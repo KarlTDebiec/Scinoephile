@@ -3,13 +3,14 @@
 """Complete reference-free multi-source transcription workflow.
 
 Package hierarchy (modules may import from any above):
+* models
 * pipeline
 * factory
 """
 
 from __future__ import annotations
 
-from .factory import get_transcription_pipeline
+from .models import AudioAnalysisMode
 from .pipeline import TranscriptionPipeline
 
-__all__ = ["TranscriptionPipeline", "get_transcription_pipeline"]
+__all__ = ["AudioAnalysisMode", "TranscriptionPipeline"]

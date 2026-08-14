@@ -131,6 +131,7 @@ class Queryer[TTestCase: TestCase]:
             return test_case
 
         query_json = test_case.query.model_dump_json(by_alias=True, indent=4)
+        query_key_sha256 = test_case.query.key_sha256
 
         # Query provider
         messages = [
@@ -146,7 +147,7 @@ class Queryer[TTestCase: TestCase]:
                     self.test_case_cls.answer_cls,
                     self.tool_box,
                     operation=self.test_case_cls.operation,
-                    query_key_sha256=test_case.query.key_sha256,
+                    query_key_sha256=query_key_sha256,
                     query_attempt=attempt,
                 )
             except ScinoephileError as exc:

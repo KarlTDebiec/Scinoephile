@@ -11,24 +11,12 @@ from typing import Self
 from pydantic import BaseModel, Field, model_validator
 
 __all__ = [
-    "AudioClassificationMode",
     "AudioEvent",
     "AudioEventDetectionResult",
     "AudioEventSpan",
     "LanguageIdentificationResult",
     "LanguageSpan",
 ]
-
-
-class AudioClassificationMode(StrEnum):
-    """Optional source-wide audio-classification behavior."""
-
-    AUTO = "auto"
-    """Use classification when available and continue after failure."""
-    ON = "on"
-    """Require successful classification."""
-    OFF = "off"
-    """Do not run classification."""
 
 
 class AudioEvent(StrEnum):

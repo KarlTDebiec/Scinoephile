@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
+from dataclasses import asdict
 from hashlib import sha256
 from logging import getLogger
 
@@ -22,17 +23,16 @@ from scinoephile.analysis.transcription.manifest import (
     RunBlock,
     RunManifest,
 )
-from scinoephile.analysis.transcription.timing import get_display_intervals
+from scinoephile.analysis.transcription.timing import get_blocks_with_display_timing
 from scinoephile.audio.classification import (
     AudioClassificationError,
-    AudioClassificationMode,
     AudioEventDetectionResult,
     FireRedAudioEventDetector,
     FireRedLanguageIdentifier,
     LanguageIdentificationResult,
 )
 from scinoephile.audio.diarization import (
-    DiarizationMode,
+    PyannoteDiarizer,
     SpeakerDiarizationError,
     SpeakerDiarizationResult,
 )
@@ -54,6 +54,8 @@ from scinoephile.workflows.transcription_alignment import (
     build_transcription_alignment_block,
 )
 
+from .models import AudioAnalysisMode
+
 __all__ = ["TranscriptionPipeline"]
 
 logger = getLogger(__name__)
@@ -71,13 +73,11 @@ class TranscriptionPipeline:
         block_splitter: SpeechBlockSplitter,
         block_vad_cache: VoiceActivityCache,
         block_vad_detector: VoiceActivityDetector,
-        audio_event_mode: AudioClassificationMode = AudioClassificationMode.AUTO,
+        audio_event_mode: AudioAnalysisMode = AudioAnalysisMode.AUTO,
         audio_event_detector: FireRedAudioEventDetector | None = None,
-        diarization_mode: DiarizationMode = DiarizationMode.AUTO,
-        diarizer: Callable[[AudioSegment], SpeakerDiarizationResult] | None = None,
-        language_identification_mode: AudioClassificationMode = (
-            AudioClassificationMode.AUTO
-        ),
+        diarization_mode: AudioAnalysisMode = AudioAnalysisMode.AUTO,
+        diarizer: PyannoteDiarizer | None = None,
+        language_identification_mode: AudioAnalysisMode = AudioAnalysisMode.AUTO,
         language_identifier: FireRedLanguageIdentifier | None = None,
         timing_settings: TimingSettings | None = None,
     ):
@@ -98,8 +98,15 @@ class TranscriptionPipeline:
             language_identifier: optional configured FireRed language identifier
             timing_settings: reference-free merged subtitle display timing
         Raises:
-            ValueError: if an enabled analysis mode lacks its dependency
+            ValueError: if sources are inconsistent or an enabled analysis mode lacks
+              its dependency
         """
+        alignment_source_names = tuple(source.name for source in alignment_sources)
+        transcriber_source_names = tuple(transcriber.transcribers)
+        if alignment_source_names != transcriber_source_names:
+            raise ValueError(
+                "Alignment sources must match transcription sources in stable order."
+            )
         self.language = language
         """Transcription and output language."""
         self.transcriber = transcriber
@@ -116,7 +123,7 @@ class TranscriptionPipeline:
         """Source-wide speech, singing, and music detection mode."""
         self.audio_event_detector = audio_event_detector
         """Optional FireRed multi-label audio-event detector."""
-        if self.audio_event_mode is not AudioClassificationMode.OFF and (
+        if self.audio_event_mode is not AudioAnalysisMode.OFF and (
             self.audio_event_detector is None
         ):
             raise ValueError("Audio-event mode requires an audio-event detector.")
@@ -124,13 +131,13 @@ class TranscriptionPipeline:
         """Source-wide speaker diarization mode."""
         self.diarizer = diarizer
         """Optional source-wide speaker diarizer."""
-        if self.diarization_mode is not DiarizationMode.OFF and self.diarizer is None:
+        if self.diarization_mode is not AudioAnalysisMode.OFF and self.diarizer is None:
             raise ValueError("Diarization mode requires a diarizer.")
         self.language_identification_mode = language_identification_mode
         """Source-wide spoken-language identification mode."""
         self.language_identifier = language_identifier
         """Optional FireRed spoken-language identifier."""
-        if self.language_identification_mode is not AudioClassificationMode.OFF and (
+        if self.language_identification_mode is not AudioAnalysisMode.OFF and (
             self.language_identifier is None
         ):
             raise ValueError(
@@ -146,6 +153,18 @@ class TranscriptionPipeline:
         """Reproducibility provenance from the most recent run."""
         self.last_blocks: list[SpeechBlock] = []
         """Most recent stable full-source block plan."""
+
+    def plan_blocks(self, audio_series: AudioSeries) -> tuple[SpeechBlock, ...]:
+        """Get the stable VAD block plan without running ASR or consensus.
+
+        Arguments:
+            audio_series: complete source audio
+        Returns:
+            VAD-derived blocks in source order
+        """
+        trace = self._get_voice_activity_trace(audio_series.audio)
+        self.last_blocks = self.block_splitter(trace)
+        return tuple(self.last_blocks)
 
     def process(
         self,
@@ -169,14 +188,7 @@ class TranscriptionPipeline:
         self.last_blocks = self.block_splitter(trace)
         selected_blocks = self._get_selected_blocks(start_at_idx, stop_at_idx)
         speech_intervals_ms = tuple(self.block_vad_detector.get_speech_intervals(trace))
-        block_records = {
-            block.index + 1: RunBlock(
-                index=block.index + 1,
-                status="empty",
-                reason="Selected block did not produce output.",
-            )
-            for block in selected_blocks
-        }
+        block_records: list[RunBlock] = []
         if (
             self.transcriber.processor.prune_test_cases
             and selected_blocks != self.last_blocks
@@ -199,6 +211,7 @@ class TranscriptionPipeline:
         output_segments = []
         alignment_blocks: list[AlignmentBlock] = []
         for block in selected_blocks:
+            block_index = block.index + 1
             block_audio = audio_series.audio[
                 block.buffered_start_ms : block.buffered_end_ms
             ]
@@ -216,29 +229,27 @@ class TranscriptionPipeline:
                     diarization=diarization,
                 )
             except TranscriptionEmptyError as exc:
-                block_records[block.index + 1] = block_records[
-                    block.index + 1
-                ].model_copy(
-                    update={
-                        "status": "empty",
-                        "reason": str(exc),
-                        "source_cache_key_sha256s": dict(
+                reason = str(exc).strip() or type(exc).__name__
+                block_records.append(
+                    RunBlock(
+                        index=block_index,
+                        status="empty",
+                        reason=reason,
+                        source_cache_key_sha256s=dict(
                             self.transcriber.last_source_cache_key_sha256s
                         ),
-                        "query_key_sha256s": (self.transcriber.last_query_key_sha256s),
-                    }
+                        query_key_sha256s=self.transcriber.last_query_key_sha256s,
+                    )
                 )
                 logger.info(
-                    f"Transcription block {block.index + 1} contains no transcribed "
-                    f"speech: {exc}"
+                    f"Transcription block {block_index} contains no transcribed "
+                    f"speech: {reason}"
                 )
                 continue
-            run_details = {
-                "source_cache_key_sha256s": dict(
-                    self.transcriber.last_source_cache_key_sha256s
-                ),
-                "query_key_sha256s": self.transcriber.last_query_key_sha256s,
-            }
+            source_cache_key_sha256s = dict(
+                self.transcriber.last_source_cache_key_sha256s
+            )
+            query_key_sha256s = self.transcriber.last_query_key_sha256s
             if diarization is not None:
                 block_segments = assign_speakers(
                     diarization,
@@ -250,18 +261,17 @@ class TranscriptionPipeline:
                 segment for segment in block_segments if segment.text.strip()
             ]
             if not block_segments:
-                block_records[block.index + 1] = block_records[
-                    block.index + 1
-                ].model_copy(
-                    update={
-                        "status": "no-core-text",
-                        "reason": "Merged text was outside the block core.",
-                        **run_details,
-                    }
+                block_records.append(
+                    RunBlock(
+                        index=block_index,
+                        status="no-core-text",
+                        reason="Merged text was outside the block core.",
+                        source_cache_key_sha256s=source_cache_key_sha256s,
+                        query_key_sha256s=query_key_sha256s,
+                    )
                 )
                 logger.info(
-                    f"Transcription block {block.index + 1} contains no core-owned "
-                    "text."
+                    f"Transcription block {block_index} contains no core-owned text."
                 )
                 continue
             block_segments = self._add_voice_activity_scores(block_segments, trace)
@@ -286,46 +296,83 @@ class TranscriptionPipeline:
                     voice_activity_trace=trace,
                 )
             )
-            block_records[block.index + 1] = block_records[block.index + 1].model_copy(
-                update={"status": "transcribed", "reason": None, **run_details}
+            block_records.append(
+                RunBlock(
+                    index=block_index,
+                    status="transcribed",
+                    source_cache_key_sha256s=source_cache_key_sha256s,
+                    query_key_sha256s=query_key_sha256s,
+                )
             )
             output_segments.extend(block_segments)
 
-        speech_intervals = [
-            (
-                segment.words[0].start if segment.words else segment.start,
-                segment.words[-1].end if segment.words else segment.end,
-            )
-            for segment in output_segments
-        ]
-        display_intervals = get_display_intervals(
-            speech_intervals, len(audio_series.audio) / 1000, self.timing_settings
+        timed_alignment_blocks = get_blocks_with_display_timing(
+            alignment_blocks, len(audio_series.audio) / 1000, self.timing_settings
         )
+        alignment_subtitles = [
+            subtitle
+            for alignment_block in timed_alignment_blocks
+            for subtitle in alignment_block.subtitles
+        ]
+        if len(alignment_subtitles) != len(output_segments):
+            raise RuntimeError(
+                "Alignment subtitle count does not match merged segment count."
+            )
         output_segments = [
-            segment.model_copy(deep=True, update={"start": start, "end": end})
-            for segment, (start, end) in zip(
-                output_segments, display_intervals, strict=True
+            segment.model_copy(
+                deep=True,
+                update={
+                    "id": segment_id,
+                    "start": subtitle.start_ms / 1000,
+                    "end": subtitle.end_ms / 1000,
+                },
+            )
+            for segment_id, (segment, subtitle) in enumerate(
+                zip(output_segments, alignment_subtitles, strict=True)
             )
         ]
-        output_segments = [
-            segment.model_copy(update={"id": segment_id})
-            for segment_id, segment in enumerate(output_segments)
-        ]
-        alignment_blocks = self._get_blocks_with_display_timing(
-            alignment_blocks, output_segments
-        )
         self.last_alignment_artifact = AlignmentArtifact(
             language=self.language,
             audio_duration_ms=len(audio_series.audio),
             sources=self.alignment_sources,
             timing=self.timing_settings,
-            blocks=tuple(alignment_blocks),
+            blocks=timed_alignment_blocks,
         )
         self.last_run_manifest = self._build_run_manifest(
-            audio_series.audio,
-            tuple(block_records[index] for index in sorted(block_records)),
+            audio_series.audio, tuple(block_records)
         )
         return get_series_from_segments(output_segments, audio=audio_series.audio)
+
+    def _add_voice_activity_scores(
+        self, segments: list[TranscribedSegment], trace: VoiceActivityTrace
+    ) -> list[TranscribedSegment]:
+        """Attach full-source VAD summaries to source-timed words.
+
+        Arguments:
+            segments: source-timed transcription segments
+            trace: full-source voice-activity score trace
+        Returns:
+            copied segments whose words include VAD summaries
+        """
+        output_segments = [segment.model_copy(deep=True) for segment in segments]
+        words = [
+            word
+            for segment in output_segments
+            for word in (segment.words if segment.words is not None else [])
+        ]
+        threshold = self.block_splitter.settings.voice_activity_threshold
+        for word_idx, word in enumerate(words):
+            word.voice_activity_score = trace.get_mean_score(word.start, word.end)
+            word.voice_activity_peak = trace.get_peak_score(word.start, word.end)
+            word.voice_activity_coverage = trace.get_coverage(
+                word.start, word.end, threshold
+            )
+            if word_idx + 1 < len(words):
+                next_word = words[word_idx + 1]
+                word.following_voice_activity_score = trace.get_mean_score(
+                    word.end, next_word.start
+                )
+        return output_segments
 
     def _build_run_manifest(
         self, audio: AudioSegment, blocks: tuple[RunBlock, ...]
@@ -350,7 +397,10 @@ class TranscriptionPipeline:
         )
         block_vad_identity = json.loads(
             json.dumps(
-                self.block_vad_detector.cache_identity,
+                {
+                    "detector": self.block_vad_detector.cache_identity,
+                    "splitter": asdict(self.block_splitter.settings),
+                },
                 allow_nan=False,
                 ensure_ascii=False,
             )
@@ -377,106 +427,53 @@ class TranscriptionPipeline:
             alignment_sha256=self.last_alignment_artifact.sha256,
         )
 
-    @staticmethod
-    def _get_blocks_with_display_timing(
-        blocks: list[AlignmentBlock], segments: list[TranscribedSegment]
-    ) -> list[AlignmentBlock]:
-        """Apply globally calculated display bounds to artifact subtitles."""
-        subtitles = [subtitle for block in blocks for subtitle in block.subtitles]
-        if len(subtitles) != len(segments):
-            raise RuntimeError(
-                "Alignment subtitle count does not match merged segment count."
-            )
-        display_bounds = {
-            subtitle.index: (round(segment.start * 1000), round(segment.end * 1000))
-            for subtitle, segment in zip(subtitles, segments, strict=True)
-        }
-        return [
-            block.model_copy(
-                update={
-                    "subtitles": tuple(
-                        subtitle.model_copy(
-                            update={
-                                "start_ms": display_bounds[subtitle.index][0],
-                                "end_ms": display_bounds[subtitle.index][1],
-                            }
-                        )
-                        for subtitle in block.subtitles
-                    )
-                }
-            )
-            for block in blocks
-        ]
-
-    def plan_blocks(self, audio_series: AudioSeries) -> tuple[SpeechBlock, ...]:
-        """Get the stable VAD block plan without running ASR or consensus.
-
-        Arguments:
-            audio_series: complete source audio
-        Returns:
-            VAD-derived blocks in source order
-        """
-        trace = self._get_voice_activity_trace(audio_series.audio)
-        self.last_blocks = self.block_splitter(trace)
-        return tuple(self.last_blocks)
-
-    def _add_voice_activity_scores(
-        self, segments: list[TranscribedSegment], trace: VoiceActivityTrace
-    ) -> list[TranscribedSegment]:
-        """Attach full-source VAD summaries to source-timed words."""
-        output_segments = [segment.model_copy(deep=True) for segment in segments]
-        words = [
-            word
-            for segment in output_segments
-            for word in (segment.words if segment.words is not None else [])
-        ]
-        threshold = self.block_splitter.settings.voice_activity_threshold
-        for word_idx, word in enumerate(words):
-            word.voice_activity_score = trace.get_mean_score(word.start, word.end)
-            word.voice_activity_peak = trace.get_peak_score(word.start, word.end)
-            word.voice_activity_coverage = trace.get_coverage(
-                word.start, word.end, threshold
-            )
-            if word_idx + 1 < len(words):
-                next_word = words[word_idx + 1]
-                word.following_voice_activity_score = trace.get_mean_score(
-                    word.end, next_word.start
-                )
-        return output_segments
-
-    def _get_diarization(
-        self, audio: AudioSegment, has_selected_blocks: bool
-    ) -> SpeakerDiarizationResult | None:
-        """Get optional source-wide speaker diarization once per run."""
-        if self.diarization_mode is DiarizationMode.OFF or not has_selected_blocks:
-            return None
-        assert self.diarizer is not None
-        try:
-            return self.diarizer(audio)
-        except SpeakerDiarizationError as exc:
-            if self.diarization_mode is DiarizationMode.ON:
-                raise
-            logger.warning(
-                f"Speaker diarization is unavailable; continuing without speaker "
-                f"evidence: {exc}"
-            )
-            return None
-
     def _get_audio_events(
         self, audio: AudioSegment | None, offset_ms: int
     ) -> AudioEventDetectionResult | None:
-        """Get optional FireRed audio events over the selected block span."""
-        if self.audio_event_mode is AudioClassificationMode.OFF or audio is None:
+        """Get optional FireRed audio events over the selected block span.
+
+        Arguments:
+            audio: selected contiguous source audio, if any
+            offset_ms: selected audio start on the complete source timeline
+        Returns:
+            audio events, or None when disabled or unavailable in auto mode
+        """
+        if self.audio_event_mode is AudioAnalysisMode.OFF or audio is None:
             return None
         assert self.audio_event_detector is not None
         try:
             return self.audio_event_detector(audio, offset_seconds=offset_ms / 1000)
         except AudioClassificationError as exc:
-            if self.audio_event_mode is AudioClassificationMode.ON:
+            if self.audio_event_mode is AudioAnalysisMode.ON:
                 raise
             logger.warning(
                 f"Audio-event detection is unavailable; continuing without "
                 f"singing or music evidence: {exc}"
+            )
+            return None
+
+    def _get_diarization(
+        self, audio: AudioSegment, has_selected_blocks: bool
+    ) -> SpeakerDiarizationResult | None:
+        """Get optional source-wide speaker diarization once per run.
+
+        Arguments:
+            audio: complete source audio
+            has_selected_blocks: whether the requested range contains blocks
+        Returns:
+            speaker diarization, or None when disabled or unavailable in auto mode
+        """
+        if self.diarization_mode is AudioAnalysisMode.OFF or not has_selected_blocks:
+            return None
+        assert self.diarizer is not None
+        try:
+            return self.diarizer(audio)
+        except SpeakerDiarizationError as exc:
+            if self.diarization_mode is AudioAnalysisMode.ON:
+                raise
+            logger.warning(
+                f"Speaker diarization is unavailable; continuing without speaker "
+                f"evidence: {exc}"
             )
             return None
 
@@ -486,11 +483,16 @@ class TranscriptionPipeline:
         offset_ms: int,
         speech_intervals_ms: Sequence[tuple[int, int]],
     ) -> LanguageIdentificationResult | None:
-        """Get optional FireRed LID over selected VAD speech intervals."""
-        if (
-            self.language_identification_mode is AudioClassificationMode.OFF
-            or audio is None
-        ):
+        """Get optional FireRed LID over selected VAD speech intervals.
+
+        Arguments:
+            audio: selected contiguous source audio, if any
+            offset_ms: selected audio start on the complete source timeline
+            speech_intervals_ms: source-timeline speech intervals
+        Returns:
+            language identification, or None when disabled or unavailable in auto mode
+        """
+        if self.language_identification_mode is AudioAnalysisMode.OFF or audio is None:
             return None
         assert self.language_identifier is not None
         speech_intervals = self._get_classification_speech_intervals(
@@ -501,7 +503,7 @@ class TranscriptionPipeline:
                 audio, speech_intervals, offset_seconds=offset_ms / 1000
             )
         except AudioClassificationError as exc:
-            if self.language_identification_mode is AudioClassificationMode.ON:
+            if self.language_identification_mode is AudioAnalysisMode.ON:
                 raise
             logger.warning(
                 f"Language identification is unavailable; continuing without "
@@ -509,42 +511,62 @@ class TranscriptionPipeline:
             )
             return None
 
-    @staticmethod
-    def _get_classification_audio(
-        audio: AudioSegment, selected_blocks: list[SpeechBlock]
-    ) -> tuple[AudioSegment | None, int]:
-        """Get the smallest contiguous source slice covering selected buffers."""
-        if not selected_blocks:
-            return None, 0
-        start_ms = min(block.buffered_start_ms for block in selected_blocks)
-        end_ms = max(block.buffered_end_ms for block in selected_blocks)
-        return audio[start_ms:end_ms], start_ms
+    def _get_selected_blocks(
+        self, start_at_idx: int, stop_at_idx: int | None
+    ) -> list[SpeechBlock]:
+        """Validate and select a half-open range from the stable block plan.
 
-    @staticmethod
-    def _get_classification_speech_intervals(
-        speech_intervals_ms: Sequence[tuple[int, int]], offset_ms: int, duration_ms: int
-    ) -> tuple[tuple[int, int], ...]:
-        """Clip block-planning speech intervals to the classification slice."""
-        source_end_ms = offset_ms + duration_ms
-        intervals = []
-        for start_ms, end_ms in speech_intervals_ms:
-            if end_ms <= offset_ms:
-                continue
-            if start_ms >= source_end_ms:
-                break
-            intervals.append(
-                (
-                    max(offset_ms, start_ms) - offset_ms,
-                    min(source_end_ms, end_ms) - offset_ms,
-                )
+        Arguments:
+            start_at_idx: inclusive zero-based block index
+            stop_at_idx: exclusive zero-based block index, or None for the end
+        Returns:
+            selected stable speech blocks
+        Raises:
+            ScinoephileError: if the selected range is invalid
+        """
+        block_count = len(self.last_blocks)
+        if stop_at_idx is None:
+            stop_at_idx = block_count
+        if (
+            start_at_idx < 0
+            or start_at_idx > block_count
+            or stop_at_idx < start_at_idx
+            or stop_at_idx > block_count
+        ):
+            raise ScinoephileError(
+                f"Invalid transcription block range [{start_at_idx}, {stop_at_idx}) "
+                f"for {block_count} available blocks."
             )
-        return tuple(intervals)
+        return self.last_blocks[start_at_idx:stop_at_idx]
+
+    def _get_voice_activity_trace(self, audio: AudioSegment) -> VoiceActivityTrace:
+        """Load or infer the full-source block-planning VAD trace.
+
+        Arguments:
+            audio: complete source audio
+        Returns:
+            cached or newly inferred frame-level VAD scores
+        """
+        metadata = self.block_vad_detector.trace_cache_identity
+        trace = self.block_vad_cache.load(audio, metadata)
+        if trace is not None:
+            return trace
+        trace = self.block_vad_detector.get_trace(audio)
+        self.block_vad_cache.save(audio, metadata, trace)
+        return trace
 
     @staticmethod
     def _get_block_pause_intervals(
         speech_intervals_ms: Sequence[tuple[int, int]], block: SpeechBlock
     ) -> tuple[tuple[float, float], ...]:
-        """Get block-local complements of block-planning speech intervals."""
+        """Get block-local complements of block-planning speech intervals.
+
+        Arguments:
+            speech_intervals_ms: source-timeline speech intervals
+            block: block whose buffered range bounds the complements
+        Returns:
+            block-local pause intervals in seconds
+        """
         pause_intervals = []
         pause_start_ms = block.buffered_start_ms
         for speech_start_ms, speech_end_ms in speech_intervals_ms:
@@ -572,10 +594,63 @@ class TranscriptionPipeline:
         return tuple(pause_intervals)
 
     @staticmethod
+    def _get_classification_audio(
+        audio: AudioSegment, selected_blocks: list[SpeechBlock]
+    ) -> tuple[AudioSegment | None, int]:
+        """Get the smallest contiguous source slice covering selected buffers.
+
+        Arguments:
+            audio: complete source audio
+            selected_blocks: stable selected speech blocks
+        Returns:
+            selected audio and its source-timeline offset, or None and zero
+        """
+        if not selected_blocks:
+            return None, 0
+        start_ms = min(block.buffered_start_ms for block in selected_blocks)
+        end_ms = max(block.buffered_end_ms for block in selected_blocks)
+        return audio[start_ms:end_ms], start_ms
+
+    @staticmethod
+    def _get_classification_speech_intervals(
+        speech_intervals_ms: Sequence[tuple[int, int]], offset_ms: int, duration_ms: int
+    ) -> tuple[tuple[int, int], ...]:
+        """Clip block-planning speech intervals to the classification slice.
+
+        Arguments:
+            speech_intervals_ms: source-timeline speech intervals
+            offset_ms: classification slice start on the source timeline
+            duration_ms: classification slice duration
+        Returns:
+            classification-slice-local speech intervals
+        """
+        source_end_ms = offset_ms + duration_ms
+        intervals = []
+        for start_ms, end_ms in speech_intervals_ms:
+            if end_ms <= offset_ms:
+                continue
+            if start_ms >= source_end_ms:
+                break
+            intervals.append(
+                (
+                    max(offset_ms, start_ms) - offset_ms,
+                    min(source_end_ms, end_ms) - offset_ms,
+                )
+            )
+        return tuple(intervals)
+
+    @staticmethod
     def _get_offset_core_segments(
         segments: list[TranscribedSegment], block: SpeechBlock
     ) -> list[TranscribedSegment]:
-        """Map block-local timings to the source and retain core-owned content."""
+        """Map block-local timings to the source and retain core-owned content.
+
+        Arguments:
+            segments: block-local transcription segments
+            block: source-timeline buffered and core bounds
+        Returns:
+            source-timed segments whose midpoints belong to the block core
+        """
         offset_seconds = block.buffered_start_ms / 1000
         core_start_seconds = block.start_ms / 1000
         core_end_seconds = block.end_ms / 1000
@@ -625,32 +700,3 @@ class TranscriptionPipeline:
                 )
             )
         return output_segments
-
-    def _get_selected_blocks(
-        self, start_at_idx: int, stop_at_idx: int | None
-    ) -> list[SpeechBlock]:
-        """Validate and select a half-open range from the stable block plan."""
-        block_count = len(self.last_blocks)
-        if stop_at_idx is None:
-            stop_at_idx = block_count
-        if (
-            start_at_idx < 0
-            or start_at_idx > block_count
-            or stop_at_idx < start_at_idx
-            or stop_at_idx > block_count
-        ):
-            raise ScinoephileError(
-                f"Invalid transcription block range [{start_at_idx}, {stop_at_idx}) "
-                f"for {block_count} available blocks."
-            )
-        return self.last_blocks[start_at_idx:stop_at_idx]
-
-    def _get_voice_activity_trace(self, audio: AudioSegment) -> VoiceActivityTrace:
-        """Load or infer the full-source block-planning VAD trace."""
-        metadata = self.block_vad_detector.trace_cache_identity
-        trace = self.block_vad_cache.load(audio, metadata)
-        if trace is not None:
-            return trace
-        trace = self.block_vad_detector.get_trace(audio)
-        self.block_vad_cache.save(audio, metadata, trace)
-        return trace

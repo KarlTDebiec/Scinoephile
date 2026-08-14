@@ -34,11 +34,11 @@ class Query(LLMModel, ABC):
         )
 
     @property
-    def key_str(self) -> str:
-        """Unique string key for the query."""
-        return json.dumps(self.key, ensure_ascii=False)
-
-    @property
     def key_sha256(self) -> str:
         """Get the stable SHA-256 digest of the semantic query key."""
         return sha256(self.key_str.encode("utf-8")).hexdigest()
+
+    @property
+    def key_str(self) -> str:
+        """Unique string key for the query."""
+        return json.dumps(self.key, ensure_ascii=False)

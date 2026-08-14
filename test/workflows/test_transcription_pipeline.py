@@ -4,23 +4,33 @@
 
 from __future__ import annotations
 
+from typing import Literal, cast
 from unittest.mock import Mock
 
 import numpy as np
+from pydantic import ValidationError
 from pydub import AudioSegment
+from pytest import mark, raises
 
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
 from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
 from scinoephile.analysis.alignment.timed_msa.models import Column, Token
 from scinoephile.analysis.transcription.artifact import AlignmentSource
-from scinoephile.audio.classification.models import AudioClassificationMode
-from scinoephile.audio.diarization.models import DiarizationMode
+from scinoephile.audio.classification.exceptions import AudioClassificationError
+from scinoephile.audio.diarization.exceptions import SpeakerDiarizationError
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
+from scinoephile.audio.transcription import (
+    TranscribedSegment,
+    TranscribedWord,
+    TranscriptionEmptyError,
+)
 from scinoephile.audio.vad import SpeechBlock, SpeechBlockSettings, VoiceActivityTrace
 from scinoephile.core import Language
 from scinoephile.lang.yue.transcription.token_similarity import YueTokenSimilarity
-from scinoephile.workflows.transcription_pipeline import TranscriptionPipeline
+from scinoephile.workflows.transcription_pipeline import (
+    AudioAnalysisMode,
+    TranscriptionPipeline,
+)
 
 _SOURCE_CACHE_KEY_SHA256S = {"one": "1" * 64, "two": "2" * 64}
 """Selected ASR cache keys used by the pipeline fixture."""
@@ -28,8 +38,57 @@ _QUERY_KEY_SHA256S = ("3" * 64,)
 """Semantic processor query keys used by the pipeline fixture."""
 
 
-def test_process_builds_subtitles_alignment_and_run_manifest():
-    """One selected block should produce mutually linked portable outputs."""
+def _get_failed_analysis_pipeline(
+    component: Literal["audio-event", "diarization", "language-identification"],
+    mode: AudioAnalysisMode,
+) -> tuple[TranscriptionPipeline, AudioSeries]:
+    """Get a pipeline whose selected optional analysis raises a domain error.
+
+    Arguments:
+        component: optional analysis component that should fail
+        mode: failure policy for the selected component
+    Returns:
+        configured pipeline and source audio
+    """
+    if component == "audio-event":
+        detector = Mock(side_effect=AudioClassificationError("unavailable"))
+        return _get_pipeline(audio_event_detector=detector, audio_event_mode=mode)
+    if component == "diarization":
+        diarizer = Mock(side_effect=SpeakerDiarizationError("unavailable"))
+        return _get_pipeline(diarization_mode=mode, diarizer=diarizer)
+    identifier = Mock(side_effect=AudioClassificationError("unavailable"))
+    return _get_pipeline(
+        language_identification_mode=mode, language_identifier=identifier
+    )
+
+
+def _get_pipeline(
+    *,
+    alignment_sources: tuple[AlignmentSource, ...] | None = None,
+    audio_event_detector: Mock | None = None,
+    audio_event_mode: AudioAnalysisMode = AudioAnalysisMode.OFF,
+    diarization_mode: AudioAnalysisMode = AudioAnalysisMode.OFF,
+    diarizer: Mock | None = None,
+    language_identification_mode: AudioAnalysisMode = AudioAnalysisMode.OFF,
+    language_identifier: Mock | None = None,
+    segment: TranscribedSegment | None = None,
+    transcription_error: TranscriptionEmptyError | None = None,
+) -> tuple[TranscriptionPipeline, AudioSeries]:
+    """Get a pipeline with deterministic mocked dependencies.
+
+    Arguments:
+        alignment_sources: optional portable source descriptors
+        audio_event_detector: optional audio-event detector
+        audio_event_mode: audio-event failure policy
+        diarization_mode: diarization failure policy
+        diarizer: optional speaker diarizer
+        language_identification_mode: language-identification failure policy
+        language_identifier: optional language identifier
+        segment: optional transcription result
+        transcription_error: optional transcription failure
+    Returns:
+        configured pipeline and source audio
+    """
     audio = AudioSegment.silent(duration=1_000)
     audio_series = AudioSeries(audio)
     trace = VoiceActivityTrace(
@@ -39,7 +98,9 @@ def test_process_builds_subtitles_alignment_and_run_manifest():
         index=0, start_ms=100, end_ms=900, buffered_start_ms=0, buffered_end_ms=1_000
     )
     block_splitter = Mock(return_value=[block])
-    block_splitter.settings = SpeechBlockSettings()
+    block_splitter.settings = SpeechBlockSettings(
+        speech_free_gap_seconds=4.0, context_padding_seconds=0.75
+    )
     block_vad_detector = Mock()
     block_vad_detector.cache_identity = {"implementation": "test"}
     block_vad_detector.trace_cache_identity = {"implementation": "test"}
@@ -47,16 +108,28 @@ def test_process_builds_subtitles_alignment_and_run_manifest():
     block_vad_cache = Mock()
     block_vad_cache.load.return_value = trace
 
-    word = TranscribedWord(text="甲", start=0.2, end=0.4, confidence=1.0)
-    segment = TranscribedSegment(
-        id=0, seek=0, start=0.2, end=0.4, text="甲", words=[word]
-    )
+    if segment is None:
+        word = TranscribedWord(text="甲", start=0.2004, end=0.4006, confidence=1.0)
+        segment = TranscribedSegment(
+            id=0, seek=0, start=0.2004, end=0.4006, text="甲", words=[word]
+        )
     transcriber = Mock()
-    transcriber.transcribe_block.return_value = [segment]
+    transcriber.transcribers = {"one": Mock(), "two": Mock()}
+    if transcription_error is None:
+        transcriber.transcribe_block.return_value = [segment]
+    else:
+        transcriber.transcribe_block.side_effect = transcription_error
     transcriber.aligner = Aligner(YueTokenSimilarity())
     transcriber.last_lexical_alignment = Alignment(
         source_names=("one", "two"),
-        columns=(Column((Token("甲", 0.2, 0.4), Token("甲", 0.2, 0.4))),),
+        columns=(
+            Column(
+                (
+                    Token("甲", segment.start, segment.end),
+                    Token("甲", segment.start, segment.end),
+                )
+            ),
+        ),
     )
     transcriber.last_source_errors = {}
     transcriber.last_source_cache_key_sha256s = _SOURCE_CACHE_KEY_SHA256S
@@ -69,33 +142,163 @@ def test_process_builds_subtitles_alignment_and_run_manifest():
     transcriber.processor.queryer.system_prompt = "test prompt"
     transcriber.processor.queryer.no_op = True
 
+    if alignment_sources is None:
+        alignment_sources = (
+            AlignmentSource(name="one", backend="test", model="one"),
+            AlignmentSource(name="two", backend="test", model="two"),
+        )
     pipeline = TranscriptionPipeline(
         language=Language.yue_hant,
         transcriber=transcriber,
-        alignment_sources=(
-            AlignmentSource(name="one", backend="test", model="one"),
-            AlignmentSource(name="two", backend="test", model="two"),
-        ),
-        audio_event_mode=AudioClassificationMode.OFF,
-        diarization_mode=DiarizationMode.OFF,
-        language_identification_mode=AudioClassificationMode.OFF,
+        alignment_sources=alignment_sources,
+        audio_event_mode=audio_event_mode,
+        audio_event_detector=audio_event_detector,
+        diarization_mode=diarization_mode,
+        diarizer=diarizer,
+        language_identification_mode=language_identification_mode,
+        language_identifier=language_identifier,
         block_splitter=block_splitter,
         block_vad_cache=block_vad_cache,
         block_vad_detector=block_vad_detector,
     )
+    return pipeline, audio_series
+
+
+def test_init_rejects_misaligned_source_descriptors():
+    """Source descriptors should match transcriber names and order."""
+    with raises(ValueError, match="must match transcription sources"):
+        _get_pipeline(
+            alignment_sources=(
+                AlignmentSource(name="two", backend="test", model="two"),
+                AlignmentSource(name="one", backend="test", model="one"),
+            )
+        )
+
+
+def test_plan_blocks_saves_a_new_voice_activity_trace():
+    """A cache miss should infer and save the reusable VAD trace."""
+    pipeline, audio_series = _get_pipeline()
+    block_vad_cache = cast(Mock, pipeline.block_vad_cache)
+    block_vad_detector = cast(Mock, pipeline.block_vad_detector)
+    trace = block_vad_cache.load.return_value
+    block_vad_cache.load.return_value = None
+    block_vad_detector.get_trace.return_value = trace
+
+    blocks = pipeline.plan_blocks(audio_series)
+
+    assert blocks == tuple(pipeline.last_blocks)
+    block_vad_cache.save.assert_called_once_with(
+        audio_series.audio, pipeline.block_vad_detector.trace_cache_identity, trace
+    )
+
+
+def test_process_builds_subtitles_alignment_and_run_manifest():
+    """One selected block should produce mutually linked portable outputs."""
+    pipeline, audio_series = _get_pipeline()
 
     output = pipeline.process(audio_series)
 
-    assert [(event.start, event.end, event.text) for event in output.events] == [
-        (0, 900, "甲")
-    ]
     assert pipeline.last_alignment_artifact is not None
     assert pipeline.last_run_manifest is not None
+    subtitle = pipeline.last_alignment_artifact.blocks[0].subtitles[0]
+    assert [(event.start, event.end, event.text) for event in output.events] == [
+        (subtitle.start_ms, subtitle.end_ms, "甲")
+    ]
+    assert subtitle.end_ms == 901
     assert pipeline.last_run_manifest.alignment_sha256 == (
         pipeline.last_alignment_artifact.sha256
     )
+    assert pipeline.last_run_manifest.block_vad_identity == {
+        "detector": {"implementation": "test"},
+        "splitter": {
+            "context_padding_seconds": 0.75,
+            "min_silence_duration_seconds": 0.1,
+            "min_speech_duration_seconds": 0.3,
+            "speech_free_gap_seconds": 4.0,
+            "voice_activity_threshold": 0.9,
+        },
+    }
     assert pipeline.last_run_manifest.blocks[0].source_cache_key_sha256s == (
         _SOURCE_CACHE_KEY_SHA256S
     )
     assert pipeline.last_run_manifest.blocks[0].query_key_sha256s == _QUERY_KEY_SHA256S
     assert pipeline.last_run_manifest.processor.no_op
+
+
+def test_process_records_empty_transcription_blocks():
+    """Empty transcription should produce a validated manifest record."""
+    pipeline, audio_series = _get_pipeline(
+        transcription_error=TranscriptionEmptyError("")
+    )
+
+    output = pipeline.process(audio_series)
+
+    assert not output.events
+    assert pipeline.last_run_manifest is not None
+    assert pipeline.last_run_manifest.blocks[0].status == "empty"
+    assert pipeline.last_run_manifest.blocks[0].reason == "TranscriptionEmptyError"
+
+
+def test_process_records_text_outside_the_block_core():
+    """Consensus text outside the selected core should remain in provenance."""
+    word = TranscribedWord(text="甲", start=0.91, end=0.95, confidence=1.0)
+    segment = TranscribedSegment(
+        id=0, seek=0, start=0.91, end=0.95, text="甲", words=[word]
+    )
+    pipeline, audio_series = _get_pipeline(segment=segment)
+
+    output = pipeline.process(audio_series)
+
+    assert not output.events
+    assert pipeline.last_run_manifest is not None
+    assert pipeline.last_run_manifest.blocks[0].status == "no-core-text"
+
+
+def test_process_rejects_invalid_run_provenance():
+    """Pipeline provenance should retain RunBlock digest validation."""
+    pipeline, audio_series = _get_pipeline()
+    pipeline.transcriber.last_query_key_sha256s = ("invalid",)
+
+    with raises(ValidationError, match="query_key_sha256s"):
+        pipeline.process(audio_series)
+
+
+@mark.parametrize(
+    "component", ("audio-event", "diarization", "language-identification")
+)
+def test_process_requires_enabled_audio_analysis(
+    component: Literal["audio-event", "diarization", "language-identification"],
+):
+    """ON mode should propagate domain failures from every optional analysis.
+
+    Arguments:
+        component: optional analysis component that should fail
+    """
+    pipeline, audio_series = _get_failed_analysis_pipeline(
+        component, AudioAnalysisMode.ON
+    )
+
+    with raises(
+        (AudioClassificationError, SpeakerDiarizationError), match="unavailable"
+    ):
+        pipeline.process(audio_series)
+
+
+@mark.parametrize(
+    "component", ("audio-event", "diarization", "language-identification")
+)
+def test_process_tolerates_unavailable_audio_analysis(
+    component: Literal["audio-event", "diarization", "language-identification"],
+):
+    """AUTO mode should tolerate domain failures from every optional analysis.
+
+    Arguments:
+        component: optional analysis component that should fail
+    """
+    pipeline, audio_series = _get_failed_analysis_pipeline(
+        component, AudioAnalysisMode.AUTO
+    )
+
+    output = pipeline.process(audio_series)
+
+    assert [event.text for event in output.events] == ["甲"]

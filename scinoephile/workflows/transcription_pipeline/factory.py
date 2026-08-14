@@ -9,11 +9,10 @@ from pathlib import Path
 
 from scinoephile.analysis.transcription.artifact import TimingSettings
 from scinoephile.audio.classification import (
-    AudioClassificationMode,
     FireRedAudioEventDetector,
     FireRedLanguageIdentifier,
 )
-from scinoephile.audio.diarization import DiarizationMode, PyannoteDiarizer
+from scinoephile.audio.diarization import PyannoteDiarizer
 from scinoephile.audio.transcription.preprocessing_settings import DemucsMode
 from scinoephile.audio.vad.cache import VoiceActivityCache
 from scinoephile.audio.vad.detector import VoiceActivityDetector
@@ -29,6 +28,7 @@ from scinoephile.workflows.multisource_transcription.factory import (
     get_multi_source_transcriber,
 )
 
+from .models import AudioAnalysisMode
 from .pipeline import TranscriptionPipeline
 
 __all__ = ["get_transcription_pipeline"]
@@ -37,13 +37,11 @@ __all__ = ["get_transcription_pipeline"]
 def get_transcription_pipeline(
     language: Language,
     *,
-    audio_event_mode: AudioClassificationMode = AudioClassificationMode.AUTO,
+    audio_event_mode: AudioAnalysisMode = AudioAnalysisMode.AUTO,
     source_specs: Sequence[TranscriptionSourceSpec] | None = None,
     demucs_mode: DemucsMode = DemucsMode.OFF,
-    diarization_mode: DiarizationMode = DiarizationMode.AUTO,
-    language_identification_mode: AudioClassificationMode = (
-        AudioClassificationMode.AUTO
-    ),
+    diarization_mode: AudioAnalysisMode = AudioAnalysisMode.AUTO,
+    language_identification_mode: AudioAnalysisMode = AudioAnalysisMode.AUTO,
     block_vad_implementation: VadImplementation = VadImplementation.PYANNOTE,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
@@ -106,15 +104,15 @@ def get_transcription_pipeline(
         padding_seconds=0.0,
     )
     audio_event_detector = None
-    if audio_event_mode is not AudioClassificationMode.OFF:
+    if audio_event_mode is not AudioAnalysisMode.OFF:
         audio_event_detector = FireRedAudioEventDetector(
             cache_root_path, overwrite_cache=overwrite_cache
         )
     diarizer = None
-    if diarization_mode is not DiarizationMode.OFF:
+    if diarization_mode is not AudioAnalysisMode.OFF:
         diarizer = PyannoteDiarizer(cache_root_path, overwrite_cache=overwrite_cache)
     language_identifier = None
-    if language_identification_mode is not AudioClassificationMode.OFF:
+    if language_identification_mode is not AudioAnalysisMode.OFF:
         language_identifier = FireRedLanguageIdentifier(
             cache_root_path, overwrite_cache=overwrite_cache
         )
