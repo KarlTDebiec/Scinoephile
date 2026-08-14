@@ -365,6 +365,10 @@ def test_processor_exposes_request_alignment_spans():
         (result.start_column, result.end_column, result.answer.transcript)
         for result in results
     ] == [(0, 1, "甲"), (5, 6, "乙")]
+    assert [result.query_key_sha256 for result in results] == [
+        call.kwargs["query_key_sha256"]
+        for call in provider.chat_completion.call_args_list
+    ]
 
 
 @parametrize(

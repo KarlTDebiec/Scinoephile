@@ -104,6 +104,8 @@ def _get_transcriber(
         ctc_aligner = Mock(spec=CtcAligner)
     if sources is None:
         sources = {"whisper": Mock(spec=Transcriber), "mimo": Mock(spec=Transcriber)}
+    for source in sources.values():
+        source.last_cache_key_sha256 = getattr(source, "last_cache_key_sha256", None)
     return MultiSourceTranscriber(
         language=Language.yue_hant,
         transcribers=sources,
@@ -119,7 +121,7 @@ def test_merge_aligns_sources_and_preserves_consensus_subtitle_splits():
     answer = _get_answer("甲", "乙")
     processor = Mock(spec=TranscriptionProcessor)
     processor.process_requests.return_value = (
-        TranscriptionRequestResult(0, 2, answer),
+        TranscriptionRequestResult(0, 2, answer, "0" * 64),
     )
     ctc_aligner = Mock(spec=CtcAligner, return_value=[_get_segment("甲乙", 0.5, 2.5)])
     transcriber = _get_transcriber(processor=processor, ctc_aligner=ctc_aligner)
@@ -137,6 +139,7 @@ def test_merge_aligns_sources_and_preserves_consensus_subtitle_splits():
         (0.5, 1.5),
         (1.5, 2.5),
     ]
+    assert transcriber.last_query_key_sha256s == ("0" * 64,)
     assert transcriber.last_timing_sources == {0: "ctc-request", 1: "ctc-request"}
     ctc_aligner.assert_called_once_with(audio, "甲乙")
     sources, speaker = processor.process_requests.call_args.args
@@ -150,8 +153,8 @@ def test_merge_uses_long_pause_boundaries_as_separate_ctc_windows():
     audio = AudioSegment.silent(duration=3_000)
     processor = Mock(spec=TranscriptionProcessor)
     processor.process_requests.return_value = (
-        TranscriptionRequestResult(0, 1, _get_answer("甲")),
-        TranscriptionRequestResult(5, 6, _get_answer("乙")),
+        TranscriptionRequestResult(0, 1, _get_answer("甲"), "0" * 64),
+        TranscriptionRequestResult(5, 6, _get_answer("乙"), "0" * 64),
     )
     ctc_aligner = Mock(
         spec=CtcAligner,
@@ -180,8 +183,8 @@ def test_merge_infers_pauses_when_explicit_evidence_is_unavailable():
     audio = AudioSegment.silent(duration=3_000)
     processor = Mock(spec=TranscriptionProcessor)
     processor.process_requests.return_value = (
-        TranscriptionRequestResult(0, 1, _get_answer("甲")),
-        TranscriptionRequestResult(6, 7, _get_answer("乙")),
+        TranscriptionRequestResult(0, 1, _get_answer("甲"), "0" * 64),
+        TranscriptionRequestResult(6, 7, _get_answer("乙"), "0" * 64),
     )
     ctc_aligner = Mock(
         spec=CtcAligner,
@@ -222,8 +225,8 @@ def test_timing_omits_empty_request_and_retains_later_consensus():
         audio,
         alignment,
         (
-            TranscriptionRequestResult(0, 1, TranscriptionAnswer(text="")),
-            TranscriptionRequestResult(5, 6, _get_answer("乙")),
+            TranscriptionRequestResult(0, 1, TranscriptionAnswer(text=""), "0" * 64),
+            TranscriptionRequestResult(5, 6, _get_answer("乙"), "0" * 64),
         ),
         ctc_aligner,
     )
@@ -278,9 +281,9 @@ def test_timing_retries_incomplete_request_against_unconsumed_block():
         audio,
         alignment,
         (
-            TranscriptionRequestResult(0, 1, _get_answer("甲")),
-            TranscriptionRequestResult(2, 3, _get_answer("乙")),
-            TranscriptionRequestResult(4, 5, _get_answer("丙")),
+            TranscriptionRequestResult(0, 1, _get_answer("甲"), "0" * 64),
+            TranscriptionRequestResult(2, 3, _get_answer("乙"), "0" * 64),
+            TranscriptionRequestResult(4, 5, _get_answer("丙"), "0" * 64),
         ),
         ctc_aligner,
     )
@@ -301,8 +304,10 @@ def test_transcribe_block_runs_sources_and_merges_successful_outputs():
     whisper_segments = [_get_segment("甲", 0.1, 0.4)]
     qwen_segments = [_get_segment("乙", 0.2, 0.5)]
     whisper = Mock(spec=Transcriber, return_value=whisper_segments)
+    whisper.last_cache_key_sha256 = "1" * 64
     mimo = Mock(spec=Transcriber, side_effect=TranscriptionEmptyError("empty"))
     qwen = Mock(spec=Transcriber, return_value=qwen_segments)
+    qwen.last_cache_key_sha256 = "2" * 64
     transcriber = _get_transcriber(
         sources={"whisper": whisper, "mimo": mimo, "qwen": qwen}
     )
@@ -312,6 +317,10 @@ def test_transcribe_block_runs_sources_and_merges_successful_outputs():
     output = transcriber(audio)
 
     assert output is expected
+    assert transcriber.last_source_cache_key_sha256s == {
+        "whisper": "1" * 64,
+        "qwen": "2" * 64,
+    }
     for source in (whisper, mimo, qwen):
         source.assert_called_once()
         assert source.call_args.args == (audio,)

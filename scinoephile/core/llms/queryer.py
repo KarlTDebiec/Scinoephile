@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from hashlib import sha256
 from logging import getLogger
 from pathlib import Path
 
@@ -132,13 +131,13 @@ class Queryer[TTestCase: TestCase]:
             return test_case
 
         query_json = test_case.query.model_dump_json(by_alias=True, indent=4)
+        query_key_sha256 = test_case.query.key_sha256
 
         # Query provider
         messages = [
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": query_json},
         ]
-        query_key_sha256 = sha256(test_case.query.key_str.encode()).hexdigest()
         for attempt in range(1, self.max_attempts + 1):
             # Get answer from provider
             initial_completion_count = len(self.provider.completion_metrics)

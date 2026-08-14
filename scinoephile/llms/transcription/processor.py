@@ -30,6 +30,8 @@ class TranscriptionRequestResult:
     """Exclusive alignment column index."""
     answer: TranscriptionAnswer
     """Consensus subtitles returned for the request."""
+    query_key_sha256: str
+    """Digest of the request's semantic query key."""
 
 
 class TranscriptionProcessor(Processor):
@@ -106,7 +108,9 @@ class TranscriptionProcessor(Processor):
             test_case = self.queryer(test_case)
             answer = cast(TranscriptionAnswer, test_case.answer)
             request_results.append(
-                TranscriptionRequestResult(start_column, end_column, answer)
+                TranscriptionRequestResult(
+                    start_column, end_column, answer, query.key_sha256
+                )
             )
 
         self.save_encountered_test_cases()

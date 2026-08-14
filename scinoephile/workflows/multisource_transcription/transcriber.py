@@ -90,6 +90,10 @@ class MultiSourceTranscriber:
         """Latest successful raw ASR source outputs."""
         self.last_source_errors: dict[str, str] = {}
         """Latest tolerated source failures keyed by stable source name."""
+        self.last_source_cache_key_sha256s: dict[str, str] = {}
+        """Latest selected ASR cache-key digests keyed by source name."""
+        self.last_query_key_sha256s: tuple[str, ...] = ()
+        """Latest semantic processor query-key digests in request order."""
         self.last_timing_sources: dict[int, TimingSource] = {}
         """Final block-local segment IDs mapped to their timing origins."""
 
@@ -132,6 +136,7 @@ class MultiSourceTranscriber:
             ScinoephileError: if fewer than two named sources are provided
             TranscriptionEmptyError: if source or consensus text is unusable
         """
+        self.last_query_key_sha256s = ()
         self.last_timing_sources = {}
         if len(sources) < 2:
             raise ScinoephileError(
@@ -176,6 +181,9 @@ class MultiSourceTranscriber:
             music=rendered.music,
             singing=rendered.singing,
         )
+        self.last_query_key_sha256s = tuple(
+            result.query_key_sha256 for result in request_results
+        )
         if not any(result.answer.transcript.strip() for result in request_results):
             raise TranscriptionEmptyError(
                 "Aligned multi-source transcription produced no usable text."
@@ -215,6 +223,8 @@ class MultiSourceTranscriber:
         self.last_lexical_alignment = None
         self.last_sources = {}
         self.last_source_errors = {}
+        self.last_source_cache_key_sha256s = {}
+        self.last_query_key_sha256s = ()
         self.last_timing_sources = {}
         successful_sources: dict[str, list[TranscribedSegment]] = {}
         source_errors = {}
@@ -260,6 +270,9 @@ class MultiSourceTranscriber:
                 )
                 continue
             successful_sources[source_name] = segments
+            cache_key_sha256 = transcriber.last_cache_key_sha256
+            if cache_key_sha256 is not None:
+                self.last_source_cache_key_sha256s[source_name] = cache_key_sha256
 
         self.last_sources = successful_sources
         self.last_source_errors = source_errors

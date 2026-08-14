@@ -18,7 +18,6 @@ from .exceptions import (
 )
 from .firered import FireRedAudioEventDetector, FireRedLanguageIdentifier
 from .models import (
-    AudioClassificationMode,
     AudioEvent,
     AudioEventDetectionResult,
     AudioEventSpan,
@@ -31,7 +30,6 @@ __all__ = [
     "AudioClassificationDependencyError",
     "AudioClassificationError",
     "AudioClassificationInferenceError",
-    "AudioClassificationMode",
     "AudioEvent",
     "AudioEventDetectionResult",
     "AudioEventSpan",

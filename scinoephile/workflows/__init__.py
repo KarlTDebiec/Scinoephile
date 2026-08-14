@@ -8,4 +8,5 @@ Package hierarchy (modules may import from any above):
 * clean / flatten / review / romanize / transcription / transcription_alignment
   / translation
 * multisource_transcription / ocr_processing
+* transcription_pipeline
 """

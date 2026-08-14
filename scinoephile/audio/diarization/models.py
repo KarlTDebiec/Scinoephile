@@ -4,23 +4,11 @@
 
 from __future__ import annotations
 
-from enum import StrEnum
 from typing import Self
 
 from pydantic import BaseModel, Field, model_validator
 
-__all__ = ["DiarizationMode", "SpeakerDiarizationResult", "SpeakerTurn"]
-
-
-class DiarizationMode(StrEnum):
-    """Speaker diarization behavior."""
-
-    AUTO = "auto"
-    """Use diarization when available and continue without it after failure."""
-    ON = "on"
-    """Require successful speaker diarization."""
-    OFF = "off"
-    """Do not run speaker diarization."""
+__all__ = ["SpeakerDiarizationResult", "SpeakerTurn"]
 
 
 class SpeakerTurn(BaseModel):

@@ -11,8 +11,24 @@ from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 from pytest import raises
 
-from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
+from scinoephile.audio.subtitles import (
+    AudioSeries,
+    AudioSubtitle,
+    get_series_from_segments,
+)
+from scinoephile.audio.transcription import TranscribedSegment
 from scinoephile.core import ScinoephileError
+
+
+def test_get_series_from_segments_rounds_millisecond_bounds():
+    """Segment conversion should use the repository millisecond convention."""
+    segment = TranscribedSegment(id=0, seek=0, start=0.1006, end=0.2006, text="Text")
+
+    series = get_series_from_segments(
+        [segment], audio=AudioSegment.silent(duration=1_000)
+    )
+
+    assert (series.events[0].start, series.events[0].end) == (101, 201)
 
 
 def test_audio_series_load_wraps_input_path_errors(tmp_path: Path):

@@ -17,11 +17,10 @@ from .exceptions import (
     SpeakerDiarizationError,
     SpeakerDiarizationInferenceError,
 )
-from .models import DiarizationMode, SpeakerDiarizationResult, SpeakerTurn
+from .models import SpeakerDiarizationResult, SpeakerTurn
 from .pyannote import PyannoteDiarizer
 
 __all__ = [
-    "DiarizationMode",
     "PyannoteDiarizer",
     "SpeakerDiarizationAuthorizationError",
     "SpeakerDiarizationCache",

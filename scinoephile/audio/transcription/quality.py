@@ -34,7 +34,7 @@ def get_transcription_quality_issue(  # noqa: PLR0911
             continue
         if not segment.words:
             return f"Segment {segment.id} has no word timings."
-        if int(segment.end * 1000) <= int(segment.start * 1000):
+        if round(segment.end * 1000) <= round(segment.start * 1000):
             return (
                 f"Segment {segment.id} has non-positive millisecond duration "
                 f"({segment.start:.3f}s to {segment.end:.3f}s)."
@@ -42,7 +42,7 @@ def get_transcription_quality_issue(  # noqa: PLR0911
         for word in segment.words:
             if not word.text.strip():
                 continue
-            if int(word.end * 1000) <= int(word.start * 1000):
+            if round(word.end * 1000) <= round(word.start * 1000):
                 return (
                     f"Segment {segment.id} word {word.text!r} has non-positive "
                     f"millisecond duration ({word.start:.3f}s to {word.end:.3f}s)."
