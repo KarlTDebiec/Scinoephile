@@ -5,7 +5,7 @@
 Package hierarchy (modules may import from any above):
 * exceptions / preprocessing_settings / transcribed_word
 * transcribed_segment
-* alignment_sequence / cache / ctc_aligner
+* alignment_sequence / cache / ctc_aligner / quality
 * transcriber
 * mlx_audio / whisper
 """

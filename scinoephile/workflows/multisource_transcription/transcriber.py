@@ -28,13 +28,12 @@ from scinoephile.audio.transcription import (
 from scinoephile.audio.transcription.alignment_sequence import (
     get_transcription_sequence,
 )
+from scinoephile.audio.transcription.quality import get_transcription_quality_issue
 from scinoephile.audio.vad.trace import VoiceActivityTrace
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.lang.yue.transcription.token_similarity import YueTokenSimilarity
 from scinoephile.llms.transcription import TranscriptionProcessor, TranscriptionSource
 from scinoephile.workflows.transcription_alignment import render_transcription_alignment
 
-from .quality import get_source_quality_issue
 from .timing import get_timed_request_segments
 
 __all__ = ["MultiSourceTranscriber"]
@@ -50,8 +49,8 @@ class MultiSourceTranscriber:
         *,
         language: Language,
         transcribers: Mapping[str, Transcriber],
+        aligner: Aligner,
         processor: TranscriptionProcessor,
-        aligner: Aligner | None = None,
         ctc_aligner: CtcAligner | None = None,
     ):
         """Initialize.
@@ -59,8 +58,8 @@ class MultiSourceTranscriber:
         Arguments:
             language: transcription and output language
             transcribers: named equal-status ASR sources
-            processor: aligned consensus and subtitle-boundary processor
             aligner: multiple-sequence character aligner
+            processor: aligned consensus and subtitle-boundary processor
             ctc_aligner: aligner used to recover final consensus timings
         Raises:
             ValueError: if there are too few named transcription sources
@@ -75,12 +74,10 @@ class MultiSourceTranscriber:
         """Transcription and output language."""
         self.transcribers = dict(transcribers)
         """Named equal-status ASR sources in stable query order."""
-        self.processor = processor
-        """Aligned consensus and subtitle-boundary processor."""
-        if aligner is None:
-            aligner = Aligner(YueTokenSimilarity())
         self.aligner = aligner
         """Multiple-sequence character aligner."""
+        self.processor = processor
+        """Aligned consensus and subtitle-boundary processor."""
         if ctc_aligner is None:
             ctc_aligner = CtcAligner(language)
         self.ctc_aligner = ctc_aligner
@@ -114,7 +111,7 @@ class MultiSourceTranscriber:
         audio_events: AudioEventDetectionResult | None = None,
         diarization: SpeakerDiarizationResult | None = None,
         language_identification: LanguageIdentificationResult | None = None,
-        pause_intervals_seconds: Sequence[tuple[float, float]] = (),
+        pause_intervals_seconds: Sequence[tuple[float, float]] | None = None,
         source_offset_seconds: float = 0.0,
         voice_activity_trace: VoiceActivityTrace | None = None,
     ) -> list[TranscribedSegment]:
@@ -195,7 +192,7 @@ class MultiSourceTranscriber:
         audio_events: AudioEventDetectionResult | None = None,
         diarization: SpeakerDiarizationResult | None = None,
         language_identification: LanguageIdentificationResult | None = None,
-        pause_intervals_seconds: Sequence[tuple[float, float]] = (),
+        pause_intervals_seconds: Sequence[tuple[float, float]] | None = None,
         source_offset_seconds: float = 0.0,
         voice_activity_trace: VoiceActivityTrace | None = None,
     ) -> list[TranscribedSegment]:
@@ -221,9 +218,26 @@ class MultiSourceTranscriber:
         self.last_timing_sources = {}
         successful_sources: dict[str, list[TranscribedSegment]] = {}
         source_errors = {}
+        audio_duration_seconds = len(audio) / 1000
         for source_name, transcriber in self.transcribers.items():
+            quality_issue: str | None = None
+
+            def is_usable(candidate: list[TranscribedSegment]) -> bool:
+                """Check whether one preprocessing attempt is usable.
+
+                Arguments:
+                    candidate: timestamped transcription candidate
+                Returns:
+                    whether the candidate is suitable for alignment
+                """
+                nonlocal quality_issue
+                quality_issue = get_transcription_quality_issue(
+                    candidate, audio_duration_seconds=audio_duration_seconds
+                )
+                return quality_issue is None
+
             try:
-                segments = transcriber(audio)
+                segments = transcriber(audio, is_usable=is_usable)
             except TranscriptionError as exc:
                 error = str(exc).strip() or type(exc).__name__
                 source_errors[source_name] = error
@@ -232,9 +246,12 @@ class MultiSourceTranscriber:
                     f"excluded from this block: {error}"
                 )
                 continue
-            quality_issue = get_source_quality_issue(
-                segments, audio_duration_seconds=len(audio) / 1000
-            )
+            if segments:
+                quality_issue = get_transcription_quality_issue(
+                    segments, audio_duration_seconds=audio_duration_seconds
+                )
+            elif quality_issue is None:
+                quality_issue = get_transcription_quality_issue(segments)
             if quality_issue is not None:
                 source_errors[source_name] = quality_issue
                 logger.info(

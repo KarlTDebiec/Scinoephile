@@ -138,7 +138,9 @@ def test_segments_are_usable_reports_missing_word_timings_concisely(
     caplog.set_level(WARNING, logger="scinoephile.lang.transcription.transcriber")
 
     assert not GuidedTranscriber._segments_are_usable([_get_segment(segment_id=7)])
-    assert caplog.messages == ["Rejecting segment 7 without word timings"]
+    assert caplog.messages == [
+        "Rejecting transcription: Segment 7 has no word timings."
+    ]
 
 
 def test_segments_are_usable_rejects_nonpositive_word_duration():

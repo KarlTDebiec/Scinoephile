@@ -3,7 +3,7 @@
 """Reference-free fusion of timestamped transcription sources.
 
 Package hierarchy (modules may import from any above):
-* quality / timing
+* timing
 * transcriber
 * factory
 """

@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
 from pytest import approx, raises
 
+from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
 from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
 from scinoephile.analysis.alignment.timed_msa.models import Column, Token
 from scinoephile.audio.transcription import (
@@ -21,6 +23,7 @@ from scinoephile.audio.transcription import (
     TranscriptionInferenceError,
 )
 from scinoephile.core import Language, ScinoephileError
+from scinoephile.lang.yue.transcription.token_similarity import YueTokenSimilarity
 from scinoephile.llms.transcription import (
     TranscriptionAnswer,
     TranscriptionProcessor,
@@ -104,6 +107,7 @@ def _get_transcriber(
     return MultiSourceTranscriber(
         language=Language.yue_hant,
         transcribers=sources,
+        aligner=Aligner(YueTokenSimilarity()),
         processor=processor,
         ctc_aligner=ctc_aligner,
     )
@@ -169,6 +173,33 @@ def test_merge_uses_long_pause_boundaries_as_separate_ctc_windows():
         (1.7, 2.2, "乙"),
     ]
     assert [len(call.args[0]) for call in ctc_aligner.call_args_list] == [500, 1_500]
+
+
+def test_merge_infers_pauses_when_explicit_evidence_is_unavailable():
+    """Test absent VAD evidence falls back to shared source-timing gaps."""
+    audio = AudioSegment.silent(duration=3_000)
+    processor = Mock(spec=TranscriptionProcessor)
+    processor.process_requests.return_value = (
+        TranscriptionRequestResult(0, 1, _get_answer("甲")),
+        TranscriptionRequestResult(6, 7, _get_answer("乙")),
+    )
+    ctc_aligner = Mock(
+        spec=CtcAligner,
+        side_effect=[[_get_segment("甲", 0.1, 0.3)], [_get_segment("乙", 0.1, 0.3)]],
+    )
+    transcriber = _get_transcriber(processor=processor, ctc_aligner=ctc_aligner)
+
+    transcriber.merge(
+        {
+            "whisper": [_get_segment("甲", 0.1, 0.4), _get_segment("乙", 1.8, 2.2)],
+            "mimo": [_get_segment("甲", 0.1, 0.4), _get_segment("乙", 1.8, 2.2)],
+        },
+        audio,
+    )
+
+    assert transcriber.last_alignment is not None
+    assert sum(column.is_pause for column in transcriber.last_alignment.columns) == 5
+    assert [len(call.args[0]) for call in ctc_aligner.call_args_list] == [400, 1_200]
 
 
 def test_timing_omits_empty_request_and_retains_later_consensus():
@@ -281,16 +312,17 @@ def test_transcribe_block_runs_sources_and_merges_successful_outputs():
     output = transcriber(audio)
 
     assert output is expected
-    whisper.assert_called_once_with(audio)
-    mimo.assert_called_once_with(audio)
-    qwen.assert_called_once_with(audio)
+    for source in (whisper, mimo, qwen):
+        source.assert_called_once()
+        assert source.call_args.args == (audio,)
+        assert callable(source.call_args.kwargs["is_usable"])
     transcriber.merge.assert_called_once_with(
         {"whisper": whisper_segments, "qwen": qwen_segments},
         audio,
         audio_events=None,
         diarization=None,
         language_identification=None,
-        pause_intervals_seconds=(),
+        pause_intervals_seconds=None,
         source_offset_seconds=0.0,
         voice_activity_trace=None,
     )
@@ -321,10 +353,19 @@ def test_transcribe_block_falls_back_to_only_successful_source():
 def test_transcribe_block_excludes_pathological_source():
     """Test source-level quality signals exclude unusable ASR evidence."""
     audio = AudioSegment.silent(duration=1_000)
-    rejected = Mock(
-        spec=Transcriber,
-        return_value=[_get_segment("呀" * 100, 0.1, 0.4, compression_ratio=37.0)],
-    )
+    pathological_segments = [_get_segment("呀" * 100, 0.1, 0.4, compression_ratio=37.0)]
+
+    def reject_pathological_segments(
+        _audio: AudioSegment,
+        *,
+        is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
+    ) -> list[TranscribedSegment]:
+        """Simulate a transcriber exhausting attempts after quality rejection."""
+        assert is_usable is not None
+        assert not is_usable(pathological_segments)
+        return []
+
+    rejected = Mock(spec=Transcriber, side_effect=reject_pathological_segments)
     mimo_segments = [_get_segment("甲", 0.1, 0.4)]
     qwen_segments = [_get_segment("乙", 0.2, 0.5)]
     transcriber = _get_transcriber(
@@ -397,10 +438,11 @@ def test_factory_uses_current_language_transcription_processor():
         return_value=processor,
     ) as get_processor:
         transcriber = get_multi_source_transcriber(
-            Language.yue_hant, sources, no_op=True, shared_test_cases=[]
+            Language.yue_hant, sources, shared_test_cases=[]
         )
 
     assert transcriber.processor is processor
+    assert isinstance(transcriber.aligner.similarity, YueTokenSimilarity)
     get_processor.assert_called_once_with(
         Language.yue_hant,
         shared_test_cases=[],
@@ -408,7 +450,6 @@ def test_factory_uses_current_language_transcription_processor():
         cache_root_path=None,
         overwrite_cache=False,
         additional_context=None,
-        no_op=True,
         current_test_cases_path=None,
         prune_test_cases=False,
     )
