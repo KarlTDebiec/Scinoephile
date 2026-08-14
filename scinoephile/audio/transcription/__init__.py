@@ -3,14 +3,11 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* demucs / exceptions / preprocessing_settings / transcribed_word / voice_activity_trace
-* speech_block / vad_cache
-* vad
+* exceptions / preprocessing_settings / transcribed_word
 * transcribed_segment
-* cache / ctc_aligner
+* alignment_sequence / cache / ctc_aligner / quality
 * transcriber
-* whisper_transcriber
-* mlx_audio
+* mlx_audio / whisper
 """
 
 from __future__ import annotations
@@ -19,7 +16,6 @@ from logging import getLogger
 
 from .cache import TranscriptionCache
 from .ctc_aligner import CtcAligner
-from .demucs import DemucsSeparator
 from .exceptions import (
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
@@ -27,29 +23,22 @@ from .exceptions import (
     TranscriptionError,
     TranscriptionInferenceError,
 )
-from .mlx_audio import MlxAudioTranscriber
+from .mlx_audio import MlxAudioModel, MlxAudioTranscriber
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
-    VADMode,
+    VadMode,
 )
-from .speech_block import SpeechBlock, SpeechBlockSettings, SpeechBlockSplitter
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .transcriber import Transcriber
-from .vad import VADImplementation, VoiceActivityDetector
-from .vad_cache import VoiceActivityCache
-from .voice_activity_trace import VoiceActivityTrace
-from .whisper_transcriber import WhisperTranscriber
+from .whisper import WhisperModel, WhisperTranscriber
 
 __all__ = [
     "CtcAligner",
     "DemucsMode",
-    "DemucsSeparator",
+    "MlxAudioModel",
     "MlxAudioTranscriber",
-    "SpeechBlock",
-    "SpeechBlockSettings",
-    "SpeechBlockSplitter",
     "TranscribedSegment",
     "TranscribedWord",
     "Transcriber",
@@ -60,11 +49,8 @@ __all__ = [
     "TranscriptionError",
     "TranscriptionInferenceError",
     "TranscriptionPreprocessingSettings",
-    "VADImplementation",
-    "VADMode",
-    "VoiceActivityCache",
-    "VoiceActivityDetector",
-    "VoiceActivityTrace",
+    "VadMode",
+    "WhisperModel",
     "WhisperTranscriber",
     "get_segment_merged",
     "get_segment_split_at_idx",
@@ -146,12 +132,23 @@ def get_segment_split_at_idx(
                             "text": first_text,
                             "end": split_time,
                             "following_voice_activity_score": None,
+                            "voice_activity_coverage": None,
+                            "voice_activity_peak": None,
+                            "voice_activity_score": None,
                         }
                     )
                 )
             if second_text:
                 second_words.append(
-                    word.model_copy(update={"text": second_text, "start": split_time})
+                    word.model_copy(
+                        update={
+                            "text": second_text,
+                            "start": split_time,
+                            "voice_activity_coverage": None,
+                            "voice_activity_peak": None,
+                            "voice_activity_score": None,
+                        }
+                    )
                 )
             split_done = True
         elif not split_done:

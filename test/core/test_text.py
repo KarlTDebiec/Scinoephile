@@ -10,7 +10,9 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.text import (
     RE_LATIN_WORD,
     get_char_type,
+    is_lexical_character,
     join_text_lines,
+    normalize_nfkc,
     normalize_text,
     replace_control_characters,
 )
@@ -60,6 +62,28 @@ def test_get_char_type_handles_half_width_characters(char: str) -> None:
 def test_join_text_lines(texts: tuple[str, ...], expected: str) -> None:
     """Text lines are joined according to adjacent characters' display width."""
     assert join_text_lines(texts) == expected
+
+
+@parametrize(
+    ("character", "expected"),
+    [
+        ("甲", True),
+        ("Ａ", True),
+        ("1", True),
+        ("。", False),
+        ("・", False),
+        (" ", False),
+    ],
+)
+def test_is_lexical_character(character: str, expected: bool) -> None:
+    """Lexical characters exclude punctuation, symbols, and separators."""
+    assert is_lexical_character(character) is expected
+
+
+@parametrize(("text", "expected"), [("Ａ①", "A1"), ("㍿", "株式会社")])
+def test_normalize_nfkc(text: str, expected: str) -> None:
+    """NFKC normalization applies Unicode compatibility composition."""
+    assert normalize_nfkc(text) == expected
 
 
 @parametrize(

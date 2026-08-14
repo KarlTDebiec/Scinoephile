@@ -57,9 +57,7 @@ def load_test_cases_from_json[TTestCase: TestCase](
     test_cases: list[TTestCase] = []
     for base_test_case in base_test_cases:
         test_case_data = base_test_case.model_dump(mode="json")
-        test_case = test_case_cls.model_validate(
-            test_case_data, context={"skip_output_quality_validation": True}
-        )
+        test_case = test_case_cls.model_validate(test_case_data)
         test_cases.append(test_case)
 
     return test_cases
