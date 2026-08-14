@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 from collections.abc import Sequence
 from dataclasses import asdict
+from enum import StrEnum
 from hashlib import sha256
 from logging import getLogger
 
@@ -23,7 +24,7 @@ from scinoephile.analysis.transcription.manifest import (
     RunBlock,
     RunManifest,
 )
-from scinoephile.analysis.transcription.timing import get_blocks_with_display_timing
+from scinoephile.analysis.transcription.timing import retime_alignment
 from scinoephile.audio.classification import (
     AudioClassificationError,
     AudioEventDetectionResult,
@@ -54,11 +55,20 @@ from scinoephile.workflows.transcription_alignment import (
     build_transcription_alignment_block,
 )
 
-from .models import AudioAnalysisMode
-
-__all__ = ["TranscriptionPipeline"]
+__all__ = ["AudioAnalysisMode", "TranscriptionPipeline"]
 
 logger = getLogger(__name__)
+
+
+class AudioAnalysisMode(StrEnum):
+    """Optional source-wide audio-analysis behavior."""
+
+    AUTO = "auto"
+    """Use analysis when available and continue without it after failure."""
+    ON = "on"
+    """Require successful analysis."""
+    OFF = "off"
+    """Do not run analysis."""
 
 
 class TranscriptionPipeline:
@@ -162,6 +172,7 @@ class TranscriptionPipeline:
         Returns:
             VAD-derived blocks in source order
         """
+        self.last_blocks = []
         trace = self._get_voice_activity_trace(audio_series.audio)
         self.last_blocks = self.block_splitter(trace)
         return tuple(self.last_blocks)
@@ -184,6 +195,7 @@ class TranscriptionPipeline:
         """
         self.last_alignment_artifact = None
         self.last_run_manifest = None
+        self.last_blocks = []
         trace = self._get_voice_activity_trace(audio_series.audio)
         self.last_blocks = self.block_splitter(trace)
         selected_blocks = self._get_selected_blocks(start_at_idx, stop_at_idx)
@@ -306,12 +318,19 @@ class TranscriptionPipeline:
             )
             output_segments.extend(block_segments)
 
-        timed_alignment_blocks = get_blocks_with_display_timing(
-            alignment_blocks, len(audio_series.audio) / 1000, self.timing_settings
+        self.last_alignment_artifact = retime_alignment(
+            AlignmentArtifact(
+                language=self.language,
+                audio_duration_ms=len(audio_series.audio),
+                sources=self.alignment_sources,
+                timing=self.timing_settings,
+                blocks=tuple(alignment_blocks),
+            ),
+            self.timing_settings,
         )
         alignment_subtitles = [
             subtitle
-            for alignment_block in timed_alignment_blocks
+            for alignment_block in self.last_alignment_artifact.blocks
             for subtitle in alignment_block.subtitles
         ]
         if len(alignment_subtitles) != len(output_segments):
@@ -331,13 +350,6 @@ class TranscriptionPipeline:
                 zip(output_segments, alignment_subtitles, strict=True)
             )
         ]
-        self.last_alignment_artifact = AlignmentArtifact(
-            language=self.language,
-            audio_duration_ms=len(audio_series.audio),
-            sources=self.alignment_sources,
-            timing=self.timing_settings,
-            blocks=timed_alignment_blocks,
-        )
         self.last_run_manifest = self._build_run_manifest(
             audio_series.audio, tuple(block_records)
         )

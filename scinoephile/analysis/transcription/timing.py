@@ -17,7 +17,6 @@ __all__ = [
     "TimingMetrics",
     "TimingPair",
     "evaluate_timing",
-    "get_blocks_with_display_timing",
     "get_display_intervals",
     "get_reference_for_alignment",
     "retime_alignment",
@@ -211,48 +210,6 @@ def evaluate_timing(
     )
 
 
-def get_blocks_with_display_timing(
-    blocks: Sequence[AlignmentBlock],
-    audio_duration_seconds: float,
-    settings: TimingSettings,
-) -> tuple[AlignmentBlock, ...]:
-    """Apply globally calculated display bounds to alignment blocks.
-
-    Arguments:
-        blocks: alignment blocks containing fixed speech-timed subtitles
-        audio_duration_seconds: complete source duration
-        settings: display-timing settings to apply
-    Returns:
-        validated alignment blocks with updated display bounds
-    """
-    subtitles = [subtitle for block in blocks for subtitle in block.subtitles]
-    display_intervals = get_display_intervals(
-        [
-            (subtitle.speech_start_ms / 1000, subtitle.speech_end_ms / 1000)
-            for subtitle in subtitles
-        ],
-        audio_duration_seconds,
-        settings,
-    )
-    display_bounds = {
-        subtitle.index: (round(start * 1000), round(end * 1000))
-        for subtitle, (start, end) in zip(subtitles, display_intervals, strict=True)
-    }
-    output_blocks = []
-    for block in blocks:
-        block_data = block.model_dump(mode="python")
-        block_data["subtitles"] = tuple(
-            {
-                **subtitle.model_dump(mode="python"),
-                "start_ms": display_bounds[subtitle.index][0],
-                "end_ms": display_bounds[subtitle.index][1],
-            }
-            for subtitle in block.subtitles
-        )
-        output_blocks.append(AlignmentBlock.model_validate(block_data))
-    return tuple(output_blocks)
-
-
 def get_display_intervals(
     speech_intervals: Sequence[tuple[float, float]],
     audio_duration_seconds: float,
@@ -358,10 +315,52 @@ def retime_alignment(
     """
     artifact_data = artifact.model_dump(mode="python")
     artifact_data["timing"] = settings
-    artifact_data["blocks"] = get_blocks_with_display_timing(
+    artifact_data["blocks"] = _get_blocks_with_display_timing(
         artifact.blocks, artifact.audio_duration_ms / 1000, settings
     )
     return AlignmentArtifact.model_validate(artifact_data)
+
+
+def _get_blocks_with_display_timing(
+    blocks: Sequence[AlignmentBlock],
+    audio_duration_seconds: float,
+    settings: TimingSettings,
+) -> tuple[AlignmentBlock, ...]:
+    """Apply globally calculated display bounds to alignment blocks.
+
+    Arguments:
+        blocks: alignment blocks containing fixed speech-timed subtitles
+        audio_duration_seconds: complete source duration
+        settings: display-timing settings to apply
+    Returns:
+        validated alignment blocks with updated display bounds
+    """
+    subtitles = [subtitle for block in blocks for subtitle in block.subtitles]
+    display_intervals = get_display_intervals(
+        [
+            (subtitle.speech_start_ms / 1000, subtitle.speech_end_ms / 1000)
+            for subtitle in subtitles
+        ],
+        audio_duration_seconds,
+        settings,
+    )
+    display_bounds = {
+        subtitle.index: (round(start * 1000), round(end * 1000))
+        for subtitle, (start, end) in zip(subtitles, display_intervals, strict=True)
+    }
+    output_blocks = []
+    for block in blocks:
+        block_data = block.model_dump(mode="python")
+        block_data["subtitles"] = tuple(
+            {
+                **subtitle.model_dump(mode="python"),
+                "start_ms": display_bounds[subtitle.index][0],
+                "end_ms": display_bounds[subtitle.index][1],
+            }
+            for subtitle in block.subtitles
+        )
+        output_blocks.append(AlignmentBlock.model_validate(block_data))
+    return tuple(output_blocks)
 
 
 def _get_candidate_series(

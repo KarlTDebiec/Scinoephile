@@ -28,8 +28,7 @@ from scinoephile.workflows.multisource_transcription.factory import (
     get_multi_source_transcriber,
 )
 
-from .models import AudioAnalysisMode
-from .pipeline import TranscriptionPipeline
+from .pipeline import AudioAnalysisMode, TranscriptionPipeline
 
 __all__ = ["get_transcription_pipeline"]
 

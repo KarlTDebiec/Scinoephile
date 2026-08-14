@@ -10,7 +10,7 @@ from unittest.mock import Mock
 import numpy as np
 from pydantic import ValidationError
 from pydub import AudioSegment
-from pytest import mark, raises
+from pytest import MonkeyPatch, mark, raises
 
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
 from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
@@ -30,6 +30,9 @@ from scinoephile.lang.yue.transcription.token_similarity import YueTokenSimilari
 from scinoephile.workflows.transcription_pipeline import (
     AudioAnalysisMode,
     TranscriptionPipeline,
+)
+from scinoephile.workflows.transcription_pipeline import (
+    factory as transcription_pipeline_factory,
 )
 
 _SOURCE_CACHE_KEY_SHA256S = {"one": "1" * 64, "two": "2" * 64}
@@ -192,6 +195,30 @@ def test_plan_blocks_saves_a_new_voice_activity_trace():
     )
 
 
+def test_plan_blocks_clears_stale_blocks_before_vad_failure():
+    """A failed plan should not expose blocks from a previous source."""
+    pipeline, audio_series = _get_pipeline()
+    block_vad_cache = cast(Mock, pipeline.block_vad_cache)
+    block_vad_cache.load.side_effect = RuntimeError("failed")
+
+    with raises(RuntimeError, match="failed"):
+        pipeline.plan_blocks(audio_series)
+
+    assert not pipeline.last_blocks
+
+
+def test_process_clears_stale_blocks_before_vad_failure():
+    """A failed run should not expose blocks from a previous source."""
+    pipeline, audio_series = _get_pipeline()
+    block_vad_cache = cast(Mock, pipeline.block_vad_cache)
+    block_vad_cache.load.side_effect = RuntimeError("failed")
+
+    with raises(RuntimeError, match="failed"):
+        pipeline.process(audio_series)
+
+    assert not pipeline.last_blocks
+
+
 def test_process_builds_subtitles_alignment_and_run_manifest():
     """One selected block should produce mutually linked portable outputs."""
     pipeline, audio_series = _get_pipeline()
@@ -302,3 +329,53 @@ def test_process_tolerates_unavailable_audio_analysis(
     output = pipeline.process(audio_series)
 
     assert [event.text for event in output.events] == ["甲"]
+
+
+def test_factory_omits_disabled_audio_analysis(monkeypatch: MonkeyPatch):
+    """Factory should omit optional analyzers and preserve source pairing."""
+    source_transcribers = {"one": Mock(), "two": Mock()}
+    alignment_sources = (
+        AlignmentSource(name="one", backend="test", model="one"),
+        AlignmentSource(name="two", backend="test", model="two"),
+    )
+    transcriber = Mock()
+    pipeline = Mock()
+    get_sources = Mock(return_value=(source_transcribers, alignment_sources))
+    get_transcriber = Mock(return_value=transcriber)
+    constructors = {
+        "VoiceActivityDetector": Mock(),
+        "VoiceActivityCache": Mock(),
+        "FireRedAudioEventDetector": Mock(),
+        "PyannoteDiarizer": Mock(),
+        "FireRedLanguageIdentifier": Mock(),
+    }
+    get_pipeline = Mock(return_value=pipeline)
+    monkeypatch.setattr(
+        transcription_pipeline_factory, "get_transcription_sources", get_sources
+    )
+    monkeypatch.setattr(
+        transcription_pipeline_factory, "get_multi_source_transcriber", get_transcriber
+    )
+    for name, constructor in constructors.items():
+        monkeypatch.setattr(transcription_pipeline_factory, name, constructor)
+    monkeypatch.setattr(
+        transcription_pipeline_factory, "TranscriptionPipeline", get_pipeline
+    )
+
+    result = transcription_pipeline_factory.get_transcription_pipeline(
+        Language.yue_hant,
+        audio_event_mode=AudioAnalysisMode.OFF,
+        diarization_mode=AudioAnalysisMode.OFF,
+        language_identification_mode=AudioAnalysisMode.OFF,
+    )
+
+    assert result is pipeline
+    constructors["FireRedAudioEventDetector"].assert_not_called()
+    constructors["PyannoteDiarizer"].assert_not_called()
+    constructors["FireRedLanguageIdentifier"].assert_not_called()
+    pipeline_arguments = get_pipeline.call_args.kwargs
+    assert pipeline_arguments["transcriber"] is transcriber
+    assert pipeline_arguments["alignment_sources"] == alignment_sources
+    assert pipeline_arguments["audio_event_detector"] is None
+    assert pipeline_arguments["diarizer"] is None
+    assert pipeline_arguments["language_identifier"] is None
