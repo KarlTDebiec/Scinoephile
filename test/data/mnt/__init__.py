@@ -32,9 +32,12 @@ from test.data.prompts import EngZhoYueGuidedTranslationPrompt
 from test.helpers import test_data_root
 
 __all__ = [
+    # Input fixtures
     "mnt_jpn_eng",
     "mnt_yue_zho_hant",
     "mnt_zho_hant",
+    # Action fixtures
+    "mnt_zho_simplify_expected_series_diff",
     "get_mnt_eng_ocr_fusion_test_cases",
     "get_mnt_eng_review_test_cases",
     "get_mnt_eng_zho_guided_translation_test_cases",
@@ -43,6 +46,7 @@ __all__ = [
     "get_mnt_zho_hant_ocr_fusion_test_cases",
     "get_mnt_zho_hant_review_test_cases",
     "get_mnt_zho_hant_simplify_review_test_cases",
+    # Output fixtures
     "mnt_eng_fuse",
     "mnt_eng_fuse_clean",
     "mnt_eng_fuse_clean_validate",
@@ -53,6 +57,10 @@ __all__ = [
     "mnt_eng_ocr_tesseract",
     "mnt_eng_ocr_tesseract_clean",
     "mnt_yue_eng",
+    "mnt_yue_hant_transcribe",
+    "mnt_yue_hant_transcribe_clean",
+    "mnt_yue_hant_transcribe_clean_simplify",
+    "mnt_yue_hant_transcribe_clean_simplify_romanize",
     "mnt_yue_zho_hans_eng",
     "mnt_zho_hans_eng",
     "mnt_zho_hans_fuse",
@@ -77,12 +85,14 @@ __all__ = [
     "mnt_zho_hant_ocr_lens_clean",
     "mnt_zho_hant_ocr_paddle",
     "mnt_zho_hant_ocr_paddle_clean",
-    "mnt_zho_simplify_expected_series_diff",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
 output_dir = title_root / "output"
+
+
+# Input fixtures
 
 
 @fixture
@@ -101,6 +111,9 @@ def mnt_yue_zho_hant() -> Series:
 def mnt_zho_hant() -> Series:
     """MNT zho-Hant series."""
     return Series.load(input_dir / "zho-Hant.srt")
+
+
+# Action fixtures
 
 
 @cache
@@ -233,6 +246,9 @@ def get_mnt_zho_hant_simplify_review_test_cases(
     return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
+# Output fixtures
+
+
 @fixture
 def mnt_eng_fuse() -> Series:
     """MNT English fused subtitles."""
@@ -291,6 +307,32 @@ def mnt_eng_ocr_tesseract_clean() -> Series:
 def mnt_yue_eng() -> Series:
     """MNT English subtitles translated from yue audio track subtitles."""
     return Series.load(output_dir / "yue_eng/eng.srt")
+
+
+@fixture
+def mnt_yue_hant_transcribe() -> Series:
+    """MNT aligned Cantonese transcription."""
+    return Series.load(output_dir / "yue-Hant_transcribe/transcribe.srt")
+
+
+@fixture
+def mnt_yue_hant_transcribe_clean() -> Series:
+    """MNT aligned Cantonese transcription, cleaned."""
+    return Series.load(output_dir / "yue-Hant_transcribe/transcribe_clean.srt")
+
+
+@fixture
+def mnt_yue_hant_transcribe_clean_simplify() -> Series:
+    """MNT aligned Cantonese transcription, cleaned and simplified."""
+    return Series.load(output_dir / "yue-Hant_transcribe/transcribe_clean_simplify.srt")
+
+
+@fixture
+def mnt_yue_hant_transcribe_clean_simplify_romanize() -> Series:
+    """MNT aligned Cantonese transcription, cleaned, simplified, and romanized."""
+    return Series.load(
+        output_dir / "yue-Hant_transcribe" / "transcribe_clean_simplify_romanize.srt"
+    )
 
 
 @fixture
