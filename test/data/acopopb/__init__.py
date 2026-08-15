@@ -32,6 +32,13 @@ from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from test.helpers import test_data_root
 
 __all__ = [
+    # Input fixtures
+    "acopopb_eng",
+    "acopopb_zho_hans",
+    "acopopb_zho_hant",
+    # Action fixtures
+    "acopopb_yue_simplify_expected_series_diff",
+    "acopopb_zho_simplify_expected_series_diff",
     "get_acopopb_eng_ocr_fusion_test_cases",
     "get_acopopb_eng_review_test_cases",
     "get_acopopb_yue_hans_ocr_fusion_test_cases",
@@ -44,7 +51,7 @@ __all__ = [
     "get_acopopb_zho_hant_ocr_fusion_test_cases",
     "get_acopopb_zho_hant_review_test_cases",
     "get_acopopb_zho_hant_simplify_review_test_cases",
-    "acopopb_eng",
+    # Output fixtures
     "acopopb_eng_ocr_fuse",
     "acopopb_eng_ocr_fuse_clean",
     "acopopb_eng_ocr_fuse_clean_validate",
@@ -81,8 +88,6 @@ __all__ = [
     "acopopb_yue_hant_transcribe_clean",
     "acopopb_yue_hant_transcribe_clean_simplify",
     "acopopb_yue_hant_transcribe_clean_simplify_romanize",
-    "acopopb_yue_simplify_expected_series_diff",
-    "acopopb_zho_hans",
     "acopopb_zho_hans_eng",
     "acopopb_zho_hans_ocr_fuse",
     "acopopb_zho_hans_ocr_fuse_clean",
@@ -94,7 +99,6 @@ __all__ = [
     "acopopb_zho_hans_ocr_lens_clean",
     "acopopb_zho_hans_ocr_paddle",
     "acopopb_zho_hans_ocr_paddle_clean",
-    "acopopb_zho_hant",
     "acopopb_zho_hant_ocr_fuse",
     "acopopb_zho_hant_ocr_fuse_clean",
     "acopopb_zho_hant_ocr_fuse_clean_validate",
@@ -103,7 +107,6 @@ __all__ = [
     "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
     "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
     "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
-    "acopopb_zho_simplify_expected_series_diff",
     "acopopb_zho_hant_ocr_lens",
     "acopopb_zho_hant_ocr_lens_clean",
     "acopopb_zho_hant_ocr_paddle",
@@ -113,6 +116,42 @@ __all__ = [
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
 output_dir = title_root / "output"
+
+
+# Input fixtures
+
+
+@fixture
+def acopopb_eng() -> Series:
+    """ACOPOPB English subtitles."""
+    return Series.load(input_dir / "eng.srt")
+
+
+@fixture
+def acopopb_zho_hans() -> Series:
+    """ACOPOPB zho-Hans subtitles."""
+    return Series.load(input_dir / "zho-Hans.srt")
+
+
+@fixture
+def acopopb_zho_hant() -> Series:
+    """ACOPOPB zho-Hant subtitles."""
+    return Series.load(input_dir / "zho-Hant.srt")
+
+
+# Action fixtures
+
+
+@fixture
+def acopopb_yue_simplify_expected_series_diff() -> list[str]:
+    """Expected differences for ACOPOPB Yue Simplified vs Traditional subtitles."""
+    return []
+
+
+@fixture
+def acopopb_zho_simplify_expected_series_diff() -> list[str]:
+    """Expected differences for ACOPOPB Zho Simplified vs Traditional subtitles."""
+    return []
 
 
 @cache
@@ -307,10 +346,7 @@ def get_acopopb_zho_hant_simplify_review_test_cases(
     return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
-@fixture
-def acopopb_eng() -> Series:
-    """ACOPOPB English subtitles."""
-    return Series.load(input_dir / "eng.srt")
+# Output fixtures
 
 
 @fixture
@@ -550,12 +586,6 @@ def acopopb_yue_hant_transcribe_clean_simplify_romanize() -> Series:
 
 
 @fixture
-def acopopb_zho_hans() -> Series:
-    """ACOPOPB zho-Hans subtitles."""
-    return Series.load(input_dir / "zho-Hans.srt")
-
-
-@fixture
 def acopopb_zho_hans_eng() -> Series:
     """ACOPOPB bilingual zho-Hans and English subtitles."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
@@ -623,12 +653,6 @@ def acopopb_zho_hans_ocr_paddle() -> Series:
 def acopopb_zho_hans_ocr_paddle_clean() -> Series:
     """ACOPOPB zho-Hans PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
-
-
-@fixture
-def acopopb_zho_hant() -> Series:
-    """ACOPOPB zho-Hant subtitles."""
-    return Series.load(input_dir / "zho-Hant.srt")
 
 
 @fixture
@@ -715,15 +739,3 @@ def acopopb_zho_hant_ocr_paddle() -> Series:
 def acopopb_zho_hant_ocr_paddle_clean() -> Series:
     """ACOPOPB zho-Hant PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
-
-
-@fixture
-def acopopb_yue_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for ACOPOPB Yue Simplified vs Traditional subtitles."""
-    return []
-
-
-@fixture
-def acopopb_zho_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for ACOPOPB Zho Simplified vs Traditional subtitles."""
-    return []
