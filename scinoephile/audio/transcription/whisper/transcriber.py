@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
+from itertools import groupby
 from logging import getLogger
 from math import ceil
 from pathlib import Path
@@ -453,15 +454,10 @@ class WhisperTranscriber(Transcriber):
             segments with stale scores corrected and repetitive windows discarded
         """
         normalized_segments: list[TranscribedSegment] = []
-        window_start_idx = 0
-        while window_start_idx < len(segments):
-            seek = segments[window_start_idx].seek
-            window_end_idx = window_start_idx + 1
-            while (
-                window_end_idx < len(segments) and segments[window_end_idx].seek == seek
-            ):
-                window_end_idx += 1
-            window = list(segments[window_start_idx:window_end_idx])
+        for seek, window_segments in groupby(
+            segments, key=lambda segment: segment.seek
+        ):
+            window = list(window_segments)
             reported_ratios = [
                 segment.compression_ratio
                 for segment in window
@@ -470,7 +466,6 @@ class WhisperTranscriber(Transcriber):
             reported_ratio = max(reported_ratios, default=0.0)
             if reported_ratio <= MAX_COMPRESSION_RATIO:
                 normalized_segments.extend(window)
-                window_start_idx = window_end_idx
                 continue
 
             retained_ratio = get_text_compression_ratio(
@@ -485,7 +480,6 @@ class WhisperTranscriber(Transcriber):
                     f"reported_compression_ratio={reported_ratio:.2f} "
                     f"retained_compression_ratio={retained_ratio:.2f}"
                 )
-                window_start_idx = window_end_idx
                 continue
 
             logger.warning(
@@ -498,7 +492,6 @@ class WhisperTranscriber(Transcriber):
             for segment in window:
                 segment.compression_ratio = retained_ratio
             normalized_segments.extend(window)
-            window_start_idx = window_end_idx
 
         return normalized_segments
 

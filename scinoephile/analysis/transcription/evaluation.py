@@ -64,6 +64,20 @@ def evaluate_character_errors(
         character-error metrics keyed by source name and `merged`
     """
     selected_reference = get_reference_for_alignment(artifact, reference)
+    return _evaluate_character_errors(artifact, selected_reference)
+
+
+def _evaluate_character_errors(
+    artifact: AlignmentArtifact, selected_reference: Series
+) -> dict[str, CharacterErrorMetrics]:
+    """Evaluate character errors against an already selected reference.
+
+    Arguments:
+        artifact: aligned multi-source transcription artifact
+        selected_reference: reference subtitles owned by the artifact's blocks
+    Returns:
+        character-error metrics keyed by source name and `merged`
+    """
     reference_text = "".join(
         subtitle.text_with_newline for subtitle in selected_reference
     )
@@ -96,7 +110,7 @@ def evaluate_transcription(
         lexical and timing evaluation
     """
     selected_reference = get_reference_for_alignment(artifact, reference)
-    character_errors = evaluate_character_errors(artifact, reference)
+    character_errors = _evaluate_character_errors(artifact, selected_reference)
     timing = evaluate_timing(artifact, reference)
     return TranscriptionEvaluation(
         reference_subtitles=len(selected_reference),

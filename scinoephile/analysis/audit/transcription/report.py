@@ -246,20 +246,6 @@ def render_transcription_alignment_terminal(
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _format_cer(cer: float, reference_length: int) -> str:
-    """Format a character error rate for an audit table.
-
-    Arguments:
-        cer: character error rate
-        reference_length: normalized reference character count
-    Returns:
-        percentage or unscored marker
-    """
-    if reference_length == 0:
-        return "—"
-    return f"{cer:.0%}"
-
-
 def _get_block_cer_lines(artifact: AlignmentArtifact, reference: Series) -> list[str]:
     """Get block-level CER rows sorted by merged error rate.
 
@@ -293,7 +279,7 @@ def _get_block_cer_lines(artifact: AlignmentArtifact, reference: Series) -> list
                 str(block_index),
                 str(reference_length),
                 *(
-                    _format_cer(metrics_by_name[name].cer, reference_length)
+                    "—" if reference_length == 0 else f"{metrics_by_name[name].cer:.0%}"
                     for name in candidate_names
                 ),
             )
@@ -304,12 +290,16 @@ def _get_block_cer_lines(artifact: AlignmentArtifact, reference: Series) -> list
     )
     return [
         "| "
-        + " | ".join(header.rjust(width) for header, width in zip(headers, widths))
+        + " | ".join(
+            header.rjust(width) for header, width in zip(headers, widths, strict=True)
+        )
         + " |",
         "| " + " | ".join("-" * (width - 1) + ":" for width in widths) + " |",
         *(
             "| "
-            + " | ".join(cell.rjust(width) for cell, width in zip(row, widths))
+            + " | ".join(
+                cell.rjust(width) for cell, width in zip(row, widths, strict=True)
+            )
             + " |"
             for row in rows
         ),

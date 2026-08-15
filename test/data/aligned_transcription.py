@@ -89,7 +89,7 @@ def process_transcription(
     if stop_at_idx is None and target_reference_count <= 0:
         raise ValueError("target_reference_count must be positive.")
     output_dir_path = title_root_path / "output" / "yue-Hant_transcribe"
-    audio_path = title_root_path / "input/yue-Hant_transcribe/audio.wav"
+    audio_path = title_root_path / "input" / "yue-Hant_transcribe" / "audio.wav"
     output_dir_path.mkdir(parents=True, exist_ok=True)
     json_dir_path = output_dir_path / "json"
     json_dir_path.mkdir(parents=True, exist_ok=True)

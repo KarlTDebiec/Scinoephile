@@ -187,20 +187,13 @@ class TranscriptionPipeline:
     def processor_identity(self) -> ProcessorIdentity:
         """Get the consensus processor configuration recorded in run manifests."""
         processor = self.transcriber.processor
-        provider_identity = json.loads(
-            json.dumps(
-                processor.queryer.provider.cache_identity,
-                allow_nan=False,
-                ensure_ascii=False,
-            )
-        )
         return ProcessorIdentity(
             operation=processor.test_case_cls.operation,
             prompt_name=processor.prompt.name,
             system_prompt_sha256=sha256(
                 processor.queryer.system_prompt.encode("utf-8")
             ).hexdigest(),
-            provider_identity=provider_identity,
+            provider_identity=processor.queryer.provider.cache_identity,
             no_op=processor.queryer.no_op,
         )
 
