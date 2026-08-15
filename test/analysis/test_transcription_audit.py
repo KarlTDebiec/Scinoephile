@@ -51,6 +51,75 @@ def test_audit_accepts_custom_token_similarity():
     assert compared_characters
 
 
+def test_audit_reports_block_cer_sorted_by_merged_error():
+    """Block CER tables should put the most troublesome merged block first."""
+    artifact = _get_artifact()
+    first_block = artifact.blocks[0].model_copy(
+        update={
+            "merged": "是・嗎",
+            "subtitles": (
+                artifact.blocks[0].subtitles[0].model_copy(update={"text": "是嗎"}),
+            ),
+        }
+    )
+    second_block = AlignmentBlock(
+        index=2,
+        core_start_ms=2_500,
+        core_end_ms=3_000,
+        buffered_start_ms=2_500,
+        buffered_end_ms=3_000,
+        columns=(AlignmentColumn(index=1, start_ms=2_600, end_ms=2_800, kind="text"),),
+        rows=(
+            AlignmentRow(name="whisper", text="乙"),
+            AlignmentRow(name="mimo", text="丙"),
+        ),
+        speaker="Ａ",
+        merged="乙",
+        subtitles=(
+            AlignmentSubtitle(
+                index=2,
+                text="乙",
+                speech_start_ms=2_600,
+                speech_end_ms=2_800,
+                timing_source="source",
+                start_ms=2_500,
+                end_ms=3_000,
+                speaker="Ａ",
+            ),
+        ),
+    )
+    artifact = artifact.model_copy(update={"blocks": (first_block, second_block)})
+    reference = Series(
+        events=[
+            Subtitle(start=900, end=2_200, text="係呀"),
+            Subtitle(start=2_500, end=3_000, text="乙"),
+        ]
+    )
+
+    report = audit_transcription_alignment(artifact, {"reference": reference})
+
+    header = "| Block | Reference characters | merged | whisper | mimo |"
+    first_row = "|     1 |                    2 |   100% |      0% |  50% |"
+    second_row = "|     2 |                    1 |     0% |      0% | 100% |"
+    assert "#### Block CER" in report
+    assert header in report
+    assert first_row in report
+    assert second_row in report
+    assert report.index(first_row) < report.index(second_row)
+    lines = report.splitlines()
+    table_start = lines.index(header)
+    assert len({len(line) for line in lines[table_start : table_start + 4]}) == 1
+
+
+def test_audit_marks_blocks_without_reference_characters_unscored():
+    """CER should be unscored when a block contains no reference characters."""
+    artifact = _get_artifact()
+
+    report = audit_transcription_alignment(artifact, {"reference": Series(events=[])})
+
+    assert "|     1 |                    0 |      — |       — |    — |" in report
+
+
 def test_audit_distinguishes_unaligned_merged_and_reference_boundaries():
     """Unaligned boundaries should mark only their owning alignment row."""
     artifact = _get_artifact()
@@ -166,6 +235,25 @@ def test_audit_renders_halfwidth_characters_as_fullwidth_cells():
 
     assert "whisper  Ａ・１" in report
     assert "mimo     カ・Ｂ" in report
+
+
+def test_audit_omits_trailing_whitespace_from_narrow_characters():
+    """Narrow final characters should not leave Markdown trailing whitespace."""
+    artifact = _get_artifact()
+    block = artifact.blocks[0].model_copy(
+        update={
+            "rows": (
+                AlignmentRow(name="whisper", text="係・a"),
+                AlignmentRow(name="mimo", text="係・a"),
+            ),
+            "merged": "係・a",
+        }
+    )
+    artifact = artifact.model_copy(update={"blocks": (block,)})
+
+    report = audit_transcription_alignment(artifact)
+
+    assert all(line == line.rstrip(" ") for line in report.splitlines())
 
 
 def test_audit_renders_language_singing_and_music_rows():
@@ -342,6 +430,31 @@ def test_audit_renders_normalized_merge_support_as_optional_row():
     ]
     assert report_rows == ["merged", "reference", "support"]
     assert terminal_rows == ["merged", "reference", "support"]
+
+
+def test_audit_quantifies_support_for_merged_omissions():
+    """The support row should score source agreement with an omitted character."""
+    artifact = _get_artifact()
+    block = artifact.blocks[0].model_copy(
+        update={
+            "rows": (
+                AlignmentRow(name="whisper", text="　・呀"),
+                AlignmentRow(name="mimo", text="是・呀"),
+            ),
+            "merged": "　・呀",
+            "subtitles": (
+                artifact.blocks[0].subtitles[0].model_copy(update={"text": "呀"}),
+            ),
+        }
+    )
+    artifact = artifact.model_copy(update={"blocks": (block,)})
+
+    report = audit_transcription_alignment(artifact, include_merge_support=True)
+
+    support_line = next(
+        line for line in report.splitlines() if line.startswith("support")
+    )
+    assert support_line.rstrip().endswith("５・９")
 
 
 def test_audit_uses_token_similarity_for_merge_support():

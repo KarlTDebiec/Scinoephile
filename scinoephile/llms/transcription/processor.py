@@ -6,7 +6,10 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
+from logging import getLogger
 from typing import cast
+
+from pydantic import ValidationError
 
 from scinoephile.core.llms import Processor
 
@@ -15,6 +18,8 @@ from .models import TranscriptionAnswer, TranscriptionQuery, TranscriptionSource
 from .prompt import TranscriptionPrompt
 
 __all__ = ["TranscriptionProcessor", "TranscriptionRequestResult"]
+
+logger = getLogger(__name__)
 
 _REQUEST_PAUSE_CHARACTERS = 4
 """Shared pause columns required to start a separate LLM request."""
@@ -105,7 +110,23 @@ class TranscriptionProcessor(Processor):
         request_results = []
         for query, (start_column, end_column) in _get_request_queries(validated_query):
             test_case = self.test_case_cls(query=query)
-            test_case = self.queryer(test_case)
+            try:
+                test_case = self.queryer(test_case)
+            except ValidationError:
+                answer = test_case.get_no_op_answer()
+                test_case = self.test_case_cls.model_validate(
+                    {
+                        **test_case.model_dump(mode="json"),
+                        "answer": answer.model_dump(mode="json"),
+                        "few_shot": False,
+                        "verified": False,
+                    }
+                )
+                test_case = self.queryer.store_answered_test_case(test_case)
+                logger.warning(
+                    "LLM exhausted valid transcription answers; used deterministic "
+                    f"column consensus: {query.key_str}"
+                )
             answer = cast(TranscriptionAnswer, test_case.answer)
             request_results.append(
                 TranscriptionRequestResult(

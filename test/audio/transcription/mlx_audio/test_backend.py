@@ -248,17 +248,22 @@ def test_loaded_model_is_shared_by_model_key(
         model_type: expected MLX-Audio loader model type
     """
     load = Mock(return_value=object())
+    get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     monkeypatch.setattr(MlxAudioBackend, "_models_by_key", {})
     monkeypatch.setattr(backend, "import_mlx_audio_stt_load", Mock(return_value=load))
+    monkeypatch.setattr(
+        backend, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
+    )
 
     first = MlxAudioBackend(model)
     second = MlxAudioBackend(model)
 
     assert first._loaded_model is load.return_value
     assert second._loaded_model is load.return_value
-    load.assert_called_once_with(
-        model.model_name, model_type=model_type, revision=model.model_revision
+    get_snapshot_dir_path.assert_called_once_with(
+        model.model_name, model.model_revision
     )
+    load.assert_called_once_with(Path("/cached/model"), model_type=model_type)
 
 
 def test_model_cache_key_includes_model_type(monkeypatch: pytest.MonkeyPatch):
@@ -269,8 +274,12 @@ def test_model_cache_key_includes_model_type(monkeypatch: pytest.MonkeyPatch):
     """
     models = [object(), object()]
     load = Mock(side_effect=models)
+    get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     monkeypatch.setattr(MlxAudioBackend, "_models_by_key", {})
     monkeypatch.setattr(backend, "import_mlx_audio_stt_load", Mock(return_value=load))
+    monkeypatch.setattr(
+        backend, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
+    )
     alternate_model = replace(MIMO_MODEL, model_type="qwen3_asr")
 
     first = MlxAudioBackend(MIMO_MODEL)
@@ -279,14 +288,8 @@ def test_model_cache_key_includes_model_type(monkeypatch: pytest.MonkeyPatch):
     assert first._loaded_model is models[0]
     assert second._loaded_model is models[1]
     assert load.call_args_list == [
-        call(
-            MIMO_MODEL.model_name, model_type="mimo", revision=MIMO_MODEL.model_revision
-        ),
-        call(
-            MIMO_MODEL.model_name,
-            model_type="qwen3_asr",
-            revision=MIMO_MODEL.model_revision,
-        ),
+        call(Path("/cached/model"), model_type="mimo"),
+        call(Path("/cached/model"), model_type="qwen3_asr"),
     ]
 
 

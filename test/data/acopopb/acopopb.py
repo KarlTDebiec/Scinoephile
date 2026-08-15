@@ -85,7 +85,7 @@ if "yue-Hant_transcribe" in actions:
     process_transcription(
         title_root,
         reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        stop_at_idx=12,
+        stop_at_idx=219,
         additional_context=transcription_additional_context,
         additional_audit_references={
             "zho-Hant": Series.load(

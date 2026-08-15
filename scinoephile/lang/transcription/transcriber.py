@@ -196,7 +196,11 @@ class GuidedTranscriber:
         # Configure standard preprocessing fallbacks
         if not isinstance(self.audio_model, WhisperModel):
             raise ValueError("Whisper backend requires a Whisper model.")
-        whisper_ctc_aligner = CtcAligner(self.language)
+        whisper_ctc_aligner = CtcAligner(
+            self.language,
+            cache_root_path=cache_root_path,
+            overwrite_cache=overwrite_cache,
+        )
         self.transcriber = WhisperTranscriber(
             model=self.audio_model,
             language=self.language,

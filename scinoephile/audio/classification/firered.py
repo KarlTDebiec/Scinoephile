@@ -16,8 +16,8 @@ from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import (
     import_firered_aed,
     import_firered_lid,
-    import_huggingface_hub,
 )
+from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
 from .cache import AudioClassificationCache
 from .exceptions import (
@@ -245,11 +245,10 @@ class FireRedLanguageIdentifier:
         if self._model is not None:
             return self._model
         try:
-            huggingface_hub = import_huggingface_hub()
-            model_dir = huggingface_hub.snapshot_download(
-                repo_id=_LANGUAGE_MODEL_ID,
-                revision=_LANGUAGE_MODEL_REVISION,
-                allow_patterns=("cmvn.ark", "dict.txt", "model.pth.tar"),
+            model_dir_path = get_huggingface_snapshot_dir_path(
+                _LANGUAGE_MODEL_ID,
+                _LANGUAGE_MODEL_REVISION,
+                ("cmvn.ark", "dict.txt", "model.pth.tar"),
             )
             model_cls, config_cls = import_firered_lid()
             config_factory = cast(Callable[..., object], config_cls)
@@ -258,7 +257,7 @@ class FireRedLanguageIdentifier:
                 getattr(model_cls, "from_pretrained"),
             )
             config = config_factory(use_gpu=self.use_gpu, use_half=self.use_half)
-            self._model = model_factory(model_dir, config)
+            self._model = model_factory(model_dir_path, config)
         except ImportError as exc:
             raise AudioClassificationDependencyError(str(exc)) from exc
         except Exception as exc:
@@ -445,13 +444,10 @@ class FireRedAudioEventDetector:
         if self._model is not None:
             return self._model
         try:
-            huggingface_hub = import_huggingface_hub()
-            model_root = Path(
-                huggingface_hub.snapshot_download(
-                    repo_id=_EVENT_MODEL_ID,
-                    revision=_EVENT_MODEL_REVISION,
-                    allow_patterns=("AED/cmvn.ark", "AED/model.pth.tar"),
-                )
+            model_root = get_huggingface_snapshot_dir_path(
+                _EVENT_MODEL_ID,
+                _EVENT_MODEL_REVISION,
+                ("AED/cmvn.ark", "AED/model.pth.tar"),
             )
             model_cls, config_cls = import_firered_aed()
             config_factory = cast(Callable[..., object], config_cls)

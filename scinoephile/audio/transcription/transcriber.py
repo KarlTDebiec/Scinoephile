@@ -251,7 +251,9 @@ class Transcriber(ABC):
             if cached_transcription is None:
                 continue
             cache_path, segments = cached_transcription
-            segments = self._prepare_cached_segments(segments, cache_path, settings)
+            segments = self._prepare_cached_segments(
+                audio, segments, cache_path, settings
+            )
             if segments and (is_usable is None or is_usable(segments)):
                 self.last_cache_key_sha256 = cache_path.stem
                 return segments, rejected_settings
@@ -367,6 +369,7 @@ class Transcriber(ABC):
 
     def _prepare_cached_segments(
         self,
+        audio: AudioSegment,
         segments: list[TranscribedSegment],
         cache_path: Path,
         settings: TranscriptionPreprocessingSettings,
@@ -374,6 +377,7 @@ class Transcriber(ABC):
         """Prepare cached segments for use.
 
         Arguments:
+            audio: audio from which the cached segments were transcribed
             segments: cached transcription segments
             cache_path: path from which the segments were loaded
             settings: preprocessing settings that produced the segments

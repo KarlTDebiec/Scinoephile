@@ -12,7 +12,12 @@ from scinoephile.core.subtitles import Series
 from .artifact import AlignmentArtifact
 from .timing import TimingMetrics, evaluate_timing, get_reference_for_alignment
 
-__all__ = ["CharacterErrorMetrics", "TranscriptionEvaluation", "evaluate_transcription"]
+__all__ = [
+    "CharacterErrorMetrics",
+    "TranscriptionEvaluation",
+    "evaluate_character_errors",
+    "evaluate_transcription",
+]
 
 
 @dataclass(frozen=True, slots=True)
@@ -47,16 +52,16 @@ class TranscriptionEvaluation:
     """Merged candidate timing metrics."""
 
 
-def evaluate_transcription(
+def evaluate_character_errors(
     artifact: AlignmentArtifact, reference: Series
-) -> TranscriptionEvaluation:
+) -> dict[str, CharacterErrorMetrics]:
     """Evaluate aligned ASR sources and merged output against one reference.
 
     Arguments:
         artifact: aligned multi-source transcription artifact
         reference: independent evaluation reference
     Returns:
-        lexical and timing evaluation
+        character-error metrics keyed by source name and `merged`
     """
     selected_reference = get_reference_for_alignment(artifact, reference)
     reference_text = "".join(
@@ -73,10 +78,25 @@ def evaluate_transcription(
     candidates["merged"] = "".join(
         subtitle.text_with_newline for subtitle in artifact.get_series()
     )
-    character_errors = {
+    return {
         name: _get_character_error_metrics(LineCER(reference_text, candidate))
         for name, candidate in candidates.items()
     }
+
+
+def evaluate_transcription(
+    artifact: AlignmentArtifact, reference: Series
+) -> TranscriptionEvaluation:
+    """Evaluate aligned ASR sources and merged output against one reference.
+
+    Arguments:
+        artifact: aligned multi-source transcription artifact
+        reference: independent evaluation reference
+    Returns:
+        lexical and timing evaluation
+    """
+    selected_reference = get_reference_for_alignment(artifact, reference)
+    character_errors = evaluate_character_errors(artifact, reference)
     timing = evaluate_timing(artifact, reference)
     return TranscriptionEvaluation(
         reference_subtitles=len(selected_reference),

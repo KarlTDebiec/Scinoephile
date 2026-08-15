@@ -13,7 +13,10 @@ from scinoephile.analysis.transcription.artifact import (
     AlignmentArtifact,
     AlignmentBlock,
 )
-from scinoephile.analysis.transcription.evaluation import evaluate_transcription
+from scinoephile.analysis.transcription.evaluation import (
+    evaluate_character_errors,
+    evaluate_transcription,
+)
 from scinoephile.analysis.transcription.timing import (
     evaluate_timing,
     get_reference_for_alignment,
@@ -99,6 +102,19 @@ def audit_transcription_alignment(
     for reference_name, reference in named_references.items():
         lines.extend(("", f"### Reference {reference_name}", ""))
         lines.extend(_get_metric_summary(selected_artifact, reference))
+        lines.extend(
+            (
+                "",
+                "#### Block CER",
+                "",
+                (
+                    "Sorted by merged CER, highest first. Blocks without reference "
+                    "characters are unscored and listed last."
+                ),
+                "",
+                *_get_block_cer_lines(selected_artifact, reference),
+            )
+        )
     if named_references and include_timing_tables:
         lines.extend(("", "## Timing Comparisons", ""))
         for reference_name, reference in named_references.items():
@@ -228,6 +244,76 @@ def render_transcription_alignment_terminal(
             )
         )
     return "\n".join(lines).rstrip() + "\n"
+
+
+def _format_cer(cer: float, reference_length: int) -> str:
+    """Format a character error rate for an audit table.
+
+    Arguments:
+        cer: character error rate
+        reference_length: normalized reference character count
+    Returns:
+        percentage or unscored marker
+    """
+    if reference_length == 0:
+        return "—"
+    return f"{cer:.0%}"
+
+
+def _get_block_cer_lines(artifact: AlignmentArtifact, reference: Series) -> list[str]:
+    """Get block-level CER rows sorted by merged error rate.
+
+    Arguments:
+        artifact: selected alignment artifact
+        reference: independent reference subtitles
+    Returns:
+        Markdown table lines
+    """
+    candidate_names = ("merged", *(source.name for source in artifact.sources))
+    block_results = []
+    for block in artifact.blocks:
+        block_artifact = artifact.model_copy(update={"blocks": (block,)})
+        block_results.append(
+            (block.index, evaluate_character_errors(block_artifact, reference))
+        )
+    block_results.sort(
+        key=lambda result: (
+            result[1]["merged"].reference_length == 0,
+            -result[1]["merged"].cer,
+            result[0],
+        )
+    )
+
+    headers = ("Block", "Reference characters", *candidate_names)
+    rows = []
+    for block_index, metrics_by_name in block_results:
+        reference_length = metrics_by_name["merged"].reference_length
+        rows.append(
+            (
+                str(block_index),
+                str(reference_length),
+                *(
+                    _format_cer(metrics_by_name[name].cer, reference_length)
+                    for name in candidate_names
+                ),
+            )
+        )
+    widths = tuple(
+        max(4, len(header), *(len(row[index]) for row in rows))
+        for index, header in enumerate(headers)
+    )
+    return [
+        "| "
+        + " | ".join(header.rjust(width) for header, width in zip(headers, widths))
+        + " |",
+        "| " + " | ".join("-" * (width - 1) + ":" for width in widths) + " |",
+        *(
+            "| "
+            + " | ".join(cell.rjust(width) for cell, width in zip(row, widths))
+            + " |"
+            for row in rows
+        ),
+    ]
 
 
 def _get_language_legend(block: AlignmentBlock) -> str | None:

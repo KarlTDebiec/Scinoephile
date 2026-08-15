@@ -79,6 +79,11 @@ def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(
         "scinoephile.core.dependencies.transcription.import_torch",
         Mock(return_value=SimpleNamespace(device=device, from_numpy=from_numpy)),
     )
+    get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
+    monkeypatch.setattr(
+        "scinoephile.audio.vad.pyannote.get_huggingface_snapshot_dir_path",
+        get_snapshot_dir_path,
+    )
     detector = VoiceActivityDetector(
         VadImplementation.PYANNOTE,
         min_speech_duration_seconds=0.2,
@@ -88,9 +93,10 @@ def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(
     audio = AudioSegment.silent(duration=1000, frame_rate=16000)
 
     assert detector(audio) == [(50, 550), (750, 1000)]
-    model_class.from_pretrained.assert_called_once_with(
-        "pyannote/segmentation-3.0", revision="e66f3d3b9eb0873085418a7b813d3b369bf160bb"
+    get_snapshot_dir_path.assert_called_once_with(
+        "pyannote/segmentation-3.0", "e66f3d3b9eb0873085418a7b813d3b369bf160bb"
     )
+    model_class.from_pretrained.assert_called_once_with(Path("/cached/model"))
     pipeline_class.assert_called_once_with(segmentation=model)
     pipeline.to.assert_called_once_with("cpu")
     pipeline._segmentation.assert_called_once_with(
@@ -113,6 +119,10 @@ def test_pyannote_missing_authorization_is_a_domain_error(
     monkeypatch.setattr(
         "scinoephile.core.dependencies.transcription.import_torch",
         Mock(return_value=SimpleNamespace()),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.vad.pyannote.get_huggingface_snapshot_dir_path",
+        Mock(return_value=Path("/cached/model")),
     )
     detector = VoiceActivityDetector(VadImplementation.PYANNOTE)
 

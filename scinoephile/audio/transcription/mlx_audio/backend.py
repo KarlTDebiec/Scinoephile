@@ -12,6 +12,7 @@ from typing import ClassVar, Protocol, cast
 from scinoephile.common.validation import val_input_file_or_dir_path
 from scinoephile.core.dependencies.transcription import import_mlx_audio_stt_load
 from scinoephile.core.language import Language
+from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
 from .model import MIMO_MODEL, MlxAudioModel
 
@@ -133,6 +134,18 @@ class MlxAudioBackend:
 
         return MlxAudioInferenceResult(text=text, generation_tokens=generation_tokens)
 
+    def _get_model_reference(self) -> Path:
+        """Resolve the configured model to a local directory.
+
+        Returns:
+            local model directory path
+        """
+        if isinstance(self._model_reference, Path):
+            return self._model_reference
+        return get_huggingface_snapshot_dir_path(
+            self._model_reference, self.model_revision
+        )
+
     @property
     def _loaded_model(self) -> _LoadedMlxAudioModel:
         """Get the cached MLX-Audio model, loading it if needed.
@@ -154,10 +167,9 @@ class MlxAudioBackend:
         if cached_model is None:
             load = import_mlx_audio_stt_load()
             load_kwargs: dict[str, object] = {"model_type": self.model.model_type}
-            if self.model_revision is not None:
-                load_kwargs["revision"] = self.model_revision
+            model_reference = self._get_model_reference()
             cached_model = cast(
-                _LoadedMlxAudioModel, load(self._model_reference, **load_kwargs)
+                _LoadedMlxAudioModel, load(model_reference, **load_kwargs)
             )
             self._models_by_key[model_key] = cached_model
         self._loaded_model_instance = cached_model

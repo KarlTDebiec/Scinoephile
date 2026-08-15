@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
@@ -97,6 +98,45 @@ def test_language_identifier_preserves_short_tail_when_subdividing(tmp_path: Pat
         (0.0, 15.2),
         (15.2, 30.4),
     ]
+
+
+def test_language_identifier_resolves_cached_model_without_network(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    """A cached FireRedLID snapshot should be resolved without network access.
+
+    Arguments:
+        tmp_path: temporary cache root path
+        monkeypatch: pytest monkeypatch fixture
+    """
+    get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
+    model = object()
+    model_factory = Mock(return_value=model)
+    config = object()
+    config_factory = Mock(return_value=config)
+    monkeypatch.setattr(
+        "scinoephile.audio.classification.firered.get_huggingface_snapshot_dir_path",
+        get_snapshot_dir_path,
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.classification.firered.import_firered_lid",
+        Mock(
+            return_value=(
+                SimpleNamespace(from_pretrained=model_factory),
+                config_factory,
+            )
+        ),
+    )
+
+    identifier = FireRedLanguageIdentifier(tmp_path)
+
+    assert identifier._get_model() is model  # noqa: SLF001
+    get_snapshot_dir_path.assert_called_once_with(
+        "FireRedTeam/FireRedLID",
+        "1bb4d285c8456429385d9c0810300df4297bc11b",
+        ("cmvn.ark", "dict.txt", "model.pth.tar"),
+    )
+    model_factory.assert_called_once_with(Path("/cached/model"), config)
 
 
 def test_language_identifier_rejects_incompatible_window_lengths(tmp_path: Path):

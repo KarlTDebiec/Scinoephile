@@ -498,21 +498,27 @@ def _get_merge_support_row(
     source_count = len(block.rows)
     output = []
     for column_idx, merged_character in enumerate(block.merged):
-        if merged_character in {"　", "・"}:
+        if merged_character == "・":
             output.append(merged_character)
             continue
         column = block.columns[column_idx]
         start_seconds = column.start_ms / 1000
         end_seconds = column.end_ms / 1000
-        merged_token = Token(merged_character, start_seconds, end_seconds)
-        matching_source_count = sum(
-            row.text[column_idx] not in {"　", "・"}
-            and token_similarity(
-                Token(row.text[column_idx], start_seconds, end_seconds), merged_token
+        if merged_character == "　":
+            matching_source_count = sum(
+                row.text[column_idx] == "　" for row in block.rows
             )
-            > 0.0
-            for row in block.rows
-        )
+        else:
+            merged_token = Token(merged_character, start_seconds, end_seconds)
+            matching_source_count = sum(
+                row.text[column_idx] not in {"　", "・"}
+                and token_similarity(
+                    Token(row.text[column_idx], start_seconds, end_seconds),
+                    merged_token,
+                )
+                > 0.0
+                for row in block.rows
+            )
         support_level = 0
         if source_count:
             support_level = int(
@@ -659,4 +665,4 @@ def _render_chunk(
         if source_name == "merged":
             lines.extend(inline_annotation_lines)
     lines.extend(trailing_annotation_lines)
-    return "\n".join(lines)
+    return "\n".join(line.rstrip(" ") for line in lines)

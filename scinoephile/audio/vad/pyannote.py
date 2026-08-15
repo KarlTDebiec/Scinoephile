@@ -12,6 +12,7 @@ import numpy as np
 from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
+from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
 from .exceptions import VoiceActivityError
 from .provider import VadImplementation, VadProvider
@@ -123,7 +124,10 @@ class PyannoteVadProvider(VadProvider):
             from_pretrained = cast(
                 Callable[..., object], getattr(model_class, "from_pretrained")
             )
-            model = from_pretrained(_MODEL_ID, revision=_MODEL_REVISION)
+            model_dir_path = get_huggingface_snapshot_dir_path(
+                _MODEL_ID, _MODEL_REVISION
+            )
+            model = from_pretrained(model_dir_path)
             if model is None:
                 raise VoiceActivityError(
                     "Unable to load the gated pyannote segmentation model. Accept "
