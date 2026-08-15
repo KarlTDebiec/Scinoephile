@@ -125,6 +125,7 @@ def get_transcription_sources(
                 vad_mode=VadMode.OFF,
                 cache_root_path=cache_root_path,
                 overwrite_cache=overwrite_cache,
+                recover_decoding=True,
             )
             backend_name = WhisperTranscriber.backend_name
         elif isinstance(source.model, MlxAudioModel):

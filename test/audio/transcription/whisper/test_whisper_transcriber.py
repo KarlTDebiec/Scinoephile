@@ -27,6 +27,7 @@ from scinoephile.audio.transcription import (
     VadMode,
     get_segment_split_at_idx,
 )
+from scinoephile.audio.transcription.quality import get_transcription_quality_issue
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper.model import (
@@ -73,6 +74,7 @@ def test_init_defaults_demucs_and_vad_to_off():
     assert transcriber.demucs_separator is None
     assert transcriber.model is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert transcriber.language is Language.yue_hant
+    assert transcriber.recovery_transcriber is None
 
 
 @parametrize("language", [Language.yue_hans, Language.yue_hant])
@@ -465,7 +467,7 @@ def test_transcribe_falls_back_to_native_text_with_ctc_alignment(
     assert len(segments) == 1
     assert segments[0].text == transcript_text
     assert segments[0].avg_logprob == -0.75
-    assert segments[0].compression_ratio == 2.8
+    assert segments[0].compression_ratio == 0.5
     assert segments[0].no_speech_prob == 0.6
     timestamped_transcribe.assert_called_once()
     model.transcribe.assert_called_once()
@@ -781,7 +783,7 @@ def test_default_model_loads_from_pinned_snapshot(monkeypatch: MonkeyPatch):
     """Resolve the default model's immutable revision before Whisper loading."""
     loaded_model = Mock()
     whisper_timestamped = SimpleNamespace(load_model=Mock(return_value=loaded_model))
-    snapshot_download = Mock(return_value="/cached/snapshot")
+    get_snapshot_dir_path = Mock(return_value=Path("/cached/snapshot"))
     monkeypatch.setattr(WhisperTranscriber, "_models_by_key", {})
     monkeypatch.setattr(
         "scinoephile.audio.transcription.whisper.transcriber.get_torch_device",
@@ -793,8 +795,9 @@ def test_default_model_loads_from_pinned_snapshot(monkeypatch: MonkeyPatch):
         Mock(return_value=whisper_timestamped),
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper.transcriber.import_huggingface_hub",
-        Mock(return_value=SimpleNamespace(snapshot_download=snapshot_download)),
+        "scinoephile.audio.transcription.whisper.transcriber."
+        "get_huggingface_snapshot_dir_path",
+        get_snapshot_dir_path,
     )
     monkeypatch.setattr(
         "scinoephile.audio.transcription.whisper.transcriber."
@@ -808,9 +811,9 @@ def test_default_model_loads_from_pinned_snapshot(monkeypatch: MonkeyPatch):
     transcriber = WhisperTranscriber()
 
     assert transcriber._loaded_model is loaded_model
-    snapshot_download.assert_called_once_with(
-        repo_id=WHISPER_LARGE_V3_CANTONESE_MODEL.model_name,
-        revision=WHISPER_LARGE_V3_CANTONESE_MODEL.model_revision,
+    get_snapshot_dir_path.assert_called_once_with(
+        WHISPER_LARGE_V3_CANTONESE_MODEL.model_name,
+        WHISPER_LARGE_V3_CANTONESE_MODEL.model_revision,
     )
     whisper_timestamped.load_model.assert_called_once_with(
         "/cached/snapshot", device="cpu"
@@ -1226,6 +1229,145 @@ def test_normalize_transcription_segments_preserves_ambiguous_credit_segments(
     )
 
     assert normalized_segments == segments
+
+
+def test_normalize_transcription_segments_discards_invalid_terminal_credit():
+    """Test a low-no-speech credit beyond the audio duration is discarded."""
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    dialogue, credit = _get_subtitle_credit_segments(no_speech_prob=0.1)
+    credit.end = 3.0
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [dialogue, credit],
+        source="cache",
+        cache_path=Path("/tmp/whisper.json"),
+        use_vad=False,
+        audio_duration_seconds=1.5,
+    )
+
+    assert normalized_segments == [dialogue]
+
+
+def test_normalize_transcription_segments_corrects_stale_window_compression():
+    """Test retained window text replaces a stale decode compression score."""
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    segments = [
+        TranscribedSegment(
+            id=0,
+            seek=0,
+            start=0.0,
+            end=0.5,
+            text="冇義氣呀",
+            compression_ratio=4.8,
+            words=[
+                TranscribedWord(text="冇義氣呀", start=0.0, end=0.5, confidence=1.0)
+            ],
+        ),
+        TranscribedSegment(
+            id=1,
+            seek=50,
+            start=0.5,
+            end=1.0,
+            text="要命呀",
+            compression_ratio=1.2,
+            words=[TranscribedWord(text="要命呀", start=0.5, end=1.0, confidence=1.0)],
+        ),
+    ]
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        segments, source="cache", cache_path=None, use_vad=False
+    )
+
+    assert [segment.text for segment in normalized_segments] == ["冇義氣呀", "要命呀"]
+    assert normalized_segments[0].compression_ratio is not None
+    assert normalized_segments[0].compression_ratio < 2.4
+
+
+def test_normalize_transcription_segments_discards_repetitive_window():
+    """Test a genuinely repetitive window is discarded without losing others."""
+    transcriber = WhisperTranscriber(model=_CUSTOM_MODEL)
+    dialogue = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=0.5,
+        text="問我班兄弟先",
+        compression_ratio=2.8,
+        words=[
+            TranscribedWord(text="問我班兄弟先", start=0.0, end=0.5, confidence=1.0)
+        ],
+    )
+    repetition = TranscribedSegment(
+        id=1,
+        seek=50,
+        start=0.5,
+        end=1.0,
+        text="喇" * 100,
+        compression_ratio=8.0,
+        words=[TranscribedWord(text="喇" * 100, start=0.5, end=1.0, confidence=1.0)],
+    )
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        [dialogue, repetition], source="cache", cache_path=None, use_vad=False
+    )
+
+    assert len(normalized_segments) == 1
+    assert normalized_segments[0].text == dialogue.text
+    assert normalized_segments[0].compression_ratio is not None
+    assert normalized_segments[0].compression_ratio < 2.4
+
+
+def test_transcribe_recovers_after_repetitive_cached_output(tmp_path: Path):
+    """Test temperature fallback recovers an unusable deterministic cache.
+
+    Arguments:
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=1000)
+    transcriber = WhisperTranscriber(
+        cache_root_path=tmp_path,
+        model=_CUSTOM_MODEL,
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VadMode.OFF,
+        recover_decoding=True,
+    )
+    recovery_transcriber = transcriber.recovery_transcriber
+    assert recovery_transcriber is not None
+    settings = transcriber._get_preprocessing_settings()[0]
+    repeated_segment = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=1.0,
+        text="呀" * 100,
+        compression_ratio=37.0,
+        words=[TranscribedWord(text="呀" * 100, start=0.0, end=1.0, confidence=1.0)],
+    )
+    transcriber._cache.save(
+        audio, transcriber._get_cache_identity(audio, settings), [repeated_segment]
+    )
+    recovered_segment = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.0,
+        end=1.0,
+        text="救命呀",
+        compression_ratio=0.5,
+        words=[TranscribedWord(text="救命呀", start=0.0, end=1.0, confidence=1.0)],
+    )
+    recovery_path = recovery_transcriber._cache.save(
+        audio,
+        recovery_transcriber._get_cache_identity(audio, settings),
+        [recovered_segment],
+    )
+
+    segments = transcriber(
+        audio,
+        is_usable=lambda candidate: get_transcription_quality_issue(candidate) is None,
+    )
+
+    assert segments == [recovered_segment]
+    assert transcriber.last_cache_key_sha256 == recovery_path.stem
 
 
 def test_get_segment_split_at_idx_includes_segment_details_in_error():

@@ -331,6 +331,42 @@ def test_process_tolerates_unavailable_audio_analysis(
     assert [event.text for event in output.events] == ["甲"]
 
 
+def test_process_uses_source_wide_audio_analysis_for_partial_ranges():
+    """Partial block ranges should reuse source-wide event and language caches."""
+    audio_event_detector = Mock(return_value=None)
+    language_identifier = Mock(return_value=None)
+    pipeline, audio_series = _get_pipeline(
+        audio_event_detector=audio_event_detector,
+        audio_event_mode=AudioAnalysisMode.ON,
+        language_identification_mode=AudioAnalysisMode.ON,
+        language_identifier=language_identifier,
+    )
+    pipeline.last_blocks = []
+    block_splitter = cast(Mock, pipeline.block_splitter)
+    block_splitter.return_value = [
+        SpeechBlock(
+            index=0, start_ms=100, end_ms=400, buffered_start_ms=0, buffered_end_ms=500
+        ),
+        SpeechBlock(
+            index=1,
+            start_ms=600,
+            end_ms=900,
+            buffered_start_ms=500,
+            buffered_end_ms=1_000,
+        ),
+    ]
+    speech_intervals = [(100, 400), (600, 900)]
+    block_vad_detector = cast(Mock, pipeline.block_vad_detector)
+    block_vad_detector.get_speech_intervals.return_value = speech_intervals
+
+    pipeline.process(audio_series, start_at_idx=1)
+
+    audio_event_detector.assert_called_once_with(audio_series.audio)
+    language_identifier.assert_called_once_with(
+        audio_series.audio, tuple(speech_intervals)
+    )
+
+
 def test_factory_omits_disabled_audio_analysis(monkeypatch: MonkeyPatch):
     """Factory should omit optional analyzers and preserve source pairing."""
     source_transcribers = {"one": Mock(), "two": Mock()}

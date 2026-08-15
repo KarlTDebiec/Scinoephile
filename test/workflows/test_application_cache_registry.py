@@ -14,6 +14,7 @@ def test_cache_registry_matches_owned_layout():
         "audio/classification/language",
         "audio/diarization",
         "audio/separation/demucs",
+        "audio/transcription/ctc",
         "audio/transcription/mlx_audio",
         "audio/transcription/whisper",
         "audio/vad",

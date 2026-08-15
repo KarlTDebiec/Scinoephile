@@ -359,6 +359,33 @@ def test_transcribe_block_falls_back_to_only_successful_source():
     assert transcriber.last_lexical_alignment is not None
 
 
+def test_transcribe_block_rejects_lone_low_information_source():
+    """Test uncorroborated vocalizations do not become merged subtitles."""
+    audio = AudioSegment.silent(duration=1_000)
+    vocalization = Mock(
+        spec=Transcriber, return_value=[_get_segment("嗯嗯嗯嗯", 0.1, 0.4)]
+    )
+    empty = Mock(spec=Transcriber, side_effect=TranscriptionEmptyError("empty"))
+    processor = Mock(spec=TranscriptionProcessor)
+    transcriber = _get_transcriber(
+        processor=processor,
+        sources={
+            "whisper": vocalization,
+            "mimo": empty,
+            "qwen": empty,
+            "sensevoice": empty,
+            "firered": empty,
+            "glm": empty,
+        },
+    )
+
+    with raises(TranscriptionEmptyError, match="low-information vocalizations"):
+        transcriber(audio)
+
+    processor.process_requests.assert_not_called()
+    assert transcriber.last_lexical_alignment is None
+
+
 def test_transcribe_block_excludes_pathological_source():
     """Test source-level quality signals exclude unusable ASR evidence."""
     audio = AudioSegment.silent(duration=1_000)
@@ -393,6 +420,41 @@ def test_transcribe_block_excludes_pathological_source():
     assert transcriber.last_source_errors == {
         "whisper": "Segment 0 compression ratio 37.00 exceeds maximum 2.40."
     }
+
+
+def test_transcribe_block_trims_source_timing_beyond_audio():
+    """Test valid source prefixes survive terminal backend timing overruns."""
+    audio = AudioSegment.silent(duration=1_000)
+    whisper_segment = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.2,
+        end=1.4,
+        text="甲乙丙",
+        words=[
+            TranscribedWord(text="甲", start=0.2, end=0.5, confidence=1.0),
+            TranscribedWord(text="乙", start=0.9, end=1.2, confidence=1.0),
+            TranscribedWord(text="丙", start=1.2, end=1.4, confidence=1.0),
+        ],
+    )
+    mimo_segments = [_get_segment("甲乙", 0.2, 0.9)]
+    transcriber = _get_transcriber(
+        sources={
+            "whisper": Mock(spec=Transcriber, return_value=[whisper_segment]),
+            "mimo": Mock(spec=Transcriber, return_value=mimo_segments),
+        }
+    )
+    transcriber.merge = Mock(return_value=[_get_segment("甲乙", 0.2, 0.9)])
+
+    transcriber(audio)
+
+    bounded_whisper = transcriber.merge.call_args.args[0]["whisper"]
+    assert [
+        (segment.text, segment.start, segment.end) for segment in bounded_whisper
+    ] == [("甲乙", 0.2, 1.0)]
+    assert [
+        (word.text, word.start, word.end) for word in bounded_whisper[0].words or []
+    ] == [("甲", 0.2, 0.5), ("乙", 0.9, 1.0)]
 
 
 def test_transcribe_block_tolerates_source_inference_failure():

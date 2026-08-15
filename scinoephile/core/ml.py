@@ -4,11 +4,63 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable, Sequence
 from functools import cache
+from pathlib import Path
+from typing import cast
 
-from .dependencies.transcription import import_torch
+from .dependencies.transcription import import_huggingface_hub, import_torch
 
-__all__ = ["get_torch_device"]
+__all__ = ["get_huggingface_snapshot_dir_path", "get_torch_device"]
+
+_HUGGINGFACE_MODEL_ALLOW_PATTERNS = (
+    "*.ark",
+    "*.bin",
+    "*.jinja",
+    "*.json",
+    "*.jsonl",
+    "*.model",
+    "*.npy",
+    "*.npz",
+    "*.pth",
+    "*.py",
+    "*.safetensors",
+    "*.tar",
+    "*.tiktoken",
+    "*.txt",
+    "*.yaml",
+    "*.yml",
+)
+"""Model asset patterns that exclude repository documentation and metadata."""
+
+
+def get_huggingface_snapshot_dir_path(
+    repo_id: str,
+    revision: str | None = None,
+    allow_patterns: Sequence[str] | None = None,
+) -> Path:
+    """Resolve a Hugging Face snapshot locally before allowing network access.
+
+    Arguments:
+        repo_id: Hugging Face repository ID
+        revision: optional immutable repository revision
+        allow_patterns: optional file patterns to include; defaults to model assets
+    Returns:
+        local snapshot directory path
+    """
+    huggingface_hub = import_huggingface_hub()
+    snapshot_download = cast(Callable[..., str], huggingface_hub.snapshot_download)
+    snapshot_kwargs: dict[str, object] = {"repo_id": repo_id}
+    if revision is not None:
+        snapshot_kwargs["revision"] = revision
+    if allow_patterns is None:
+        allow_patterns = _HUGGINGFACE_MODEL_ALLOW_PATTERNS
+    snapshot_kwargs["allow_patterns"] = tuple(allow_patterns)
+    try:
+        snapshot_path = snapshot_download(local_files_only=True, **snapshot_kwargs)
+    except OSError:
+        snapshot_path = snapshot_download(**snapshot_kwargs)
+    return Path(snapshot_path)
 
 
 @cache

@@ -65,6 +65,7 @@ def test_default_cantonese_sources_use_configured_models_without_internal_vad():
     assert whisper.call_args.kwargs["model"] is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert whisper.call_args.kwargs["language"] is Language.yue_hant
     assert whisper.call_args.kwargs["vad_mode"] is VadMode.OFF
+    assert whisper.call_args.kwargs["recover_decoding"]
     assert [call.kwargs["model"] for call in mlx.call_args_list] == [
         MIMO_MODEL,
         QWEN3_ASR_MODEL,

@@ -5,15 +5,35 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from zlib import compress
 
 from .transcribed_segment import TranscribedSegment
 
-__all__ = ["get_transcription_quality_issue"]
+__all__ = [
+    "MAX_COMPRESSION_RATIO",
+    "get_text_compression_ratio",
+    "get_transcription_quality_issue",
+    "is_low_information_text",
+]
 
 _AUDIO_END_TOLERANCE_SECONDS = 1.0
 """Maximum accepted timestamp extension beyond the source audio."""
-_MAX_COMPRESSION_RATIO = 2.4
+_LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢嗯嘶")
+"""Standalone vocalizations that do not provide lexical evidence."""
+MAX_COMPRESSION_RATIO = 2.4
 """Maximum backend-reported compression ratio accepted for alignment."""
+
+
+def get_text_compression_ratio(text: str) -> float:
+    """Get the zlib compression ratio used by Whisper.
+
+    Arguments:
+        text: text whose repetitiveness should be measured
+    Returns:
+        ratio of uncompressed to compressed UTF-8 bytes
+    """
+    text_bytes = text.encode("utf-8")
+    return len(text_bytes) / len(compress(text_bytes))
 
 
 def get_transcription_quality_issue(  # noqa: PLR0911
@@ -49,12 +69,12 @@ def get_transcription_quality_issue(  # noqa: PLR0911
                 )
         if (
             segment.compression_ratio is not None
-            and segment.compression_ratio > _MAX_COMPRESSION_RATIO
+            and segment.compression_ratio > MAX_COMPRESSION_RATIO
         ):
             return (
                 f"Segment {segment.id} compression ratio "
                 f"{segment.compression_ratio:.2f} exceeds maximum "
-                f"{_MAX_COMPRESSION_RATIO:.2f}."
+                f"{MAX_COMPRESSION_RATIO:.2f}."
             )
         if (
             audio_duration_seconds is not None
@@ -67,3 +87,17 @@ def get_transcription_quality_issue(  # noqa: PLR0911
     if not any(segment.text.strip() for segment in segments):
         return "Transcription contains no nonblank text."
     return None
+
+
+def is_low_information_text(text: str) -> bool:
+    """Check whether text contains only standalone vocalizations.
+
+    Arguments:
+        text: transcription text to inspect
+    Returns:
+        whether every alphanumeric character is a low-information vocalization
+    """
+    content_characters = {character for character in text if character.isalnum()}
+    return (
+        bool(content_characters) and content_characters <= _LOW_INFORMATION_CHARACTERS
+    )

@@ -142,6 +142,11 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.version", lambda name: "4.0.7"
     )
+    get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_huggingface_snapshot_dir_path",
+        get_snapshot_dir_path,
+    )
     audio = AudioSegment.silent(duration=1000, frame_rate=16000)
     diarizer = PyannoteDiarizer(
         tmp_path, device="cpu", num_speakers=2, overwrite_cache=False
@@ -151,10 +156,11 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     second = diarizer(audio)
 
     assert first == second
-    from_pretrained.assert_called_once_with(
+    get_snapshot_dir_path.assert_called_once_with(
         "pyannote/speaker-diarization-community-1",
-        revision="3533c8cf8e369892e6b79ff1bf80f7b0286a54ee",
+        "3533c8cf8e369892e6b79ff1bf80f7b0286a54ee",
     )
+    from_pretrained.assert_called_once_with(Path("/cached/model"))
     assert pipeline.call_count == 1
     assert pipeline.device == "cpu"
     assert pipeline.kwargs == {"num_speakers": 2}
@@ -214,11 +220,15 @@ def test_custom_model_uses_repository_default_revision(
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_torch", lambda: _FakeTorch
     )
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_huggingface_snapshot_dir_path",
+        Mock(return_value=Path("/cached/custom-model")),
+    )
     diarizer = PyannoteDiarizer(tmp_path, model_id="custom/model")
 
     diarizer._get_pipeline()  # noqa: SLF001
 
-    from_pretrained.assert_called_once_with("custom/model")
+    from_pretrained.assert_called_once_with(Path("/cached/custom-model"))
     assert diarizer.model_revision is None
 
 
@@ -248,6 +258,10 @@ def test_diarizer_reports_gated_model_authorization(
     )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.version", lambda name: "4.0.7"
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_huggingface_snapshot_dir_path",
+        Mock(return_value=Path("/cached/model")),
     )
     diarizer = PyannoteDiarizer(tmp_path, device="cpu")
 

@@ -20,6 +20,8 @@ class AudioCacheNamespace(CacheNamespace):
     """Speaker diarization results."""
     SEPARATION_DEMUCS = "audio/separation/demucs"
     """Demucs-separated audio."""
+    TRANSCRIPTION_CTC = "audio/transcription/ctc"
+    """CTC forced-alignment results."""
     TRANSCRIPTION_MLX_AUDIO = "audio/transcription/mlx_audio"
     """MLX-Audio transcription results."""
     TRANSCRIPTION_WHISPER = "audio/transcription/whisper"

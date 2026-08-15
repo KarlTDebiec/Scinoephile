@@ -7,6 +7,8 @@ scinoephile.egg-info
 /local/
 /test/.coverage
 /test/data/*/input/*_ocr/source.sup
+/test/data/*/input/yue-Hant_transcribe/audio.wav
+/test/data/*/input/yue.wav
 /test/data/*/output/**/*.html
 /test/data/*/output/**/*.json
 !/test/data/*/output/*/lang/*/ocr_fusion.json

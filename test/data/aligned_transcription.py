@@ -7,18 +7,21 @@ from __future__ import annotations
 import json
 from collections.abc import Mapping
 from dataclasses import asdict
+from hashlib import sha256
 from logging import getLogger
 from pathlib import Path
+from typing import cast
 
 from scinoephile.analysis.audit.transcription.report import (
     audit_transcription_alignment,
     render_transcription_alignment_terminal,
 )
-from scinoephile.analysis.transcription import AlignmentArtifact
+from scinoephile.analysis.transcription import AlignmentArtifact, RunManifest
 from scinoephile.analysis.transcription.evaluation import (
     TranscriptionEvaluation,
     evaluate_transcription,
 )
+from scinoephile.analysis.transcription.timing import retime_alignment
 from scinoephile.audio.segment import load_audio_segment
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import Language, ScinoephileError
@@ -36,9 +39,18 @@ from scinoephile.workflows.transcription_pipeline.factory import (
     get_transcription_pipeline,
 )
 
+from .helpers import (
+    load_or_clean_series,
+    load_or_romanize_series,
+    load_or_simplify_series,
+)
+
 __all__ = ["process_transcription"]
 
 logger = getLogger(__name__)
+
+_EVALUATION_VERSION = 4
+"""Version of evaluation metrics and audit rendering behavior."""
 
 
 def process_transcription(
@@ -57,7 +69,7 @@ def process_transcription(
     terminal_authority: str | None = None,
     overwrite: bool = False,
 ) -> Series:
-    """Run one reference-free transcription experiment and save its evaluation.
+    """Run, postprocess, and evaluate one reference-free transcription experiment.
 
     The Cantonese reference determines only how many leading blocks are run
     and how the finished output is scored. It is never passed to ASR, alignment,
@@ -76,14 +88,14 @@ def process_transcription(
         additional_audit_references: additional named references used only in audits
         reference_name: audit row name for the primary scoring reference
         terminal_authority: merged or named reference row for ANSI output
-        overwrite: whether to regenerate an existing artifact and SRT
+        overwrite: whether to regenerate existing transcription outputs
     Returns:
         merged transcription series
     """
     if stop_at_idx is None and target_reference_count <= 0:
         raise ValueError("target_reference_count must be positive.")
     output_dir_path = title_root_path / "output" / "yue-Hant_transcribe"
-    audio_path = output_dir_path / "audio" / "audio.wav"
+    audio_path = title_root_path / "input" / "yue.wav"
     output_dir_path.mkdir(parents=True, exist_ok=True)
     json_dir_path = output_dir_path / "json"
     json_dir_path.mkdir(parents=True, exist_ok=True)
@@ -97,19 +109,31 @@ def process_transcription(
             raise ValueError(f"Duplicate audit reference name: {name}")
         audit_references[name] = audit_reference
 
-    if artifact_path.exists() and not overwrite:
-        artifact = AlignmentArtifact.load(artifact_path)
-        output = artifact.get_series()
-        if not transcription_path.exists():
-            output.save(transcription_path)
-        _save_evaluation(
-            output_dir_path,
-            artifact,
-            reference,
-            audit_references=audit_references,
-            terminal_authority=terminal_authority,
+    existing_artifact, existing_manifest = _load_existing_run(
+        artifact_path, run_manifest_path, overwrite
+    )
+    if existing_artifact is not None:
+        existing_output = _get_matching_existing_output(
+            existing_artifact, existing_manifest, stop_at_idx
         )
-        return output
+        if existing_output is not None:
+            if not transcription_path.exists():
+                existing_output.save(transcription_path)
+            _save_evaluation(
+                output_dir_path,
+                existing_artifact,
+                reference,
+                audit_references=audit_references,
+                terminal_authority=terminal_authority,
+            )
+            _generate_transcription_derivatives(
+                existing_output, output_dir_path, overwrite=False
+            )
+            return existing_output
+        logger.info(
+            f"Existing alignment does not match the requested {stop_at_idx}-block "
+            "prefix; checking whether it can be extended."
+        )
 
     audio = _load_audio_series(
         audio_path,
@@ -130,18 +154,16 @@ def process_transcription(
         stop_at_idx = _get_stop_at_idx_for_reference_count(
             pipeline, audio, reference, target_reference_count
         )
-    output = transcribe_series(
+    output, artifact = _transcribe_requested_blocks(
         audio,
-        language=Language.yue_hant,
-        pipeline=pipeline,
-        alignment_outfile_path=artifact_path,
-        run_manifest_outfile_path=run_manifest_path,
-        stop_at_idx=stop_at_idx,
+        pipeline,
+        stop_at_idx,
+        artifact_path,
+        run_manifest_path,
+        existing_artifact,
+        existing_manifest,
     )
     output.save(transcription_path)
-    artifact = pipeline.last_alignment_artifact
-    if artifact is None:
-        raise RuntimeError("Transcription pipeline did not produce an artifact.")
     completion_metrics = provider.completion_metrics[initial_completion_count:]
     usage_path = json_dir_path / "llm_usage.json"
     save_chat_completion_metrics_to_json(usage_path, completion_metrics)
@@ -153,7 +175,280 @@ def process_transcription(
         audit_references=audit_references,
         terminal_authority=terminal_authority,
     )
+    _generate_transcription_derivatives(output, output_dir_path, overwrite=True)
     return output
+
+
+def _generate_transcription_derivatives(
+    transcription: Series, output_dir_path: Path, *, overwrite: bool
+):
+    """Generate cleaned, simplified, and romanized transcription outputs.
+
+    Arguments:
+        transcription: raw Traditional Cantonese transcription
+        output_dir_path: transcription output directory
+        overwrite: whether to overwrite existing derivative outputs
+    """
+    cleaned = load_or_clean_series(
+        transcription,
+        output_dir_path / "transcribe_clean.srt",
+        Language.yue_hant,
+        overwrite,
+    )
+    simplified = load_or_simplify_series(
+        cleaned, output_dir_path / "transcribe_clean_simplify.srt", overwrite
+    )
+    load_or_romanize_series(
+        simplified,
+        output_dir_path / "transcribe_clean_simplify_romanize.srt",
+        Language.yue_hans,
+        overwrite,
+    )
+
+
+def _get_matching_existing_output(
+    artifact: AlignmentArtifact, manifest: RunManifest | None, stop_at_idx: int | None
+) -> Series | None:
+    """Get output when an existing artifact covers the requested prefix exactly.
+
+    Arguments:
+        artifact: existing portable alignment artifact
+        manifest: corresponding validated run manifest, if available
+        stop_at_idx: requested exclusive block index, or None for existing output
+    Returns:
+        existing merged subtitles when the request matches, otherwise None
+    """
+    if stop_at_idx is None:
+        return artifact.get_series()
+    processed_block_indexes = tuple(block.index for block in artifact.blocks)
+    if manifest is not None and manifest.alignment_sha256 == artifact.sha256:
+        processed_block_indexes = tuple(block.index for block in manifest.blocks)
+    requested_block_indexes = tuple(range(1, stop_at_idx + 1))
+    if processed_block_indexes != requested_block_indexes:
+        return None
+    return artifact.get_series()
+
+
+def _load_existing_run(
+    artifact_path: Path, run_manifest_path: Path, overwrite: bool
+) -> tuple[AlignmentArtifact | None, RunManifest | None]:
+    """Load an existing alignment artifact and its valid linked manifest.
+
+    Arguments:
+        artifact_path: portable alignment artifact path
+        run_manifest_path: compact run manifest path
+        overwrite: whether existing output must be ignored
+    Returns:
+        existing artifact and linked manifest, when available
+    """
+    if overwrite or not artifact_path.exists():
+        return None, None
+    artifact = AlignmentArtifact.load(artifact_path)
+    if not run_manifest_path.exists():
+        return artifact, None
+    try:
+        manifest = RunManifest.load(run_manifest_path)
+    except (OSError, ValueError) as exc:
+        logger.warning(f"Ignoring invalid transcription run manifest: {exc}")
+        return artifact, None
+    if manifest.alignment_sha256 != artifact.sha256:
+        return artifact, None
+    return artifact, manifest
+
+
+def _transcribe_requested_blocks(
+    audio: AudioSeries,
+    pipeline: TranscriptionPipeline,
+    stop_at_idx: int,
+    artifact_path: Path,
+    run_manifest_path: Path,
+    existing_artifact: AlignmentArtifact | None,
+    existing_manifest: RunManifest | None,
+) -> tuple[Series, AlignmentArtifact]:
+    """Transcribe a requested prefix, reusing a compatible completed prefix.
+
+    Arguments:
+        audio: complete source audio
+        pipeline: configured transcription pipeline
+        stop_at_idx: requested exclusive block index
+        artifact_path: portable alignment artifact output path
+        run_manifest_path: compact run manifest output path
+        existing_artifact: candidate reusable alignment prefix
+        existing_manifest: provenance for the candidate prefix
+    Returns:
+        merged subtitles and complete alignment artifact
+    """
+    start_at_idx = 0
+    if (
+        existing_artifact is not None
+        and existing_manifest is not None
+        and _is_reusable_prefix(
+            pipeline, audio, existing_artifact, existing_manifest, stop_at_idx
+        )
+    ):
+        start_at_idx = len(existing_manifest.blocks)
+        logger.info(
+            f"Reusing {start_at_idx} completed transcription blocks and processing "
+            f"blocks {start_at_idx + 1}-{stop_at_idx}."
+        )
+    elif existing_artifact is not None:
+        logger.info("Existing alignment is not a compatible prefix; regenerating.")
+
+    if not start_at_idx:
+        output = transcribe_series(
+            audio,
+            language=Language.yue_hant,
+            pipeline=pipeline,
+            alignment_outfile_path=artifact_path,
+            run_manifest_outfile_path=run_manifest_path,
+            stop_at_idx=stop_at_idx,
+        )
+        artifact = pipeline.last_alignment_artifact
+        if artifact is None:
+            raise RuntimeError("Transcription pipeline did not produce an artifact.")
+        return output, artifact
+
+    transcribe_series(
+        audio,
+        language=Language.yue_hant,
+        pipeline=pipeline,
+        alignment_outfile_path=artifact_path,
+        run_manifest_outfile_path=run_manifest_path,
+        start_at_idx=start_at_idx,
+        stop_at_idx=stop_at_idx,
+    )
+    suffix_artifact = pipeline.last_alignment_artifact
+    suffix_manifest = pipeline.last_run_manifest
+    if suffix_artifact is None or suffix_manifest is None:
+        raise RuntimeError("Transcription pipeline did not retain resumable outputs.")
+    assert existing_artifact is not None
+    assert existing_manifest is not None
+    artifact, manifest = _combine_run_prefix(
+        existing_artifact, existing_manifest, suffix_artifact, suffix_manifest
+    )
+    pipeline.last_alignment_artifact = artifact
+    pipeline.last_run_manifest = manifest
+    artifact.save(artifact_path)
+    manifest.save(run_manifest_path)
+    return artifact.get_series(), artifact
+
+
+def _combine_run_prefix(
+    prefix_artifact: AlignmentArtifact,
+    prefix_manifest: RunManifest,
+    suffix_artifact: AlignmentArtifact,
+    suffix_manifest: RunManifest,
+) -> tuple[AlignmentArtifact, RunManifest]:
+    """Combine a validated prior prefix with newly processed suffix blocks.
+
+    Arguments:
+        prefix_artifact: reusable leading alignment blocks
+        prefix_manifest: provenance for the reusable leading blocks
+        suffix_artifact: newly generated trailing alignment blocks
+        suffix_manifest: provenance for the newly generated trailing blocks
+    Returns:
+        combined alignment artifact and run manifest
+    Raises:
+        RuntimeError: if the suffix does not immediately follow the prefix
+    """
+    prefix_count = len(prefix_manifest.blocks)
+    suffix_indexes = tuple(block.index for block in suffix_manifest.blocks)
+    expected_suffix_indexes = tuple(
+        range(prefix_count + 1, prefix_count + len(suffix_indexes) + 1)
+    )
+    if suffix_indexes != expected_suffix_indexes:
+        raise RuntimeError("Transcription suffix does not immediately follow prefix.")
+
+    subtitle_index = 1
+    blocks = []
+    for block in (*prefix_artifact.blocks, *suffix_artifact.blocks):
+        subtitles = []
+        for subtitle in block.subtitles:
+            subtitles.append(subtitle.model_copy(update={"index": subtitle_index}))
+            subtitle_index += 1
+        blocks.append(block.model_copy(update={"subtitles": tuple(subtitles)}))
+    artifact = retime_alignment(
+        AlignmentArtifact.model_validate(
+            {**suffix_artifact.model_dump(mode="python"), "blocks": tuple(blocks)}
+        ),
+        suffix_artifact.timing,
+    )
+    manifest = RunManifest.model_validate(
+        {
+            **suffix_manifest.model_dump(mode="python"),
+            "blocks": (*prefix_manifest.blocks, *suffix_manifest.blocks),
+            "alignment_sha256": artifact.sha256,
+        }
+    )
+    return artifact, manifest
+
+
+def _is_reusable_prefix(
+    pipeline: TranscriptionPipeline,
+    audio: AudioSeries,
+    artifact: AlignmentArtifact,
+    manifest: RunManifest,
+    stop_at_idx: int,
+) -> bool:
+    """Check whether a completed run is a compatible proper prefix.
+
+    Arguments:
+        pipeline: currently configured transcription pipeline
+        audio: complete decoded source audio
+        artifact: candidate reusable alignment artifact
+        manifest: provenance corresponding to the candidate artifact
+        stop_at_idx: requested exclusive block index
+    Returns:
+        whether only the requested suffix needs processing
+    """
+    prefix_count = len(manifest.blocks)
+    if (
+        prefix_count == 0
+        or prefix_count >= stop_at_idx
+        or tuple(block.index for block in manifest.blocks)
+        != tuple(range(1, prefix_count + 1))
+        or manifest.alignment_sha256 != artifact.sha256
+    ):
+        return False
+    transcribed_indexes = tuple(
+        block.index for block in manifest.blocks if block.status == "transcribed"
+    )
+    if tuple(block.index for block in artifact.blocks) != transcribed_indexes:
+        return False
+
+    blocks = pipeline.plan_blocks(audio)
+    if (
+        stop_at_idx > len(blocks)
+        or manifest.language is not pipeline.language
+        or artifact.language is not pipeline.language
+        or artifact.audio_duration_ms != len(audio.audio)
+        or artifact.sources != pipeline.alignment_sources
+        or artifact.timing != pipeline.timing_settings
+        or manifest.audio_sha256 != sha256(audio.audio.raw_data).hexdigest()
+        or manifest.audio_duration_ms != len(audio.audio)
+        or manifest.audio_channels != audio.audio.channels
+        or manifest.audio_frame_rate != audio.audio.frame_rate
+        or manifest.audio_sample_width != audio.audio.sample_width
+        or manifest.block_vad_identity != pipeline.block_vad_identity
+        or manifest.planned_block_count != len(blocks)
+        or manifest.processor != pipeline.processor_identity
+    ):
+        return False
+    for alignment_block in artifact.blocks:
+        planned_block = blocks[alignment_block.index - 1]
+        if (
+            alignment_block.core_start_ms,
+            alignment_block.core_end_ms,
+            alignment_block.buffered_start_ms,
+            alignment_block.buffered_end_ms,
+        ) != (
+            planned_block.start_ms,
+            planned_block.end_ms,
+            planned_block.buffered_start_ms,
+            planned_block.buffered_end_ms,
+        ):
+            return False
+    return True
 
 
 def _get_stop_at_idx_for_reference_count(
@@ -256,45 +551,56 @@ def _save_evaluation(
         audit_references: named independent references rendered in the audit
         terminal_authority: optional authoritative row rendered in the terminal
     """
-    evaluation = evaluate_transcription(artifact, reference)
-    cer = {
-        name: asdict(character_errors)
-        for name, character_errors in evaluation.character_errors.items()
-    }
-    metrics = {
-        "format": "scinoephile-transcription-evaluation",
-        "version": 1,
-        "processed_blocks": len(artifact.blocks),
-        "reference_subtitles": evaluation.reference_subtitles,
-        "candidate_subtitles": evaluation.candidate_subtitles,
-        "cer": cer,
-        "timing": _serialize_timing(evaluation),
-    }
     json_dir_path = output_dir_path / "json"
     json_dir_path.mkdir(parents=True, exist_ok=True)
-    (json_dir_path / "metrics.json").write_text(
-        json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    metrics_path = json_dir_path / "metrics.json"
+    audit_path = output_dir_path / "audit.md"
+    evaluation_identity = _get_evaluation_identity(
+        artifact, reference, audit_references
     )
-    reference_similarity = None
+    metrics = _load_cached_evaluation(metrics_path, audit_path, evaluation_identity)
+    token_similarity = None
     if artifact.language in {Language.yue_hans, Language.yue_hant}:
-        reference_similarity = YueTokenSimilarity(
+        token_similarity = YueTokenSimilarity(
             timing_weight=2.0, timing_tolerance_seconds=0.75
         )
-    (output_dir_path / "audit.md").write_text(
-        audit_transcription_alignment(
-            artifact,
-            audit_references,
-            reference_similarity=reference_similarity,
-            include_merge_support=True,
-        ),
-        encoding="utf-8",
-    )
+    if metrics is None:
+        evaluation = evaluate_transcription(artifact, reference)
+        cer = {
+            name: asdict(character_errors)
+            for name, character_errors in evaluation.character_errors.items()
+        }
+        metrics = {
+            "format": "scinoephile-transcription-evaluation",
+            "version": _EVALUATION_VERSION,
+            "input": evaluation_identity,
+            "processed_blocks": len(artifact.blocks),
+            "reference_subtitles": evaluation.reference_subtitles,
+            "candidate_subtitles": evaluation.candidate_subtitles,
+            "cer": cer,
+            "timing": _serialize_timing(evaluation),
+        }
+        metrics_path.write_text(
+            json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+        audit_path.write_text(
+            audit_transcription_alignment(
+                artifact,
+                audit_references,
+                token_similarity=token_similarity,
+                include_merge_support=True,
+            ),
+            encoding="utf-8",
+        )
+    else:
+        logger.info("Reusing unchanged transcription metrics and Markdown audit.")
+    cer = cast(dict[str, dict[str, float]], metrics["cer"])
     if terminal_authority is not None:
         terminal_alignment = render_transcription_alignment_terminal(
             artifact,
             audit_references,
             authoritative_row_name=terminal_authority,
-            reference_similarity=reference_similarity,
+            token_similarity=token_similarity,
             include_merge_support=True,
         )
         logger.info(f"\n{terminal_alignment.rstrip()}")
@@ -302,6 +608,83 @@ def _save_evaluation(
         "Aligned transcription evaluation: "
         + ", ".join(f"{name} CER {values['cer']:.3%}" for name, values in cer.items())
     )
+
+
+def _get_evaluation_identity(
+    artifact: AlignmentArtifact,
+    reference: Series,
+    audit_references: Mapping[str, Series],
+) -> dict[str, object]:
+    """Get the inputs determining saved evaluation and audit output.
+
+    Arguments:
+        artifact: aligned multi-source transcription artifact
+        reference: independent reference used for metrics
+        audit_references: named independent references rendered in the audit
+    Returns:
+        stable content identity for reusable evaluation output
+    """
+    return {
+        "alignment_sha256": artifact.sha256,
+        "reference_sha256": _get_series_sha256(reference),
+        "audit_reference_sha256s": {
+            name: _get_series_sha256(series)
+            for name, series in sorted(audit_references.items())
+        },
+    }
+
+
+def _get_series_sha256(series: Series) -> str:
+    """Get a stable digest of subtitle content used by evaluation.
+
+    Arguments:
+        series: subtitle series to digest
+    Returns:
+        lowercase hexadecimal SHA-256 digest
+    """
+    payload = [
+        {
+            "end": subtitle.end,
+            "name": subtitle.name,
+            "start": subtitle.start,
+            "text": subtitle.text,
+        }
+        for subtitle in series
+    ]
+    return sha256(
+        json.dumps(
+            payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True
+        ).encode("utf-8")
+    ).hexdigest()
+
+
+def _load_cached_evaluation(
+    metrics_path: Path, audit_path: Path, evaluation_identity: Mapping[str, object]
+) -> dict[str, object] | None:
+    """Load reusable evaluation metrics when both saved outputs are current.
+
+    Arguments:
+        metrics_path: evaluation metrics JSON path
+        audit_path: Markdown alignment audit path
+        evaluation_identity: expected artifact and reference identity
+    Returns:
+        parsed metrics when reusable, otherwise None
+    """
+    if not metrics_path.is_file() or not audit_path.is_file():
+        return None
+    try:
+        metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+    except (OSError, TypeError, ValueError):
+        return None
+    if (
+        not isinstance(metrics, dict)
+        or metrics.get("format") != "scinoephile-transcription-evaluation"
+        or metrics.get("version") != _EVALUATION_VERSION
+        or metrics.get("input") != evaluation_identity
+        or not isinstance(metrics.get("cer"), dict)
+    ):
+        return None
+    return metrics
 
 
 def _serialize_timing(evaluation: TranscriptionEvaluation) -> dict[str, object]:

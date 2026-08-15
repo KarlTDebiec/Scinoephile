@@ -8,20 +8,21 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
+from scinoephile.core.subtitles import Series
+from test.data.aligned_transcription import process_transcription
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
-from test.data.transcription import process_transcription
 from test.helpers import test_data_root
+
+set_logging_verbosity(2)
 
 title_root = test_data_root / Path(__file__).parent.name
 output_path = title_root / "output"
 eng_ocr_path = output_path / "eng_ocr"
 yue_hans_ocr_path = output_path / "yue-Hans_ocr"
 yue_hant_ocr_path = output_path / "yue-Hant_ocr"
-yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"
-zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
 
 transcription_additional_context = """
 電影背景：
@@ -50,7 +51,6 @@ transcription_additional_context = """
 - 照妖鏡 / 乾坤袋 / 隱身符 / 移魂大法 / 三味白骨火：劇中法器、法術名稱。
 """
 
-set_logging_verbosity(2)
 
 actions = {
     # "eng_ocr",
@@ -84,12 +84,14 @@ if "zho-Hans_eng" in actions:
 if "yue-Hant_transcribe" in actions:
     process_transcription(
         title_root,
-        zho_hant_guide_path,
         reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        language=Language.yue_hant,
-        guide_language=Language.zho_hant,
-        output_dir_path=yue_hant_transcribe_path,
+        stop_at_idx=219,
         additional_context=transcription_additional_context,
-        run_review_and_translation=False,
-        overwrite=True,
+        additional_audit_references={
+            "zho-Hant": Series.load(
+                zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
+            )
+        },
+        reference_name="yue-Hant",
+        terminal_authority="yue-Hant",
     )

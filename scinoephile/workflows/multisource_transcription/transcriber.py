@@ -28,7 +28,10 @@ from scinoephile.audio.transcription import (
 from scinoephile.audio.transcription.alignment_sequence import (
     get_transcription_sequence,
 )
-from scinoephile.audio.transcription.quality import get_transcription_quality_issue
+from scinoephile.audio.transcription.quality import (
+    get_transcription_quality_issue,
+    is_low_information_text,
+)
 from scinoephile.audio.vad.trace import VoiceActivityTrace
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.llms.transcription import TranscriptionProcessor, TranscriptionSource
@@ -241,6 +244,9 @@ class MultiSourceTranscriber:
                     whether the candidate is suitable for alignment
                 """
                 nonlocal quality_issue
+                candidate = self._get_audio_bounded_segments(
+                    candidate, audio_duration_seconds
+                )
                 quality_issue = get_transcription_quality_issue(
                     candidate, audio_duration_seconds=audio_duration_seconds
                 )
@@ -256,6 +262,9 @@ class MultiSourceTranscriber:
                     f"excluded from this block: {error}"
                 )
                 continue
+            segments = self._get_audio_bounded_segments(
+                segments, audio_duration_seconds
+            )
             if segments:
                 quality_issue = get_transcription_quality_issue(
                     segments, audio_duration_seconds=audio_duration_seconds
@@ -282,6 +291,12 @@ class MultiSourceTranscriber:
             )
         if len(successful_sources) == 1:
             source_name, segments = next(iter(successful_sources.items()))
+            text = "".join(segment.text for segment in segments)
+            if is_low_information_text(text):
+                raise TranscriptionEmptyError(
+                    f"Only surviving transcription source {source_name!r} produced "
+                    "low-information vocalizations."
+                )
             sequence = get_transcription_sequence(source_name, segments)
             self.last_lexical_alignment = Alignment(
                 source_names=(source_name,),
@@ -303,3 +318,69 @@ class MultiSourceTranscriber:
             source_offset_seconds=source_offset_seconds,
             voice_activity_trace=voice_activity_trace,
         )
+
+    @staticmethod
+    def _get_audio_bounded_segments(
+        segments: list[TranscribedSegment], audio_duration_seconds: float
+    ) -> list[TranscribedSegment]:
+        """Clip timestamped source evidence to the supplied audio.
+
+        Small backend timestamp overruns are accepted during source-quality
+        validation, but impossible timing units must not reach the alignment.
+
+        Arguments:
+            segments: raw timestamped source transcription
+            audio_duration_seconds: duration of the supplied audio
+        Returns:
+            transcription whose timed words lie within the supplied audio
+        """
+        if all(
+            segment.start >= 0.0
+            and segment.end <= audio_duration_seconds
+            and all(
+                word.start >= 0.0 and word.end <= audio_duration_seconds
+                for word in (segment.words or [])
+            )
+            for segment in segments
+        ):
+            return segments
+
+        output_segments = []
+        for segment in segments:
+            if not segment.words:
+                output_segments.append(segment)
+                continue
+            words = []
+            for word in segment.words:
+                start_seconds = max(0.0, min(word.start, audio_duration_seconds))
+                end_seconds = max(0.0, min(word.end, audio_duration_seconds))
+                if round(end_seconds * 1000) <= round(start_seconds * 1000):
+                    continue
+                if start_seconds == word.start and end_seconds == word.end:
+                    words.append(word)
+                    continue
+                words.append(
+                    word.model_copy(update={"start": start_seconds, "end": end_seconds})
+                )
+            if not words:
+                continue
+            text = "".join(word.text for word in words)
+            if (
+                words == segment.words
+                and segment.start == words[0].start
+                and segment.end == words[-1].end
+                and segment.text == text
+            ):
+                output_segments.append(segment)
+                continue
+            output_segments.append(
+                segment.model_copy(
+                    update={
+                        "start": words[0].start,
+                        "end": words[-1].end,
+                        "text": text,
+                        "words": words,
+                    }
+                )
+            )
+        return output_segments

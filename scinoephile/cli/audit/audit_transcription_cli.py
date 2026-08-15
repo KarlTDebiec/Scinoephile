@@ -188,16 +188,16 @@ class AuditTranscriptionCli(AuditCliBase):
             if reference_name in references:
                 parser.error(f"Duplicate reference name: {reference_name}")
             references[reference_name] = read_series(parser, reference_path)
-        reference_similarity = None
+        token_similarity = None
         if artifact.language.is_cantonese:
-            reference_similarity = YueTokenSimilarity()
+            token_similarity = YueTokenSimilarity()
 
         # Generate report
         try:
             report = audit_transcription_alignment(
                 artifact,
                 references,
-                reference_similarity=reference_similarity,
+                token_similarity=token_similarity,
                 first_index=first_index,
                 last_index=last_index,
                 first_block=first_block,

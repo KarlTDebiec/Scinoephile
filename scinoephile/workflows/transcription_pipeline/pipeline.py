@@ -10,7 +10,9 @@ from dataclasses import asdict
 from enum import StrEnum
 from hashlib import sha256
 from logging import getLogger
+from typing import cast
 
+from pydantic import JsonValue
 from pydub import AudioSegment
 
 from scinoephile.analysis.transcription.artifact import (
@@ -164,6 +166,37 @@ class TranscriptionPipeline:
         self.last_blocks: list[SpeechBlock] = []
         """Most recent stable full-source block plan."""
 
+    @property
+    def block_vad_identity(self) -> dict[str, JsonValue]:
+        """Get the block-planning configuration recorded in run manifests."""
+        return cast(
+            dict[str, JsonValue],
+            json.loads(
+                json.dumps(
+                    {
+                        "detector": self.block_vad_detector.cache_identity,
+                        "splitter": asdict(self.block_splitter.settings),
+                    },
+                    allow_nan=False,
+                    ensure_ascii=False,
+                )
+            ),
+        )
+
+    @property
+    def processor_identity(self) -> ProcessorIdentity:
+        """Get the consensus processor configuration recorded in run manifests."""
+        processor = self.transcriber.processor
+        return ProcessorIdentity(
+            operation=processor.test_case_cls.operation,
+            prompt_name=processor.prompt.name,
+            system_prompt_sha256=sha256(
+                processor.queryer.system_prompt.encode("utf-8")
+            ).hexdigest(),
+            provider_identity=processor.queryer.provider.cache_identity,
+            no_op=processor.queryer.no_op,
+        )
+
     def plan_blocks(self, audio_series: AudioSeries) -> tuple[SpeechBlock, ...]:
         """Get the stable VAD block plan without running ASR or consensus.
 
@@ -209,14 +242,10 @@ class TranscriptionPipeline:
                 "Cannot prune transcription test cases while processing only a "
                 "subset of transcription blocks."
             )
-        classification_audio, classification_offset_ms = self._get_classification_audio(
-            audio_series.audio, selected_blocks
-        )
-        audio_events = self._get_audio_events(
-            classification_audio, classification_offset_ms
-        )
+        analysis_audio = audio_series.audio if selected_blocks else None
+        audio_events = self._get_audio_events(analysis_audio)
         language_identification = self._get_language_identification(
-            classification_audio, classification_offset_ms, speech_intervals_ms
+            analysis_audio, speech_intervals_ms
         )
         diarization = self._get_diarization(audio_series.audio, bool(selected_blocks))
 
@@ -399,24 +428,6 @@ class TranscriptionPipeline:
         """
         if self.last_alignment_artifact is None:
             raise RuntimeError("Cannot build run provenance without an artifact.")
-        processor = self.transcriber.processor
-        provider_identity = json.loads(
-            json.dumps(
-                processor.queryer.provider.cache_identity,
-                allow_nan=False,
-                ensure_ascii=False,
-            )
-        )
-        block_vad_identity = json.loads(
-            json.dumps(
-                {
-                    "detector": self.block_vad_detector.cache_identity,
-                    "splitter": asdict(self.block_splitter.settings),
-                },
-                allow_nan=False,
-                ensure_ascii=False,
-            )
-        )
         return RunManifest(
             language=self.language,
             audio_sha256=sha256(audio.raw_data).hexdigest(),
@@ -424,29 +435,20 @@ class TranscriptionPipeline:
             audio_channels=audio.channels,
             audio_frame_rate=audio.frame_rate,
             audio_sample_width=audio.sample_width,
-            block_vad_identity=block_vad_identity,
+            block_vad_identity=self.block_vad_identity,
             planned_block_count=len(self.last_blocks),
             blocks=blocks,
-            processor=ProcessorIdentity(
-                operation=processor.test_case_cls.operation,
-                prompt_name=processor.prompt.name,
-                system_prompt_sha256=sha256(
-                    processor.queryer.system_prompt.encode("utf-8")
-                ).hexdigest(),
-                provider_identity=provider_identity,
-                no_op=processor.queryer.no_op,
-            ),
+            processor=self.processor_identity,
             alignment_sha256=self.last_alignment_artifact.sha256,
         )
 
     def _get_audio_events(
-        self, audio: AudioSegment | None, offset_ms: int
+        self, audio: AudioSegment | None
     ) -> AudioEventDetectionResult | None:
-        """Get optional FireRed audio events over the selected block span.
+        """Get optional FireRed audio events over the complete source.
 
         Arguments:
-            audio: selected contiguous source audio, if any
-            offset_ms: selected audio start on the complete source timeline
+            audio: complete source audio, if the range contains blocks
         Returns:
             audio events, or None when disabled or unavailable in auto mode
         """
@@ -454,7 +456,7 @@ class TranscriptionPipeline:
             return None
         assert self.audio_event_detector is not None
         try:
-            return self.audio_event_detector(audio, offset_seconds=offset_ms / 1000)
+            return self.audio_event_detector(audio)
         except AudioClassificationError as exc:
             if self.audio_event_mode is AudioAnalysisMode.ON:
                 raise
@@ -490,16 +492,12 @@ class TranscriptionPipeline:
             return None
 
     def _get_language_identification(
-        self,
-        audio: AudioSegment | None,
-        offset_ms: int,
-        speech_intervals_ms: Sequence[tuple[int, int]],
+        self, audio: AudioSegment | None, speech_intervals_ms: Sequence[tuple[int, int]]
     ) -> LanguageIdentificationResult | None:
-        """Get optional FireRed LID over selected VAD speech intervals.
+        """Get optional FireRed LID over complete-source VAD speech intervals.
 
         Arguments:
-            audio: selected contiguous source audio, if any
-            offset_ms: selected audio start on the complete source timeline
+            audio: complete source audio, if the range contains blocks
             speech_intervals_ms: source-timeline speech intervals
         Returns:
             language identification, or None when disabled or unavailable in auto mode
@@ -507,13 +505,8 @@ class TranscriptionPipeline:
         if self.language_identification_mode is AudioAnalysisMode.OFF or audio is None:
             return None
         assert self.language_identifier is not None
-        speech_intervals = self._get_classification_speech_intervals(
-            speech_intervals_ms, offset_ms, len(audio)
-        )
         try:
-            return self.language_identifier(
-                audio, speech_intervals, offset_seconds=offset_ms / 1000
-            )
+            return self.language_identifier(audio, speech_intervals_ms)
         except AudioClassificationError as exc:
             if self.language_identification_mode is AudioAnalysisMode.ON:
                 raise
@@ -604,52 +597,6 @@ class TranscriptionPipeline:
                 )
             )
         return tuple(pause_intervals)
-
-    @staticmethod
-    def _get_classification_audio(
-        audio: AudioSegment, selected_blocks: list[SpeechBlock]
-    ) -> tuple[AudioSegment | None, int]:
-        """Get the smallest contiguous source slice covering selected buffers.
-
-        Arguments:
-            audio: complete source audio
-            selected_blocks: stable selected speech blocks
-        Returns:
-            selected audio and its source-timeline offset, or None and zero
-        """
-        if not selected_blocks:
-            return None, 0
-        start_ms = min(block.buffered_start_ms for block in selected_blocks)
-        end_ms = max(block.buffered_end_ms for block in selected_blocks)
-        return audio[start_ms:end_ms], start_ms
-
-    @staticmethod
-    def _get_classification_speech_intervals(
-        speech_intervals_ms: Sequence[tuple[int, int]], offset_ms: int, duration_ms: int
-    ) -> tuple[tuple[int, int], ...]:
-        """Clip block-planning speech intervals to the classification slice.
-
-        Arguments:
-            speech_intervals_ms: source-timeline speech intervals
-            offset_ms: classification slice start on the source timeline
-            duration_ms: classification slice duration
-        Returns:
-            classification-slice-local speech intervals
-        """
-        source_end_ms = offset_ms + duration_ms
-        intervals = []
-        for start_ms, end_ms in speech_intervals_ms:
-            if end_ms <= offset_ms:
-                continue
-            if start_ms >= source_end_ms:
-                break
-            intervals.append(
-                (
-                    max(offset_ms, start_ms) - offset_ms,
-                    min(source_end_ms, end_ms) - offset_ms,
-                )
-            )
-        return tuple(intervals)
 
     @staticmethod
     def _get_offset_core_segments(

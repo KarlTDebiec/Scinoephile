@@ -17,6 +17,7 @@ from scinoephile.core.dependencies.transcription import (
     import_pyannote_audio,
     import_torch,
 )
+from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
 from .cache import SpeakerDiarizationCache
 from .exceptions import (
@@ -220,10 +221,10 @@ class PyannoteDiarizer:
             pyannote_audio = import_pyannote_audio()
             pipeline_cls = getattr(pyannote_audio, "Pipeline")
             from_pretrained = getattr(pipeline_cls, "from_pretrained")
-            if self.model_revision is None:
-                pipeline = from_pretrained(self.model_id)
-            else:
-                pipeline = from_pretrained(self.model_id, revision=self.model_revision)
+            model_dir_path = get_huggingface_snapshot_dir_path(
+                self.model_id, self.model_revision
+            )
+            pipeline = from_pretrained(model_dir_path)
             if pipeline is None:
                 raise SpeakerDiarizationAuthorizationError(
                     f"Unable to load gated pyannote model {self.model_id!r}. Accept "

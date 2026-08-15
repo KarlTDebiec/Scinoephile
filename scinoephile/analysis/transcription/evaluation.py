@@ -6,13 +6,18 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scinoephile.analysis.character_error_rate.series_cer import SeriesCER
-from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.analysis.character_error_rate.line_cer import LineCER
+from scinoephile.core.subtitles import Series
 
 from .artifact import AlignmentArtifact
 from .timing import TimingMetrics, evaluate_timing, get_reference_for_alignment
 
-__all__ = ["CharacterErrorMetrics", "TranscriptionEvaluation", "evaluate_transcription"]
+__all__ = [
+    "CharacterErrorMetrics",
+    "TranscriptionEvaluation",
+    "evaluate_character_errors",
+    "evaluate_transcription",
+]
 
 
 @dataclass(frozen=True, slots=True)
@@ -47,6 +52,52 @@ class TranscriptionEvaluation:
     """Merged candidate timing metrics."""
 
 
+def evaluate_character_errors(
+    artifact: AlignmentArtifact, reference: Series
+) -> dict[str, CharacterErrorMetrics]:
+    """Evaluate aligned ASR sources and merged output against one reference.
+
+    Arguments:
+        artifact: aligned multi-source transcription artifact
+        reference: independent evaluation reference
+    Returns:
+        character-error metrics keyed by source name and `merged`
+    """
+    selected_reference = get_reference_for_alignment(artifact, reference)
+    return _evaluate_character_errors(artifact, selected_reference)
+
+
+def _evaluate_character_errors(
+    artifact: AlignmentArtifact, selected_reference: Series
+) -> dict[str, CharacterErrorMetrics]:
+    """Evaluate character errors against an already selected reference.
+
+    Arguments:
+        artifact: aligned multi-source transcription artifact
+        selected_reference: reference subtitles owned by the artifact's blocks
+    Returns:
+        character-error metrics keyed by source name and `merged`
+    """
+    reference_text = "".join(
+        subtitle.text_with_newline for subtitle in selected_reference
+    )
+    source_texts = {source.name: [] for source in artifact.sources}
+    for block in artifact.blocks:
+        rows = {row.name: row.text for row in block.rows}
+        for source in artifact.sources:
+            text = rows.get(source.name, "").replace("　", "").replace("・", "")
+            if text:
+                source_texts[source.name].append(text)
+    candidates = {name: "".join(texts) for name, texts in source_texts.items()}
+    candidates["merged"] = "".join(
+        subtitle.text_with_newline for subtitle in artifact.get_series()
+    )
+    return {
+        name: _get_character_error_metrics(LineCER(reference_text, candidate))
+        for name, candidate in candidates.items()
+    }
+
+
 def evaluate_transcription(
     artifact: AlignmentArtifact, reference: Series
 ) -> TranscriptionEvaluation:
@@ -59,23 +110,7 @@ def evaluate_transcription(
         lexical and timing evaluation
     """
     selected_reference = get_reference_for_alignment(artifact, reference)
-    source_events = {source.name: [] for source in artifact.sources}
-    for block in artifact.blocks:
-        rows = {row.name: row.text for row in block.rows}
-        for source in artifact.sources:
-            text = rows.get(source.name, "").replace("　", "").replace("・", "")
-            if text:
-                source_events[source.name].append(
-                    Subtitle(
-                        start=block.core_start_ms, end=block.core_end_ms, text=text
-                    )
-                )
-    candidates = {name: Series(events=events) for name, events in source_events.items()}
-    candidates["merged"] = artifact.get_series()
-    character_errors = {
-        name: _get_character_error_metrics(SeriesCER(selected_reference, candidate))
-        for name, candidate in candidates.items()
-    }
+    character_errors = _evaluate_character_errors(artifact, selected_reference)
     timing = evaluate_timing(artifact, reference)
     return TranscriptionEvaluation(
         reference_subtitles=len(selected_reference),
@@ -85,7 +120,7 @@ def evaluate_transcription(
     )
 
 
-def _get_character_error_metrics(result: SeriesCER) -> CharacterErrorMetrics:
+def _get_character_error_metrics(result: LineCER) -> CharacterErrorMetrics:
     """Copy one character-error result into a serializable value object.
 
     Arguments:

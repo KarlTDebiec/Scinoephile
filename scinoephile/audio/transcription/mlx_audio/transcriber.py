@@ -26,6 +26,7 @@ from scinoephile.audio.transcription.preprocessing_settings import (
     TranscriptionPreprocessingSettings,
     VadMode,
 )
+from scinoephile.audio.transcription.quality import is_low_information_text
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.transcriber import Transcriber
@@ -46,9 +47,6 @@ logger = getLogger(__name__)
 
 _CHUNK_POSTPROCESSING_VERSION = "2"
 """Version of overlapping chunk ownership and timestamp clipping."""
-
-_LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢嗯嘶")
-"""Standalone vocalizations rejected as unusable transcripts."""
 
 _MLX_AUDIO_SOURCE_REVISION = "ff0197c0ae9f9fd02072904c696f2533e329c06e"
 """Pinned MLX-Audio source revision."""
@@ -129,7 +127,11 @@ class MlxAudioTranscriber(Transcriber):
         """Direct MLX-Audio inference backend."""
 
         self.ctc_aligner = CtcAligner(
-            language, ctc_model_name, model_revision=ctc_model_revision
+            language,
+            ctc_model_name,
+            model_revision=ctc_model_revision,
+            cache_root_path=cache_root_path,
+            overwrite_cache=overwrite_cache,
         )
         if max_tokens is None:
             max_tokens = model.default_max_tokens
@@ -269,8 +271,7 @@ class MlxAudioTranscriber(Transcriber):
             text = inference_result.text
             if not text.strip():
                 raise TranscriptionEmptyError("MLX-Audio returned empty transcript.")
-            content_characters = {char for char in text if char.isalnum()}
-            if content_characters and content_characters <= _LOW_INFORMATION_CHARACTERS:
+            if is_low_information_text(text):
                 raise TranscriptionEmptyError(
                     f"MLX-Audio returned only low-information vocalizations: {text!r}"
                 )

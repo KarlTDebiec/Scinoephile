@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import unicodedata
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from statistics import median
 
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
@@ -64,6 +64,7 @@ def render_transcription_alignment_block(
     profile_column_anchor_ids = []
     annotation_rows = _get_annotation_rows(
         block,
+        token_similarity=aligner.similarity,
         include_audio_events=include_audio_events,
         include_language=include_language,
         include_merge_support=include_merge_support,
@@ -368,6 +369,7 @@ def _get_annotation_cell(
 def _get_annotation_rows(
     block: AlignmentBlock,
     *,
+    token_similarity: Callable[[Token, Token], float],
     include_audio_events: bool,
     include_language: bool,
     include_merge_support: bool,
@@ -377,6 +379,7 @@ def _get_annotation_rows(
 
     Arguments:
         block: alignment block containing portable annotations
+        token_similarity: token substitution scoring used for source support
         include_audio_events: whether to include singing and music rows
         include_language: whether to include the spoken-language row
         include_merge_support: whether to include merged-character support
@@ -388,7 +391,7 @@ def _get_annotation_rows(
     if include_speaker:
         rows.append(("speaker", block.speaker))
     if include_merge_support:
-        rows.append(("support", _get_merge_support_row(block)))
+        rows.append(("support", _get_merge_support_row(block, token_similarity)))
     if include_language and block.language_trace is not None:
         rows.append(("language", block.language_trace))
     if include_audio_events:
@@ -481,24 +484,41 @@ def _get_merge_support_display_cell(character: str) -> str:
     return colorize(character, color)
 
 
-def _get_merge_support_row(block: AlignmentBlock) -> str:
-    """Get normalized exact source agreement for each merged column.
+def _get_merge_support_row(
+    block: AlignmentBlock, token_similarity: Callable[[Token, Token], float]
+) -> str:
+    """Get normalized source agreement for each merged column.
 
     Arguments:
         block: alignment block containing successful source and merged rows
+        token_similarity: token substitution scoring used to identify support
     Returns:
         fullwidth support digits, gaps, and shared pause characters
     """
     source_count = len(block.rows)
     output = []
     for column_idx, merged_character in enumerate(block.merged):
-        if merged_character in {"　", "・"}:
+        if merged_character == "・":
             output.append(merged_character)
             continue
-        matching_source_count = sum(
-            normalize_nfkc(row.text[column_idx]) == normalize_nfkc(merged_character)
-            for row in block.rows
-        )
+        column = block.columns[column_idx]
+        start_seconds = column.start_ms / 1000
+        end_seconds = column.end_ms / 1000
+        if merged_character == "　":
+            matching_source_count = sum(
+                row.text[column_idx] == "　" for row in block.rows
+            )
+        else:
+            merged_token = Token(merged_character, start_seconds, end_seconds)
+            matching_source_count = sum(
+                row.text[column_idx] not in {"　", "・"}
+                and token_similarity(
+                    Token(row.text[column_idx], start_seconds, end_seconds),
+                    merged_token,
+                )
+                > 0.0
+                for row in block.rows
+            )
         support_level = 0
         if source_count:
             support_level = int(
@@ -645,4 +665,4 @@ def _render_chunk(
         if source_name == "merged":
             lines.extend(inline_annotation_lines)
     lines.extend(trailing_annotation_lines)
-    return "\n".join(lines)
+    return "\n".join(line.rstrip(" ") for line in lines)

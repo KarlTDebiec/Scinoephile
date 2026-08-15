@@ -5,19 +5,24 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 import numpy as np
 from opencc import OpenCC
 from pydub import AudioSegment
 
+from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core import Language
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import (
     import_torch,
     import_transformers,
 )
+from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
+from .cache import TranscriptionCache
 from .exceptions import (
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
@@ -54,6 +59,9 @@ _SCRIPT_CONVERSION_CONFIGS = {
 }
 """OpenCC configurations keyed by transcription language and CTC model name."""
 
+_ALIGNMENT_VERSION = 1
+"""Version of the CTC forced-alignment algorithm and output shaping."""
+
 
 class CtcAligner:
     """Aligns transcription text to audio using a CTC model."""
@@ -71,6 +79,8 @@ class CtcAligner:
         device: str = "cpu",
         *,
         model_revision: str | None = None,
+        cache_root_path: Path | None = None,
+        overwrite_cache: bool = False,
     ):
         """Initialize.
 
@@ -79,6 +89,8 @@ class CtcAligner:
             model_name: optional Hugging Face CTC model name or local model path
             device: device identifier passed to the CTC model
             model_revision: optional immutable Hugging Face model revision
+            cache_root_path: root directory beneath which to cache
+            overwrite_cache: whether to replace matching cache files
         Raises:
             ValueError: if no default model is available for the language
         """
@@ -108,11 +120,23 @@ class CtcAligner:
         self.device = device
         """Device identifier passed to the CTC model."""
 
+        self.cache = TranscriptionCache(
+            cache_root_path,
+            AudioCacheNamespace.TRANSCRIPTION_CTC,
+            "ctc",
+            "CTC-aligned",
+            overwrite_cache,
+        )
+        """Persistent cache of forced-alignment results."""
+
         self._model: CtcModel | None = None
         """CTC model used for alignment."""
 
         self._processor: CtcProcessor | None = None
         """Processor associated with the CTC model."""
+
+        self._model_dir_path: Path | None = None
+        """Resolved local model directory path, or None before loading."""
 
     def __call__(self, audio: AudioSegment, text: str) -> list[TranscribedSegment]:
         """Align transcript text to source audio.
@@ -140,10 +164,7 @@ class CtcAligner:
                 return self._model
 
             transformers = import_transformers()
-            load_kwargs = self._get_load_kwargs()
-            model = transformers.AutoModelForCTC.from_pretrained(
-                self.model_name, **load_kwargs
-            )
+            model = self._load_pretrained(transformers.AutoModelForCTC.from_pretrained)
             if hasattr(model, "to"):
                 model = model.to(self.device)
             if hasattr(model, "eval"):
@@ -167,9 +188,8 @@ class CtcAligner:
                 return self._processor
 
             transformers = import_transformers()
-            load_kwargs = self._get_load_kwargs()
-            processor = transformers.AutoProcessor.from_pretrained(
-                self.model_name, **load_kwargs
+            processor = self._load_pretrained(
+                transformers.AutoProcessor.from_pretrained
             )
             self._processor = processor
             self._processors[processor_key] = processor
@@ -190,6 +210,10 @@ class CtcAligner:
         transcript_text = text
         if not transcript_text.strip():
             raise TranscriptionAlignmentError("Cannot align empty transcript.")
+        cache_identity = self._get_cache_identity(transcript_text)
+        cached = self.cache.load(audio, cache_identity)
+        if cached is not None:
+            return cached[1]
 
         # Derive timing scale from the audio being aligned
         duration_seconds = len(audio) / 1000
@@ -217,7 +241,7 @@ class CtcAligner:
                 raise TranscriptionAlignmentError(
                     "CTC alignment did not produce timings."
                 )
-            return [
+            segments = [
                 TranscribedSegment(
                     id=0,
                     seek=0,
@@ -227,6 +251,8 @@ class CtcAligner:
                     words=words,
                 )
             ]
+            self.cache.save(audio, cache_identity, segments)
+            return segments
         except TranscriptionAlignmentError:
             raise
         except (ImportError, OSError, RuntimeError, ValueError) as exc:
@@ -298,11 +324,56 @@ class CtcAligner:
             "CTC aligner did not expose a blank token ID."
         )
 
-    def _get_load_kwargs(self) -> dict[str, str]:
-        """Get revision arguments passed to Hugging Face loaders."""
-        if self.model_revision is None:
-            return {}
-        return {"revision": self.model_revision}
+    def _get_model_dir_path(self) -> Path:
+        """Resolve the model to a local directory.
+
+        Returns:
+            local model directory path
+        """
+        if self._model_dir_path is not None:
+            return self._model_dir_path
+
+        configured_path = Path(self.model_name)
+        if configured_path.is_dir():
+            self._model_dir_path = configured_path
+        else:
+            self._model_dir_path = get_huggingface_snapshot_dir_path(
+                self.model_name, self.model_revision
+            )
+        return self._model_dir_path
+
+    def _get_cache_identity(self, text: str) -> dict[str, object]:
+        """Get the configuration identifying reusable forced alignment.
+
+        Arguments:
+            text: transcription text aligned to the audio
+        Returns:
+            complete CTC alignment identity
+        """
+        return {
+            "alignment_version": _ALIGNMENT_VERSION,
+            "device": self.device,
+            "language": self.language.code,
+            "model_name": self.model_name,
+            "model_revision": self.model_revision,
+            "runtime": {
+                "torch": get_distribution_identity("torch"),
+                "transformers": get_distribution_identity("transformers"),
+            },
+            "script_conversion": self._script_conversion_config,
+            "text": text,
+        }
+
+    def _load_pretrained(self, loader: Callable[..., Any]) -> Any:
+        """Load a Hugging Face asset locally before allowing network access.
+
+        Arguments:
+            loader: Hugging Face ``from_pretrained`` callable
+        Returns:
+            loaded model or processor
+        """
+        model_dir_path = self._get_model_dir_path()
+        return loader(model_dir_path, local_files_only=True)
 
     def _get_token_ids(self, text: str) -> tuple[list[int], list[int]]:
         """Get CTC token IDs and source text indices for supported characters.

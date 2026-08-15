@@ -4,7 +4,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
+from itertools import groupby
 from logging import getLogger
 from math import ceil
 from pathlib import Path
@@ -15,12 +16,18 @@ from scinoephile.audio.separation import DemucsSeparator
 from scinoephile.audio.transcription.ctc_aligner import CtcAligner
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionEmptyError,
+    TranscriptionError,
     TranscriptionInferenceError,
 )
 from scinoephile.audio.transcription.preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
     VadMode,
+)
+from scinoephile.audio.transcription.quality import (
+    MAX_COMPRESSION_RATIO,
+    get_text_compression_ratio,
+    get_transcription_quality_issue,
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcriber import Transcriber
@@ -33,7 +40,7 @@ from scinoephile.core.dependencies.transcription import (
     import_whisper_timestamped,
 )
 from scinoephile.core.language import Language
-from scinoephile.core.ml import get_torch_device
+from scinoephile.core.ml import get_huggingface_snapshot_dir_path, get_torch_device
 
 from .model import WHISPER_LARGE_V3_CANTONESE_MODEL, WhisperModel
 
@@ -51,6 +58,9 @@ _MAX_TOKENS_PER_SECOND = 16
 
 _MIN_SAMPLE_LEN = 32
 """Minimum token budget for very short source audio."""
+
+_RECOVERY_TEMPERATURES = (0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
+"""Whisper temperature schedule used after standard decoding fails."""
 
 _SUBTITLE_CREDIT_MIN_NO_SPEECH_PROBABILITY = 0.6
 """Minimum no-speech probability for discarding a terminal subtitle credit."""
@@ -89,6 +99,7 @@ class WhisperTranscriber(Transcriber):
         overwrite_cache: bool = False,
         temperature: float | Sequence[float] = 0.0,
         condition_on_previous_text: bool = True,
+        recover_decoding: bool = False,
         ctc_aligner: CtcAligner | None = None,
         demucs_separator: DemucsSeparator | None = None,
         vad_detector: VoiceActivityDetector | None = None,
@@ -105,6 +116,8 @@ class WhisperTranscriber(Transcriber):
             temperature: decoding temperature or fallback schedule
             condition_on_previous_text: whether to condition each decoding window on
                 the preceding window
+            recover_decoding: whether to retry unusable deterministic output with a
+                temperature fallback schedule
             ctc_aligner: optional CTC aligner used when Whisper timestamping fails
             demucs_separator: optional shared Demucs vocal separator
             vad_detector: optional shared voice activity detector
@@ -131,11 +144,67 @@ class WhisperTranscriber(Transcriber):
             demucs_separator,
             vad_detector,
         )
+        self.recovery_transcriber: WhisperTranscriber | None = None
+        """Defensive temperature-fallback transcriber, when enabled."""
+        if recover_decoding:
+            self.recovery_transcriber = WhisperTranscriber(
+                model=self.model,
+                language=self.language,
+                demucs_mode=self.demucs_mode,
+                vad_mode=self.vad_mode,
+                cache_root_path=self._cache.cache_root_path,
+                overwrite_cache=self._cache.overwrite,
+                temperature=_RECOVERY_TEMPERATURES,
+                condition_on_previous_text=False,
+                ctc_aligner=self.ctc_aligner,
+                demucs_separator=self.demucs_separator,
+                vad_detector=self.vad_detector,
+            )
 
     @property
     def model_name(self) -> str:
         """Get the Whisper model name or local model path."""
         return self.model.model_name
+
+    def transcribe(
+        self,
+        audio: AudioSegment,
+        *,
+        is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
+    ) -> list[TranscribedSegment]:
+        """Transcribe audio, retrying unusable output when configured.
+
+        Arguments:
+            audio: audio to transcribe
+            is_usable: optional callback used to reject output and trigger retries
+        Returns:
+            first usable deterministic or recovered transcription
+        """
+        try:
+            segments = super().transcribe(audio, is_usable=is_usable)
+        except TranscriptionError:
+            if self.recovery_transcriber is None:
+                raise
+            segments = []
+        if segments or self.recovery_transcriber is None:
+            return segments
+
+        logger.info(
+            "Retrying Whisper after standard decoding produced no usable transcript"
+        )
+        segments = self.recovery_transcriber(audio, is_usable=is_usable)
+        self.last_cache_key_sha256 = self.recovery_transcriber.last_cache_key_sha256
+        return segments
+
+    def remove_cached_transcriptions(self, audio: AudioSegment):
+        """Remove standard and recovery transcriptions for the audio.
+
+        Arguments:
+            audio: audio used for cache-key generation
+        """
+        super().remove_cached_transcriptions(audio)
+        if self.recovery_transcriber is not None:
+            self.recovery_transcriber.remove_cached_transcriptions(audio)
 
     @property
     def _loaded_model(self) -> Whisper:
@@ -190,9 +259,10 @@ class WhisperTranscriber(Transcriber):
                 "A Whisper model revision may only be used with a Hugging Face "
                 "repository ID."
             )
-        huggingface_hub = import_huggingface_hub()
-        return huggingface_hub.snapshot_download(
-            repo_id=self.model_name, revision=self.model.model_revision
+        return str(
+            get_huggingface_snapshot_dir_path(
+                self.model_name, self.model.model_revision
+            )
         )
 
     @staticmethod
@@ -245,6 +315,7 @@ class WhisperTranscriber(Transcriber):
         source: str,
         cache_path: Path | None,
         use_vad: bool,
+        audio_duration_seconds: float | None = None,
     ) -> list[TranscribedSegment]:
         """Normalize malformed transcription segments from Whisper output.
 
@@ -253,6 +324,7 @@ class WhisperTranscriber(Transcriber):
             source: source of the segments, for logging
             cache_path: cache path associated with the segments, if any
             use_vad: whether Whisper VAD produced the segments
+            audio_duration_seconds: complete source-audio duration, if known
         Returns:
             normalized transcription segments
         """
@@ -302,11 +374,10 @@ class WhisperTranscriber(Transcriber):
             if not segment.text.strip():
                 segment_idx -= 1
                 continue
-            if (
-                segment.no_speech_prob is None
-                or segment.no_speech_prob < _SUBTITLE_CREDIT_MIN_NO_SPEECH_PROBABILITY
-            ):
-                break
+            high_no_speech_probability = (
+                segment.no_speech_prob is not None
+                and segment.no_speech_prob >= _SUBTITLE_CREDIT_MIN_NO_SPEECH_PROBABILITY
+            )
 
             normalized_text = segment.text.casefold()
             marker_indexes = [
@@ -315,9 +386,19 @@ class WhisperTranscriber(Transcriber):
                 if marker in normalized_text
             ]
             if not marker_indexes:
+                if not high_no_speech_probability:
+                    break
                 pending_suffix_indexes.append(segment_idx)
                 segment_idx -= 1
                 continue
+            if not high_no_speech_probability and (
+                audio_duration_seconds is None
+                or get_transcription_quality_issue(
+                    [segment], audio_duration_seconds=audio_duration_seconds
+                )
+                is None
+            ):
+                break
 
             marker_idx = min(marker_indexes)
             retained_text = segment.text[:marker_idx].rstrip()
@@ -345,6 +426,72 @@ class WhisperTranscriber(Transcriber):
 
             del normalized_segments[segment_idx]
             segment_idx -= 1
+
+        return self._normalize_decode_window_compression(
+            normalized_segments, source=source, cache_path=cache_path, use_vad=use_vad
+        )
+
+    def _normalize_decode_window_compression(
+        self,
+        segments: Sequence[TranscribedSegment],
+        *,
+        source: str,
+        cache_path: Path | None,
+        use_vad: bool,
+    ) -> list[TranscribedSegment]:
+        """Normalize Whisper compression scores against retained window text.
+
+        Whisper reports compression for a complete decode window, then copies that
+        score onto each emitted segment. The score may include a repetitive
+        unfinished suffix that is absent from the retained segments.
+
+        Arguments:
+            segments: normalized segments to inspect by decode window
+            source: source of the segments, for logging
+            cache_path: cache path associated with the segments, if any
+            use_vad: whether Whisper VAD produced the segments
+        Returns:
+            segments with stale scores corrected and repetitive windows discarded
+        """
+        normalized_segments: list[TranscribedSegment] = []
+        for seek, window_segments in groupby(
+            segments, key=lambda segment: segment.seek
+        ):
+            window = list(window_segments)
+            reported_ratios = [
+                segment.compression_ratio
+                for segment in window
+                if segment.compression_ratio is not None
+            ]
+            reported_ratio = max(reported_ratios, default=0.0)
+            if reported_ratio <= MAX_COMPRESSION_RATIO:
+                normalized_segments.extend(window)
+                continue
+
+            retained_ratio = get_text_compression_ratio(
+                "".join(segment.text for segment in window)
+            )
+            segment_ids = tuple(segment.id for segment in window)
+            if retained_ratio > MAX_COMPRESSION_RATIO:
+                logger.warning(
+                    f"Discarding repetitive Whisper decode window for "
+                    f"model={self.model_name} vad={use_vad} source={source} "
+                    f"cache={cache_path} seek={seek} segment_ids={segment_ids} "
+                    f"reported_compression_ratio={reported_ratio:.2f} "
+                    f"retained_compression_ratio={retained_ratio:.2f}"
+                )
+                continue
+
+            logger.warning(
+                f"Correcting stale Whisper decode-window compression score for "
+                f"model={self.model_name} vad={use_vad} source={source} "
+                f"cache={cache_path} seek={seek} segment_ids={segment_ids} "
+                f"reported_compression_ratio={reported_ratio:.2f} "
+                f"retained_compression_ratio={retained_ratio:.2f}"
+            )
+            for segment in window:
+                segment.compression_ratio = retained_ratio
+            normalized_segments.extend(window)
 
         return normalized_segments
 
@@ -490,6 +637,7 @@ class WhisperTranscriber(Transcriber):
 
     def _prepare_cached_segments(
         self,
+        audio: AudioSegment,
         segments: list[TranscribedSegment],
         cache_path: Path,
         settings: TranscriptionPreprocessingSettings,
@@ -497,6 +645,7 @@ class WhisperTranscriber(Transcriber):
         """Normalize cached Whisper segments.
 
         Arguments:
+            audio: audio from which the cached segments were transcribed
             segments: cached transcription segments
             cache_path: path from which the segments were loaded
             settings: preprocessing settings that produced the segments
@@ -504,7 +653,11 @@ class WhisperTranscriber(Transcriber):
             normalized cached segments
         """
         return self._normalize_transcription_segments(
-            segments, source="cache", cache_path=cache_path, use_vad=settings.use_vad
+            segments,
+            source="cache",
+            cache_path=cache_path,
+            use_vad=settings.use_vad,
+            audio_duration_seconds=len(audio) / 1000,
         )
 
     def _get_whisper_vad(
@@ -608,6 +761,7 @@ class WhisperTranscriber(Transcriber):
                             source="whisper",
                             cache_path=None,
                             use_vad=settings.use_vad,
+                            audio_duration_seconds=len(audio) / 1000,
                         )
                         if voice_activity_trace is not None:
                             return self._add_voice_activity_scores(
@@ -634,7 +788,11 @@ class WhisperTranscriber(Transcriber):
                 f"(affected windows: {limit_hit_count})"
             )
         normalized_segments = self._normalize_transcription_segments(
-            segments, source="whisper", cache_path=None, use_vad=settings.use_vad
+            segments,
+            source="whisper",
+            cache_path=None,
+            use_vad=settings.use_vad,
+            audio_duration_seconds=len(audio) / 1000,
         )
         if voice_activity_trace is not None:
             return self._add_voice_activity_scores(

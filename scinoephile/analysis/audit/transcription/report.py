@@ -13,7 +13,10 @@ from scinoephile.analysis.transcription.artifact import (
     AlignmentArtifact,
     AlignmentBlock,
 )
-from scinoephile.analysis.transcription.evaluation import evaluate_transcription
+from scinoephile.analysis.transcription.evaluation import (
+    evaluate_character_errors,
+    evaluate_transcription,
+)
 from scinoephile.analysis.transcription.timing import (
     evaluate_timing,
     get_reference_for_alignment,
@@ -30,7 +33,7 @@ def audit_transcription_alignment(
     artifact: AlignmentArtifact,
     references: Mapping[str, Series] | None = None,
     *,
-    reference_similarity: Callable[[Token, Token], float] | None = None,
+    token_similarity: Callable[[Token, Token], float] | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -46,7 +49,8 @@ def audit_transcription_alignment(
     Arguments:
         artifact: portable multi-source transcription alignment
         references: optional named independent references
-        reference_similarity: optional audit-only reference substitution scoring
+        token_similarity: optional token substitution scoring for reference alignment
+            and merged-character support
         first_index: first merged subtitle index whose complete block to include
         last_index: last merged subtitle index whose complete block to include
         first_block: first one-based VAD block index to include
@@ -88,7 +92,7 @@ def audit_transcription_alignment(
     ]
     if include_merge_support:
         lines.append(
-            "- exact merge support: ０=no matching successful ASR source; "
+            "- merge support: ０=no similar successful ASR source; "
             "９=all successful ASR sources match"
         )
     index_range = format_index_range(first_index, last_index, track_name="merged")
@@ -98,6 +102,19 @@ def audit_transcription_alignment(
     for reference_name, reference in named_references.items():
         lines.extend(("", f"### Reference {reference_name}", ""))
         lines.extend(_get_metric_summary(selected_artifact, reference))
+        lines.extend(
+            (
+                "",
+                "#### Block CER",
+                "",
+                (
+                    "Sorted by merged CER, highest first. Blocks without reference "
+                    "characters are unscored and listed last."
+                ),
+                "",
+                *_get_block_cer_lines(selected_artifact, reference),
+            )
+        )
     if named_references and include_timing_tables:
         lines.extend(("", "## Timing Comparisons", ""))
         for reference_name, reference in named_references.items():
@@ -106,9 +123,9 @@ def audit_transcription_alignment(
             lines.append("")
 
     lines.extend(("", "## Alignments", ""))
-    if reference_similarity is None:
-        reference_similarity = _get_token_similarity
-    aligner = Aligner(reference_similarity)
+    if token_similarity is None:
+        token_similarity = _get_token_similarity
+    aligner = Aligner(token_similarity)
     for block in blocks:
         lines.append(f"### Block {block.index}")
         if block.source_errors:
@@ -144,7 +161,7 @@ def render_transcription_alignment_terminal(
     references: Mapping[str, Series] | None = None,
     *,
     authoritative_row_name: str = "merged",
-    reference_similarity: Callable[[Token, Token], float] | None = None,
+    token_similarity: Callable[[Token, Token], float] | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -163,7 +180,8 @@ def render_transcription_alignment_terminal(
         artifact: portable multi-source transcription alignment
         references: optional named independent references
         authoritative_row_name: named reference or merged row used for coloring
-        reference_similarity: optional audit-only reference substitution scoring
+        token_similarity: optional token substitution scoring for reference alignment
+            and merged-character support
         first_index: first merged subtitle index whose complete block to include
         last_index: last merged subtitle index whose complete block to include
         first_block: first one-based VAD block index to include
@@ -194,9 +212,9 @@ def render_transcription_alignment_terminal(
         first_block=first_block,
         last_block=last_block,
     )
-    if reference_similarity is None:
-        reference_similarity = _get_token_similarity
-    aligner = Aligner(reference_similarity)
+    if token_similarity is None:
+        token_similarity = _get_token_similarity
+    aligner = Aligner(token_similarity)
     lines = [f"Authority: {authoritative_row_name}"]
     for block in blocks:
         lines.extend(("", f"Block {block.index}"))
@@ -226,6 +244,66 @@ def render_transcription_alignment_terminal(
             )
         )
     return "\n".join(lines).rstrip() + "\n"
+
+
+def _get_block_cer_lines(artifact: AlignmentArtifact, reference: Series) -> list[str]:
+    """Get block-level CER rows sorted by merged error rate.
+
+    Arguments:
+        artifact: selected alignment artifact
+        reference: independent reference subtitles
+    Returns:
+        Markdown table lines
+    """
+    candidate_names = ("merged", *(source.name for source in artifact.sources))
+    block_results = []
+    for block in artifact.blocks:
+        block_artifact = artifact.model_copy(update={"blocks": (block,)})
+        block_results.append(
+            (block.index, evaluate_character_errors(block_artifact, reference))
+        )
+    block_results.sort(
+        key=lambda result: (
+            result[1]["merged"].reference_length == 0,
+            -result[1]["merged"].cer,
+            result[0],
+        )
+    )
+
+    headers = ("Block", "Reference characters", *candidate_names)
+    rows = []
+    for block_index, metrics_by_name in block_results:
+        reference_length = metrics_by_name["merged"].reference_length
+        rows.append(
+            (
+                str(block_index),
+                str(reference_length),
+                *(
+                    "—" if reference_length == 0 else f"{metrics_by_name[name].cer:.0%}"
+                    for name in candidate_names
+                ),
+            )
+        )
+    widths = tuple(
+        max(4, len(header), *(len(row[index]) for row in rows))
+        for index, header in enumerate(headers)
+    )
+    return [
+        "| "
+        + " | ".join(
+            header.rjust(width) for header, width in zip(headers, widths, strict=True)
+        )
+        + " |",
+        "| " + " | ".join("-" * (width - 1) + ":" for width in widths) + " |",
+        *(
+            "| "
+            + " | ".join(
+                cell.rjust(width) for cell, width in zip(row, widths, strict=True)
+            )
+            + " |"
+            for row in rows
+        ),
+    ]
 
 
 def _get_language_legend(block: AlignmentBlock) -> str | None:

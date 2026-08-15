@@ -5,7 +5,9 @@
 from __future__ import annotations
 
 import sys
+from pathlib import Path
 from types import SimpleNamespace
+from typing import Any, cast
 from unittest.mock import Mock
 
 import numpy as np
@@ -119,12 +121,17 @@ def test_ctc_aligner_loads_default_model_at_pinned_revision(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test default CTC assets load from their immutable Hugging Face revision."""
+    get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     model = Mock()
     model.to.return_value = model
     model_factory = Mock(return_value=model)
     processor_factory = Mock(return_value=object())
     monkeypatch.setattr(CtcAligner, "_models", {})
     monkeypatch.setattr(CtcAligner, "_processors", {})
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc_aligner.get_huggingface_snapshot_dir_path",
+        get_snapshot_dir_path,
+    )
     monkeypatch.setattr(
         "scinoephile.audio.transcription.ctc_aligner.import_transformers",
         Mock(
@@ -139,12 +146,75 @@ def test_ctc_aligner_loads_default_model_at_pinned_revision(
     assert aligner.model is model
     assert aligner.processor is not None
     expected_revision = "22aad52d435eb6dbaf354bdad9b0da84ce7d6156"
-    model_factory.assert_called_once_with(
-        "facebook/wav2vec2-base-960h", revision=expected_revision
+    get_snapshot_dir_path.assert_called_once_with(
+        "facebook/wav2vec2-base-960h", expected_revision
     )
+    model_factory.assert_called_once_with(Path("/cached/model"), local_files_only=True)
     processor_factory.assert_called_once_with(
-        "facebook/wav2vec2-base-960h", revision=expected_revision
+        Path("/cached/model"), local_files_only=True
     )
+
+
+def test_ctc_aligner_resolves_custom_model_snapshot_before_loading(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test a custom Hugging Face asset resolves to a local snapshot before loading.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    aligner = CtcAligner(Language.eng, "organization/model")
+    get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc_aligner.get_huggingface_snapshot_dir_path",
+        get_snapshot_dir_path,
+    )
+    loaded = object()
+    loader = Mock(return_value=loaded)
+
+    result = aligner._load_pretrained(loader)
+
+    assert result is loaded
+    get_snapshot_dir_path.assert_called_once_with("organization/model", None)
+    loader.assert_called_once_with(Path("/cached/model"), local_files_only=True)
+
+
+def test_ctc_aligner_persistently_caches_alignment(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    """Test repeated CTC alignment loads timestamped output from disk.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
+    log_probs = np.log(
+        np.array(
+            [
+                [0.85, 0.10, 0.05],
+                [0.05, 0.90, 0.05],
+                [0.85, 0.10, 0.05],
+                [0.05, 0.05, 0.90],
+            ]
+        )
+    )
+    audio = AudioSegment.silent(duration=1000)
+    first_aligner = CtcAligner(Language.yue_hant, cache_root_path=tmp_path)
+    get_alignment_inputs = Mock(return_value=(log_probs, [1, 2], [0, 1], 0))
+    monkeypatch.setattr(first_aligner, "_get_alignment_inputs", get_alignment_inputs)
+
+    first_segments = first_aligner.align(audio, "你好")
+    second_aligner = CtcAligner(Language.yue_hant, cache_root_path=tmp_path)
+    monkeypatch.setattr(
+        second_aligner,
+        "_get_alignment_inputs",
+        Mock(side_effect=AssertionError("inference should not run")),
+    )
+    second_segments = second_aligner.align(audio, "你好")
+
+    assert second_segments == first_segments
+    assert get_alignment_inputs.call_count == 1
+    assert len(list((tmp_path / "audio" / "transcription" / "ctc").glob("*.json"))) == 1
 
 
 def test_ctc_audio_samples_use_requested_rate_and_float32():
@@ -172,8 +242,8 @@ def test_ctc_audio_samples_reject_empty_audio():
 def test_ctc_alignment_uses_processor_sampling_rate(monkeypatch: pytest.MonkeyPatch):
     """Test CTC alignment uses the configured processor's sampling rate."""
     aligner = CtcAligner(Language.yue_hant)
-    aligner._processor = SimpleNamespace(
-        feature_extractor=SimpleNamespace(sampling_rate=8000)
+    aligner._processor = cast(
+        Any, SimpleNamespace(feature_extractor=SimpleNamespace(sampling_rate=8000))
     )
     aligner._model = object()
     get_audio_samples = Mock(side_effect=RuntimeError("stop after conversion"))
@@ -242,7 +312,7 @@ def test_ctc_aligner_aligns_word_delimiter():
         )
     )
     aligner = CtcAligner(Language.yue_hant)
-    aligner._processor = SimpleNamespace(tokenizer=FakeTokenizer())
+    aligner._processor = cast(Any, SimpleNamespace(tokenizer=FakeTokenizer()))
     aligner._model = object()
 
     token_ids, char_indices = aligner._get_token_ids("你 好")
@@ -428,7 +498,7 @@ def test_ctc_token_ids_normalize_case_and_skip_unknown_chars():
             return {"你": 1, "說": 2, "A": 4}.get(token, 3)
 
     aligner = CtcAligner(Language.yue_hant)
-    aligner._processor = SimpleNamespace(tokenizer=FakeTokenizer())
+    aligner._processor = cast(Any, SimpleNamespace(tokenizer=FakeTokenizer()))
     aligner._model = object()
 
     token_ids, char_indices = aligner._get_token_ids(" 你 說。a嘅 ")
@@ -478,7 +548,7 @@ def test_ctc_token_ids_use_default_model_script_conversion(
             return 3
 
     aligner = CtcAligner(language)
-    aligner._processor = SimpleNamespace(tokenizer=FakeTokenizer())
+    aligner._processor = cast(Any, SimpleNamespace(tokenizer=FakeTokenizer()))
 
     token_ids, char_indices = aligner._get_token_ids(text)
 
@@ -509,7 +579,7 @@ def test_ctc_token_ids_do_not_convert_script_for_model_override():
             return 3
 
     aligner = CtcAligner(Language.yue_hans, "organization/model")
-    aligner._processor = SimpleNamespace(tokenizer=FakeTokenizer())
+    aligner._processor = cast(Any, SimpleNamespace(tokenizer=FakeTokenizer()))
 
     token_ids, char_indices = aligner._get_token_ids("说")
 
@@ -525,11 +595,11 @@ def test_ctc_models_and_processors_are_cached_independently(
     class FakeAutoProcessor:
         """Fake Hugging Face processor factory."""
 
-        model_names: list[str] = []
+        model_names: list[Path] = []
         """Model names loaded by the fake factory."""
 
         @classmethod
-        def from_pretrained(cls, model_name: str) -> object:
+        def from_pretrained(cls, model_name: Path, **_kwargs: object) -> object:
             """Load a fake processor.
 
             Arguments:
@@ -566,11 +636,11 @@ def test_ctc_models_and_processors_are_cached_independently(
     class FakeAutoModelForCTC:
         """Fake Hugging Face CTC model factory."""
 
-        model_names: list[str] = []
+        model_names: list[Path] = []
         """Model names loaded by the fake factory."""
 
         @classmethod
-        def from_pretrained(cls, model_name: str) -> FakeModel:
+        def from_pretrained(cls, model_name: Path, **_kwargs: object) -> FakeModel:
             """Load a fake CTC model.
 
             Arguments:
@@ -583,6 +653,15 @@ def test_ctc_models_and_processors_are_cached_independently(
 
     monkeypatch.setattr(CtcAligner, "_models", {})
     monkeypatch.setattr(CtcAligner, "_processors", {})
+
+    def get_snapshot_dir_path(model_name: str, _revision: str | None) -> Path:
+        """Resolve a fake local model snapshot path."""
+        return Path("/cached") / model_name.rsplit("/", 1)[-1]
+
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc_aligner.get_huggingface_snapshot_dir_path",
+        get_snapshot_dir_path,
+    )
     monkeypatch.setitem(
         sys.modules,
         "transformers",
@@ -603,13 +682,13 @@ def test_ctc_models_and_processors_are_cached_independently(
     assert other_device_aligner.processor is first_aligner.processor
     assert other_device_aligner.model is not first_aligner.model
     assert FakeAutoProcessor.model_names == [
-        "organization/model-a",
-        "organization/model-b",
+        Path("/cached/model-a"),
+        Path("/cached/model-b"),
     ]
     assert FakeAutoModelForCTC.model_names == [
-        "organization/model-a",
-        "organization/model-b",
-        "organization/model-a",
+        Path("/cached/model-a"),
+        Path("/cached/model-b"),
+        Path("/cached/model-a"),
     ]
 
 

@@ -468,6 +468,27 @@ def test_processor_retries_answers_omitting_majority_consensus_speech():
     assert "preserves only 40.0%" in retry_messages[-1]["content"]
 
 
+def test_processor_falls_back_after_invalid_consensus_retries():
+    """Exhausted LLM validation retries should use deterministic consensus."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    provider.chat_completion.return_value = json.dumps(
+        {"wenben": "甲｜"}, ensure_ascii=False
+    )
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+    source_text = "甲乙丙丁戊己庚辛壬癸"
+
+    answer = processor.process(
+        _get_sources(*(source_text for _ in range(3))), "Ａ" * len(source_text)
+    )
+
+    assert answer.transcript == source_text
+    assert provider.chat_completion.call_count == 5
+
+
 def test_answer_coverage_allows_locally_supported_character_corrections():
     """The omission guard should allow a minority character at the same column."""
     query = TranscriptionQuery(
