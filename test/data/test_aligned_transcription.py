@@ -203,7 +203,7 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
     json_dir_path = output_dir_path / "json"
     assert result == output
     load_audio.assert_called_once_with(
-        title_root_path / "input/yue-Hant_transcribe/audio.wav",
+        title_root_path / "input/yue.wav",
         media_path=None,
         stream_index=None,
         audio_extraction_mode=AudioExtractionMode.ORIGINAL,
