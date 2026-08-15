@@ -39,6 +39,12 @@ from scinoephile.workflows.transcription_pipeline.factory import (
     get_transcription_pipeline,
 )
 
+from .helpers import (
+    load_or_clean_series,
+    load_or_romanize_series,
+    load_or_simplify_series,
+)
+
 __all__ = ["process_transcription"]
 
 logger = getLogger(__name__)
@@ -63,7 +69,7 @@ def process_transcription(
     terminal_authority: str | None = None,
     overwrite: bool = False,
 ) -> Series:
-    """Run one reference-free transcription experiment and save its evaluation.
+    """Run, postprocess, and evaluate one reference-free transcription experiment.
 
     The Cantonese reference determines only how many leading blocks are run
     and how the finished output is scored. It is never passed to ASR, alignment,
@@ -82,7 +88,7 @@ def process_transcription(
         additional_audit_references: additional named references used only in audits
         reference_name: audit row name for the primary scoring reference
         terminal_authority: merged or named reference row for ANSI output
-        overwrite: whether to regenerate an existing artifact and SRT
+        overwrite: whether to regenerate existing transcription outputs
     Returns:
         merged transcription series
     """
@@ -119,6 +125,9 @@ def process_transcription(
                 reference,
                 audit_references=audit_references,
                 terminal_authority=terminal_authority,
+            )
+            _generate_transcription_derivatives(
+                existing_output, output_dir_path, overwrite=False
             )
             return existing_output
         logger.info(
@@ -166,7 +175,35 @@ def process_transcription(
         audit_references=audit_references,
         terminal_authority=terminal_authority,
     )
+    _generate_transcription_derivatives(output, output_dir_path, overwrite=True)
     return output
+
+
+def _generate_transcription_derivatives(
+    transcription: Series, output_dir_path: Path, *, overwrite: bool
+):
+    """Generate cleaned, simplified, and romanized transcription outputs.
+
+    Arguments:
+        transcription: raw Traditional Cantonese transcription
+        output_dir_path: transcription output directory
+        overwrite: whether to overwrite existing derivative outputs
+    """
+    cleaned = load_or_clean_series(
+        transcription,
+        output_dir_path / "transcribe_clean.srt",
+        Language.yue_hant,
+        overwrite,
+    )
+    simplified = load_or_simplify_series(
+        cleaned, output_dir_path / "transcribe_clean_simplify.srt", overwrite
+    )
+    load_or_romanize_series(
+        simplified,
+        output_dir_path / "transcribe_clean_simplify_romanize.srt",
+        Language.yue_hans,
+        overwrite,
+    )
 
 
 def _get_matching_existing_output(

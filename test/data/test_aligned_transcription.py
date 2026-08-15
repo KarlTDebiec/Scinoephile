@@ -117,6 +117,9 @@ def test_existing_alignment_recreates_srt_without_transcription(tmp_path: Path):
 
     assert output == artifact.get_series()
     assert (output_dir_path / "transcribe.srt").exists()
+    assert (output_dir_path / "transcribe_clean.srt").exists()
+    assert (output_dir_path / "transcribe_clean_simplify.srt").exists()
+    assert (output_dir_path / "transcribe_clean_simplify_romanize.srt").exists()
     load_audio.assert_not_called()
     get_pipeline.assert_not_called()
 
@@ -192,6 +195,17 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
         patch(
             "test.data.aligned_transcription.transcribe_series", return_value=output
         ) as transcribe,
+        patch(
+            "test.data.aligned_transcription.load_or_clean_series", return_value=output
+        ) as clean,
+        patch(
+            "test.data.aligned_transcription.load_or_simplify_series",
+            return_value=output,
+        ) as simplify,
+        patch(
+            "test.data.aligned_transcription.load_or_romanize_series",
+            return_value=output,
+        ) as romanize,
     ):
         result = transcription_data.process_transcription(
             title_root_path,
@@ -224,6 +238,18 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
         stop_at_idx=1,
     )
     save_usage.assert_called_once_with(json_dir_path / "llm_usage.json", [])
+    clean.assert_called_once_with(
+        output, output_dir_path / "transcribe_clean.srt", Language.yue_hant, True
+    )
+    simplify.assert_called_once_with(
+        output, output_dir_path / "transcribe_clean_simplify.srt", True
+    )
+    romanize.assert_called_once_with(
+        output,
+        output_dir_path / "transcribe_clean_simplify_romanize.srt",
+        Language.yue_hans,
+        True,
+    )
     assert (output_dir_path / "transcribe.srt").exists()
     assert (output_dir_path / "audit.md").exists()
     assert (json_dir_path / "metrics.json").exists()

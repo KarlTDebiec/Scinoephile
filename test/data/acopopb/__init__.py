@@ -77,6 +77,10 @@ __all__ = [
     "acopopb_yue_hant_ocr_lens_clean",
     "acopopb_yue_hant_ocr_paddle",
     "acopopb_yue_hant_ocr_paddle_clean",
+    "acopopb_yue_hant_transcribe",
+    "acopopb_yue_hant_transcribe_clean",
+    "acopopb_yue_hant_transcribe_clean_simplify",
+    "acopopb_yue_hant_transcribe_clean_simplify_romanize",
     "acopopb_yue_simplify_expected_series_diff",
     "acopopb_zho_hans",
     "acopopb_zho_hans_eng",
@@ -517,6 +521,32 @@ def acopopb_yue_hant_ocr_paddle() -> Series:
 def acopopb_yue_hant_ocr_paddle_clean() -> Series:
     """ACOPOPB yue-Hant PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "yue-Hant_ocr/paddle_clean.srt")
+
+
+@fixture
+def acopopb_yue_hant_transcribe() -> Series:
+    """ACOPOPB yue-Hant transcribed subtitles."""
+    return Series.load(output_dir / "yue-Hant_transcribe/transcribe.srt")
+
+
+@fixture
+def acopopb_yue_hant_transcribe_clean() -> Series:
+    """ACOPOPB yue-Hant transcribed subtitles, cleaned."""
+    return Series.load(output_dir / "yue-Hant_transcribe/transcribe_clean.srt")
+
+
+@fixture
+def acopopb_yue_hant_transcribe_clean_simplify() -> Series:
+    """ACOPOPB yue-Hant transcribed subtitles, cleaned and simplified."""
+    return Series.load(output_dir / "yue-Hant_transcribe/transcribe_clean_simplify.srt")
+
+
+@fixture
+def acopopb_yue_hant_transcribe_clean_simplify_romanize() -> Series:
+    """ACOPOPB yue-Hant transcribed subtitles, cleaned, simplified, and romanized."""
+    return Series.load(
+        output_dir / "yue-Hant_transcribe/transcribe_clean_simplify_romanize.srt"
+    )
 
 
 @fixture
