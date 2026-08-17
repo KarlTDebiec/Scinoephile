@@ -81,7 +81,7 @@ def build_transcription_alignment_block(
         alignment: lexical multi-ASR alignment using block-local times
         merged_segments: merged segments using complete-source times
         aligner: aligner used to project the merged row onto the ASR profile
-        speech_block: VAD-derived core and buffered source intervals
+        speech_block: complete-source audio interval
         audio_events: optional complete-source FireRed audio-event timeline
         diarization: optional complete-source speaker diarization
         first_subtitle_index: one-based global index for the first merged subtitle
@@ -100,7 +100,7 @@ def build_transcription_alignment_block(
     if any(column.is_pause or column.is_marker for column in alignment.columns):
         raise ValueError("Portable block construction requires lexical alignment.")
 
-    offset_seconds = speech_block.buffered_start_ms / 1000
+    offset_seconds = speech_block.start_ms / 1000
     merged_name = "merged"
     while merged_name in alignment.source_names:
         merged_name = f"_{merged_name}"
@@ -147,10 +147,8 @@ def build_transcription_alignment_block(
     )
     return AlignmentBlock(
         index=speech_block.index + 1,
-        core_start_ms=speech_block.start_ms,
-        core_end_ms=speech_block.end_ms,
-        buffered_start_ms=speech_block.buffered_start_ms,
-        buffered_end_ms=speech_block.buffered_end_ms,
+        start_ms=speech_block.start_ms,
+        end_ms=speech_block.end_ms,
         columns=tuple(columns),
         rows=rendered.rows[:-1],
         speaker=rendered.speaker,

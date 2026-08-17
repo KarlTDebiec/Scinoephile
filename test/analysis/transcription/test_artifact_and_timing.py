@@ -92,7 +92,7 @@ def test_artifact_round_trip_preserves_canonical_schema(tmp_path: Path):
     loaded = AlignmentArtifact.load(artifact_path)
 
     assert loaded == artifact
-    assert loaded.version == 4
+    assert loaded.version == 5
     assert {"gap_character", "pause_character", "speech_character"}.isdisjoint(
         loaded.model_dump()
     )
@@ -106,13 +106,13 @@ def test_artifact_source_identity_is_nonblank():
         AlignmentSource(name=" ", backend="whisper", model="whisper")
 
 
-def test_block_rejects_columns_outside_buffer():
-    """Portable column timing should remain within its ASR input buffer."""
+def test_block_rejects_columns_outside_block():
+    """Portable column timing should remain within its ASR input block."""
     block_data = _get_artifact().blocks[0].model_dump()
     block_data["columns"][0]["start_ms"] = 3001
     block_data["columns"][0]["end_ms"] = 3001
 
-    with raises(ValueError, match="within the block buffer"):
+    with raises(ValueError, match="within the block"):
         AlignmentBlock.model_validate(block_data)
 
 
@@ -219,10 +219,8 @@ def _get_artifact() -> AlignmentArtifact:
         blocks=(
             AlignmentBlock(
                 index=1,
-                core_start_ms=500,
-                core_end_ms=2500,
-                buffered_start_ms=0,
-                buffered_end_ms=3000,
+                start_ms=0,
+                end_ms=3000,
                 columns=(
                     AlignmentColumn(index=1, start_ms=1000, end_ms=1500, kind="text"),
                     AlignmentColumn(index=2, start_ms=1500, end_ms=1750, kind="pause"),

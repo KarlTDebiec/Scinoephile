@@ -58,7 +58,7 @@ _WAVEFORM_SAMPLE_WIDTH = 2
 
 
 class FireRedLanguageIdentifier:
-    """Identify spoken language over VAD-derived source intervals."""
+    """Identify spoken language over selected source intervals."""
 
     def __init__(
         self,
@@ -76,8 +76,8 @@ class FireRedLanguageIdentifier:
         Arguments:
             cache_root_path: root directory beneath which to cache results
             batch_size: utterance windows classified together
-            minimum_window_seconds: shorter VAD speech intervals are omitted
-            maximum_window_seconds: longer VAD speech intervals are subdivided
+            minimum_window_seconds: shorter source intervals are omitted
+            maximum_window_seconds: longer source intervals are subdivided
             use_gpu: whether to use CUDA
             use_half: whether to use half precision on CUDA
             overwrite_cache: whether to replace matching cache entries
@@ -131,7 +131,7 @@ class FireRedLanguageIdentifier:
         Raises:
             AudioClassificationDependencyError: if optional dependencies are missing
             AudioClassificationInferenceError: if model loading or inference fails
-            ValueError: if the offset or speech intervals are invalid
+            ValueError: if the offset or source intervals are invalid
         """
         if not isfinite(offset_seconds) or offset_seconds < 0.0:
             raise ValueError("Language-identification offset must be non-negative.")

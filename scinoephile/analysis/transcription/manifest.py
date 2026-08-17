@@ -44,13 +44,13 @@ class ProcessorIdentity(BaseModel):
 
 
 class RunBlock(BaseModel):
-    """Cache references and outcome for one selected VAD block."""
+    """Cache references and outcome for one selected transcription block."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     index: int = Field(ge=1)
-    """One-based VAD block index."""
-    status: Literal["transcribed", "empty", "excluded", "no-core-text"]
+    """One-based block index."""
+    status: Literal["transcribed", "empty", "excluded"]
     """Outcome of processing this selected block."""
     reason: _NonBlankString | None = None
     """Human-readable omission reason, when applicable."""
@@ -69,7 +69,7 @@ class RunManifest(BaseModel):
 
     format: Literal["scinoephile-transcription-run"] = "scinoephile-transcription-run"
     """Stable manifest format identifier."""
-    version: Literal[2] = 2
+    version: Literal[3] = 3
     """Manifest schema version."""
     language: Language
     """Transcription output language."""
@@ -86,9 +86,9 @@ class RunManifest(BaseModel):
     block_vad_identity: dict[str, JsonValue] = Field(min_length=1)
     """Block-planning VAD model and postprocessing identity."""
     planned_block_count: int = Field(ge=0)
-    """Number of blocks in the complete VAD plan."""
+    """Number of blocks in the complete hard-cut plan."""
     excluded_blocks: tuple[int, ...] = ()
-    """One-based VAD block numbers excluded by configuration."""
+    """One-based block numbers excluded by configuration."""
     blocks: tuple[RunBlock, ...]
     """Selected blocks and their run outcomes."""
     processor: ProcessorIdentity
@@ -127,14 +127,14 @@ class RunManifest(BaseModel):
             self.excluded_blocks[0] < 1
             or self.excluded_blocks[-1] > self.planned_block_count
         ):
-            raise ValueError("Excluded transcription block exceeds the VAD plan.")
+            raise ValueError("Excluded transcription block exceeds the block plan.")
         indexes = tuple(block.index for block in self.blocks)
         if indexes != tuple(sorted(set(indexes))):
             raise ValueError(
                 "Transcription run block indexes must be unique and ordered."
             )
         if indexes and indexes[-1] > self.planned_block_count:
-            raise ValueError("Transcription run block index exceeds the VAD plan.")
+            raise ValueError("Transcription run block index exceeds the block plan.")
         excluded_blocks = set(self.excluded_blocks)
         if any(
             (block.status == "excluded") != (block.index in excluded_blocks)

@@ -77,7 +77,7 @@ class AudioAnalysisMode(StrEnum):
 
 
 class TranscriptionPipeline:
-    """Plan speech blocks, merge ASR evidence, and produce timed subtitles."""
+    """Plan audio blocks, merge ASR evidence, and produce timed subtitles."""
 
     def __init__(
         self,
@@ -102,7 +102,7 @@ class TranscriptionPipeline:
             language: transcription and output language
             transcriber: configured aligned multi-source transcriber
             alignment_sources: portable descriptors for every expected ASR source
-            block_splitter: configured VAD-derived block splitter
+            block_splitter: configured hard-cut block splitter
             block_vad_cache: full-source VAD trace cache
             block_vad_detector: full-source block-planning VAD
             audio_event_mode: source-wide speech, singing, and music mode
@@ -201,12 +201,12 @@ class TranscriptionPipeline:
         )
 
     def plan_blocks(self, audio_series: AudioSeries) -> tuple[SpeechBlock, ...]:
-        """Get the stable VAD block plan without running ASR or consensus.
+        """Get the stable hard-cut block plan without running ASR or consensus.
 
         Arguments:
             audio_series: complete source audio
         Returns:
-            VAD-derived blocks in source order
+            complete-source audio partitions in source order
         """
         self.last_blocks = []
         trace = self._get_voice_activity_trace(audio_series.audio)
@@ -221,11 +221,11 @@ class TranscriptionPipeline:
         start_at_idx: int = 0,
         stop_at_idx: int | None = None,
     ) -> AudioSeries:
-        """Transcribe selected VAD-derived source blocks.
+        """Transcribe selected complete-source audio blocks.
 
         Arguments:
             audio_series: complete source audio without required subtitle events
-            exclude_blocks: one-based VAD block numbers to skip
+            exclude_blocks: one-based block numbers to skip
             start_at_idx: inclusive zero-based block index at which to start
             stop_at_idx: exclusive zero-based block index at which to stop
         Returns:
@@ -252,10 +252,7 @@ class TranscriptionPipeline:
         audio_events = self._get_audio_events(analysis_audio)
         language_identification = self._get_language_identification(
             analysis_audio,
-            tuple(
-                (block.buffered_start_ms, block.buffered_end_ms)
-                for block in processed_blocks
-            ),
+            tuple((block.start_ms, block.end_ms) for block in processed_blocks),
         )
         diarization = self._get_diarization(audio_series.audio, bool(processed_blocks))
 
@@ -263,13 +260,11 @@ class TranscriptionPipeline:
         alignment_blocks: list[AlignmentBlock] = []
         for block in processed_blocks:
             block_index = block.index + 1
-            block_audio = audio_series.audio[
-                block.buffered_start_ms : block.buffered_end_ms
-            ]
+            block_audio = audio_series.audio[block.start_ms : block.end_ms]
             try:
                 block_segments = self.transcriber.transcribe_block(
                     block_audio,
-                    source_offset_seconds=block.buffered_start_ms / 1000,
+                    source_offset_seconds=block.start_ms / 1000,
                     diarization=diarization,
                 )
             except TranscriptionEmptyError as exc:
@@ -296,12 +291,10 @@ class TranscriptionPipeline:
             query_key_sha256s = self.transcriber.last_query_key_sha256s
             if diarization is not None:
                 block_segments = assign_speakers(
-                    diarization,
-                    block_segments,
-                    offset_seconds=block.buffered_start_ms / 1000,
+                    diarization, block_segments, offset_seconds=block.start_ms / 1000
                 )
             block_segments = [
-                get_segment_with_offset(segment, block.buffered_start_ms / 1000)
+                get_segment_with_offset(segment, block.start_ms / 1000)
                 for segment in block_segments
             ]
             block_segments = [
@@ -402,8 +395,8 @@ class TranscriptionPipeline:
         """Separate selected blocks into work and configured exclusions.
 
         Arguments:
-            selected_blocks: VAD blocks selected by the requested range
-            excluded_blocks: one-based VAD block numbers skipped by configuration
+            selected_blocks: blocks selected by the requested range
+            excluded_blocks: one-based block numbers skipped by configuration
         Returns:
             blocks to process and manifest records for excluded selected blocks
         """
@@ -434,8 +427,8 @@ class TranscriptionPipeline:
 
         Arguments:
             audio: complete decoded source audio
-            blocks: selected VAD block outcomes and cache identities
-            excluded_blocks: one-based VAD block numbers skipped by configuration
+            blocks: selected block outcomes and cache identities
+            excluded_blocks: one-based block numbers skipped by configuration
         Returns:
             compact run manifest
         """
@@ -509,7 +502,7 @@ class TranscriptionPipeline:
         """Validate and normalize configured block exclusions.
 
         Arguments:
-            exclude_blocks: one-based VAD block numbers to skip
+            exclude_blocks: one-based block numbers to skip
         Returns:
             unique excluded block numbers in ascending order
         Raises:
@@ -533,11 +526,11 @@ class TranscriptionPipeline:
     def _get_language_identification(
         self, audio: AudioSegment | None, block_intervals_ms: Sequence[tuple[int, int]]
     ) -> LanguageIdentificationResult | None:
-        """Get optional FireRed LID over selected buffered blocks.
+        """Get optional FireRed LID over selected blocks.
 
         Arguments:
             audio: complete source audio, if the range contains blocks
-            block_intervals_ms: selected buffered source intervals
+            block_intervals_ms: selected source intervals
         Returns:
             language identification, or None when disabled or unavailable in auto mode
         """
@@ -564,7 +557,7 @@ class TranscriptionPipeline:
             start_at_idx: inclusive zero-based block index
             stop_at_idx: exclusive zero-based block index, or None for the end
         Returns:
-            selected stable speech blocks
+            selected stable audio blocks
         Raises:
             ScinoephileError: if the selected range is invalid
         """

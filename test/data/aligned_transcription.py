@@ -82,7 +82,7 @@ def process_transcription(
         audio_extraction_mode: channel preparation used during media audio extraction
         media_start_seconds: seconds trimmed from extracted media audio
         stop_at_idx: exclusive block index, or None to process every planned block
-        exclude_blocks: one-based VAD block numbers to skip
+        exclude_blocks: one-based block numbers to skip
         additional_context: production consensus prompt context
         additional_audit_references: additional named references used only in audits
         reference_name: audit row name for the primary scoring reference
@@ -225,7 +225,7 @@ def _get_matching_existing_output(
         artifact: existing portable alignment artifact
         manifest: corresponding validated run manifest, if available
         stop_at_idx: requested exclusive block index, or None for a complete run
-        excluded_blocks: one-based VAD block numbers to skip
+        excluded_blocks: one-based block numbers to skip
     Returns:
         existing merged subtitles when the request matches, otherwise None
     """
@@ -261,7 +261,11 @@ def _load_existing_run(
     """
     if overwrite or not artifact_path.exists():
         return None, None
-    artifact = AlignmentArtifact.load(artifact_path)
+    try:
+        artifact = AlignmentArtifact.load(artifact_path)
+    except (OSError, ValueError) as exc:
+        logger.warning(f"Ignoring invalid transcription alignment artifact: {exc}")
+        return None, None
     if not run_manifest_path.exists():
         return artifact, None
     try:
@@ -290,7 +294,7 @@ def _transcribe_requested_blocks(
         audio: complete source audio
         pipeline: configured transcription pipeline
         stop_at_idx: requested exclusive block index
-        excluded_blocks: one-based VAD block numbers to skip
+        excluded_blocks: one-based block numbers to skip
         artifact_path: portable alignment artifact output path
         run_manifest_path: compact run manifest output path
         existing_artifact: candidate reusable alignment prefix
@@ -375,11 +379,6 @@ def _log_reused_blocks(artifact: AlignmentArtifact, manifest: RunManifest):
             logger.info(
                 f"Transcription block {run_block.index} contains no transcribed "
                 f"speech: {reason}"
-            )
-            continue
-        if run_block.status == "no-core-text":
-            logger.info(
-                f"Transcription block {run_block.index} contains no core-owned text."
             )
             continue
         if run_block.status == "excluded":
@@ -473,7 +472,7 @@ def _is_reusable_prefix(
         artifact: candidate reusable alignment artifact
         manifest: provenance corresponding to the candidate artifact
         stop_at_idx: requested exclusive block index
-        excluded_blocks: one-based VAD block numbers to skip
+        excluded_blocks: one-based block numbers to skip
     Returns:
         whether only the requested suffix needs processing
     """
@@ -513,16 +512,9 @@ def _is_reusable_prefix(
         return False
     for alignment_block in artifact.blocks:
         planned_block = blocks[alignment_block.index - 1]
-        if (
-            alignment_block.core_start_ms,
-            alignment_block.core_end_ms,
-            alignment_block.buffered_start_ms,
-            alignment_block.buffered_end_ms,
-        ) != (
+        if (alignment_block.start_ms, alignment_block.end_ms) != (
             planned_block.start_ms,
             planned_block.end_ms,
-            planned_block.buffered_start_ms,
-            planned_block.buffered_end_ms,
         ):
             return False
     return True

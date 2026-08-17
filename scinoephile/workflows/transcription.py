@@ -80,9 +80,9 @@ def transcribe_series(
         shared_test_cases: preloaded transcription test cases
         timing_settings: reference-free merged subtitle display timing
         pipeline: optional preconfigured pipeline override
-        exclude_blocks: one-based VAD block numbers to skip
-        start_at_idx: inclusive zero-based VAD block index at which to start
-        stop_at_idx: exclusive zero-based VAD block index at which to stop
+        exclude_blocks: one-based block numbers to skip
+        start_at_idx: inclusive zero-based block index at which to start
+        stop_at_idx: exclusive zero-based block index at which to stop
     Returns:
         merged and timed audio subtitle series
     """

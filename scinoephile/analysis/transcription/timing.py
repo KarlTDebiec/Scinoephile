@@ -297,13 +297,13 @@ def get_display_intervals(
 def get_reference_for_alignment(
     artifact: AlignmentArtifact, reference: Series
 ) -> Series:
-    """Select reference subtitles owned by the artifact's VAD block cores.
+    """Select reference subtitles owned by the artifact's processed blocks.
 
     Arguments:
         artifact: alignment artifact whose processed block range is authoritative
         reference: complete independent reference series
     Returns:
-        reference subtitles whose midpoint lies within a processed block core
+        reference subtitles whose midpoint lies within a processed block
     """
     return Series(
         events=[
@@ -432,15 +432,13 @@ def _get_reference_selection(
     Returns:
         selected original indexes and reference subtitles
     """
-    core_ranges = tuple(
-        (block.core_start_ms, block.core_end_ms) for block in artifact.blocks
-    )
+    block_ranges = tuple((block.start_ms, block.end_ms) for block in artifact.blocks)
     return tuple(
         (index, subtitle)
         for index, subtitle in enumerate(reference)
         if any(
             start_ms <= (subtitle.start + subtitle.end) / 2 < end_ms
-            for start_ms, end_ms in core_ranges
+            for start_ms, end_ms in block_ranges
         )
     )
 

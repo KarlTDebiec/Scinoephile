@@ -105,13 +105,9 @@ def _get_pipeline(
     trace = VoiceActivityTrace(
         np.ones(10), start_ms=50.0, step_ms=100.0, duration_ms=1_000
     )
-    block = SpeechBlock(
-        index=0, start_ms=100, end_ms=900, buffered_start_ms=0, buffered_end_ms=1_000
-    )
+    block = SpeechBlock(index=0, start_ms=0, end_ms=1_000)
     block_splitter = Mock(return_value=[block])
-    block_splitter.settings = SpeechBlockSettings(
-        speech_free_gap_seconds=4.0, context_padding_seconds=0.75
-    )
+    block_splitter.settings = SpeechBlockSettings(speech_free_gap_seconds=4.0)
     block_vad_detector = Mock()
     block_vad_detector.cache_identity = {"implementation": "test"}
     block_vad_detector.trace_cache_identity = {"implementation": "test"}
@@ -257,7 +253,6 @@ def test_process_builds_subtitles_alignment_and_run_manifest(caplog: LogCaptureF
     assert pipeline.last_run_manifest.block_vad_identity == {
         "detector": {"implementation": "test"},
         "splitter": {
-            "context_padding_seconds": 0.75,
             "min_silence_duration_seconds": 0.1,
             "min_speech_duration_seconds": 0.3,
             "speech_free_gap_seconds": 4.0,
@@ -357,8 +352,8 @@ def test_process_rejects_invalid_excluded_blocks(exclude_blocks: list[object]):
         pipeline.process(audio_series, exclude_blocks=cast(list[int], exclude_blocks))
 
 
-def test_process_preserves_text_outside_the_vad_core():
-    """Consensus text within the buffer should not be clipped to VAD activity."""
+def test_process_preserves_text_anywhere_in_block():
+    """Consensus text anywhere in a hard-cut block should be preserved."""
     word = TranscribedWord(text="甲", start=0.91, end=0.95, confidence=1.0)
     segment = TranscribedSegment(
         id=0, seek=0, start=0.91, end=0.95, text="甲", words=[word]
@@ -425,8 +420,8 @@ def test_process_tolerates_unavailable_audio_analysis(
     assert [event.text for event in output.events] == ["甲"]
 
 
-def test_process_uses_selected_block_buffers_for_language_analysis():
-    """Language analysis should inspect full selected buffers without VAD clipping."""
+def test_process_uses_selected_blocks_for_language_analysis():
+    """Language analysis should inspect complete selected block intervals."""
     audio_event_detector = Mock(return_value=None)
     language_identifier = Mock(return_value=None)
     pipeline, audio_series = _get_pipeline(
@@ -438,16 +433,8 @@ def test_process_uses_selected_block_buffers_for_language_analysis():
     pipeline.last_blocks = []
     block_splitter = cast(Mock, pipeline.block_splitter)
     block_splitter.return_value = [
-        SpeechBlock(
-            index=0, start_ms=100, end_ms=400, buffered_start_ms=0, buffered_end_ms=500
-        ),
-        SpeechBlock(
-            index=1,
-            start_ms=600,
-            end_ms=900,
-            buffered_start_ms=500,
-            buffered_end_ms=1_000,
-        ),
+        SpeechBlock(index=0, start_ms=0, end_ms=500),
+        SpeechBlock(index=1, start_ms=500, end_ms=1_000),
     ]
     pipeline.process(audio_series, start_at_idx=1)
 

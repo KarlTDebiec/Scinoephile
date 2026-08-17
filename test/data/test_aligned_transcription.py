@@ -173,6 +173,28 @@ def test_existing_alignment_is_regenerated_for_different_block_count(tmp_path: P
     )
 
 
+def test_invalid_existing_alignment_is_ignored(
+    tmp_path: Path, caplog: LogCaptureFixture
+):
+    """An artifact from an unsupported schema should trigger regeneration.
+
+    Arguments:
+        tmp_path: temporary output directory
+        caplog: captured log records
+    """
+    artifact_path = tmp_path / "alignment.json"
+    artifact_data = _get_artifact().model_dump(mode="json")
+    artifact_data["version"] = 4
+    artifact_path.write_text(json.dumps(artifact_data), encoding="utf-8")
+
+    existing_run = transcription_data._load_existing_run(  # noqa: SLF001
+        artifact_path, tmp_path / "run.json", overwrite=False
+    )
+
+    assert existing_run == (None, None)
+    assert "Ignoring invalid transcription alignment artifact" in caplog.text
+
+
 def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
     """A fresh run should route provenance and write harness outputs."""
     title_root_path = tmp_path / "title"
@@ -186,13 +208,7 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
     pipeline = Mock(spec=TranscriptionPipeline)
     pipeline.last_alignment_artifact = artifact
     pipeline.plan_blocks.return_value = (
-        SpeechBlock(
-            index=0,
-            start_ms=500,
-            end_ms=2_500,
-            buffered_start_ms=0,
-            buffered_end_ms=3_000,
-        ),
+        SpeechBlock(index=0, start_ms=0, end_ms=3_000),
     )
 
     with (
@@ -322,7 +338,12 @@ def test_full_run_reuse_requires_every_planned_block():
     )
 
     complete_manifest = manifest.model_copy(
-        update={"blocks": (*manifest.blocks, RunBlock(index=2, status="no-core-text"))}
+        update={
+            "blocks": (
+                *manifest.blocks,
+                RunBlock(index=2, status="empty", reason="No transcribed speech."),
+            )
+        }
     )
     assert (
         transcription_data._get_matching_existing_output(  # noqa: SLF001
@@ -381,20 +402,8 @@ def test_run_prefix_is_reused_only_when_current_configuration_matches():
     pipeline.block_vad_identity = {"implementation": "test"}
     pipeline.processor_identity = processor
     pipeline.plan_blocks.return_value = (
-        SpeechBlock(
-            index=0,
-            start_ms=500,
-            end_ms=2_500,
-            buffered_start_ms=0,
-            buffered_end_ms=3_000,
-        ),
-        SpeechBlock(
-            index=1,
-            start_ms=3_500,
-            end_ms=5_500,
-            buffered_start_ms=3_000,
-            buffered_end_ms=6_000,
-        ),
+        SpeechBlock(index=0, start_ms=0, end_ms=3_000),
+        SpeechBlock(index=1, start_ms=3_000, end_ms=6_000),
     )
 
     assert transcription_data._is_reusable_prefix(  # noqa: SLF001
@@ -415,10 +424,8 @@ def test_run_prefix_combination_renumbers_and_retimes_subtitles():
         {
             **prefix_block.model_dump(mode="python"),
             "index": 2,
-            "core_start_ms": 3_500,
-            "core_end_ms": 5_500,
-            "buffered_start_ms": 3_000,
-            "buffered_end_ms": 6_000,
+            "start_ms": 3_000,
+            "end_ms": 6_000,
             "columns": (
                 AlignmentColumn(index=1, start_ms=4_000, end_ms=4_500, kind="text"),
                 AlignmentColumn(index=2, start_ms=4_500, end_ms=5_000, kind="text"),
@@ -474,10 +481,8 @@ def _get_artifact() -> AlignmentArtifact:
         blocks=(
             AlignmentBlock(
                 index=1,
-                core_start_ms=500,
-                core_end_ms=2_500,
-                buffered_start_ms=0,
-                buffered_end_ms=3_000,
+                start_ms=0,
+                end_ms=3_000,
                 columns=(
                     AlignmentColumn(index=1, start_ms=1_000, end_ms=1_500, kind="text"),
                     AlignmentColumn(index=2, start_ms=1_500, end_ms=2_000, kind="text"),

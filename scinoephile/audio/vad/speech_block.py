@@ -1,10 +1,11 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Audio speech blocks inferred from long speech-free gaps."""
+"""Complete-source audio blocks inferred from long speech-free gaps."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from itertools import pairwise
 from math import ceil
 
 from .intervals import get_active_frame_intervals, get_frame_boundary_ms
@@ -18,9 +19,7 @@ class SpeechBlockSettings:
     """Configuration for splitting audio at long speech-free gaps."""
 
     speech_free_gap_seconds: float = 3.0
-    """Minimum speech-free duration that separates adjacent blocks."""
-    context_padding_seconds: float = 1.0
-    """Additional ASR context supplied before and after each block core."""
+    """Minimum speech-free duration eligible for a hard cut."""
     voice_activity_threshold: float = 0.9
     """Minimum model score treated as voice activity."""
     min_silence_duration_seconds: float = 0.1
@@ -32,36 +31,30 @@ class SpeechBlockSettings:
         """Validate block-splitting configuration."""
         if self.speech_free_gap_seconds <= 0.0:
             raise ValueError("Speech-free block gap must be positive.")
-        if self.context_padding_seconds < 0.0:
-            raise ValueError("Speech-block context padding must be non-negative.")
         if not 0.0 <= self.voice_activity_threshold <= 1.0:
             raise ValueError(
-                "Speech-block voice threshold must be between zero and one."
+                "Block-planning voice threshold must be between zero and one."
             )
         if self.min_silence_duration_seconds < 0.0:
-            raise ValueError("Minimum speech-block silence must be non-negative.")
+            raise ValueError("Minimum block-planning silence must be non-negative.")
         if self.min_speech_duration_seconds < 0.0:
-            raise ValueError("Minimum speech-block activity must be non-negative.")
+            raise ValueError("Minimum block-planning activity must be non-negative.")
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class SpeechBlock:
-    """One core audio range plus optional neighboring ASR context."""
+    """One complete-source audio partition inferred from voice activity."""
 
     index: int
     """Zero-based stable block index."""
     start_ms: int
-    """Inclusive core start on the complete source timeline."""
+    """Inclusive start on the complete source timeline."""
     end_ms: int
-    """Exclusive core end on the complete source timeline."""
-    buffered_start_ms: int
-    """Inclusive padded audio start supplied to ASR."""
-    buffered_end_ms: int
-    """Exclusive padded audio end supplied to ASR."""
+    """Exclusive end on the complete source timeline."""
 
 
 class SpeechBlockSplitter:
-    """Split retained speech into blocks at long inactive runs."""
+    """Partition complete audio at long inactive runs."""
 
     def __init__(self, settings: SpeechBlockSettings | None = None):
         """Initialize.
@@ -75,48 +68,36 @@ class SpeechBlockSplitter:
         """Block-splitting configuration."""
 
     def __call__(self, trace: VoiceActivityTrace) -> list[SpeechBlock]:
-        """Split retained voice activity into stable padded blocks.
+        """Partition the complete source into stable hard-cut blocks.
 
         Arguments:
             trace: full-source voice-activity score trace
         Returns:
-            blocks spanning speech groups separated by long inactive runs
+            contiguous blocks covering the complete source
         """
         if trace.duration_ms == 0:
             return []
 
         active_runs = self._get_active_runs(trace)
         if not active_runs:
-            return []
+            return [SpeechBlock(index=0, start_ms=0, end_ms=trace.duration_ms)]
 
-        grouped_runs = []
-        group_start_idx, group_end_idx = active_runs[0]
+        cut_points_ms = [0]
+        previous_run_end_idx = active_runs[0][1]
         for run_start_idx, run_end_idx in active_runs[1:]:
-            gap_start_ms = get_frame_boundary_ms(trace, group_end_idx)
+            gap_start_ms = get_frame_boundary_ms(trace, previous_run_end_idx)
             gap_end_ms = get_frame_boundary_ms(trace, run_start_idx)
             if gap_end_ms - gap_start_ms >= (
                 self.settings.speech_free_gap_seconds * 1000
             ):
-                grouped_runs.append((group_start_idx, group_end_idx))
-                group_start_idx = run_start_idx
-            group_end_idx = run_end_idx
-        grouped_runs.append((group_start_idx, group_end_idx))
+                cut_points_ms.append(round((gap_start_ms + gap_end_ms) / 2))
+            previous_run_end_idx = run_end_idx
+        cut_points_ms.append(trace.duration_ms)
 
-        padding_ms = round(self.settings.context_padding_seconds * 1000)
-        blocks = []
-        for index, (start_idx, end_idx) in enumerate(grouped_runs):
-            start_ms = round(get_frame_boundary_ms(trace, start_idx))
-            end_ms = round(get_frame_boundary_ms(trace, end_idx))
-            blocks.append(
-                SpeechBlock(
-                    index=index,
-                    start_ms=start_ms,
-                    end_ms=end_ms,
-                    buffered_start_ms=max(0, start_ms - padding_ms),
-                    buffered_end_ms=min(trace.duration_ms, end_ms + padding_ms),
-                )
-            )
-        return blocks
+        return [
+            SpeechBlock(index=index, start_ms=start_ms, end_ms=end_ms)
+            for index, (start_ms, end_ms) in enumerate(pairwise(cut_points_ms))
+        ]
 
     def _get_active_runs(self, trace: VoiceActivityTrace) -> list[tuple[int, int]]:
         """Get significant half-open runs of active trace frames.
