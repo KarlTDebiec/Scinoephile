@@ -344,6 +344,71 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
     }
 
 
+def test_processor_does_not_split_at_discontinuous_timed_pauses():
+    """Adjacent rendered pauses should split only when temporally continuous."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    provider.chat_completion.return_value = json.dumps(
+        {"wenben": "甲乙｜"}, ensure_ascii=False
+    )
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    results = processor.process_requests(
+        _get_sources("甲・・・・乙", "甲・・・・乙"),
+        "Ａ・・・・Ｂ",
+        pause_intervals_seconds=(
+            None,
+            (1.0, 1.473),
+            (1.996, 2.246),
+            (2.246, 2.496),
+            (2.496, 2.857),
+            None,
+        ),
+    )
+
+    assert [
+        (result.start_column, result.end_column, result.answer.transcript)
+        for result in results
+    ] == [(0, 6, "甲乙")]
+    provider.chat_completion.assert_called_once()
+
+
+def test_processor_splits_at_continuous_timed_pause():
+    """A continuous one-second timed pause should divide requests."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    provider.chat_completion.side_effect = [
+        json.dumps({"wenben": "甲｜"}, ensure_ascii=False),
+        json.dumps({"wenben": "乙｜"}, ensure_ascii=False),
+    ]
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    results = processor.process_requests(
+        _get_sources("甲・・・・乙", "甲・・・・乙"),
+        "Ａ・・・・Ｂ",
+        pause_intervals_seconds=(
+            None,
+            (1.0, 1.25),
+            (1.25, 1.5),
+            (1.5, 1.75),
+            (1.75, 2.0),
+            None,
+        ),
+    )
+
+    assert [
+        (result.start_column, result.end_column, result.answer.transcript)
+        for result in results
+    ] == [(0, 1, "甲"), (5, 6, "乙")]
+    assert provider.chat_completion.call_count == 2
+
+
 def test_processor_exposes_request_alignment_spans():
     """Request results should retain their complete-alignment column spans."""
     provider = Mock(

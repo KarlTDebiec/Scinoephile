@@ -1,65 +1,72 @@
 {
   "format": "scinoephile-transcription-evaluation",
-  "version": 1,
-  "processed_blocks": 31,
-  "reference_subtitles": 100,
-  "candidate_subtitles": 120,
+  "version": 4,
+  "input": {
+    "alignment_sha256": "429658eb2848f3618cb977e9cb3d4a8dc114556155c360a74fd14eef3dd81e21",
+    "reference_sha256": "d828de3b0381eb9761121d3849cc6e68dee204027cc0bb369739f3c743b0e683",
+    "audit_reference_sha256s": {
+      "zho-Hant": "d828de3b0381eb9761121d3849cc6e68dee204027cc0bb369739f3c743b0e683"
+    }
+  },
+  "processed_blocks": 191,
+  "reference_subtitles": 683,
+  "candidate_subtitles": 812,
   "cer": {
     "whisper": {
-      "cer": 0.9642857142857143,
-      "correct": 234,
-      "substitutions": 396,
-      "insertions": 211,
-      "deletions": 14,
-      "reference_length": 644
+      "cer": 0.8040370058873002,
+      "correct": 2238,
+      "substitutions": 2391,
+      "insertions": 1306,
+      "deletions": 127,
+      "reference_length": 4756
     },
     "mimo": {
-      "cer": 1.0372670807453417,
-      "correct": 193,
-      "substitutions": 437,
-      "insertions": 217,
-      "deletions": 14,
-      "reference_length": 644
+      "cer": 0.9222035323801514,
+      "correct": 1961,
+      "substitutions": 2722,
+      "insertions": 1591,
+      "deletions": 73,
+      "reference_length": 4756
     },
     "qwen": {
-      "cer": 1.0481366459627328,
-      "correct": 213,
-      "substitutions": 416,
-      "insertions": 244,
-      "deletions": 15,
-      "reference_length": 644
+      "cer": 0.9390243902439024,
+      "correct": 2032,
+      "substitutions": 2645,
+      "insertions": 1742,
+      "deletions": 79,
+      "reference_length": 4756
     },
     "sensevoice": {
-      "cer": 0.9347826086956522,
-      "correct": 182,
-      "substitutions": 435,
-      "insertions": 140,
-      "deletions": 27,
-      "reference_length": 644
+      "cer": 0.8395710681244744,
+      "correct": 1756,
+      "substitutions": 2736,
+      "insertions": 993,
+      "deletions": 264,
+      "reference_length": 4756
     },
     "firered": {
-      "cer": 0.9875776397515528,
-      "correct": 223,
-      "substitutions": 398,
-      "insertions": 215,
-      "deletions": 23,
-      "reference_length": 644
+      "cer": 0.8944491169049622,
+      "correct": 2023,
+      "substitutions": 2621,
+      "insertions": 1521,
+      "deletions": 112,
+      "reference_length": 4756
     },
     "glm": {
-      "cer": 1.0,
-      "correct": 191,
-      "substitutions": 430,
-      "insertions": 191,
-      "deletions": 23,
-      "reference_length": 644
+      "cer": 0.8824642556770396,
+      "correct": 1858,
+      "substitutions": 2790,
+      "insertions": 1299,
+      "deletions": 108,
+      "reference_length": 4756
     },
     "merged": {
-      "cer": 0.953416149068323,
-      "correct": 244,
-      "substitutions": 377,
-      "insertions": 214,
-      "deletions": 23,
-      "reference_length": 644
+      "cer": 0.8673254835996635,
+      "correct": 2094,
+      "substitutions": 2562,
+      "insertions": 1463,
+      "deletions": 100,
+      "reference_length": 4756
     }
   },
   "timing": {
@@ -68,28 +75,32 @@
       "lead_out_seconds": 0.5,
       "minimum_duration_seconds": 0.75
     },
-    "text_aligned_groups": 83,
-    "micro_intersection_over_union": 0.435860180096405,
-    "one_to_one_groups": 55,
-    "one_to_one_micro_intersection_over_union": 0.43493030595248533,
-    "mean_intersection_over_union": 0.4280087980641795,
-    "mean_reference_coverage": 0.7105020881528867,
-    "mean_start_error_ms": -831.7469879518072,
-    "mean_end_error_ms": -75.55421686746988,
-    "mean_absolute_start_error_ms": 1135.1927710843374,
-    "mean_absolute_end_error_ms": 754.566265060241,
-    "unmatched_candidate_subtitles": 7,
-    "unmatched_reference_subtitles": 2,
+    "text_aligned_groups": 550,
+    "micro_intersection_over_union": 0.5010425837794423,
+    "one_to_one_groups": 366,
+    "one_to_one_micro_intersection_over_union": 0.4428739401935189,
+    "mean_intersection_over_union": 0.4938343907978301,
+    "mean_reference_coverage": 0.7713755463399041,
+    "mean_start_error_ms": -807.5454545454545,
+    "mean_end_error_ms": -38.64363636363636,
+    "mean_absolute_start_error_ms": 1007.4472727272728,
+    "mean_absolute_end_error_ms": 729.6909090909091,
+    "unmatched_candidate_subtitles": 81,
+    "unmatched_reference_subtitles": 13,
     "candidate_to_reference_group_counts": {
-      "1:1": 55,
-      "1:2": 6,
+      "1:1": 366,
+      "1:2": 35,
       "1:3": 1,
-      "2:1": 11,
-      "2:2": 2,
-      "3:1": 3,
-      "3:2": 3,
-      "3:3": 1,
-      "4:1": 1
+      "1:5": 1,
+      "2:1": 71,
+      "2:2": 34,
+      "2:3": 14,
+      "3:1": 15,
+      "3:2": 4,
+      "3:3": 4,
+      "4:1": 2,
+      "4:3": 2,
+      "5:2": 1
     }
   }
 }

@@ -132,16 +132,16 @@ class AlignmentSubtitle(BaseModel):
 
 
 class AlignmentBlock(BaseModel):
-    """One VAD-derived block of aligned ASR, speaker, and merged evidence."""
+    """One processing block of aligned ASR, speaker, and merged evidence."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     index: int = Field(ge=1)
     """One-based block index in the complete VAD plan."""
     core_start_ms: int = Field(ge=0)
-    """Inclusive start of the block-owned source interval."""
+    """Inclusive start of the VAD activity used to plan the block."""
     core_end_ms: int = Field(ge=0)
-    """Exclusive end of the block-owned source interval."""
+    """Exclusive end of the VAD activity used to plan the block."""
     buffered_start_ms: int = Field(ge=0)
     """Inclusive start of the ASR input interval."""
     buffered_end_ms: int = Field(ge=0)
@@ -151,7 +151,7 @@ class AlignmentBlock(BaseModel):
     rows: tuple[AlignmentRow, ...]
     """Source rows in artifact source order."""
     speaker: str
-    """Speaker/VAD annotation row aligned with all source rows."""
+    """Speaker annotation row aligned with all source rows."""
     language_trace: str | None = None
     """Spoken-language annotation row aligned with all source rows."""
     language_legend: dict[str, str] = Field(default_factory=dict)
@@ -163,7 +163,7 @@ class AlignmentBlock(BaseModel):
     merged: str
     """Lexical merged row aligned with all source rows."""
     subtitles: tuple[AlignmentSubtitle, ...]
-    """Core-owned merged subtitles produced from this block."""
+    """Merged subtitles produced from this buffered block."""
     source_errors: dict[str, str] = Field(default_factory=dict)
     """Source failures that were tolerated while processing the block."""
 
@@ -313,7 +313,7 @@ class AlignmentArtifact(BaseModel):
     sources: tuple[AlignmentSource, ...]
     """ASR sources in stable alignment row order."""
     blocks: tuple[AlignmentBlock, ...]
-    """Processed VAD blocks in source order."""
+    """Processed audio blocks in source order."""
 
     @property
     def sha256(self) -> str:
@@ -433,11 +433,11 @@ class AlignmentArtifact(BaseModel):
                     "Alignment subtitle indexes must be globally consecutive."
                 )
             if (
-                subtitle.speech_start_ms < block.core_start_ms
-                or subtitle.speech_end_ms > block.core_end_ms
+                subtitle.speech_start_ms < block.buffered_start_ms
+                or subtitle.speech_end_ms > block.buffered_end_ms
             ):
                 raise ValueError(
-                    "Alignment subtitle speech must lie within its block core."
+                    "Alignment subtitle speech must lie within its buffered block."
                 )
             if subtitle.end_ms > self.audio_duration_ms:
                 raise ValueError("Alignment subtitle exceeds the source audio.")

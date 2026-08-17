@@ -4,13 +4,14 @@
 
 from __future__ import annotations
 
+from logging import INFO
 from typing import Literal, cast
 from unittest.mock import Mock
 
 import numpy as np
 from pydantic import ValidationError
 from pydub import AudioSegment
-from pytest import MonkeyPatch, mark, raises
+from pytest import LogCaptureFixture, MonkeyPatch, mark, raises
 
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
 from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
@@ -219,12 +220,24 @@ def test_process_clears_stale_blocks_before_vad_failure():
     assert not pipeline.last_blocks
 
 
-def test_process_builds_subtitles_alignment_and_run_manifest():
-    """One selected block should produce mutually linked portable outputs."""
+def test_process_builds_subtitles_alignment_and_run_manifest(caplog: LogCaptureFixture):
+    """One selected block should produce linked outputs and a completion log.
+
+    Arguments:
+        caplog: captured log records
+    """
     pipeline, audio_series = _get_pipeline()
+    caplog.set_level(
+        INFO, logger="scinoephile.workflows.transcription_pipeline.pipeline"
+    )
 
     output = pipeline.process(audio_series)
 
+    transcribe_kwargs = cast(
+        Mock, pipeline.transcriber
+    ).transcribe_block.call_args.kwargs
+    assert "pause_intervals_seconds" not in transcribe_kwargs
+    assert "voice_activity_trace" not in transcribe_kwargs
     assert pipeline.last_alignment_artifact is not None
     assert pipeline.last_run_manifest is not None
     subtitle = pipeline.last_alignment_artifact.blocks[0].subtitles[0]
@@ -250,6 +263,9 @@ def test_process_builds_subtitles_alignment_and_run_manifest():
     )
     assert pipeline.last_run_manifest.blocks[0].query_key_sha256s == _QUERY_KEY_SHA256S
     assert pipeline.last_run_manifest.processor.no_op
+    assert "BLOCK 1:" in caplog.text
+    assert "TRANSCRIPTION (yue-Hant):" in caplog.text
+    assert "甲" in caplog.text
 
 
 def test_process_records_empty_transcription_blocks():
@@ -266,8 +282,46 @@ def test_process_records_empty_transcription_blocks():
     assert pipeline.last_run_manifest.blocks[0].reason == "TranscriptionEmptyError"
 
 
-def test_process_records_text_outside_the_block_core():
-    """Consensus text outside the selected core should remain in provenance."""
+def test_process_excludes_configured_blocks(caplog: LogCaptureFixture):
+    """Excluded one-based block numbers should skip transcription and be recorded.
+
+    Arguments:
+        caplog: captured log records
+    """
+    pipeline, audio_series = _get_pipeline()
+    caplog.set_level(
+        INFO, logger="scinoephile.workflows.transcription_pipeline.pipeline"
+    )
+
+    output = pipeline.process(audio_series, exclude_blocks=[1])
+
+    assert not output.events
+    transcriber = cast(Mock, pipeline.transcriber)
+    transcriber.transcribe_block.assert_not_called()
+    assert pipeline.last_alignment_artifact is not None
+    assert not pipeline.last_alignment_artifact.blocks
+    assert pipeline.last_run_manifest is not None
+    assert pipeline.last_run_manifest.excluded_blocks == (1,)
+    assert pipeline.last_run_manifest.blocks[0].status == "excluded"
+    assert pipeline.last_run_manifest.blocks[0].reason == ("Excluded by configuration.")
+    assert "Transcription block 1 is excluded." in caplog.text
+
+
+@mark.parametrize("exclude_blocks", ([0], [2], [True], [1.0]))
+def test_process_rejects_invalid_excluded_blocks(exclude_blocks: list[object]):
+    """Block exclusions should contain valid one-based numbers from the plan.
+
+    Arguments:
+        exclude_blocks: invalid configured block exclusions
+    """
+    pipeline, audio_series = _get_pipeline()
+
+    with raises(ValueError, match="Excluded transcription blocks"):
+        pipeline.process(audio_series, exclude_blocks=cast(list[int], exclude_blocks))
+
+
+def test_process_preserves_text_outside_the_vad_core():
+    """Consensus text within the buffer should not be clipped to VAD activity."""
     word = TranscribedWord(text="甲", start=0.91, end=0.95, confidence=1.0)
     segment = TranscribedSegment(
         id=0, seek=0, start=0.91, end=0.95, text="甲", words=[word]
@@ -276,9 +330,12 @@ def test_process_records_text_outside_the_block_core():
 
     output = pipeline.process(audio_series)
 
-    assert not output.events
+    assert [event.text for event in output.events] == ["甲"]
+    assert pipeline.last_alignment_artifact is not None
+    subtitle = pipeline.last_alignment_artifact.blocks[0].subtitles[0]
+    assert (subtitle.speech_start_ms, subtitle.speech_end_ms) == (910, 950)
     assert pipeline.last_run_manifest is not None
-    assert pipeline.last_run_manifest.blocks[0].status == "no-core-text"
+    assert pipeline.last_run_manifest.blocks[0].status == "transcribed"
 
 
 def test_process_rejects_invalid_run_provenance():
@@ -331,8 +388,8 @@ def test_process_tolerates_unavailable_audio_analysis(
     assert [event.text for event in output.events] == ["甲"]
 
 
-def test_process_uses_source_wide_audio_analysis_for_partial_ranges():
-    """Partial block ranges should reuse source-wide event and language caches."""
+def test_process_uses_selected_block_buffers_for_language_analysis():
+    """Language analysis should inspect full selected buffers without VAD clipping."""
     audio_event_detector = Mock(return_value=None)
     language_identifier = Mock(return_value=None)
     pipeline, audio_series = _get_pipeline(
@@ -355,16 +412,10 @@ def test_process_uses_source_wide_audio_analysis_for_partial_ranges():
             buffered_end_ms=1_000,
         ),
     ]
-    speech_intervals = [(100, 400), (600, 900)]
-    block_vad_detector = cast(Mock, pipeline.block_vad_detector)
-    block_vad_detector.get_speech_intervals.return_value = speech_intervals
-
     pipeline.process(audio_series, start_at_idx=1)
 
     audio_event_detector.assert_called_once_with(audio_series.audio)
-    language_identifier.assert_called_once_with(
-        audio_series.audio, tuple(speech_intervals)
-    )
+    language_identifier.assert_called_once_with(audio_series.audio, ((500, 1_000),))
 
 
 def test_factory_omits_disabled_audio_analysis(monkeypatch: MonkeyPatch):

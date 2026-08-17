@@ -67,7 +67,6 @@ def test_build_transcription_alignment_block_uses_current_artifact_models():
             buffered_end_ms=12_000,
         ),
         diarization=diarization,
-        pause_intervals_seconds=((0.2, 0.7),),
         timing_sources={7: "ctc-request"},
     )
 

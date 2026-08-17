@@ -32,7 +32,6 @@ from scinoephile.audio.transcription.quality import (
     get_transcription_quality_issue,
     is_low_information_text,
 )
-from scinoephile.audio.vad.trace import VoiceActivityTrace
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.llms.transcription import TranscriptionProcessor, TranscriptionSource
 from scinoephile.workflows.transcription_alignment import render_transcription_alignment
@@ -120,7 +119,6 @@ class MultiSourceTranscriber:
         language_identification: LanguageIdentificationResult | None = None,
         pause_intervals_seconds: Sequence[tuple[float, float]] | None = None,
         source_offset_seconds: float = 0.0,
-        voice_activity_trace: VoiceActivityTrace | None = None,
     ) -> list[TranscribedSegment]:
         """Merge timestamped sources and recover consensus subtitle timings.
 
@@ -130,9 +128,8 @@ class MultiSourceTranscriber:
             audio_events: optional source-wide FireRed audio-event timeline
             diarization: optional source-wide exclusive speaker timeline
             language_identification: optional source-wide FireRed language timeline
-            pause_intervals_seconds: block-local VAD silence intervals
+            pause_intervals_seconds: optional explicit block-local pause intervals
             source_offset_seconds: source time corresponding to block-local zero
-            voice_activity_trace: optional source-wide VAD score trace
         Returns:
             final consensus subtitles with block-local CTC timings
         Raises:
@@ -172,7 +169,6 @@ class MultiSourceTranscriber:
             language_identification=language_identification,
             source_offset_seconds=source_offset_seconds,
             traditionalize=self.language is Language.yue_hant,
-            voice_activity_trace=voice_activity_trace,
         )
         request_results = self.processor.process_requests(
             [
@@ -182,6 +178,9 @@ class MultiSourceTranscriber:
             rendered.speaker,
             language=rendered.language,
             music=rendered.music,
+            pause_intervals_seconds=tuple(
+                column.pause_interval_seconds for column in alignment.columns
+            ),
             singing=rendered.singing,
         )
         self.last_query_key_sha256s = tuple(
@@ -205,7 +204,6 @@ class MultiSourceTranscriber:
         language_identification: LanguageIdentificationResult | None = None,
         pause_intervals_seconds: Sequence[tuple[float, float]] | None = None,
         source_offset_seconds: float = 0.0,
-        voice_activity_trace: VoiceActivityTrace | None = None,
     ) -> list[TranscribedSegment]:
         """Transcribe one padded block using optional audio-analysis evidence.
 
@@ -214,9 +212,8 @@ class MultiSourceTranscriber:
             audio_events: optional source-wide FireRed audio-event timeline
             diarization: optional source-wide exclusive speaker timeline
             language_identification: optional source-wide FireRed language timeline
-            pause_intervals_seconds: block-local VAD silence intervals
+            pause_intervals_seconds: optional explicit block-local pause intervals
             source_offset_seconds: source time corresponding to block-local zero
-            voice_activity_trace: optional source-wide VAD score trace
         Returns:
             final consensus subtitles with block-local CTC timings
         Raises:
@@ -316,7 +313,6 @@ class MultiSourceTranscriber:
             language_identification=language_identification,
             pause_intervals_seconds=pause_intervals_seconds,
             source_offset_seconds=source_offset_seconds,
-            voice_activity_trace=voice_activity_trace,
         )
 
     @staticmethod

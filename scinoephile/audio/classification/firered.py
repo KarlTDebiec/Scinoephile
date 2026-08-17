@@ -116,15 +116,15 @@ class FireRedLanguageIdentifier:
     def __call__(
         self,
         audio: AudioSegment,
-        speech_intervals_ms: Sequence[tuple[int, int]],
+        intervals_ms: Sequence[tuple[int, int]],
         *,
         offset_seconds: float = 0.0,
     ) -> LanguageIdentificationResult:
-        """Identify language in VAD-derived speech windows.
+        """Identify language in selected audio intervals.
 
         Arguments:
             audio: complete source audio
-            speech_intervals_ms: ordered VAD speech intervals in milliseconds
+            intervals_ms: ordered source intervals in milliseconds
             offset_seconds: source-timeline offset added to result spans
         Returns:
             source-timeline language identification spans
@@ -135,7 +135,7 @@ class FireRedLanguageIdentifier:
         """
         if not isfinite(offset_seconds) or offset_seconds < 0.0:
             raise ValueError("Language-identification offset must be non-negative.")
-        windows = self._get_windows(speech_intervals_ms, len(audio))
+        windows = self._get_windows(intervals_ms, len(audio))
         cache_identity = self._get_cache_identity(windows, offset_seconds)
         cached_result = self._cache.load(
             audio, cache_identity, LanguageIdentificationResult
@@ -225,7 +225,7 @@ class FireRedLanguageIdentifier:
                 **get_distribution_identity("fireredasr2s"),
                 "source_revision": _FIRERED_RUNTIME_REVISION,
             },
-            "speech_windows": [[start, end] for start, end in windows],
+            "analysis_windows": [[start, end] for start, end in windows],
             "use_gpu": self.use_gpu,
             "use_half": self.use_half,
             "waveform_channels": _WAVEFORM_CHANNELS,
@@ -267,12 +267,12 @@ class FireRedLanguageIdentifier:
         return self._model
 
     def _get_windows(
-        self, speech_intervals_ms: Sequence[tuple[int, int]], audio_duration_ms: int
+        self, intervals_ms: Sequence[tuple[int, int]], audio_duration_ms: int
     ) -> tuple[tuple[float, float], ...]:
-        """Validate, clip, and subdivide VAD speech intervals.
+        """Validate, clip, and subdivide selected audio intervals.
 
         Arguments:
-            speech_intervals_ms: ordered VAD speech intervals in milliseconds
+            intervals_ms: ordered source intervals in milliseconds
             audio_duration_ms: duration of the source audio in milliseconds
         Returns:
             clipped and subdivided intervals in seconds
@@ -281,9 +281,9 @@ class FireRedLanguageIdentifier:
         """
         windows = []
         previous_end_ms = 0
-        for start_ms, end_ms in speech_intervals_ms:
+        for start_ms, end_ms in intervals_ms:
             if start_ms < previous_end_ms or end_ms <= start_ms:
-                raise ValueError("Language speech intervals must be ordered.")
+                raise ValueError("Language-identification intervals must be ordered.")
             previous_end_ms = end_ms
             clipped_start = max(0.0, start_ms / 1000)
             clipped_end = min(audio_duration_ms / 1000, end_ms / 1000)

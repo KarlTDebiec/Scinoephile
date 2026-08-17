@@ -249,8 +249,12 @@ def test_loaded_model_is_shared_by_model_key(
     """
     load = Mock(return_value=object())
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
+    mimo_asr = SimpleNamespace(get_model_path=Mock())
     monkeypatch.setattr(MlxAudioBackend, "_models_by_key", {})
     monkeypatch.setattr(backend, "import_mlx_audio_stt_load", Mock(return_value=load))
+    monkeypatch.setattr(
+        backend, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
+    )
     monkeypatch.setattr(
         backend, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
     )
@@ -260,9 +264,12 @@ def test_loaded_model_is_shared_by_model_key(
 
     assert first._loaded_model is load.return_value
     assert second._loaded_model is load.return_value
-    get_snapshot_dir_path.assert_called_once_with(
-        model.model_name, model.model_revision
-    )
+    expected_snapshot_calls = [call(model.model_name, model.model_revision)]
+    if model.audio_tokenizer_model_name is not None:
+        expected_snapshot_calls.append(
+            call(model.audio_tokenizer_model_name, model.audio_tokenizer_model_revision)
+        )
+    assert get_snapshot_dir_path.call_args_list == expected_snapshot_calls
     load.assert_called_once_with(Path("/cached/model"), model_type=model_type)
 
 
@@ -275,8 +282,12 @@ def test_model_cache_key_includes_model_type(monkeypatch: pytest.MonkeyPatch):
     models = [object(), object()]
     load = Mock(side_effect=models)
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
+    mimo_asr = SimpleNamespace(get_model_path=Mock())
     monkeypatch.setattr(MlxAudioBackend, "_models_by_key", {})
     monkeypatch.setattr(backend, "import_mlx_audio_stt_load", Mock(return_value=load))
+    monkeypatch.setattr(
+        backend, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
+    )
     monkeypatch.setattr(
         backend, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
     )
@@ -291,6 +302,51 @@ def test_model_cache_key_includes_model_type(monkeypatch: pytest.MonkeyPatch):
         call(Path("/cached/model"), model_type="mimo"),
         call(Path("/cached/model"), model_type="qwen3_asr"),
     ]
+
+
+def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test MiMo loading bypasses MLX-Audio's mutable remote tokenizer lookup.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    model_path = Path("/cached/mimo")
+    audio_tokenizer_path = Path("/cached/mimo-audio-tokenizer")
+    remote_get_model_path = Mock()
+    mimo_asr = SimpleNamespace(get_model_path=remote_get_model_path)
+    loaded_model = object()
+
+    def load(local_model_path: Path, **kwargs: object) -> object:
+        """Check the replacement resolver while simulating model loading."""
+        assert local_model_path == model_path
+        assert kwargs == {"model_type": "mimo"}
+        assert mimo_asr.get_model_path(MIMO_MODEL.audio_tokenizer_model_name) == (
+            audio_tokenizer_path
+        )
+        return loaded_model
+
+    get_snapshot_dir_path = Mock(side_effect=(model_path, audio_tokenizer_path))
+    monkeypatch.setattr(MlxAudioBackend, "_models_by_key", {})
+    monkeypatch.setattr(backend, "import_mlx_audio_stt_load", Mock(return_value=load))
+    monkeypatch.setattr(
+        backend, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
+    )
+    monkeypatch.setattr(
+        backend, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
+    )
+
+    assert MlxAudioBackend(MIMO_MODEL)._loaded_model is loaded_model
+    assert get_snapshot_dir_path.call_args_list == [
+        call(MIMO_MODEL.model_name, MIMO_MODEL.model_revision),
+        call(
+            MIMO_MODEL.audio_tokenizer_model_name,
+            MIMO_MODEL.audio_tokenizer_model_revision,
+        ),
+    ]
+    assert mimo_asr.get_model_path is remote_get_model_path
+    remote_get_model_path.assert_not_called()
 
 
 def test_model_validates_local_path(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):

@@ -16,6 +16,7 @@ __all__ = [
     "import_firered_lid",
     "import_huggingface_hub",
     "import_huggingface_hub_utils",
+    "import_mlx_audio_mimo_asr",
     "import_mlx_audio_stt_load",
     "import_pyannote_audio",
     "import_pyannote_audio_voice_activity_detection",
@@ -119,6 +120,19 @@ def import_huggingface_hub_utils() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return huggingface_hub_utils
+
+
+def import_mlx_audio_mimo_asr() -> ModuleType:
+    """Import the MLX-Audio MiMo ASR implementation on demand.
+
+    Returns:
+        MLX-Audio MiMo ASR module
+    """
+    try:
+        import mlx_audio.stt.models.mimo_v2_asr.asr as mimo_asr
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return mimo_asr
 
 
 def import_mlx_audio_stt_load() -> Callable[..., object]:

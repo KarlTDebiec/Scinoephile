@@ -23,6 +23,8 @@ logger = getLogger(__name__)
 
 _REQUEST_PAUSE_CHARACTERS = 4
 """Shared pause columns required to start a separate LLM request."""
+_REQUEST_PAUSE_SECONDS = 1.0
+"""Continuous shared-pause duration required to start a separate request."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -81,6 +83,7 @@ class TranscriptionProcessor(Processor):
         *,
         language: str | None = None,
         music: str | None = None,
+        pause_intervals_seconds: Sequence[tuple[float, float] | None] | None = None,
         singing: str | None = None,
     ) -> tuple[TranscriptionRequestResult, ...]:
         """Transcribe aligned ASR evidence as separately timed requests.
@@ -90,6 +93,7 @@ class TranscriptionProcessor(Processor):
             speaker: aligned speaker and voice-activity row
             language: optional aligned spoken-language row
             music: optional aligned music row
+            pause_intervals_seconds: optional interval for each alignment column
             singing: optional aligned singing row
         Returns:
             request answers with their complete-alignment column spans
@@ -108,7 +112,9 @@ class TranscriptionProcessor(Processor):
             ),
         )
         request_results = []
-        for query, (start_column, end_column) in _get_request_queries(validated_query):
+        for query, (start_column, end_column) in _get_request_queries(
+            validated_query, pause_intervals_seconds
+        ):
             test_case = self.test_case_cls(query=query)
             try:
                 test_case = self.queryer(test_case)
@@ -136,6 +142,39 @@ class TranscriptionProcessor(Processor):
 
         self.save_encountered_test_cases()
         return tuple(request_results)
+
+
+def _get_flat_content_spans(
+    rows: tuple[str, ...], width: int
+) -> tuple[tuple[int, int], ...]:
+    """Get content spans separated by long rendered pause runs.
+
+    Arguments:
+        rows: equal-width source and annotation rows
+        width: alignment column count
+    Returns:
+        content spans between long shared pause runs
+    """
+    content_spans = []
+    content_start = 0
+    pause_start: int | None = None
+    for column_idx in range(width + 1):
+        is_shared_pause = column_idx < width and all(
+            row[column_idx] == "・" for row in rows
+        )
+        if is_shared_pause:
+            if pause_start is None:
+                pause_start = column_idx
+            continue
+        if pause_start is not None:
+            if column_idx - pause_start >= _REQUEST_PAUSE_CHARACTERS:
+                if content_start < pause_start:
+                    content_spans.append((content_start, pause_start))
+                content_start = column_idx
+            pause_start = None
+    if content_start < width:
+        content_spans.append((content_start, width))
+    return tuple(content_spans)
 
 
 def _get_query_slice(
@@ -168,12 +207,18 @@ def _get_query_slice(
 
 def _get_request_queries(
     query: TranscriptionQuery,
+    pause_intervals_seconds: Sequence[tuple[float, float] | None] | None = None,
 ) -> tuple[tuple[TranscriptionQuery, tuple[int, int]], ...]:
-    """Split a validated alignment query at long shared pause runs."""
-    requests = []
-    content_spans = []
-    content_start = 0
-    pause_start: int | None = None
+    """Split a validated alignment query at long continuous shared pauses.
+
+    Arguments:
+        query: validated complete-block alignment query
+        pause_intervals_seconds: optional interval for each alignment column
+    Returns:
+        request queries and their complete-alignment column spans
+    Raises:
+        ValueError: if structured pause intervals do not match the query
+    """
     rows = (
         query.speaker,
         *(source.text for source in query.sources),
@@ -183,23 +228,14 @@ def _get_request_queries(
             if annotation is not None
         ),
     )
-    for column_idx in range(len(query.speaker) + 1):
-        is_shared_pause = column_idx < len(query.speaker) and all(
-            row[column_idx] == "・" for row in rows
+    if pause_intervals_seconds is None:
+        content_spans = _get_flat_content_spans(rows, len(query.speaker))
+    else:
+        content_spans = _get_timed_content_spans(
+            rows, pause_intervals_seconds, len(query.speaker)
         )
-        if is_shared_pause:
-            if pause_start is None:
-                pause_start = column_idx
-            continue
-        if pause_start is not None:
-            if column_idx - pause_start >= _REQUEST_PAUSE_CHARACTERS:
-                if content_start < pause_start:
-                    content_spans.append((content_start, pause_start))
-                content_start = column_idx
-            pause_start = None
-    if content_start < len(query.speaker):
-        content_spans.append((content_start, len(query.speaker)))
 
+    requests = []
     for content_start, content_end in content_spans:
         request = _get_query_slice(query, content_start, content_end)
         if any(
@@ -209,3 +245,65 @@ def _get_request_queries(
         ):
             requests.append((request, (content_start, content_end)))
     return tuple(requests)
+
+
+def _get_timed_content_spans(
+    rows: tuple[str, ...],
+    pause_intervals_seconds: Sequence[tuple[float, float] | None],
+    width: int,
+) -> tuple[tuple[int, int], ...]:
+    """Get content spans separated by long continuous timed pauses.
+
+    Arguments:
+        rows: equal-width source and annotation rows
+        pause_intervals_seconds: interval for each alignment column
+        width: alignment column count
+    Returns:
+        content spans between long continuous shared pauses
+    Raises:
+        ValueError: if structured pause intervals do not match the rows
+    """
+    if len(pause_intervals_seconds) != width:
+        raise ValueError(
+            "Timed pause intervals must match the transcription alignment width."
+        )
+
+    content_spans = []
+    content_start = 0
+    pause_start: int | None = None
+    pause_interval_start: float | None = None
+    pause_interval_end: float | None = None
+    for column_idx in range(width + 1):
+        pause_interval = None
+        if column_idx < width:
+            pause_interval = pause_intervals_seconds[column_idx]
+        if pause_interval is not None:
+            if not all(row[column_idx] == "・" for row in rows):
+                raise ValueError(
+                    "Timed pause intervals require shared transcription pause columns."
+                )
+            if (
+                pause_start is not None
+                and pause_interval_end is not None
+                and abs(pause_interval[0] - pause_interval_end) <= 1e-9
+            ):
+                pause_interval_end = pause_interval[1]
+                continue
+        if pause_start is not None:
+            if (
+                pause_interval_start is not None
+                and pause_interval_end is not None
+                and pause_interval_end - pause_interval_start >= _REQUEST_PAUSE_SECONDS
+            ):
+                if content_start < pause_start:
+                    content_spans.append((content_start, pause_start))
+                content_start = column_idx
+            pause_start = None
+            pause_interval_start = None
+            pause_interval_end = None
+        if pause_interval is not None:
+            pause_start = column_idx
+            pause_interval_start, pause_interval_end = pause_interval
+    if content_start < width:
+        content_spans.append((content_start, width))
+    return tuple(content_spans)

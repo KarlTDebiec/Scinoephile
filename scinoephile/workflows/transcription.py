@@ -53,6 +53,7 @@ def transcribe_series(
     shared_test_cases: list[TestCase] | None = None,
     timing_settings: TimingSettings | None = None,
     pipeline: TranscriptionPipeline | None = None,
+    exclude_blocks: Sequence[int] = (),
     start_at_idx: int = 0,
     stop_at_idx: int | None = None,
 ) -> AudioSeries:
@@ -79,6 +80,7 @@ def transcribe_series(
         shared_test_cases: preloaded transcription test cases
         timing_settings: reference-free merged subtitle display timing
         pipeline: optional preconfigured pipeline override
+        exclude_blocks: one-based VAD block numbers to skip
         start_at_idx: inclusive zero-based VAD block index at which to start
         stop_at_idx: exclusive zero-based VAD block index at which to stop
     Returns:
@@ -104,7 +106,10 @@ def transcribe_series(
             timing_settings=timing_settings,
         )
     output = pipeline.process(
-        audio_series, start_at_idx=start_at_idx, stop_at_idx=stop_at_idx
+        audio_series,
+        exclude_blocks=exclude_blocks,
+        start_at_idx=start_at_idx,
+        stop_at_idx=stop_at_idx,
     )
     if alignment_outfile_path is not None:
         if pipeline.last_alignment_artifact is None:
