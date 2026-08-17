@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import IntEnum
 from functools import cache
 
 import pycantonese
@@ -12,7 +13,7 @@ import pycantonese
 from scinoephile.core.text import normalize_nfkc
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 
-__all__ = ["CharacterFeatures"]
+__all__ = ["CharacterFeatures", "CharacterRelationship", "get_character_relationship"]
 
 _EQUIVALENCE_GROUPS = (
     frozenset({"不", "唔"}),
@@ -24,6 +25,23 @@ _EQUIVALENCE_GROUPS = (
     frozenset({"這", "呢"}),
 )
 """Common Mandarinized and Yue ASR substitutions."""
+
+
+class CharacterRelationship(IntEnum):
+    """Strength of Yue evidence relating two characters."""
+
+    unrelated = 0
+    """No known lexical or pronunciation relationship."""
+    same_jyutping_base = 1
+    """Same context-free Yue syllable with different tone."""
+    same_jyutping = 2
+    """Same context-free Yue pronunciation including tone."""
+    equivalent = 3
+    """Known Yue and standard-Chinese equivalents."""
+    script_variant = 4
+    """Simplified or Traditional forms of the same character."""
+    exact = 5
+    """Compatibility-normalized exact match."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -73,3 +91,30 @@ class CharacterFeatures:
             jyutping_base=jyutping.rstrip("123456"),
             simplified=simplified,
         )
+
+
+def get_character_relationship(one: str, two: str) -> CharacterRelationship:
+    """Classify the shared Yue evidence between two characters.
+
+    Arguments:
+        one: first character
+        two: second character
+    Returns:
+        strongest known Yue relationship
+    """
+    if normalize_nfkc(one) == normalize_nfkc(two):
+        return CharacterRelationship.exact
+    one_features = CharacterFeatures.get(one)
+    two_features = CharacterFeatures.get(two)
+    if one_features.simplified == two_features.simplified:
+        return CharacterRelationship.script_variant
+    if one_features.equivalence_groups.intersection(two_features.equivalence_groups):
+        return CharacterRelationship.equivalent
+    if one_features.jyutping and one_features.jyutping == two_features.jyutping:
+        return CharacterRelationship.same_jyutping
+    if (
+        one_features.jyutping_base
+        and one_features.jyutping_base == two_features.jyutping_base
+    ):
+        return CharacterRelationship.same_jyutping_base
+    return CharacterRelationship.unrelated

@@ -46,6 +46,13 @@ class TranscriptionValidation:
             return 1.0
         return self.preserved_majority_column_count / self.majority_column_count
 
+    @property
+    def mapped_majority_coverage(self) -> float:
+        """Get the proportion of majority columns occupied by answer text."""
+        if not self.majority_column_count:
+            return 1.0
+        return self.mapped_majority_column_count / self.majority_column_count
+
     def preserves_required_majority(self, minimum_coverage: float) -> bool:
         """Whether majority evidence meets coverage with a short-answer safeguard.
 
@@ -63,17 +70,22 @@ class TranscriptionValidation:
         """
         if not 0.0 <= minimum_coverage <= 1.0:
             raise ValueError("Minimum majority coverage must be between zero and one.")
-        missing_column_count = (
+        unmapped_column_count = (
+            self.majority_column_count - self.mapped_majority_column_count
+        )
+        unsupported_column_count = (
             self.majority_column_count - self.preserved_majority_column_count
         )
         proportional_tolerance = floor(
             self.majority_column_count * (1.0 - minimum_coverage) + 1e-12
         )
-        if missing_column_count <= proportional_tolerance:
+        if unmapped_column_count > proportional_tolerance:
+            return False
+        if unsupported_column_count <= proportional_tolerance:
             return True
         if self.mapped_majority_column_count < self.majority_column_count:
             return False
-        return missing_column_count <= max(proportional_tolerance, 1)
+        return unsupported_column_count <= max(proportional_tolerance, 1)
 
 
 class TranscriptionAlignmentScorer:
@@ -154,7 +166,7 @@ class TranscriptionAlignmentScorer:
             answer_character = answer_characters[answer_idx]
             if any(
                 self.get_character_relationship(answer_character, source_character)
-                >= TranscriptionCharacterRelationship.equivalent
+                >= TranscriptionCharacterRelationship.pronunciation
                 for source_character in source_characters
             ):
                 preserved_majority_column_count += 1

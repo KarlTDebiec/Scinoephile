@@ -9,7 +9,7 @@ from typing import cast
 from unittest.mock import Mock
 
 from pydantic import ValidationError
-from pytest import raises
+from pytest import LogCaptureFixture, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
@@ -23,7 +23,6 @@ from scinoephile.llms.transcription import (
     TranscriptionSource,
     TranscriptionTestCase,
 )
-from test.helpers import parametrize
 
 _LOCALIZED_PROMPT = TranscriptionPrompt(
     language=Language.yue_hant,
@@ -71,9 +70,6 @@ def test_prompt_aliases_are_used_for_nested_llm_correspondence():
             {"mingcheng": "two", "yuanwen": "我是"},
         ],
         "shuoshuuren": "ＡＡ",
-        "language": None,
-        "singing": None,
-        "music": None,
     }
     assert test_case.answer is not None
     assert test_case.answer.model_dump(by_alias=True) == {"wenben": "我係｜"}
@@ -199,12 +195,11 @@ def test_query_accepts_distinct_fullwidth_gap_and_pause_annotations():
     assert query.speaker == "Ａ　・"
 
 
-def test_query_accepts_equal_width_language_singing_and_music_rows():
-    """Optional FireRed rows should retain the alignment's exact width."""
+def test_query_rejects_audit_only_analysis_rows():
+    """Language and audio-event traces should not enter LLM correspondence."""
     query_cls = TranscriptionManager.get_query_cls(TranscriptionManager.base_prompt)
 
-    query = cast(
-        TranscriptionQuery,
+    with raises(ValidationError, match="Extra inputs are not permitted"):
         query_cls.model_validate(
             {
                 "sources": [
@@ -216,12 +211,7 @@ def test_query_accepts_equal_width_language_singing_and_music_rows():
                 "singing": "唱・　",
                 "music": "　・樂",
             }
-        ),
-    )
-
-    assert query.language == "粵・日"
-    assert query.singing == "唱・　"
-    assert query.music == "　・樂"
+        )
 
 
 def test_query_rejects_reference_evidence_and_reference_markers():
@@ -328,9 +318,6 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
             {"mingcheng": "source_2", "yuanwen": "甲"},
         ],
         "shuoshuuren": "Ａ",
-        "language": None,
-        "singing": None,
-        "music": None,
     }
     assert json.loads(second_messages[1]["content"]) == {
         "laiyuan": [
@@ -338,9 +325,6 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
             {"mingcheng": "source_2", "yuanwen": "乙"},
         ],
         "shuoshuuren": "Ｂ",
-        "language": None,
-        "singing": None,
-        "music": None,
     }
 
 
@@ -436,40 +420,6 @@ def test_processor_exposes_request_alignment_spans():
     ]
 
 
-@parametrize(
-    ("language", "singing", "music"),
-    [
-        ("粵・英・・日", None, None),
-        (None, "　・唱・・　", None),
-        (None, None, "　・樂・・　"),
-    ],
-)
-def test_processor_does_not_split_when_an_optional_row_breaks_a_pause(
-    language: str | None, singing: str | None, music: str | None
-):
-    """A pause is shared only when every present analysis row marks it."""
-    provider = Mock(
-        spec=LLMProvider,
-        cache_identity={"implementation": "test"},
-        completion_metrics=[],
-    )
-    provider.chat_completion.return_value = json.dumps(
-        {"wenben": "甲乙｜"}, ensure_ascii=False
-    )
-    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
-
-    answer = processor.process(
-        _get_sources("甲・・・・乙", "甲・・・・乙"),
-        "Ａ・・・・Ｂ",
-        language=language,
-        singing=singing,
-        music=music,
-    )
-
-    assert answer.transcript == "甲乙"
-    provider.chat_completion.assert_called_once()
-
-
 def test_processor_omits_one_request_without_discarding_later_consensus():
     """An empty request answer should not discard other request transcripts."""
     provider = Mock(
@@ -533,8 +483,14 @@ def test_processor_retries_answers_omitting_majority_consensus_speech():
     assert "preserves only 40.0%" in retry_messages[-1]["content"]
 
 
-def test_processor_falls_back_after_invalid_consensus_retries():
-    """Exhausted LLM validation retries should use deterministic consensus."""
+def test_processor_falls_back_after_invalid_consensus_retries(
+    caplog: LogCaptureFixture,
+):
+    """Exhausted retries should use and accurately log deterministic consensus.
+
+    Arguments:
+        caplog: captured log records
+    """
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
@@ -552,6 +508,7 @@ def test_processor_falls_back_after_invalid_consensus_retries():
 
     assert answer.transcript == source_text
     assert provider.chat_completion.call_count == 5
+    assert f"used deterministic column consensus: {source_text + '｜'!r}" in caplog.text
 
 
 def test_answer_coverage_allows_locally_supported_character_corrections():
@@ -593,6 +550,15 @@ def test_answer_coverage_rejects_insertions_replacing_missing_majority_span():
 
     with raises(ValidationError, match="preserves only 40.0%"):
         TranscriptionTestCase(query=query, answer=answer)
+
+
+def test_answer_coverage_rejects_unmapped_majority_despite_supported_remainder():
+    """Supported substitutions must not obscure excessive omitted columns."""
+    scorer = TranscriptionAlignmentScorer()
+    validation = scorer.score(tuple("甲乙丙丁戊己" for _ in range(3)), "甲乙丙丁")
+
+    assert validation.mapped_majority_coverage == 4 / 6
+    assert not validation.preserves_required_majority(0.9)
 
 
 def test_answer_coverage_accepts_compatibility_width_equivalence():

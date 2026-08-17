@@ -31,22 +31,23 @@ set_logging_verbosity(2)
 
 transcription_additional_context = """
 電影背景：
-《龍貓》係一九八八年宮崎駿動畫電影嘅香港粵語配音版。草壁一家搬到鄉郊，
-小月同妹妹小美喺媽媽留院養病期間遇到龍貓、煤煤蟲同貓巴士。對白以家庭日常、
+《龍貓》係一九八八年宮崎駿動畫電影嘅香港粵語配音版。大卷一家搬到鄉郊，
+草子同妹妹次子喺媽媽留院養病期間遇到龍貓、煤炭屎鬼同貓巴士。對白以家庭日常、
 兒童說話同溫暖奇幻場面為主。請按實際粵語語音用香港繁體粵語字詞轉錄，保留
 語氣助詞、兒童口吻同角色稱呼。評估參考字幕係書面中文，雖然對應粵語音軌，
 但經常意譯或將粵語口語改寫成標準中文；唔應照抄而令轉錄普通話化。
 
 電影專有名稱及用語：
-- 小月 / 姐姐：草壁家長女，英文名 Satsuki。
-- 小美 / 妹妹：草壁家幼女，英文名 Mei。
-- 草壁：一家人嘅姓氏。
-- 勘太：鄰居男孩。
-- 婆婆：照顧兩姊妹嘅鄰居長輩。
+- 草子 / 姐姐：大卷家長女，英文名 Satsuki。
+- 次子 / 妹妹：大卷家幼女，英文名 Mei。
+- 大卷：兩姊妹嘅爸爸，亦係一家人嘅姓氏。
+- 阿信：鄰居男孩。
+- 八婆：照顧兩姊妹嘅鄰居長輩；對白亦會按稱呼講「八嬸」，應跟實際語音。
 - 龍貓：森林入面嘅神秘生物；按實際對白保留「龍貓」。
+- 呲呲嗏、嘣嘣吧：兩隻較細嘅龍貓嘅叫聲。
 - 貓巴士：貓形巴士。
-- 煤煤蟲 / 煤屎：屋入面嘅黑色小精靈；按實際粵語講法轉錄。
-- 樟樹、橡果子 / 種子、粟米：故事中反覆出現嘅事物。
+- 煤炭屎鬼 / 煤屎：屋入面嘅黑色小精靈；按實際粵語講法轉錄。
+- 樟樹、橡子 / 種子、粟米：故事中反覆出現嘅事物。
 """
 
 additional_context = """
@@ -60,15 +61,16 @@ insults literally when they would sound crude, offensive, or out of tone in
 English. Translate the intended tone, not just the literal wording.
 
 Movie-specific names and terminology:
-- 小月 / 姐姐: Satsuki
-- 小美 / 次子: Mei
-- 草壁: Kusakabe
-- 勘太: Kanta
+- 草子 / 姐姐: Satsuki
+- 次子 / 妹妹: Mei
+- 大卷: Kusakabe or Dad, according to context
+- 阿信: Kanta
 - 婆婆 / 八婆 / 八婶: Granny
 - 龙猫 / 龍貓: Totoro
+- 呲呲嗏 / 嘣嘣吧: vocalizations made by the two smaller Totoros
 - 樟树 / 樟樹: camphor tree
-- 橡果子 / 种子 / 種子: acorn
-- 煤屎 / 煤煤虫 / 煤煤蟲: soot sprites
+- 橡子 / 种子 / 種子: acorn
+- 煤屎 / 煤炭屎鬼: soot sprites
 - 粟米: corn
 - 妈咪 / 媽咪: Mom
 """

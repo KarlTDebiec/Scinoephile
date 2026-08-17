@@ -17,6 +17,13 @@ from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
 from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
 from scinoephile.analysis.alignment.timed_msa.models import Column, Token
 from scinoephile.analysis.transcription.artifact import AlignmentSource
+from scinoephile.audio.classification import (
+    AudioEvent,
+    AudioEventDetectionResult,
+    AudioEventSpan,
+    LanguageIdentificationResult,
+    LanguageSpan,
+)
 from scinoephile.audio.classification.exceptions import AudioClassificationError
 from scinoephile.audio.diarization.exceptions import SpeakerDiarizationError
 from scinoephile.audio.subtitles import AudioSeries
@@ -236,8 +243,7 @@ def test_process_builds_subtitles_alignment_and_run_manifest(caplog: LogCaptureF
     transcribe_kwargs = cast(
         Mock, pipeline.transcriber
     ).transcribe_block.call_args.kwargs
-    assert "pause_intervals_seconds" not in transcribe_kwargs
-    assert "voice_activity_trace" not in transcribe_kwargs
+    assert set(transcribe_kwargs) == {"diarization", "source_offset_seconds"}
     assert pipeline.last_alignment_artifact is not None
     assert pipeline.last_run_manifest is not None
     subtitle = pipeline.last_alignment_artifact.blocks[0].subtitles[0]
@@ -266,6 +272,37 @@ def test_process_builds_subtitles_alignment_and_run_manifest(caplog: LogCaptureF
     assert "BLOCK 1:" in caplog.text
     assert "TRANSCRIPTION (yue-Hant):" in caplog.text
     assert "甲" in caplog.text
+
+
+def test_process_retains_audit_only_classifications_outside_transcriber_request():
+    """Classification traces should reach the artifact but not consensus requests."""
+    audio_events = AudioEventDetectionResult(
+        spans=[
+            AudioEventSpan(start=0.2, end=0.5, event=AudioEvent.MUSIC),
+            AudioEventSpan(start=0.2, end=0.5, event=AudioEvent.SINGING),
+        ]
+    )
+    languages = LanguageIdentificationResult(
+        spans=[LanguageSpan(start=0.2, end=0.5, language="zh-yue", confidence=0.9)]
+    )
+    pipeline, audio_series = _get_pipeline(
+        audio_event_detector=Mock(return_value=audio_events),
+        audio_event_mode=AudioAnalysisMode.ON,
+        language_identification_mode=AudioAnalysisMode.ON,
+        language_identifier=Mock(return_value=languages),
+    )
+
+    pipeline.process(audio_series)
+
+    transcribe_kwargs = cast(
+        Mock, pipeline.transcriber
+    ).transcribe_block.call_args.kwargs
+    assert set(transcribe_kwargs) == {"diarization", "source_offset_seconds"}
+    assert pipeline.last_alignment_artifact is not None
+    block = pipeline.last_alignment_artifact.blocks[0]
+    assert block.language_trace == "粵"
+    assert block.singing_trace == "唱"
+    assert block.music_trace == "樂"
 
 
 def test_process_records_empty_transcription_blocks():

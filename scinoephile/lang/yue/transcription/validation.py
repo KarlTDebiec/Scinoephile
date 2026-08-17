@@ -4,7 +4,10 @@
 
 from __future__ import annotations
 
-from scinoephile.lang.yue.character_features import CharacterFeatures
+from scinoephile.lang.yue.character_features import (
+    CharacterRelationship,
+    get_character_relationship,
+)
 from scinoephile.llms.transcription import (
     TranscriptionAlignmentScorer,
     TranscriptionCharacterRelationship,
@@ -27,25 +30,11 @@ class YueTranscriptionAlignmentScorer(TranscriptionAlignmentScorer):
         Returns:
             relationship between the characters
         """
-        relationship = super().get_character_relationship(one, two)
-        if relationship is TranscriptionCharacterRelationship.exact:
-            return relationship
-
-        one_features = CharacterFeatures.get(one)
-        two_features = CharacterFeatures.get(two)
-        if one_features.simplified == two_features.simplified:
+        relationship = get_character_relationship(one, two)
+        if relationship is CharacterRelationship.exact:
+            return TranscriptionCharacterRelationship.exact
+        if relationship >= CharacterRelationship.equivalent:
             return TranscriptionCharacterRelationship.equivalent
-        if one_features.equivalence_groups.intersection(
-            two_features.equivalence_groups
-        ):
-            return TranscriptionCharacterRelationship.equivalent
-
-        matching_pronunciation = (
-            one_features.jyutping and one_features.jyutping == two_features.jyutping
-        ) or (
-            one_features.jyutping_base
-            and one_features.jyutping_base == two_features.jyutping_base
-        )
-        if matching_pronunciation:
+        if relationship >= CharacterRelationship.same_jyutping_base:
             return TranscriptionCharacterRelationship.pronunciation
         return TranscriptionCharacterRelationship.none

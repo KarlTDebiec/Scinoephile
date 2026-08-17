@@ -50,28 +50,17 @@ class TranscriptionProcessor(Processor):
     """Manager used to construct prompt-specific models."""
 
     def process(
-        self,
-        sources: Sequence[TranscriptionSource],
-        speaker: str,
-        *,
-        language: str | None = None,
-        music: str | None = None,
-        singing: str | None = None,
+        self, sources: Sequence[TranscriptionSource], speaker: str
     ) -> TranscriptionAnswer:
         """Transcribe one complete aligned ASR block.
 
         Arguments:
             sources: named equal-status aligned ASR rows
-            speaker: aligned speaker and voice-activity row
-            language: optional aligned spoken-language row
-            music: optional aligned music row
-            singing: optional aligned singing row
+            speaker: aligned speaker row
         Returns:
             consensus transcript divided into subtitles
         """
-        request_results = self.process_requests(
-            sources, speaker, language=language, music=music, singing=singing
-        )
+        request_results = self.process_requests(sources, speaker)
         return TranscriptionAnswer(
             text="".join(result.answer.text for result in request_results)
         )
@@ -81,20 +70,14 @@ class TranscriptionProcessor(Processor):
         sources: Sequence[TranscriptionSource],
         speaker: str,
         *,
-        language: str | None = None,
-        music: str | None = None,
         pause_intervals_seconds: Sequence[tuple[float, float] | None] | None = None,
-        singing: str | None = None,
     ) -> tuple[TranscriptionRequestResult, ...]:
         """Transcribe aligned ASR evidence as separately timed requests.
 
         Arguments:
             sources: named equal-status aligned ASR rows
-            speaker: aligned speaker and voice-activity row
-            language: optional aligned spoken-language row
-            music: optional aligned music row
+            speaker: aligned speaker row
             pause_intervals_seconds: optional interval for each alignment column
-            singing: optional aligned singing row
         Returns:
             request answers with their complete-alignment column spans
         """
@@ -105,9 +88,6 @@ class TranscriptionProcessor(Processor):
                 {
                     "sources": [source.model_dump(mode="json") for source in sources],
                     "speaker": speaker,
-                    "language": language,
-                    "singing": singing,
-                    "music": music,
                 }
             ),
         )
@@ -119,7 +99,7 @@ class TranscriptionProcessor(Processor):
             try:
                 test_case = self.queryer(test_case)
             except ValidationError:
-                answer = test_case.get_no_op_answer()
+                answer = cast(TranscriptionAnswer, test_case.get_no_op_answer())
                 test_case = self.test_case_cls.model_validate(
                     {
                         **test_case.model_dump(mode="json"),
@@ -131,7 +111,7 @@ class TranscriptionProcessor(Processor):
                 test_case = self.queryer.store_answered_test_case(test_case)
                 logger.warning(
                     "LLM exhausted valid transcription answers; used deterministic "
-                    f"column consensus: {query.key_str}"
+                    f"column consensus: {answer.text!r}"
                 )
             answer = cast(TranscriptionAnswer, test_case.answer)
             request_results.append(
@@ -196,12 +176,6 @@ def _get_query_slice(
         ],
         "speaker": query.speaker[start:end],
     }
-    if query.language is not None:
-        update["language"] = query.language[start:end]
-    if query.music is not None:
-        update["music"] = query.music[start:end]
-    if query.singing is not None:
-        update["singing"] = query.singing[start:end]
     return query.model_copy(update=update)
 
 
@@ -219,15 +193,7 @@ def _get_request_queries(
     Raises:
         ValueError: if structured pause intervals do not match the query
     """
-    rows = (
-        query.speaker,
-        *(source.text for source in query.sources),
-        *(
-            annotation
-            for annotation in (query.language, query.singing, query.music)
-            if annotation is not None
-        ),
-    )
+    rows = (query.speaker, *(source.text for source in query.sources))
     if pause_intervals_seconds is None:
         content_spans = _get_flat_content_spans(rows, len(query.speaker))
     else:

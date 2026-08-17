@@ -146,10 +146,13 @@ def test_merge_aligns_sources_and_preserves_consensus_subtitle_splits():
     assert [source.name for source in sources] == ["whisper", "mimo"]
     assert [source.text for source in sources] == ["甲乙", "甲乙"]
     assert speaker == "　　"
+    assert processor.process_requests.call_args.kwargs == {
+        "pause_intervals_seconds": (None, None)
+    }
 
 
 def test_merge_uses_long_pause_boundaries_as_separate_ctc_windows():
-    """Test each request is aligned within its VAD-bounded audio span."""
+    """Test each request is aligned within its pause-bounded audio span."""
     audio = AudioSegment.silent(duration=3_000)
     processor = Mock(spec=TranscriptionProcessor)
     processor.process_requests.return_value = (
@@ -179,7 +182,7 @@ def test_merge_uses_long_pause_boundaries_as_separate_ctc_windows():
 
 
 def test_merge_infers_pauses_when_explicit_evidence_is_unavailable():
-    """Test absent VAD evidence falls back to shared source-timing gaps."""
+    """Test absent explicit pause evidence falls back to source-timing gaps."""
     audio = AudioSegment.silent(duration=3_000)
     processor = Mock(spec=TranscriptionProcessor)
     processor.process_requests.return_value = (
@@ -328,16 +331,14 @@ def test_transcribe_block_runs_sources_and_merges_successful_outputs():
     transcriber.merge.assert_called_once_with(
         {"whisper": whisper_segments, "qwen": qwen_segments},
         audio,
-        audio_events=None,
         diarization=None,
-        language_identification=None,
         pause_intervals_seconds=None,
         source_offset_seconds=0.0,
     )
 
 
-def test_transcribe_block_falls_back_to_only_successful_source():
-    """Test one successful source remains usable without a consensus query."""
+def test_transcribe_block_rejects_only_successful_source():
+    """Test uncorroborated source output does not become a subtitle."""
     audio = AudioSegment.silent(duration=1_000)
     segments = [_get_segment("甲", 0.1, 0.4)]
     whisper = Mock(spec=Transcriber, return_value=segments)
@@ -350,38 +351,14 @@ def test_transcribe_block_falls_back_to_only_successful_source():
         sources={"whisper": whisper, "mimo": mimo},
     )
 
-    output = transcriber(audio)
-
-    assert output is segments
-    processor.process_requests.assert_not_called()
-    ctc_aligner.assert_not_called()
-    assert transcriber.last_lexical_alignment is not None
-
-
-def test_transcribe_block_rejects_lone_low_information_source():
-    """Test uncorroborated vocalizations do not become merged subtitles."""
-    audio = AudioSegment.silent(duration=1_000)
-    vocalization = Mock(
-        spec=Transcriber, return_value=[_get_segment("嗯嗯嗯嗯", 0.1, 0.4)]
-    )
-    empty = Mock(spec=Transcriber, side_effect=TranscriptionEmptyError("empty"))
-    processor = Mock(spec=TranscriptionProcessor)
-    transcriber = _get_transcriber(
-        processor=processor,
-        sources={
-            "whisper": vocalization,
-            "mimo": empty,
-            "qwen": empty,
-            "sensevoice": empty,
-            "firered": empty,
-            "glm": empty,
-        },
-    )
-
-    with raises(TranscriptionEmptyError, match="low-information vocalizations"):
+    with raises(
+        TranscriptionEmptyError,
+        match="Only transcription source 'whisper' produced usable output",
+    ):
         transcriber(audio)
 
     processor.process_requests.assert_not_called()
+    ctc_aligner.assert_not_called()
     assert transcriber.last_lexical_alignment is None
 
 

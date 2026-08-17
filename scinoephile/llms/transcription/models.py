@@ -32,11 +32,6 @@ _SPEAKER_CHARACTERS = frozenset(
     {"　", "・", "＊"} | {chr(ord("Ａ") + index) for index in range(26)}
 )
 """Characters permitted in the speaker annotation row."""
-_LANGUAGE_CHARACTERS = frozenset(
-    {"　", "・", "粵", "普", "英", "日", "韓", "外"}
-    | {chr(ord("Ａ") + index) for index in range(26)}
-)
-"""Characters permitted in the spoken-language annotation row."""
 
 
 class TranscriptionSource(LLMModel):
@@ -70,13 +65,7 @@ class TranscriptionQuery(Query):
     sources: list[TranscriptionSource] = Field(min_length=1)
     """One or more named equal-status ASR source rows."""
     speaker: str = Field(min_length=1, max_length=10_000)
-    """Column-aligned speaker and voice-activity annotations."""
-    language: str | None = Field(default=None, min_length=1, max_length=10_000)
-    """Column-aligned spoken-language annotations, when available."""
-    singing: str | None = Field(default=None, min_length=1, max_length=10_000)
-    """Column-aligned singing annotations, when available."""
-    music: str | None = Field(default=None, min_length=1, max_length=10_000)
-    """Column-aligned music annotations, when available."""
+    """Column-aligned speaker annotations."""
 
     @model_validator(mode="after")
     def validate_rows(self) -> Self:
@@ -89,15 +78,7 @@ class TranscriptionQuery(Query):
             raise ValueError(self.prompt.reference_source_err)
 
         # Every row shares one alignment-column grid without subtitle boundaries
-        rows = (
-            self.speaker,
-            *(source.text for source in self.sources),
-            *(
-                annotation
-                for annotation in (self.language, self.singing, self.music)
-                if annotation is not None
-            ),
-        )
+        rows = (self.speaker, *(source.text for source in self.sources))
         if len({len(row) for row in rows}) != 1:
             raise ValueError(self.prompt.row_length_err)
         if any("｜" in row for row in rows):
@@ -106,15 +87,6 @@ class TranscriptionQuery(Query):
         # Validate the compact alphabets used by annotation rows
         if any(character not in _SPEAKER_CHARACTERS for character in self.speaker):
             raise ValueError(self.prompt.speaker_character_err)
-        if self.language is not None and any(
-            character not in _LANGUAGE_CHARACTERS for character in self.language
-        ):
-            raise ValueError(self.prompt.language_character_err)
-        for annotation, marker in ((self.singing, "唱"), (self.music, "樂")):
-            if annotation is not None and any(
-                character not in {"　", "・", marker} for character in annotation
-            ):
-                raise ValueError(self.prompt.audio_event_character_err)
 
         # At least one ASR source must contain text beyond gaps and pauses
         if not any(

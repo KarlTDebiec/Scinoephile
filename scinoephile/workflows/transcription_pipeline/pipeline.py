@@ -133,7 +133,7 @@ class TranscriptionPipeline:
         self.block_vad_cache = block_vad_cache
         """Persistent full-source block-planning VAD trace cache."""
         self.block_vad_detector = block_vad_detector
-        """Voice activity detector used only for block planning and pause evidence."""
+        """Voice activity detector used only for block planning."""
         self.audio_event_mode = audio_event_mode
         """Source-wide speech, singing, and music detection mode."""
         self.audio_event_detector = audio_event_detector
@@ -269,8 +269,6 @@ class TranscriptionPipeline:
             try:
                 block_segments = self.transcriber.transcribe_block(
                     block_audio,
-                    audio_events=audio_events,
-                    language_identification=language_identification,
                     source_offset_seconds=block.buffered_start_ms / 1000,
                     diarization=diarization,
                 )

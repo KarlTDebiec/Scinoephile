@@ -32,28 +32,11 @@ class TranscriptionPrompt(Prompt):
     )
     """Description of aligned transcription row text field."""
     speaker: str = "speaker"
-    """Name of speaker and voice-activity row field."""
+    """Name of speaker row field."""
     speaker_desc: str = (
-        "Column-aligned fullwidth speaker labels, unattributed-speech markers, and "
-        "gap or timed-pause markers."
+        "Column-aligned fullwidth speaker labels and gap or timed-pause markers."
     )
-    """Description of speaker and voice-activity row field."""
-    language_field: str = "language"
-    """Name of spoken-language annotation row field."""
-    language_desc: str = (
-        "Optional column-aligned fullwidth spoken-language labels and gaps."
-    )
-    """Description of spoken-language annotation row field."""
-    singing: str = "singing"
-    """Name of singing annotation row field."""
-    singing_desc: str = (
-        "Optional column-aligned singing labels, gaps, and timed pauses."
-    )
-    """Description of singing annotation row field."""
-    music: str = "music"
-    """Name of music annotation row field."""
-    music_desc: str = "Optional column-aligned music labels, gaps, and timed pauses."
-    """Description of music annotation row field."""
+    """Description of speaker row field."""
     answer_text: str = "text"
     """Name of consensus text field in answer."""
     answer_text_desc: str = (
@@ -71,8 +54,7 @@ class TranscriptionPrompt(Prompt):
     )
     """Error when a reference-like source is included."""
     row_length_err: str = (
-        "All ASR, speaker, and optional analysis rows in a query must have equal "
-        "nonzero lengths."
+        "All ASR and speaker rows in a query must have equal nonzero lengths."
     )
     """Error when aligned row lengths differ."""
     reference_marker_err: str = (
@@ -84,16 +66,6 @@ class TranscriptionPrompt(Prompt):
         "fullwidth gaps, and fullwidth timed-pause markers."
     )
     """Error when a speaker row contains an unknown annotation."""
-    language_character_err: str = (
-        "Language rows may contain only defined fullwidth language labels, gaps, "
-        "and timed-pause markers."
-    )
-    """Error when a language row contains an unknown annotation."""
-    audio_event_character_err: str = (
-        "Audio-event rows may contain only their defined fullwidth label, gaps, and "
-        "timed-pause markers."
-    )
-    """Error when an audio-event row contains an unknown annotation."""
     transcript_empty_err: str = "Transcription queries must contain transcribed text."
     """Error when every ASR row contains only gaps."""
     answer_text_err: str = (
