@@ -59,7 +59,7 @@ _SCRIPT_CONVERSION_CONFIGS = {
 }
 """OpenCC configurations keyed by transcription language and CTC model name."""
 
-_ALIGNMENT_VERSION = 1
+_ALIGNMENT_VERSION = 2
 """Version of the CTC forced-alignment algorithm and output shaping."""
 
 
@@ -514,7 +514,7 @@ class CtcAligner:
             )
         frame_idx = int(np.argmax(final_column))
 
-        # Backtrack through the trellis to recover token frame spans
+        # Backtrack through the trellis to recover token emission frames
         alignment_token_idx = alignment_token_count
         path: list[tuple[int, int, float]] = []
         for trellis_frame_idx in range(frame_idx, 0, -1):
@@ -528,17 +528,14 @@ class CtcAligner:
                 + log_probs[trellis_frame_idx - 1, token_id]
             )
             if change_score > stay_score:
-                score_token_id = token_id
-            else:
-                score_token_id = blank_token_id
-            path.append(
-                (
-                    path_token_indices[alignment_token_idx - 1],
-                    trellis_frame_idx - 1,
-                    float(np.exp(log_probs[trellis_frame_idx - 1, score_token_id])),
-                )
-            )
-            if change_score > stay_score:
+                if token_id != blank_token_id:
+                    path.append(
+                        (
+                            path_token_indices[alignment_token_idx - 1],
+                            trellis_frame_idx - 1,
+                            float(np.exp(log_probs[trellis_frame_idx - 1, token_id])),
+                        )
+                    )
                 alignment_token_idx -= 1
                 if alignment_token_idx == 0:
                     break
@@ -571,34 +568,19 @@ class CtcAligner:
             raise TranscriptionAlignmentError("CTC alignment received no audio frames.")
         frame_duration = duration_seconds / frame_count
 
-        # Collapse consecutive frames assigned to each transcript character
+        # Convert each transcript token emission to its source character timing
         timed_chars: dict[int, tuple[float, float, float]] = {}
-        path_idx = 0
-        while path_idx < len(path):
-            segment_end_idx = path_idx
-            while (
-                segment_end_idx < len(path)
-                and path[path_idx][0] == path[segment_end_idx][0]
-            ):
-                segment_end_idx += 1
-
-            token_idx = path[path_idx][0]
+        for token_idx, frame_idx, confidence in path:
             if token_idx < 0 or token_idx >= len(char_indices):
                 raise TranscriptionAlignmentError(
                     "CTC path token index is out of range."
                 )
             char_idx = char_indices[token_idx]
-            start = path[path_idx][1] * frame_duration
-            end = (path[segment_end_idx - 1][1] + 1) * frame_duration
-            confidence = sum(item[2] for item in path[path_idx:segment_end_idx]) / (
-                segment_end_idx - path_idx
-            )
             timed_chars[char_idx] = (
-                round(start, 3),
-                round(end, 3),
+                round(frame_idx * frame_duration, 3),
+                round((frame_idx + 1) * frame_duration, 3),
                 round(confidence, 3),
             )
-            path_idx = segment_end_idx
         return timed_chars
 
     @staticmethod

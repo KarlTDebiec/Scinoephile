@@ -95,6 +95,21 @@ class TranscriptionProcessor(Processor):
         for query, (start_column, end_column) in _get_request_queries(
             validated_query, pause_intervals_seconds
         ):
+            if _get_usable_source_count(query) < 2:
+                request_results.append(
+                    TranscriptionRequestResult(
+                        start_column,
+                        end_column,
+                        TranscriptionAnswer(text=""),
+                        query.key_sha256,
+                    )
+                )
+                logger.info(
+                    "Omitted transcription request at alignment columns "
+                    f"{start_column}-{end_column}: fewer than two sources contain "
+                    "usable text."
+                )
+                continue
             test_case = self.test_case_cls(query=query)
             try:
                 test_case = self.queryer(test_case)
@@ -204,11 +219,7 @@ def _get_request_queries(
     requests = []
     for content_start, content_end in content_spans:
         request = _get_query_slice(query, content_start, content_end)
-        if any(
-            character != "・" and not character.isspace()
-            for source in request.sources
-            for character in source.text
-        ):
+        if any(_has_usable_content(source.text) for source in request.sources):
             requests.append((request, (content_start, content_end)))
     return tuple(requests)
 
@@ -273,3 +284,25 @@ def _get_timed_content_spans(
     if content_start < width:
         content_spans.append((content_start, width))
     return tuple(content_spans)
+
+
+def _get_usable_source_count(query: TranscriptionQuery) -> int:
+    """Count sources containing usable content in one request.
+
+    Arguments:
+        query: one pause-delimited transcription query
+    Returns:
+        number of sources containing nonblank, non-pause text
+    """
+    return sum(_has_usable_content(source.text) for source in query.sources)
+
+
+def _has_usable_content(text: str) -> bool:
+    """Check whether aligned text contains usable content.
+
+    Arguments:
+        text: aligned transcription text
+    Returns:
+        whether the text contains nonblank, non-pause content
+    """
+    return any(character != "・" and not character.isspace() for character in text)

@@ -272,21 +272,41 @@ def test_processor_no_op_preserves_request_spans_and_subtitle_limits():
     provider.chat_completion.assert_not_called()
 
 
-def test_processor_transcribes_one_source():
-    """One ASR source should be sent through the normal transcription path."""
+def test_processor_omits_one_source_request():
+    """A request supported by only one ASR source should be omitted."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    answer = processor.process(_get_sources("我係"), "ＡＡ")
+
+    assert answer.transcript == ""
+    provider.chat_completion.assert_not_called()
+
+
+def test_processor_omits_one_source_request_but_keeps_supported_request():
+    """An unsupported request should not discard later corroborated speech."""
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
         completion_metrics=[],
     )
     provider.chat_completion.return_value = json.dumps(
-        {"wenben": "我係｜"}, ensure_ascii=False
+        {"wenben": "乙｜"}, ensure_ascii=False
     )
     processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
 
-    answer = processor.process(_get_sources("我係"), "ＡＡ")
+    results = processor.process_requests(
+        _get_sources("甲・・・・乙", "　・・・・乙"), "Ａ・・・・Ｂ"
+    )
 
-    assert answer.transcript == "我係"
+    assert [
+        (result.start_column, result.end_column, result.answer.transcript)
+        for result in results
+    ] == [(0, 1, ""), (5, 6, "乙")]
     provider.chat_completion.assert_called_once()
 
 
