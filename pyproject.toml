@@ -20,7 +20,7 @@ dependencies = [
     "hkscs-unicode-converter>=1.1.0",
     "jieba>=0.42.1",
     "numba>=0.67.0",
-    "numpy>=2.4.6",
+    "numpy>=2.5.2",
     "openai>=2.53.0",
     "opencc>=1.4.1",
     "pillow>=12.3.0",
@@ -172,7 +172,7 @@ scinoephile = [
 
 [tool.uv]
 override-dependencies = [
-    "numpy>=2.4.6",
+    "numpy>=2.5.2",
     "transformers>=5.15.0",
 ]
 package = true
