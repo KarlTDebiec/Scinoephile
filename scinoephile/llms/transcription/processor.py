@@ -12,9 +12,15 @@ from typing import cast
 from pydantic import ValidationError
 
 from scinoephile.core.llms import Processor
+from scinoephile.core.text import is_low_information_text
 
 from .manager import TranscriptionManager
-from .models import TranscriptionAnswer, TranscriptionQuery, TranscriptionSource
+from .models import (
+    TranscriptionAnswer,
+    TranscriptionQuery,
+    TranscriptionSource,
+    TranscriptionTestCase,
+)
 from .prompt import TranscriptionPrompt
 
 __all__ = ["TranscriptionProcessor", "TranscriptionRequestResult"]
@@ -39,6 +45,8 @@ class TranscriptionRequestResult:
     """Consensus subtitles returned for the request."""
     query_key_sha256: str
     """Digest of the request's semantic query key."""
+    answer_evidence_column_indexes: tuple[int, ...] = ()
+    """Complete-alignment columns corroborating answer characters."""
 
 
 class TranscriptionProcessor(Processor):
@@ -81,15 +89,13 @@ class TranscriptionProcessor(Processor):
         Returns:
             request answers with their complete-alignment column spans
         """
-        query_cls = self.test_case_cls.query_cls
-        validated_query = cast(
-            TranscriptionQuery,
-            query_cls.model_validate(
-                {
-                    "sources": [source.model_dump(mode="json") for source in sources],
-                    "speaker": speaker,
-                }
-            ),
+        test_case_cls = cast(type[TranscriptionTestCase], self.test_case_cls)
+        query_cls = test_case_cls.query_cls
+        validated_query = query_cls.model_validate(
+            {
+                "sources": [source.model_dump(mode="json") for source in sources],
+                "speaker": speaker,
+            }
         )
         request_results = []
         for query, (start_column, end_column) in _get_request_queries(
@@ -110,28 +116,70 @@ class TranscriptionProcessor(Processor):
                     "usable text."
                 )
                 continue
-            test_case = self.test_case_cls(query=query)
+            if _contains_only_low_information_text(query):
+                request_results.append(
+                    TranscriptionRequestResult(
+                        start_column,
+                        end_column,
+                        TranscriptionAnswer(text=""),
+                        query.key_sha256,
+                    )
+                )
+                logger.info(
+                    "Omitted transcription request at alignment columns "
+                    f"{start_column}-{end_column}: sources contain only "
+                    "low-information vocalizations."
+                )
+                continue
+            test_case = test_case_cls(query=query)
             try:
                 test_case = self.queryer(test_case)
             except ValidationError:
                 answer = cast(TranscriptionAnswer, test_case.get_no_op_answer())
-                test_case = self.test_case_cls.model_validate(
-                    {
-                        **test_case.model_dump(mode="json"),
-                        "answer": answer.model_dump(mode="json"),
-                        "few_shot": False,
-                        "verified": False,
-                    }
-                )
-                test_case = self.queryer.store_answered_test_case(test_case)
+                try:
+                    test_case = test_case_cls.model_validate(
+                        {
+                            **test_case.model_dump(mode="json"),
+                            "answer": answer.model_dump(mode="json"),
+                            "few_shot": False,
+                            "verified": False,
+                        }
+                    )
+                except ValidationError:
+                    logger.warning(
+                        "Deterministic column consensus could not satisfy strict "
+                        "transcription validation; returning its conservative "
+                        "cross-source consensus without storing it as a test case."
+                    )
+                else:
+                    test_case = self.queryer.store_answered_test_case(test_case)
                 logger.warning(
                     "LLM exhausted valid transcription answers; used deterministic "
                     f"column consensus: {answer.text!r}"
                 )
-            answer = cast(TranscriptionAnswer, test_case.answer)
+            else:
+                answer = cast(TranscriptionAnswer, test_case.answer)
+            if is_low_information_text(answer.transcript):
+                logger.info(
+                    "Omitted transcription request at alignment columns "
+                    f"{start_column}-{end_column}: consensus contains only "
+                    "low-information vocalizations."
+                )
+                answer = TranscriptionAnswer(text="")
+            validation = test_case_cls.alignment_scorer.score(
+                tuple(source.text for source in query.sources), answer.transcript
+            )
+            answer_evidence_column_indexes = tuple(
+                start_column + column_idx
+                for column_idx in validation.answer_evidence_column_indexes
+            )
             request_results.append(
                 TranscriptionRequestResult(
-                    start_column, end_column, answer, query.key_sha256
+                    start_column,
+                    end_column,
+                    answer,
+                    query.key_sha256,
+                    answer_evidence_column_indexes,
                 )
             )
 
@@ -295,6 +343,22 @@ def _get_usable_source_count(query: TranscriptionQuery) -> int:
         number of sources containing nonblank, non-pause text
     """
     return sum(_has_usable_content(source.text) for source in query.sources)
+
+
+def _contains_only_low_information_text(query: TranscriptionQuery) -> bool:
+    """Check whether every usable source contains only vocalizations.
+
+    Arguments:
+        query: one pause-delimited transcription query
+    Returns:
+        whether all usable source text is low-information
+    """
+    usable_texts = [
+        source.text for source in query.sources if _has_usable_content(source.text)
+    ]
+    return bool(usable_texts) and all(
+        is_low_information_text(text) for text in usable_texts
+    )
 
 
 def _has_usable_content(text: str) -> bool:

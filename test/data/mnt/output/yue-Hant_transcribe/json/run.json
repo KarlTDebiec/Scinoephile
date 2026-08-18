@@ -329,8 +329,8 @@
     },
     {
       "index": 20,
-      "status": "empty",
-      "reason": "Aligned multi-source transcription produced no usable text.",
+      "status": "transcribed",
+      "reason": null,
       "source_cache_key_sha256s": {
         "mimo": "f3648a9fe9c9750183ce7b7ae320918ce90684e6a115d94ce86604f2ca143d4f",
         "qwen": "a488a1661e4b9211272aa19e736b3a5dad377ce757c7f7e413e214631b9ec01f",
@@ -879,8 +879,8 @@
     },
     {
       "index": 55,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "mimo": "8a718a198687cdc310f6ecb545b632748c0794a40f5f51a205d2f12a5f2f3599",
         "qwen": "ca3364c7f934504a8ae76c79393534059501851ec73c40d8c541820f02405725",
@@ -1243,8 +1243,8 @@
     },
     {
       "index": 80,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "a0236045089046c695fc1cad8f88aa907825b09b3f1aa4f6132ac72c4837326d",
         "mimo": "e8ee9427855e5817fa18f7fa69a4ddca50c3715b2e64239a17d07a0e10c364c0",
@@ -1367,8 +1367,8 @@
     },
     {
       "index": 88,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "fe24de39e947b8d6277ea76995d8a23cf4b681270c33e907d686e6e8acc8086c",
         "firered": "30e7b8bdbd9c15ea70d2b04b3eda30e64855cbd6d9490815c18a64ecb8d24dd5"
@@ -1398,8 +1398,8 @@
     },
     {
       "index": 91,
-      "status": "empty",
-      "reason": "Aligned multi-source transcription produced no usable text.",
+      "status": "transcribed",
+      "reason": null,
       "source_cache_key_sha256s": {
         "mimo": "a5b739d3ef04a6f2c3015867a4df932830e9fc82cffd9e2f229a19765a41080c",
         "qwen": "d180dd2b1211e59e4282c20747c858d42a167bca7b7d2c518c83f86e95ddddb5"
@@ -1710,8 +1710,8 @@
     },
     {
       "index": 111,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "1895069d11343146fc16166eb404cf0eb3c540e8722385b65e0d154f20edbe81",
         "firered": "c0a3a07920e651e4253567402c9a3eaa7b408d75c78ef012ce0a24c820b29fe4"
@@ -1868,8 +1868,8 @@
     },
     {
       "index": 121,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "da417ee6f4bdb28ed65264ce0641b163dad8918239a420dd6a5c169cddf78bab",
         "qwen": "b70d750f8c6ee801c14dad47e10f4a431e0be791a1e1e42d3bf5dffa80a8038a",
@@ -2077,8 +2077,8 @@
     },
     {
       "index": 134,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "1af670cc5f5272dc5806db8ec0939faf3935b596bfdd9c4d8a37ae2e5a31e696",
         "qwen": "67dc1ae792130a4cd9ffddf4b8baed4eae0d496e4a4a17d31bf9f12ea2c07c1c",
@@ -2185,8 +2185,8 @@
     },
     {
       "index": 142,
-      "status": "empty",
-      "reason": "Aligned multi-source transcription produced no usable text.",
+      "status": "transcribed",
+      "reason": null,
       "source_cache_key_sha256s": {
         "whisper": "5cdcedad2b6ca07937be221e45196518f79de3784fa8ca138ad2e3f815f82315",
         "mimo": "54c98fb366823c09063d35b55f4d032e50998c1c009923b380472a81a66367fb",
@@ -2231,8 +2231,8 @@
     },
     {
       "index": 145,
-      "status": "empty",
-      "reason": "Aligned multi-source transcription produced no usable text.",
+      "status": "transcribed",
+      "reason": null,
       "source_cache_key_sha256s": {
         "whisper": "be859be88e8de4c2977d1376534afef3e36241322565b618a35d9e990f1b9f5f",
         "mimo": "f217dc77322cd5b41929b235fbafb0852fe8642ab8ffdaddce89fd88b4c3026c",
@@ -2311,8 +2311,8 @@
     },
     {
       "index": 150,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "mimo": "d67849d33847d757da47e0ed1329f55e05e2c136116a33e3b6dee0daccd6e2c5",
         "qwen": "d39a457f1c093a10c5461c85a0d14fef215b097498bc3fea331409bfe06f2551",
@@ -2324,8 +2324,8 @@
     },
     {
       "index": 151,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "bfde4e1cba01ec2b8bda6798ef31e95f6206426ebb536530d1c3e6503bad9205",
         "mimo": "0d48203d5d2c3a82c70078d0238ebbd90728f371d6bf76a26ad93cae97d71262",
@@ -2338,8 +2338,8 @@
     },
     {
       "index": 152,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "382cc41c3fb33c860bc16653d80c310842749989fab9ac9b70dc4e79187c0926",
         "mimo": "bd187fec7c395b04566d3ff610dbb172731f71d478307cfee2ce471b5c3484bf"
@@ -2350,8 +2350,8 @@
     },
     {
       "index": 153,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "f55e0adbdbe07718325d1062cefed590d2145dd9b8339da2ad96db467e0ed733",
         "mimo": "aabd5a0315187820269c8ee522c2df5aea4058ce0bdb6958b483c36a8d35c79a",
@@ -2377,8 +2377,8 @@
     },
     {
       "index": 155,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "f76c1de3bbac3e587438460704ad0d095e61c485f63a3205ab77de7ac4c41a64",
         "mimo": "01863d6b65eb52cf29fb1ee3955c8d45f3006b8f826662240dec2f2bc2aa38c9",
@@ -2851,8 +2851,8 @@
     },
     {
       "index": 185,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "cb5913bfd9dda62dafc6484e4240060ca3348a5318333202310e8a220e6234b8",
         "mimo": "8141cff334deb1e64c3e35c1ca8bd934b95d54fa378b19f8726aff666dbdadec",
@@ -3142,8 +3142,8 @@
     },
     {
       "index": 203,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "46fea7fe0eaa8cd777a2273865f294f77750b51fcc7a8d6af87123994c54eabc",
         "mimo": "58ac1967737a7bf336aa84c56ee0471757cb453862aec95c162b4166baa7323c",
@@ -3202,8 +3202,8 @@
     },
     {
       "index": 207,
-      "status": "transcribed",
-      "reason": null,
+      "status": "empty",
+      "reason": "Aligned multi-source transcription produced no usable text.",
       "source_cache_key_sha256s": {
         "whisper": "1400efcb02f5500de0a4f1cbf7ca8734be1ad98bdd6f7bf5e787b300a7f559f9",
         "mimo": "cdf804a9d73ca278151685f46f523ac8ce671dce2c82ec7d95246f33ee4eb871",
@@ -3356,8 +3356,8 @@
   ],
   "processor": {
     "operation": "transcription",
-    "prompt_name": "TranscriptionPrompt_yue_Hant_09db3a5b3c1a",
-    "system_prompt_sha256": "1c3040d70e9b54a3fa22e7e4d2935281159afeb2e8f90d550ab31e1c73a60543",
+    "prompt_name": "TranscriptionPrompt_yue_Hant_eae3ff23982f",
+    "system_prompt_sha256": "62f22ee4a733d6ff9f57801b20d682a26128b5dcc9ba0fe6d371805c025fe0c0",
     "provider_identity": {
       "implementation": "scinoephile.llms.providers.openai_provider.OpenAIProvider",
       "model": "gpt-5.6-luna",
@@ -3366,5 +3366,5 @@
     },
     "no_op": false
   },
-  "alignment_sha256": "e42d0668ae1c6f6632752ee29833a72c857fd1dfe8e8ed68e56e065cdf1f5ab9"
+  "alignment_sha256": "58e78587f5381e3e22b8970e0fdede3d5c2e83ccef80a3afcace3a207ee27c39"
 }

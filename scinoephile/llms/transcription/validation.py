@@ -9,13 +9,20 @@ from dataclasses import dataclass
 from enum import IntEnum
 from typing import ClassVar
 
-from scinoephile.core.text import is_lexical_character, normalize_nfkc
+from scinoephile.core.text import (
+    is_lexical_character,
+    is_low_information_text,
+    normalize_nfkc,
+)
 
 __all__ = [
     "TranscriptionAlignmentScorer",
     "TranscriptionCharacterRelationship",
     "TranscriptionValidation",
 ]
+
+_MINIMUM_OCCUPIED_EVIDENCE_SOURCE_COUNT = 5
+"""Minimum sources required for presence-only omission evidence."""
 
 
 class TranscriptionCharacterRelationship(IntEnum):
@@ -39,11 +46,29 @@ class TranscriptionValidation:
     """Number of strict-majority columns preserved by supported answer characters."""
     longest_unpreserved_consensus_text: str
     """Representative text of the longest unpreserved strong-consensus run."""
+    longest_unsupported_answer_text: str
+    """Longest answer run lacking corroboration from two ASR sources."""
+    fragile_boundary_answer_text: str
+    """Short boundary phrase mixing invented and single-source characters."""
+    longest_unmapped_occupied_text: str
+    """Longest run of corroborated occupied columns omitted from the answer."""
+    answer_evidence_column_indexes: tuple[int, ...]
+    """Profile columns corroborating answer characters in sequence."""
 
     @property
     def longest_unpreserved_consensus_run(self) -> int:
         """Get the longest consecutive run of unpreserved consensus columns."""
         return len(self.longest_unpreserved_consensus_text)
+
+    @property
+    def longest_unmapped_occupied_run(self) -> int:
+        """Get the longest consecutive run of omitted occupied columns."""
+        return len(self.longest_unmapped_occupied_text)
+
+    @property
+    def longest_unsupported_answer_run(self) -> int:
+        """Get the longest consecutive unsupported answer run."""
+        return len(self.longest_unsupported_answer_text)
 
     @property
     def majority_coverage(self) -> float:
@@ -72,6 +97,40 @@ class TranscriptionValidation:
         if maximum_unpreserved_columns < 0:
             raise ValueError("Maximum unpreserved column count must be non-negative.")
         return self.longest_unpreserved_consensus_run <= maximum_unpreserved_columns
+
+    def preserves_occupied_evidence(self, maximum_unmapped_columns: int) -> bool:
+        """Whether the answer avoids omitting corroborated occupied columns.
+
+        Arguments:
+            maximum_unmapped_columns: maximum permitted consecutive omissions
+        Returns:
+            whether the answer preserves occupied ASR evidence
+        Raises:
+            ValueError: if the maximum is negative
+        """
+        if maximum_unmapped_columns < 0:
+            raise ValueError("Maximum unmapped column count must be non-negative.")
+        return self.longest_unmapped_occupied_run <= maximum_unmapped_columns
+
+    def has_supported_answer(self, maximum_unsupported_characters: int) -> bool:
+        """Whether the answer avoids long unsupported additions.
+
+        Arguments:
+            maximum_unsupported_characters: maximum permitted consecutive additions
+        Returns:
+            whether answer text has sufficient ASR support
+        Raises:
+            ValueError: if the maximum is negative
+        """
+        if maximum_unsupported_characters < 0:
+            raise ValueError(
+                "Maximum unsupported character count must be non-negative."
+            )
+        return self.longest_unsupported_answer_run <= maximum_unsupported_characters
+
+    def has_supported_boundary(self) -> bool:
+        """Whether a short answer avoids a fragile source-unsupported boundary."""
+        return not self.fragile_boundary_answer_text
 
 
 class TranscriptionAlignmentScorer:
@@ -146,7 +205,7 @@ class TranscriptionAlignmentScorer:
         majority_source_count = source_count // 2 + 1
         strong_consensus_source_count = max(majority_source_count, source_count - 1)
         for profile_column_idx, source_characters in profile_columns:
-            majority_character = self._get_consensus_character(
+            majority_character = self.get_consensus_character(
                 source_characters, majority_source_count
             )
             if majority_character is None:
@@ -168,7 +227,7 @@ class TranscriptionAlignmentScorer:
             if is_preserved:
                 preserved_majority_column_count += 1
 
-            consensus_character = self._get_consensus_character(
+            consensus_character = self.get_consensus_character(
                 source_characters, strong_consensus_source_count
             )
             missing_consensus_characters.append(
@@ -180,19 +239,64 @@ class TranscriptionAlignmentScorer:
                 else None
             )
 
-        longest_unpreserved_consensus_text = _get_longest_run_text(
+        longest_unpreserved_consensus_text = _get_longest_informative_run_text(
             missing_consensus_characters
         )
         if not preserved_majority_column_count:
-            longest_unpreserved_consensus_text = _get_longest_run_text(
+            longest_unpreserved_consensus_text = _get_longest_informative_run_text(
                 unpreserved_consensus_characters
             )
+
+        corroborating_source_count = min(2, source_count)
+        unsupported_answer_characters: list[str | None] = []
+        answer_evidence_column_indexes = []
+        answer_support_counts = []
+        source_characters_by_column = dict(profile_columns)
+        for answer_character, profile_column_idx in zip(
+            answer_characters, answer_profile_indexes, strict=True
+        ):
+            support_count = 0
+            if profile_column_idx is not None:
+                support_count = sum(
+                    self.get_character_relationship(answer_character, source_character)
+                    >= TranscriptionCharacterRelationship.pronunciation
+                    for source_character in source_characters_by_column[
+                        profile_column_idx
+                    ]
+                )
+            answer_support_counts.append(support_count)
+            unsupported_answer_characters.append(
+                None
+                if support_count >= corroborating_source_count
+                else answer_character
+            )
+            if (
+                support_count >= corroborating_source_count
+                and profile_column_idx is not None
+            ):
+                answer_evidence_column_indexes.append(profile_column_idx)
+
+        occupied_source_count = max(majority_source_count, source_count - 1)
+        longest_unmapped_occupied_text = _get_longest_internal_occupied_text(
+            profile_columns,
+            answer_index_by_profile_column,
+            occupied_source_count,
+            source_count,
+        )
 
         return TranscriptionValidation(
             majority_column_count=majority_column_count,
             mapped_majority_column_count=mapped_majority_column_count,
             preserved_majority_column_count=preserved_majority_column_count,
             longest_unpreserved_consensus_text=longest_unpreserved_consensus_text,
+            longest_unsupported_answer_text=_get_longest_run_text(
+                unsupported_answer_characters
+            ),
+            fragile_boundary_answer_text=_get_fragile_boundary_text(
+                answer_characters, answer_support_counts, corroborating_source_count
+            ),
+            longest_unmapped_occupied_text=longest_unmapped_occupied_text,
+            answer_evidence_column_indexes=tuple(answer_evidence_column_indexes),
         )
 
     def _get_answer_profile_indexes(
@@ -269,10 +373,17 @@ class TranscriptionAlignmentScorer:
                 raise RuntimeError("Unable to backtrack transcription validation.")
         return tuple(answer_profile_indexes)
 
-    def _get_consensus_character(
+    def get_consensus_character(
         self, source_characters: Sequence[str], required_source_count: int
     ) -> str | None:
-        """Get a representative of the strongest sufficiently supported group."""
+        """Get a representative of the strongest sufficiently supported group.
+
+        Arguments:
+            source_characters: lexical characters from one aligned column
+            required_source_count: minimum equivalent source character count
+        Returns:
+            strongest supported representative, or None
+        """
         consensus_character = None
         consensus_count = required_source_count - 1
         for candidate in source_characters:
@@ -313,6 +424,125 @@ def _get_longest_run_text(characters: Sequence[str | None]) -> str:
         current_characters = []
     if len(current_characters) > len(longest_text):
         longest_text = "".join(current_characters)
+    return longest_text
+
+
+def _get_longest_informative_run_text(characters: Sequence[str | None]) -> str:
+    """Get the longest run that is not solely a vocalization.
+
+    Arguments:
+        characters: characters whose None values divide candidate runs
+    Returns:
+        longest lexical-information-bearing run
+    """
+    longest_text = ""
+    current_characters = []
+    for character in (*characters, None):
+        if character is not None:
+            current_characters.append(character)
+            continue
+        text = "".join(current_characters)
+        if not is_low_information_text(text) and len(text) > len(longest_text):
+            longest_text = text
+        current_characters = []
+    return longest_text
+
+
+def _get_fragile_boundary_text(
+    answer_characters: Sequence[str],
+    answer_support_counts: Sequence[int],
+    corroborating_source_count: int,
+) -> str:
+    """Get a short boundary phrase mixing invented and single-source text."""
+    if len(answer_characters) > 4:
+        return ""
+
+    boundary_spans = []
+    prefix_end = 0
+    while (
+        prefix_end < len(answer_support_counts)
+        and answer_support_counts[prefix_end] < corroborating_source_count
+    ):
+        prefix_end += 1
+    boundary_spans.append((0, prefix_end))
+
+    suffix_start = len(answer_support_counts)
+    while (
+        suffix_start > 0
+        and answer_support_counts[suffix_start - 1] < corroborating_source_count
+    ):
+        suffix_start -= 1
+    boundary_spans.append((suffix_start, len(answer_support_counts)))
+
+    fragile_texts = []
+    for start, end in boundary_spans:
+        support_counts = answer_support_counts[start:end]
+        if len(support_counts) >= 2 and 0 in support_counts and 1 in support_counts:
+            fragile_texts.append("".join(answer_characters[start:end]))
+    return max(fragile_texts, key=len, default="")
+
+
+def _get_longest_internal_occupied_text(
+    profile_columns: Sequence[tuple[int, tuple[str, ...]]],
+    answer_index_by_profile_column: dict[int, int],
+    occupied_source_count: int,
+    source_count: int,
+) -> str:
+    """Get the longest high-occupancy internal hole in an answer alignment.
+
+    Arguments:
+        profile_columns: source characters grouped by alignment column
+        answer_index_by_profile_column: answer-character indexes by mapped column
+        occupied_source_count: minimum populated sources for an occupied column
+        source_count: complete number of aligned sources
+    Returns:
+        representative text of the longest qualifying internal hole
+    """
+    if source_count < _MINIMUM_OCCUPIED_EVIDENCE_SOURCE_COUNT:
+        return ""
+
+    mapped_profile_columns = answer_index_by_profile_column.keys()
+    longest_text = ""
+    column_position = 0
+    while column_position < len(profile_columns):
+        profile_column_idx, source_characters = profile_columns[column_position]
+        if (
+            len(source_characters) < occupied_source_count
+            or profile_column_idx in mapped_profile_columns
+        ):
+            column_position += 1
+            continue
+
+        start_position = column_position
+        characters = []
+        while column_position < len(profile_columns):
+            profile_column_idx, source_characters = profile_columns[column_position]
+            if (
+                len(source_characters) < occupied_source_count
+                or profile_column_idx in mapped_profile_columns
+            ):
+                break
+            characters.append(source_characters[0])
+            column_position += 1
+
+        end_position = column_position - 1
+        has_mapped_left_flank = (
+            start_position > 0
+            and profile_columns[start_position - 1][0] in mapped_profile_columns
+        )
+        has_mapped_right_flank = (
+            end_position + 1 < len(profile_columns)
+            and profile_columns[end_position + 1][0] in mapped_profile_columns
+        )
+        text = "".join(characters)
+        if (
+            has_mapped_left_flank
+            and has_mapped_right_flank
+            and not is_low_information_text(text)
+            and len(text) > len(longest_text)
+        ):
+            longest_text = text
+
     return longest_text
 
 

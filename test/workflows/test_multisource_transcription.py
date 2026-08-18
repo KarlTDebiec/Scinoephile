@@ -257,6 +257,24 @@ def test_request_interval_falls_back_to_in_audio_lexical_timing():
     assert interval == (0.35, 1.0)
 
 
+def test_request_interval_is_constrained_to_answer_evidence():
+    """Corroborating answer columns should narrow a broad request interval."""
+    alignment = Alignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
+            Column((Token("乙", 1.0, 1.5), Token("乙", 1.0, 1.5))),
+            Column((Token("丙", 2.2, 2.5), Token("丙", 2.2, 2.5))),
+        ),
+    )
+
+    interval = get_request_interval(
+        alignment, (0, 3), 3.0, answer_evidence_column_indexes=(1,)
+    )
+
+    assert interval == (0.75, 1.75)
+
+
 def test_timing_retries_incomplete_request_against_unconsumed_block():
     """Test incomplete request timing retries against unconsumed block audio."""
     audio = AudioSegment.silent(duration=3_000)

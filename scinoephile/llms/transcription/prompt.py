@@ -91,6 +91,20 @@ class TranscriptionPrompt(Prompt):
         "the complete transcript in order."
     )
     """Error template when an answer omits a long consensus span."""
+    occupied_omission_err_tpl: str = (
+        "The answer omitted {count} consecutive columns where nearly every ASR "
+        "source contains speech ({evidence}); no more than {maximum} consecutive "
+        "occupied columns may be omitted. Re-read that aligned span and return "
+        "the spoken content in order."
+    )
+    """Error template when an answer omits corroborated occupied columns."""
+    unsupported_answer_err_tpl: str = (
+        "The answer added {count} consecutive characters without sufficient "
+        "aligned ASR support ({text}); no more than {maximum} consecutive "
+        "unsupported characters may be added. Remove invented text and use only "
+        "content supported by the aligned sources."
+    )
+    """Error template when an answer adds an unsupported span."""
 
     def consensus_omission_err(
         self, consensus: str, maximum_unpreserved_columns: int
@@ -109,6 +123,21 @@ class TranscriptionPrompt(Prompt):
             maximum=maximum_unpreserved_columns,
         )
 
+    def occupied_omission_err(
+        self, evidence: str, maximum_unmapped_columns: int
+    ) -> str:
+        """Get an error for omitted occupied ASR columns.
+
+        Arguments:
+            evidence: representative text of the omitted occupied span
+            maximum_unmapped_columns: maximum permitted consecutive omissions
+        Returns:
+            formatted error message
+        """
+        return self.occupied_omission_err_tpl.format(
+            evidence=evidence, count=len(evidence), maximum=maximum_unmapped_columns
+        )
+
     def subtitle_length_err(self, indexes: list[int], max_characters: int) -> str:
         """Get an error for subtitles exceeding the configured maximum length.
 
@@ -121,4 +150,19 @@ class TranscriptionPrompt(Prompt):
         return self.subtitle_length_err_tpl.format(
             indexes=", ".join(str(index) for index in indexes),
             max_characters=max_characters,
+        )
+
+    def unsupported_answer_err(
+        self, text: str, maximum_unsupported_characters: int
+    ) -> str:
+        """Get an error for unsupported answer text.
+
+        Arguments:
+            text: longest unsupported answer span
+            maximum_unsupported_characters: maximum permitted consecutive additions
+        Returns:
+            formatted error message
+        """
+        return self.unsupported_answer_err_tpl.format(
+            text=text, count=len(text), maximum=maximum_unsupported_characters
         )

@@ -50,7 +50,9 @@ YueTranscriptionPromptYueHant = TranscriptionPrompt(
         嘅答案。多來源查詢唔可以因為至少要輸出一項字幕而勉強揀一個來源。短片段入面，
         兩個來源只係偶然重合一個字，但各自提出唔同詞句，唔算可辨識共識。例如來源分別
         係「桃花」、「蒲布」、空白、「婆」、空白同「婆婆」時，必須回答空字串，唔可以
-        回答「婆」或者「婆婆」。
+        回答「婆」或者「婆婆」。純粹由「啊」、「嗯」、「哎」、「哈哈」或者 `AAAH`
+        呢類叫聲組成嘅片段亦必須回答空字串；寧願漏咗冇詞義嘅叫聲，都唔好將模型幻聽嘅
+        叫聲加入字幕。
 
         答案唔係字幕列表，而係一個 `wenben` 字串。輸出完整轉寫，並喺每項字幕結尾
         插入「｜」；答案最後一個字符都必須係「｜」。例如兩項字幕可以回答
@@ -91,6 +93,16 @@ YueTranscriptionPromptYueHant = TranscriptionPrompt(
     consensus_omission_err_tpl=(
         "答案漏咗或者改咗 {count} 個連續高可信多數語音轉寫欄（{consensus}）；最多只可以"
         "漏或者改 {maximum} 個連續欄。請重新檢查嗰段對齊內容並返回完整轉寫。"
+    ),
+    occupied_omission_err_tpl=(
+        "答案漏咗 {count} 個連續而幾乎所有語音轉寫來源都有文字嘅欄（{evidence}）；最多"
+        "只可以漏 {maximum} 個連續有內容嘅欄。請重新檢查嗰段對齊內容並返回實際講出嘅"
+        "完整文字。"
+    ),
+    unsupported_answer_err_tpl=(
+        "答案加入咗 {count} 個連續而冇跨來源語音轉寫支持嘅字符（{text}）；"
+        "最多只可以加入 {maximum} 個連續冇支持嘅字符。請刪走虛構內容，只保留對齊來源"
+        "有支持嘅文字。"
     ),
     subtitle_length_err_tpl=(
         "答案字幕序號 {indexes} 超過每項 {max_characters} 個非空白字符嘅上限。"

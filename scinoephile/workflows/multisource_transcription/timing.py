@@ -34,14 +34,19 @@ _REQUEST_FALLBACK_PADDING_SECONDS = 0.25
 
 
 def get_request_interval(
-    alignment: Alignment, span: tuple[int, int], duration_seconds: float
+    alignment: Alignment,
+    span: tuple[int, int],
+    duration_seconds: float,
+    *,
+    answer_evidence_column_indexes: Sequence[int] = (),
 ) -> tuple[float, float] | None:
-    """Get the audio interval bounded by adjacent long shared pauses.
+    """Get the audio interval around answer evidence within shared-pause bounds.
 
     Arguments:
         alignment: complete aligned source and pause evidence
         span: inclusive and exclusive alignment-column indexes
         duration_seconds: complete block duration
+        answer_evidence_column_indexes: columns corroborating answer characters
     Returns:
         bounded audio interval, or None when evidence is outside the audio
     """
@@ -56,8 +61,38 @@ def get_request_interval(
         end_seconds = alignment.columns[end_column].start_seconds
     start_seconds = max(0.0, min(start_seconds, duration_seconds))
     end_seconds = max(start_seconds, min(end_seconds, duration_seconds))
+    pause_interval = None
     if end_seconds > start_seconds:
-        return start_seconds, end_seconds
+        pause_interval = (start_seconds, end_seconds)
+
+    evidence_columns = tuple(
+        alignment.columns[column_idx]
+        for column_idx in answer_evidence_column_indexes
+        if start_column <= column_idx < end_column
+    )
+    if evidence_columns:
+        evidence_start_seconds = max(
+            0.0,
+            min(column.start_seconds for column in evidence_columns)
+            - _REQUEST_FALLBACK_PADDING_SECONDS,
+        )
+        evidence_end_seconds = min(
+            duration_seconds,
+            max(column.end_seconds for column in evidence_columns)
+            + _REQUEST_FALLBACK_PADDING_SECONDS,
+        )
+        if pause_interval is not None:
+            evidence_start_seconds = max(evidence_start_seconds, pause_interval[0])
+            evidence_end_seconds = min(evidence_end_seconds, pause_interval[1])
+        if evidence_end_seconds > evidence_start_seconds:
+            return evidence_start_seconds, evidence_end_seconds
+        logger.warning(
+            "Answer-evidence timing does not overlap its shared-pause request "
+            "bounds; using the shared-pause interval instead."
+        )
+
+    if pause_interval is not None:
+        return pause_interval
 
     content_columns = alignment.columns[start_column:end_column]
     if not content_columns:
@@ -114,6 +149,9 @@ def get_timed_request_segments(  # noqa: PLR0912, PLR0915
             alignment,
             (request_result.start_column, request_result.end_column),
             duration_seconds,
+            answer_evidence_column_indexes=(
+                request_result.answer_evidence_column_indexes
+            ),
         )
         if request_interval is None:
             logger.warning(

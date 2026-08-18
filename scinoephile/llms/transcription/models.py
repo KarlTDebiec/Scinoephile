@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import unicodedata
-from collections import Counter
 from typing import ClassVar, Self
 
 from pydantic import Field, field_validator, model_validator
@@ -179,6 +178,10 @@ class TranscriptionTestCase(TestCase):
     """Scorer used to compare answers with ASR evidence."""
     maximum_unpreserved_consensus_columns: ClassVar[int] = 2
     """Maximum consecutive strong-consensus columns an answer may not preserve."""
+    maximum_unmapped_occupied_columns: ClassVar[int] = 1
+    """Maximum consecutive corroborated occupied columns an answer may omit."""
+    maximum_unsupported_answer_characters: ClassVar[int] = 4
+    """Maximum consecutive answer characters lacking two-source corroboration."""
     query_cls: ClassVar[type[TranscriptionQuery]] = TranscriptionQuery
     """Query model class."""
     answer_cls: ClassVar[type[TranscriptionAnswer]] = TranscriptionAnswer
@@ -193,17 +196,22 @@ class TranscriptionTestCase(TestCase):
     def get_no_op_answer(self) -> TranscriptionAnswer:
         """Get a deterministic column-wise consensus answer.
 
-        The most common character in each aligned column is selected. Stable source
-        order breaks ties, while gaps, pauses, and nonlexical characters are omitted
-        from the output.
+        The strongest character supported by at least two sources in each aligned
+        column is selected. Gaps, pauses, nonlexical characters, and isolated
+        single-source content are omitted.
 
         Returns:
             plurality consensus split into valid subtitle-length chunks
         """
         consensus_characters = []
         for column in zip(*(source.text for source in self.query.sources), strict=True):
-            character = Counter(column).most_common(1)[0][0]
-            if is_lexical_character(character):
+            source_characters = tuple(
+                character for character in column if is_lexical_character(character)
+            )
+            character = self.alignment_scorer.get_consensus_character(
+                source_characters, min(2, len(self.query.sources))
+            )
+            if character is not None:
                 consensus_characters.append(character)
         consensus = "".join(consensus_characters)
         subtitles = (
@@ -229,6 +237,30 @@ class TranscriptionTestCase(TestCase):
         validation = self.alignment_scorer.score(
             tuple(source.text for source in self.query.sources), self.answer.transcript
         )
+        if not validation.has_supported_answer(
+            self.maximum_unsupported_answer_characters
+        ):
+            raise ValueError(
+                self.prompt.unsupported_answer_err(
+                    validation.longest_unsupported_answer_text,
+                    self.maximum_unsupported_answer_characters,
+                )
+            )
+        if not validation.has_supported_boundary():
+            raise ValueError(
+                self.prompt.unsupported_answer_err(
+                    validation.fragile_boundary_answer_text, 1
+                )
+            )
+        if not validation.preserves_occupied_evidence(
+            self.maximum_unmapped_occupied_columns
+        ):
+            raise ValueError(
+                self.prompt.occupied_omission_err(
+                    validation.longest_unmapped_occupied_text,
+                    self.maximum_unmapped_occupied_columns,
+                )
+            )
         if not validation.preserves_consensus(
             self.maximum_unpreserved_consensus_columns
         ):
