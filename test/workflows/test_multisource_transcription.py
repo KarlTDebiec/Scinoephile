@@ -275,6 +275,92 @@ def test_request_interval_is_constrained_to_answer_evidence():
     assert interval == (0.75, 1.75)
 
 
+def test_timing_realigns_subtitle_stretched_across_omitted_evidence():
+    """A retained subtitle should not span noisy text omitted from the answer."""
+    audio = AudioSegment.silent(duration=10_000)
+    answer = _get_answer("甲", "乙")
+    ctc_aligner = Mock(
+        spec=CtcAligner,
+        side_effect=[
+            [
+                TranscribedSegment(
+                    id=0,
+                    seek=0,
+                    start=0.1,
+                    end=8.2,
+                    text="甲乙",
+                    words=[
+                        TranscribedWord(text="甲", start=0.1, end=7.5, confidence=1.0),
+                        TranscribedWord(text="乙", start=8.0, end=8.2, confidence=1.0),
+                    ],
+                )
+            ],
+            [_get_segment("甲", 0.1, 0.3)],
+        ],
+    )
+    alignment = Alignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
+            Column((Token("丙", 4.0, 4.2), Token("丁", 4.0, 4.2))),
+            Column((Token("乙", 8.0, 8.2), Token("乙", 8.0, 8.2))),
+        ),
+    )
+    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2), (0, 2))
+
+    output, timing_sources = get_timed_request_segments(
+        audio, alignment, (request_result,), ctc_aligner
+    )
+
+    assert [(segment.text, segment.start, segment.end) for segment in output] == [
+        ("甲", 0.1, 0.3),
+        ("乙", 8.0, 8.2),
+    ]
+    assert timing_sources == {0: "ctc-subtitle", 1: "ctc-request"}
+    assert [len(call.args[0]) for call in ctc_aligner.call_args_list] == [8_450, 650]
+
+
+def test_timing_retains_long_subtitle_supported_across_its_interval():
+    """Long timing should remain when the subtitle itself spans the evidence."""
+    audio = AudioSegment.silent(duration=10_000)
+    answer = _get_answer("甲乙")
+    ctc_aligner = Mock(
+        spec=CtcAligner,
+        return_value=[
+            TranscribedSegment(
+                id=0,
+                seek=0,
+                start=0.1,
+                end=8.2,
+                text="甲乙",
+                words=[
+                    TranscribedWord(text="甲", start=0.1, end=0.3, confidence=1.0),
+                    TranscribedWord(text="乙", start=8.0, end=8.2, confidence=1.0),
+                ],
+            )
+        ],
+    )
+    alignment = Alignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
+            Column((Token("丙", 4.0, 4.2), Token("丁", 4.0, 4.2))),
+            Column((Token("乙", 8.0, 8.2), Token("乙", 8.0, 8.2))),
+        ),
+    )
+    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2), (0, 2))
+
+    output, timing_sources = get_timed_request_segments(
+        audio, alignment, (request_result,), ctc_aligner
+    )
+
+    assert [(segment.text, segment.start, segment.end) for segment in output] == [
+        ("甲乙", 0.1, 8.2)
+    ]
+    assert timing_sources == {0: "ctc-request"}
+    ctc_aligner.assert_called_once()
+
+
 def test_timing_retries_incomplete_request_against_unconsumed_block():
     """Test incomplete request timing retries against unconsumed block audio."""
     audio = AudioSegment.silent(duration=3_000)
