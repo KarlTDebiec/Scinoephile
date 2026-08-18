@@ -177,8 +177,8 @@ class TranscriptionTestCase(TestCase):
         TranscriptionAlignmentScorer()
     )
     """Scorer used to compare answers with ASR evidence."""
-    minimum_consensus_coverage: ClassVar[float] = 0.9
-    """Minimum sequence-aligned preservation of strict-majority ASR evidence."""
+    maximum_unpreserved_consensus_columns: ClassVar[int] = 2
+    """Maximum consecutive strong-consensus columns an answer may not preserve."""
     query_cls: ClassVar[type[TranscriptionQuery]] = TranscriptionQuery
     """Query model class."""
     answer_cls: ClassVar[type[TranscriptionAnswer]] = TranscriptionAnswer
@@ -217,7 +217,7 @@ class TranscriptionTestCase(TestCase):
         )
 
     @model_validator(mode="after")
-    def validate_consensus_coverage(self) -> Self:
+    def validate_consensus_preservation(self) -> Self:
         """Ensure the answer preserves sufficient consensus from the ASR sources.
 
         Returns:
@@ -229,10 +229,13 @@ class TranscriptionTestCase(TestCase):
         validation = self.alignment_scorer.score(
             tuple(source.text for source in self.query.sources), self.answer.transcript
         )
-        if not validation.preserves_required_majority(self.minimum_consensus_coverage):
+        if not validation.preserves_consensus(
+            self.maximum_unpreserved_consensus_columns
+        ):
             raise ValueError(
-                self.prompt.consensus_coverage_err(
-                    validation.majority_coverage, self.minimum_consensus_coverage
+                self.prompt.consensus_omission_err(
+                    validation.longest_unpreserved_consensus_text,
+                    self.maximum_unpreserved_consensus_columns,
                 )
             )
         return self

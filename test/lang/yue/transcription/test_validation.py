@@ -43,4 +43,14 @@ def test_yue_alignment_scorer_preserves_pronunciation_matches():
     validation = YueTranscriptionAlignmentScorer().score(("啊", "啊", "啊"), "呀")
 
     assert validation.majority_coverage == 1.0
-    assert validation.preserves_required_majority(0.9)
+    assert validation.preserves_consensus(2)
+
+
+def test_yue_alignment_scorer_accepts_common_asr_spellings():
+    """Preferred Yue spellings should preserve common phonetic ASR forms."""
+    validation = YueTranscriptionAlignmentScorer().score(
+        tuple("睇下係咪噶啦" for _ in range(3)), "睇吓係咪㗎啦"
+    )
+
+    assert validation.majority_coverage == 1.0
+    assert validation.longest_unpreserved_consensus_run == 0

@@ -84,25 +84,29 @@ class TranscriptionPrompt(Prompt):
         "{max_characters} nonwhitespace characters."
     )
     """Error template when answer subtitles exceed the configured maximum length."""
-    consensus_coverage_err_tpl: str = (
-        "The answer preserves only {coverage:.1%} of the sequence-aligned "
-        "high-confidence majority ASR columns; it must preserve at least "
-        "{minimum:.1%}. The answer likely omitted or replaced consensus speech. "
-        "Re-read every aligned column and return the complete transcript in order."
+    consensus_omission_err_tpl: str = (
+        "The answer omitted or replaced {count} consecutive high-confidence "
+        "majority ASR columns ({consensus}); no more than {maximum} consecutive "
+        "columns may be omitted or replaced. Re-read that aligned span and return "
+        "the complete transcript in order."
     )
-    """Error template when answer coverage suggests omitted consensus speech."""
+    """Error template when an answer omits a long consensus span."""
 
-    def consensus_coverage_err(self, coverage: float, minimum: float) -> str:
-        """Get an error for insufficient sequence-aligned majority coverage.
+    def consensus_omission_err(
+        self, consensus: str, maximum_unpreserved_columns: int
+    ) -> str:
+        """Get an error for a long unpreserved majority span.
 
         Arguments:
-            coverage: proportion of the majority sequence preserved in the answer
-            minimum: minimum required coverage
+            consensus: representative text of the unpreserved majority span
+            maximum_unpreserved_columns: maximum permitted consecutive omissions
         Returns:
             formatted error message
         """
-        return self.consensus_coverage_err_tpl.format(
-            coverage=coverage, minimum=minimum
+        return self.consensus_omission_err_tpl.format(
+            consensus=consensus,
+            count=len(consensus),
+            maximum=maximum_unpreserved_columns,
         )
 
     def subtitle_length_err(self, indexes: list[int], max_characters: int) -> str:

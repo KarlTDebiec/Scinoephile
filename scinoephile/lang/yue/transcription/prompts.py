@@ -88,9 +88,9 @@ YueTranscriptionPromptYueHant = TranscriptionPrompt(
         "包含對齊或者講者標記。"
     ),
     answer_punctuation_err="除咗全形字幕邊界之外，答案文本唔可以包含任何標點或者符號。",
-    consensus_coverage_err_tpl=(
-        "答案只保留咗高可信多數語音轉寫字符序列嘅 {coverage:.1%}，必須至少保留 "
-        "{minimum:.1%}。答案好可能漏咗各來源一致嘅對白；請重新逐欄檢查並返回完整轉寫。"
+    consensus_omission_err_tpl=(
+        "答案漏咗或者改咗 {count} 個連續高可信多數語音轉寫欄（{consensus}）；最多只可以"
+        "漏或者改 {maximum} 個連續欄。請重新檢查嗰段對齊內容並返回完整轉寫。"
     ),
     subtitle_length_err_tpl=(
         "答案字幕序號 {indexes} 超過每項 {max_characters} 個非空白字符嘅上限。"

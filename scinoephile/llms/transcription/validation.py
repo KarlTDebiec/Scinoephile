@@ -7,7 +7,6 @@ from __future__ import annotations
 from collections.abc import Sequence
 from dataclasses import dataclass
 from enum import IntEnum
-from math import floor
 from typing import ClassVar
 
 from scinoephile.core.text import is_lexical_character, normalize_nfkc
@@ -38,6 +37,13 @@ class TranscriptionValidation:
     """Number of strict-majority columns occupied by an answer character."""
     preserved_majority_column_count: int
     """Number of strict-majority columns preserved by supported answer characters."""
+    longest_unpreserved_consensus_text: str
+    """Representative text of the longest unpreserved strong-consensus run."""
+
+    @property
+    def longest_unpreserved_consensus_run(self) -> int:
+        """Get the longest consecutive run of unpreserved consensus columns."""
+        return len(self.longest_unpreserved_consensus_text)
 
     @property
     def majority_coverage(self) -> float:
@@ -53,39 +59,19 @@ class TranscriptionValidation:
             return 1.0
         return self.mapped_majority_column_count / self.majority_column_count
 
-    def preserves_required_majority(self, minimum_coverage: float) -> bool:
-        """Whether majority evidence meets coverage with a short-answer safeguard.
-
-        The configured coverage may permit omissions in longer requests. For short
-        requests, one mapped but unsupported replacement may also be tolerated so a
-        contextual spelling correction does not block transcription. The tolerance
-        never excuses a majority column omitted from the answer entirely.
+    def preserves_consensus(self, maximum_unpreserved_columns: int) -> bool:
+        """Whether the answer avoids a long omission of strong consensus evidence.
 
         Arguments:
-            minimum_coverage: minimum proportion of majority columns to preserve
+            maximum_unpreserved_columns: maximum permitted consecutive omissions
         Returns:
-            whether the answer passes deterministic majority preservation
+            whether the answer passes deterministic consensus preservation
         Raises:
-            ValueError: if minimum coverage is outside its accepted range
+            ValueError: if the maximum is negative
         """
-        if not 0.0 <= minimum_coverage <= 1.0:
-            raise ValueError("Minimum majority coverage must be between zero and one.")
-        unmapped_column_count = (
-            self.majority_column_count - self.mapped_majority_column_count
-        )
-        unsupported_column_count = (
-            self.majority_column_count - self.preserved_majority_column_count
-        )
-        proportional_tolerance = floor(
-            self.majority_column_count * (1.0 - minimum_coverage) + 1e-12
-        )
-        if unmapped_column_count > proportional_tolerance:
-            return False
-        if unsupported_column_count <= proportional_tolerance:
-            return True
-        if self.mapped_majority_column_count < self.majority_column_count:
-            return False
-        return unsupported_column_count <= max(proportional_tolerance, 1)
+        if maximum_unpreserved_columns < 0:
+            raise ValueError("Maximum unpreserved column count must be non-negative.")
+        return self.longest_unpreserved_consensus_run <= maximum_unpreserved_columns
 
 
 class TranscriptionAlignmentScorer:
@@ -155,26 +141,58 @@ class TranscriptionAlignmentScorer:
         majority_column_count = 0
         mapped_majority_column_count = 0
         preserved_majority_column_count = 0
+        missing_consensus_characters: list[str | None] = []
+        unpreserved_consensus_characters: list[str | None] = []
+        majority_source_count = source_count // 2 + 1
+        strong_consensus_source_count = max(majority_source_count, source_count - 1)
         for profile_column_idx, source_characters in profile_columns:
-            if not self._has_strict_majority(source_characters, source_count):
+            majority_character = self._get_consensus_character(
+                source_characters, majority_source_count
+            )
+            if majority_character is None:
+                missing_consensus_characters.append(None)
+                unpreserved_consensus_characters.append(None)
                 continue
             majority_column_count += 1
             answer_idx = answer_index_by_profile_column.get(profile_column_idx)
-            if answer_idx is None:
-                continue
-            mapped_majority_column_count += 1
-            answer_character = answer_characters[answer_idx]
-            if any(
-                self.get_character_relationship(answer_character, source_character)
-                >= TranscriptionCharacterRelationship.pronunciation
-                for source_character in source_characters
-            ):
+            is_preserved = False
+            if answer_idx is not None:
+                mapped_majority_column_count += 1
+                answer_character = answer_characters[answer_idx]
+                is_preserved = (
+                    self.get_character_relationship(
+                        answer_character, majority_character
+                    )
+                    >= TranscriptionCharacterRelationship.pronunciation
+                )
+            if is_preserved:
                 preserved_majority_column_count += 1
+
+            consensus_character = self._get_consensus_character(
+                source_characters, strong_consensus_source_count
+            )
+            missing_consensus_characters.append(
+                consensus_character if answer_idx is None else None
+            )
+            unpreserved_consensus_characters.append(
+                consensus_character
+                if consensus_character and not is_preserved
+                else None
+            )
+
+        longest_unpreserved_consensus_text = _get_longest_run_text(
+            missing_consensus_characters
+        )
+        if not preserved_majority_column_count:
+            longest_unpreserved_consensus_text = _get_longest_run_text(
+                unpreserved_consensus_characters
+            )
 
         return TranscriptionValidation(
             majority_column_count=majority_column_count,
             mapped_majority_column_count=mapped_majority_column_count,
             preserved_majority_column_count=preserved_majority_column_count,
+            longest_unpreserved_consensus_text=longest_unpreserved_consensus_text,
         )
 
     def _get_answer_profile_indexes(
@@ -204,12 +222,18 @@ class TranscriptionAlignmentScorer:
                     self.get_character_relationship(answer_character, source_character)
                     for source_character in source_characters
                 )
-                profile_score = max(map(self._get_relationship_score, relationships))
-                strong_source_count = sum(
-                    relationship >= TranscriptionCharacterRelationship.equivalent
+                relationship_scores = tuple(
+                    self._get_relationship_score(relationship)
                     for relationship in relationships
                 )
-                profile_score += 2.0 * strong_source_count / source_count
+                missing_source_count = source_count - len(relationship_scores)
+                profile_score = (
+                    sum(relationship_scores)
+                    + missing_source_count
+                    * self._get_relationship_score(
+                        TranscriptionCharacterRelationship.none
+                    )
+                ) / source_count
                 best_score = scores[profile_idx - 1][answer_idx - 1] + profile_score
                 best_state = 0
                 gap_in_answer_score = (
@@ -245,19 +269,22 @@ class TranscriptionAlignmentScorer:
                 raise RuntimeError("Unable to backtrack transcription validation.")
         return tuple(answer_profile_indexes)
 
-    def _has_strict_majority(
-        self, source_characters: Sequence[str], source_count: int
-    ) -> bool:
-        """Whether any character has strict strong-equivalent source support."""
+    def _get_consensus_character(
+        self, source_characters: Sequence[str], required_source_count: int
+    ) -> str | None:
+        """Get a representative of the strongest sufficiently supported group."""
+        consensus_character = None
+        consensus_count = required_source_count - 1
         for candidate in source_characters:
             count = sum(
                 self.get_character_relationship(candidate, character)
                 >= TranscriptionCharacterRelationship.equivalent
                 for character in source_characters
             )
-            if count > source_count / 2:
-                return True
-        return False
+            if count > consensus_count:
+                consensus_character = candidate
+                consensus_count = count
+        return consensus_character
 
     @staticmethod
     def _get_relationship_score(
@@ -271,6 +298,22 @@ class TranscriptionAlignmentScorer:
         if relationship is TranscriptionCharacterRelationship.pronunciation:
             return 3.0
         return -2.0
+
+
+def _get_longest_run_text(characters: Sequence[str | None]) -> str:
+    """Get the text of the longest run not interrupted by a missing character."""
+    longest_text = ""
+    current_characters = []
+    for character in characters:
+        if character is not None:
+            current_characters.append(character)
+            continue
+        if len(current_characters) > len(longest_text):
+            longest_text = "".join(current_characters)
+        current_characters = []
+    if len(current_characters) > len(longest_text):
+        longest_text = "".join(current_characters)
+    return longest_text
 
 
 def _validate_rows(source_texts: Sequence[str]):

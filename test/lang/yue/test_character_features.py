@@ -34,3 +34,5 @@ def test_character_relationship_orders_flexible_yue_matches():
         get_character_relationship("啊", "呀")
         >= CharacterRelationship.same_jyutping_base
     )
+    assert get_character_relationship("下", "吓") >= CharacterRelationship.equivalent
+    assert get_character_relationship("噶", "㗎") >= CharacterRelationship.equivalent

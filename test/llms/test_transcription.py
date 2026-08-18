@@ -461,7 +461,7 @@ def test_processor_retries_subtitles_exceeding_hard_length_limit():
     assert "maximum of 20 nonwhitespace characters" in retry_messages[-1]["content"]
 
 
-def test_processor_retries_answers_omitting_majority_consensus_speech():
+def test_processor_retries_answers_omitting_strong_consensus_speech():
     """Answers omitting a large unanimous span should be retried."""
     provider = Mock(
         spec=LLMProvider,
@@ -480,7 +480,8 @@ def test_processor_retries_answers_omitting_majority_consensus_speech():
 
     assert answer.transcript == "甲乙丙丁戊己庚辛壬癸"
     retry_messages = provider.chat_completion.call_args.args[0]
-    assert "preserves only 40.0%" in retry_messages[-1]["content"]
+    assert "6 consecutive" in retry_messages[-1]["content"]
+    assert "戊己庚辛壬癸" in retry_messages[-1]["content"]
 
 
 def test_processor_falls_back_after_invalid_consensus_retries(
@@ -511,7 +512,7 @@ def test_processor_falls_back_after_invalid_consensus_retries(
     assert f"used deterministic column consensus: {source_text + '｜'!r}" in caplog.text
 
 
-def test_answer_coverage_allows_locally_supported_character_corrections():
+def test_answer_consensus_allows_pronunciation_supported_corrections():
     """The omission guard should allow a minority character at the same column."""
     query = TranscriptionQuery(
         sources=[
@@ -528,7 +529,7 @@ def test_answer_coverage_allows_locally_supported_character_corrections():
     assert test_case.answer == answer
 
 
-def test_answer_coverage_rejects_equal_length_majority_replacement():
+def test_answer_consensus_rejects_equal_length_majority_replacement():
     """Unrelated equal-length text should not count as preserved evidence."""
     query = TranscriptionQuery(
         sources=_get_sources(*("ＡＢＣＤＥＦＧＨＩＪ" for _ in range(3))),
@@ -536,32 +537,62 @@ def test_answer_coverage_rejects_equal_length_majority_replacement():
     )
     answer = TranscriptionAnswer(text="ＫＬＭＮＯＰＱＲＳＴ｜")
 
-    with raises(ValidationError, match="preserves only 0.0%"):
+    with raises(ValidationError, match="10 consecutive"):
         TranscriptionTestCase(query=query, answer=answer)
 
 
-def test_answer_coverage_rejects_insertions_replacing_missing_majority_span():
-    """Inserted text should not compensate for omitted majority characters."""
+def test_answer_consensus_allows_contextual_span_rewrite():
+    """A mapped contextual rewrite should not be treated as omitted text."""
     query = TranscriptionQuery(
         sources=_get_sources(*("甲乙丙丁戊己庚辛壬癸" for _ in range(3))),
         speaker="Ａ" * 10,
     )
     answer = TranscriptionAnswer(text="甲乙丙丁天地玄黃宇宙｜")
 
-    with raises(ValidationError, match="preserves only 40.0%"):
-        TranscriptionTestCase(query=query, answer=answer)
+    test_case = TranscriptionTestCase(query=query, answer=answer)
+
+    assert test_case.answer == answer
 
 
-def test_answer_coverage_rejects_unmapped_majority_despite_supported_remainder():
-    """Supported substitutions must not obscure excessive omitted columns."""
+def test_answer_consensus_rejects_three_consecutive_omissions():
+    """Three consecutive omitted majority columns should trigger a retry."""
     scorer = TranscriptionAlignmentScorer()
-    validation = scorer.score(tuple("甲乙丙丁戊己" for _ in range(3)), "甲乙丙丁")
+    validation = scorer.score(tuple("甲乙丙丁戊己庚" for _ in range(3)), "甲乙丙丁")
 
-    assert validation.mapped_majority_coverage == 4 / 6
-    assert not validation.preserves_required_majority(0.9)
+    assert validation.longest_unpreserved_consensus_text == "戊己庚"
+    assert not validation.preserves_consensus(2)
 
 
-def test_answer_coverage_accepts_compatibility_width_equivalence():
+def test_answer_consensus_allows_scattered_contextual_corrections():
+    """Scattered contextual rewrites should not trigger an omission retry."""
+    source_text = "甲乙丙丁戊己庚辛壬癸"
+    query = TranscriptionQuery(
+        sources=_get_sources(*(source_text for _ in range(3))),
+        speaker="Ａ" * len(source_text),
+    )
+    answer = TranscriptionAnswer(text="甲天丙丁地己庚玄壬癸｜")
+
+    validation = TranscriptionAlignmentScorer().score(
+        tuple(source.text for source in query.sources), answer.transcript
+    )
+    test_case = TranscriptionTestCase(query=query, answer=answer)
+
+    assert validation.majority_coverage == 0.7
+    assert validation.longest_unpreserved_consensus_run == 0
+    assert test_case.answer == answer
+
+
+def test_answer_alignment_prioritizes_cross_source_support():
+    """Single-source text should not pull an answer away from consensus columns."""
+    validation = TranscriptionAlignmentScorer().score(
+        ("　　　　", "　　甲乙", "甲乙甲乙"), "甲乙丙"
+    )
+
+    assert validation.mapped_majority_coverage == 1.0
+    assert validation.majority_coverage == 1.0
+
+
+def test_answer_consensus_accepts_compatibility_width_equivalence():
     """Halfwidth and fullwidth Latin characters should preserve the same evidence."""
     query = TranscriptionQuery(
         sources=_get_sources(*("June" for _ in range(3))), speaker="Ａ" * 4
@@ -573,7 +604,7 @@ def test_answer_coverage_accepts_compatibility_width_equivalence():
     assert test_case.answer == answer
 
 
-def test_answer_coverage_ignores_nonlexical_source_columns():
+def test_answer_consensus_ignores_nonlexical_source_columns():
     """Punctuation and spaces should not count as required answer evidence."""
     source_text = "甲，乙 丙，丁 戊，己"
     query = TranscriptionQuery(
@@ -591,7 +622,7 @@ def test_answer_coverage_ignores_nonlexical_source_columns():
     assert test_case.answer == answer
 
 
-def test_answer_coverage_tolerates_one_contextual_spelling_replacement():
+def test_answer_consensus_tolerates_one_contextual_spelling_replacement():
     """One mapped unsupported name correction should not fail a short request."""
     query = TranscriptionQuery(
         sources=_get_sources(*("膠兜依然係咁喺度" for _ in range(3))), speaker="Ａ" * 8
@@ -603,7 +634,7 @@ def test_answer_coverage_tolerates_one_contextual_spelling_replacement():
     assert test_case.answer == answer
 
 
-def test_answer_coverage_does_not_reject_context_resolved_weak_columns():
+def test_answer_consensus_does_not_reject_context_resolved_weak_columns():
     """Columns without a strict majority should remain diagnostic rather than fatal."""
     source_texts = ("菇時", "巫師", "　師", "古時", "　時", "姑絲")
     query = TranscriptionQuery(sources=_get_sources(*source_texts), speaker="ＡＡ")
@@ -617,16 +648,40 @@ def test_answer_coverage_does_not_reject_context_resolved_weak_columns():
     assert test_case.answer == answer
 
 
-def test_empty_answer_requires_absent_majority_evidence():
-    """An empty answer should fail only when strict-majority speech is present."""
+def test_empty_answer_rejects_only_long_consensus_spans():
+    """An empty answer should retry only for a substantial consensus omission."""
     weak_query = TranscriptionQuery(
         sources=_get_sources("甲", "乙", "丙"), speaker="Ａ"
     )
-    strong_query = TranscriptionQuery(
-        sources=_get_sources("甲", "甲", "甲"), speaker="Ａ"
+    short_query = TranscriptionQuery(
+        sources=_get_sources(*("甲乙" for _ in range(3))), speaker="ＡＡ"
+    )
+    long_query = TranscriptionQuery(
+        sources=_get_sources(*("甲乙丙" for _ in range(3))), speaker="ＡＡＡ"
     )
     answer = TranscriptionAnswer(text="")
 
     assert TranscriptionTestCase(query=weak_query, answer=answer).answer == answer
-    with raises(ValidationError, match="preserves only 0.0%"):
-        TranscriptionTestCase(query=strong_query, answer=answer)
+    assert TranscriptionTestCase(query=short_query, answer=answer).answer == answer
+    with raises(ValidationError, match="甲乙丙"):
+        TranscriptionTestCase(query=long_query, answer=answer)
+
+
+def test_empty_answer_allows_bare_majority_without_strong_consensus():
+    """A bare four-of-six majority should not force noisy text into the answer."""
+    query = TranscriptionQuery(
+        sources=_get_sources(
+            "甲乙丙", "甲乙丙", "甲乙丙", "甲乙丙", "丁戊己", "庚辛壬"
+        ),
+        speaker="ＡＡＡ",
+    )
+    answer = TranscriptionAnswer(text="")
+
+    validation = TranscriptionAlignmentScorer().score(
+        tuple(source.text for source in query.sources), answer.transcript
+    )
+    test_case = TranscriptionTestCase(query=query, answer=answer)
+
+    assert validation.majority_column_count == 3
+    assert validation.longest_unpreserved_consensus_run == 0
+    assert test_case.answer == answer

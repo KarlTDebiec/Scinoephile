@@ -23,6 +23,8 @@ _EQUIVALENCE_GROUPS = (
     frozenset({"是", "係", "系"}),
     frozenset({"的", "嘅"}),
     frozenset({"這", "呢"}),
+    frozenset({"下", "吓"}),
+    frozenset({"噶", "㗎"}),
 )
 """Common Mandarinized and Yue ASR substitutions."""
 
