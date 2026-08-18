@@ -8,17 +8,14 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
-from scinoephile.media.audio import AudioExtractionMode
+from test.data.aligned_transcription import process_transcription
 from test.data.ocr import process_ocr
 from test.data.stacking import process_zho_hans_eng
-from test.data.transcription import process_transcription_pipeline
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
 output_path = title_root / "output"
 set_logging_verbosity(2)
-
-yue_remux_path = Path("/Volumes/Backup/Video/BD Remux/Trivisa (2016).mkv")
 
 transcription_additional_context = """
 電影背景：
@@ -64,15 +61,12 @@ if "zho-Hans_eng" in actions:
     eng_path = output_path / "eng_ocr" / "fuse_clean_validate_review_flatten.srt"
     process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
 if "yue-Hant_transcribe" in actions:
-    process_transcription_pipeline(
+    process_transcription(
         title_root,
         reference_path=(
             output_path / "zho-Hant_ocr" / "fuse_clean_validate_review_flatten.srt"
         ),
-        media_path=yue_remux_path,
-        stream_index=1,
-        audio_extraction_mode=AudioExtractionMode.CENTER_HEAVY,
         additional_context=transcription_additional_context,
         reference_name="zho-Hant",
-        terminal_alignment_authority="merged",
+        terminal_authority="merged",
     )

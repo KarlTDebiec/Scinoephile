@@ -8,10 +8,9 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
-from scinoephile.media.audio import AudioExtractionMode
+from test.data.aligned_transcription import process_transcription
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
-from test.data.transcription import process_transcription_pipeline
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -21,11 +20,6 @@ set_logging_verbosity(2)
 eng_ocr_path = output_path / "eng_ocr"
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 zho_hant_ocr_path = output_path / "zho-Hant_ocr"
-yue_transcribe_backup_path = output_path / "yue_transcribe_backup"
-yue_remux_path = Path("/Volumes/Backup/Video/BD Remux/My Life as McDull (2001).mkv")
-old_yue_hans_path = (
-    yue_transcribe_backup_path / "transcribe_translate_guided_review.srt"
-)
 transcription_additional_context = """
 電影背景：
 《麥兜故事》係二〇〇一年香港粵語動畫電影。成年麥兜回憶自己喺九龍大角咀成長、
@@ -77,18 +71,15 @@ if "zho-Hans_eng" in actions:
     process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
 if "yue-Hans_eng" in actions:
     yue_hans_path = (
-        yue_transcribe_backup_path / "transcribe_translate_guided_review.srt"
+        output_path / "yue_transcribe_backup" / "transcribe_translate_guided_review.srt"
     )
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
     process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)
 if "yue-Hant_transcribe" in actions:
-    process_transcription_pipeline(
+    process_transcription(
         title_root,
         reference_path=zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        media_path=yue_remux_path,
-        stream_index=1,
-        audio_extraction_mode=AudioExtractionMode.CENTER_HEAVY,
         additional_context=transcription_additional_context,
         reference_name="zho-Hant",
-        terminal_alignment_authority="merged",
+        terminal_authority="merged",
     )
