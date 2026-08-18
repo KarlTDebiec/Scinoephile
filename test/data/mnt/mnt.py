@@ -99,7 +99,7 @@ if "yue-Hant_transcribe" in actions:
     process_transcription(
         title_root,
         reference_path=input_path / "yue_zho-Hant.srt",
-        # stop_at_idx=300,
+        # stop_at_idx=5,
         exclude_blocks=[1, 2, 216],
         additional_context=transcription_additional_context,
         reference_name="zho-Hant",
