@@ -21,9 +21,6 @@ __all__ = [
     "TranscriptionValidation",
 ]
 
-_MINIMUM_OCCUPIED_EVIDENCE_SOURCE_COUNT = 5
-"""Minimum sources required for presence-only omission evidence."""
-
 
 class TranscriptionCharacterRelationship(IntEnum):
     """Strength of source support for one answer character."""
@@ -50,20 +47,15 @@ class TranscriptionValidation:
     """Longest answer run lacking corroboration from two ASR sources."""
     fragile_boundary_answer_text: str
     """Short boundary phrase mixing invented and single-source characters."""
-    longest_unmapped_occupied_text: str
-    """Longest run of corroborated occupied columns omitted from the answer."""
     answer_evidence_column_indexes: tuple[int, ...]
     """Profile columns corroborating answer characters in sequence."""
+    answer_character_evidence_column_indexes: tuple[int | None, ...]
+    """Corroborating profile column for each lexical answer character."""
 
     @property
     def longest_unpreserved_consensus_run(self) -> int:
         """Get the longest consecutive run of unpreserved consensus columns."""
         return len(self.longest_unpreserved_consensus_text)
-
-    @property
-    def longest_unmapped_occupied_run(self) -> int:
-        """Get the longest consecutive run of omitted occupied columns."""
-        return len(self.longest_unmapped_occupied_text)
 
     @property
     def longest_unsupported_answer_run(self) -> int:
@@ -97,20 +89,6 @@ class TranscriptionValidation:
         if maximum_unpreserved_columns < 0:
             raise ValueError("Maximum unpreserved column count must be non-negative.")
         return self.longest_unpreserved_consensus_run <= maximum_unpreserved_columns
-
-    def preserves_occupied_evidence(self, maximum_unmapped_columns: int) -> bool:
-        """Whether the answer avoids omitting corroborated occupied columns.
-
-        Arguments:
-            maximum_unmapped_columns: maximum permitted consecutive omissions
-        Returns:
-            whether the answer preserves occupied ASR evidence
-        Raises:
-            ValueError: if the maximum is negative
-        """
-        if maximum_unmapped_columns < 0:
-            raise ValueError("Maximum unmapped column count must be non-negative.")
-        return self.longest_unmapped_occupied_run <= maximum_unmapped_columns
 
     def has_supported_answer(self, maximum_unsupported_characters: int) -> bool:
         """Whether the answer avoids long unsupported additions.
@@ -250,6 +228,7 @@ class TranscriptionAlignmentScorer:
         corroborating_source_count = min(2, source_count)
         unsupported_answer_characters: list[str | None] = []
         answer_evidence_column_indexes = []
+        answer_character_evidence_column_indexes = []
         answer_support_counts = []
         source_characters_by_column = dict(profile_columns)
         for answer_character, profile_column_idx in zip(
@@ -275,14 +254,9 @@ class TranscriptionAlignmentScorer:
                 and profile_column_idx is not None
             ):
                 answer_evidence_column_indexes.append(profile_column_idx)
-
-        occupied_source_count = max(majority_source_count, source_count - 1)
-        longest_unmapped_occupied_text = _get_longest_internal_occupied_text(
-            profile_columns,
-            answer_index_by_profile_column,
-            occupied_source_count,
-            source_count,
-        )
+                answer_character_evidence_column_indexes.append(profile_column_idx)
+            else:
+                answer_character_evidence_column_indexes.append(None)
 
         return TranscriptionValidation(
             majority_column_count=majority_column_count,
@@ -295,8 +269,10 @@ class TranscriptionAlignmentScorer:
             fragile_boundary_answer_text=_get_fragile_boundary_text(
                 answer_characters, answer_support_counts, corroborating_source_count
             ),
-            longest_unmapped_occupied_text=longest_unmapped_occupied_text,
             answer_evidence_column_indexes=tuple(answer_evidence_column_indexes),
+            answer_character_evidence_column_indexes=tuple(
+                answer_character_evidence_column_indexes
+            ),
         )
 
     def _get_answer_profile_indexes(
@@ -480,70 +456,6 @@ def _get_fragile_boundary_text(
         if len(support_counts) >= 2 and 0 in support_counts and 1 in support_counts:
             fragile_texts.append("".join(answer_characters[start:end]))
     return max(fragile_texts, key=len, default="")
-
-
-def _get_longest_internal_occupied_text(
-    profile_columns: Sequence[tuple[int, tuple[str, ...]]],
-    answer_index_by_profile_column: dict[int, int],
-    occupied_source_count: int,
-    source_count: int,
-) -> str:
-    """Get the longest high-occupancy internal hole in an answer alignment.
-
-    Arguments:
-        profile_columns: source characters grouped by alignment column
-        answer_index_by_profile_column: answer-character indexes by mapped column
-        occupied_source_count: minimum populated sources for an occupied column
-        source_count: complete number of aligned sources
-    Returns:
-        representative text of the longest qualifying internal hole
-    """
-    if source_count < _MINIMUM_OCCUPIED_EVIDENCE_SOURCE_COUNT:
-        return ""
-
-    mapped_profile_columns = answer_index_by_profile_column.keys()
-    longest_text = ""
-    column_position = 0
-    while column_position < len(profile_columns):
-        profile_column_idx, source_characters = profile_columns[column_position]
-        if (
-            len(source_characters) < occupied_source_count
-            or profile_column_idx in mapped_profile_columns
-        ):
-            column_position += 1
-            continue
-
-        start_position = column_position
-        characters = []
-        while column_position < len(profile_columns):
-            profile_column_idx, source_characters = profile_columns[column_position]
-            if (
-                len(source_characters) < occupied_source_count
-                or profile_column_idx in mapped_profile_columns
-            ):
-                break
-            characters.append(source_characters[0])
-            column_position += 1
-
-        end_position = column_position - 1
-        has_mapped_left_flank = (
-            start_position > 0
-            and profile_columns[start_position - 1][0] in mapped_profile_columns
-        )
-        has_mapped_right_flank = (
-            end_position + 1 < len(profile_columns)
-            and profile_columns[end_position + 1][0] in mapped_profile_columns
-        )
-        text = "".join(characters)
-        if (
-            has_mapped_left_flank
-            and has_mapped_right_flank
-            and not is_low_information_text(text)
-            and len(text) > len(longest_text)
-        ):
-            longest_text = text
-
-    return longest_text
 
 
 def _validate_rows(source_texts: Sequence[str]):

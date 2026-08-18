@@ -94,11 +94,6 @@ YueTranscriptionPromptYueHant = TranscriptionPrompt(
         "答案漏咗或者改咗 {count} 個連續高可信多數語音轉寫欄（{consensus}）；最多只可以"
         "漏或者改 {maximum} 個連續欄。請重新檢查嗰段對齊內容並返回完整轉寫。"
     ),
-    occupied_omission_err_tpl=(
-        "答案漏咗 {count} 個連續而幾乎所有語音轉寫來源都有文字嘅欄（{evidence}）；最多"
-        "只可以漏 {maximum} 個連續有內容嘅欄。請重新檢查嗰段對齊內容並返回實際講出嘅"
-        "完整文字。"
-    ),
     unsupported_answer_err_tpl=(
         "答案加入咗 {count} 個連續而冇跨來源語音轉寫支持嘅字符（{text}）；"
         "最多只可以加入 {maximum} 個連續冇支持嘅字符。請刪走虛構內容，只保留對齊來源"

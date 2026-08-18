@@ -30,7 +30,7 @@ _NonBlankString = Annotated[str, StringConstraints(min_length=1, strip_whitespac
 _SpeakerSymbol = Annotated[str, StringConstraints(pattern=r"^[Ａ-Ｚ]$")]
 """Anonymous fullwidth Latin speaker symbol."""
 
-TimingSource = Literal["ctc-request", "ctc-unconsumed-block", "source"]
+TimingSource = Literal["ctc-request", "ctc-subtitle", "ctc-unconsumed-block", "source"]
 """Origin of one final subtitle's speech timing."""
 
 

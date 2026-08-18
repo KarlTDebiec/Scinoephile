@@ -91,13 +91,6 @@ class TranscriptionPrompt(Prompt):
         "the complete transcript in order."
     )
     """Error template when an answer omits a long consensus span."""
-    occupied_omission_err_tpl: str = (
-        "The answer omitted {count} consecutive columns where nearly every ASR "
-        "source contains speech ({evidence}); no more than {maximum} consecutive "
-        "occupied columns may be omitted. Re-read that aligned span and return "
-        "the spoken content in order."
-    )
-    """Error template when an answer omits corroborated occupied columns."""
     unsupported_answer_err_tpl: str = (
         "The answer added {count} consecutive characters without sufficient "
         "aligned ASR support ({text}); no more than {maximum} consecutive "
@@ -121,21 +114,6 @@ class TranscriptionPrompt(Prompt):
             consensus=consensus,
             count=len(consensus),
             maximum=maximum_unpreserved_columns,
-        )
-
-    def occupied_omission_err(
-        self, evidence: str, maximum_unmapped_columns: int
-    ) -> str:
-        """Get an error for omitted occupied ASR columns.
-
-        Arguments:
-            evidence: representative text of the omitted occupied span
-            maximum_unmapped_columns: maximum permitted consecutive omissions
-        Returns:
-            formatted error message
-        """
-        return self.occupied_omission_err_tpl.format(
-            evidence=evidence, count=len(evidence), maximum=maximum_unmapped_columns
         )
 
     def subtitle_length_err(self, indexes: list[int], max_characters: int) -> str:

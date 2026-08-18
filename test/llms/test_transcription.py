@@ -439,6 +439,10 @@ def test_processor_exposes_request_alignment_spans():
         for call in provider.chat_completion.call_args_list
     ]
     assert [result.answer_evidence_column_indexes for result in results] == [(0,), (5,)]
+    assert [result.answer_character_evidence_column_indexes for result in results] == [
+        (0,),
+        (5,),
+    ]
 
 
 def test_processor_omits_requests_containing_only_vocalizations():
@@ -753,8 +757,8 @@ def test_empty_answer_uses_character_consensus_with_fewer_sources():
         TranscriptionTestCase(query=long_query, answer=answer)
 
 
-def test_answer_rejects_internal_fully_occupied_columns_without_consensus():
-    """An answer should retain internal spans where every source detected speech."""
+def test_answer_allows_internal_fully_occupied_columns_without_consensus():
+    """Presence without textual consensus should not force uncertain content."""
     source_texts = (
         "甲乙丙丁戊",
         "甲己庚辛戊",
@@ -771,9 +775,9 @@ def test_answer_rejects_internal_fully_occupied_columns_without_consensus():
     )
     assert validation.majority_column_count == 2
     assert validation.longest_unpreserved_consensus_run == 0
-    assert validation.longest_unmapped_occupied_text == "乙丙丁"
-    with raises(ValidationError, match="3 consecutive columns"):
-        TranscriptionTestCase(query=query, answer=answer)
+    test_case = TranscriptionTestCase(query=query, answer=answer)
+
+    assert test_case.answer == answer
 
 
 def test_answer_allows_boundary_fully_occupied_columns_without_consensus():

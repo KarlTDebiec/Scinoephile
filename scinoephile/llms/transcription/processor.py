@@ -47,6 +47,8 @@ class TranscriptionRequestResult:
     """Digest of the request's semantic query key."""
     answer_evidence_column_indexes: tuple[int, ...] = ()
     """Complete-alignment columns corroborating answer characters."""
+    answer_character_evidence_column_indexes: tuple[int | None, ...] = ()
+    """Corroborating complete-alignment column for each answer character."""
 
 
 class TranscriptionProcessor(Processor):
@@ -173,6 +175,14 @@ class TranscriptionProcessor(Processor):
                 start_column + column_idx
                 for column_idx in validation.answer_evidence_column_indexes
             )
+            answer_character_evidence_column_indexes: list[int | None] = []
+            for column_idx in validation.answer_character_evidence_column_indexes:
+                if column_idx is None:
+                    answer_character_evidence_column_indexes.append(None)
+                else:
+                    answer_character_evidence_column_indexes.append(
+                        start_column + column_idx
+                    )
             request_results.append(
                 TranscriptionRequestResult(
                     start_column,
@@ -180,6 +190,7 @@ class TranscriptionProcessor(Processor):
                     answer,
                     query.key_sha256,
                     answer_evidence_column_indexes,
+                    tuple(answer_character_evidence_column_indexes),
                 )
             )
 

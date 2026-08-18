@@ -178,8 +178,6 @@ class TranscriptionTestCase(TestCase):
     """Scorer used to compare answers with ASR evidence."""
     maximum_unpreserved_consensus_columns: ClassVar[int] = 2
     """Maximum consecutive strong-consensus columns an answer may not preserve."""
-    maximum_unmapped_occupied_columns: ClassVar[int] = 1
-    """Maximum consecutive corroborated occupied columns an answer may omit."""
     maximum_unsupported_answer_characters: ClassVar[int] = 4
     """Maximum consecutive answer characters lacking two-source corroboration."""
     query_cls: ClassVar[type[TranscriptionQuery]] = TranscriptionQuery
@@ -250,15 +248,6 @@ class TranscriptionTestCase(TestCase):
             raise ValueError(
                 self.prompt.unsupported_answer_err(
                     validation.fragile_boundary_answer_text, 1
-                )
-            )
-        if not validation.preserves_occupied_evidence(
-            self.maximum_unmapped_occupied_columns
-        ):
-            raise ValueError(
-                self.prompt.occupied_omission_err(
-                    validation.longest_unmapped_occupied_text,
-                    self.maximum_unmapped_occupied_columns,
                 )
             )
         if not validation.preserves_consensus(
