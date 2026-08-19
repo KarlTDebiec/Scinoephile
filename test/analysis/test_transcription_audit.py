@@ -56,6 +56,8 @@ def test_audit_reports_block_cer_sorted_by_merged_error():
     artifact = _get_artifact()
     first_block = artifact.blocks[0].model_copy(
         update={
+            "core_end_ms": 2_500,
+            "buffered_end_ms": 2_500,
             "merged": "是・嗎",
             "subtitles": (
                 artifact.blocks[0].subtitles[0].model_copy(update={"text": "是嗎"}),
@@ -118,6 +120,23 @@ def test_audit_marks_blocks_without_reference_characters_unscored():
     report = audit_transcription_alignment(artifact, {"reference": Series(events=[])})
 
     assert "|     1 |                    0 |      — |       — |    — |" in report
+
+
+def test_audit_assigns_boundary_reference_by_global_text_alignment():
+    """Reference text should follow its matching block across a timing boundary."""
+    artifact = _get_boundary_artifact()
+    reference = Series(events=[Subtitle(start=800, end=1_000, text="乙")])
+
+    report = audit_transcription_alignment(artifact, {"reference": reference})
+
+    reference_lines = [
+        line for line in report.splitlines() if line.startswith("reference")
+    ]
+    assert len(reference_lines) == 2
+    assert "乙" not in reference_lines[0]
+    assert "乙" in reference_lines[1]
+    assert "|     1 |                    0 |      — |" in report
+    assert "|     2 |                    1 |     0% |" in report
 
 
 def test_audit_distinguishes_unaligned_merged_and_reference_boundaries():
@@ -662,8 +681,8 @@ def test_audit_splits_rows_at_merge_request_boundaries():
     artifact = _get_artifact()
     block = AlignmentBlock(
         index=1,
-        core_start_ms=500,
-        core_end_ms=2500,
+        core_start_ms=0,
+        core_end_ms=3000,
         buffered_start_ms=0,
         buffered_end_ms=3000,
         columns=(
@@ -893,8 +912,8 @@ def _get_artifact() -> AlignmentArtifact:
         blocks=(
             AlignmentBlock(
                 index=1,
-                core_start_ms=500,
-                core_end_ms=2500,
+                core_start_ms=0,
+                core_end_ms=3000,
                 buffered_start_ms=0,
                 buffered_end_ms=3000,
                 columns=(
@@ -920,6 +939,57 @@ def _get_artifact() -> AlignmentArtifact:
                         speaker="Ａ",
                     ),
                 ),
+            ),
+        ),
+    )
+
+
+def _get_boundary_artifact() -> AlignmentArtifact:
+    """Get two blocks whose reference timing and text imply different owners."""
+    sources = (
+        AlignmentSource(name="whisper", backend="whisper", model="whisper"),
+        AlignmentSource(name="mimo", backend="mlx", model="mimo"),
+    )
+    return AlignmentArtifact(
+        language=Language.yue_hant,
+        audio_duration_ms=2_000,
+        sources=sources,
+        blocks=(
+            _get_character_block(1, 0, "甲", sources),
+            _get_character_block(2, 1_000, "乙", sources),
+        ),
+    )
+
+
+def _get_character_block(
+    index: int, start_ms: int, text: str, sources: tuple[AlignmentSource, ...]
+) -> AlignmentBlock:
+    """Get one single-character artifact block for audit tests."""
+    speech_start_ms = start_ms + 100
+    speech_end_ms = start_ms + 300
+    return AlignmentBlock(
+        index=index,
+        core_start_ms=start_ms,
+        core_end_ms=start_ms + 1_000,
+        buffered_start_ms=start_ms,
+        buffered_end_ms=start_ms + 1_000,
+        columns=(
+            AlignmentColumn(
+                index=1, start_ms=speech_start_ms, end_ms=speech_end_ms, kind="text"
+            ),
+        ),
+        rows=tuple(AlignmentRow(name=source.name, text=text) for source in sources),
+        speaker="Ａ",
+        merged=text,
+        subtitles=(
+            AlignmentSubtitle(
+                index=index,
+                text=text,
+                speech_start_ms=speech_start_ms,
+                speech_end_ms=speech_end_ms,
+                timing_source="source",
+                start_ms=start_ms,
+                end_ms=start_ms + 500,
             ),
         ),
     )

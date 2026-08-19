@@ -167,6 +167,29 @@ def test_existing_alignment_is_regenerated_for_different_block_count(tmp_path: P
     )
 
 
+def test_invalid_existing_alignment_is_ignored(
+    tmp_path: Path, caplog: LogCaptureFixture
+):
+    """An artifact from an unsupported schema should trigger regeneration.
+
+    Arguments:
+        tmp_path: temporary output directory
+        caplog: captured log records
+    """
+    artifact_path = tmp_path / "alignment.json"
+    artifact_data = _get_artifact().model_dump(mode="json")
+    artifact_data["version"] = 3
+    artifact_path.write_text(json.dumps(artifact_data), encoding="utf-8")
+
+    existing_run = transcription_data._load_existing_run(  # noqa: SLF001
+        artifact_path, tmp_path / "run.json", overwrite=False
+    )
+
+    assert existing_run == (None, None)
+    assert "Ignoring invalid transcription alignment artifact" in caplog.text
+    assert "Extra inputs are not permitted" not in caplog.text
+
+
 def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
     """A fresh run should route provenance and write harness outputs."""
     title_root_path = tmp_path / "title"
