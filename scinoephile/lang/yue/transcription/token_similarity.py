@@ -8,8 +8,10 @@ from dataclasses import dataclass
 from math import isfinite
 
 from scinoephile.analysis.alignment.timed_msa.models import Token
-from scinoephile.core.text import normalize_nfkc
-from scinoephile.lang.yue.character_features import CharacterFeatures
+from scinoephile.lang.yue.character_features import (
+    CharacterRelationship,
+    get_character_relationship,
+)
 
 __all__ = ["YueTokenSimilarity"]
 
@@ -91,21 +93,15 @@ class YueTokenSimilarity:
         Returns:
             Yue-aware lexical substitution score
         """
-        if normalize_nfkc(one) == normalize_nfkc(two):
+        relationship = get_character_relationship(one, two)
+        if relationship is CharacterRelationship.exact:
             return self.exact_score
-        one_features = CharacterFeatures.get(one)
-        two_features = CharacterFeatures.get(two)
-        if one_features.simplified == two_features.simplified:
+        if relationship is CharacterRelationship.script_variant:
             return self.script_variant_score
-        if one_features.equivalence_groups.intersection(
-            two_features.equivalence_groups
-        ):
+        if relationship is CharacterRelationship.equivalent:
             return self.yue_equivalent_score
-        if one_features.jyutping and one_features.jyutping == two_features.jyutping:
+        if relationship is CharacterRelationship.same_jyutping:
             return self.same_jyutping_score
-        if (
-            one_features.jyutping_base
-            and one_features.jyutping_base == two_features.jyutping_base
-        ):
+        if relationship is CharacterRelationship.same_jyutping_base:
             return self.same_jyutping_base_score
         return self.substitution_score

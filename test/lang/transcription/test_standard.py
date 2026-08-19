@@ -76,9 +76,9 @@ def test_yue_prompts_distinguish_single_and_multiple_sources():
     assert "如果查詢有多個來源" in traditional_prompt
     assert "只出現喺單一來源" in traditional_prompt
     assert "唔係獨立嘅詞彙證據" in traditional_prompt
-    assert "同語言分類一致就收錄" in traditional_prompt
+    assert "語言分類" not in traditional_prompt
     assert "如果查询只有一个来源" in simplified_prompt
     assert "如果查询有多个来源" in simplified_prompt
     assert "只出现喺单一来源" in simplified_prompt
     assert "唔系独立嘅词汇证据" in simplified_prompt
-    assert "同语言分类一致就收录" in simplified_prompt
+    assert "语言分类" not in simplified_prompt

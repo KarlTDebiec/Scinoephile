@@ -262,11 +262,8 @@ class TranscriptionPipeline:
             try:
                 block_segments = self.transcriber.transcribe_block(
                     block_audio,
-                    audio_events=audio_events,
-                    language_identification=language_identification,
                     pause_intervals_seconds=pause_intervals,
                     source_offset_seconds=block.buffered_start_ms / 1000,
-                    voice_activity_trace=trace,
                     diarization=diarization,
                 )
             except TranscriptionEmptyError as exc:
