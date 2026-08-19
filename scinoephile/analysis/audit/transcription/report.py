@@ -14,12 +14,12 @@ from scinoephile.analysis.transcription.artifact import (
     AlignmentBlock,
 )
 from scinoephile.analysis.transcription.evaluation import (
-    evaluate_character_errors,
+    evaluate_selected_character_errors,
     evaluate_transcription,
 )
 from scinoephile.analysis.transcription.timing import (
     evaluate_timing,
-    get_reference_for_alignment,
+    get_block_references,
 )
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import normalize_nfkc
@@ -53,8 +53,8 @@ def audit_transcription_alignment(
             and merged-character support
         first_index: first merged subtitle index whose complete block to include
         last_index: last merged subtitle index whose complete block to include
-        first_block: first one-based VAD block index to include
-        last_block: last one-based VAD block index to include
+        first_block: first one-based block index to include
+        last_block: last one-based block index to include
         include_audio_events: whether to render singing and music rows
         include_language: whether to render the spoken-language row
         include_merge_support: whether to render normalized merged-character support
@@ -68,6 +68,10 @@ def audit_transcription_alignment(
     """
     validate_audit_range(first_index, last_index, first_block, last_block)
     named_references = _get_named_references(artifact, references)
+    block_references = {
+        reference_name: get_block_references(artifact, reference)
+        for reference_name, reference in named_references.items()
+    }
     blocks = _get_selected_blocks(
         artifact.blocks,
         first_index=first_index,
@@ -84,7 +88,7 @@ def audit_transcription_alignment(
         f"- format: {artifact.format} v{artifact.version}",
         f"- language: {artifact.language.code}",
         f"- ASR sources: {len(artifact.sources)}",
-        f"- selected VAD blocks: {len(blocks)}",
+        f"- selected blocks: {len(blocks)}",
         f"- selected merged subtitles: {sum(len(block.subtitles) for block in blocks)}",
         f"- references: {', '.join(named_references) or 'none'}",
         f"- pause encoding: one ・ per {artifact.pause_unit_ms} ms",
@@ -112,7 +116,9 @@ def audit_transcription_alignment(
                     "characters are unscored and listed last."
                 ),
                 "",
-                *_get_block_cer_lines(selected_artifact, reference),
+                *_get_block_cer_lines(
+                    selected_artifact, block_references[reference_name]
+                ),
             )
         )
     if named_references and include_timing_tables:
@@ -137,14 +143,13 @@ def audit_transcription_alignment(
             lines.extend(("", language_legend))
         if include_timing_tables:
             lines.extend(("", *_get_merged_subtitle_lines(block)))
-        block_artifact = artifact.model_copy(update={"blocks": (block,)})
-        block_references = {
-            reference_name: get_reference_for_alignment(block_artifact, reference)
-            for reference_name, reference in named_references.items()
+        references_for_block = {
+            reference_name: references_by_block[block.index]
+            for reference_name, references_by_block in block_references.items()
         }
         rendered = render_transcription_alignment_block(
             block,
-            block_references,
+            references_for_block,
             aligner,
             request_pause_columns=artifact.request_pause_columns,
             include_audio_events=include_audio_events,
@@ -184,8 +189,8 @@ def render_transcription_alignment_terminal(
             and merged-character support
         first_index: first merged subtitle index whose complete block to include
         last_index: last merged subtitle index whose complete block to include
-        first_block: first one-based VAD block index to include
-        last_block: last one-based VAD block index to include
+        first_block: first one-based block index to include
+        last_block: last one-based block index to include
         include_audio_events: whether to render singing and music rows
         include_language: whether to render the spoken-language row
         include_merge_support: whether to render normalized merged-character support
@@ -198,6 +203,10 @@ def render_transcription_alignment_terminal(
     """
     validate_audit_range(first_index, last_index, first_block, last_block)
     named_references = _get_named_references(artifact, references)
+    block_references = {
+        reference_name: get_block_references(artifact, reference)
+        for reference_name, reference in named_references.items()
+    }
     valid_authoritative_names = {"merged", *named_references}
     if authoritative_row_name not in valid_authoritative_names:
         options = ", ".join(sorted(valid_authoritative_names))
@@ -225,15 +234,14 @@ def render_transcription_alignment_terminal(
             lines.append(f"Source errors: {errors}")
         if include_language and (language_legend := _get_language_legend(block)):
             lines.append(language_legend)
-        block_artifact = artifact.model_copy(update={"blocks": (block,)})
-        block_references = {
-            reference_name: get_reference_for_alignment(block_artifact, reference)
-            for reference_name, reference in named_references.items()
+        references_for_block = {
+            reference_name: references_by_block[block.index]
+            for reference_name, references_by_block in block_references.items()
         }
         lines.append(
             render_transcription_alignment_block(
                 block,
-                block_references,
+                references_for_block,
                 aligner,
                 request_pause_columns=artifact.request_pause_columns,
                 include_audio_events=include_audio_events,
@@ -246,12 +254,14 @@ def render_transcription_alignment_terminal(
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _get_block_cer_lines(artifact: AlignmentArtifact, reference: Series) -> list[str]:
+def _get_block_cer_lines(
+    artifact: AlignmentArtifact, references_by_block: Mapping[int, Series]
+) -> list[str]:
     """Get block-level CER rows sorted by merged error rate.
 
     Arguments:
         artifact: selected alignment artifact
-        reference: independent reference subtitles
+        references_by_block: globally aligned reference subtitles by block index
     Returns:
         Markdown table lines
     """
@@ -260,7 +270,12 @@ def _get_block_cer_lines(artifact: AlignmentArtifact, reference: Series) -> list
     for block in artifact.blocks:
         block_artifact = artifact.model_copy(update={"blocks": (block,)})
         block_results.append(
-            (block.index, evaluate_character_errors(block_artifact, reference))
+            (
+                block.index,
+                evaluate_selected_character_errors(
+                    block_artifact, references_by_block[block.index]
+                ),
+            )
         )
     block_results.sort(
         key=lambda result: (
@@ -442,8 +457,8 @@ def _get_selected_blocks(
         blocks: alignment blocks in source order
         first_index: first merged subtitle index whose block to include
         last_index: last merged subtitle index whose block to include
-        first_block: first VAD block index to include
-        last_block: last VAD block index to include
+        first_block: first block index to include
+        last_block: last block index to include
     Returns:
         complete blocks intersecting the requested range
     """

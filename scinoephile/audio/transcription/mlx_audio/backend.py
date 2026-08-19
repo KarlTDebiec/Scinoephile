@@ -4,13 +4,18 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Callable, Iterator, Mapping
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
+from threading import Lock
 from typing import ClassVar, Protocol, cast
 
 from scinoephile.common.validation import val_input_file_or_dir_path
-from scinoephile.core.dependencies.transcription import import_mlx_audio_stt_load
+from scinoephile.core.dependencies.transcription import (
+    import_mlx_audio_mimo_asr,
+    import_mlx_audio_stt_load,
+)
 from scinoephile.core.language import Language
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
@@ -41,9 +46,11 @@ class MlxAudioBackend:
     """Runs direct speech-to-text inference through one MLX-Audio model."""
 
     _models_by_key: ClassVar[
-        dict[tuple[str, str | None, str], _LoadedMlxAudioModel]
+        dict[tuple[str, str | None, str, str | None, str | None], _LoadedMlxAudioModel]
     ] = {}
-    """Loaded models shared by reference, revision, and MLX-Audio model type."""
+    """Loaded models shared by complete model identity."""
+    _model_load_lock: ClassVar[Lock] = Lock()
+    """Lock protecting process-wide model loading and resolver replacement."""
 
     def __init__(
         self, model: MlxAudioModel = MIMO_MODEL, language: Language = Language.yue_hant
@@ -146,6 +153,54 @@ class MlxAudioBackend:
             self._model_reference, self.model_revision
         )
 
+    def _get_audio_tokenizer_reference(self) -> Path | None:
+        """Resolve a remote model's auxiliary audio tokenizer locally.
+
+        Returns:
+            pinned local audio-tokenizer directory, when configured
+        """
+        if (
+            not isinstance(self._model_reference, str)
+            or self.model.audio_tokenizer_model_name is None
+        ):
+            return None
+        return get_huggingface_snapshot_dir_path(
+            self.model.audio_tokenizer_model_name,
+            self.model.audio_tokenizer_model_revision,
+        )
+
+    @contextmanager
+    def _use_local_audio_tokenizer(
+        self, audio_tokenizer_reference: Path | None
+    ) -> Iterator[None]:
+        """Make MLX-Audio use a pre-resolved auxiliary tokenizer directory.
+
+        Arguments:
+            audio_tokenizer_reference: pinned local tokenizer directory, if required
+        """
+        if audio_tokenizer_reference is None:
+            yield
+            return
+
+        # MLX-Audio's MiMo hook otherwise resolves the manifest's mutable tokenizer
+        # repository through Hugging Face even when the required files are cached.
+        mimo_asr = import_mlx_audio_mimo_asr()
+        get_model_path = cast(Callable[..., Path], mimo_asr.get_model_path)
+
+        def get_local_model_path(
+            path_or_hf_repo: str, *args: object, **kwargs: object
+        ) -> Path:
+            """Resolve the configured tokenizer locally and delegate other models."""
+            if path_or_hf_repo == self.model.audio_tokenizer_model_name:
+                return audio_tokenizer_reference
+            return get_model_path(path_or_hf_repo, *args, **kwargs)
+
+        setattr(mimo_asr, "get_model_path", get_local_model_path)
+        try:
+            yield
+        finally:
+            setattr(mimo_asr, "get_model_path", get_model_path)
+
     @property
     def _loaded_model(self) -> _LoadedMlxAudioModel:
         """Get the cached MLX-Audio model, loading it if needed.
@@ -160,17 +215,22 @@ class MlxAudioBackend:
             str(self._model_reference),
             self.model_revision,
             self.model.model_type,
+            self.model.audio_tokenizer_model_name,
+            self.model.audio_tokenizer_model_revision,
         )
 
         # Reuse the process-wide model cache across inference instances
-        cached_model = self._models_by_key.get(model_key)
-        if cached_model is None:
-            load = import_mlx_audio_stt_load()
-            load_kwargs: dict[str, object] = {"model_type": self.model.model_type}
-            model_reference = self._get_model_reference()
-            cached_model = cast(
-                _LoadedMlxAudioModel, load(model_reference, **load_kwargs)
-            )
-            self._models_by_key[model_key] = cached_model
+        with self._model_load_lock:
+            cached_model = self._models_by_key.get(model_key)
+            if cached_model is None:
+                load = import_mlx_audio_stt_load()
+                load_kwargs: dict[str, object] = {"model_type": self.model.model_type}
+                model_reference = self._get_model_reference()
+                audio_tokenizer_reference = self._get_audio_tokenizer_reference()
+                with self._use_local_audio_tokenizer(audio_tokenizer_reference):
+                    cached_model = cast(
+                        _LoadedMlxAudioModel, load(model_reference, **load_kwargs)
+                    )
+                self._models_by_key[model_key] = cached_model
         self._loaded_model_instance = cached_model
         return self._loaded_model_instance

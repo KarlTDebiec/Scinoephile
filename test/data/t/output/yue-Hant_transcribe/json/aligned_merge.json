@@ -1,0 +1,2161 @@
+[
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "mimo",
+          "text": "Takeittothedo・・・or"
+        },
+        {
+          "name": "qwen",
+          "text": "係佢直接到唔到　　　　　　・・・　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "咩　京又得唔到　　　　　　・・・　　"
+        },
+        {
+          "name": "firered",
+          "text": "再　堅持一下到時候　　　　・・・　　"
+        }
+      ],
+      "speaker": "ＡＢＢＡＡＡＡＡＡＡ　　　・・・　　",
+      "language": "　　　　　　　　　　　　　・・・　　",
+      "singing": "　　　　　　　　　　　　　・・・　　",
+      "music": "　　　　　　　　　　　　　・・・　　"
+    },
+    "answer": {
+      "text": "唔到。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "喂警察"
+        },
+        {
+          "name": "mimo",
+          "text": "喂差人"
+        },
+        {
+          "name": "qwen",
+          "text": "喂蔡人"
+        },
+        {
+          "name": "sensevoice",
+          "text": "喂親人"
+        },
+        {
+          "name": "firered",
+          "text": "喂插眼"
+        },
+        {
+          "name": "glm",
+          "text": "喂差人"
+        }
+      ],
+      "speaker": "ＣＣＣ",
+      "language": "普普普",
+      "singing": "　　　",
+      "music": "　　　"
+    },
+    "answer": {
+      "text": "喂，差人。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "拿我新聞證出來看看・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "攞　三件　出嚟啊　・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "攞我三分　鐘去睇　・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "攞個身份證出嚟睇下・・・"
+        },
+        {
+          "name": "firered",
+          "text": "　哦上門領券來　　・・・"
+        },
+        {
+          "name": "glm",
+          "text": "幫我上門　裏去等下・・・"
+        }
+      ],
+      "speaker": "ＣＣＣＣＣＣＣＣＣ・・・",
+      "language": "普普普普普普普普普・・・",
+      "singing": "　　　　　　　　　・・・",
+      "music": "　　　　　　　　　・・・"
+    },
+    "answer": {
+      "text": "攞個身份證出嚟睇下。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　查下咩料收到"
+        },
+        {
+          "name": "mimo",
+          "text": "先　　　　　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "車　　有咩料收到"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　系咩料收到"
+        },
+        {
+          "name": "firered",
+          "text": "車上沒有留稍等把"
+        },
+        {
+          "name": "glm",
+          "text": "　　請下咩料收到"
+        }
+      ],
+      "speaker": "ＢＢＢＢＢＢＤＤ",
+      "language": "ＡＡＡＡＡＡ　Ｂ",
+      "singing": "　　　　　　　　",
+      "music": "　　　　　　　　"
+    },
+    "answer": {
+      "text": "查下咩料｜收到｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "角度係代住啲咩呀電台查下查　　　個牌匙　・・・C532743・・尾數1・桂正雄"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　　　　　　　　　　　　　　　　　　・・・　五三二七四三・・尾數一・季正紅"
+        },
+        {
+          "name": "qwen",
+          "text": "多多　代住啦咩　電台請車咁好好好睇　　睇・・・四五三二七四三・・尾數一・桂正雄"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　多　代未　　　電　　check　　　　・・・睇五三二七四三・・美　一・郭正雄"
+        },
+        {
+          "name": "firered",
+          "text": "刀倒　進來沒有　電台來check個包來來・・・c五三二七四三・・尾數一・桂正紅"
+        },
+        {
+          "name": "glm",
+          "text": "收到　收到收　　　　　　　　到咗未啊電台・・・C五三二七四三・・尾數一・貴正雄"
+        }
+      ],
+      "speaker": "ＢＢＢＤＤＤＤＤＤＤＤＢＢＤＤＤＤＤＤＤ・・・ＤＤＤＤＤＤＤ・・ＤＤＤ・ＤＤＤ",
+      "language": "ＢＢＢＢＢＢＢＢＢＢＢ　普普普普普普普普・・・粵粵粵粵粵粵粵・・普普普・粵粵粵",
+      "singing": "　　　　　　　　　　　　　　　　　　　　・・・　　　　　　　・・　　　・　　　",
+      "music": "　　　　　　　　　　　　　　　　　　　　・・・　　　　　　　・・　　　・　　　"
+    },
+    "answer": {
+      "text": "帶住咩？電台check｜C五三二七四三｜尾數一｜季正雄｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "打下佢・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "　　　・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "打　佢・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "八　個・・・"
+        },
+        {
+          "name": "glm",
+          "text": "打　佢・・・"
+        }
+      ],
+      "speaker": "ＥＥＥ・・・",
+      "language": "ＡＡＡ・・・",
+      "singing": "　　　・・・",
+      "music": "　　　・・・"
+    },
+    "answer": {
+      "text": "打佢。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "嘅　　arrangementsforHongKong・跟　　　　　　　　　　　天啲agreement而諗咩　　　　　　　　　　　　　　　　　　　　　　　　　咩咩・・・咩　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　咩咩咩　　　　　　　　　　　　　　　　　　　　　咩咩咩　　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "ThearrangementsforHongKong・containedintheagreementarenotmeasuresofexpediencyThey・・・arelongtermpolicieswhichwi・llbeincorporatedintheBasicLawforHongKongandpreser　　vedintac　　"
+        },
+        {
+          "name": "qwen",
+          "text": "啲安排事對香港　　　　　　　　　　　　　　　　　　　・containedintheagreementarenotmeasuresofexpediencythey・・・arelongtermpolicieswhichwi・llbeincorporatedinthebasiclawforHongKongandpreser人民　　　　　　　　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "thearrangementsforhongkong・containedintheagreementarenotmeasuresofexpediencythey・・・arelongtermpolicieswhichwi・llbeincorporatedinthebasiclawforhongkongandpreser　　vedintactt"
+        },
+        {
+          "name": "firered",
+          "text": "thearrangementsforhongcome・containedintheagreementandnotmeasuresofexpediencythey・・・arelongtermpolicieswhichwi・llbeincorporatedinthebasiclawforhongcomeandpreser　　vedintact　"
+        },
+        {
+          "name": "glm",
+          "text": "ThearrangementsforHongKong・containedintheagreementarenotmeasuresofexpediencyThey・・・arelongtermpolicieswhichwi・llbeincorporatedintheBasicLawforHongKongandpreser　　vedintac　　"
+        }
+      ],
+      "speaker": "ＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦ・ＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦ・・・ＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦ・ＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦＦ　ＦＦ",
+      "language": "ＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＡＣＣＣＣ・ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ・・・英英英英英英英英英英英英英英英英英英英英英英英英英英・ＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣＣ　　ＣＣ",
+      "singing": "　　　　　　　　　　　　　　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　唱唱唱　　　　　　　　　　　　　　　　　　　　　　　　・・・唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱　・唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱　　　　　　　　　　　　　　　　　　　　　　　　　唱唱唱　　唱　　　　　　　　　",
+      "music": "樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂　　　　　　・　　　　　樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂　　　　　樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂　　　　　　　　樂樂樂樂樂樂樂　　　樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂　　　　　　　　　　"
+    },
+    "answer": {
+      "text": "The arrangements for｜Hong Kong｜contained in the｜agreement are not｜measures of｜expediency.｜They｜are long-term policies｜which will be｜incorporated in the｜Basic Law for Hong｜Kong and preserved｜intact.｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "　tforfi"
+        },
+        {
+          "name": "qwen",
+          "text": "　　　　　　　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "ftforfi"
+        },
+        {
+          "name": "firered",
+          "text": "　　forfi"
+        },
+        {
+          "name": "glm",
+          "text": "　tforfi"
+        }
+      ],
+      "speaker": "ＧＧＧＧＧＧＧ",
+      "language": "普普普普普普普",
+      "singing": "　　　　　　　",
+      "music": "　　　　　　樂"
+    },
+    "answer": {
+      "text": "forfi｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "ftyyears・from1997我國　　　　　　　　　　　　　兩個聲明不受干擾的全面貫徹實施是中英兩國的共同利益"
+        },
+        {
+          "name": "qwen",
+          "text": "　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　不受幹擾的全面貫徹實施是中英兩國的共同利益"
+        },
+        {
+          "name": "sensevoice",
+          "text": "ftyyears・fromnineteenninetyseven　　　　　　　　　　　　　　　　　　　　　　　　　"
+        },
+        {
+          "name": "firered",
+          "text": "ftyyears・fromnineteenninetyseven兩個生命不受干擾的全面貫徹實施是中英兩國的共同利益"
+        },
+        {
+          "name": "glm",
+          "text": "ftyyears・fromnineteenninetyseven　　　　　　　　　　　　　　　　　　　　　　　　　"
+        }
+      ],
+      "speaker": "ＧＧＧＧＧＧＧＧ・ＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧ　ＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧＧ",
+      "language": "ＢＢＢＢＢＢＢＢ・普普普普普普普普普普普普普普普普普普普普普普普　普普普普普普普普普普普普普普普普普普普普普普普普",
+      "singing": "　　　　　　　　・　　　　　　　　　　唱唱唱唱唱唱唱唱唱　　　　　　唱唱唱唱唱唱唱唱唱唱唱唱唱　　　　　　　　　　",
+      "music": "樂樂樂樂樂樂樂樂・　　　樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂"
+    },
+    "answer": {
+      "text": "Fifty years｜from 1997，｜不受干擾的全面貫徹實施｜是中英兩國的共同利益。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　・・・　　　　　　・　　・・・咩"
+        },
+        {
+          "name": "mimo",
+          "text": "　你也是・・・我們雙方共同・的　・・・人"
+        },
+        {
+          "name": "qwen",
+          "text": "利益也是・・・我們雙方共同・的　・・・人"
+        },
+        {
+          "name": "sensevoice",
+          "text": "利益也是・・・我們雙方共同・的責・・・任"
+        },
+        {
+          "name": "firered",
+          "text": "利益也是・・・我們雙方共同・的責・・・任"
+        },
+        {
+          "name": "glm",
+          "text": "　你也是・・・我們雙方共同・的　・・・人"
+        }
+      ],
+      "speaker": "ＧＧＧＧ・・・ＧＧＧＧＧＧ・ＧＧ・・・Ｇ",
+      "language": "普普普普・・・普普普普普　・　　・・・　",
+      "singing": "　　　　・・・　　　　　　・　　・・・　",
+      "music": "樂樂樂樂・・・樂樂樂樂樂樂・樂樂・・・樂"
+    },
+    "answer": {
+      "text": "利益也是｜我們雙方共同｜的責任。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "今日下午觀塘發生鞋劫案四名持槍鞋匪徒連環打劫立華街現間金行"
+        },
+        {
+          "name": "mimo",
+          "text": "今日下晝觀塘發生械劫案四名持槍械匪徒連環打劫諾華街五間金行"
+        },
+        {
+          "name": "qwen",
+          "text": "今日下晝觀塘發生械劫案四名持槍械匪徒連環打劫麗華街五間金行"
+        },
+        {
+          "name": "sensevoice",
+          "text": "今日下晝觀塘發生械劫案四名持槍械匪徒便環打劫立華街五間金行"
+        },
+        {
+          "name": "firered",
+          "text": "今日下晝觀塘發生械劫案四名持槍械匪徒連環打劫物華街五間金行"
+        },
+        {
+          "name": "glm",
+          "text": "今日下午官塘發生械劫案四名持槍歹　徒變幻打劫摩羅街五間金行"
+        }
+      ],
+      "speaker": "ＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨ",
+      "language": "粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵",
+      "singing": "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
+      "music": "樂樂樂樂樂　　　　　　　　　　　　　　　　　　　　　　　　"
+    },
+    "answer": {
+      "text": "今日下晝觀塘發生械劫案。｜四名持槍械匪徒連環打劫物華街五間金行。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "由觀眾提供片段見到賊人離開嘅時候同喺附近秘密執勤嘅飛虎隊員發生槍戰雙方開槍過白房事件中兩名逃人及三名軍人警　方上　　　　　　　　・・　　　警方相信・・今次鞋劫案嘅主謀係頭號通緝犯葉國寬　　"
+        },
+        {
+          "name": "mimo",
+          "text": "有觀眾提供片段見到賊人離開嘅時候同喺附近秘密執勤嘅飛虎隊員發生槍戰雙方開槍過百發事件中兩名途人及三名觀塘警員受傷其中黑工損失大約・・四　萬警方相信・・今次械劫案嘅主謀系頭號通緝犯葉國歡　啊"
+        },
+        {
+          "name": "qwen",
+          "text": "由觀眾提供片段見到賊人離開嘅時候同喺附近被物執勤嘅非虎隊員發生槍戰雙方開槍過白房事件中兩名逃人及三名均系敵　營傷　　及共損失大約・・四　萬警方相信・・今次械劫案嘅主謀系頭號通緝犯葉國寬一姑"
+        },
+        {
+          "name": "sensevoice",
+          "text": "由觀眾提供片段見到賊人離開嘅時候同喺附近秘密執勤嘅飛虎隊員發生槍戰雙方開槍過白房事件中兩名途人及三名軍眾警　　　　　生黑損失大　・・人　犯警方相信・・今次械劫案嘅主謀系頭號通緝犯葉國　　　"
+        },
+        {
+          "name": "firered",
+          "text": "由觀眾提供片段見到賊人離開嘅時候同喺附近秘密執勤嘅飛虎隊員發生槍戰雙方開槍過百火事件中兩名途人及三名軍　警　受傷　　合共損失大約・・一千萬警方相信・・今次械劫案嘅主謀系頭號通緝犯葉國　　啊"
+        },
+        {
+          "name": "glm",
+          "text": "由觀眾提供片段見到賊人離開嘅時候同喺附近被密伺襲嘅飛虎隊員發生槍戰上方開槍過百彈事件中兩名逃人及三名軍　警　被殺　　　　　　　　・・　　　警方相信・・今次械劫案嘅主謀係頭號通失犯葉國藩　　"
+        }
+      ],
+      "speaker": "ＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨ・・ＨＨＨＨＨＨＨ・・ＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＩ",
+      "language": "粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵　・・　粵　　　粵粵・・　粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵",
+      "singing": "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　・・　　　　　　　　　　　　　　　　　　　",
+      "music": "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・　　　　　　　・・　　　　　　　　　　　　　　　　　　　"
+    },
+    "answer": {
+      "text": "有觀眾提供片段，｜見到賊人離開嘅時候，｜同喺附近秘密執勤嘅飛虎隊員｜發生槍戰，雙方開槍過百發。｜事件中兩名途人及三名軍警受傷，｜合共損失大約一千萬。｜警方相信，今次械劫案嘅主謀｜係頭號通緝犯葉國歡。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "一孤當關　萬夫莫敵・・真係威吓寬哥"
+        },
+        {
+          "name": "mimo",
+          "text": "一鋪都冇啊萬夫莫敵・・真系威下歡哥"
+        },
+        {
+          "name": "qwen",
+          "text": "一夫當關　萬夫莫敵・・真系威下坤哥"
+        },
+        {
+          "name": "sensevoice",
+          "text": "一夫當關　萬夫無敵・・真系威下潘哥"
+        },
+        {
+          "name": "firered",
+          "text": "一夫當關　萬夫莫敵・・真系威下歡哥"
+        },
+        {
+          "name": "glm",
+          "text": "一呼東廣　萬夫莫敵・・即系威下冠哥"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩＩＩＩＩ・・ＩＩＩＩＩＩ",
+      "language": "粵粵粵粵粵粵粵粵普・・普普普普普普",
+      "singing": "　　　　　　　　　・・　　　　　　",
+      "music": "　　　　　　　　　・・　　　　　　"
+    },
+    "answer": {
+      "text": "一夫當關，萬夫莫敵｜真係威吓歡哥｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "但係大劑啦"
+        },
+        {
+          "name": "mimo",
+          "text": "但系大劑啦"
+        },
+        {
+          "name": "qwen",
+          "text": "但系大劑啦"
+        },
+        {
+          "name": "sensevoice",
+          "text": "但系大劑啦"
+        },
+        {
+          "name": "firered",
+          "text": "但系大劑啦"
+        },
+        {
+          "name": "glm",
+          "text": "但系大隻啦"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩ",
+      "language": "粵粵粵　粵",
+      "singing": "　　　　　",
+      "music": "　　　　　"
+    },
+    "answer": {
+      "text": "但係大劑啦。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "都話賤多啲報紙㗎啦睇吓睇吓　周圍都係噱・・攞去啦仆街"
+        },
+        {
+          "name": "mimo",
+          "text": "都話剪多啲報紙噶啦睇一睇啦　周圍都系血・・攞去啦扑街"
+        },
+        {
+          "name": "qwen",
+          "text": "都話佔多啲報紙噶啦睇下睇下　週圍都系血・・攞去啦扑街"
+        },
+        {
+          "name": "sensevoice",
+          "text": "都話佔多啲報紙噶啦睇下睇下　週圍都系血・・攞去粒扑街"
+        },
+        {
+          "name": "firered",
+          "text": "都話佔到啲報紙噶啦睇下睇下　週圍都系血・・攞去啦扑街"
+        },
+        {
+          "name": "glm",
+          "text": "刀啊斬多啲布紙噶啦睇下睇下四周　都系血・・攞去啦撈街"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩ・・ＩＩＩＩＩ",
+      "language": "粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵",
+      "singing": "　　　　　　　　　　　　　　　　　　　・・　　　　　",
+      "music": "　　　　　　　　　　　　　　　　　　　・・　　　　　"
+    },
+    "answer": {
+      "text": "都話剪多啲報紙㗎啦，｜睇吓睇吓，周圍都係血。｜攞去啦，仆街！｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "唉"
+        },
+        {
+          "name": "mimo",
+          "text": "唉"
+        },
+        {
+          "name": "qwen",
+          "text": "唉"
+        },
+        {
+          "name": "sensevoice",
+          "text": "唉"
+        },
+        {
+          "name": "firered",
+          "text": "唉"
+        },
+        {
+          "name": "glm",
+          "text": "唉"
+        }
+      ],
+      "speaker": "Ｉ",
+      "language": "　",
+      "singing": "　",
+      "music": "　"
+    },
+    "answer": {
+      "text": "唉。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "喂真係好大劑　呀・・・兩截唔・・好意思・・最　多兩截・・講好四次㗎喎・講唔講道義㗎・・・成千萬佛你嚟畀兩狗・・以前　少都五隻啦・你哋班燒裝佬讚晒呀　讚你條毛咩今時唔同往日呀喂出面啲衫佢睇得好緊㗎・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "喂真繫好大劑　啊・・・兩次唔・・好意思・・最　多兩次・・講好四次噶　・講唔講道義噶・・・成千萬貨你哋俾兩嚿・・以前最少都五隻啦・你哋班燒莊佬走晒啊就係你條毛咩今時唔同往日啦喂出邊啲差佬睇得好緊噶・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "喂真繫好大劑　啊・・・兩次唔・・好意思・・最　多兩次・・講好四次噶喎・講唔講道義噶・・・成千萬房你哋俾兩九・・以前住少東五謝啦・你哋班燒焦佬賺曬啊　賺你條毛咩今時唔同往日啦喂出面啲衫都睇得好緊㗎・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "系真繫好大劑　啊・・・兩次唔・・好意思・・最　多兩次・・講好四次噶　・講唔高道意噶・・・成千萬伏你哋俾兩九・・以前最少刀五隻啦・你哋班肖當佬賺晒啊　賺你條毛咩今時唔同往日啦喂出邊啲衫路睇得好緊噶・・・"
+        },
+        {
+          "name": "firered",
+          "text": "喂真繫好大劑　啊・・・兩次唔・・好意思・・最　多兩次・・講好四次噶　・講唔講道義噶・・・成千萬貨你哋俾兩狗・・以前最少都五隻啦・你哋班燒莊佬賺晒啊　賺你條毛咩今時唔同往日啦喂出邊啲生路睇得好緊噶・・・"
+        },
+        {
+          "name": "glm",
+          "text": "喂真繫好大隻嘢啊・・・兩次唔・・好意思・・仲要多兩次・・講好四次嘅喎・講唔講道理噶・・・成千萬佛你哋俾兩九・・以前最少都五戒啦・你哋班小爛佬賺曬啊　賺你條毛咩今時唔同往日啦喂出邊啲收路睇得好緊噶・・・"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩＩＩＩ・・・ＩＩＩ・・ＩＩＩ・・ＩＩＩＩＩ・・ＢＢＢＢ　Ｂ・ＢＢＢＢＢＢ・・・ＢＢＢＢＢＢＢＢＢ・・ＢＢＢＢＢＢＢＢ・ＢＢＢＢＢＢＢＢＢＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩ・・・",
+      "language": "粵粵粵粵粵粵粵粵・・・粵粵普・・普普普・・粵粵粵粵粵・・粵粵粵粵　粵・粵粵粵粵粵粵・・・粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・",
+      "singing": "　　　　　　　　・・・　　　・・　　　・・　　　　　・・　　　　　　・　　　　　　・・・　　　　　　　　　・・　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・",
+      "music": "　　　　　　　　・・・　　　・・　　　・・　　　　　・・　　　　　　・　　　　　　・・・樂樂樂樂樂　　　　・・　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・・・"
+    },
+    "answer": {
+      "text": "喂，真係好大劑啊！｜兩次唔｜好意思。｜最多兩次。｜講好四次㗎喎。｜講唔講道義㗎？｜成千萬貨，你哋畀兩嚿。｜以前最少都五隻啦。｜你哋班燒莊佬賺晒啊。｜賺你條毛咩？｜今時唔同往日啦。｜喂，出面啲差佬睇得好緊㗎。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "係・尤其是你嗰批貨啊寬哥・上次嗰批燒咗兩年足足兩年喇・・真係炒股炒樓炒栗子都好過啦係咪"
+        },
+        {
+          "name": "mimo",
+          "text": "系・尤其是你嗰批貨啊坤哥・上次嗰批燒咗兩年足足兩年啊・・真系炒股炒樓炒栗子都好過啦系嘛"
+        },
+        {
+          "name": "qwen",
+          "text": "嘿・尤其是你個批貨啊寬哥・上次嗰批燒咗兩年足足兩年啊・・真系炒股炒樓炒日子都好過啦系嘛"
+        },
+        {
+          "name": "sensevoice",
+          "text": "嘿・尤其是你嗰批貨啊歡哥・上次嗰批燒咗兩年足足兩年啦・・真系炒股炒樓炒栗子都好過啦系嘛"
+        },
+        {
+          "name": "firered",
+          "text": "系・尤其是你　批貨啊歡哥・上次　批燒咗兩年足足兩年啦・・真系炒股炒樓炒栗子都好過啦系嘛"
+        },
+        {
+          "name": "glm",
+          "text": "系・尤其是你個批貨啊坤哥・上次嗰批燒咗兩年足足兩年啦・・真系炒股炒鬧炒律紙都好過啦系嘛"
+        }
+      ],
+      "speaker": "Ｉ・ＩＩＩＩＩＩＩＩＩＩ・ＩＩＩＩＩＩＩＩＩＩＩＩＩ・・ＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩ",
+      "language": "粵・粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵",
+      "singing": "　・　　　　　　　　　　・　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　",
+      "music": "　・　　　　　　　　　　・　　　　　　　　　　　　　・・　　　　　　　　　　　　　　　"
+    },
+    "answer": {
+      "text": "係。｜尤其是你嗰批貨啊，歡哥。｜上次嗰批燒咗兩年，足足兩年喇。｜真係炒股炒樓炒栗子都好過啦，係咪？｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "等雪雪畀我　・・・四轉・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "到　時俾我　・・・四寸・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "當説説俾我説・・・一句・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "等小雪俾我　・・・四g・・・"
+        },
+        {
+          "name": "firered",
+          "text": "都輸蝕俾我　・・・四g・・・"
+        },
+        {
+          "name": "glm",
+          "text": "當初賜俾我　・・・死絕・・・"
+        }
+      ],
+      "speaker": "ＫＫＫＫＫＫ・・・ＫＫ・・・",
+      "language": "韓韓韓韓韓韓・・・粵粵・・・",
+      "singing": "　　　　　　・・・　　・・・",
+      "music": "　　　　　　・・・　　・・・"
+    },
+    "answer": {
+      "text": "俾我。｜死㗎。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　既然款歌出到聲　點話點好啦・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "哼既然歡哥出到聲啊點話點好啦・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "嗯既然本哥出到聲啊點話點好啦・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "嗯既然佢歌出到聲啊點話點好啦・・・"
+        },
+        {
+          "name": "firered",
+          "text": "嗯既然歡哥出到聲啊點話點好啦・・・"
+        },
+        {
+          "name": "glm",
+          "text": "嗯既然煙哥出到聲啊點啊點好啦・・・"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩＩＩＩＩＩＩＩＩＩ・・・",
+      "language": "粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・",
+      "singing": "　　　　　　　　　　　　　　・・・",
+      "music": "　　　　　　　　　　　　　　・・・"
+    },
+    "answer": {
+      "text": "嗯，既然歡哥出到聲啊，點話點好啦？｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "不如你搵個第二個・・啊我都計唔掂數嘅我睇怕都冇人敢收抱你阿毛"
+        },
+        {
+          "name": "mimo",
+          "text": "不如你揾過第二個・・啊我都計唔掂數嘅我睇怕都冇人敢收　　　　"
+        },
+        {
+          "name": "qwen",
+          "text": "不如你搵個第二個・・啊我都計唔掂數嘅我睇怕都冇人敢收徒你啊　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "不如你穩個第二個・・啊我都計唔掂數嘅我睇怕都冇人咁收圖你阿　"
+        },
+        {
+          "name": "firered",
+          "text": "不如你穩個第二個・・啊我都計唔掂數嘅我睇怕都冇人感受吐你阿夢"
+        },
+        {
+          "name": "glm",
+          "text": "不如你揾個第二個・・啊我都計唔掂數嘅我睇下都冇人咁收　　　　"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩＩＩＩ・・ＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＩＫＫＫ　",
+      "language": "粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵　",
+      "singing": "　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　",
+      "music": "　　　　　　　　・・　　　　　　　　　　　　　　　　　　　　"
+    },
+    "answer": {
+      "text": "不如你搵個第二個。｜啊，我都計唔掂數嘅，｜我睇怕都冇人敢收留你呀嘛。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "海禁飯"
+        },
+        {
+          "name": "mimo",
+          "text": "我今晚"
+        },
+        {
+          "name": "qwen",
+          "text": "我咁笨"
+        },
+        {
+          "name": "sensevoice",
+          "text": "我咁晚"
+        },
+        {
+          "name": "firered",
+          "text": "我咁晚"
+        },
+        {
+          "name": "glm",
+          "text": "　　　"
+        }
+      ],
+      "speaker": "ＫＫＫ",
+      "language": "ＡＡＡ",
+      "singing": "　　　",
+      "music": "　　　"
+    },
+    "answer": {
+      "text": "我咁晚｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "咁先粒我啫・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "咁先冧我啫・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "咁知甩我啫・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "咁先甩我啫・・・"
+        },
+        {
+          "name": "firered",
+          "text": "咁先笠我啫・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　　　　　・・・"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩ・・・",
+      "language": "粵粵粵粵粵・・・",
+      "singing": "　　　　　・・・",
+      "music": "　　　　　・・・"
+    },
+    "answer": {
+      "text": "咁先冧我啫。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "唔好要我自己嚟喎・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "唔好要我自己嚟喎・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "唔好要我自己嚟喎・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "唔好要我自己嚟　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "唔好要我自己嚟　・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　冇要我自己嚟話・・・"
+        }
+      ],
+      "speaker": "ＫＫＫＫＫＫＫＫ・・・",
+      "language": "粵粵粵粵粵粵粵粵・・・",
+      "singing": "　　　　　　　　・・・",
+      "music": "　　　　　　　　・・・"
+    },
+    "answer": {
+      "text": "唔好要我自己嚟喎。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "真係多謝晒你呀寬哥"
+        },
+        {
+          "name": "mimo",
+          "text": "真系多謝晒你啊歡哥"
+        },
+        {
+          "name": "qwen",
+          "text": "真系多謝晒你啊歡哥"
+        },
+        {
+          "name": "sensevoice",
+          "text": "真系多謝晒你啊本哥"
+        },
+        {
+          "name": "firered",
+          "text": "真系多謝晒你啊歡哥"
+        },
+        {
+          "name": "glm",
+          "text": "真係多謝曬你啊歡哥"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩＩＩＩＩ",
+      "language": "粵粵粵粵粵粵粵粵粵",
+      "singing": "　　　　　　　　　",
+      "music": "　　　　　　　　　"
+    },
+    "answer": {
+      "text": "真係多謝晒你呀歡哥。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "以後　咪嚟搵我"
+        },
+        {
+          "name": "mimo",
+          "text": "以後　咪嚟揾我"
+        },
+        {
+          "name": "qwen",
+          "text": "以後　咪嚟揾我"
+        },
+        {
+          "name": "sensevoice",
+          "text": "以後　咪嚟　我"
+        },
+        {
+          "name": "firered",
+          "text": "以後　咪嚟穩我"
+        },
+        {
+          "name": "glm",
+          "text": "之後唔系嚟揾我"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩＩＩ",
+      "language": "粵粵粵粵粵粵粵",
+      "singing": "　　　　　　　",
+      "music": "　　　　　　　"
+    },
+    "answer": {
+      "text": "以後咪嚟揾我。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "唔好再合作啦・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "唔好再合作啦・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "啊冇再合作啦・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　好再合作啦・・・"
+        },
+        {
+          "name": "firered",
+          "text": "唔好再合作啦・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　冇再合作　・・・"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩＡ・・・",
+      "language": "粵粵粵粵粵　・・・",
+      "singing": "　　　　　　・・・",
+      "music": "　　　　　　・・・"
+    },
+    "answer": {
+      "text": "唔好再合作啦。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "各行各路啊・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "過行過路啊・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "各行各路啊・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "各行各路啊・・・"
+        },
+        {
+          "name": "firered",
+          "text": "各行各路啊・・・"
+        },
+        {
+          "name": "glm",
+          "text": "個行個路啊・・・"
+        }
+      ],
+      "speaker": "ＩＩＩＩＩ・・・",
+      "language": "粵粵粵粵粵・・・",
+      "singing": "　　　　　・・・",
+      "music": "　　　　　・・・"
+    },
+    "answer": {
+      "text": "各行各路啊。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "啊花樣・・回來了・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "啊方向・・回來　・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "啊好樣・・好樣啦・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "啊看啊・・去人啦・・・"
+        },
+        {
+          "name": "firered",
+          "text": "啊方向・・不遠了・・・"
+        },
+        {
+          "name": "glm",
+          "text": "啊黃洋・・回來啦・・・"
+        }
+      ],
+      "speaker": "ＬＬＬ・・ＬＬＬ・・・",
+      "language": "ＤＤＤ・・　　　・・・",
+      "singing": "　　　・・　　　・・・",
+      "music": "　　　・・　　　・・・"
+    },
+    "answer": {
+      "text": "啊。｜回來啦。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "總幹嘍・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "鬆開嘍・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "仲有咯・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "仲家樓・・・"
+        },
+        {
+          "name": "firered",
+          "text": "準備好・・・"
+        },
+        {
+          "name": "glm",
+          "text": "總舵樓・・・"
+        }
+      ],
+      "speaker": "ＭＭＭ・・・",
+      "language": "普普普・・・",
+      "singing": "　　　・・・",
+      "music": "　　　・・・"
+    },
+    "answer": {
+      "text": "仲有囉。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "mimo",
+          "text": "冇嘢冇嘢・系預花嘅船嚟嘅咩"
+        },
+        {
+          "name": "qwen",
+          "text": "冇嘢冇嘢・系雨花嘅船嚟嘅咩"
+        },
+        {
+          "name": "sensevoice",
+          "text": "冇嘢冇嘢・系要發嘅船嚟嘅咩"
+        },
+        {
+          "name": "firered",
+          "text": "冇嘢冇嘢・系要發嘅船嚟嘅咩"
+        },
+        {
+          "name": "glm",
+          "text": "冇嘢冇嘢・系玉花嘅算嚟嘅咩"
+        }
+      ],
+      "speaker": "ＮＮＮＮ・ＮＮＮＮＮＮＮＮ",
+      "language": "普普普普・粵粵粵粵粵粵粵粵",
+      "singing": "　　　　・　　　　　　　　",
+      "music": "　　　　・　　　　　　　　"
+    },
+    "answer": {
+      "text": "冇嘢冇嘢。｜係耀發嘅船嚟嘅咩？｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "mimo",
+          "text": "預花啊永遠預花做走私電車啫"
+        },
+        {
+          "name": "qwen",
+          "text": "雨花啊半雨雨花做走私電器啫"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　　好以發做走私　器啫"
+        },
+        {
+          "name": "firered",
+          "text": "意發啊本　意發做走私電器啫"
+        },
+        {
+          "name": "glm",
+          "text": "玉花啊　捧玉花做走私電器啫"
+        }
+      ],
+      "speaker": "ＮＮＮＮＮＮＮＮＮＮＮＮＮ",
+      "language": "粵粵粵粵粵粵粵粵粵粵粵粵粵",
+      "singing": "　　　　　　　　　　　　　",
+      "music": "　　　　　　　　　　　　　"
+    },
+    "answer": {
+      "text": "易發啊，本身易發做走私電器啫。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "mimo",
+          "text": "咁撚大碼・面目整撚成咁・有人睇住攞正牌做生意噶"
+        },
+        {
+          "name": "qwen",
+          "text": "咁卵大嘛・面目猙獰成咁・有人睇住攞正牌做生意噶"
+        },
+        {
+          "name": "sensevoice",
+          "text": "咁捻大嘛・面　樽卵成咁・有人睇住攞正牌做生意噶"
+        },
+        {
+          "name": "firered",
+          "text": "咁捻大馬・面目張膽成咁・有人睇住攞正牌做生意噶"
+        },
+        {
+          "name": "glm",
+          "text": "咁樣大馬・面目全變成狗・有人睇住攞正牌做生意噶"
+        }
+      ],
+      "speaker": "ＮＮＮＮ・ＮＮＮＮＮＮ・ＮＮＮＮＮＮＮＮＮＮＮ",
+      "language": "粵粵粵粵・粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵",
+      "singing": "　　　　・　　　　　　・　　　　　　　　　　　",
+      "music": "　　　　・　　　　　　・　　　　　　　　　　　"
+    },
+    "answer": {
+      "text": "咁撚大膽。｜面目猙獰成咁。｜有人睇住攞正牌做生意㗎。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "mimo",
+          "text": "　一部電視機下邊賣兩千上邊・・賣八千啊"
+        },
+        {
+          "name": "qwen",
+          "text": "　一部電視機下邊賣兩千上面・・賣八千啊"
+        },
+        {
+          "name": "sensevoice",
+          "text": "有家部　　　下邊賣　千上邊・・賣八千啊"
+        },
+        {
+          "name": "firered",
+          "text": "　一部電視機下邊賣兩千上面・・賣八千啊"
+        },
+        {
+          "name": "glm",
+          "text": "　一部電視機下面賣兩千上面・・賣八千啊"
+        }
+      ],
+      "speaker": "ＮＮＮＮＮＮＮＮＮＮＮＮＮ・・ＮＮＮＮ",
+      "language": "粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵",
+      "singing": "　　　　　　　　　　　　　・・　　　　",
+      "music": "　　　　　　　　　　　　　・・　　　　"
+    },
+    "answer": {
+      "text": "一部電視機下邊賣兩千上邊｜賣八千啊！｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "郁吓都幾百萬呀走入度少啦・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "在卡都幾百萬啊　揸多少啦・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "肉下都幾百萬啊　集到少啦・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "喐下都幾百萬啦　集到少啦・・・"
+        },
+        {
+          "name": "firered",
+          "text": "喐下都幾百萬啊　執到笑啦・・・"
+        },
+        {
+          "name": "glm",
+          "text": "屋企都幾百萬啊　執到少啦・・・"
+        }
+      ],
+      "speaker": "ＮＮＮＮＮＮＮＮＮＮＮＮ・・・",
+      "language": "普普普普普普普粵粵粵粵粵・・・",
+      "singing": "　　　　　　　　　　　　・・・",
+      "music": "　　　　　　　　　　　　・・・"
+    },
+    "answer": {
+      "text": "喐吓都幾百萬呀。｜執到笑啦。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "咦都話要夠抄呀唔得咁把呀　　　　　　　　係呀今日要呀你嗰邊有八千萬吖嘛　五點之前要你一定要留畀我呀朱尼　　　你嗰邊有咁多可能即刻去金户攞　馬上要"
+        },
+        {
+          "name": "mimo",
+          "text": "哎都系要九鈔啊兩　　百啊　嗰邊有五千　　系啊今日要啊你嗰邊有八千蚊啊嘛　五點之前要你一定要留俾我啊Jony　你嗰邊有冇　　　即刻而家要　　馬上要"
+        },
+        {
+          "name": "qwen",
+          "text": "喂都系要夠鈔啊唔得唔把啊你嗰邊有五千萬啊系啊今日要啊你嗰邊有八千萬啊嘛　五點之前要你一定要留俾我啊朱尼　　　你嗰邊有咁多　　即刻要　急付咯馬上要"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　要　鈔啊　　　　　　　　　　　　　　　今　要啊你　邊有八千　啊嘛　五點之前要你一定要留俾我啊　　　　　你　邊有咁多　　即刻　金樓　　馬上要"
+        },
+        {
+          "name": "firered",
+          "text": "　都系要夠抄啊　　　　　　　　　　　　　　啊今日要啊你嗰邊有八千萬啊嘛　　點之前要你一定要留俾我啊julie你嗰邊有咁多　我即刻去金鋪攞　馬上要"
+        },
+        {
+          "name": "glm",
+          "text": "喂都系要夠超啊唔系咁幫啊　邊邊有五千　蚊系啊今日要啊你嗰邊有八千蚊啊嘛我唔點之前要你一定要留俾我啊Juni　你嗰邊有咁多　款即刻去金庫攞要馬上要"
+        }
+      ],
+      "speaker": "ＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＯＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＰＡＡＡＡＡＡ",
+      "language": "粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵",
+      "singing": "唱　　　　　　　　　　唱　　　唱唱唱唱唱唱唱唱唱唱唱唱唱唱　　　　唱唱唱唱唱唱唱唱　　　　　　　　　　　唱唱唱唱唱唱　　　唱唱唱唱唱唱唱唱唱唱唱",
+      "music": "樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂"
+    },
+    "answer": {
+      "text": "喂，都係要夠鈔呀，唔得咁霸呀？｜你嗰邊有五千蚊呀？｜係呀，今日要呀。｜你嗰邊有八千蚊吖嘛。｜五點之前要，你一定要留畀我呀，朱尼。｜你嗰邊有咁多款？｜即刻去金舖攞，馬上要。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "服　　經理　　　　　　　　　　　　・・　　　　　　　・・　任牛王長眷至死練一生差一射不可一棄只一心等一天日月如飛・・家等不到你・・願無・・・機又想・・起"
+        },
+        {
+          "name": "mimo",
+          "text": "O　　K未　　　　　　　　　　　　・・　　　　　　　・・　任由我腸斷至死戀一生差一些不可一起只一心等一天日月如飛・・卻等不到你・・願忘・・・記又想・・起"
+        },
+        {
+          "name": "qwen",
+          "text": "一絲絲一滴滴最慰藉一幅幅一聲聲又復・・燃起怎麼死不你・・你任由我長戀至死連一生差一些不可一棄只一心等一天一月如飛・・卻等不到你・・願忘・・・記又想・・起"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　經理　　　　　　　　　　　　・・　　　　　　　・・　任　我願　　死　　生　　　不　　　　　　　　　　　　　・・卻等不　　・・　忘・・・記又想・・　"
+        },
+        {
+          "name": "firered",
+          "text": "　　　　　　　　　　　　　　　　　・・　　　　　　　・・　任由我腸斷至死戀一生差一些不可一起只一心等一天日月如飛・・卻等不到你・・願忘・・・記又想・・起"
+        },
+        {
+          "name": "glm",
+          "text": "T　　heyoung　　　　　　　・・　　　　　　　・・你一輪望長年自死連一輩子一世不捨一平只一心等一天日月如飛・・卻等不到你・・願忘・・・記又想・・起"
+        }
+      ],
+      "speaker": "ＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱ・・ＱＱＱＱＱＱＱ・・ＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱＱ・・ＱＱＱＱＱ・・ＱＱ・・・ＱＱＱ・・Ｑ",
+      "language": "粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵・・粵粵・・・粵粵粵・・粵",
+      "singing": "唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱・・唱唱唱唱唱唱唱・・唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱唱・・唱唱唱唱唱・・唱唱・・・唱唱唱・・唱",
+      "music": "樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・樂樂樂樂樂樂樂・・樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂樂・・樂樂樂樂樂・・樂樂・・・樂樂樂・・樂"
+    },
+    "answer": {
+      "text": "任由我腸斷至死戀一生｜差一些不可一起｜只一心等一天｜日月如飛｜卻等不到你｜願忘｜記又想｜起｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "你・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "你・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "你・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　・・・"
+        },
+        {
+          "name": "firered",
+          "text": "你・・・"
+        },
+        {
+          "name": "glm",
+          "text": "你・・・"
+        }
+      ],
+      "speaker": "Ｑ・・・",
+      "language": "英・・・",
+      "singing": "唱・・・",
+      "music": "樂・・・"
+    },
+    "answer": {
+      "text": "你｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "長生"
+        },
+        {
+          "name": "mimo",
+          "text": "青青"
+        },
+        {
+          "name": "qwen",
+          "text": "卓生"
+        },
+        {
+          "name": "sensevoice",
+          "text": "杉杉"
+        },
+        {
+          "name": "firered",
+          "text": "卓生"
+        },
+        {
+          "name": "glm",
+          "text": "陳生"
+        }
+      ],
+      "speaker": "ＲＲ",
+      "language": "普普",
+      "singing": "　　",
+      "music": "樂樂"
+    },
+    "answer": {
+      "text": "卓生｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "不如我哋傾返銀　碼先・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "不如我哋傾翻銀　碼先・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "不如我哋傾翻個人話先・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "不如我哋傾翻銀　話先・・・"
+        },
+        {
+          "name": "firered",
+          "text": "不如我哋傾翻個人馬先・・・"
+        },
+        {
+          "name": "glm",
+          "text": "不如我哋傾翻一盤話先・・・"
+        }
+      ],
+      "speaker": "ＲＲＲＲＲＲＲＲＲＲ・・・",
+      "language": "粵粵粵粵粵粵粵粵粵粵・・・",
+      "singing": "　　　　　　　　　　・・・",
+      "music": "樂樂樂樂樂樂樂樂樂樂・・・"
+    },
+    "answer": {
+      "text": "不如我哋傾返銀碼先。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "係咪廢咗　　少少喎"
+        },
+        {
+          "name": "mimo",
+          "text": "系咪輝哥　　少少啊"
+        },
+        {
+          "name": "qwen",
+          "text": "系咪飛咗　　少少　"
+        },
+        {
+          "name": "sensevoice",
+          "text": "系咪　咗　　少少　"
+        },
+        {
+          "name": "firered",
+          "text": "系咪飛咗　　少少啊"
+        },
+        {
+          "name": "glm",
+          "text": "系咪fat嘅少少啊"
+        }
+      ],
+      "speaker": "ＳＳＳＳＳＳＳＳＳ",
+      "language": "粵粵粵粵粵粵粵粵　",
+      "singing": "　　　　　　　　　",
+      "music": "　　　　　　　　　"
+    },
+    "answer": {
+      "text": "係咪肥咗少少啊？｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "唔得唱多次先"
+        },
+        {
+          "name": "mimo",
+          "text": "唔得唱一次先"
+        },
+        {
+          "name": "qwen",
+          "text": "唔得創個次先"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　得唱一次先"
+        },
+        {
+          "name": "firered",
+          "text": "唔得唱一次先"
+        },
+        {
+          "name": "glm",
+          "text": "唔得唱下次先"
+        }
+      ],
+      "speaker": "ＳＳＳＳＳＳ",
+      "language": "　粵粵粵粵粵",
+      "singing": "　　　　　　",
+      "music": "　　　　　　"
+    },
+    "answer": {
+      "text": "唔得唱一次先。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "紅笑臉紅裙紅"
+        },
+        {
+          "name": "qwen",
+          "text": "紅燒面紅裙紅"
+        },
+        {
+          "name": "sensevoice",
+          "text": "紅燒面紅裙紅"
+        },
+        {
+          "name": "firered",
+          "text": "紅燒面紅軍紅"
+        },
+        {
+          "name": "glm",
+          "text": "紅燒面紅綿紅"
+        }
+      ],
+      "speaker": "ＱＱＱＱＱ　",
+      "language": "粵粵粵粵粵　",
+      "singing": "唱唱唱唱唱　",
+      "music": "　　　　　樂"
+    },
+    "answer": {
+      "text": "紅燒面紅裙紅｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　　　　　"
+        },
+        {
+          "name": "mimo",
+          "text": "絲巾白紙杯"
+        },
+        {
+          "name": "qwen",
+          "text": "絲巾白紙杯"
+        },
+        {
+          "name": "sensevoice",
+          "text": "絲巾白紙杯"
+        },
+        {
+          "name": "firered",
+          "text": "旗跟白旗不"
+        },
+        {
+          "name": "glm",
+          "text": "絲巾白紙簿"
+        }
+      ],
+      "speaker": "ＱＱＱＱＱ",
+      "language": "粵粵粵粵粵",
+      "singing": "　唱唱唱唱",
+      "music": "　樂樂樂樂"
+    },
+    "answer": {
+      "text": "絲巾白紙杯｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "我話唱多次喎你聽唔到・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "我話想多次喎你聽唔到・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "我話唱多次喎你聽唔到・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "我話上多次　你聽唔到・・・"
+        },
+        {
+          "name": "firered",
+          "text": "我話唱多次喎你聽唔到・・・"
+        },
+        {
+          "name": "glm",
+          "text": "我話唱多次喎你聽唔到・・・"
+        }
+      ],
+      "speaker": "ＳＳＳＳＳＳＳＳＳＳ・・・",
+      "language": "粵粵粵粵粵粵粵粵粵粵・・・",
+      "singing": "　　　　　　　　　　・・・",
+      "music": "　　　　　　　　　　・・・"
+    },
+    "answer": {
+      "text": "我話唱多次喎你聽唔到。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "我話唱歌字　聽唔聽到呀"
+        },
+        {
+          "name": "mimo",
+          "text": "　話長我絕　對唔聽講啊"
+        },
+        {
+          "name": "qwen",
+          "text": "　哇蔡國治　聽唔聽到啊"
+        },
+        {
+          "name": "sensevoice",
+          "text": "講話唱　　　聽唔聽　啊"
+        },
+        {
+          "name": "firered",
+          "text": "我話唱個字你聽唔聽到啊"
+        },
+        {
+          "name": "glm",
+          "text": "我話唱到節慶　　聽到啊"
+        }
+      ],
+      "speaker": "ＡＡＡＡＡＡＡＡＡＡＡ",
+      "language": "普普普普普普普普普普普",
+      "singing": "　　　　唱唱唱唱　唱　",
+      "music": "　　　　　　　　　　樂"
+    },
+    "answer": {
+      "text": "我話唱歌啫，聽唔聽到呀？｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "唔好再浪費時間・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "唔好再　嘥時間・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "　冇再　嘥時間・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　好再　嘥時間・・・"
+        },
+        {
+          "name": "firered",
+          "text": "唔好再　嘥時間・・・"
+        },
+        {
+          "name": "glm",
+          "text": "　冇再　生時間・・・"
+        }
+      ],
+      "speaker": "ＲＲＲＲＲＲＲ・・・",
+      "language": "粵粵粵粵粵粵粵・・・",
+      "singing": "　　　　　　　・・・",
+      "music": "樂樂樂樂樂樂　・・・"
+    },
+    "answer": {
+      "text": "唔好再嘥時間。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "答不中呀・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "大不了嘛・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "大　王啊・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "大會中啊・・・"
+        },
+        {
+          "name": "firered",
+          "text": "打吳用啊・・・"
+        },
+        {
+          "name": "glm",
+          "text": "다봐요맘・・・"
+        }
+      ],
+      "speaker": "ＳＳＳＳ・・・",
+      "language": "韓韓韓韓・・・",
+      "singing": "　　　　・・・",
+      "music": "　　　　・・・"
+    },
+    "answer": {
+      "text": "大不了呀。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "係講曬嘢嘅"
+        },
+        {
+          "name": "mimo",
+          "text": "你講十億嘅"
+        },
+        {
+          "name": "qwen",
+          "text": "系講啥嘢嘅"
+        },
+        {
+          "name": "sensevoice",
+          "text": "系講晒億嘅"
+        },
+        {
+          "name": "firered",
+          "text": "系講晒嘢嘅"
+        },
+        {
+          "name": "glm",
+          "text": "系講曬嘢嘅"
+        }
+      ],
+      "speaker": "ＳＳＳＳＳ",
+      "language": "粵粵粵粵粵",
+      "singing": "　　　　　",
+      "music": "　　　　　"
+    },
+    "answer": {
+      "text": "係講曬嘢嘅。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "做啲傾"
+        },
+        {
+          "name": "mimo",
+          "text": "O　K"
+        },
+        {
+          "name": "qwen",
+          "text": "做　咩"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　　　"
+        },
+        {
+          "name": "firered",
+          "text": "o　k"
+        },
+        {
+          "name": "glm",
+          "text": "做　嘢"
+        }
+      ],
+      "speaker": "ＳＳＳ",
+      "language": "　　粵",
+      "singing": "　　　",
+      "music": "　　　"
+    },
+    "answer": {
+      "text": "做啲嘢。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "殺時間有咁多現金冇乜可能・・我而家手頭上・得五億・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "霎時間要咁多現金冇乜可能・・我而家手頭上・得五億・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "霎時間有咁多現金冇乜可能・・我而家手頭上・得五億・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "霎時間　咁多現金冇乜可能・・我而家手頭上・得五億・・・"
+        },
+        {
+          "name": "firered",
+          "text": "霎時間　咁多現金冇乜可能・・我而家手頭上・得五億・・・"
+        },
+        {
+          "name": "glm",
+          "text": "曬時間有咁多現金冇乜可能・・我而家手頭上・得五億・・・"
+        }
+      ],
+      "speaker": "ＲＲＲＲＲＲＲＲＲＲＲＲ・・ＲＲＲＲＲＲ・ＲＲＲ・・・",
+      "language": "粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵・普普普・・・",
+      "singing": "　　　　　　　　　　　　・・　　　　　　・　　　・・・",
+      "music": "　　　　　　　　　　　　・・　　　　　　・　　　・・・"
+    },
+    "answer": {
+      "text": "霎時間有咁多現金冇乜可能。｜我而家手頭上。｜得五億。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "我幾"
+        },
+        {
+          "name": "mimo",
+          "text": "　幾"
+        },
+        {
+          "name": "qwen",
+          "text": "　幾"
+        },
+        {
+          "name": "sensevoice",
+          "text": "　幾"
+        },
+        {
+          "name": "firered",
+          "text": "　幾"
+        },
+        {
+          "name": "glm",
+          "text": "　幾"
+        }
+      ],
+      "speaker": "ＡＡ",
+      "language": "　　",
+      "singing": "　　",
+      "music": "　　"
+    },
+    "answer": {
+      "text": "幾｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "時要你行開㗎"
+        },
+        {
+          "name": "mimo",
+          "text": "時要你行開噶"
+        },
+        {
+          "name": "qwen",
+          "text": "時要你行開噶"
+        },
+        {
+          "name": "sensevoice",
+          "text": "時要你行開噶"
+        },
+        {
+          "name": "firered",
+          "text": "時要你行開噶"
+        },
+        {
+          "name": "glm",
+          "text": "時要你行開噶"
+        }
+      ],
+      "speaker": "ＴＴＴＴＴＡ",
+      "language": "粵粵粵粵粵粵",
+      "singing": "　　　　　　",
+      "music": "　　　　　　"
+    },
+    "answer": {
+      "text": "時要你行開。｜㗎。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "五億袋住先啦"
+        },
+        {
+          "name": "mimo",
+          "text": "五億袋住先啦"
+        },
+        {
+          "name": "qwen",
+          "text": "五億待住先啦"
+        },
+        {
+          "name": "sensevoice",
+          "text": "唔易袋住先啦"
+        },
+        {
+          "name": "firered",
+          "text": "五億袋住先啦"
+        },
+        {
+          "name": "glm",
+          "text": "唔抑待住先啦"
+        }
+      ],
+      "speaker": "ＡＴＴＴＴＴ",
+      "language": "　粵粵粵粵粵",
+      "singing": "　　　　　　",
+      "music": "　　　　　　"
+    },
+    "answer": {
+      "text": "五億袋住先啦。｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "見好就收啦・・咁咪　一半個仔你囉你要上莊啦定下　莊呀・・你真係以為我唔敢報警呀"
+        },
+        {
+          "name": "mimo",
+          "text": "見好就收啦・・　咪俾　翻個仔你咯　要上就啊定系唔就啊・・你真系以為我唔敢報警啊"
+        },
+        {
+          "name": "qwen",
+          "text": "見好就收啦・・咁啊俾一半個仔你咯你要上妝啊定唔化妝啊・・你真系以為我唔敢報警啊"
+        },
+        {
+          "name": "sensevoice",
+          "text": "見好就收啦・・咁咪俾一半個仔你咯　要上鈎啊定　　裝啊・・你真系以為我唔敢報警啊"
+        },
+        {
+          "name": "firered",
+          "text": "見好就收啦・・咁咪俾一半個仔你咯你要上裝啊定　　裝啊・・你真系以為我唔敢報警啊"
+        },
+        {
+          "name": "glm",
+          "text": "見好就收啦・・唔系俾一　個仔嚟咯你要上咗啊定唔上咗啊・・你真系以為我唔敢報警啊"
+        }
+      ],
+      "speaker": "ＴＴＴＴＴ・・ＴＴＴＴＴＴＴＴＴＴＴＴＴＡＡＡＡＡＡ・・ＴＴＴＴＴＴＴＴＴＴＴ",
+      "language": "粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・粵粵粵粵粵粵粵粵粵粵粵",
+      "singing": "　　　　　・・　　　　　　　　　　　　唱唱唱唱唱唱唱・・　　　　　　　　　　　",
+      "music": "　　　　　・・　　　　　　　　　　　　　　　　　　　・・　　　　　　　　　　　"
+    },
+    "answer": {
+      "text": "見好就收啦。｜咁咪俾一半個仔你囉。｜你要上莊呀，定唔上莊呀？｜你真係以為我唔敢報警呀？｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "警察知你個仔喺邊咩"
+        },
+        {
+          "name": "mimo",
+          "text": "警察知你個仔喺邊咩"
+        },
+        {
+          "name": "qwen",
+          "text": "警察知你個仔喺邊咩"
+        },
+        {
+          "name": "sensevoice",
+          "text": "警察知你個仔喺邊呢"
+        },
+        {
+          "name": "firered",
+          "text": "警察知你個仔喺邊咩"
+        },
+        {
+          "name": "glm",
+          "text": "警察知你個仔喺邊咩"
+        }
+      ],
+      "speaker": "ＳＳＳＳＳＳＳＳＡ",
+      "language": "粵粵粵粵粵粵粵粵粵",
+      "singing": "　　　　　　　　　",
+      "music": "　　　　　　　　　"
+    },
+    "answer": {
+      "text": "警察知你個仔喺邊？｜咩？｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　你隻都唔係捉個快　打　呀・　倒吊呀汙水呀　燒春袋玩個晒呀4　8小時都放我出嚟・・・但係到時你個仔"
+        },
+        {
+          "name": "mimo",
+          "text": "嗯　　最多咪捉個快　打　啊・啊告票啊陪罪啊阿小春代玩個晒廿四　　小時要放我出嚟・・・但　到時你個仔"
+        },
+        {
+          "name": "qwen",
+          "text": "嗯你　最多咪捉我翻去打　啊・啊告調啊灌水啊　燒春袋玩過晒啊四十八小時要放我出嚟・・・但　到時你個仔"
+        },
+        {
+          "name": "sensevoice",
+          "text": "嗯你　最多咪捉個快蛋　　啊・啊到吊啊灌歲啊　小信袋玩個晒啊四廿八小時要放我出嚟・・・但繫到時你個仔"
+        },
+        {
+          "name": "firered",
+          "text": "嗯你　最多咪捉佢翻去打　啊・啊倒吊啊灌水啊　燒春袋玩個晒啊四十八小時要放咗出嚟・・・但繫到時你個仔"
+        },
+        {
+          "name": "glm",
+          "text": "嗯你　最緊要捉個翻去打下啊・啊到掉啊佢水啊　少春帶玩過曬啊四十八小時要放開出嚟・・・但　都是你個仔"
+        }
+      ],
+      "speaker": "ＳＳＳＳＳＳＳＳＳＳＳＳＳ・ＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳＳ・・・ＳＳＳＳＳＳＳ",
+      "language": "粵粵粵粵粵粵粵粵粵粵粵粵粵・粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵粵・・・粵粵粵粵粵粵粵",
+      "singing": "　　　　　　　　　　　　　・唱唱　　　　　　　　　　　　　　　　　　　　　　　・・・　　唱唱唱唱唱",
+      "music": "　　　　　　　　　　　　　・　　　　　　　　　　　　　　　　　　　　　　　　　・・・　　　　　　　"
+    },
+    "answer": {
+      "text": "嗯，你最多咪捉我返去打吓呀｜倒吊呀，灌水呀，燒春袋玩過晒呀｜四十八小時要放我出嚟｜但係到時你個仔｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "　"
+        },
+        {
+          "name": "mimo",
+          "text": "仔"
+        },
+        {
+          "name": "qwen",
+          "text": "仔"
+        },
+        {
+          "name": "sensevoice",
+          "text": "仔"
+        },
+        {
+          "name": "firered",
+          "text": "仔"
+        },
+        {
+          "name": "glm",
+          "text": "仔"
+        }
+      ],
+      "speaker": "Ａ",
+      "language": "普",
+      "singing": "　",
+      "music": "　"
+    },
+    "answer": {
+      "text": "仔｜"
+    }
+  },
+  {
+    "query": {
+      "sources": [
+        {
+          "name": "whisper",
+          "text": "我帶啲位畀一哥・・・"
+        },
+        {
+          "name": "mimo",
+          "text": "我打電話俾阿哥・・・"
+        },
+        {
+          "name": "qwen",
+          "text": "我帶電話俾一個・・・"
+        },
+        {
+          "name": "sensevoice",
+          "text": "我打電話俾一哥・・・"
+        },
+        {
+          "name": "firered",
+          "text": "我打電話畀阿公・・・"
+        },
+        {
+          "name": "glm",
+          "text": "我帶你去飲一杯・・・"
+        }
+      ],
+      "speaker": "ＲＲＳＳＳＳＳ・・・",
+      "language": "普普普普普普普・・・",
+      "singing": "　　　　　　　・・・",
+      "music": "　　　　　　　・・・"
+    },
+    "answer": {
+      "text": "我打電話俾阿哥。｜"
+    }
+  }
+]

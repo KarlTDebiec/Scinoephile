@@ -6,10 +6,11 @@ from __future__ import annotations
 
 import json
 from collections.abc import Iterable
+from logging import getLogger
 from pathlib import Path
 from typing import cast
 
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, ValidationError
 
 from scinoephile.common.file import open_atomic_text_file
 
@@ -18,6 +19,8 @@ from .prompt import Prompt
 from .test_case import TestCase
 
 __all__ = ["load_test_cases_from_json", "save_test_cases_to_json"]
+
+logger = getLogger(__name__)
 
 
 def load_test_cases_from_json[TTestCase: TestCase](
@@ -40,18 +43,55 @@ def load_test_cases_from_json[TTestCase: TestCase](
     with open(input_path, encoding="utf-8") as input_file:
         raw_test_cases: object = json.load(input_file)
 
-    # Validate using the base-prompt schema
-    base_test_case_list_type = list[base_test_case_cls]
-    base_test_case_adapter = TypeAdapter(base_test_case_list_type)
-    validated_base_test_cases = base_test_case_adapter.validate_python(
-        raw_test_cases,
-        by_alias=True,
-        by_name=False,
-        strict=True,
-        extra="forbid",
-        context={"alias_only": True},
+    # Validate using the base-prompt schema. Unverified generated answers may become
+    # stale as semantic validators improve; retain their valid queries for replacement.
+    raw_test_case_adapter = TypeAdapter(list[dict[str, object]])
+    raw_test_case_items = raw_test_case_adapter.validate_python(
+        raw_test_cases, strict=True
     )
-    base_test_cases = cast("list[TTestCase]", validated_base_test_cases)
+    base_test_cases: list[TTestCase] = []
+    stale_answer_count = 0
+    for raw_test_case in raw_test_case_items:
+        try:
+            base_test_case = base_test_case_cls.model_validate(
+                raw_test_case,
+                by_alias=True,
+                by_name=False,
+                strict=True,
+                extra="forbid",
+                context={"alias_only": True},
+            )
+        except ValidationError as original_error:
+            if (
+                raw_test_case.get("answer") is None
+                or raw_test_case.get("verified") is True
+                or raw_test_case.get("few_shot") is True
+            ):
+                raise
+            unanswered_test_case_data = {
+                **raw_test_case,
+                "answer": None,
+                "few_shot": False,
+                "verified": False,
+            }
+            try:
+                base_test_case = base_test_case_cls.model_validate(
+                    unanswered_test_case_data,
+                    by_alias=True,
+                    by_name=False,
+                    strict=True,
+                    extra="forbid",
+                    context={"alias_only": True},
+                )
+            except ValidationError:
+                raise original_error
+            stale_answer_count += 1
+        base_test_cases.append(cast("TTestCase", base_test_case))
+    if stale_answer_count:
+        logger.warning(
+            f"Discarded {stale_answer_count} stale unverified answer(s) while "
+            f"loading {input_path}; their valid queries will be regenerated."
+        )
 
     # Convert to the requested prompt schema
     test_cases: list[TTestCase] = []
@@ -67,8 +107,6 @@ def save_test_cases_to_json[TTestCase: TestCase](
     output_path: Path,
     test_cases: Iterable[TTestCase],
     manager_cls: type[Manager[TTestCase]],
-    *,
-    prune: bool = False,
 ):
     """Save test cases to JSON file.
 
@@ -76,31 +114,14 @@ def save_test_cases_to_json[TTestCase: TestCase](
         output_path: path to JSON file to which to save
         test_cases: test cases to save
         manager_cls: manager class used to construct test case models
-        prune: whether to remove existing test cases that were not provided
     """
     test_cases_to_save = list(test_cases)
-    if output_path.exists() and not prune:
-        existing_test_cases = load_test_cases_from_json(
-            output_path, manager_cls, manager_cls.base_prompt
-        )
-        encountered_query_keys = {
-            test_case.query.key for test_case in test_cases_to_save
-        }
-        test_cases_to_save = [
-            test_case
-            for test_case in existing_test_cases
-            if test_case.query.key not in encountered_query_keys
-        ] + test_cases_to_save
-
     base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
-    data = []
-    for test_case in test_cases_to_save:
-        base_test_case = base_test_case_cls.model_validate(
-            test_case.model_dump(mode="json")
-        )
-        data.append(
-            base_test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)
-        )
+    base_test_case_list_type = list[base_test_case_cls]
+    base_test_case_adapter = TypeAdapter(base_test_case_list_type)
+    data = base_test_case_adapter.dump_python(
+        test_cases_to_save, mode="json", by_alias=True, exclude_defaults=True
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open_atomic_text_file(output_path) as temp_file:

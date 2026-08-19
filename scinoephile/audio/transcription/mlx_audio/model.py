@@ -32,6 +32,10 @@ class MlxAudioModel:
     """Model-specific language values keyed by Scinoephile language."""
     model_revision: str | None = None
     """Immutable Hugging Face revision, or None for local or mutable models."""
+    audio_tokenizer_model_name: str | None = None
+    """Auxiliary Hugging Face audio-tokenizer name, when required."""
+    audio_tokenizer_model_revision: str | None = None
+    """Immutable auxiliary audio-tokenizer revision, when required."""
     default_max_tokens: int | None = None
     """Default maximum generated tokens, or None for the model's native behavior."""
     max_tokens_argument: str | None = "max_tokens"
@@ -72,6 +76,8 @@ MIMO_MODEL = MlxAudioModel(
         Language.zho_hant: "zh",
     },
     model_revision="69813f0d57fb9bb5328735c4e907a4558b47d341",
+    audio_tokenizer_model_name="mlx-community/MiMo-Audio-Tokenizer",
+    audio_tokenizer_model_revision="6d451ed9a73024b4d33b87afa69e0dfd40d8f306",
     default_max_tokens=256,
     max_safe_audio_duration_seconds=55.0,
 )

@@ -32,28 +32,11 @@ class TranscriptionPrompt(Prompt):
     )
     """Description of aligned transcription row text field."""
     speaker: str = "speaker"
-    """Name of speaker and voice-activity row field."""
+    """Name of speaker row field."""
     speaker_desc: str = (
-        "Column-aligned fullwidth speaker labels, unattributed-speech markers, and "
-        "gap or timed-pause markers."
+        "Column-aligned fullwidth speaker labels and gap or timed-pause markers."
     )
-    """Description of speaker and voice-activity row field."""
-    language_field: str = "language"
-    """Name of spoken-language annotation row field."""
-    language_desc: str = (
-        "Optional column-aligned fullwidth spoken-language labels and gaps."
-    )
-    """Description of spoken-language annotation row field."""
-    singing: str = "singing"
-    """Name of singing annotation row field."""
-    singing_desc: str = (
-        "Optional column-aligned singing labels, gaps, and timed pauses."
-    )
-    """Description of singing annotation row field."""
-    music: str = "music"
-    """Name of music annotation row field."""
-    music_desc: str = "Optional column-aligned music labels, gaps, and timed pauses."
-    """Description of music annotation row field."""
+    """Description of speaker row field."""
     answer_text: str = "text"
     """Name of consensus text field in answer."""
     answer_text_desc: str = (
@@ -71,8 +54,7 @@ class TranscriptionPrompt(Prompt):
     )
     """Error when a reference-like source is included."""
     row_length_err: str = (
-        "All ASR, speaker, and optional analysis rows in a query must have equal "
-        "nonzero lengths."
+        "All ASR and speaker rows in a query must have equal nonzero lengths."
     )
     """Error when aligned row lengths differ."""
     reference_marker_err: str = (
@@ -84,16 +66,6 @@ class TranscriptionPrompt(Prompt):
         "fullwidth gaps, and fullwidth timed-pause markers."
     )
     """Error when a speaker row contains an unknown annotation."""
-    language_character_err: str = (
-        "Language rows may contain only defined fullwidth language labels, gaps, "
-        "and timed-pause markers."
-    )
-    """Error when a language row contains an unknown annotation."""
-    audio_event_character_err: str = (
-        "Audio-event rows may contain only their defined fullwidth label, gaps, and "
-        "timed-pause markers."
-    )
-    """Error when an audio-event row contains an unknown annotation."""
     transcript_empty_err: str = "Transcription queries must contain transcribed text."
     """Error when every ASR row contains only gaps."""
     answer_text_err: str = (
@@ -112,25 +84,36 @@ class TranscriptionPrompt(Prompt):
         "{max_characters} nonwhitespace characters."
     )
     """Error template when answer subtitles exceed the configured maximum length."""
-    consensus_coverage_err_tpl: str = (
-        "The answer preserves only {coverage:.1%} of the sequence-aligned "
-        "high-confidence majority ASR columns; it must preserve at least "
-        "{minimum:.1%}. The answer likely omitted or replaced consensus speech. "
-        "Re-read every aligned column and return the complete transcript in order."
+    consensus_omission_err_tpl: str = (
+        "The answer omitted or replaced {count} consecutive high-confidence "
+        "majority ASR columns ({consensus}); no more than {maximum} consecutive "
+        "columns may be omitted or replaced. Re-read that aligned span and return "
+        "the complete transcript in order."
     )
-    """Error template when answer coverage suggests omitted consensus speech."""
+    """Error template when an answer omits a long consensus span."""
+    unsupported_answer_err_tpl: str = (
+        "The answer added {count} consecutive characters without sufficient "
+        "aligned ASR support ({text}); no more than {maximum} consecutive "
+        "unsupported characters may be added. Remove invented text and use only "
+        "content supported by the aligned sources."
+    )
+    """Error template when an answer adds an unsupported span."""
 
-    def consensus_coverage_err(self, coverage: float, minimum: float) -> str:
-        """Get an error for insufficient sequence-aligned majority coverage.
+    def consensus_omission_err(
+        self, consensus: str, maximum_unpreserved_columns: int
+    ) -> str:
+        """Get an error for a long unpreserved majority span.
 
         Arguments:
-            coverage: proportion of the majority sequence preserved in the answer
-            minimum: minimum required coverage
+            consensus: representative text of the unpreserved majority span
+            maximum_unpreserved_columns: maximum permitted consecutive omissions
         Returns:
             formatted error message
         """
-        return self.consensus_coverage_err_tpl.format(
-            coverage=coverage, minimum=minimum
+        return self.consensus_omission_err_tpl.format(
+            consensus=consensus,
+            count=len(consensus),
+            maximum=maximum_unpreserved_columns,
         )
 
     def subtitle_length_err(self, indexes: list[int], max_characters: int) -> str:
@@ -145,4 +128,19 @@ class TranscriptionPrompt(Prompt):
         return self.subtitle_length_err_tpl.format(
             indexes=", ".join(str(index) for index in indexes),
             max_characters=max_characters,
+        )
+
+    def unsupported_answer_err(
+        self, text: str, maximum_unsupported_characters: int
+    ) -> str:
+        """Get an error for unsupported answer text.
+
+        Arguments:
+            text: longest unsupported answer span
+            maximum_unsupported_characters: maximum permitted consecutive additions
+        Returns:
+            formatted error message
+        """
+        return self.unsupported_answer_err_tpl.format(
+            text=text, count=len(text), maximum=maximum_unsupported_characters
         )
