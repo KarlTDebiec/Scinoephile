@@ -1,6 +1,6 @@
 {
   "format": "scinoephile-transcription-evaluation",
-  "version": 4,
+  "version": 5,
   "input": {
     "alignment_sha256": "a35b2edbac865a1b487a3d043f50fd9c74cce1430790935251ccac5f52bec3fd",
     "reference_sha256": "d828de3b0381eb9761121d3849cc6e68dee204027cc0bb369739f3c743b0e683",

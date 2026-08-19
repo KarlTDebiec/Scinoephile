@@ -193,6 +193,7 @@ def test_invalid_existing_alignment_is_ignored(
 
     assert existing_run == (None, None)
     assert "Ignoring invalid transcription alignment artifact" in caplog.text
+    assert "Extra inputs are not permitted" not in caplog.text
 
 
 def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):

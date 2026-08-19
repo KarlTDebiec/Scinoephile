@@ -49,7 +49,7 @@ __all__ = ["process_transcription"]
 
 logger = getLogger(__name__)
 
-_EVALUATION_VERSION = 4
+_EVALUATION_VERSION = 5
 """Version of evaluation metrics and audit rendering behavior."""
 
 
@@ -264,14 +264,18 @@ def _load_existing_run(
     try:
         artifact = AlignmentArtifact.load(artifact_path)
     except (OSError, ValueError) as exc:
-        logger.warning(f"Ignoring invalid transcription alignment artifact: {exc}")
+        error_summary = str(exc).splitlines()[0]
+        logger.warning(
+            f"Ignoring invalid transcription alignment artifact: {error_summary}"
+        )
         return None, None
     if not run_manifest_path.exists():
         return artifact, None
     try:
         manifest = RunManifest.load(run_manifest_path)
     except (OSError, ValueError) as exc:
-        logger.warning(f"Ignoring invalid transcription run manifest: {exc}")
+        error_summary = str(exc).splitlines()[0]
+        logger.warning(f"Ignoring invalid transcription run manifest: {error_summary}")
         return artifact, None
     if manifest.alignment_sha256 != artifact.sha256:
         return artifact, None

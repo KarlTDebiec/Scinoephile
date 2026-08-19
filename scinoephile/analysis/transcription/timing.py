@@ -18,6 +18,7 @@ __all__ = [
     "TimingMetrics",
     "TimingPair",
     "evaluate_timing",
+    "get_block_references",
     "get_display_intervals",
     "get_reference_for_alignment",
     "retime_alignment",
@@ -196,7 +197,7 @@ def evaluate_timing(
     pairs = []
     unmatched_candidate_indexes = set()
     unmatched_reference_indexes = set()
-    for candidate_indexes, reference_indexes in _get_event_index_groups(diff):
+    for candidate_indexes, reference_indexes in diff.get_event_index_groups():
         if not candidate_indexes:
             unmatched_reference_indexes.update(reference_indexes)
             continue
@@ -218,6 +219,46 @@ def evaluate_timing(
         unmatched_candidate_subtitles=len(unmatched_candidate_indexes),
         unmatched_reference_subtitles=len(unmatched_reference_indexes),
     )
+
+
+def get_block_references(
+    artifact: AlignmentArtifact, reference: Series
+) -> dict[int, Series]:
+    """Assign reference subtitles to artifact blocks by global text alignment.
+
+    Text correspondence takes precedence over the reference timing near block
+    boundaries. Reference-only subtitles retain their midpoint-based owner.
+
+    Arguments:
+        artifact: alignment artifact whose blocks receive reference subtitles
+        reference: complete independent reference series
+    Returns:
+        selected reference subtitles keyed by artifact block index
+    """
+    selected_reference = get_reference_for_alignment(artifact, reference)
+    events_by_block = {block.index: [] for block in artifact.blocks}
+    if not selected_reference:
+        return {
+            block_index: Series(events=events)
+            for block_index, events in events_by_block.items()
+        }
+
+    reference_block_indexes = _get_reference_block_indexes(artifact, selected_reference)
+
+    for reference_index, subtitle in enumerate(selected_reference):
+        block_index = reference_block_indexes[reference_index]
+        if block_index is None:
+            midpoint_ms = (subtitle.start + subtitle.end) / 2
+            block_index = next(
+                block.index
+                for block in artifact.blocks
+                if block.start_ms <= midpoint_ms < block.end_ms
+            )
+        events_by_block[block_index].append(subtitle)
+    return {
+        block_index: Series(events=events)
+        for block_index, events in events_by_block.items()
+    }
 
 
 def get_display_intervals(
@@ -382,43 +423,62 @@ def _get_candidate_series(
     return retime_alignment(artifact, settings).get_series()
 
 
-def _get_event_index_groups(
-    diff: SeriesDiff,
-) -> tuple[tuple[tuple[int, ...], tuple[int, ...]], ...]:
-    """Consolidate line diff messages into subtitle event groups.
+def _get_proportional_index(
+    source_index: int, source_length: int, target_length: int
+) -> int:
+    """Map an index proportionally between nonempty ordered collections.
 
     Arguments:
-        diff: line-level subtitle diff
+        source_index: zero-based index in the source collection
+        source_length: number of source items
+        target_length: number of target items
     Returns:
-        connected candidate and reference event-index groups
+        nearest corresponding zero-based target index
     """
-    groups: list[tuple[set[int], set[int]]] = []
-    for message in diff.get_messages(include_equal=True):
-        candidate_indexes, reference_indexes = diff.get_event_indices(message)
-        overlapping_group_indexes = [
-            group_index
-            for group_index, (group_candidates, group_references) in enumerate(groups)
-            if not group_candidates.isdisjoint(candidate_indexes)
-            or not group_references.isdisjoint(reference_indexes)
-        ]
-        if not overlapping_group_indexes:
-            groups.append((set(candidate_indexes), set(reference_indexes)))
-            continue
+    if source_length == 1:
+        return target_length // 2
+    numerator = source_index * (target_length - 1)
+    denominator = source_length - 1
+    return (2 * numerator + denominator) // (2 * denominator)
 
-        group_index = overlapping_group_indexes[0]
-        groups[group_index][0].update(candidate_indexes)
-        groups[group_index][1].update(reference_indexes)
-        for overlapping_group_index in reversed(overlapping_group_indexes[1:]):
-            other_candidate_indexes, other_reference_indexes = groups.pop(
-                overlapping_group_index
-            )
-            groups[group_index][0].update(other_candidate_indexes)
-            groups[group_index][1].update(other_reference_indexes)
 
-    return tuple(
-        (tuple(sorted(candidate_indexes)), tuple(sorted(reference_indexes)))
-        for candidate_indexes, reference_indexes in groups
+def _get_reference_block_indexes(
+    artifact: AlignmentArtifact, reference: Series
+) -> tuple[int | None, ...]:
+    """Get text-aligned artifact block owners for selected reference subtitles.
+
+    Arguments:
+        artifact: alignment artifact providing candidate subtitles and block owners
+        reference: already selected independent reference subtitles
+    Returns:
+        artifact block index or None for each reference subtitle
+    """
+    candidate_block_indexes = tuple(
+        block.index for block in artifact.blocks for _ in block.subtitles
     )
+    reference_block_indexes: list[int | None] = [None] * len(reference)
+    if not candidate_block_indexes:
+        return tuple(reference_block_indexes)
+
+    diff = SeriesDiff(_get_speech_series(artifact), reference)
+    for candidate_indexes, reference_indexes in diff.get_event_index_groups():
+        if not candidate_indexes or not reference_indexes:
+            continue
+        candidate_block_group = tuple(
+            candidate_block_indexes[index] for index in candidate_indexes
+        )
+        if len(set(candidate_block_group)) == 1:
+            for reference_index in reference_indexes:
+                reference_block_indexes[reference_index] = candidate_block_group[0]
+            continue
+        for reference_position, reference_index in enumerate(reference_indexes):
+            candidate_position = _get_proportional_index(
+                reference_position, len(reference_indexes), len(candidate_indexes)
+            )
+            reference_block_indexes[reference_index] = candidate_block_group[
+                candidate_position
+            ]
+    return tuple(reference_block_indexes)
 
 
 def _get_reference_selection(

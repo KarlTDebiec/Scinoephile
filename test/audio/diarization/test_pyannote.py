@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
+from warnings import catch_warnings, simplefilter, warn_explicit
 
 from pydub import AudioSegment
 from pytest import MonkeyPatch, raises
@@ -213,12 +214,29 @@ def test_custom_model_uses_repository_default_revision(
     pipeline = _FakePipeline()
     from_pretrained = Mock(return_value=pipeline)
     pipeline_cls = SimpleNamespace(from_pretrained=from_pretrained)
+
+    def import_pyannote_audio() -> SimpleNamespace:
+        """Return mocked pyannote after emitting its irrelevant decoding warning."""
+        warn_explicit(
+            "torchcodec is not installed correctly so built-in audio decoding will "
+            "fail.",
+            UserWarning,
+            filename="pyannote/audio/core/io.py",
+            lineno=48,
+            module="pyannote.audio.core.io",
+        )
+        return SimpleNamespace(Pipeline=pipeline_cls)
+
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_pyannote_audio",
-        lambda: SimpleNamespace(Pipeline=pipeline_cls),
+        import_pyannote_audio,
     )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_torch", lambda: _FakeTorch
+    )
+    get_torch_device = Mock(return_value="mps")
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_torch_device", get_torch_device
     )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.get_huggingface_snapshot_dir_path",
@@ -226,9 +244,15 @@ def test_custom_model_uses_repository_default_revision(
     )
     diarizer = PyannoteDiarizer(tmp_path, model_id="custom/model")
 
-    diarizer._get_pipeline()  # noqa: SLF001
+    with catch_warnings(record=True) as caught_warnings:
+        simplefilter("always")
+        diarizer._get_pipeline()  # noqa: SLF001
 
+    assert caught_warnings == []
     from_pretrained.assert_called_once_with(Path("/cached/custom-model"))
+    get_torch_device.assert_called_once_with()
+    assert diarizer.device == "mps"
+    assert pipeline.device == "mps"
     assert diarizer.model_revision is None
 
 

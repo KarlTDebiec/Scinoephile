@@ -9,6 +9,7 @@ from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
+from warnings import catch_warnings, filterwarnings
 
 import numpy as np
 
@@ -17,7 +18,7 @@ from scinoephile.core.dependencies.transcription import (
     import_pyannote_audio,
     import_torch,
 )
-from scinoephile.core.ml import get_huggingface_snapshot_dir_path
+from scinoephile.core.ml import get_huggingface_snapshot_dir_path, get_torch_device
 
 from .cache import SpeakerDiarizationCache
 from .exceptions import (
@@ -71,7 +72,7 @@ class PyannoteDiarizer:
             model_id: Hugging Face pipeline identifier
             model_revision: exact Hugging Face model revision; None selects the
                 pinned Community-1 revision or a custom repository's default
-            device: Torch device, or None to use CPU
+            device: Torch device, or None to select the available accelerator
             num_speakers: exact source-wide speaker count, when known
             min_speakers: minimum source-wide speaker count, when known
             max_speakers: maximum source-wide speaker count, when known
@@ -104,7 +105,9 @@ class PyannoteDiarizer:
             model_revision = _DEFAULT_MODEL_REVISION
         self.model_revision = model_revision
         """Exact Hugging Face pipeline and model-asset revision, or None."""
-        self.device = device or "cpu"
+        if device is None:
+            device = get_torch_device()
+        self.device = device
         """Torch device used for local inference."""
         self.num_speakers = num_speakers
         """Exact source-wide speaker count, when known."""
@@ -134,6 +137,7 @@ class PyannoteDiarizer:
         if cached_result is not None:
             return cached_result
 
+        logger.info(f"Running pyannote speaker diarization on {self.device}.")
         pipeline = self._get_pipeline()
         try:
             torch = import_torch()
@@ -218,7 +222,14 @@ class PyannoteDiarizer:
         if self._pipeline is not None:
             return self._pipeline
         try:
-            pyannote_audio = import_pyannote_audio()
+            with catch_warnings():
+                filterwarnings(
+                    "ignore",
+                    message=r"\s*torchcodec is not installed correctly",
+                    category=UserWarning,
+                    module=r"pyannote\.audio\.core\.io",
+                )
+                pyannote_audio = import_pyannote_audio()
             pipeline_cls = getattr(pyannote_audio, "Pipeline")
             from_pretrained = getattr(pipeline_cls, "from_pretrained")
             model_dir_path = get_huggingface_snapshot_dir_path(

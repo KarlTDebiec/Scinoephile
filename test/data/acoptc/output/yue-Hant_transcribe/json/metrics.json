@@ -1,65 +1,73 @@
 {
   "format": "scinoephile-transcription-evaluation",
-  "version": 1,
-  "processed_blocks": 25,
-  "reference_subtitles": 113,
-  "candidate_subtitles": 112,
+  "version": 5,
+  "input": {
+    "alignment_sha256": "a45c102f2924596fc1fa7f3a7dbf36788bffab928fc516e196ccb692c719494f",
+    "reference_sha256": "3769d0bbba323811af87b519a28d752c6d2a225a08cf86a129f3a992f85e72e0",
+    "audit_reference_sha256s": {
+      "yue-Hant": "3769d0bbba323811af87b519a28d752c6d2a225a08cf86a129f3a992f85e72e0",
+      "zho-Hant": "87e98d8d73bc18ee2baede548ee04043957c8b04a2c73cb134003fef2a64993f"
+    }
+  },
+  "processed_blocks": 220,
+  "reference_subtitles": 1505,
+  "candidate_subtitles": 1380,
   "cer": {
     "whisper": {
-      "cer": 0.31910112359550563,
-      "correct": 645,
-      "substitutions": 203,
-      "insertions": 39,
-      "deletions": 42,
-      "reference_length": 890
+      "cer": 0.33115011789363374,
+      "correct": 8335,
+      "substitutions": 2280,
+      "insertions": 676,
+      "deletions": 836,
+      "reference_length": 11451
     },
     "mimo": {
-      "cer": 0.23370786516853934,
-      "correct": 729,
-      "substitutions": 143,
-      "insertions": 47,
-      "deletions": 18,
-      "reference_length": 890
+      "cer": 0.3039035892061829,
+      "correct": 9074,
+      "substitutions": 1903,
+      "insertions": 1103,
+      "deletions": 474,
+      "reference_length": 11451
     },
     "qwen": {
-      "cer": 0.251685393258427,
-      "correct": 711,
-      "substitutions": 159,
-      "insertions": 45,
-      "deletions": 20,
-      "reference_length": 890
+      "cer": 0.2828573923674788,
+      "correct": 8884,
+      "substitutions": 2179,
+      "insertions": 672,
+      "deletions": 388,
+      "reference_length": 11451
     },
     "sensevoice": {
-      "cer": 0.2662921348314607,
-      "correct": 695,
-      "substitutions": 172,
-      "insertions": 42,
-      "deletions": 23,
-      "reference_length": 890
+      "cer": 0.37996681512531655,
+      "correct": 7397,
+      "substitutions": 1647,
+      "insertions": 297,
+      "deletions": 2407,
+      "reference_length": 11451
     },
     "firered": {
-      "cer": 0.22134831460674156,
-      "correct": 739,
-      "substitutions": 130,
-      "insertions": 46,
-      "deletions": 21,
-      "reference_length": 890
+      "cer": 0.3055628329403546,
+      "correct": 8907,
+      "substitutions": 1711,
+      "insertions": 955,
+      "deletions": 833,
+      "reference_length": 11451
     },
     "glm": {
-      "cer": 0.3235955056179775,
-      "correct": 652,
-      "substitutions": 213,
-      "insertions": 50,
-      "deletions": 25,
-      "reference_length": 890
+      "cer": 0.3318487468343376,
+      "correct": 8149,
+      "substitutions": 2672,
+      "insertions": 498,
+      "deletions": 630,
+      "reference_length": 11451
     },
     "merged": {
-      "cer": 0.16404494382022472,
-      "correct": 790,
-      "substitutions": 86,
-      "insertions": 46,
-      "deletions": 14,
-      "reference_length": 890
+      "cer": 0.180857567024714,
+      "correct": 9849,
+      "substitutions": 1112,
+      "insertions": 469,
+      "deletions": 490,
+      "reference_length": 11451
     }
   },
   "timing": {
@@ -68,26 +76,33 @@
       "lead_out_seconds": 0.5,
       "minimum_duration_seconds": 0.75
     },
-    "text_aligned_groups": 90,
-    "micro_intersection_over_union": 0.7712418300653595,
-    "one_to_one_groups": 64,
-    "one_to_one_micro_intersection_over_union": 0.7421552546252146,
-    "mean_intersection_over_union": 0.7555223438223199,
-    "mean_reference_coverage": 0.8983764371599975,
-    "mean_start_error_ms": -42.333333333333336,
-    "mean_end_error_ms": 161.16666666666666,
-    "mean_absolute_start_error_ms": 226.86666666666667,
-    "mean_absolute_end_error_ms": 340.52222222222224,
-    "unmatched_candidate_subtitles": 4,
-    "unmatched_reference_subtitles": 3,
+    "text_aligned_groups": 1165,
+    "micro_intersection_over_union": 0.177097835578615,
+    "one_to_one_groups": 889,
+    "one_to_one_micro_intersection_over_union": 0.1093427115253488,
+    "mean_intersection_over_union": 0.22279017525992076,
+    "mean_reference_coverage": 0.30686794963519926,
+    "mean_start_error_ms": 1989.151931330472,
+    "mean_end_error_ms": 2228.7090128755367,
+    "mean_absolute_start_error_ms": 2248.9802575107296,
+    "mean_absolute_end_error_ms": 2472.85321888412,
+    "unmatched_candidate_subtitles": 41,
+    "unmatched_reference_subtitles": 109,
     "candidate_to_reference_group_counts": {
-      "1:1": 64,
-      "1:2": 10,
-      "1:3": 2,
-      "2:1": 6,
-      "2:2": 5,
-      "3:1": 2,
-      "4:2": 1
+      "1:1": 889,
+      "1:2": 112,
+      "1:3": 5,
+      "1:5": 1,
+      "2:1": 78,
+      "2:2": 50,
+      "2:3": 13,
+      "2:4": 2,
+      "3:1": 4,
+      "3:2": 5,
+      "3:3": 2,
+      "3:4": 2,
+      "3:5": 1,
+      "4:5": 1
     }
   }
 }
