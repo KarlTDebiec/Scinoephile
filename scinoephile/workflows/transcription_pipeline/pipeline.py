@@ -556,6 +556,7 @@ class TranscriptionPipeline:
         trace = self.block_vad_cache.load(audio, metadata)
         if trace is not None:
             return trace
+        logger.info("Running full-source voice activity detection.")
         trace = self.block_vad_detector.get_trace(audio)
         self.block_vad_cache.save(audio, metadata, trace)
         return trace

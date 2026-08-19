@@ -9,7 +9,7 @@ import json
 from functools import cache
 from pathlib import Path
 from typing import Any, Unpack
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from weakref import ref
 
 from pydantic import JsonValue, ValidationError
@@ -949,6 +949,39 @@ def test_processor_saves_encountered_cases_to_current_json(tmp_path: Path):
     saved = load_test_cases_from_json(current_test_cases_path, _Manager, _PROMPT)
     assert len(saved) == 1
     assert saved[0].model_dump(mode="json") == shared.model_dump(mode="json")
+
+
+def test_processor_saves_in_memory_upserts_without_reloading(tmp_path: Path):
+    """Processor saves should upsert retained cases without reloading JSON."""
+    existing = _TestCase(query=_Query(text="existing"), answer=_Answer(output="old"))
+    untouched = _TestCase(
+        query=_Query(text="untouched"), answer=_Answer(output="retained")
+    )
+    current_test_cases_path = tmp_path / "test_cases.json"
+    save_test_cases_to_json(current_test_cases_path, [existing, untouched], _Manager)
+    processor = _Processor(
+        prompt=_PROMPT,
+        current_test_cases_path=current_test_cases_path,
+        provider=Mock(
+            spec=LLMProvider,
+            cache_identity={"implementation": "test"},
+            completion_metrics=[],
+        ),
+    )
+    updated = _TestCase(query=_Query(text="existing"), answer=_Answer(output="new"))
+    processor.queryer.log_encountered_test_case(updated)
+
+    with patch(
+        "scinoephile.core.llms.utils.load_test_cases_from_json",
+        side_effect=AssertionError("save reloaded persisted test cases"),
+    ):
+        processor.save_encountered_test_cases()
+
+    saved = load_test_cases_from_json(current_test_cases_path, _Manager, _PROMPT)
+    assert [(test_case.query.text, test_case.answer.output) for test_case in saved] == [
+        ("existing", "new"),
+        ("untouched", "retained"),
+    ]
 
 
 def test_processor_passes_injected_provider_to_queryer():
