@@ -53,8 +53,8 @@ def audit_transcription_alignment(
             and merged-character support
         first_index: first merged subtitle index whose complete block to include
         last_index: last merged subtitle index whose complete block to include
-        first_block: first one-based VAD block index to include
-        last_block: last one-based VAD block index to include
+        first_block: first one-based block index to include
+        last_block: last one-based block index to include
         include_audio_events: whether to render singing and music rows
         include_language: whether to render the spoken-language row
         include_merge_support: whether to render normalized merged-character support
@@ -84,7 +84,7 @@ def audit_transcription_alignment(
         f"- format: {artifact.format} v{artifact.version}",
         f"- language: {artifact.language.code}",
         f"- ASR sources: {len(artifact.sources)}",
-        f"- selected VAD blocks: {len(blocks)}",
+        f"- selected blocks: {len(blocks)}",
         f"- selected merged subtitles: {sum(len(block.subtitles) for block in blocks)}",
         f"- references: {', '.join(named_references) or 'none'}",
         f"- pause encoding: one ・ per {artifact.pause_unit_ms} ms",
@@ -184,8 +184,8 @@ def render_transcription_alignment_terminal(
             and merged-character support
         first_index: first merged subtitle index whose complete block to include
         last_index: last merged subtitle index whose complete block to include
-        first_block: first one-based VAD block index to include
-        last_block: last one-based VAD block index to include
+        first_block: first one-based block index to include
+        last_block: last one-based block index to include
         include_audio_events: whether to render singing and music rows
         include_language: whether to render the spoken-language row
         include_merge_support: whether to render normalized merged-character support
@@ -442,8 +442,8 @@ def _get_selected_blocks(
         blocks: alignment blocks in source order
         first_index: first merged subtitle index whose block to include
         last_index: last merged subtitle index whose block to include
-        first_block: first VAD block index to include
-        last_block: last VAD block index to include
+        first_block: first block index to include
+        last_block: last block index to include
     Returns:
         complete blocks intersecting the requested range
     """

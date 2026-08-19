@@ -61,7 +61,7 @@ def get_transcription_pipeline(
         demucs_mode: source-level vocal-separation mode
         diarization_mode: source-wide speaker diarization mode
         language_identification_mode: source-wide spoken-language mode
-        block_vad_implementation: VAD used for block planning and pause evidence
+        block_vad_implementation: VAD used for block planning
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
         provider: provider to use for consensus queries

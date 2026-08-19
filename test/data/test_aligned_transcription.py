@@ -10,7 +10,7 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
-from pytest import LogCaptureFixture, raises
+from pytest import LogCaptureFixture
 
 import test.data.aligned_transcription as transcription_data
 from scinoephile.analysis.character_error_rate import LineCER
@@ -27,7 +27,7 @@ from scinoephile.analysis.transcription import (
 )
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.vad import SpeechBlock
-from scinoephile.core import Language, ScinoephileError
+from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.media.audio import AudioExtractionMode
 from scinoephile.workflows.transcription_pipeline import TranscriptionPipeline
@@ -95,8 +95,10 @@ def test_evaluation_reuses_unchanged_metrics_and_audit(tmp_path: Path):
     assert audit_path.stat().st_mtime_ns == audit_mtime
 
 
-def test_existing_alignment_recreates_srt_without_transcription(tmp_path: Path):
-    """A portable alignment alone should be sufficient to reuse test output."""
+def test_matching_explicit_alignment_recreates_srt_without_transcription(
+    tmp_path: Path,
+):
+    """A matching portable prefix should be sufficient to reuse test output."""
     title_root_path = tmp_path / "title"
     output_dir_path = title_root_path / "output/yue-Hant_transcribe"
     artifact_path = output_dir_path / "json/alignment.json"
@@ -112,7 +114,10 @@ def test_existing_alignment_recreates_srt_without_transcription(tmp_path: Path):
         ) as get_pipeline,
     ):
         output = transcription_data.process_transcription(
-            title_root_path, reference_path=reference_path, reference_name="yue-Hant"
+            title_root_path,
+            reference_path=reference_path,
+            stop_at_idx=1,
+            reference_name="yue-Hant",
         )
 
     assert output == artifact.get_series()
@@ -163,8 +168,31 @@ def test_existing_alignment_is_regenerated_for_different_block_count(tmp_path: P
         pipeline=pipeline,
         alignment_outfile_path=artifact_path,
         run_manifest_outfile_path=output_dir_path / "json/run.json",
+        exclude_blocks=(),
         stop_at_idx=2,
     )
+
+
+def test_invalid_existing_alignment_is_ignored(
+    tmp_path: Path, caplog: LogCaptureFixture
+):
+    """An artifact from an unsupported schema should trigger regeneration.
+
+    Arguments:
+        tmp_path: temporary output directory
+        caplog: captured log records
+    """
+    artifact_path = tmp_path / "alignment.json"
+    artifact_data = _get_artifact().model_dump(mode="json")
+    artifact_data["version"] = 4
+    artifact_path.write_text(json.dumps(artifact_data), encoding="utf-8")
+
+    existing_run = transcription_data._load_existing_run(  # noqa: SLF001
+        artifact_path, tmp_path / "run.json", overwrite=False
+    )
+
+    assert existing_run == (None, None)
+    assert "Ignoring invalid transcription alignment artifact" in caplog.text
 
 
 def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
@@ -179,6 +207,9 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
     provider = Mock(completion_metrics=[])
     pipeline = Mock(spec=TranscriptionPipeline)
     pipeline.last_alignment_artifact = artifact
+    pipeline.plan_blocks.return_value = (
+        SpeechBlock(index=0, start_ms=0, end_ms=3_000),
+    )
 
     with (
         patch(
@@ -208,10 +239,7 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
         ) as romanize,
     ):
         result = transcription_data.process_transcription(
-            title_root_path,
-            reference_path=reference_path,
-            stop_at_idx=1,
-            target_reference_count=0,
+            title_root_path, reference_path=reference_path
         )
 
     json_dir_path = output_dir_path / "json"
@@ -235,6 +263,7 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
         pipeline=pipeline,
         alignment_outfile_path=json_dir_path / "alignment.json",
         run_manifest_outfile_path=json_dir_path / "run.json",
+        exclude_blocks=(),
         stop_at_idx=1,
     )
     save_usage.assert_called_once_with(json_dir_path / "llm_usage.json", [])
@@ -293,44 +322,71 @@ def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
     assert not load_audio.call_args_list[1].kwargs
 
 
-def test_reference_count_selects_smallest_block_prefix():
-    """The evaluation harness should stop after the target reference count."""
-    pipeline = Mock(spec=TranscriptionPipeline)
-    pipeline.plan_blocks.return_value = (
-        SpeechBlock(
-            index=0,
-            start_ms=1_000,
-            end_ms=3_000,
-            buffered_start_ms=0,
-            buffered_end_ms=4_000,
-        ),
-        SpeechBlock(
-            index=1,
-            start_ms=5_000,
-            end_ms=8_000,
-            buffered_start_ms=4_000,
-            buffered_end_ms=9_000,
-        ),
-    )
-    audio = AudioSeries(audio=AudioSegment.silent(duration=10_000), events=[])
-    reference = Series(
-        events=[
-            Subtitle(start=1_100, end=1_500, text="甲"),
-            Subtitle(start=2_000, end=2_400, text="乙"),
-            Subtitle(start=5_200, end=5_600, text="丙"),
-        ]
+def test_full_run_reuse_requires_every_planned_block():
+    """An omitted block limit should reuse only a complete run manifest."""
+    audio = AudioSeries(audio=AudioSegment.silent(duration=6_000), events=[])
+    artifact = _get_artifact().model_copy(update={"audio_duration_ms": 6_000})
+    manifest = _get_manifest(
+        audio, artifact, _get_processor_identity(), planned_block_count=2
     )
 
     assert (
-        transcription_data._get_stop_at_idx_for_reference_count(  # noqa: SLF001
-            pipeline, audio, reference, 3
+        transcription_data._get_matching_existing_output(  # noqa: SLF001
+            artifact, manifest, None
         )
-        == 2
+        is None
     )
-    with raises(ScinoephileError, match="covers only 3"):
-        transcription_data._get_stop_at_idx_for_reference_count(  # noqa: SLF001
-            pipeline, audio, reference, 4
+
+    complete_manifest = manifest.model_copy(
+        update={
+            "blocks": (
+                *manifest.blocks,
+                RunBlock(index=2, status="empty", reason="No transcribed speech."),
+            )
+        }
+    )
+    assert (
+        transcription_data._get_matching_existing_output(  # noqa: SLF001
+            artifact, complete_manifest, None
         )
+        == artifact.get_series()
+    )
+
+
+def test_existing_output_requires_matching_block_exclusions():
+    """A saved run should be reused only for its configured block exclusions."""
+    audio = AudioSeries(audio=AudioSegment.silent(duration=3_000), events=[])
+    artifact = _get_artifact()
+    manifest = _get_manifest(
+        audio, artifact, _get_processor_identity(), planned_block_count=1
+    )
+
+    assert (
+        transcription_data._get_matching_existing_output(  # noqa: SLF001
+            artifact, manifest, None, (1,)
+        )
+        is None
+    )
+
+
+def test_reused_transcription_blocks_are_logged(caplog: LogCaptureFixture):
+    """A resumed run should display each block in its completed prefix.
+
+    Arguments:
+        caplog: captured log records
+    """
+    audio = AudioSeries(audio=AudioSegment.silent(duration=3_000), events=[])
+    artifact = _get_artifact()
+    manifest = _get_manifest(
+        audio, artifact, _get_processor_identity(), planned_block_count=2
+    )
+    caplog.set_level("INFO", logger="test.data.aligned_transcription")
+
+    transcription_data._log_reused_blocks(artifact, manifest)  # noqa: SLF001
+
+    assert "BLOCK 1:" in caplog.text
+    assert "TRANSCRIPTION (yue-Hant):" in caplog.text
+    assert "係呀" in caplog.text
 
 
 def test_run_prefix_is_reused_only_when_current_configuration_matches():
@@ -346,20 +402,8 @@ def test_run_prefix_is_reused_only_when_current_configuration_matches():
     pipeline.block_vad_identity = {"implementation": "test"}
     pipeline.processor_identity = processor
     pipeline.plan_blocks.return_value = (
-        SpeechBlock(
-            index=0,
-            start_ms=500,
-            end_ms=2_500,
-            buffered_start_ms=0,
-            buffered_end_ms=3_000,
-        ),
-        SpeechBlock(
-            index=1,
-            start_ms=3_500,
-            end_ms=5_500,
-            buffered_start_ms=3_000,
-            buffered_end_ms=6_000,
-        ),
+        SpeechBlock(index=0, start_ms=0, end_ms=3_000),
+        SpeechBlock(index=1, start_ms=3_000, end_ms=6_000),
     )
 
     assert transcription_data._is_reusable_prefix(  # noqa: SLF001
@@ -380,10 +424,8 @@ def test_run_prefix_combination_renumbers_and_retimes_subtitles():
         {
             **prefix_block.model_dump(mode="python"),
             "index": 2,
-            "core_start_ms": 3_500,
-            "core_end_ms": 5_500,
-            "buffered_start_ms": 3_000,
-            "buffered_end_ms": 6_000,
+            "start_ms": 3_000,
+            "end_ms": 6_000,
             "columns": (
                 AlignmentColumn(index=1, start_ms=4_000, end_ms=4_500, kind="text"),
                 AlignmentColumn(index=2, start_ms=4_500, end_ms=5_000, kind="text"),
@@ -439,10 +481,8 @@ def _get_artifact() -> AlignmentArtifact:
         blocks=(
             AlignmentBlock(
                 index=1,
-                core_start_ms=500,
-                core_end_ms=2_500,
-                buffered_start_ms=0,
-                buffered_end_ms=3_000,
+                start_ms=0,
+                end_ms=3_000,
                 columns=(
                     AlignmentColumn(index=1, start_ms=1_000, end_ms=1_500, kind="text"),
                     AlignmentColumn(index=2, start_ms=1_500, end_ms=2_000, kind="text"),

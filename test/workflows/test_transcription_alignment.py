@@ -59,15 +59,8 @@ def test_build_transcription_alignment_block_uses_current_artifact_models():
         alignment,
         merged_segments,
         Aligner(YueTokenSimilarity()),
-        speech_block=SpeechBlock(
-            index=0,
-            start_ms=10_000,
-            end_ms=12_000,
-            buffered_start_ms=10_000,
-            buffered_end_ms=12_000,
-        ),
+        speech_block=SpeechBlock(index=0, start_ms=10_000, end_ms=12_000),
         diarization=diarization,
-        pause_intervals_seconds=((0.2, 0.7),),
         timing_sources={7: "ctc-request"},
     )
 
@@ -121,13 +114,7 @@ def test_build_transcription_alignment_block_adds_classification_rows():
         alignment,
         merged_segments,
         Aligner(YueTokenSimilarity()),
-        speech_block=SpeechBlock(
-            index=0,
-            start_ms=10_000,
-            end_ms=12_000,
-            buffered_start_ms=10_000,
-            buffered_end_ms=12_000,
-        ),
+        speech_block=SpeechBlock(index=0, start_ms=10_000, end_ms=12_000),
         audio_events=events,
         language_identification=languages,
         pause_intervals_seconds=((0.2, 0.5),),
@@ -154,11 +141,5 @@ def test_build_transcription_alignment_block_rejects_invalid_segment_timing():
             alignment,
             merged_segments,
             Aligner(YueTokenSimilarity()),
-            speech_block=SpeechBlock(
-                index=0,
-                start_ms=10_000,
-                end_ms=12_000,
-                buffered_start_ms=10_000,
-                buffered_end_ms=12_000,
-            ),
+            speech_block=SpeechBlock(index=0, start_ms=10_000, end_ms=12_000),
         )

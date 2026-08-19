@@ -333,7 +333,6 @@ def test_transcribe_block_runs_sources_and_merges_successful_outputs():
         language_identification=None,
         pause_intervals_seconds=None,
         source_offset_seconds=0.0,
-        voice_activity_trace=None,
     )
 
 
