@@ -17,6 +17,7 @@ from .artifact import AlignmentArtifact, AlignmentBlock, TimingSettings
 __all__ = [
     "TimingMetrics",
     "TimingPair",
+    "evaluate_selected_timing",
     "evaluate_timing",
     "get_block_references",
     "get_display_intervals",
@@ -165,6 +166,37 @@ class TimingMetrics:
         )
 
 
+def evaluate_selected_timing(
+    artifact: AlignmentArtifact,
+    selected_reference: Series,
+    settings: TimingSettings | None = None,
+    *,
+    original_reference_indexes: Sequence[int] | None = None,
+) -> TimingMetrics:
+    """Evaluate timing against an already selected reference collection.
+
+    Arguments:
+        artifact: aligned multi-source transcription artifact
+        selected_reference: reference subtitles owned by the artifact's blocks
+        settings: display timing to evaluate, or artifact timing when omitted
+        original_reference_indexes: optional zero-based indexes in the complete
+            reference collection
+    Returns:
+        aggregate and per-pair temporal overlap metrics
+    Raises:
+        ValueError: if original reference indexes do not match the selection
+    """
+    if original_reference_indexes is None:
+        original_reference_indexes = tuple(range(len(selected_reference)))
+    elif len(original_reference_indexes) != len(selected_reference):
+        raise ValueError(
+            "Original reference indexes must match the selected reference."
+        )
+    return _evaluate_timing(
+        artifact, selected_reference, tuple(original_reference_indexes), settings
+    )
+
+
 def evaluate_timing(
     artifact: AlignmentArtifact,
     reference: Series,
@@ -183,12 +215,24 @@ def evaluate_timing(
     Returns:
         aggregate and per-pair temporal overlap metrics
     """
-    candidate = _get_candidate_series(artifact, settings)
     reference_selection = _get_reference_selection(artifact, reference)
     selected_reference = Series(
         events=[subtitle for _, subtitle in reference_selection]
     )
     original_reference_indexes = tuple(index for index, _ in reference_selection)
+    return _evaluate_timing(
+        artifact, selected_reference, original_reference_indexes, settings
+    )
+
+
+def _evaluate_timing(
+    artifact: AlignmentArtifact,
+    selected_reference: Series,
+    original_reference_indexes: tuple[int, ...],
+    settings: TimingSettings | None,
+) -> TimingMetrics:
+    """Evaluate timing against an explicit reference selection."""
+    candidate = _get_candidate_series(artifact, settings)
     if settings is None:
         settings = artifact.timing
     # Establish the text correspondence from immutable CTC speech bounds so the

@@ -139,6 +139,25 @@ def test_audit_assigns_boundary_reference_by_global_text_alignment():
     assert "|     2 |                    1 |     0% |" in report
 
 
+def test_audit_filtered_summary_uses_globally_assigned_reference():
+    """Filtered summaries should score the same globally assigned references."""
+    artifact = _get_boundary_artifact()
+    reference = Series(events=[Subtitle(start=800, end=1_000, text="乙")])
+
+    report = audit_transcription_alignment(
+        artifact,
+        {"reference": reference},
+        first_block=2,
+        last_block=2,
+        include_timing_tables=True,
+    )
+
+    assert "- reference subtitles: 1" in report
+    assert "- text-aligned timing groups: 1" in report
+    assert "|     2 |                    1 |     0% |" in report
+    assert "| 2 | 1 |" in report
+
+
 def test_audit_distinguishes_unaligned_merged_and_reference_boundaries():
     """Unaligned boundaries should mark only their owning alignment row."""
     artifact = _get_artifact()

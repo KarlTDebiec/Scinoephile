@@ -15,10 +15,9 @@ from scinoephile.analysis.transcription.artifact import (
 )
 from scinoephile.analysis.transcription.evaluation import (
     evaluate_selected_character_errors,
-    evaluate_transcription,
 )
 from scinoephile.analysis.transcription.timing import (
-    evaluate_timing,
+    evaluate_selected_timing,
     get_block_references,
 )
 from scinoephile.core.subtitles import Series
@@ -103,9 +102,25 @@ def audit_transcription_alignment(
     if index_range is not None:
         lines.append(f"- requested {index_range}; complete containing blocks shown")
     selected_artifact = artifact.model_copy(update={"blocks": tuple(blocks)})
+    selected_references = {}
+    selected_reference_indexes = {}
     for reference_name, reference in named_references.items():
+        selected_events = [
+            subtitle
+            for block in blocks
+            for subtitle in block_references[reference_name][block.index]
+        ]
+        indexes_by_identity: dict[int, list[int]] = {}
+        for reference_index, subtitle in enumerate(reference):
+            indexes_by_identity.setdefault(id(subtitle), []).append(reference_index)
+        selected_references[reference_name] = Series(events=selected_events)
+        selected_reference_indexes[reference_name] = tuple(
+            indexes_by_identity[id(subtitle)].pop(0) for subtitle in selected_events
+        )
+
+    for reference_name, selected_reference in selected_references.items():
         lines.extend(("", f"### Reference {reference_name}", ""))
-        lines.extend(_get_metric_summary(selected_artifact, reference))
+        lines.extend(_get_metric_summary(selected_artifact, selected_reference))
         lines.extend(
             (
                 "",
@@ -123,9 +138,15 @@ def audit_transcription_alignment(
         )
     if named_references and include_timing_tables:
         lines.extend(("", "## Timing Comparisons", ""))
-        for reference_name, reference in named_references.items():
+        for reference_name, selected_reference in selected_references.items():
             lines.extend((f"### {reference_name}", ""))
-            lines.extend(_get_timing_comparison_lines(selected_artifact, reference))
+            lines.extend(
+                _get_timing_comparison_lines(
+                    selected_artifact,
+                    selected_reference,
+                    selected_reference_indexes[reference_name],
+                )
+            )
             lines.append("")
 
     lines.extend(("", "## Alignments", ""))
@@ -361,20 +382,22 @@ def _get_merged_subtitle_lines(block: AlignmentBlock) -> list[str]:
     return lines
 
 
-def _get_metric_summary(artifact: AlignmentArtifact, reference: Series) -> list[str]:
+def _get_metric_summary(
+    artifact: AlignmentArtifact, selected_reference: Series
+) -> list[str]:
     """Get CER and timing summary lines for selected blocks.
 
     Arguments:
         artifact: selected alignment artifact
-        reference: independent reference subtitles
+        selected_reference: reference subtitles assigned to the selected blocks
     Returns:
         Markdown summary list items
     """
-    evaluation = evaluate_transcription(artifact, reference)
-    lines = [f"- reference subtitles: {evaluation.reference_subtitles}"]
-    for name, result in evaluation.character_errors.items():
+    character_errors = evaluate_selected_character_errors(artifact, selected_reference)
+    lines = [f"- reference subtitles: {len(selected_reference)}"]
+    for name, result in character_errors.items():
         lines.append(f"- {name} CER: {result.cer:.3%}")
-    timing = evaluation.timing
+    timing = evaluate_selected_timing(artifact, selected_reference)
     group_counts = timing.candidate_to_reference_group_counts
     lines.extend(
         (
@@ -481,17 +504,24 @@ def _get_selected_blocks(
 
 
 def _get_timing_comparison_lines(
-    artifact: AlignmentArtifact, reference: Series
+    artifact: AlignmentArtifact,
+    selected_reference: Series,
+    original_reference_indexes: Sequence[int],
 ) -> list[str]:
     """Get text-aligned candidate/reference timing comparisons.
 
     Arguments:
         artifact: selected alignment artifact
-        reference: independent reference subtitles
+        selected_reference: reference subtitles assigned to the selected blocks
+        original_reference_indexes: zero-based indexes in the complete reference
     Returns:
         Markdown timing-comparison table lines
     """
-    timing = evaluate_timing(artifact, reference)
+    timing = evaluate_selected_timing(
+        artifact,
+        selected_reference,
+        original_reference_indexes=original_reference_indexes,
+    )
     candidate_indexes = tuple(
         subtitle.index for block in artifact.blocks for subtitle in block.subtitles
     )
