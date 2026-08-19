@@ -601,6 +601,24 @@ def test_answer_consensus_rejects_equal_length_majority_replacement():
         TranscriptionTestCase(query=query, answer=answer)
 
 
+def test_answer_consensus_rejects_consecutive_mapped_replacements():
+    """Mapped but unrelated characters should remain unpreserved consensus."""
+    source_text = "甲乙丙丁戊"
+    query = TranscriptionQuery(
+        sources=_get_sources(*(source_text for _ in range(3))),
+        speaker="Ａ" * len(source_text),
+    )
+    answer = TranscriptionAnswer(text="天地玄黃戊｜")
+
+    validation = TranscriptionAlignmentScorer().score(
+        tuple(source.text for source in query.sources), answer.transcript
+    )
+
+    assert validation.longest_unpreserved_consensus_text == "甲乙丙丁"
+    with raises(ValidationError, match="4 consecutive"):
+        TranscriptionTestCase(query=query, answer=answer)
+
+
 def test_answer_consensus_rejects_long_unsupported_addition():
     """Sparse single-source matches should not license an invented phrase."""
     query = TranscriptionQuery(
@@ -668,7 +686,7 @@ def test_answer_consensus_allows_scattered_contextual_corrections():
     test_case = TranscriptionTestCase(query=query, answer=answer)
 
     assert validation.majority_coverage == 0.7
-    assert validation.longest_unpreserved_consensus_run == 0
+    assert validation.longest_unpreserved_consensus_run == 1
     assert test_case.answer == answer
 
 

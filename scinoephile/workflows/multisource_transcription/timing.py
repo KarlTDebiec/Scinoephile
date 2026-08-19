@@ -152,13 +152,17 @@ def get_timed_request_segments(  # noqa: PLR0912, PLR0915
                 "processor found no sufficiently supported speech."
             )
             continue
+        answer_evidence_column_indexes = request_result.answer_evidence_column_indexes
+        character_evidence = request_result.answer_character_evidence_column_indexes
+        if character_evidence and any(
+            column_idx is None for column_idx in character_evidence
+        ):
+            answer_evidence_column_indexes = ()
         request_interval = get_request_interval(
             alignment,
             (request_result.start_column, request_result.end_column),
             duration_seconds,
-            answer_evidence_column_indexes=(
-                request_result.answer_evidence_column_indexes
-            ),
+            answer_evidence_column_indexes=answer_evidence_column_indexes,
         )
         if request_interval is None:
             logger.warning(

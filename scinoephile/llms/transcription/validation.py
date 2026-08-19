@@ -178,7 +178,6 @@ class TranscriptionAlignmentScorer:
         majority_column_count = 0
         mapped_majority_column_count = 0
         preserved_majority_column_count = 0
-        missing_consensus_characters: list[str | None] = []
         unpreserved_consensus_characters: list[str | None] = []
         majority_source_count = source_count // 2 + 1
         strong_consensus_source_count = max(majority_source_count, source_count - 1)
@@ -187,7 +186,6 @@ class TranscriptionAlignmentScorer:
                 source_characters, majority_source_count
             )
             if majority_character is None:
-                missing_consensus_characters.append(None)
                 unpreserved_consensus_characters.append(None)
                 continue
             majority_column_count += 1
@@ -208,9 +206,6 @@ class TranscriptionAlignmentScorer:
             consensus_character = self.get_consensus_character(
                 source_characters, strong_consensus_source_count
             )
-            missing_consensus_characters.append(
-                consensus_character if answer_idx is None else None
-            )
             unpreserved_consensus_characters.append(
                 consensus_character
                 if consensus_character and not is_preserved
@@ -218,12 +213,8 @@ class TranscriptionAlignmentScorer:
             )
 
         longest_unpreserved_consensus_text = _get_longest_informative_run_text(
-            missing_consensus_characters
+            unpreserved_consensus_characters
         )
-        if not preserved_majority_column_count:
-            longest_unpreserved_consensus_text = _get_longest_informative_run_text(
-                unpreserved_consensus_characters
-            )
 
         corroborating_source_count = min(2, source_count)
         unsupported_answer_characters: list[str | None] = []

@@ -275,6 +275,32 @@ def test_request_interval_is_constrained_to_answer_evidence():
     assert interval == (0.75, 1.75)
 
 
+def test_timing_retains_request_audio_for_unsupported_edge_correction():
+    """An unsupported answer edge should prevent evidence-only audio cropping."""
+    audio = AudioSegment.silent(duration=3_000)
+    alignment = Alignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
+            Column((Token("乙", 1.0, 1.5), Token("乙", 1.0, 1.5))),
+            Column((Token("丙", 2.2, 2.5), Token("丙", 2.2, 2.5))),
+        ),
+    )
+    request_result = TranscriptionRequestResult(
+        0, 3, _get_answer("天乙"), "0" * 64, (1,), (None, 1)
+    )
+    ctc_aligner = Mock(spec=CtcAligner, return_value=[_get_segment("天乙", 0.1, 0.5)])
+
+    output, _ = get_timed_request_segments(
+        audio, alignment, (request_result,), ctc_aligner
+    )
+
+    assert [(segment.text, segment.start, segment.end) for segment in output] == [
+        ("天乙", 0.1, 0.5)
+    ]
+    assert len(ctc_aligner.call_args.args[0]) == 3_000
+
+
 def test_timing_realigns_subtitle_stretched_across_omitted_evidence():
     """A retained subtitle should not span noisy text omitted from the answer."""
     audio = AudioSegment.silent(duration=10_000)
