@@ -9,7 +9,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
-from warnings import catch_warnings, simplefilter, warn_explicit
 
 from pydub import AudioSegment
 from pytest import MonkeyPatch, raises
@@ -215,21 +214,9 @@ def test_custom_model_uses_repository_default_revision(
     from_pretrained = Mock(return_value=pipeline)
     pipeline_cls = SimpleNamespace(from_pretrained=from_pretrained)
 
-    def import_pyannote_audio() -> SimpleNamespace:
-        """Return mocked pyannote after emitting its irrelevant decoding warning."""
-        warn_explicit(
-            "torchcodec is not installed correctly so built-in audio decoding will "
-            "fail.",
-            UserWarning,
-            filename="pyannote/audio/core/io.py",
-            lineno=48,
-            module="pyannote.audio.core.io",
-        )
-        return SimpleNamespace(Pipeline=pipeline_cls)
-
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_pyannote_audio",
-        import_pyannote_audio,
+        lambda: SimpleNamespace(Pipeline=pipeline_cls),
     )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_torch", lambda: _FakeTorch
@@ -244,11 +231,8 @@ def test_custom_model_uses_repository_default_revision(
     )
     diarizer = PyannoteDiarizer(tmp_path, model_id="custom/model")
 
-    with catch_warnings(record=True) as caught_warnings:
-        simplefilter("always")
-        diarizer._get_pipeline()  # noqa: SLF001
+    diarizer._get_pipeline()  # noqa: SLF001
 
-    assert caught_warnings == []
     from_pretrained.assert_called_once_with(Path("/cached/custom-model"))
     get_torch_device.assert_called_once_with()
     assert diarizer.device == "mps"

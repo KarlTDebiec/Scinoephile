@@ -9,7 +9,6 @@ from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
-from warnings import catch_warnings, filterwarnings
 
 import numpy as np
 
@@ -222,14 +221,7 @@ class PyannoteDiarizer:
         if self._pipeline is not None:
             return self._pipeline
         try:
-            with catch_warnings():
-                filterwarnings(
-                    "ignore",
-                    message=r"\s*torchcodec is not installed correctly",
-                    category=UserWarning,
-                    module=r"pyannote\.audio\.core\.io",
-                )
-                pyannote_audio = import_pyannote_audio()
+            pyannote_audio = import_pyannote_audio()
             pipeline_cls = getattr(pyannote_audio, "Pipeline")
             from_pretrained = getattr(pipeline_cls, "from_pretrained")
             model_dir_path = get_huggingface_snapshot_dir_path(

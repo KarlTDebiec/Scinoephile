@@ -182,14 +182,21 @@ def test_init_rejects_misaligned_source_descriptors():
         )
 
 
-def test_plan_blocks_saves_a_new_voice_activity_trace():
-    """A cache miss should infer and save the reusable VAD trace."""
+def test_plan_blocks_saves_a_new_voice_activity_trace(caplog: LogCaptureFixture):
+    """A cache miss should log, infer, and save the reusable VAD trace.
+
+    Arguments:
+        caplog: captured log records
+    """
     pipeline, audio_series = _get_pipeline()
     block_vad_cache = cast(Mock, pipeline.block_vad_cache)
     block_vad_detector = cast(Mock, pipeline.block_vad_detector)
     trace = block_vad_cache.load.return_value
     block_vad_cache.load.return_value = None
     block_vad_detector.get_trace.return_value = trace
+    caplog.set_level(
+        INFO, logger="scinoephile.workflows.transcription_pipeline.pipeline"
+    )
 
     blocks = pipeline.plan_blocks(audio_series)
 
@@ -197,6 +204,7 @@ def test_plan_blocks_saves_a_new_voice_activity_trace():
     block_vad_cache.save.assert_called_once_with(
         audio_series.audio, pipeline.block_vad_detector.trace_cache_identity, trace
     )
+    assert "Running full-source voice activity detection." in caplog.messages
 
 
 def test_plan_blocks_clears_stale_blocks_before_vad_failure():
