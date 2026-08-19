@@ -160,8 +160,32 @@ def test_json_loading_rejects_non_base_fields(tmp_path: Path, test_case_data: di
         {"query": []},
         {"query": {"base_subtitles": "not a list"}},
         {"query": {"base_subtitles": [{"base_index": "1", "base_text": "original"}]}},
+        {
+            "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
+            "answer": {
+                "base_revisions": [
+                    {"base_index": 1, "base_text": "corrected", "base_note": "typo"}
+                ]
+            },
+            "verified": 1,
+        },
+        {
+            "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
+            "answer": {
+                "base_revisions": [
+                    {"base_index": 1, "base_text": "corrected", "base_note": "typo"}
+                ]
+            },
+            "few_shot": 1,
+        },
     ],
-    ids=["non-object-query", "non-list-subtitles", "coerced-index"],
+    ids=[
+        "non-object-query",
+        "non-list-subtitles",
+        "coerced-index",
+        "coerced-verified",
+        "coerced-few-shot",
+    ],
 )
 def test_json_loading_is_strict(tmp_path: Path, test_case_data: dict):
     """Repository JSON should reject values requiring type coercion."""

@@ -66,6 +66,11 @@ def load_test_cases_from_json[TTestCase: TestCase](
                 raw_test_case.get("answer") is None
                 or raw_test_case.get("verified") is True
                 or raw_test_case.get("few_shot") is True
+                or any(
+                    flag_name in raw_test_case
+                    and not isinstance(raw_test_case[flag_name], bool)
+                    for flag_name in ("few_shot", "verified")
+                )
             ):
                 raise
             unanswered_test_case_data = {
