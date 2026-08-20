@@ -18,11 +18,12 @@ from logging import getLogger
 from .cache import TranscriptionCache
 from .ctc_aligner import CtcAligner
 from .exceptions import (
+    TranscriptionRecognitionTokenLimitError,
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
+    TranscriptionRecognitionError,
 )
 from .mlx_audio import MlxAudioModelSpec, MlxAudioTokenizerSpec, MlxAudioTranscriber
 from .preprocessing_settings import (
@@ -41,6 +42,7 @@ __all__ = [
     "MlxAudioModelSpec",
     "MlxAudioTokenizerSpec",
     "MlxAudioTranscriber",
+    "TranscriptionRecognitionTokenLimitError",
     "TranscribedSegment",
     "TranscribedWord",
     "Transcriber",
@@ -49,7 +51,7 @@ __all__ = [
     "TranscriptionCache",
     "TranscriptionEmptyError",
     "TranscriptionError",
-    "TranscriptionInferenceError",
+    "TranscriptionRecognitionError",
     "TranscriptionPreprocessingSettings",
     "VadMode",
     "WhisperModel",

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 
 from scinoephile.core.language import Language
 
-from .tokenizer import MIMO_AUDIO_TOKENIZER, MlxAudioTokenizerSpec
+from .tokenizer_spec import MIMO_AUDIO_TOKENIZER, MlxAudioTokenizerSpec
 
 __all__ = [
     "FIRERED_ASR2_MODEL",

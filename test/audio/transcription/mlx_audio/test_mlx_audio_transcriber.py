@@ -25,11 +25,11 @@ from scinoephile.audio.transcription import (
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
     TranscriptionPreprocessingSettings,
+    TranscriptionRecognitionError,
     VadMode,
 )
-from scinoephile.audio.transcription.mlx_audio.model import (
+from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
@@ -37,7 +37,10 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     SENSEVOICE_MODEL,
     MlxAudioModelSpec,
 )
-from scinoephile.audio.transcription.mlx_audio.recognizer import MlxAudioResult
+from scinoephile.audio.transcription.mlx_audio.recognizer import (
+    MlxAudioRecognizer,
+    MlxAudioResult,
+)
 from scinoephile.audio.transcription.mlx_audio.transcriber import MlxAudioTranscriber
 from scinoephile.audio.vad import (
     VadImplementation,
@@ -419,12 +422,14 @@ def test_transcribe_uses_direct_mlx_audio_inference(monkeypatch: pytest.MonkeyPa
         model_name="ctc/test-model", model_revision=None, return_value=expected_segments
     )
 
-    def fake_recognize(audio_path: Path) -> MlxAudioResult:
+    def fake_recognizer_call(
+        _recognizer: MlxAudioRecognizer, audio_path: Path
+    ) -> MlxAudioResult:
         """Capture direct MLX-Audio arguments and return transcript text."""
         captured["audio_path"] = audio_path
         return SimpleNamespace(text="你好", generation_tokens=0)
 
-    monkeypatch.setattr(transcriber.recognizer, "recognize", fake_recognize)
+    monkeypatch.setattr(MlxAudioRecognizer, "__call__", fake_recognizer_call)
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
@@ -444,7 +449,7 @@ def test_transcribe_chunks_audio_assigns_and_clips_words(
         chunk_duration_seconds=2.0,
         chunk_overlap_seconds=0.5,
     )
-    recognize = Mock(
+    recognizer_call = Mock(
         side_effect=[
             SimpleNamespace(text="one", generation_tokens=0),
             SimpleNamespace(text="two", generation_tokens=0),
@@ -474,10 +479,10 @@ def test_transcribe_chunks_audio_assigns_and_clips_words(
             [_get_timed_segment("three", start=0.6, end=1.0)],
         ],
     )
-    monkeypatch.setattr(transcriber.recognizer, "recognize", recognize)
+    monkeypatch.setattr(MlxAudioRecognizer, "__call__", recognizer_call)
     segments = transcriber.transcribe(audio)
 
-    assert recognize.call_count == 3
+    assert recognizer_call.call_count == 3
     assert transcriber.ctc_aligner.call_count == 3
     assert [segment.text for segment in segments] == ["one", "two", "three"]
     assert [segment.id for segment in segments] == [0, 1, 2]
@@ -499,7 +504,7 @@ def test_token_limit_guard_proactively_chunks_long_mimo_audio(
         vad_mode=VadMode.OFF,
         token_limit_guard=True,
     )
-    recognize = Mock(
+    recognizer_call = Mock(
         side_effect=[
             SimpleNamespace(text="one duplicate", generation_tokens=3),
             SimpleNamespace(text="duplicate two", generation_tokens=3),
@@ -515,11 +520,11 @@ def test_token_limit_guard_proactively_chunks_long_mimo_audio(
             [_get_timed_segment("three", start=1.1, end=2.9)],
         ],
     )
-    monkeypatch.setattr(transcriber.recognizer, "recognize", recognize)
+    monkeypatch.setattr(MlxAudioRecognizer, "__call__", recognizer_call)
 
     segments = transcriber.transcribe(audio)
 
-    assert recognize.call_count == 3
+    assert recognizer_call.call_count == 3
     assert [len(call.args[0]) for call in transcriber.ctc_aligner.call_args_list] == [
         54_000,
         55_000,
@@ -579,7 +584,7 @@ def test_transcribe_splits_audio_after_generation_token_exhaustion(
         vad_mode=VadMode.OFF,
         chunk_overlap_seconds=0.0,
     )
-    recognize = Mock(
+    recognizer_call = Mock(
         side_effect=[
             SimpleNamespace(text="truncated", generation_tokens=256),
             SimpleNamespace(text="one", generation_tokens=1),
@@ -594,10 +599,10 @@ def test_transcribe_splits_audio_after_generation_token_exhaustion(
             [_get_timed_segment("two", end=2.0)],
         ],
     )
-    monkeypatch.setattr(transcriber.recognizer, "recognize", recognize)
+    monkeypatch.setattr(MlxAudioRecognizer, "__call__", recognizer_call)
     segments = transcriber.transcribe(audio)
 
-    assert recognize.call_count == 3
+    assert recognizer_call.call_count == 3
     assert transcriber.ctc_aligner.call_count == 2
     assert [segment.text for segment in segments] == ["one", "two"]
     assert [segment.start for segment in segments] == pytest.approx([0.0, 2.0])
@@ -615,7 +620,7 @@ def test_token_limit_guard_splits_audio_near_generation_limit(
         vad_mode=VadMode.OFF,
         chunk_overlap_seconds=0.0,
     )
-    recognize = Mock(
+    recognizer_call = Mock(
         side_effect=[
             SimpleNamespace(text="compressed", generation_tokens=244),
             SimpleNamespace(text="one", generation_tokens=1),
@@ -630,13 +635,13 @@ def test_token_limit_guard_splits_audio_near_generation_limit(
             [_get_timed_segment("two", end=2.0)],
         ],
     )
-    monkeypatch.setattr(transcriber.recognizer, "recognize", recognize)
+    monkeypatch.setattr(MlxAudioRecognizer, "__call__", recognizer_call)
 
     segments = transcriber._transcribe_audio_window_with_retry(
         audio, guard_token_limit=True
     )
 
-    assert recognize.call_count == 3
+    assert recognizer_call.call_count == 3
     assert transcriber.ctc_aligner.call_count == 2
     assert [segment.text for segment in segments] == ["one", "two"]
 
@@ -652,7 +657,7 @@ def test_transcribe_splits_audio_after_incomplete_ctc_alignment(
         vad_mode=VadMode.OFF,
         chunk_overlap_seconds=0.0,
     )
-    recognize = Mock(
+    recognizer_call = Mock(
         side_effect=[
             SimpleNamespace(text="whole", generation_tokens=0),
             SimpleNamespace(text="one", generation_tokens=0),
@@ -670,11 +675,11 @@ def test_transcribe_splits_audio_after_incomplete_ctc_alignment(
             [_get_timed_segment("two", end=2.0)],
         ],
     )
-    monkeypatch.setattr(transcriber.recognizer, "recognize", recognize)
+    monkeypatch.setattr(MlxAudioRecognizer, "__call__", recognizer_call)
 
     segments = transcriber.transcribe(audio)
 
-    assert recognize.call_count == 3
+    assert recognizer_call.call_count == 3
     assert transcriber.ctc_aligner.call_count == 3
     assert [segment.text for segment in segments] == ["one", "two"]
     assert [segment.start for segment in segments] == pytest.approx([0.0, 2.0])
@@ -689,18 +694,20 @@ def test_transcribe_does_not_split_audio_after_other_ctc_errors(
     transcriber = MlxAudioTranscriber(
         MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.OFF
     )
-    recognize = Mock(return_value=SimpleNamespace(text="whole", generation_tokens=0))
+    recognizer_call = Mock(
+        return_value=SimpleNamespace(text="whole", generation_tokens=0)
+    )
     transcriber.ctc_aligner = Mock(
         model_name="ctc/test-model",
         model_revision=None,
         side_effect=TranscriptionAlignmentError("CTC backend unavailable."),
     )
-    monkeypatch.setattr(transcriber.recognizer, "recognize", recognize)
+    monkeypatch.setattr(MlxAudioRecognizer, "__call__", recognizer_call)
 
     with pytest.raises(TranscriptionAlignmentError, match="backend unavailable"):
         transcriber.transcribe(audio)
 
-    recognize.assert_called_once()
+    recognizer_call.assert_called_once()
     transcriber.ctc_aligner.assert_called_once()
 
 
@@ -883,9 +890,11 @@ def test_transcribe_aligns_text_and_writes_cache(
         vad_mode=VadMode.OFF,
     )
     monkeypatch.setattr(
-        transcriber.recognizer,
-        "recognize",
-        lambda _audio_path: SimpleNamespace(text="你好", generation_tokens=0),
+        MlxAudioRecognizer,
+        "__call__",
+        lambda _recognizer, _audio_path: SimpleNamespace(
+            text="你好", generation_tokens=0
+        ),
     )
     transcriber.ctc_aligner = Mock(
         model_name="ctc/test-model", model_revision=None, return_value=expected_segments
@@ -916,8 +925,8 @@ def test_transcribe_rejects_low_information_vocalizations(
         MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.OFF
     )
     monkeypatch.setattr(
-        transcriber.recognizer,
-        "recognize",
+        MlxAudioRecognizer,
+        "__call__",
         Mock(return_value=SimpleNamespace(text="啊！啊！", generation_tokens=0)),
     )
     transcriber.ctc_aligner = Mock(model_name="ctc/test-model", model_revision=None)
@@ -935,13 +944,13 @@ def test_transcribe_wraps_mlx_audio_inference_errors(monkeypatch: pytest.MonkeyP
         MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.OFF
     )
     monkeypatch.setattr(
-        transcriber.recognizer,
-        "recognize",
+        MlxAudioRecognizer,
+        "__call__",
         Mock(side_effect=ImportError("missing mlx_audio")),
     )
 
     with pytest.raises(
-        TranscriptionInferenceError, match="Unable to run MLX-Audio inference"
+        TranscriptionRecognitionError, match="Unable to run MLX-Audio inference"
     ):
         transcriber.transcribe(audio)
 

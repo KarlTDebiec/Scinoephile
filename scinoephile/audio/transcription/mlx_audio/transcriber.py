@@ -19,7 +19,8 @@ from scinoephile.audio.transcription.exceptions import (
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
+    TranscriptionRecognitionError,
+    TranscriptionRecognitionTokenLimitError,
 )
 from scinoephile.audio.transcription.preprocessing_settings import (
     DemucsMode,
@@ -35,7 +36,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
 from scinoephile.core.cache.runtime import get_distribution_identity
 
-from .model import MlxAudioModelSpec
+from .model_spec import MlxAudioModelSpec
 from .recognizer import MlxAudioRecognizer
 
 __all__ = ["MlxAudioTranscriber"]
@@ -53,10 +54,6 @@ _MLX_AUDIO_SOURCE_REVISION = "ff0197c0ae9f9fd02072904c696f2533e329c06e"
 
 _TOKEN_LIMIT_GUARD_FRACTION = 0.95
 """Generation-budget fraction treated as suspicious under the opt-in guard."""
-
-
-class _MlxAudioTokenLimitError(TranscriptionInferenceError):
-    """Raised when MLX-Audio exhausts its text-token generation budget."""
 
 
 class MlxAudioTranscriber(Transcriber):
@@ -217,7 +214,7 @@ class MlxAudioTranscriber(Transcriber):
                 return self._transcribe_vad_audio(audio, guard_token_limit)
             return self._transcribe_unfiltered_audio(audio, guard_token_limit)
         except (AssertionError, ImportError) as exc:
-            raise TranscriptionInferenceError(
+            raise TranscriptionRecognitionError(
                 f"Unable to run MLX-Audio transcription: {exc}"
             ) from exc
 
@@ -238,9 +235,9 @@ class MlxAudioTranscriber(Transcriber):
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
             try:
-                inference_result = self.recognizer.recognize(temp_audio_path)
+                inference_result = self.recognizer(temp_audio_path)
             except (ImportError, OSError, RuntimeError, ValueError) as exc:
-                raise TranscriptionInferenceError(
+                raise TranscriptionRecognitionError(
                     f"Unable to run MLX-Audio inference: {exc}"
                 ) from exc
             generation_tokens = inference_result.generation_tokens
@@ -250,7 +247,7 @@ class MlxAudioTranscriber(Transcriber):
                 if generation_tokens >= max_tokens or (
                     guard_token_limit and generation_tokens >= guarded_limit
                 ):
-                    raise _MlxAudioTokenLimitError(
+                    raise TranscriptionRecognitionTokenLimitError(
                         f"MLX-Audio used {generation_tokens} of its {max_tokens} "
                         "generation tokens."
                     )
@@ -278,10 +275,13 @@ class MlxAudioTranscriber(Transcriber):
         """
         try:
             return self._transcribe_audio_window(audio, guard_token_limit)
-        except (_MlxAudioTokenLimitError, TranscriptionAlignmentIncompleteError) as exc:
+        except (
+            TranscriptionRecognitionTokenLimitError,
+            TranscriptionAlignmentIncompleteError,
+        ) as exc:
             if len(audio) <= 1:
                 raise
-            if isinstance(exc, _MlxAudioTokenLimitError):
+            if isinstance(exc, TranscriptionRecognitionTokenLimitError):
                 retry_reason = "generation token exhaustion"
             else:
                 retry_reason = "incomplete CTC alignment"

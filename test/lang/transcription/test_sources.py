@@ -10,7 +10,7 @@ from unittest.mock import patch
 from pytest import raises
 
 from scinoephile.audio.transcription import VadMode
-from scinoephile.audio.transcription.mlx_audio.model import (
+from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,

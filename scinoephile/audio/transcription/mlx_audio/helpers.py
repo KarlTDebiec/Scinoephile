@@ -11,7 +11,7 @@ from typing import cast
 
 from scinoephile.core.dependencies.transcription import import_mlx_audio_mimo_asr
 
-from .tokenizer import MlxAudioTokenizerSpec
+from .tokenizer_spec import MlxAudioTokenizerSpec
 
 __all__ = ["use_local_tokenizer"]
 

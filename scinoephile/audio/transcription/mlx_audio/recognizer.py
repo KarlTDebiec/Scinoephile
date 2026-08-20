@@ -13,7 +13,7 @@ from scinoephile.core.language import Language
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
 from .helpers import use_local_tokenizer
-from .model import MlxAudioModelSpec
+from .model_spec import MlxAudioModelSpec
 
 __all__ = ["MlxAudioRecognizer", "MlxAudioResult"]
 
@@ -52,6 +52,18 @@ class MlxAudioRecognizer:
             )
         self.language = language
         """Language to transcribe."""
+
+    def __call__(self, audio_path: Path) -> MlxAudioResult:
+        """Recognize speech in one audio file using MLX-Audio.
+
+        Arguments:
+            audio_path: audio file to transcribe
+        Returns:
+            MLX-Audio recognition result
+        Raises:
+            ImportError: if MLX-Audio is unavailable
+        """
+        return self.model.generate(str(audio_path), **self.generate_kw)
 
     @cached_property
     def generate_kw(self) -> dict[str, object]:
@@ -93,15 +105,3 @@ class MlxAudioRecognizer:
         )
         with use_local_tokenizer(tokenizer, tokenizer_dir_path):
             return load(model_dir_path, model_type=self.model_spec.model_type)
-
-    def recognize(self, audio_path: Path) -> MlxAudioResult:
-        """Recognize speech in one audio file using MLX-Audio.
-
-        Arguments:
-            audio_path: audio file to transcribe
-        Returns:
-            MLX-Audio recognition result
-        Raises:
-            ImportError: if MLX-Audio is unavailable
-        """
-        return self.model.generate(str(audio_path), **self.generate_kw)

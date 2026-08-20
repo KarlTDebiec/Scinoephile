@@ -7,11 +7,12 @@ from __future__ import annotations
 from scinoephile.core.exceptions import ScinoephileError
 
 __all__ = [
+    "TranscriptionRecognitionTokenLimitError",
     "TranscriptionAlignmentError",
     "TranscriptionAlignmentIncompleteError",
     "TranscriptionEmptyError",
     "TranscriptionError",
-    "TranscriptionInferenceError",
+    "TranscriptionRecognitionError",
 ]
 
 
@@ -31,5 +32,9 @@ class TranscriptionEmptyError(TranscriptionError):
     """Raised when a transcription backend returns no transcript text."""
 
 
-class TranscriptionInferenceError(TranscriptionError):
-    """Raised when transcription inference fails or returns malformed output."""
+class TranscriptionRecognitionError(TranscriptionError):
+    """Raised when transcription recognition fails or returns malformed output."""
+
+
+class TranscriptionRecognitionTokenLimitError(TranscriptionRecognitionError):
+    """Raised when transcription exhausts its generation token limit."""

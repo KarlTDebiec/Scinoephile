@@ -17,7 +17,7 @@ from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.cache.artifact import remove_cache_artifact
 from scinoephile.core.paths import get_runtime_cache_root_path
 
-from .exceptions import TranscriptionError, TranscriptionInferenceError
+from .exceptions import TranscriptionError, TranscriptionRecognitionError
 from .transcribed_segment import TranscribedSegment
 
 __all__ = ["TranscriptionCache"]
@@ -122,23 +122,23 @@ class TranscriptionCache:
             with cache_path.open("r", encoding="utf-8") as file:
                 payload = json.load(file)
             if not isinstance(payload, Mapping):
-                raise TranscriptionInferenceError(
+                raise TranscriptionRecognitionError(
                     f"Malformed {self.backend_label} transcription cache payload: "
                     f"{cache_path}"
                 )
             if payload.get("cache_version") != _CACHE_VERSION:
-                raise TranscriptionInferenceError(
+                raise TranscriptionRecognitionError(
                     f"Unsupported {self.backend_label} transcription cache version: "
                     f"{cache_path}"
                 )
             if payload.get("cache_identity") != expected_cache_identity:
-                raise TranscriptionInferenceError(
+                raise TranscriptionRecognitionError(
                     f"Mismatched {self.backend_label} transcription cache identity: "
                     f"{cache_path}"
                 )
             raw_segments = payload.get("segments")
             if not isinstance(raw_segments, list):
-                raise TranscriptionInferenceError(
+                raise TranscriptionRecognitionError(
                     f"Malformed {self.backend_label} transcription cache payload: "
                     f"{cache_path}"
                 )
@@ -149,7 +149,7 @@ class TranscriptionCache:
             self._discard_invalid_entry(cache_path, exc)
             return None
         except (OSError, TypeError, ValueError) as exc:
-            cache_error = TranscriptionInferenceError(
+            cache_error = TranscriptionRecognitionError(
                 f"Unable to read {self.backend_label} transcription cache "
                 f"{cache_path}: {exc}"
             )

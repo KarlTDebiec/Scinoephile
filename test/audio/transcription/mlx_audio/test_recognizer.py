@@ -15,7 +15,7 @@ from unittest.mock import Mock, call
 import pytest
 
 from scinoephile.audio.transcription.mlx_audio import helpers, recognizer
-from scinoephile.audio.transcription.mlx_audio.model import (
+from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
@@ -24,7 +24,7 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     MlxAudioModelSpec,
 )
 from scinoephile.audio.transcription.mlx_audio.recognizer import MlxAudioRecognizer
-from scinoephile.audio.transcription.mlx_audio.tokenizer import (
+from scinoephile.audio.transcription.mlx_audio.tokenizer_spec import (
     MIMO_AUDIO_TOKENIZER,
     MlxAudioTokenizerSpec,
 )
@@ -41,7 +41,7 @@ def test_mimo_uses_pinned_audio_tokenizer():
     )
 
 
-def test_recognize_returns_model_result(tmp_path: Path):
+def test_recognizer_returns_model_result(tmp_path: Path):
     """Test the MLX-Audio model result is returned directly.
 
     Arguments:
@@ -54,7 +54,7 @@ def test_recognize_returns_model_result(tmp_path: Path):
     mlx_audio_recognizer = MlxAudioRecognizer(MIMO_MODEL)
     mlx_audio_recognizer.__dict__["model"] = loaded_model
 
-    result = mlx_audio_recognizer.recognize(audio_path)
+    result = mlx_audio_recognizer(audio_path)
 
     assert result is model_result
     loaded_model.generate.assert_called_once_with(
@@ -73,7 +73,7 @@ def test_recognize_returns_model_result(tmp_path: Path):
     ],
     ids=["mimo", "qwen3-asr", "sensevoice", "firered-asr2", "glm-asr"],
 )
-def test_recognize_adapts_model_specific_generation_arguments(
+def test_recognizer_adapts_model_specific_generation_arguments(
     tmp_path: Path, model: MlxAudioModelSpec, expected_kwargs: dict[str, object]
 ):
     """Test new model families receive only generation arguments they support.
@@ -91,7 +91,7 @@ def test_recognize_adapts_model_specific_generation_arguments(
     mlx_audio_recognizer = MlxAudioRecognizer(model_spec=model)
     mlx_audio_recognizer.__dict__["model"] = loaded_model
 
-    result = mlx_audio_recognizer.recognize(audio_path)
+    result = mlx_audio_recognizer(audio_path)
 
     assert result.text == "你好"
     loaded_model.generate.assert_called_once_with(str(audio_path), **expected_kwargs)
@@ -164,8 +164,8 @@ def test_model_is_cached_by_recognizer(
 
     mlx_audio_recognizer = MlxAudioRecognizer(model)
 
-    mlx_audio_recognizer.recognize(Path("audio.wav"))
-    mlx_audio_recognizer.recognize(Path("audio.wav"))
+    mlx_audio_recognizer(Path("audio.wav"))
+    mlx_audio_recognizer(Path("audio.wav"))
     expected_snapshot_calls = [call(model.name, model.revision)]
     if model.tokenizer is not None:
         expected_snapshot_calls.append(
@@ -211,7 +211,7 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
     )
 
     mlx_audio_recognizer = MlxAudioRecognizer(MIMO_MODEL)
-    mlx_audio_recognizer.recognize(Path("audio.wav"))
+    mlx_audio_recognizer(Path("audio.wav"))
     assert get_snapshot_dir_path.call_args_list == [
         call(MIMO_MODEL.name, MIMO_MODEL.revision),
         call(tokenizer.name, tokenizer.revision),

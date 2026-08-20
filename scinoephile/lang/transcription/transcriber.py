@@ -26,7 +26,7 @@ from scinoephile.audio.transcription import (
     get_segment_split_at_idx,
     get_segment_split_on_word_timings,
 )
-from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModelSpec
+from scinoephile.audio.transcription.mlx_audio.model_spec import MlxAudioModelSpec
 from scinoephile.audio.transcription.quality import get_transcription_quality_issue
 from scinoephile.audio.transcription.whisper.model import WhisperModel
 from scinoephile.common.validation import val_index_range
