@@ -97,7 +97,7 @@ class MlxAudioTranscriber(Transcriber):
             max_tokens: optional override for the model's generation limit
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
-            token_limit_guard: whether to proactively guard model-family token limits
+            token_limit_guard: whether to proactively guard model token limits
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
             cache_root_path: root directory beneath which to cache
@@ -140,7 +140,7 @@ class MlxAudioTranscriber(Transcriber):
                 raise ValueError("MLX-Audio max tokens must be positive.")
             if model.max_tokens_argument is None:
                 raise ValueError(
-                    f"MLX-Audio {model.family_name} does not support a generation "
+                    f"MLX-Audio {model.model_type} does not support a generation "
                     "token limit."
                 )
         self.max_tokens = max_tokens
@@ -172,8 +172,8 @@ class MlxAudioTranscriber(Transcriber):
 
     @property
     def model_name(self) -> str:
-        """Get the MLX-Audio model name or local model path."""
-        return self.model.model_name
+        """Get the MLX-Audio model name."""
+        return self.model.name
 
     def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
@@ -191,9 +191,9 @@ class MlxAudioTranscriber(Transcriber):
         if chunk_duration_ms is not None:
             chunk_duration_seconds = chunk_duration_ms / 1000
         cache_identity: dict[str, object] = {
-            "model_family": self.model.family_name,
+            "model_type": self.model.model_type,
             "model_name": self.model_name,
-            "model_revision": self.model.model_revision,
+            "model_revision": self.model.revision,
             "runtime": {
                 **get_distribution_identity("mlx-audio"),
                 "source_revision": _MLX_AUDIO_SOURCE_REVISION,

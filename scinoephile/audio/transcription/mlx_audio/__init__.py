@@ -10,7 +10,7 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .model import MlxAudioModel
+from .model import MlxAudioModel, MlxAudioTokenizerModel
 from .transcriber import MlxAudioTranscriber
 
-__all__ = ["MlxAudioModel", "MlxAudioTranscriber"]
+__all__ = ["MlxAudioModel", "MlxAudioTokenizerModel", "MlxAudioTranscriber"]

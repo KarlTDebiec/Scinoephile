@@ -14,7 +14,7 @@ from .dependencies.transcription import import_huggingface_hub, import_torch
 __all__ = ["ModelSource", "get_huggingface_snapshot_dir_path", "get_torch_device"]
 
 type ModelSource = tuple[str, str]
-"""Model name or local path paired with its required immutable revision."""
+"""Model name paired with its required immutable revision."""
 
 _HUGGINGFACE_MODEL_ALLOW_PATTERNS = (
     "*.ark",

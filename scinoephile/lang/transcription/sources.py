@@ -112,10 +112,14 @@ def get_transcription_sources(
     transcribers: dict[str, Transcriber] = {}
     descriptors = []
     for source in source_specs:
+        if isinstance(source.model, WhisperModel):
+            model_name = source.model.model_name
+        else:
+            model_name = source.model.name
         if language not in source.model.languages:
             raise ScinoephileError(
                 f"Transcription source {source.name!r} model "
-                f"{source.model.model_name!r} does not support {language.code}."
+                f"{model_name!r} does not support {language.code}."
             )
         if isinstance(source.model, WhisperModel):
             transcriber = WhisperTranscriber(
@@ -148,8 +152,6 @@ def get_transcription_sources(
             )
         transcribers[source.name] = transcriber
         descriptors.append(
-            AlignmentSource(
-                name=source.name, backend=backend_name, model=source.model.model_name
-            )
+            AlignmentSource(name=source.name, backend=backend_name, model=model_name)
         )
     return transcribers, tuple(descriptors)

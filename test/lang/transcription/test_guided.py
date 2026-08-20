@@ -233,7 +233,7 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
         )
 
     assert transcriber.audio_model is expected_mlx_audio_model
-    assert transcriber.model_name == expected_mlx_audio_model.model_name
+    assert transcriber.model_name == expected_mlx_audio_model.name
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None
     assert transcriber.tail_recovery_transcriber is None

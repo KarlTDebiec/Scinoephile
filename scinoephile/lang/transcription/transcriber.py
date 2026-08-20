@@ -175,7 +175,10 @@ class GuidedTranscriber:
         self.language = language
         self.guide_language = guide_language
         self.audio_model = audio_model
-        self.model_name = audio_model.model_name
+        if isinstance(audio_model, MlxAudioModel):
+            self.model_name = audio_model.name
+        else:
+            self.model_name = audio_model.model_name
         self.aligner = aligner
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode

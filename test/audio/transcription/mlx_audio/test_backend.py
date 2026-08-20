@@ -26,6 +26,7 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
     MlxAudioModel,
+    MlxAudioTokenizerModel,
 )
 from scinoephile.core import Language
 from scinoephile.core.dependencies import transcription as transcription_dependencies
@@ -74,7 +75,7 @@ from scinoephile.core.dependencies import transcription as transcription_depende
 def test_init_derives_mlx_audio_languages(
     model: MlxAudioModel, expected_languages: Mapping[Language, str | None]
 ):
-    """Test each model family derives its language identifier."""
+    """Test each model type derives its language identifier."""
     languages = {
         language: MlxAudioBackend(model=model, language=language).mlx_audio_language
         for language in Language
@@ -83,34 +84,12 @@ def test_init_derives_mlx_audio_languages(
     assert languages == expected_languages
 
 
-@pytest.mark.parametrize(
-    ("audio_tokenizer_model_name", "audio_tokenizer_model_revision", "message"),
-    [
-        ("organization/tokenizer", None, "tokenizer revision is required"),
-        (None, "revision", "tokenizer name is required"),
-    ],
-    ids=["missing-revision", "missing-name"],
-)
-def test_init_rejects_incomplete_audio_tokenizer_source(
-    audio_tokenizer_model_name: str | None,
-    audio_tokenizer_model_revision: str | None,
-    message: str,
-):
-    """Test auxiliary tokenizer names and required revisions stay paired.
-
-    Arguments:
-        audio_tokenizer_model_name: configured tokenizer model name
-        audio_tokenizer_model_revision: configured tokenizer model revision
-        message: expected validation error text
-    """
-    model = replace(
-        MIMO_MODEL,
-        audio_tokenizer_model_name=audio_tokenizer_model_name,
-        audio_tokenizer_model_revision=audio_tokenizer_model_revision,
+def test_mimo_uses_pinned_audio_tokenizer_model():
+    """Test MiMo defines its required audio-tokenizer model."""
+    assert MIMO_MODEL.audio_tokenizer == MlxAudioTokenizerModel(
+        name="mlx-community/MiMo-Audio-Tokenizer",
+        revision="6d451ed9a73024b4d33b87afa69e0dfd40d8f306",
     )
-
-    with pytest.raises(ValueError, match=message):
-        MlxAudioBackend(model)
 
 
 @pytest.mark.parametrize(
@@ -294,10 +273,10 @@ def test_loaded_model_is_shared_by_model_key(
 
     assert first._loaded_model is load.return_value
     assert second._loaded_model is load.return_value
-    expected_snapshot_calls = [call(model.model_name, model.model_revision)]
-    if model.audio_tokenizer_model_name is not None:
+    expected_snapshot_calls = [call(model.name, model.revision)]
+    if model.audio_tokenizer is not None:
         expected_snapshot_calls.append(
-            call(model.audio_tokenizer_model_name, model.audio_tokenizer_model_revision)
+            call(model.audio_tokenizer.name, model.audio_tokenizer.revision)
         )
     assert get_snapshot_dir_path.call_args_list == expected_snapshot_calls
     load.assert_called_once_with(Path("/cached/model"), model_type=model_type)
@@ -347,14 +326,14 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
     remote_get_model_path = Mock()
     mimo_asr = SimpleNamespace(get_model_path=remote_get_model_path)
     loaded_model = object()
+    audio_tokenizer = MIMO_MODEL.audio_tokenizer
+    assert audio_tokenizer is not None
 
     def load(local_model_path: Path, **kwargs: object) -> object:
         """Check the replacement resolver while simulating model loading."""
         assert local_model_path == model_path
         assert kwargs == {"model_type": "mimo"}
-        assert mimo_asr.get_model_path(MIMO_MODEL.audio_tokenizer_model_name) == (
-            audio_tokenizer_path
-        )
+        assert mimo_asr.get_model_path(audio_tokenizer.name) == audio_tokenizer_path
         return loaded_model
 
     get_snapshot_dir_path = Mock(side_effect=(model_path, audio_tokenizer_path))
@@ -369,36 +348,11 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
 
     assert MlxAudioBackend(MIMO_MODEL)._loaded_model is loaded_model
     assert get_snapshot_dir_path.call_args_list == [
-        call(MIMO_MODEL.model_name, MIMO_MODEL.model_revision),
-        call(
-            MIMO_MODEL.audio_tokenizer_model_name,
-            MIMO_MODEL.audio_tokenizer_model_revision,
-        ),
+        call(MIMO_MODEL.name, MIMO_MODEL.revision),
+        call(audio_tokenizer.name, audio_tokenizer.revision),
     ]
     assert mimo_asr.get_model_path is remote_get_model_path
     remote_get_model_path.assert_not_called()
-
-
-def test_model_validates_local_path(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
-    """Test local model paths are resolved before loading.
-
-    Arguments:
-        monkeypatch: pytest monkeypatch fixture
-        tmp_path: temporary directory path
-    """
-    model_path = tmp_path / "model"
-    model_path.mkdir()
-    load = Mock(return_value=object())
-    monkeypatch.setattr(MlxAudioBackend, "_models_by_key", {})
-    monkeypatch.setattr(backend, "import_mlx_audio_stt_load", Mock(return_value=load))
-
-    model = replace(
-        MIMO_MODEL, model_name=str(model_path), model_revision="local-revision"
-    )
-    mlx_audio_backend = MlxAudioBackend(model)
-
-    assert mlx_audio_backend._loaded_model is load.return_value
-    load.assert_called_once_with(model_path.resolve(), model_type="mimo")
 
 
 def test_mlx_audio_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):

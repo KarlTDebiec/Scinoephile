@@ -95,16 +95,12 @@ def test_get_cache_path_separates_model_configuration(runtime_cache_root_path: P
     audio = _get_cache_audio()
     first_transcriber = _get_mlx_audio_transcriber(
         model=replace(
-            MIMO_MODEL,
-            model_name="custom/MiMo-V2.5-ASR-one",
-            model_revision="revision-one",
+            MIMO_MODEL, name="custom/MiMo-V2.5-ASR-one", revision="revision-one"
         )
     )
     second_transcriber = _get_mlx_audio_transcriber(
         model=replace(
-            MIMO_MODEL,
-            model_name="custom/MiMo-V2.5-ASR-two",
-            model_revision="revision-two",
+            MIMO_MODEL, name="custom/MiMo-V2.5-ASR-two", revision="revision-two"
         )
     )
 
@@ -135,10 +131,10 @@ def test_get_cache_path_separates_model_revisions():
     """Test remote model revisions contribute to MLX-Audio cache identity."""
     audio = _get_cache_audio()
     first_transcriber = _get_mlx_audio_transcriber(
-        model=replace(MIMO_MODEL, model_revision="revision-one")
+        model=replace(MIMO_MODEL, revision="revision-one")
     )
     second_transcriber = _get_mlx_audio_transcriber(
-        model=replace(MIMO_MODEL, model_revision="revision-two")
+        model=replace(MIMO_MODEL, revision="revision-two")
     )
 
     assert _get_cache_path(first_transcriber, audio) != _get_cache_path(
@@ -443,7 +439,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(monkeypatch: pytest.MonkeyPa
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
-    assert transcriber.model_name == MIMO_MODEL.model_name
+    assert transcriber.model_name == MIMO_MODEL.name
     assert transcriber.backend.mlx_audio_language == "zh"
     assert captured["max_tokens"] == 256
     assert isinstance(captured["audio_path"], Path)
@@ -930,8 +926,8 @@ def test_transcribe_aligns_text_and_writes_cache(
     cache_payload = json.loads(cache_path.read_text(encoding="utf-8"))
     assert cache_payload["cache_version"] == 2
     assert cache_payload["cache_identity"]["backend"] == "mlx-audio"
-    assert cache_payload["cache_identity"]["model_family"] == "mimo"
-    assert cache_payload["cache_identity"]["model_name"] == MIMO_MODEL.model_name
+    assert cache_payload["cache_identity"]["model_type"] == "mimo"
+    assert cache_payload["cache_identity"]["model_name"] == MIMO_MODEL.name
     assert cache_payload["segments"][0]["text"] == "你好"
 
 

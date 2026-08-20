@@ -13,6 +13,7 @@ __all__ = [
     "GLM_ASR_MODEL",
     "MIMO_MODEL",
     "MlxAudioModel",
+    "MlxAudioTokenizerModel",
     "QWEN3_ASR_MODEL",
     "SENSEVOICE_MODEL",
 ]
@@ -22,20 +23,16 @@ __all__ = [
 class MlxAudioModel:
     """Complete definition of one MLX-Audio STT model."""
 
-    model_name: str
-    """Hugging Face model name or local model path."""
-    family_name: str
-    """Stable model-family name used in cache identities."""
+    name: str
+    """Hugging Face model name."""
     model_type: str
     """Model type passed to the MLX-Audio loader."""
     languages: dict[Language, str | None]
     """Model-specific language values keyed by Scinoephile language."""
-    model_revision: str
+    revision: str
     """Required immutable model revision."""
-    audio_tokenizer_model_name: str | None = None
-    """Auxiliary Hugging Face audio-tokenizer name, when required."""
-    audio_tokenizer_model_revision: str | None = None
-    """Immutable auxiliary audio-tokenizer revision, when required."""
+    audio_tokenizer: MlxAudioTokenizerModel | None = None
+    """Auxiliary audio-tokenizer model, when required."""
     default_max_tokens: int | None = None
     """Default maximum generated tokens, or None for the model's native behavior."""
     max_tokens_argument: str | None = "max_tokens"
@@ -44,29 +41,36 @@ class MlxAudioModel:
     """Maximum safe audio duration per inference, or None when unrestricted."""
 
 
+@dataclass(frozen=True, slots=True)
+class MlxAudioTokenizerModel:
+    """Complete definition of one MLX-Audio tokenizer model."""
+
+    name: str
+    """Hugging Face model name."""
+    revision: str
+    """Required immutable model revision."""
+
+
 FIRERED_ASR2_MODEL = MlxAudioModel(
-    model_name="mlx-community/FireRedASR2-AED-mlx",
-    family_name="firered-asr2",
+    name="mlx-community/FireRedASR2-AED-mlx",
     model_type="fireredasr2",
     languages=dict.fromkeys(Language),
-    model_revision="f3212eacfa49b851130b97c63653c8e06ee09bdb",
+    revision="f3212eacfa49b851130b97c63653c8e06ee09bdb",
     max_tokens_argument="max_len",
 )
 """Default MLX FireRedASR2-AED model."""
 
 GLM_ASR_MODEL = MlxAudioModel(
-    model_name="mlx-community/GLM-ASR-Nano-2512-8bit",
-    family_name="glm-asr",
+    name="mlx-community/GLM-ASR-Nano-2512-8bit",
     model_type="glm",
     languages=dict.fromkeys(Language),
-    model_revision="fa36e850714806d8e50aac6573a8c0177d2e5e1a",
+    revision="fa36e850714806d8e50aac6573a8c0177d2e5e1a",
     default_max_tokens=128,
 )
 """Default MLX GLM-ASR-Nano-2512 model."""
 
 MIMO_MODEL = MlxAudioModel(
-    model_name="mlx-community/MiMo-V2.5-ASR-MLX",
-    family_name="mimo",
+    name="mlx-community/MiMo-V2.5-ASR-MLX",
     model_type="mimo",
     languages={
         Language.eng: "en",
@@ -75,17 +79,18 @@ MIMO_MODEL = MlxAudioModel(
         Language.zho_hans: "zh",
         Language.zho_hant: "zh",
     },
-    model_revision="69813f0d57fb9bb5328735c4e907a4558b47d341",
-    audio_tokenizer_model_name="mlx-community/MiMo-Audio-Tokenizer",
-    audio_tokenizer_model_revision="6d451ed9a73024b4d33b87afa69e0dfd40d8f306",
+    revision="69813f0d57fb9bb5328735c4e907a4558b47d341",
+    audio_tokenizer=MlxAudioTokenizerModel(
+        name="mlx-community/MiMo-Audio-Tokenizer",
+        revision="6d451ed9a73024b4d33b87afa69e0dfd40d8f306",
+    ),
     default_max_tokens=256,
     max_safe_audio_duration_seconds=55.0,
 )
 """Default MLX MiMo model."""
 
 QWEN3_ASR_MODEL = MlxAudioModel(
-    model_name="mlx-community/Qwen3-ASR-0.6B-8bit",
-    family_name="qwen3-asr",
+    name="mlx-community/Qwen3-ASR-0.6B-8bit",
     model_type="qwen3_asr",
     languages={
         Language.eng: "English",
@@ -94,14 +99,13 @@ QWEN3_ASR_MODEL = MlxAudioModel(
         Language.zho_hans: "Chinese",
         Language.zho_hant: "Chinese",
     },
-    model_revision="89e96d92ba34aca20b3e29fb10cc284097d1219f",
+    revision="89e96d92ba34aca20b3e29fb10cc284097d1219f",
     default_max_tokens=8192,
 )
 """Default MLX Qwen3-ASR model."""
 
 SENSEVOICE_MODEL = MlxAudioModel(
-    model_name="mlx-community/SenseVoiceSmall",
-    family_name="sensevoice",
+    name="mlx-community/SenseVoiceSmall",
     model_type="sensevoice",
     languages={
         Language.eng: "en",
@@ -110,7 +114,7 @@ SENSEVOICE_MODEL = MlxAudioModel(
         Language.zho_hans: "zh",
         Language.zho_hant: "zh",
     },
-    model_revision="8ddd966bd96243cff196422f81f0c5d955814792",
+    revision="8ddd966bd96243cff196422f81f0c5d955814792",
     max_tokens_argument=None,
 )
 """Default MLX SenseVoiceSmall model."""

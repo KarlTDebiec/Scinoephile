@@ -56,11 +56,11 @@ def test_default_cantonese_sources_use_configured_models_without_internal_vad():
     )
     assert tuple(source.model for source in descriptors) == (
         WHISPER_LARGE_V3_CANTONESE_MODEL.model_name,
-        MIMO_MODEL.model_name,
-        QWEN3_ASR_MODEL.model_name,
-        SENSEVOICE_MODEL.model_name,
-        FIRERED_ASR2_MODEL.model_name,
-        GLM_ASR_MODEL.model_name,
+        MIMO_MODEL.name,
+        QWEN3_ASR_MODEL.name,
+        SENSEVOICE_MODEL.name,
+        FIRERED_ASR2_MODEL.name,
+        GLM_ASR_MODEL.name,
     )
     assert whisper.call_args.kwargs["model"] is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert whisper.call_args.kwargs["language"] is Language.yue_hant
@@ -100,7 +100,7 @@ def test_source_spec_normalizes_name():
 
 def test_source_uses_model_capability_for_token_limit_guard():
     """Test customized constrained models retain token-limit protection."""
-    customized_mimo_model = replace(MIMO_MODEL, model_revision="custom-revision")
+    customized_mimo_model = replace(MIMO_MODEL, revision="custom-revision")
     source_specs = [
         TranscriptionSourceSpec(name="mimo", model=customized_mimo_model),
         TranscriptionSourceSpec(name="whisper", model=WHISPER_LARGE_V3_CANTONESE_MODEL),
