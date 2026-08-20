@@ -4,7 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * tokenizer
-* model
+* helpers / model
 * recognizer
 * transcriber
 """

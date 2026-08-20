@@ -238,7 +238,7 @@ class MlxAudioTranscriber(Transcriber):
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
             try:
-                inference_result = self.recognizer.transcribe(temp_audio_path)
+                inference_result = self.recognizer.recognize(temp_audio_path)
             except (ImportError, OSError, RuntimeError, ValueError) as exc:
                 raise TranscriptionInferenceError(
                     f"Unable to run MLX-Audio inference: {exc}"
