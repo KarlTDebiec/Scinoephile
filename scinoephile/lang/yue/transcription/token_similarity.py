@@ -94,14 +94,14 @@ class YueTokenSimilarity:
             Yue-aware lexical substitution score
         """
         relationship = get_character_relationship(one, two)
-        if relationship is CharacterRelationship.exact:
+        if relationship is CharacterRelationship.EXACT:
             return self.exact_score
-        if relationship is CharacterRelationship.script_variant:
+        if relationship is CharacterRelationship.SCRIPT_VARIANT:
             return self.script_variant_score
-        if relationship is CharacterRelationship.equivalent:
+        if relationship is CharacterRelationship.EQUIVALENT:
             return self.yue_equivalent_score
-        if relationship is CharacterRelationship.same_jyutping:
+        if relationship is CharacterRelationship.SAME_JYUTPING:
             return self.same_jyutping_score
-        if relationship is CharacterRelationship.same_jyutping_base:
+        if relationship is CharacterRelationship.SAME_JYUTPING_BASE:
             return self.same_jyutping_base_score
         return self.substitution_score

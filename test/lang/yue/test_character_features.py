@@ -22,17 +22,17 @@ def test_character_relationship_orders_flexible_yue_matches():
     )
 
     assert relationships == (
-        CharacterRelationship.exact,
-        CharacterRelationship.script_variant,
-        CharacterRelationship.equivalent,
-        CharacterRelationship.same_jyutping,
-        CharacterRelationship.same_jyutping_base,
-        CharacterRelationship.unrelated,
+        CharacterRelationship.EXACT,
+        CharacterRelationship.SCRIPT_VARIANT,
+        CharacterRelationship.EQUIVALENT,
+        CharacterRelationship.SAME_JYUTPING,
+        CharacterRelationship.SAME_JYUTPING_BASE,
+        CharacterRelationship.UNRELATED,
     )
-    assert get_character_relationship("系", "係") >= CharacterRelationship.equivalent
+    assert get_character_relationship("系", "係") >= CharacterRelationship.EQUIVALENT
     assert (
         get_character_relationship("啊", "呀")
-        >= CharacterRelationship.same_jyutping_base
+        >= CharacterRelationship.SAME_JYUTPING_BASE
     )
-    assert get_character_relationship("下", "吓") >= CharacterRelationship.equivalent
-    assert get_character_relationship("噶", "㗎") >= CharacterRelationship.equivalent
+    assert get_character_relationship("下", "吓") >= CharacterRelationship.EQUIVALENT
+    assert get_character_relationship("噶", "㗎") >= CharacterRelationship.EQUIVALENT

@@ -287,7 +287,7 @@ def test_timing_retains_request_audio_for_unsupported_edge_correction():
         ),
     )
     request_result = TranscriptionRequestResult(
-        0, 3, _get_answer("天乙"), "0" * 64, (1,), (None, 1)
+        0, 3, _get_answer("天乙"), "0" * 64, (None, 1)
     )
     ctc_aligner = Mock(spec=CtcAligner, return_value=[_get_segment("天乙", 0.1, 0.5)])
 
@@ -332,7 +332,7 @@ def test_timing_realigns_subtitle_stretched_across_omitted_evidence():
             Column((Token("乙", 8.0, 8.2), Token("乙", 8.0, 8.2))),
         ),
     )
-    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2), (0, 2))
+    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2))
 
     output, timing_sources = get_timed_request_segments(
         audio, alignment, (request_result,), ctc_aligner
@@ -374,7 +374,7 @@ def test_timing_retains_long_subtitle_supported_across_its_interval():
             Column((Token("乙", 8.0, 8.2), Token("乙", 8.0, 8.2))),
         ),
     )
-    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2), (0, 2))
+    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2))
 
     output, timing_sources = get_timed_request_segments(
         audio, alignment, (request_result,), ctc_aligner

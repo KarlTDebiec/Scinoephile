@@ -31,10 +31,10 @@ class YueTranscriptionAlignmentScorer(TranscriptionAlignmentScorer):
             relationship between the characters
         """
         relationship = get_character_relationship(one, two)
-        if relationship is CharacterRelationship.exact:
-            return TranscriptionCharacterRelationship.exact
-        if relationship >= CharacterRelationship.equivalent:
-            return TranscriptionCharacterRelationship.equivalent
-        if relationship >= CharacterRelationship.same_jyutping_base:
-            return TranscriptionCharacterRelationship.pronunciation
-        return TranscriptionCharacterRelationship.none
+        if relationship is CharacterRelationship.EXACT:
+            return TranscriptionCharacterRelationship.EXACT
+        if relationship >= CharacterRelationship.EQUIVALENT:
+            return TranscriptionCharacterRelationship.EQUIVALENT
+        if relationship >= CharacterRelationship.SAME_JYUTPING_BASE:
+            return TranscriptionCharacterRelationship.PRONUNCIATION
+        return TranscriptionCharacterRelationship.NONE

@@ -57,7 +57,6 @@ __all__ = [
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",
     "get_segment_split_on_word_timings",
-    "get_segment_with_offset",
 ]
 
 logger = getLogger(__name__)
@@ -264,34 +263,3 @@ def get_segment_split_on_word_timings(
         for word_idx, word in enumerate(segment.words)
         if word.text
     ]
-
-
-def get_segment_with_offset(
-    segment: TranscribedSegment, offset_seconds: float
-) -> TranscribedSegment:
-    """Add a source-time offset to a transcription segment.
-
-    Arguments:
-        segment: segment timed against an audio slice
-        offset_seconds: slice start on the containing audio timeline
-    Returns:
-        segment timed against the containing audio
-    """
-    words = None
-    if segment.words is not None:
-        words = [
-            word.model_copy(
-                update={
-                    "start": word.start + offset_seconds,
-                    "end": word.end + offset_seconds,
-                }
-            )
-            for word in segment.words
-        ]
-    return segment.model_copy(
-        update={
-            "start": segment.start + offset_seconds,
-            "end": segment.end + offset_seconds,
-            "words": words,
-        }
-    )

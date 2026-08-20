@@ -32,17 +32,17 @@ _EQUIVALENCE_GROUPS = (
 class CharacterRelationship(IntEnum):
     """Strength of Yue evidence relating two characters."""
 
-    unrelated = 0
+    UNRELATED = 0
     """No known lexical or pronunciation relationship."""
-    same_jyutping_base = 1
+    SAME_JYUTPING_BASE = 1
     """Same context-free Yue syllable with different tone."""
-    same_jyutping = 2
+    SAME_JYUTPING = 2
     """Same context-free Yue pronunciation including tone."""
-    equivalent = 3
+    EQUIVALENT = 3
     """Known Yue and standard-Chinese equivalents."""
-    script_variant = 4
+    SCRIPT_VARIANT = 4
     """Simplified or Traditional forms of the same character."""
-    exact = 5
+    EXACT = 5
     """Compatibility-normalized exact match."""
 
 
@@ -105,18 +105,18 @@ def get_character_relationship(one: str, two: str) -> CharacterRelationship:
         strongest known Yue relationship
     """
     if normalize_nfkc(one) == normalize_nfkc(two):
-        return CharacterRelationship.exact
+        return CharacterRelationship.EXACT
     one_features = CharacterFeatures.get(one)
     two_features = CharacterFeatures.get(two)
     if one_features.simplified == two_features.simplified:
-        return CharacterRelationship.script_variant
+        return CharacterRelationship.SCRIPT_VARIANT
     if one_features.equivalence_groups.intersection(two_features.equivalence_groups):
-        return CharacterRelationship.equivalent
+        return CharacterRelationship.EQUIVALENT
     if one_features.jyutping and one_features.jyutping == two_features.jyutping:
-        return CharacterRelationship.same_jyutping
+        return CharacterRelationship.SAME_JYUTPING
     if (
         one_features.jyutping_base
         and one_features.jyutping_base == two_features.jyutping_base
     ):
-        return CharacterRelationship.same_jyutping_base
-    return CharacterRelationship.unrelated
+        return CharacterRelationship.SAME_JYUTPING_BASE
+    return CharacterRelationship.UNRELATED

@@ -18,7 +18,6 @@ from scinoephile.audio.transcription import (
     TranscriptionEmptyError,
     get_segment_merged,
     get_segment_split_at_idx,
-    get_segment_with_offset,
 )
 from scinoephile.core.text import is_lexical_character
 from scinoephile.llms.transcription import (
@@ -219,7 +218,7 @@ def get_timed_request_segments(  # noqa: PLR0912, PLR0915
         aligned_segment = get_segment_merged(aligned)
         request_segments = _split_aligned_segment(aligned_segment, answer)
         offset_segments = [
-            get_segment_with_offset(segment, start_seconds)
+            _get_segment_with_offset(segment, start_seconds)
             for segment in request_segments
         ]
         previous_end_seconds = 0.0
@@ -254,6 +253,37 @@ def get_timed_request_segments(  # noqa: PLR0912, PLR0915
         )
     }
     return numbered_segments, timing_sources
+
+
+def _get_segment_with_offset(
+    segment: TranscribedSegment, offset_seconds: float
+) -> TranscribedSegment:
+    """Add a source-time offset to a transcription segment.
+
+    Arguments:
+        segment: segment timed against an audio slice
+        offset_seconds: slice start on the containing audio timeline
+    Returns:
+        segment timed against the containing audio
+    """
+    words = None
+    if segment.words is not None:
+        words = [
+            word.model_copy(
+                update={
+                    "start": word.start + offset_seconds,
+                    "end": word.end + offset_seconds,
+                }
+            )
+            for word in segment.words
+        ]
+    return segment.model_copy(
+        update={
+            "start": segment.start + offset_seconds,
+            "end": segment.end + offset_seconds,
+            "words": words,
+        }
+    )
 
 
 def _get_subtitle_evidence_column_indexes(
@@ -420,7 +450,7 @@ def _repair_stretched_segments(  # noqa: PLR0913
                 f"{segment.text!r}: CTC alignment produced no timed text."
             )
             continue
-        repaired = get_segment_with_offset(get_segment_merged(aligned), start_seconds)
+        repaired = _get_segment_with_offset(get_segment_merged(aligned), start_seconds)
         if repaired.text != segment.text:
             raise RuntimeError(
                 "Subtitle-local CTC text does not match the requested consensus."

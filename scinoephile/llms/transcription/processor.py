@@ -45,10 +45,17 @@ class TranscriptionRequestResult:
     """Consensus subtitles returned for the request."""
     query_key_sha256: str
     """Digest of the request's semantic query key."""
-    answer_evidence_column_indexes: tuple[int, ...] = ()
-    """Complete-alignment columns corroborating answer characters."""
     answer_character_evidence_column_indexes: tuple[int | None, ...] = ()
     """Corroborating complete-alignment column for each answer character."""
+
+    @property
+    def answer_evidence_column_indexes(self) -> tuple[int, ...]:
+        """Get all complete-alignment columns corroborating answer characters."""
+        return tuple(
+            column_idx
+            for column_idx in self.answer_character_evidence_column_indexes
+            if column_idx is not None
+        )
 
 
 class TranscriptionProcessor(Processor):
@@ -103,7 +110,12 @@ class TranscriptionProcessor(Processor):
         for query, (start_column, end_column) in _get_request_queries(
             validated_query, pause_intervals_seconds
         ):
+            omission_reason = None
             if _get_usable_source_count(query) < 2:
+                omission_reason = "fewer than two sources contain usable text"
+            elif _contains_only_low_information_text(query):
+                omission_reason = "sources contain only low-information vocalizations"
+            if omission_reason is not None:
                 request_results.append(
                     TranscriptionRequestResult(
                         start_column,
@@ -114,23 +126,7 @@ class TranscriptionProcessor(Processor):
                 )
                 logger.info(
                     "Omitted transcription request at alignment columns "
-                    f"{start_column}-{end_column}: fewer than two sources contain "
-                    "usable text."
-                )
-                continue
-            if _contains_only_low_information_text(query):
-                request_results.append(
-                    TranscriptionRequestResult(
-                        start_column,
-                        end_column,
-                        TranscriptionAnswer(text=""),
-                        query.key_sha256,
-                    )
-                )
-                logger.info(
-                    "Omitted transcription request at alignment columns "
-                    f"{start_column}-{end_column}: sources contain only "
-                    "low-information vocalizations."
+                    f"{start_column}-{end_column}: {omission_reason}."
                 )
                 continue
             test_case = test_case_cls(query=query)
@@ -171,10 +167,6 @@ class TranscriptionProcessor(Processor):
             validation = test_case_cls.alignment_scorer.score(
                 tuple(source.text for source in query.sources), answer.transcript
             )
-            answer_evidence_column_indexes = tuple(
-                start_column + column_idx
-                for column_idx in validation.answer_evidence_column_indexes
-            )
             answer_character_evidence_column_indexes: list[int | None] = []
             for column_idx in validation.answer_character_evidence_column_indexes:
                 if column_idx is None:
@@ -189,13 +181,28 @@ class TranscriptionProcessor(Processor):
                     end_column,
                     answer,
                     query.key_sha256,
-                    answer_evidence_column_indexes,
                     tuple(answer_character_evidence_column_indexes),
                 )
             )
 
         self.save_encountered_test_cases()
         return tuple(request_results)
+
+
+def _contains_only_low_information_text(query: TranscriptionQuery) -> bool:
+    """Check whether every usable source contains only vocalizations.
+
+    Arguments:
+        query: one pause-delimited transcription query
+    Returns:
+        whether all usable source text is low-information
+    """
+    usable_texts = [
+        source.text for source in query.sources if _has_usable_content(source.text)
+    ]
+    return bool(usable_texts) and all(
+        is_low_information_text(text) for text in usable_texts
+    )
 
 
 def _get_flat_content_spans(
@@ -354,22 +361,6 @@ def _get_usable_source_count(query: TranscriptionQuery) -> int:
         number of sources containing nonblank, non-pause text
     """
     return sum(_has_usable_content(source.text) for source in query.sources)
-
-
-def _contains_only_low_information_text(query: TranscriptionQuery) -> bool:
-    """Check whether every usable source contains only vocalizations.
-
-    Arguments:
-        query: one pause-delimited transcription query
-    Returns:
-        whether all usable source text is low-information
-    """
-    usable_texts = [
-        source.text for source in query.sources if _has_usable_content(source.text)
-    ]
-    return bool(usable_texts) and all(
-        is_low_information_text(text) for text in usable_texts
-    )
 
 
 def _has_usable_content(text: str) -> bool:
