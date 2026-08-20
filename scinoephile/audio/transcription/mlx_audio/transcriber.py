@@ -35,8 +35,8 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
 from scinoephile.core.cache.runtime import get_distribution_identity
 
-from .backend import MlxAudioBackend
-from .model import MlxAudioModel
+from .model import MlxAudioModelSpec
+from .recognizer import MlxAudioRecognizer
 
 __all__ = ["MlxAudioTranscriber"]
 
@@ -73,10 +73,9 @@ class MlxAudioTranscriber(Transcriber):
 
     def __init__(
         self,
-        model: MlxAudioModel,
+        model: MlxAudioModelSpec,
         language: Language = Language.yue_hant,
         ctc_model_name: str | None = None,
-        max_tokens: int | None = None,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
         token_limit_guard: bool = False,
@@ -91,10 +90,9 @@ class MlxAudioTranscriber(Transcriber):
         """Initialize.
 
         Arguments:
-            model: MLX-Audio model
+            model: MLX-Audio model specification
             language: language to transcribe
             ctc_model_name: optional CTC model name or local model path
-            max_tokens: optional override for the model's generation limit
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
             token_limit_guard: whether to proactively guard model token limits
@@ -121,10 +119,10 @@ class MlxAudioTranscriber(Transcriber):
             )
 
         self.model = model
-        """Selected MLX-Audio model."""
+        """Selected MLX-Audio model specification."""
 
-        self.backend = MlxAudioBackend(self.model, language)
-        """Direct MLX-Audio inference backend."""
+        self.recognizer = MlxAudioRecognizer(self.model, language)
+        """Direct MLX-Audio speech recognizer."""
 
         self.ctc_aligner = CtcAligner(
             language,
@@ -133,17 +131,6 @@ class MlxAudioTranscriber(Transcriber):
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
         )
-        if max_tokens is None:
-            max_tokens = model.default_max_tokens
-        if max_tokens is not None:
-            if max_tokens <= 0:
-                raise ValueError("MLX-Audio max tokens must be positive.")
-            if model.max_tokens_argument is None:
-                raise ValueError(
-                    f"MLX-Audio {model.model_type} does not support a generation "
-                    "token limit."
-                )
-        self.max_tokens = max_tokens
         self.chunk_duration_seconds = chunk_duration_seconds
         self.chunk_overlap_seconds = chunk_overlap_seconds
         self.token_limit_guard = token_limit_guard
@@ -168,7 +155,7 @@ class MlxAudioTranscriber(Transcriber):
     @property
     def language(self) -> Language:
         """Get the transcription language."""
-        return self.backend.language
+        return self.recognizer.language
 
     @property
     def model_name(self) -> str:
@@ -199,7 +186,7 @@ class MlxAudioTranscriber(Transcriber):
                 "source_revision": _MLX_AUDIO_SOURCE_REVISION,
             },
             "language": self.language.code,
-            "max_tokens": self.max_tokens,
+            "max_tokens": self.model.max_tokens,
             "chunk_duration_seconds": chunk_duration_seconds,
             "chunk_overlap_seconds": chunk_overlap_ms / 1000,
             "chunk_postprocessing_version": _CHUNK_POSTPROCESSING_VERSION,
@@ -250,14 +237,14 @@ class MlxAudioTranscriber(Transcriber):
         """
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
-            max_tokens = self.max_tokens
             try:
-                inference_result = self.backend.transcribe(temp_audio_path, max_tokens)
+                inference_result = self.recognizer.transcribe(temp_audio_path)
             except (ImportError, OSError, RuntimeError, ValueError) as exc:
                 raise TranscriptionInferenceError(
                     f"Unable to run MLX-Audio inference: {exc}"
                 ) from exc
             generation_tokens = inference_result.generation_tokens
+            max_tokens = self.model.max_tokens
             if max_tokens is not None:
                 guarded_limit = ceil(max_tokens * _TOKEN_LIMIT_GUARD_FRACTION)
                 if generation_tokens >= max_tokens or (

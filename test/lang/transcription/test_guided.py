@@ -23,7 +23,7 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioModel,
+    MlxAudioModelSpec,
 )
 from scinoephile.audio.transcription.whisper.model import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
@@ -199,7 +199,9 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     ],
 )
 def test_get_guided_transcriber_configures_mlx_audio_model(
-    tmp_path: Path, model: TranscriptionModel, expected_mlx_audio_model: MlxAudioModel
+    tmp_path: Path,
+    model: TranscriptionModel,
+    expected_mlx_audio_model: MlxAudioModelSpec,
 ):
     """Test the factory selects each complete MLX-Audio model.
 

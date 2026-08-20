@@ -23,7 +23,7 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioModel,
+    MlxAudioModelSpec,
 )
 from scinoephile.audio.transcription.whisper.model import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
@@ -43,7 +43,7 @@ class TranscriptionSourceSpec:
 
     name: str
     """Stable source name used in alignment rows and artifacts."""
-    model: WhisperModel | MlxAudioModel
+    model: WhisperModel | MlxAudioModelSpec
     """Configured speech-to-text model."""
 
     def __post_init__(self):
@@ -132,7 +132,7 @@ def get_transcription_sources(
                 recover_decoding=True,
             )
             backend_name = WhisperTranscriber.backend_name
-        elif isinstance(source.model, MlxAudioModel):
+        elif isinstance(source.model, MlxAudioModelSpec):
             transcriber = MlxAudioTranscriber(
                 model=source.model,
                 language=language,
