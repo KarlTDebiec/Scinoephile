@@ -134,12 +134,9 @@ def get_transcription_sources(
             backend_name = WhisperTranscriber.backend_name
         elif isinstance(source.model, MlxAudioModelSpec):
             transcriber = MlxAudioTranscriber(
-                model=source.model,
+                model_spec=source.model,
                 language=language,
                 chunk_duration_seconds=_MLX_AUDIO_CHUNK_DURATION_SECONDS,
-                token_limit_guard=(
-                    source.model.max_safe_audio_duration_seconds is not None
-                ),
                 demucs_mode=demucs_mode,
                 vad_mode=VadMode.OFF,
                 cache_root_path=cache_root_path,

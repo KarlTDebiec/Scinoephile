@@ -204,7 +204,6 @@ def get_guided_transcriber(
     overwrite_cache: bool = False,
     strip_generated_punctuation: bool = False,
     mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
-    mlx_audio_token_limit_guard: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     no_op: bool = False,
@@ -229,7 +228,6 @@ def get_guided_transcriber(
         strip_generated_punctuation: whether to remove generated sentence
             punctuation after timing and before guided alignment
         mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
-        mlx_audio_token_limit_guard: whether to guard constrained MLX-Audio models
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         no_op: use neutral answers instead of querying an LLM
@@ -319,9 +317,8 @@ def get_guided_transcriber(
     mlx_audio_transcriber = None
     if isinstance(audio_model, MlxAudioModelSpec):
         mlx_audio_transcriber = MlxAudioTranscriber(
-            model=audio_model,
+            model_spec=audio_model,
             language=language,
-            token_limit_guard=mlx_audio_token_limit_guard,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             cache_root_path=cache_root_path,

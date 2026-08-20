@@ -32,6 +32,13 @@ from scinoephile.core import Language
 from scinoephile.core.dependencies import transcription as transcription_dependencies
 
 
+@pytest.fixture(autouse=True)
+def use_apple_silicon_platform(monkeypatch: pytest.MonkeyPatch):
+    """Run recognizer tests as though on the supported platform."""
+    monkeypatch.setattr(recognizer.platform, "system", Mock(return_value="Darwin"))
+    monkeypatch.setattr(recognizer.platform, "machine", Mock(return_value="arm64"))
+
+
 def test_mimo_uses_pinned_audio_tokenizer():
     """Test MiMo defines its required audio-tokenizer specification."""
     assert MIMO_MODEL.tokenizer is MIMO_AUDIO_TOKENIZER
@@ -119,12 +126,34 @@ def test_model_rejects_invalid_generation_limit(
         replace(model, max_tokens=max_tokens)
 
 
+def test_model_rejects_invalid_safe_audio_duration():
+    """Test model definitions require a positive safe audio duration."""
+    with pytest.raises(ValueError, match="max safe audio duration must be positive"):
+        replace(MIMO_MODEL, max_safe_audio_duration_seconds=0)
+
+
 def test_init_rejects_unsupported_language():
     """Test the recognizer rejects unsupported languages."""
     model = replace(MIMO_MODEL, languages={})
 
     with pytest.raises(ValueError, match="eng is not supported"):
         MlxAudioRecognizer(model, Language.eng)
+
+
+@pytest.mark.parametrize(
+    ("system", "machine"),
+    [("Linux", "arm64"), ("Darwin", "x86_64"), ("Windows", "ARM64")],
+)
+def test_model_rejects_unsupported_platform(
+    monkeypatch: pytest.MonkeyPatch, system: str, machine: str
+):
+    """Test model loading rejects unsupported platforms."""
+    monkeypatch.setattr(recognizer.platform, "system", Mock(return_value=system))
+    monkeypatch.setattr(recognizer.platform, "machine", Mock(return_value=machine))
+    mlx_audio_recognizer = MlxAudioRecognizer(MIMO_MODEL)
+
+    with pytest.raises(RuntimeError, match="requires macOS on Apple Silicon"):
+        _ = mlx_audio_recognizer.model
 
 
 @pytest.mark.parametrize(

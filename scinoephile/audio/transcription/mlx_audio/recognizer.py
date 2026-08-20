@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import platform
 from functools import cached_property
 from pathlib import Path
 from typing import Any, Protocol, cast
@@ -91,7 +92,18 @@ class MlxAudioRecognizer:
 
         Returns:
             loaded MLX-Audio model
+        Raises:
+            RuntimeError: if MLX-Audio is unsupported on the current platform
         """
+        system = platform.system()
+        machine = platform.machine()
+        if system != "Darwin" or machine != "arm64":
+            raise RuntimeError(
+                "MLX-Audio support requires macOS on Apple Silicon "
+                f"(detected platform.system()={system!r}, "
+                f"platform.machine()={machine!r}). CUDA support is not included."
+            )
+
         load = import_mlx_audio_stt_load()
         model_dir_path = get_huggingface_snapshot_dir_path(
             self.model_spec.name, self.model_spec.revision

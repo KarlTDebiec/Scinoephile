@@ -43,15 +43,19 @@ class MlxAudioModelSpec:
 
     def __post_init__(self):
         """Validate the model definition."""
-        if self.max_tokens is None:
-            return
-        if self.max_tokens <= 0:
-            raise ValueError("MLX-Audio max tokens must be positive.")
-        if self.max_tokens_arg is None:
-            raise ValueError(
-                f"MLX-Audio {self.model_type} does not support a generation token "
-                "limit."
-            )
+        if self.max_tokens is not None:
+            if self.max_tokens <= 0:
+                raise ValueError("MLX-Audio max tokens must be positive.")
+            if self.max_tokens_arg is None:
+                raise ValueError(
+                    f"MLX-Audio {self.model_type} does not support a generation token "
+                    "limit."
+                )
+        if (
+            self.max_safe_audio_duration_seconds is not None
+            and self.max_safe_audio_duration_seconds <= 0
+        ):
+            raise ValueError("MLX-Audio max safe audio duration must be positive.")
 
 
 FIRERED_ASR2_MODEL = MlxAudioModelSpec(

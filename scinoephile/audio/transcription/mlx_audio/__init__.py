@@ -4,7 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * tokenizer_spec
-* helpers / model_spec
+* helpers / model_spec / timing
 * recognizer
 * transcriber
 """

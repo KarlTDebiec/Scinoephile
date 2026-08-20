@@ -222,7 +222,6 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
             cache_root_path=tmp_path,
             strip_generated_punctuation=True,
             mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
-            mlx_audio_token_limit_guard=True,
             provider=Mock(
                 spec=LLMProvider,
                 cache_identity={"implementation": "test"},
@@ -242,9 +241,8 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
     assert transcriber.strip_generated_punctuation
     assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
     mlx_audio_transcriber_class.assert_called_once_with(
-        model=expected_mlx_audio_model,
+        model_spec=expected_mlx_audio_model,
         language=Language.yue_hant,
-        token_limit_guard=True,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VadMode.OFF,
         cache_root_path=tmp_path,
