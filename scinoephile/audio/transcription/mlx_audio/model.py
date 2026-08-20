@@ -8,12 +8,13 @@ from dataclasses import dataclass
 
 from scinoephile.core.language import Language
 
+from .tokenizer_model import MIMO_AUDIO_TOKENIZER_MODEL, MlxAudioTokenizerModel
+
 __all__ = [
     "FIRERED_ASR2_MODEL",
     "GLM_ASR_MODEL",
     "MIMO_MODEL",
     "MlxAudioModel",
-    "MlxAudioTokenizerModel",
     "QWEN3_ASR_MODEL",
     "SENSEVOICE_MODEL",
 ]
@@ -39,16 +40,6 @@ class MlxAudioModel:
     """MLX-Audio generation-limit parameter, or None when unsupported."""
     max_safe_audio_duration_seconds: float | None = None
     """Maximum safe audio duration per inference, or None when unrestricted."""
-
-
-@dataclass(frozen=True, slots=True)
-class MlxAudioTokenizerModel:
-    """Complete definition of one MLX-Audio tokenizer model."""
-
-    name: str
-    """Hugging Face model name."""
-    revision: str
-    """Required immutable model revision."""
 
 
 FIRERED_ASR2_MODEL = MlxAudioModel(
@@ -80,10 +71,7 @@ MIMO_MODEL = MlxAudioModel(
         Language.zho_hant: "zh",
     },
     revision="69813f0d57fb9bb5328735c4e907a4558b47d341",
-    audio_tokenizer=MlxAudioTokenizerModel(
-        name="mlx-community/MiMo-Audio-Tokenizer",
-        revision="6d451ed9a73024b4d33b87afa69e0dfd40d8f306",
-    ),
+    audio_tokenizer=MIMO_AUDIO_TOKENIZER_MODEL,
     default_max_tokens=256,
     max_safe_audio_duration_seconds=55.0,
 )

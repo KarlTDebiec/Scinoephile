@@ -36,7 +36,7 @@ from scinoephile.core import Language
 from scinoephile.core.cache.runtime import get_distribution_identity
 
 from .backend import MlxAudioBackend
-from .model import MIMO_MODEL, MlxAudioModel
+from .model import MlxAudioModel
 
 __all__ = ["MlxAudioTranscriber"]
 
@@ -73,7 +73,7 @@ class MlxAudioTranscriber(Transcriber):
 
     def __init__(
         self,
-        model: MlxAudioModel = MIMO_MODEL,
+        model: MlxAudioModel,
         language: Language = Language.yue_hant,
         ctc_model_name: str | None = None,
         max_tokens: int | None = None,
@@ -107,7 +107,7 @@ class MlxAudioTranscriber(Transcriber):
             ctc_model_revision: optional immutable Hugging Face CTC model revision
         Raises:
             TranscriptionError: if the platform does not support MLX-Audio
-            ValueError: if the language or numeric configuration is invalid
+            ValueError: if the numeric configuration is invalid
         """
         # Reject runtimes that cannot execute MLX-Audio
         system = platform.system()
@@ -199,7 +199,6 @@ class MlxAudioTranscriber(Transcriber):
                 "source_revision": _MLX_AUDIO_SOURCE_REVISION,
             },
             "language": self.language.code,
-            "mlx_audio_language": self.backend.mlx_audio_language,
             "max_tokens": self.max_tokens,
             "chunk_duration_seconds": chunk_duration_seconds,
             "chunk_overlap_seconds": chunk_overlap_ms / 1000,
@@ -259,7 +258,7 @@ class MlxAudioTranscriber(Transcriber):
                     f"Unable to run MLX-Audio inference: {exc}"
                 ) from exc
             generation_tokens = inference_result.generation_tokens
-            if max_tokens is not None and generation_tokens is not None:
+            if max_tokens is not None:
                 guarded_limit = ceil(max_tokens * _TOKEN_LIMIT_GUARD_FRACTION)
                 if generation_tokens >= max_tokens or (
                     guard_token_limit and generation_tokens >= guarded_limit

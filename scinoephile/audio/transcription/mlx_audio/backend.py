@@ -4,9 +4,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterator, Mapping
+from collections.abc import Callable, Iterator
 from contextlib import contextmanager
-from dataclasses import dataclass
 from pathlib import Path
 from threading import Lock
 from typing import ClassVar, Protocol, cast
@@ -16,82 +15,48 @@ from scinoephile.core.dependencies.transcription import (
     import_mlx_audio_stt_load,
 )
 from scinoephile.core.language import Language
-from scinoephile.core.ml import ModelSource, get_huggingface_snapshot_dir_path
+from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
-from .model import MIMO_MODEL, MlxAudioModel, MlxAudioTokenizerModel
+from .model import MlxAudioModel
 
 __all__ = ["MlxAudioBackend", "MlxAudioInferenceResult"]
 
 
-@dataclass(frozen=True, slots=True)
-class MlxAudioInferenceResult:
-    """Result of direct MLX-Audio inference."""
+class MlxAudioInferenceResult(Protocol):
+    """Structural type returned by MLX-Audio inference."""
 
     text: str
     """Transcript text."""
 
-    generation_tokens: int | None = None
-    """Number of generated text tokens, when reported by the model."""
+    generation_tokens: int
+    """Number of generated text tokens."""
 
 
 class _LoadedMlxAudioModel(Protocol):
     """Structural type for loaded MLX-Audio models used by the backend."""
 
-    def generate(self, audio: str, **kwargs: object) -> object:
+    def generate(self, audio: str, **kwargs: object) -> MlxAudioInferenceResult:
         """Generate a transcript for one audio file."""
-
-
-@dataclass(frozen=True, slots=True)
-class _MlxAudioLoadKey:
-    """Inputs that uniquely determine a loaded MLX-Audio model."""
-
-    model: ModelSource
-    """Primary model source."""
-
-    model_type: str
-    """Model type passed to the MLX-Audio loader."""
-
-    audio_tokenizer: MlxAudioTokenizerModel | None
-    """Auxiliary audio-tokenizer model, when required."""
 
 
 class MlxAudioBackend:
     """Runs direct speech-to-text inference through one MLX-Audio model."""
 
-    _models_by_key: ClassVar[dict[_MlxAudioLoadKey, _LoadedMlxAudioModel]] = {}
-    """Loaded models shared by complete model identity."""
     _model_load_lock: ClassVar[Lock] = Lock()
-    """Lock protecting process-wide model loading and resolver replacement."""
+    """Lock protecting model loading and resolver replacement."""
 
-    def __init__(
-        self, model: MlxAudioModel = MIMO_MODEL, language: Language = Language.yue_hant
-    ):
+    def __init__(self, model: MlxAudioModel, language: Language = Language.yue_hant):
         """Initialize.
 
         Arguments:
             model: MLX-Audio model
             language: language to transcribe
-        Raises:
-            ValueError: if the model does not support the language
         """
         self.model = model
         """Selected MLX-Audio model."""
 
-        # Convert the Scinoephile language to the selected model's value
-        try:
-            self.language = language
-            self.mlx_audio_language = self.model.languages[language]
-        except KeyError as exc:
-            raise ValueError(
-                f"{language} is not supported by MLX-Audio "
-                f"{self.model.model_type} transcription"
-            ) from exc
-
-        self._model_source: ModelSource = (self.model.name, self.model.revision)
-        """Pinned primary model source."""
-
-        self._audio_tokenizer = self.model.audio_tokenizer
-        """Pinned auxiliary audio-tokenizer model, when required."""
+        self.language = language
+        """Language to transcribe."""
 
         self._loaded_model_instance: _LoadedMlxAudioModel | None = None
         """Loaded MLX-Audio model."""
@@ -105,14 +70,67 @@ class MlxAudioBackend:
             audio_path: audio file to transcribe
             max_tokens: generation limit, or None to use native model behavior
         Returns:
-            normalized inference result
+            MLX-Audio inference result
         Raises:
             ImportError: if MLX-Audio is unavailable
-            ValueError: if the limit is invalid or the model returns malformed output
+            ValueError: if the language or generation limit is invalid
+        """
+        generate_kwargs = self._get_generate_kwargs(max_tokens)
+        return self._loaded_model.generate(str(audio_path), **generate_kwargs)
+
+    @property
+    def _loaded_model(self) -> _LoadedMlxAudioModel:
+        """Get this backend's MLX-Audio model, loading it if needed.
+
+        Returns:
+            loaded MLX-Audio model
+        """
+        loaded_model = self._loaded_model_instance
+        if loaded_model is not None:
+            return loaded_model
+
+        with self._model_load_lock:
+            loaded_model = self._loaded_model_instance
+            if loaded_model is None:
+                load = import_mlx_audio_stt_load()
+                load_kwargs: dict[str, object] = {"model_type": self.model.model_type}
+                model_dir_path = get_huggingface_snapshot_dir_path(
+                    self.model.name, self.model.revision
+                )
+                audio_tokenizer_dir_path = None
+                audio_tokenizer = self.model.audio_tokenizer
+                if audio_tokenizer is not None:
+                    audio_tokenizer_dir_path = get_huggingface_snapshot_dir_path(
+                        audio_tokenizer.name, audio_tokenizer.revision
+                    )
+                with self._use_local_audio_tokenizer(audio_tokenizer_dir_path):
+                    loaded_model = cast(
+                        _LoadedMlxAudioModel, load(model_dir_path, **load_kwargs)
+                    )
+                self._loaded_model_instance = loaded_model
+        return loaded_model
+
+    def _get_generate_kwargs(self, max_tokens: int | None) -> dict[str, object]:
+        """Get model-specific keyword arguments for MLX-Audio generation.
+
+        Arguments:
+            max_tokens: generation limit, or None to use native model behavior
+        Returns:
+            keyword arguments for the selected model's generate method
+        Raises:
+            ValueError: if the selected model does not support the language or a
+                generation limit
         """
         generate_kwargs: dict[str, object] = {}
-        if self.mlx_audio_language is not None:
-            generate_kwargs["language"] = self.mlx_audio_language
+        try:
+            model_language = self.model.languages[self.language]
+        except KeyError as exc:
+            raise ValueError(
+                f"{self.language} is not supported by MLX-Audio "
+                f"{self.model.model_type} transcription"
+            ) from exc
+        if model_language is not None:
+            generate_kwargs["language"] = model_language
         if max_tokens is not None:
             max_tokens_argument = self.model.max_tokens_argument
             if max_tokens_argument is None:
@@ -121,82 +139,7 @@ class MlxAudioBackend:
                     "generation token limit."
                 )
             generate_kwargs[max_tokens_argument] = max_tokens
-        result = self._loaded_model.generate(str(audio_path), **generate_kwargs)
-
-        # Normalize mapping- and attribute-based results
-        if isinstance(result, Mapping):
-            result_mapping = cast(Mapping[str, object], result)
-            text = result_mapping.get("text")
-            generation_tokens = result_mapping.get("generation_tokens")
-        else:
-            text = getattr(result, "text", None)
-            generation_tokens = getattr(result, "generation_tokens", None)
-        if not isinstance(text, str):
-            raise ValueError("MLX-Audio inference result is missing transcript text.")
-        if generation_tokens is not None and (
-            not isinstance(generation_tokens, int)
-            or isinstance(generation_tokens, bool)
-            or generation_tokens < 0
-        ):
-            raise ValueError(
-                "MLX-Audio inference result has an invalid generation token count."
-            )
-
-        return MlxAudioInferenceResult(text=text, generation_tokens=generation_tokens)
-
-    @property
-    def _loaded_model(self) -> _LoadedMlxAudioModel:
-        """Get the cached MLX-Audio model, loading it if needed.
-
-        Returns:
-            loaded MLX-Audio model
-        """
-        if self._loaded_model_instance is not None:
-            return self._loaded_model_instance
-
-        model_key = _MlxAudioLoadKey(
-            model=self._model_source,
-            model_type=self.model.model_type,
-            audio_tokenizer=self._audio_tokenizer,
-        )
-
-        # Reuse the process-wide model cache across inference instances
-        with self._model_load_lock:
-            cached_model = self._models_by_key.get(model_key)
-            if cached_model is None:
-                load = import_mlx_audio_stt_load()
-                load_kwargs: dict[str, object] = {"model_type": self.model.model_type}
-                model_dir_path = self._get_model_dir_path()
-                audio_tokenizer_dir_path = self._get_audio_tokenizer_dir_path()
-                with self._use_local_audio_tokenizer(audio_tokenizer_dir_path):
-                    cached_model = cast(
-                        _LoadedMlxAudioModel, load(model_dir_path, **load_kwargs)
-                    )
-                self._models_by_key[model_key] = cached_model
-        self._loaded_model_instance = cached_model
-        return self._loaded_model_instance
-
-    def _get_audio_tokenizer_dir_path(self) -> Path | None:
-        """Resolve a remote model's auxiliary audio tokenizer locally.
-
-        Returns:
-            pinned local audio-tokenizer directory, when configured
-        """
-        audio_tokenizer = self._audio_tokenizer
-        if audio_tokenizer is None:
-            return None
-        return get_huggingface_snapshot_dir_path(
-            audio_tokenizer.name, audio_tokenizer.revision
-        )
-
-    def _get_model_dir_path(self) -> Path:
-        """Resolve the configured model to a local directory.
-
-        Returns:
-            local model directory path
-        """
-        model_name, model_revision = self._model_source
-        return get_huggingface_snapshot_dir_path(model_name, model_revision)
+        return generate_kwargs
 
     @contextmanager
     def _use_local_audio_tokenizer(
@@ -211,7 +154,7 @@ class MlxAudioBackend:
             yield
             return
 
-        audio_tokenizer = self._audio_tokenizer
+        audio_tokenizer = self.model.audio_tokenizer
         if audio_tokenizer is None:
             raise RuntimeError("MLX-Audio tokenizer model is missing.")
 

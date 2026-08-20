@@ -3,6 +3,7 @@
 """MLX-Audio transcription and timestamp alignment.
 
 Package hierarchy (modules may import from any above):
+* tokenizer_model
 * model
 * backend
 * transcriber
@@ -10,7 +11,8 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .model import MlxAudioModel, MlxAudioTokenizerModel
+from .model import MlxAudioModel
+from .tokenizer_model import MlxAudioTokenizerModel
 from .transcriber import MlxAudioTranscriber
 
 __all__ = ["MlxAudioModel", "MlxAudioTokenizerModel", "MlxAudioTranscriber"]
