@@ -132,26 +132,22 @@ class AlignmentSubtitle(BaseModel):
 
 
 class AlignmentBlock(BaseModel):
-    """One VAD-derived block of aligned ASR, speaker, and merged evidence."""
+    """One processing block of aligned ASR, speaker, and merged evidence."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     index: int = Field(ge=1)
-    """One-based block index in the complete VAD plan."""
-    core_start_ms: int = Field(ge=0)
-    """Inclusive start of the block-owned source interval."""
-    core_end_ms: int = Field(ge=0)
-    """Exclusive end of the block-owned source interval."""
-    buffered_start_ms: int = Field(ge=0)
+    """One-based block index in the complete hard-cut plan."""
+    start_ms: int = Field(ge=0)
     """Inclusive start of the ASR input interval."""
-    buffered_end_ms: int = Field(ge=0)
+    end_ms: int = Field(ge=0)
     """Exclusive end of the ASR input interval."""
     columns: tuple[AlignmentColumn, ...]
     """Overall-time alignment column metadata."""
     rows: tuple[AlignmentRow, ...]
     """Source rows in artifact source order."""
     speaker: str
-    """Speaker/VAD annotation row aligned with all source rows."""
+    """Speaker annotation row aligned with all source rows."""
     language_trace: str | None = None
     """Spoken-language annotation row aligned with all source rows."""
     language_legend: dict[str, str] = Field(default_factory=dict)
@@ -163,7 +159,7 @@ class AlignmentBlock(BaseModel):
     merged: str
     """Lexical merged row aligned with all source rows."""
     subtitles: tuple[AlignmentSubtitle, ...]
-    """Core-owned merged subtitles produced from this block."""
+    """Merged subtitles produced from this block."""
     source_errors: dict[str, str] = Field(default_factory=dict)
     """Source failures that were tolerated while processing the block."""
 
@@ -231,16 +227,9 @@ class AlignmentBlock(BaseModel):
                 raise ValueError("Alignment pause markers require a pause column.")
 
     def _validate_ranges(self) -> None:
-        """Validate core, buffer, and column ranges."""
-        if self.core_end_ms <= self.core_start_ms:
-            raise ValueError("Alignment block core duration must be positive.")
-        if self.buffered_end_ms <= self.buffered_start_ms:
-            raise ValueError("Alignment block buffered duration must be positive.")
-        if (
-            self.core_start_ms < self.buffered_start_ms
-            or self.core_end_ms > self.buffered_end_ms
-        ):
-            raise ValueError("Alignment block core must lie within its buffer.")
+        """Validate block and column ranges."""
+        if self.end_ms <= self.start_ms:
+            raise ValueError("Alignment block duration must be positive.")
         if not self.columns:
             raise ValueError("Alignment blocks must contain at least one column.")
         if tuple(column.index for column in self.columns) != tuple(
@@ -248,11 +237,10 @@ class AlignmentBlock(BaseModel):
         ):
             raise ValueError("Alignment column indexes must be consecutive.")
         if any(
-            column.start_ms < self.buffered_start_ms
-            or column.end_ms > self.buffered_end_ms
+            column.start_ms < self.start_ms or column.end_ms > self.end_ms
             for column in self.columns
         ):
-            raise ValueError("Alignment columns must lie within the block buffer.")
+            raise ValueError("Alignment columns must lie within the block.")
 
     def _validate_rows(self) -> None:
         """Validate aligned row widths, names, and source errors."""
@@ -298,7 +286,7 @@ class AlignmentArtifact(BaseModel):
         "scinoephile-transcription-alignment"
     )
     """Stable artifact format identifier."""
-    version: Literal[4] = 4
+    version: Literal[5] = 5
     """Artifact schema version."""
     language: Language
     """Language of the ASR rows and merged subtitles."""
@@ -313,7 +301,7 @@ class AlignmentArtifact(BaseModel):
     sources: tuple[AlignmentSource, ...]
     """ASR sources in stable alignment row order."""
     blocks: tuple[AlignmentBlock, ...]
-    """Processed VAD blocks in source order."""
+    """Processed audio blocks in source order."""
 
     @property
     def sha256(self) -> str:
@@ -370,22 +358,22 @@ class AlignmentArtifact(BaseModel):
         block: AlignmentBlock,
         source_names: tuple[str, ...],
         previous_block_index: int,
-        previous_core_end_ms: int,
+        previous_block_end_ms: int,
     ) -> None:
         """Validate one block's source identity and position in the artifact.
 
         Arguments:
             block: block to validate
             source_names: expected source names in stable order
-            previous_block_index: preceding processed VAD block index
-            previous_core_end_ms: preceding processed block core end
+            previous_block_index: preceding processed block index
+            previous_block_end_ms: preceding processed block end
         """
-        if block.buffered_end_ms > self.audio_duration_ms:
+        if block.end_ms > self.audio_duration_ms:
             raise ValueError("Alignment block exceeds the source audio duration.")
         if block.index <= previous_block_index:
             raise ValueError("Alignment block indexes must be increasing.")
-        if block.core_start_ms < previous_core_end_ms:
-            raise ValueError("Alignment block cores must not overlap.")
+        if block.start_ms < previous_block_end_ms:
+            raise ValueError("Alignment blocks must not overlap.")
         block_source_names = tuple(row.name for row in block.rows)
         if block_source_names != tuple(
             name for name in source_names if name in block_source_names
@@ -433,12 +421,10 @@ class AlignmentArtifact(BaseModel):
                     "Alignment subtitle indexes must be globally consecutive."
                 )
             if (
-                subtitle.speech_start_ms < block.core_start_ms
-                or subtitle.speech_end_ms > block.core_end_ms
+                subtitle.speech_start_ms < block.start_ms
+                or subtitle.speech_end_ms > block.end_ms
             ):
-                raise ValueError(
-                    "Alignment subtitle speech must lie within its block core."
-                )
+                raise ValueError("Alignment subtitle speech must lie within its block.")
             if subtitle.end_ms > self.audio_duration_ms:
                 raise ValueError("Alignment subtitle exceeds the source audio.")
             if subtitle.speech_start_ms < previous_speech_end_ms:
@@ -459,13 +445,13 @@ class AlignmentArtifact(BaseModel):
         """Validate source identity and ordered block contents."""
         source_names = self._validate_sources()
         previous_block_index = 0
-        previous_core_end_ms = -1
+        previous_block_end_ms = -1
         subtitle_state = (0, -1, -1)
         for block in self.blocks:
             self._validate_block(
-                block, source_names, previous_block_index, previous_core_end_ms
+                block, source_names, previous_block_index, previous_block_end_ms
             )
             subtitle_state = self._validate_subtitles(block, *subtitle_state)
             previous_block_index = block.index
-            previous_core_end_ms = block.core_end_ms
+            previous_block_end_ms = block.end_ms
         return self

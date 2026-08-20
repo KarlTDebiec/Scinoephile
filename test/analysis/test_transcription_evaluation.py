@@ -49,10 +49,8 @@ def test_evaluation_calculates_cer_across_subtitle_boundaries():
         blocks=(
             AlignmentBlock(
                 index=1,
-                core_start_ms=0,
-                core_end_ms=5_000,
-                buffered_start_ms=0,
-                buffered_end_ms=5_000,
+                start_ms=0,
+                end_ms=5_000,
                 columns=columns,
                 rows=(
                     AlignmentRow(name="one", text=combined_text),

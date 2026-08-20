@@ -149,7 +149,7 @@ def test_merge_aligns_sources_and_preserves_consensus_subtitle_splits():
 
 
 def test_merge_uses_long_pause_boundaries_as_separate_ctc_windows():
-    """Test each request is aligned within its VAD-bounded audio span."""
+    """Test each request is aligned within its pause-bounded audio span."""
     audio = AudioSegment.silent(duration=3_000)
     processor = Mock(spec=TranscriptionProcessor)
     processor.process_requests.return_value = (
@@ -179,7 +179,7 @@ def test_merge_uses_long_pause_boundaries_as_separate_ctc_windows():
 
 
 def test_merge_infers_pauses_when_explicit_evidence_is_unavailable():
-    """Test absent VAD evidence falls back to shared source-timing gaps."""
+    """Test absent explicit evidence falls back to shared source-timing gaps."""
     audio = AudioSegment.silent(duration=3_000)
     processor = Mock(spec=TranscriptionProcessor)
     processor.process_requests.return_value = (
@@ -333,7 +333,6 @@ def test_transcribe_block_runs_sources_and_merges_successful_outputs():
         language_identification=None,
         pause_intervals_seconds=None,
         source_offset_seconds=0.0,
-        voice_activity_trace=None,
     )
 
 
