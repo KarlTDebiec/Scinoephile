@@ -102,8 +102,7 @@ def audit_transcription_alignment(
     if index_range is not None:
         lines.append(f"- requested {index_range}; complete containing blocks shown")
     selected_artifact = artifact.model_copy(update={"blocks": tuple(blocks)})
-    selected_references = {}
-    selected_reference_indexes = {}
+    reference_selections: dict[str, tuple[Series, tuple[int, ...]]] = {}
     for reference_name, reference in named_references.items():
         selected_events = [
             subtitle
@@ -113,12 +112,14 @@ def audit_transcription_alignment(
         indexes_by_identity: dict[int, list[int]] = {}
         for reference_index, subtitle in enumerate(reference):
             indexes_by_identity.setdefault(id(subtitle), []).append(reference_index)
-        selected_references[reference_name] = Series(events=selected_events)
-        selected_reference_indexes[reference_name] = tuple(
-            indexes_by_identity[id(subtitle)].pop(0) for subtitle in selected_events
+        reference_selections[reference_name] = (
+            Series(events=selected_events),
+            tuple(
+                indexes_by_identity[id(subtitle)].pop(0) for subtitle in selected_events
+            ),
         )
 
-    for reference_name, selected_reference in selected_references.items():
+    for reference_name, (selected_reference, _) in reference_selections.items():
         lines.extend(("", f"### Reference {reference_name}", ""))
         lines.extend(_get_metric_summary(selected_artifact, selected_reference))
         lines.extend(
@@ -138,13 +139,14 @@ def audit_transcription_alignment(
         )
     if named_references and include_timing_tables:
         lines.extend(("", "## Timing Comparisons", ""))
-        for reference_name, selected_reference in selected_references.items():
+        for reference_name, (
+            selected_reference,
+            original_reference_indexes,
+        ) in reference_selections.items():
             lines.extend((f"### {reference_name}", ""))
             lines.extend(
                 _get_timing_comparison_lines(
-                    selected_artifact,
-                    selected_reference,
-                    selected_reference_indexes[reference_name],
+                    selected_artifact, selected_reference, original_reference_indexes
                 )
             )
             lines.append("")

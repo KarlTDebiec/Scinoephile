@@ -225,46 +225,6 @@ def evaluate_timing(
     )
 
 
-def _evaluate_timing(
-    artifact: AlignmentArtifact,
-    selected_reference: Series,
-    original_reference_indexes: tuple[int, ...],
-    settings: TimingSettings | None,
-) -> TimingMetrics:
-    """Evaluate timing against an explicit reference selection."""
-    candidate = _get_candidate_series(artifact, settings)
-    if settings is None:
-        settings = artifact.timing
-    # Establish the text correspondence from immutable CTC speech bounds so the
-    # display-padding policy under test cannot change which subtitles are scored.
-    diff = SeriesDiff(_get_speech_series(artifact), selected_reference)
-    pairs = []
-    unmatched_candidate_indexes = set()
-    unmatched_reference_indexes = set()
-    for candidate_indexes, reference_indexes in diff.get_event_index_groups():
-        if not candidate_indexes:
-            unmatched_reference_indexes.update(reference_indexes)
-            continue
-        if not reference_indexes:
-            unmatched_candidate_indexes.update(candidate_indexes)
-            continue
-        pairs.append(
-            _get_timing_pair(
-                candidate,
-                selected_reference,
-                candidate_indexes,
-                reference_indexes,
-                original_reference_indexes,
-            )
-        )
-    return TimingMetrics(
-        settings=settings,
-        pairs=tuple(pairs),
-        unmatched_candidate_subtitles=len(unmatched_candidate_indexes),
-        unmatched_reference_subtitles=len(unmatched_reference_indexes),
-    )
-
-
 def get_block_references(
     artifact: AlignmentArtifact, reference: Series
 ) -> dict[int, Series]:
@@ -280,13 +240,9 @@ def get_block_references(
         selected reference subtitles keyed by artifact block index
     """
     selected_reference = get_reference_for_alignment(artifact, reference)
-    events_by_block = {block.index: [] for block in artifact.blocks}
-    if not selected_reference:
-        return {
-            block_index: Series(events=events)
-            for block_index, events in events_by_block.items()
-        }
-
+    events_by_block: dict[int, list[Subtitle]] = {
+        block.index: [] for block in artifact.blocks
+    }
     reference_block_indexes = _get_reference_block_indexes(artifact, selected_reference)
 
     for reference_index, subtitle in enumerate(selected_reference):
@@ -414,6 +370,54 @@ def retime_alignment(
         artifact.blocks, artifact.audio_duration_ms / 1000, settings
     )
     return AlignmentArtifact.model_validate(artifact_data)
+
+
+def _evaluate_timing(
+    artifact: AlignmentArtifact,
+    selected_reference: Series,
+    original_reference_indexes: tuple[int, ...],
+    settings: TimingSettings | None,
+) -> TimingMetrics:
+    """Evaluate timing against an explicit reference selection.
+
+    Arguments:
+        artifact: aligned multi-source transcription artifact
+        selected_reference: reference subtitles owned by the artifact's blocks
+        original_reference_indexes: zero-based indexes in the complete reference
+        settings: display timing to evaluate, or artifact timing when omitted
+    Returns:
+        aggregate and per-pair temporal overlap metrics
+    """
+    candidate = _get_candidate_series(artifact, settings)
+    if settings is None:
+        settings = artifact.timing
+    # Keep the display-padding policy from changing text correspondence
+    diff = SeriesDiff(_get_speech_series(artifact), selected_reference)
+    pairs = []
+    unmatched_candidate_indexes = set()
+    unmatched_reference_indexes = set()
+    for candidate_indexes, reference_indexes in diff.get_event_index_groups():
+        if not candidate_indexes:
+            unmatched_reference_indexes.update(reference_indexes)
+            continue
+        if not reference_indexes:
+            unmatched_candidate_indexes.update(candidate_indexes)
+            continue
+        pairs.append(
+            _get_timing_pair(
+                candidate,
+                selected_reference,
+                candidate_indexes,
+                reference_indexes,
+                original_reference_indexes,
+            )
+        )
+    return TimingMetrics(
+        settings=settings,
+        pairs=tuple(pairs),
+        unmatched_candidate_subtitles=len(unmatched_candidate_indexes),
+        unmatched_reference_subtitles=len(unmatched_reference_indexes),
+    )
 
 
 def _get_blocks_with_display_timing(
