@@ -104,7 +104,6 @@ def _get_pipeline(
     block_vad_detector = Mock()
     block_vad_detector.cache_identity = {"implementation": "test"}
     block_vad_detector.trace_cache_identity = {"implementation": "test"}
-    block_vad_detector.get_speech_intervals.return_value = [(100, 900)]
     block_vad_cache = Mock()
     block_vad_cache.load.return_value = trace
 

@@ -103,7 +103,7 @@ class MultiSourceTranscriber:
         """Transcribe audio without optional analysis evidence.
 
         Arguments:
-            audio: complete padded block audio
+            audio: complete processing-block audio
         Returns:
             final consensus subtitles with block-local timings
         """
@@ -128,7 +128,7 @@ class MultiSourceTranscriber:
             audio_events: optional source-wide FireRed audio-event timeline
             diarization: optional source-wide exclusive speaker timeline
             language_identification: optional source-wide FireRed language timeline
-            pause_intervals_seconds: block-local VAD silence intervals
+            pause_intervals_seconds: optional explicit block-local pause intervals
             source_offset_seconds: source time corresponding to block-local zero
         Returns:
             final consensus subtitles with block-local CTC timings
@@ -202,14 +202,14 @@ class MultiSourceTranscriber:
         pause_intervals_seconds: Sequence[tuple[float, float]] | None = None,
         source_offset_seconds: float = 0.0,
     ) -> list[TranscribedSegment]:
-        """Transcribe one padded block using optional audio-analysis evidence.
+        """Transcribe one processing block using optional audio-analysis evidence.
 
         Arguments:
-            audio: complete padded block audio
+            audio: complete processing-block audio
             audio_events: optional source-wide FireRed audio-event timeline
             diarization: optional source-wide exclusive speaker timeline
             language_identification: optional source-wide FireRed language timeline
-            pause_intervals_seconds: block-local VAD silence intervals
+            pause_intervals_seconds: optional explicit block-local pause intervals
             source_offset_seconds: source time corresponding to block-local zero
         Returns:
             final consensus subtitles with block-local CTC timings
