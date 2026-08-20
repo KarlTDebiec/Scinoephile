@@ -9,7 +9,7 @@ from typing import cast
 from unittest.mock import Mock
 
 from pydantic import ValidationError
-from pytest import raises
+from pytest import LogCaptureFixture, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
@@ -23,7 +23,6 @@ from scinoephile.llms.transcription import (
     TranscriptionSource,
     TranscriptionTestCase,
 )
-from test.helpers import parametrize
 
 _LOCALIZED_PROMPT = TranscriptionPrompt(
     language=Language.yue_hant,
@@ -71,9 +70,6 @@ def test_prompt_aliases_are_used_for_nested_llm_correspondence():
             {"mingcheng": "two", "yuanwen": "我是"},
         ],
         "shuoshuuren": "ＡＡ",
-        "language": None,
-        "singing": None,
-        "music": None,
     }
     assert test_case.answer is not None
     assert test_case.answer.model_dump(by_alias=True) == {"wenben": "我係｜"}
@@ -199,12 +195,11 @@ def test_query_accepts_distinct_fullwidth_gap_and_pause_annotations():
     assert query.speaker == "Ａ　・"
 
 
-def test_query_accepts_equal_width_language_singing_and_music_rows():
-    """Optional FireRed rows should retain the alignment's exact width."""
+def test_query_rejects_audit_only_analysis_rows():
+    """Language and audio-event traces should not enter LLM correspondence."""
     query_cls = TranscriptionManager.get_query_cls(TranscriptionManager.base_prompt)
 
-    query = cast(
-        TranscriptionQuery,
+    with raises(ValidationError, match="Extra inputs are not permitted"):
         query_cls.model_validate(
             {
                 "sources": [
@@ -216,12 +211,7 @@ def test_query_accepts_equal_width_language_singing_and_music_rows():
                 "singing": "唱・　",
                 "music": "　・樂",
             }
-        ),
-    )
-
-    assert query.language == "粵・日"
-    assert query.singing == "唱・　"
-    assert query.music == "　・樂"
+        )
 
 
 def test_query_rejects_reference_evidence_and_reference_markers():
@@ -282,21 +272,41 @@ def test_processor_no_op_preserves_request_spans_and_subtitle_limits():
     provider.chat_completion.assert_not_called()
 
 
-def test_processor_transcribes_one_source():
-    """One ASR source should be sent through the normal transcription path."""
+def test_processor_omits_one_source_request():
+    """A request supported by only one ASR source should be omitted."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    answer = processor.process(_get_sources("我係"), "ＡＡ")
+
+    assert answer.transcript == ""
+    provider.chat_completion.assert_not_called()
+
+
+def test_processor_omits_one_source_request_but_keeps_supported_request():
+    """An unsupported request should not discard later corroborated speech."""
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
         completion_metrics=[],
     )
     provider.chat_completion.return_value = json.dumps(
-        {"wenben": "我係｜"}, ensure_ascii=False
+        {"wenben": "乙｜"}, ensure_ascii=False
     )
     processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
 
-    answer = processor.process(_get_sources("我係"), "ＡＡ")
+    results = processor.process_requests(
+        _get_sources("甲・・・・乙", "　・・・・乙"), "Ａ・・・・Ｂ"
+    )
 
-    assert answer.transcript == "我係"
+    assert [
+        (result.start_column, result.end_column, result.answer.transcript)
+        for result in results
+    ] == [(0, 1, ""), (5, 6, "乙")]
     provider.chat_completion.assert_called_once()
 
 
@@ -328,9 +338,6 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
             {"mingcheng": "source_2", "yuanwen": "甲"},
         ],
         "shuoshuuren": "Ａ",
-        "language": None,
-        "singing": None,
-        "music": None,
     }
     assert json.loads(second_messages[1]["content"]) == {
         "laiyuan": [
@@ -338,10 +345,72 @@ def test_processor_splits_flat_rows_at_four_shared_pause_characters():
             {"mingcheng": "source_2", "yuanwen": "乙"},
         ],
         "shuoshuuren": "Ｂ",
-        "language": None,
-        "singing": None,
-        "music": None,
     }
+
+
+def test_processor_does_not_split_at_discontinuous_timed_pauses():
+    """Adjacent rendered pauses should split only when temporally continuous."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    provider.chat_completion.return_value = json.dumps(
+        {"wenben": "甲乙｜"}, ensure_ascii=False
+    )
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    results = processor.process_requests(
+        _get_sources("甲・・・・乙", "甲・・・・乙"),
+        "Ａ・・・・Ｂ",
+        pause_intervals_seconds=(
+            None,
+            (1.0, 1.473),
+            (1.996, 2.246),
+            (2.246, 2.496),
+            (2.496, 2.857),
+            None,
+        ),
+    )
+
+    assert [
+        (result.start_column, result.end_column, result.answer.transcript)
+        for result in results
+    ] == [(0, 6, "甲乙")]
+    provider.chat_completion.assert_called_once()
+
+
+def test_processor_splits_at_continuous_timed_pause():
+    """A continuous one-second timed pause should divide requests."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    provider.chat_completion.side_effect = [
+        json.dumps({"wenben": "甲｜"}, ensure_ascii=False),
+        json.dumps({"wenben": "乙｜"}, ensure_ascii=False),
+    ]
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    results = processor.process_requests(
+        _get_sources("甲・・・・乙", "甲・・・・乙"),
+        "Ａ・・・・Ｂ",
+        pause_intervals_seconds=(
+            None,
+            (1.0, 1.25),
+            (1.25, 1.5),
+            (1.5, 1.75),
+            (1.75, 2.0),
+            None,
+        ),
+    )
+
+    assert [
+        (result.start_column, result.end_column, result.answer.transcript)
+        for result in results
+    ] == [(0, 1, "甲"), (5, 6, "乙")]
+    assert provider.chat_completion.call_count == 2
 
 
 def test_processor_exposes_request_alignment_spans():
@@ -369,39 +438,45 @@ def test_processor_exposes_request_alignment_spans():
         call.kwargs["query_key_sha256"]
         for call in provider.chat_completion.call_args_list
     ]
+    assert [result.answer_evidence_column_indexes for result in results] == [(0,), (5,)]
+    assert [result.answer_character_evidence_column_indexes for result in results] == [
+        (0,),
+        (5,),
+    ]
 
 
-@parametrize(
-    ("language", "singing", "music"),
-    [
-        ("粵・英・・日", None, None),
-        (None, "　・唱・・　", None),
-        (None, None, "　・樂・・　"),
-    ],
-)
-def test_processor_does_not_split_when_an_optional_row_breaks_a_pause(
-    language: str | None, singing: str | None, music: str | None
-):
-    """A pause is shared only when every present analysis row marks it."""
+def test_processor_omits_requests_containing_only_vocalizations():
+    """Corroborated nonlexical vocalizations should not become subtitles."""
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
+
+    answer = processor.process(
+        _get_sources("哎　哎啊嗯", "誒誒　　嗯", "哎　哎　嗯"), "Ａ" * 5
+    )
+
+    assert answer.text == ""
+    provider.chat_completion.assert_not_called()
+
+
+def test_processor_omits_low_information_consensus_from_mixed_request():
+    """Low-information output should be removed even when sources include words."""
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
         completion_metrics=[],
     )
     provider.chat_completion.return_value = json.dumps(
-        {"wenben": "甲乙｜"}, ensure_ascii=False
+        {"wenben": "哈哈｜"}, ensure_ascii=False
     )
     processor = TranscriptionProcessor(_LOCALIZED_PROMPT, provider=provider)
 
-    answer = processor.process(
-        _get_sources("甲・・・・乙", "甲・・・・乙"),
-        "Ａ・・・・Ｂ",
-        language=language,
-        singing=singing,
-        music=music,
-    )
+    answer = processor.process(_get_sources("哈哈甲", "哈哈甲"), "ＡＡＡ")
 
-    assert answer.transcript == "甲乙"
+    assert answer.text == ""
     provider.chat_completion.assert_called_once()
 
 
@@ -446,7 +521,7 @@ def test_processor_retries_subtitles_exceeding_hard_length_limit():
     assert "maximum of 20 nonwhitespace characters" in retry_messages[-1]["content"]
 
 
-def test_processor_retries_answers_omitting_majority_consensus_speech():
+def test_processor_retries_answers_omitting_strong_consensus_speech():
     """Answers omitting a large unanimous span should be retried."""
     provider = Mock(
         spec=LLMProvider,
@@ -465,11 +540,18 @@ def test_processor_retries_answers_omitting_majority_consensus_speech():
 
     assert answer.transcript == "甲乙丙丁戊己庚辛壬癸"
     retry_messages = provider.chat_completion.call_args.args[0]
-    assert "preserves only 40.0%" in retry_messages[-1]["content"]
+    assert "6 consecutive" in retry_messages[-1]["content"]
+    assert "戊己庚辛壬癸" in retry_messages[-1]["content"]
 
 
-def test_processor_falls_back_after_invalid_consensus_retries():
-    """Exhausted LLM validation retries should use deterministic consensus."""
+def test_processor_falls_back_after_invalid_consensus_retries(
+    caplog: LogCaptureFixture,
+):
+    """Exhausted retries should use and accurately log deterministic consensus.
+
+    Arguments:
+        caplog: captured log records
+    """
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
@@ -487,9 +569,10 @@ def test_processor_falls_back_after_invalid_consensus_retries():
 
     assert answer.transcript == source_text
     assert provider.chat_completion.call_count == 5
+    assert f"used deterministic column consensus: {source_text + '｜'!r}" in caplog.text
 
 
-def test_answer_coverage_allows_locally_supported_character_corrections():
+def test_answer_consensus_allows_pronunciation_supported_corrections():
     """The omission guard should allow a minority character at the same column."""
     query = TranscriptionQuery(
         sources=[
@@ -506,7 +589,7 @@ def test_answer_coverage_allows_locally_supported_character_corrections():
     assert test_case.answer == answer
 
 
-def test_answer_coverage_rejects_equal_length_majority_replacement():
+def test_answer_consensus_rejects_equal_length_majority_replacement():
     """Unrelated equal-length text should not count as preserved evidence."""
     query = TranscriptionQuery(
         sources=_get_sources(*("ＡＢＣＤＥＦＧＨＩＪ" for _ in range(3))),
@@ -514,23 +597,110 @@ def test_answer_coverage_rejects_equal_length_majority_replacement():
     )
     answer = TranscriptionAnswer(text="ＫＬＭＮＯＰＱＲＳＴ｜")
 
-    with raises(ValidationError, match="preserves only 0.0%"):
+    with raises(ValidationError, match="10 consecutive"):
         TranscriptionTestCase(query=query, answer=answer)
 
 
-def test_answer_coverage_rejects_insertions_replacing_missing_majority_span():
-    """Inserted text should not compensate for omitted majority characters."""
+def test_answer_consensus_rejects_consecutive_mapped_replacements():
+    """Mapped but unrelated characters should remain unpreserved consensus."""
+    source_text = "甲乙丙丁戊"
+    query = TranscriptionQuery(
+        sources=_get_sources(*(source_text for _ in range(3))),
+        speaker="Ａ" * len(source_text),
+    )
+    answer = TranscriptionAnswer(text="天地玄黃戊｜")
+
+    validation = TranscriptionAlignmentScorer().score(
+        tuple(source.text for source in query.sources), answer.transcript
+    )
+
+    assert validation.longest_unpreserved_consensus_text == "甲乙丙丁"
+    with raises(ValidationError, match="4 consecutive"):
+        TranscriptionTestCase(query=query, answer=answer)
+
+
+def test_answer_consensus_rejects_long_unsupported_addition():
+    """Sparse single-source matches should not license an invented phrase."""
+    query = TranscriptionQuery(
+        sources=_get_sources(
+            "買巴車買巴車有隻", "鳳棒走鳳棒走有隻", "請炮跳請炮跳有隻"
+        ),
+        speaker="Ａ" * len("買巴車買巴車有隻"),
+    )
+    answer = TranscriptionAnswer(text="貓巴士貓巴士有隻｜")
+
+    validation = TranscriptionAlignmentScorer().score(
+        tuple(source.text for source in query.sources), answer.transcript
+    )
+
+    assert validation.longest_unsupported_answer_text == "貓巴士貓巴士"
+    with raises(ValidationError, match="without sufficient aligned ASR support"):
+        TranscriptionTestCase(query=query, answer=answer)
+
+
+def test_answer_consensus_rejects_trailing_single_source_phrase():
+    """A one-source character should not license an invented adjacent character."""
+    query = TranscriptionQuery(
+        sources=_get_sources("痴子　　", "　" * 3 + "蹟", "次子　　", "廁子　　"),
+        speaker="Ａ" * 4,
+    )
+    answer = TranscriptionAnswer(text="次子奇蹟｜")
+
+    with raises(ValidationError, match="without sufficient aligned ASR support"):
+        TranscriptionTestCase(query=query, answer=answer)
+
+
+def test_answer_consensus_rejects_unsupported_contextual_span_rewrite():
+    """Context alone should not authorize a long source-unsupported rewrite."""
     query = TranscriptionQuery(
         sources=_get_sources(*("甲乙丙丁戊己庚辛壬癸" for _ in range(3))),
         speaker="Ａ" * 10,
     )
     answer = TranscriptionAnswer(text="甲乙丙丁天地玄黃宇宙｜")
 
-    with raises(ValidationError, match="preserves only 40.0%"):
+    with raises(ValidationError, match="6 consecutive characters"):
         TranscriptionTestCase(query=query, answer=answer)
 
 
-def test_answer_coverage_accepts_compatibility_width_equivalence():
+def test_answer_consensus_rejects_three_consecutive_omissions():
+    """Three consecutive omitted majority columns should trigger a retry."""
+    scorer = TranscriptionAlignmentScorer()
+    validation = scorer.score(tuple("甲乙丙丁戊己庚" for _ in range(3)), "甲乙丙丁")
+
+    assert validation.longest_unpreserved_consensus_text == "戊己庚"
+    assert not validation.preserves_consensus(2)
+
+
+def test_answer_consensus_allows_scattered_contextual_corrections():
+    """Scattered contextual rewrites should not trigger an omission retry."""
+    source_text = "甲乙丙丁戊己庚辛壬癸"
+    query = TranscriptionQuery(
+        sources=_get_sources(*(source_text for _ in range(3))),
+        speaker="Ａ" * len(source_text),
+    )
+    answer = TranscriptionAnswer(text="甲天丙丁地己庚玄壬癸｜")
+
+    validation = TranscriptionAlignmentScorer().score(
+        tuple(source.text for source in query.sources), answer.transcript
+    )
+    test_case = TranscriptionTestCase(query=query, answer=answer)
+
+    assert validation.majority_coverage == 0.7
+    assert validation.longest_unpreserved_consensus_run == 1
+    assert test_case.answer == answer
+
+
+def test_answer_alignment_prioritizes_cross_source_support():
+    """Single-source text should not pull an answer away from consensus columns."""
+    validation = TranscriptionAlignmentScorer().score(
+        ("　　　　", "　　甲乙", "甲乙甲乙"), "甲乙丙"
+    )
+
+    assert validation.mapped_majority_coverage == 1.0
+    assert validation.majority_coverage == 1.0
+
+
+def test_answer_consensus_accepts_compatibility_width_equivalence():
     """Halfwidth and fullwidth Latin characters should preserve the same evidence."""
     query = TranscriptionQuery(
         sources=_get_sources(*("June" for _ in range(3))), speaker="Ａ" * 4
@@ -542,7 +712,7 @@ def test_answer_coverage_accepts_compatibility_width_equivalence():
     assert test_case.answer == answer
 
 
-def test_answer_coverage_ignores_nonlexical_source_columns():
+def test_answer_consensus_ignores_nonlexical_source_columns():
     """Punctuation and spaces should not count as required answer evidence."""
     source_text = "甲，乙 丙，丁 戊，己"
     query = TranscriptionQuery(
@@ -560,7 +730,7 @@ def test_answer_coverage_ignores_nonlexical_source_columns():
     assert test_case.answer == answer
 
 
-def test_answer_coverage_tolerates_one_contextual_spelling_replacement():
+def test_answer_consensus_tolerates_one_contextual_spelling_replacement():
     """One mapped unsupported name correction should not fail a short request."""
     query = TranscriptionQuery(
         sources=_get_sources(*("膠兜依然係咁喺度" for _ in range(3))), speaker="Ａ" * 8
@@ -572,7 +742,7 @@ def test_answer_coverage_tolerates_one_contextual_spelling_replacement():
     assert test_case.answer == answer
 
 
-def test_answer_coverage_does_not_reject_context_resolved_weak_columns():
+def test_answer_consensus_does_not_reject_context_resolved_weak_columns():
     """Columns without a strict majority should remain diagnostic rather than fatal."""
     source_texts = ("菇時", "巫師", "　師", "古時", "　時", "姑絲")
     query = TranscriptionQuery(sources=_get_sources(*source_texts), speaker="ＡＡ")
@@ -586,16 +756,82 @@ def test_answer_coverage_does_not_reject_context_resolved_weak_columns():
     assert test_case.answer == answer
 
 
-def test_empty_answer_requires_absent_majority_evidence():
-    """An empty answer should fail only when strict-majority speech is present."""
+def test_empty_answer_uses_character_consensus_with_fewer_sources():
+    """Presence alone should not force text when fewer than five sources remain."""
     weak_query = TranscriptionQuery(
         sources=_get_sources("甲", "乙", "丙"), speaker="Ａ"
     )
-    strong_query = TranscriptionQuery(
-        sources=_get_sources("甲", "甲", "甲"), speaker="Ａ"
+    short_query = TranscriptionQuery(
+        sources=_get_sources(*("甲乙" for _ in range(3))), speaker="ＡＡ"
+    )
+    long_query = TranscriptionQuery(
+        sources=_get_sources(*("甲乙丙" for _ in range(3))), speaker="ＡＡＡ"
     )
     answer = TranscriptionAnswer(text="")
 
     assert TranscriptionTestCase(query=weak_query, answer=answer).answer == answer
-    with raises(ValidationError, match="preserves only 0.0%"):
-        TranscriptionTestCase(query=strong_query, answer=answer)
+    assert TranscriptionTestCase(query=short_query, answer=answer).answer == answer
+    with raises(ValidationError, match="甲乙丙"):
+        TranscriptionTestCase(query=long_query, answer=answer)
+
+
+def test_answer_allows_internal_fully_occupied_columns_without_consensus():
+    """Presence without textual consensus should not force uncertain content."""
+    source_texts = (
+        "甲乙丙丁戊",
+        "甲己庚辛戊",
+        "甲壬癸子戊",
+        "甲丑寅卯戊",
+        "甲辰巳午戊",
+        "甲未申酉戊",
+    )
+    query = TranscriptionQuery(sources=_get_sources(*source_texts), speaker="Ａ" * 5)
+    answer = TranscriptionAnswer(text="甲戊｜")
+
+    validation = TranscriptionAlignmentScorer().score(
+        tuple(source.text for source in query.sources), answer.transcript
+    )
+    assert validation.majority_column_count == 2
+    assert validation.longest_unpreserved_consensus_run == 0
+    test_case = TranscriptionTestCase(query=query, answer=answer)
+
+    assert test_case.answer == answer
+
+
+def test_answer_allows_boundary_fully_occupied_columns_without_consensus():
+    """Presence-only evidence should not force text at an answer boundary."""
+    query = TranscriptionQuery(
+        sources=_get_sources(
+            "乙丙丁戊", "己庚辛戊", "壬癸子戊", "丑寅卯戊", "辰巳午戊", "未申酉戊"
+        ),
+        speaker="Ａ" * 4,
+    )
+    answer = TranscriptionAnswer(text="戊｜")
+
+    test_case = TranscriptionTestCase(query=query, answer=answer)
+
+    assert test_case.answer == answer
+
+
+def test_answer_allows_internal_low_information_occupied_columns():
+    """Corroborated vocalizations may be omitted from otherwise lexical text."""
+    query = TranscriptionQuery(
+        sources=_get_sources(*("甲嗯啊乙" for _ in range(6))), speaker="Ａ" * 4
+    )
+    answer = TranscriptionAnswer(text="甲乙｜")
+
+    test_case = TranscriptionTestCase(query=query, answer=answer)
+
+    assert test_case.answer == answer
+
+
+def test_empty_answer_allows_low_information_consensus():
+    """A vocalization consensus should not force a subtitle."""
+    query = TranscriptionQuery(
+        sources=_get_sources("啦啦啦", "啦啦啦", "anL"), speaker="Ａ" * 3
+    )
+    answer = TranscriptionAnswer(text="")
+
+    test_case = TranscriptionTestCase(query=query, answer=answer)
+
+    assert test_case.answer == answer

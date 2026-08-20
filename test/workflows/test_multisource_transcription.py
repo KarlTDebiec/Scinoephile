@@ -146,10 +146,13 @@ def test_merge_aligns_sources_and_preserves_consensus_subtitle_splits():
     assert [source.name for source in sources] == ["whisper", "mimo"]
     assert [source.text for source in sources] == ["甲乙", "甲乙"]
     assert speaker == "　　"
+    assert processor.process_requests.call_args.kwargs == {
+        "pause_intervals_seconds": (None, None)
+    }
 
 
 def test_merge_uses_long_pause_boundaries_as_separate_ctc_windows():
-    """Test each request is aligned within its VAD-bounded audio span."""
+    """Test each request is aligned within its pause-bounded audio span."""
     audio = AudioSegment.silent(duration=3_000)
     processor = Mock(spec=TranscriptionProcessor)
     processor.process_requests.return_value = (
@@ -179,7 +182,7 @@ def test_merge_uses_long_pause_boundaries_as_separate_ctc_windows():
 
 
 def test_merge_infers_pauses_when_explicit_evidence_is_unavailable():
-    """Test absent VAD evidence falls back to shared source-timing gaps."""
+    """Test absent explicit pause evidence falls back to source-timing gaps."""
     audio = AudioSegment.silent(duration=3_000)
     processor = Mock(spec=TranscriptionProcessor)
     processor.process_requests.return_value = (
@@ -252,6 +255,136 @@ def test_request_interval_falls_back_to_in_audio_lexical_timing():
     interval = get_request_interval(alignment, (2, 3), 1.0)
 
     assert interval == (0.35, 1.0)
+
+
+def test_request_interval_is_constrained_to_answer_evidence():
+    """Corroborating answer columns should narrow a broad request interval."""
+    alignment = Alignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
+            Column((Token("乙", 1.0, 1.5), Token("乙", 1.0, 1.5))),
+            Column((Token("丙", 2.2, 2.5), Token("丙", 2.2, 2.5))),
+        ),
+    )
+
+    interval = get_request_interval(
+        alignment, (0, 3), 3.0, answer_evidence_column_indexes=(1,)
+    )
+
+    assert interval == (0.75, 1.75)
+
+
+def test_timing_retains_request_audio_for_unsupported_edge_correction():
+    """An unsupported answer edge should prevent evidence-only audio cropping."""
+    audio = AudioSegment.silent(duration=3_000)
+    alignment = Alignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
+            Column((Token("乙", 1.0, 1.5), Token("乙", 1.0, 1.5))),
+            Column((Token("丙", 2.2, 2.5), Token("丙", 2.2, 2.5))),
+        ),
+    )
+    request_result = TranscriptionRequestResult(
+        0, 3, _get_answer("天乙"), "0" * 64, (None, 1)
+    )
+    ctc_aligner = Mock(spec=CtcAligner, return_value=[_get_segment("天乙", 0.1, 0.5)])
+
+    output, _ = get_timed_request_segments(
+        audio, alignment, (request_result,), ctc_aligner
+    )
+
+    assert [(segment.text, segment.start, segment.end) for segment in output] == [
+        ("天乙", 0.1, 0.5)
+    ]
+    assert len(ctc_aligner.call_args.args[0]) == 3_000
+
+
+def test_timing_realigns_subtitle_stretched_across_omitted_evidence():
+    """A retained subtitle should not span noisy text omitted from the answer."""
+    audio = AudioSegment.silent(duration=10_000)
+    answer = _get_answer("甲", "乙")
+    ctc_aligner = Mock(
+        spec=CtcAligner,
+        side_effect=[
+            [
+                TranscribedSegment(
+                    id=0,
+                    seek=0,
+                    start=0.1,
+                    end=8.2,
+                    text="甲乙",
+                    words=[
+                        TranscribedWord(text="甲", start=0.1, end=7.5, confidence=1.0),
+                        TranscribedWord(text="乙", start=8.0, end=8.2, confidence=1.0),
+                    ],
+                )
+            ],
+            [_get_segment("甲", 0.1, 0.3)],
+        ],
+    )
+    alignment = Alignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
+            Column((Token("丙", 4.0, 4.2), Token("丁", 4.0, 4.2))),
+            Column((Token("乙", 8.0, 8.2), Token("乙", 8.0, 8.2))),
+        ),
+    )
+    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2))
+
+    output, timing_sources = get_timed_request_segments(
+        audio, alignment, (request_result,), ctc_aligner
+    )
+
+    assert [(segment.text, segment.start, segment.end) for segment in output] == [
+        ("甲", 0.1, 0.3),
+        ("乙", 8.0, 8.2),
+    ]
+    assert timing_sources == {0: "ctc-subtitle", 1: "ctc-request"}
+    assert [len(call.args[0]) for call in ctc_aligner.call_args_list] == [8_450, 650]
+
+
+def test_timing_retains_long_subtitle_supported_across_its_interval():
+    """Long timing should remain when the subtitle itself spans the evidence."""
+    audio = AudioSegment.silent(duration=10_000)
+    answer = _get_answer("甲乙")
+    ctc_aligner = Mock(
+        spec=CtcAligner,
+        return_value=[
+            TranscribedSegment(
+                id=0,
+                seek=0,
+                start=0.1,
+                end=8.2,
+                text="甲乙",
+                words=[
+                    TranscribedWord(text="甲", start=0.1, end=0.3, confidence=1.0),
+                    TranscribedWord(text="乙", start=8.0, end=8.2, confidence=1.0),
+                ],
+            )
+        ],
+    )
+    alignment = Alignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
+            Column((Token("丙", 4.0, 4.2), Token("丁", 4.0, 4.2))),
+            Column((Token("乙", 8.0, 8.2), Token("乙", 8.0, 8.2))),
+        ),
+    )
+    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2))
+
+    output, timing_sources = get_timed_request_segments(
+        audio, alignment, (request_result,), ctc_aligner
+    )
+
+    assert [(segment.text, segment.start, segment.end) for segment in output] == [
+        ("甲乙", 0.1, 8.2)
+    ]
+    assert timing_sources == {0: "ctc-request"}
+    ctc_aligner.assert_called_once()
 
 
 def test_timing_retries_incomplete_request_against_unconsumed_block():
@@ -328,17 +461,14 @@ def test_transcribe_block_runs_sources_and_merges_successful_outputs():
     transcriber.merge.assert_called_once_with(
         {"whisper": whisper_segments, "qwen": qwen_segments},
         audio,
-        audio_events=None,
         diarization=None,
-        language_identification=None,
         pause_intervals_seconds=None,
         source_offset_seconds=0.0,
-        voice_activity_trace=None,
     )
 
 
-def test_transcribe_block_falls_back_to_only_successful_source():
-    """Test one successful source remains usable without a consensus query."""
+def test_transcribe_block_rejects_only_successful_source():
+    """Test uncorroborated source output does not become a subtitle."""
     audio = AudioSegment.silent(duration=1_000)
     segments = [_get_segment("甲", 0.1, 0.4)]
     whisper = Mock(spec=Transcriber, return_value=segments)
@@ -351,38 +481,14 @@ def test_transcribe_block_falls_back_to_only_successful_source():
         sources={"whisper": whisper, "mimo": mimo},
     )
 
-    output = transcriber(audio)
-
-    assert output is segments
-    processor.process_requests.assert_not_called()
-    ctc_aligner.assert_not_called()
-    assert transcriber.last_lexical_alignment is not None
-
-
-def test_transcribe_block_rejects_lone_low_information_source():
-    """Test uncorroborated vocalizations do not become merged subtitles."""
-    audio = AudioSegment.silent(duration=1_000)
-    vocalization = Mock(
-        spec=Transcriber, return_value=[_get_segment("嗯嗯嗯嗯", 0.1, 0.4)]
-    )
-    empty = Mock(spec=Transcriber, side_effect=TranscriptionEmptyError("empty"))
-    processor = Mock(spec=TranscriptionProcessor)
-    transcriber = _get_transcriber(
-        processor=processor,
-        sources={
-            "whisper": vocalization,
-            "mimo": empty,
-            "qwen": empty,
-            "sensevoice": empty,
-            "firered": empty,
-            "glm": empty,
-        },
-    )
-
-    with raises(TranscriptionEmptyError, match="low-information vocalizations"):
+    with raises(
+        TranscriptionEmptyError,
+        match="Only transcription source 'whisper' produced usable output",
+    ):
         transcriber(audio)
 
     processor.process_requests.assert_not_called()
+    ctc_aligner.assert_not_called()
     assert transcriber.last_lexical_alignment is None
 
 

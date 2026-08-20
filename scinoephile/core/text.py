@@ -36,6 +36,7 @@ __all__ = [
     "get_char_type",
     "is_full_width_char",
     "is_lexical_character",
+    "is_low_information_text",
     "join_text_lines",
     "normalize_fullwidth_alphanumerics",
     "normalize_nfkc",
@@ -49,6 +50,14 @@ __all__ = [
 
 type ChineseScript = Literal["Hans", "Hant"]
 """Chinese script supported by text processing helpers."""
+
+
+_LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢喔嗯嘶哎誒唉嘿呵哈嘩哇啦哼咦")
+"""Standalone vocalizations that do not provide lexical evidence."""
+_LOW_INFORMATION_LATIN_RE = re.compile(
+    r"(?:a+h*|o+h*|u+h*|h+m+|u+m+|ha+|he+)+", re.IGNORECASE
+)
+"""Latin-script standalone vocalizations."""
 
 
 class AnsiColor(Enum):
@@ -325,6 +334,30 @@ def is_lexical_character(character: str) -> bool:
         whether the character is lexical rather than formatting or punctuation
     """
     return not unicodedata.category(character).startswith(("C", "P", "S", "Z"))
+
+
+def is_low_information_text(text: str) -> bool:
+    """Check whether text contains only standalone vocalizations.
+
+    Arguments:
+        text: text to inspect
+    Returns:
+        whether every lexical character belongs to a common vocalization
+    """
+    lexical_text = "".join(
+        character
+        for character in normalize_nfkc(text)
+        if is_lexical_character(character)
+    )
+    if not lexical_text:
+        return False
+    non_latin_characters = {
+        character for character in lexical_text if not character.isascii()
+    }
+    latin_text = "".join(character for character in lexical_text if character.isascii())
+    return non_latin_characters <= _LOW_INFORMATION_CHARACTERS and (
+        not latin_text or _LOW_INFORMATION_LATIN_RE.fullmatch(latin_text) is not None
+    )
 
 
 def join_text_lines(texts: Sequence[str]) -> str:
