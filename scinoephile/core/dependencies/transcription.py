@@ -46,18 +46,6 @@ _TRANSCRIPTION_EXTRA_MESSAGE = (
 )
 
 
-@contextmanager
-def _ignore_pyannote_torchcodec_warning() -> Iterator[None]:
-    """Ignore pyannote's irrelevant optional audio-decoder warning."""
-    with catch_warnings():
-        filterwarnings(
-            "ignore",
-            message=r"\s*torchcodec is not installed correctly",
-            category=UserWarning,
-        )
-        yield
-
-
 def import_demucs_infer_apply() -> ModuleType:
     """Import the Demucs model application module on demand.
 
@@ -266,3 +254,15 @@ def import_whisper_timestamped() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped
+
+
+@contextmanager
+def _ignore_pyannote_torchcodec_warning() -> Iterator[None]:
+    """Ignore pyannote's irrelevant optional audio-decoder warning."""
+    with catch_warnings():
+        filterwarnings(
+            "ignore",
+            message=r"\s*torchcodec is not installed correctly",
+            category=UserWarning,
+        )
+        yield

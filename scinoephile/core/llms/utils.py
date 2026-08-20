@@ -43,8 +43,7 @@ def load_test_cases_from_json[TTestCase: TestCase](
     with open(input_path, encoding="utf-8") as input_file:
         raw_test_cases: object = json.load(input_file)
 
-    # Validate using the base-prompt schema. Unverified generated answers may become
-    # stale as semantic validators improve; retain their valid queries for replacement.
+    # Retain valid queries when unverified answers fail updated semantic validation
     raw_test_case_adapter = TypeAdapter(list[dict[str, object]])
     raw_test_case_items = raw_test_case_adapter.validate_python(
         raw_test_cases, strict=True

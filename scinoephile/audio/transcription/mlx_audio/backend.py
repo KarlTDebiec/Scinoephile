@@ -141,66 +141,6 @@ class MlxAudioBackend:
 
         return MlxAudioInferenceResult(text=text, generation_tokens=generation_tokens)
 
-    def _get_model_reference(self) -> Path:
-        """Resolve the configured model to a local directory.
-
-        Returns:
-            local model directory path
-        """
-        if isinstance(self._model_reference, Path):
-            return self._model_reference
-        return get_huggingface_snapshot_dir_path(
-            self._model_reference, self.model_revision
-        )
-
-    def _get_audio_tokenizer_reference(self) -> Path | None:
-        """Resolve a remote model's auxiliary audio tokenizer locally.
-
-        Returns:
-            pinned local audio-tokenizer directory, when configured
-        """
-        if (
-            not isinstance(self._model_reference, str)
-            or self.model.audio_tokenizer_model_name is None
-        ):
-            return None
-        return get_huggingface_snapshot_dir_path(
-            self.model.audio_tokenizer_model_name,
-            self.model.audio_tokenizer_model_revision,
-        )
-
-    @contextmanager
-    def _use_local_audio_tokenizer(
-        self, audio_tokenizer_reference: Path | None
-    ) -> Iterator[None]:
-        """Make MLX-Audio use a pre-resolved auxiliary tokenizer directory.
-
-        Arguments:
-            audio_tokenizer_reference: pinned local tokenizer directory, if required
-        """
-        if audio_tokenizer_reference is None:
-            yield
-            return
-
-        # MLX-Audio's MiMo hook otherwise resolves the manifest's mutable tokenizer
-        # repository through Hugging Face even when the required files are cached.
-        mimo_asr = import_mlx_audio_mimo_asr()
-        get_model_path = cast(Callable[..., Path], mimo_asr.get_model_path)
-
-        def get_local_model_path(
-            path_or_hf_repo: str, *args: object, **kwargs: object
-        ) -> Path:
-            """Resolve the configured tokenizer locally and delegate other models."""
-            if path_or_hf_repo == self.model.audio_tokenizer_model_name:
-                return audio_tokenizer_reference
-            return get_model_path(path_or_hf_repo, *args, **kwargs)
-
-        setattr(mimo_asr, "get_model_path", get_local_model_path)
-        try:
-            yield
-        finally:
-            setattr(mimo_asr, "get_model_path", get_model_path)
-
     @property
     def _loaded_model(self) -> _LoadedMlxAudioModel:
         """Get the cached MLX-Audio model, loading it if needed.
@@ -234,3 +174,62 @@ class MlxAudioBackend:
                 self._models_by_key[model_key] = cached_model
         self._loaded_model_instance = cached_model
         return self._loaded_model_instance
+
+    def _get_audio_tokenizer_reference(self) -> Path | None:
+        """Resolve a remote model's auxiliary audio tokenizer locally.
+
+        Returns:
+            pinned local audio-tokenizer directory, when configured
+        """
+        if (
+            not isinstance(self._model_reference, str)
+            or self.model.audio_tokenizer_model_name is None
+        ):
+            return None
+        return get_huggingface_snapshot_dir_path(
+            self.model.audio_tokenizer_model_name,
+            self.model.audio_tokenizer_model_revision,
+        )
+
+    def _get_model_reference(self) -> Path:
+        """Resolve the configured model to a local directory.
+
+        Returns:
+            local model directory path
+        """
+        if isinstance(self._model_reference, Path):
+            return self._model_reference
+        return get_huggingface_snapshot_dir_path(
+            self._model_reference, self.model_revision
+        )
+
+    @contextmanager
+    def _use_local_audio_tokenizer(
+        self, audio_tokenizer_reference: Path | None
+    ) -> Iterator[None]:
+        """Make MLX-Audio use a pre-resolved auxiliary tokenizer directory.
+
+        Arguments:
+            audio_tokenizer_reference: pinned local tokenizer directory, if required
+        """
+        if audio_tokenizer_reference is None:
+            yield
+            return
+
+        # Keep MLX-Audio from resolving the manifest's mutable tokenizer remotely
+        mimo_asr = import_mlx_audio_mimo_asr()
+        get_model_path = cast(Callable[..., Path], mimo_asr.get_model_path)
+
+        def get_local_model_path(
+            path_or_hf_repo: str, *args: object, **kwargs: object
+        ) -> Path:
+            """Resolve the configured tokenizer locally and delegate other models."""
+            if path_or_hf_repo == self.model.audio_tokenizer_model_name:
+                return audio_tokenizer_reference
+            return get_model_path(path_or_hf_repo, *args, **kwargs)
+
+        setattr(mimo_asr, "get_model_path", get_local_model_path)
+        try:
+            yield
+        finally:
+            setattr(mimo_asr, "get_model_path", get_model_path)

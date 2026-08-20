@@ -201,10 +201,10 @@ def test_cache_identity_separates_exact_model_revisions(
     assert first_path != second_path
 
 
-def test_custom_model_uses_repository_default_revision(
+def test_custom_model_uses_repository_and_device_defaults(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """A custom model without a revision should use its repository default.
+    """A custom model should use repository and detected device defaults.
 
     Arguments:
         tmp_path: temporary cache root path
