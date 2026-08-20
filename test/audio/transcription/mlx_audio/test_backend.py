@@ -84,6 +84,36 @@ def test_init_derives_mlx_audio_languages(
 
 
 @pytest.mark.parametrize(
+    ("audio_tokenizer_model_name", "audio_tokenizer_model_revision", "message"),
+    [
+        ("organization/tokenizer", None, "tokenizer revision is required"),
+        (None, "revision", "tokenizer name is required"),
+    ],
+    ids=["missing-revision", "missing-name"],
+)
+def test_init_rejects_incomplete_audio_tokenizer_source(
+    audio_tokenizer_model_name: str | None,
+    audio_tokenizer_model_revision: str | None,
+    message: str,
+):
+    """Test auxiliary tokenizer names and required revisions stay paired.
+
+    Arguments:
+        audio_tokenizer_model_name: configured tokenizer model name
+        audio_tokenizer_model_revision: configured tokenizer model revision
+        message: expected validation error text
+    """
+    model = replace(
+        MIMO_MODEL,
+        audio_tokenizer_model_name=audio_tokenizer_model_name,
+        audio_tokenizer_model_revision=audio_tokenizer_model_revision,
+    )
+
+    with pytest.raises(ValueError, match=message):
+        MlxAudioBackend(model)
+
+
+@pytest.mark.parametrize(
     (
         "model",
         "model_result",
@@ -362,7 +392,9 @@ def test_model_validates_local_path(monkeypatch: pytest.MonkeyPatch, tmp_path: P
     monkeypatch.setattr(MlxAudioBackend, "_models_by_key", {})
     monkeypatch.setattr(backend, "import_mlx_audio_stt_load", Mock(return_value=load))
 
-    model = replace(MIMO_MODEL, model_name=str(model_path))
+    model = replace(
+        MIMO_MODEL, model_name=str(model_path), model_revision="local-revision"
+    )
     mlx_audio_backend = MlxAudioBackend(model)
 
     assert mlx_audio_backend._loaded_model is load.return_value

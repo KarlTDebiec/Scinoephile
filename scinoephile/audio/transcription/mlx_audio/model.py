@@ -30,8 +30,8 @@ class MlxAudioModel:
     """Model type passed to the MLX-Audio loader."""
     languages: dict[Language, str | None]
     """Model-specific language values keyed by Scinoephile language."""
-    model_revision: str | None = None
-    """Immutable Hugging Face revision, or None for local or mutable models."""
+    model_revision: str
+    """Required immutable model revision."""
     audio_tokenizer_model_name: str | None = None
     """Auxiliary Hugging Face audio-tokenizer name, when required."""
     audio_tokenizer_model_revision: str | None = None

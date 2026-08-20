@@ -95,12 +95,16 @@ def test_get_cache_path_separates_model_configuration(runtime_cache_root_path: P
     audio = _get_cache_audio()
     first_transcriber = _get_mlx_audio_transcriber(
         model=replace(
-            MIMO_MODEL, model_name="custom/MiMo-V2.5-ASR-one", model_revision=None
+            MIMO_MODEL,
+            model_name="custom/MiMo-V2.5-ASR-one",
+            model_revision="revision-one",
         )
     )
     second_transcriber = _get_mlx_audio_transcriber(
         model=replace(
-            MIMO_MODEL, model_name="custom/MiMo-V2.5-ASR-two", model_revision=None
+            MIMO_MODEL,
+            model_name="custom/MiMo-V2.5-ASR-two",
+            model_revision="revision-two",
         )
     )
 

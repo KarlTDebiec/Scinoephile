@@ -17,7 +17,7 @@ from scinoephile.core.dependencies.transcription import (
     import_mlx_audio_stt_load,
 )
 from scinoephile.core.language import Language
-from scinoephile.core.ml import get_huggingface_snapshot_dir_path
+from scinoephile.core.ml import ModelSource, get_huggingface_snapshot_dir_path
 
 from .model import MIMO_MODEL, MlxAudioModel
 
@@ -42,12 +42,24 @@ class _LoadedMlxAudioModel(Protocol):
         """Generate a transcript for one audio file."""
 
 
+@dataclass(frozen=True, slots=True)
+class _MlxAudioLoadKey:
+    """Inputs that uniquely determine a loaded MLX-Audio model."""
+
+    model: ModelSource
+    """Primary model source."""
+
+    model_type: str
+    """Model type passed to the MLX-Audio loader."""
+
+    audio_tokenizer: ModelSource | None
+    """Auxiliary audio-tokenizer source, when required."""
+
+
 class MlxAudioBackend:
     """Runs direct speech-to-text inference through one MLX-Audio model."""
 
-    _models_by_key: ClassVar[
-        dict[tuple[str, str | None, str, str | None, str | None], _LoadedMlxAudioModel]
-    ] = {}
+    _models_by_key: ClassVar[dict[_MlxAudioLoadKey, _LoadedMlxAudioModel]] = {}
     """Loaded models shared by complete model identity."""
     _model_load_lock: ClassVar[Lock] = Lock()
     """Lock protecting process-wide model loading and resolver replacement."""
@@ -61,7 +73,8 @@ class MlxAudioBackend:
             model: MLX-Audio model
             language: language to transcribe
         Raises:
-            ValueError: if the model family does not support the language
+            ValueError: if the model family does not support the language or an
+                auxiliary tokenizer source is incomplete
         """
         self.model = model
         """Selected MLX-Audio model."""
@@ -76,19 +89,30 @@ class MlxAudioBackend:
                 f"{self.model.family_name} transcription"
             ) from exc
 
-        # Resolve local paths while preserving remote Hugging Face references
+        # Normalize local paths while preserving remote Hugging Face names
         selected_model_name = self.model.model_name
-        model_reference: str | Path = selected_model_name
         model_path = Path(selected_model_name).expanduser()
         if model_path.exists() or selected_model_name.startswith(("/", ".", "~")):
-            model_reference = val_input_file_or_dir_path(selected_model_name)
-        self._model_reference = model_reference
-        """Resolved local model path or remote Hugging Face reference."""
-
-        self.model_revision = (
-            self.model.model_revision if isinstance(model_reference, str) else None
+            selected_model_name = str(val_input_file_or_dir_path(selected_model_name))
+        self._model_source: ModelSource = (
+            selected_model_name,
+            self.model.model_revision,
         )
-        """Immutable remote model revision, or None for local models."""
+        """Pinned primary model source."""
+
+        self._audio_tokenizer_source: ModelSource | None = None
+        audio_tokenizer_name = self.model.audio_tokenizer_model_name
+        audio_tokenizer_revision = self.model.audio_tokenizer_model_revision
+        if audio_tokenizer_name is not None:
+            if audio_tokenizer_revision is None:
+                raise ValueError("MLX-Audio tokenizer revision is required.")
+            self._audio_tokenizer_source = (
+                audio_tokenizer_name,
+                audio_tokenizer_revision,
+            )
+        elif audio_tokenizer_revision is not None:
+            raise ValueError("MLX-Audio tokenizer name is required.")
+        """Pinned auxiliary audio-tokenizer source, when required."""
 
         self._loaded_model_instance: _LoadedMlxAudioModel | None = None
         """Loaded MLX-Audio model."""
@@ -151,12 +175,10 @@ class MlxAudioBackend:
         if self._loaded_model_instance is not None:
             return self._loaded_model_instance
 
-        model_key = (
-            str(self._model_reference),
-            self.model_revision,
-            self.model.model_type,
-            self.model.audio_tokenizer_model_name,
-            self.model.audio_tokenizer_model_revision,
+        model_key = _MlxAudioLoadKey(
+            model=self._model_source,
+            model_type=self.model.model_type,
+            audio_tokenizer=self._audio_tokenizer_source,
         )
 
         # Reuse the process-wide model cache across inference instances
@@ -165,43 +187,44 @@ class MlxAudioBackend:
             if cached_model is None:
                 load = import_mlx_audio_stt_load()
                 load_kwargs: dict[str, object] = {"model_type": self.model.model_type}
-                model_reference = self._get_model_reference()
-                audio_tokenizer_reference = self._get_audio_tokenizer_reference()
-                with self._use_local_audio_tokenizer(audio_tokenizer_reference):
+                model_dir_path = self._get_model_dir_path()
+                audio_tokenizer_dir_path = self._get_audio_tokenizer_dir_path()
+                with self._use_local_audio_tokenizer(audio_tokenizer_dir_path):
                     cached_model = cast(
-                        _LoadedMlxAudioModel, load(model_reference, **load_kwargs)
+                        _LoadedMlxAudioModel, load(model_dir_path, **load_kwargs)
                     )
                 self._models_by_key[model_key] = cached_model
         self._loaded_model_instance = cached_model
         return self._loaded_model_instance
 
-    def _get_audio_tokenizer_reference(self) -> Path | None:
+    def _get_audio_tokenizer_dir_path(self) -> Path | None:
         """Resolve a remote model's auxiliary audio tokenizer locally.
 
         Returns:
             pinned local audio-tokenizer directory, when configured
         """
-        if (
-            not isinstance(self._model_reference, str)
-            or self.model.audio_tokenizer_model_name is None
-        ):
+        model_name, _ = self._model_source
+        if Path(model_name).is_absolute():
             return None
+        audio_tokenizer_source = self._audio_tokenizer_source
+        if audio_tokenizer_source is None:
+            return None
+        audio_tokenizer_name, audio_tokenizer_revision = audio_tokenizer_source
         return get_huggingface_snapshot_dir_path(
-            self.model.audio_tokenizer_model_name,
-            self.model.audio_tokenizer_model_revision,
+            audio_tokenizer_name, audio_tokenizer_revision
         )
 
-    def _get_model_reference(self) -> Path:
+    def _get_model_dir_path(self) -> Path:
         """Resolve the configured model to a local directory.
 
         Returns:
             local model directory path
         """
-        if isinstance(self._model_reference, Path):
-            return self._model_reference
-        return get_huggingface_snapshot_dir_path(
-            self._model_reference, self.model_revision
-        )
+        model_name, model_revision = self._model_source
+        model_dir_path = Path(model_name)
+        if model_dir_path.is_absolute():
+            return model_dir_path
+        return get_huggingface_snapshot_dir_path(model_name, model_revision)
 
     @contextmanager
     def _use_local_audio_tokenizer(
@@ -216,6 +239,11 @@ class MlxAudioBackend:
             yield
             return
 
+        audio_tokenizer_source = self._audio_tokenizer_source
+        if audio_tokenizer_source is None:
+            raise RuntimeError("MLX-Audio tokenizer source is missing.")
+        audio_tokenizer_name, _ = audio_tokenizer_source
+
         # Keep MLX-Audio from resolving the manifest's mutable tokenizer remotely
         mimo_asr = import_mlx_audio_mimo_asr()
         get_model_path = cast(Callable[..., Path], mimo_asr.get_model_path)
@@ -224,7 +252,7 @@ class MlxAudioBackend:
             path_or_hf_repo: str, *args: object, **kwargs: object
         ) -> Path:
             """Resolve the configured tokenizer locally and delegate other models."""
-            if path_or_hf_repo == self.model.audio_tokenizer_model_name:
+            if path_or_hf_repo == audio_tokenizer_name:
                 return audio_tokenizer_reference
             return get_model_path(path_or_hf_repo, *args, **kwargs)
 

@@ -193,7 +193,7 @@ class MlxAudioTranscriber(Transcriber):
         cache_identity: dict[str, object] = {
             "model_family": self.model.family_name,
             "model_name": self.model_name,
-            "model_revision": self.backend.model_revision,
+            "model_revision": self.model.model_revision,
             "runtime": {
                 **get_distribution_identity("mlx-audio"),
                 "source_revision": _MLX_AUDIO_SOURCE_REVISION,
