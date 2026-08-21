@@ -164,7 +164,10 @@ def test_ctc_aligner_loads_default_model_at_pinned_revision(
     runtime_model = Mock()
     runtime_model.to.return_value = runtime_model
     model_factory = Mock(return_value=runtime_model)
-    processor_factory = Mock(return_value=object())
+    runtime_processor = SimpleNamespace(
+        feature_extractor=SimpleNamespace(sampling_rate=16000)
+    )
+    processor_factory = Mock(return_value=runtime_processor)
     monkeypatch.setattr(
         "scinoephile.audio.transcription.ctc.model.get_huggingface_snapshot_dir_path",
         get_snapshot_dir_path,
@@ -208,7 +211,7 @@ def test_ctc_aligner_resolves_custom_model_snapshot(monkeypatch: pytest.MonkeyPa
         "scinoephile.audio.transcription.ctc.model.get_huggingface_snapshot_dir_path",
         get_snapshot_dir_path,
     )
-    processor = object()
+    processor = SimpleNamespace(feature_extractor=SimpleNamespace(sampling_rate=16000))
     processor_factory = Mock(return_value=processor)
     monkeypatch.setattr(
         "scinoephile.audio.transcription.ctc.model.import_transformers",
@@ -226,6 +229,38 @@ def test_ctc_aligner_resolves_custom_model_snapshot(monkeypatch: pytest.MonkeyPa
     processor_factory.assert_called_once_with(
         Path("/cached/model"), local_files_only=True
     )
+
+
+@pytest.mark.parametrize("sampling_rate", [None, 0, -1, "16000"])
+def test_ctc_model_rejects_invalid_processor_sampling_rate(
+    sampling_rate: object, monkeypatch: pytest.MonkeyPatch
+):
+    """Test processor loading rejects an invalid sampling rate.
+
+    Arguments:
+        sampling_rate: invalid processor sampling rate
+        monkeypatch: pytest monkeypatch fixture
+    """
+    processor_factory = Mock(
+        return_value=SimpleNamespace(
+            feature_extractor=SimpleNamespace(sampling_rate=sampling_rate)
+        )
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc.model.get_huggingface_snapshot_dir_path",
+        Mock(return_value=Path("/cached/model")),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc.model.import_transformers",
+        Mock(
+            return_value=SimpleNamespace(
+                AutoProcessor=SimpleNamespace(from_pretrained=processor_factory)
+            )
+        ),
+    )
+
+    with pytest.raises(TranscriptionAlignmentError, match="valid sampling rate"):
+        _ = CtcModel(_CUSTOM_MODEL, "cpu").processor
 
 
 def test_ctc_aligner_persistently_caches_alignment(

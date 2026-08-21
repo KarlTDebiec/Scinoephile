@@ -54,13 +54,7 @@ class CtcModel:
             ImportError: if CTC dependencies are unavailable
             TranscriptionAlignmentError: if model inputs cannot be prepared
         """
-        feature_extractor = getattr(self.processor, "feature_extractor", None)
-        sampling_rate = getattr(feature_extractor, "sampling_rate", None)
-        if not isinstance(sampling_rate, int) or sampling_rate <= 0:
-            raise TranscriptionAlignmentError(
-                "CTC aligner processor did not expose a valid sampling rate."
-            )
-
+        sampling_rate = self.processor.feature_extractor.sampling_rate
         samples = to_mono_int16(audio, sampling_rate).astype(np.float32)
         samples /= float(1 << 15)
         if samples.size == 0:
@@ -77,21 +71,17 @@ class CtcModel:
             logits = output.logits[0]
             log_probs = logits.log_softmax(dim=-1).detach().cpu().numpy()
 
-        config = getattr(self.model, "config", None)
-        blank_token_id = getattr(config, "pad_token_id", None)
-        tokenizer = getattr(self.processor, "tokenizer", None)
+        blank_token_id = self.model.config.pad_token_id
         if not isinstance(blank_token_id, int):
-            blank_token_id = getattr(tokenizer, "pad_token_id", None)
+            blank_token_id = self.processor.tokenizer.pad_token_id
         if not isinstance(blank_token_id, int):
             raise TranscriptionAlignmentError(
                 "CTC aligner did not expose a blank token ID."
             )
 
-        if tokenizer is None:
-            raise TranscriptionAlignmentError(
-                "CTC aligner processor lacks a tokenizer."
-            )
-        token_ids, char_indices = get_token_ids(text, tokenizer, model_text)
+        token_ids, char_indices = get_token_ids(
+            text, self.processor.tokenizer, model_text
+        )
         return log_probs, token_ids, char_indices, blank_token_id
 
     @cached_property
@@ -122,6 +112,12 @@ class CtcModel:
         model_dir_path = get_huggingface_snapshot_dir_path(
             self.spec.name, self.spec.revision
         )
-        return transformers.AutoProcessor.from_pretrained(
+        processor = transformers.AutoProcessor.from_pretrained(
             model_dir_path, local_files_only=True
         )
+        sampling_rate = processor.feature_extractor.sampling_rate
+        if not isinstance(sampling_rate, int) or sampling_rate <= 0:
+            raise TranscriptionAlignmentError(
+                "CTC aligner processor did not expose a valid sampling rate."
+            )
+        return processor
