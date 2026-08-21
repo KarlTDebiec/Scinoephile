@@ -3,7 +3,7 @@
 """CTC transcription alignment.
 
 Package hierarchy (modules may import from any above):
-* model_spec / path / text
+* model_spec / path / text / tokenization
 * model
 * aligner
 """

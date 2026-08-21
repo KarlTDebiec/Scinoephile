@@ -21,6 +21,7 @@ from scinoephile.audio.transcription.ctc.model import CtcModel
 from scinoephile.audio.transcription.ctc.model_spec import CtcModelSpec
 from scinoephile.audio.transcription.ctc.path import get_best_path
 from scinoephile.audio.transcription.ctc.text import get_transcribed_words
+from scinoephile.audio.transcription.ctc.tokenization import get_token_ids
 from scinoephile.core import Language, OpenCCConfig
 from scinoephile.core.ml import ModelSpec
 
@@ -316,8 +317,8 @@ def test_ctc_best_path_accepts_blank_between_repeated_labels():
     ]
 
 
-def test_ctc_aligner_aligns_word_delimiter(monkeypatch: pytest.MonkeyPatch):
-    """Test a tokenizer word delimiter participates in the CTC path."""
+def test_ctc_token_ids_include_word_delimiter():
+    """Test token IDs include a tokenizer word delimiter."""
 
     class FakeTokenizer:
         """Fake tokenizer with a word delimiter token."""
@@ -348,12 +349,7 @@ def test_ctc_aligner_aligns_word_delimiter(monkeypatch: pytest.MonkeyPatch):
             ]
         )
     )
-    aligner = CtcAligner(Language.yue_hant)
-    monkeypatch.setitem(
-        aligner.model.__dict__, "processor", SimpleNamespace(tokenizer=FakeTokenizer())
-    )
-
-    token_ids, char_indices = aligner.model._get_token_ids("你 好")
+    token_ids, char_indices = get_token_ids("你 好", FakeTokenizer())
     path = get_best_path(log_probs, token_ids, 0)
 
     assert token_ids == [1, 2, 3]
@@ -519,9 +515,7 @@ def test_ctc_aligner_attaches_internal_unaligned_characters(
     )
 
 
-def test_ctc_token_ids_normalize_case_and_skip_unknown_chars(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_ctc_token_ids_normalize_case_and_skip_unknown_chars():
     """Test CTC token preparation normalizes case and skips unknown text."""
 
     class FakeTokenizer:
@@ -544,12 +538,7 @@ def test_ctc_token_ids_normalize_case_and_skip_unknown_chars(
             """
             return {"你": 1, "說": 2, "A": 4}.get(token, 3)
 
-    aligner = CtcAligner(Language.yue_hant)
-    monkeypatch.setitem(
-        aligner.model.__dict__, "processor", SimpleNamespace(tokenizer=FakeTokenizer())
-    )
-
-    token_ids, char_indices = aligner.model._get_token_ids(" 你 說。a嘅 ")
+    token_ids, char_indices = get_token_ids(" 你 說。a嘅 ", FakeTokenizer())
 
     assert token_ids == [1, 5, 2, 4]
     assert char_indices == [1, 2, 3, 5]
@@ -572,7 +561,6 @@ def test_ctc_token_ids_normalize_case_and_skip_unknown_chars(
     ],
 )
 def test_ctc_token_ids_use_default_model_script_conversion(
-    monkeypatch: pytest.MonkeyPatch,
     language: Language,
     text: str,
     model_text: str | None,
@@ -583,7 +571,6 @@ def test_ctc_token_ids_use_default_model_script_conversion(
     """Test token lookup converts only toward the default model's script.
 
     Arguments:
-        monkeypatch: pytest monkeypatch fixture
         language: transcription language
         text: transcript text
         model_text: transcript converted to the model tokenizer's script
@@ -612,11 +599,7 @@ def test_ctc_token_ids_use_default_model_script_conversion(
             return 3
 
     aligner = CtcAligner(language)
-    monkeypatch.setitem(
-        aligner.model.__dict__, "processor", SimpleNamespace(tokenizer=FakeTokenizer())
-    )
-
-    token_ids, char_indices = aligner.model._get_token_ids(text, model_text)
+    token_ids, char_indices = get_token_ids(text, FakeTokenizer(), model_text)
 
     assert aligner._script_conversion_config is expected_config
     assert token_ids == expected_token_ids
@@ -653,9 +636,7 @@ def test_ctc_aligner_passes_model_script_text_to_model(
     model_call.assert_called_once_with(audio, text, expected_model_text)
 
 
-def test_ctc_token_ids_do_not_convert_script_for_model_override(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_ctc_token_ids_do_not_convert_script_for_model_override():
     """Test custom CTC models do not receive inferred script conversion."""
 
     class FakeTokenizer:
@@ -678,11 +659,7 @@ def test_ctc_token_ids_do_not_convert_script_for_model_override(
             return 3
 
     aligner = CtcAligner(Language.yue_hans, _CUSTOM_MODEL)
-    monkeypatch.setitem(
-        aligner.model.__dict__, "processor", SimpleNamespace(tokenizer=FakeTokenizer())
-    )
-
-    token_ids, char_indices = aligner.model._get_token_ids("说")
+    token_ids, char_indices = get_token_ids("说", FakeTokenizer())
 
     assert aligner._script_conversion_config is None
     assert token_ids == []
