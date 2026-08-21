@@ -19,7 +19,7 @@ from scinoephile.audio.transcription import DemucsMode, TranscriptionEmptyError,
 from scinoephile.audio.transcription.preprocessing_settings import (
     TranscriptionPreprocessingSettings,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
 )
 from scinoephile.audio.transcription.whisper.transcriber import WhisperTranscriber
@@ -31,7 +31,7 @@ from scinoephile.audio.vad import (
 )
 
 _CUSTOM_MODEL = replace(
-    WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model", model_revision=None
+    WHISPER_LARGE_V3_CANTONESE_MODEL, name="custom/model", revision="custom-revision"
 )
 
 
@@ -322,13 +322,13 @@ def test_vad_cache_identity_separates_implementation_and_settings(
     )
     audio = AudioSegment.silent(duration=100)
     silero = WhisperTranscriber(
-        model=_CUSTOM_MODEL,
+        model_spec=_CUSTOM_MODEL,
         cache_root_path=tmp_path,
         vad_mode=VadMode.ON,
         vad_detector=VoiceActivityDetector(VadImplementation.SILERO),
     )
     ten = WhisperTranscriber(
-        model=_CUSTOM_MODEL,
+        model_spec=_CUSTOM_MODEL,
         cache_root_path=tmp_path,
         vad_mode=VadMode.ON,
         vad_detector=VoiceActivityDetector(VadImplementation.TEN, threshold=0.6),
@@ -454,7 +454,7 @@ def test_whisper_receives_explicit_ten_intervals(
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        model=_CUSTOM_MODEL,
+        model_spec=_CUSTOM_MODEL,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VadMode.ON,
@@ -488,7 +488,7 @@ def test_whisper_auto_retries_after_ten_unsupported_platform(
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        model=_CUSTOM_MODEL,
+        model_spec=_CUSTOM_MODEL,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VadMode.AUTO,
@@ -523,7 +523,7 @@ def test_whisper_ten_empty_output_skips_inference(
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        model=_CUSTOM_MODEL,
+        model_spec=_CUSTOM_MODEL,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VadMode.ON,

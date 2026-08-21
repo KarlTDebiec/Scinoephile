@@ -5,9 +5,11 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
 from types import ModuleType
 from typing import TYPE_CHECKING
+from warnings import catch_warnings, filterwarnings
 
 __all__ = [
     "import_demucs_infer_apply",
@@ -16,6 +18,7 @@ __all__ = [
     "import_firered_lid",
     "import_huggingface_hub",
     "import_huggingface_hub_utils",
+    "import_mlx_audio_mimo_asr",
     "import_mlx_audio_stt_load",
     "import_pyannote_audio",
     "import_pyannote_audio_voice_activity_detection",
@@ -30,10 +33,7 @@ __all__ = [
 if TYPE_CHECKING:
     from demucs_infer.apply import BagOfModels, Model
     from torch import Tensor
-    from transformers import PreTrainedModel, ProcessorMixin
 
-    type CtcModel = PreTrainedModel
-    type CtcProcessor = ProcessorMixin
     type DemucsModel = BagOfModels | Model
     type TorchTensor = Tensor
 
@@ -121,6 +121,19 @@ def import_huggingface_hub_utils() -> ModuleType:
     return huggingface_hub_utils
 
 
+def import_mlx_audio_mimo_asr() -> ModuleType:
+    """Import the MLX-Audio MiMo ASR implementation on demand.
+
+    Returns:
+        MLX-Audio MiMo ASR module
+    """
+    try:
+        import mlx_audio.stt.models.mimo_v2_asr.asr as mimo_asr
+    except ImportError as exc:
+        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return mimo_asr
+
+
 def import_mlx_audio_stt_load() -> Callable[..., object]:
     """Import the MLX-Audio STT model loader on demand.
 
@@ -141,7 +154,8 @@ def import_pyannote_audio() -> ModuleType:
         pyannote.audio module
     """
     try:
-        import pyannote.audio
+        with _ignore_pyannote_torchcodec_warning():
+            import pyannote.audio
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return pyannote.audio
@@ -154,7 +168,8 @@ def import_pyannote_audio_voice_activity_detection() -> Callable[..., object]:
         pyannote.audio voice activity detection pipeline class
     """
     try:
-        from pyannote.audio.pipelines import VoiceActivityDetection
+        with _ignore_pyannote_torchcodec_warning():
+            from pyannote.audio.pipelines import VoiceActivityDetection
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return VoiceActivityDetection
@@ -236,3 +251,15 @@ def import_whisper_timestamped() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped
+
+
+@contextmanager
+def _ignore_pyannote_torchcodec_warning() -> Iterator[None]:
+    """Ignore pyannote's irrelevant optional audio-decoder warning."""
+    with catch_warnings():
+        filterwarnings(
+            "ignore",
+            message=r"\s*torchcodec is not installed correctly",
+            category=UserWarning,
+        )
+        yield

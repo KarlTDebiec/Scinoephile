@@ -17,15 +17,15 @@ from scinoephile.audio.transcription import (
     VadMode,
     WhisperTranscriber,
 )
-from scinoephile.audio.transcription.mlx_audio.model import (
+from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioModel,
+    MlxAudioModelSpec,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
 )
 from scinoephile.core import Language, ScinoephileError
@@ -125,7 +125,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert not hasattr(transcriber, "cache_root_path")
     assert (transcriber.audio_model, transcriber.model_name) == (
         WHISPER_LARGE_V3_CANTONESE_MODEL,
-        WHISPER_LARGE_V3_CANTONESE_MODEL.model_name,
+        WHISPER_LARGE_V3_CANTONESE_MODEL.name,
     )
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
@@ -138,7 +138,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     whisper_transcriber = transcriber.transcriber
     assert isinstance(whisper_transcriber, WhisperTranscriber)
-    assert whisper_transcriber.model is WHISPER_LARGE_V3_CANTONESE_MODEL
+    assert whisper_transcriber.model_spec is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert whisper_transcriber.language is Language.yue_hant
     assert transcriber.transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.transcriber.vad_mode is VadMode.OFF
@@ -199,7 +199,9 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     ],
 )
 def test_get_guided_transcriber_configures_mlx_audio_model(
-    tmp_path: Path, model: TranscriptionModel, expected_mlx_audio_model: MlxAudioModel
+    tmp_path: Path,
+    model: TranscriptionModel,
+    expected_mlx_audio_model: MlxAudioModelSpec,
 ):
     """Test the factory selects each complete MLX-Audio model.
 
@@ -220,7 +222,6 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
             cache_root_path=tmp_path,
             strip_generated_punctuation=True,
             mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
-            mlx_audio_token_limit_guard=True,
             provider=Mock(
                 spec=LLMProvider,
                 cache_identity={"implementation": "test"},
@@ -233,21 +234,21 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
         )
 
     assert transcriber.audio_model is expected_mlx_audio_model
-    assert transcriber.model_name == expected_mlx_audio_model.model_name
+    assert transcriber.model_name == expected_mlx_audio_model.name
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None
     assert transcriber.tail_recovery_transcriber is None
     assert transcriber.strip_generated_punctuation
     assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
-    mlx_audio_transcriber_class.assert_called_once_with(
-        model=expected_mlx_audio_model,
-        language=Language.yue_hant,
-        token_limit_guard=True,
-        demucs_mode=DemucsMode.OFF,
-        vad_mode=VadMode.OFF,
-        cache_root_path=tmp_path,
-        overwrite_cache=False,
-    )
+    mlx_audio_transcriber_class.assert_called_once()
+    transcriber_kw = mlx_audio_transcriber_class.call_args.kwargs
+    assert transcriber_kw["model"].spec is expected_mlx_audio_model
+    assert isinstance(transcriber_kw["ctc_aligner"], CtcAligner)
+    assert transcriber_kw["ctc_aligner"].language is Language.yue_hant
+    assert transcriber_kw["demucs_mode"] is DemucsMode.OFF
+    assert transcriber_kw["vad_mode"] is VadMode.OFF
+    assert transcriber_kw["cache_root_path"] == tmp_path
+    assert not transcriber_kw["overwrite_cache"]
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path):
@@ -314,6 +315,36 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path
 
 def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: Path):
     """Test default JSON test cases are preserved between runs."""
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
+    delineation_json_path = test_case_dir_path / "delineation" / "test.json"
+    punctuation_json_path = test_case_dir_path / "punctuation" / "test.json"
+    delineation_test_case_data = [
+        {
+            "query": {
+                "ref_sub_1": "參考一",
+                "ref_sub_2": "參考二",
+                "target_sub_1": "目標一",
+                "target_sub_2": "目標二",
+            },
+            "answer": {},
+        }
+    ]
+    punctuation_test_case_data = [
+        {
+            "query": {"ref_sub": "參考", "target_subs": ["目標"]},
+            "answer": {"target_sub_punctuated": "目標。"},
+            "difficulty": 2,
+        }
+    ]
+    delineation_json_path.parent.mkdir(parents=True)
+    punctuation_json_path.parent.mkdir(parents=True)
+    delineation_json_path.write_text(
+        json.dumps(delineation_test_case_data), encoding="utf-8"
+    )
+    punctuation_json_path.write_text(
+        json.dumps(punctuation_test_case_data), encoding="utf-8"
+    )
+
     with (
         patch(
             "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
@@ -336,33 +367,6 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: 
             punctuation_test_cases=[],
             cache_root_path=tmp_path,
         )
-    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
-    delineation_json_path = test_case_dir_path / "delineation" / "test.json"
-    punctuation_json_path = test_case_dir_path / "punctuation" / "test.json"
-    delineation_test_case_data = [
-        {
-            "query": {
-                "ref_sub_1": "參考一",
-                "ref_sub_2": "參考二",
-                "target_sub_1": "目標一",
-                "target_sub_2": "目標二",
-            },
-            "answer": {},
-        }
-    ]
-    punctuation_test_case_data = [
-        {
-            "query": {"ref_sub": "參考", "target_subs": ["目標"]},
-            "answer": {"target_sub_punctuated": "目標。"},
-            "difficulty": 2,
-        }
-    ]
-    delineation_json_path.write_text(
-        json.dumps(delineation_test_case_data), encoding="utf-8"
-    )
-    punctuation_json_path.write_text(
-        json.dumps(punctuation_test_case_data), encoding="utf-8"
-    )
 
     transcriber.aligner.update_all_test_cases()
 

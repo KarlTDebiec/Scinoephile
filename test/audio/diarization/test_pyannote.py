@@ -201,10 +201,10 @@ def test_cache_identity_separates_exact_model_revisions(
     assert first_path != second_path
 
 
-def test_custom_model_uses_repository_default_revision(
+def test_custom_model_uses_repository_and_device_defaults(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """A custom model without a revision should use its repository default.
+    """A custom model should use repository and detected device defaults.
 
     Arguments:
         tmp_path: temporary cache root path
@@ -213,12 +213,17 @@ def test_custom_model_uses_repository_default_revision(
     pipeline = _FakePipeline()
     from_pretrained = Mock(return_value=pipeline)
     pipeline_cls = SimpleNamespace(from_pretrained=from_pretrained)
+
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_pyannote_audio",
         lambda: SimpleNamespace(Pipeline=pipeline_cls),
     )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_torch", lambda: _FakeTorch
+    )
+    get_torch_device = Mock(return_value="mps")
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_torch_device", get_torch_device
     )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.get_huggingface_snapshot_dir_path",
@@ -229,6 +234,9 @@ def test_custom_model_uses_repository_default_revision(
     diarizer._get_pipeline()  # noqa: SLF001
 
     from_pretrained.assert_called_once_with(Path("/cached/custom-model"))
+    get_torch_device.assert_called_once_with()
+    assert diarizer.device == "mps"
+    assert pipeline.device == "mps"
     assert diarizer.model_revision is None
 
 
