@@ -111,7 +111,7 @@ def get_zho_text_converted(
 
     if apply_exclusions and config in SIMPLIFIED_CONFIGS:
         return _get_zho_text_converted_with_exclusions(text, converter, T2S_EXCLUSIONS)
-    if apply_exclusions and config == OpenCCConfig.s2hk:
+    if apply_exclusions and config in (OpenCCConfig.s2hk, OpenCCConfig.s2hkp):
         return _get_zho_text_converted_with_exclusions(text, converter, S2HK_EXCLUSIONS)
     return converter.convert(text)
 

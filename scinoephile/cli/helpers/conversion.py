@@ -19,6 +19,7 @@ from scinoephile.core.script import OpenCCConfig
 
 __all__ = [
     "CONVERSION_LOCALIZATIONS",
+    "OPENCC_CONFIG_LOCALIZATIONS",
     "add_opencc_convert_argument",
     "add_opencc_convert_auto_argument",
     "opencc_config_arg",
@@ -69,7 +70,9 @@ OPENCC_CONFIG_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "s2tw": "简体中文转繁体中文（台湾标准）。",
         "tw2s": "繁体中文（台湾标准）转简体中文。",
         "s2hk": "简体中文转繁体中文（香港标准）。",
+        "s2hkp": "简体中文转繁体中文（香港标准，包含香港惯用词）。",
         "hk2s": "繁体中文（香港标准）转简体中文。",
+        "hk2sp": "繁体中文（香港标准）转简体中文（包含大陆惯用词）。",
         "s2twp": "简体中文转繁体中文（台湾标准，包含台湾惯用词）。",
         "tw2sp": "繁体中文（台湾标准）转简体中文（包含大陆惯用词）。",
         "t2tw": "繁体中文（OpenCC 标准）转台湾标准。",
@@ -85,7 +88,9 @@ OPENCC_CONFIG_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "s2tw": "簡體中文轉繁體中文（臺灣標準）。",
         "tw2s": "繁體中文（臺灣標準）轉簡體中文。",
         "s2hk": "簡體中文轉繁體中文（香港標準）。",
+        "s2hkp": "簡體中文轉繁體中文（香港標準，包含香港慣用詞）。",
         "hk2s": "繁體中文（香港標準）轉簡體中文。",
+        "hk2sp": "繁體中文（香港標準）轉簡體中文（包含大陸慣用詞）。",
         "s2twp": "簡體中文轉繁體中文（臺灣標準，包含臺灣慣用詞）。",
         "tw2sp": "繁體中文（臺灣標準）轉簡體中文（包含大陸慣用詞）。",
         "t2tw": "繁體中文（OpenCC 標準）轉臺灣標準。",
