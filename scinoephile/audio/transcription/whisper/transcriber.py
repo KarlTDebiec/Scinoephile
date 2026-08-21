@@ -34,22 +34,17 @@ from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.audio.vad import VoiceActivityDetector, VoiceActivityTrace
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cache.runtime import get_distribution_identity
-from scinoephile.core.dependencies.transcription import (
-    import_huggingface_hub,
-    import_huggingface_hub_utils,
-    import_whisper_timestamped,
-)
+from scinoephile.core.dependencies.transcription import import_whisper_timestamped
 from scinoephile.core.language import Language
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path, get_torch_device
 
-from .model import WHISPER_LARGE_V3_CANTONESE_MODEL, WhisperModel
+from .model_spec import WHISPER_LARGE_V3_CANTONESE_MODEL, WhisperModelSpec
 
 __all__ = ["SUBTITLE_CREDIT_HALLUCINATION_MARKERS", "WhisperTranscriber"]
 
 SUBTITLE_CREDIT_HALLUCINATION_MARKERS = ("amara.org", "字幕由", "字幕提供者")
 """Markers indicating an ASR-generated subtitle-credit hallucination."""
 
-_LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
 _MAX_SAMPLE_LEN = 224
 """Maximum token budget supported by the configured Whisper models."""
 
@@ -86,12 +81,12 @@ class WhisperTranscriber(Transcriber):
     backend_label = "Whisper"
     """Human-readable backend name used in log messages."""
 
-    _models_by_key: ClassVar[dict[tuple[str, str | None, str], Whisper]] = {}
+    _models_by_key: ClassVar[dict[tuple[str, str, str], Whisper]] = {}
     """Loaded models shared by name, revision, and device in the current process."""
 
     def __init__(
         self,
-        model: WhisperModel = WHISPER_LARGE_V3_CANTONESE_MODEL,
+        model_spec: WhisperModelSpec = WHISPER_LARGE_V3_CANTONESE_MODEL,
         language: Language = Language.yue_hant,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VadMode = VadMode.OFF,
@@ -107,7 +102,7 @@ class WhisperTranscriber(Transcriber):
         """Initialize.
 
         Arguments:
-            model: Whisper model
+            model_spec: Whisper model specification
             language: language to transcribe
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
@@ -124,14 +119,16 @@ class WhisperTranscriber(Transcriber):
         Raises:
             ValueError: if the model does not support the language
         """
-        self.model = model
+        self.model_spec = model_spec
+        """Whisper model specification."""
+
         self._loaded_model_instance: Whisper | None = None
         self.language = language
         try:
-            self._whisper_language = model.languages[language]
+            self._whisper_language = model_spec.languages[language]
         except KeyError as exc:
             raise ValueError(
-                f"{language} is not supported by Whisper model {model.model_name}"
+                f"{language} is not supported by Whisper model {model_spec.name}"
             ) from exc
         self.temperature: float | Sequence[float] = temperature
         self.condition_on_previous_text = condition_on_previous_text
@@ -148,7 +145,7 @@ class WhisperTranscriber(Transcriber):
         """Defensive temperature-fallback transcriber, when enabled."""
         if recover_decoding:
             self.recovery_transcriber = WhisperTranscriber(
-                model=self.model,
+                model_spec=self.model_spec,
                 language=self.language,
                 demucs_mode=self.demucs_mode,
                 vad_mode=self.vad_mode,
@@ -163,8 +160,8 @@ class WhisperTranscriber(Transcriber):
 
     @property
     def model_name(self) -> str:
-        """Get the Whisper model name or local model path."""
-        return self.model.model_name
+        """Get the Whisper model name."""
+        return self.model_spec.name
 
     def transcribe(
         self,
@@ -217,53 +214,21 @@ class WhisperTranscriber(Transcriber):
             return self._loaded_model_instance
 
         device = get_torch_device()
-        model_key = (self.model_name, self.model.model_revision, device)
+        model_key = (self.model_spec.name, self.model_spec.revision, device)
 
         # Reuse the process-wide model cache across transcriber instances
         cached_model = self._models_by_key.get(model_key)
         if cached_model is None:
             whisper_timestamped = import_whisper_timestamped()
-            model_reference = self._get_model_reference()
-            try:
-                cached_model = whisper_timestamped.load_model(
-                    model_reference, device=device
-                )
-            except FileNotFoundError:
-                if not self._model_name_is_huggingface_repo_id():
-                    raise
-                logger.warning(
-                    "Whisper model load failed due to missing cache file; "
-                    "re-downloading Hugging Face snapshot and retrying."
-                )
-                huggingface_hub = import_huggingface_hub()
-                model_reference = huggingface_hub.snapshot_download(
-                    repo_id=self.model_name, revision=self.model.model_revision
-                )
-                cached_model = whisper_timestamped.load_model(
-                    model_reference, device=device
-                )
+            model_dir_path = get_huggingface_snapshot_dir_path(
+                self.model_spec.name, self.model_spec.revision
+            )
+            cached_model = whisper_timestamped.load_model(
+                str(model_dir_path), device=device
+            )
             self._models_by_key[model_key] = cached_model
         self._loaded_model_instance = cached_model
         return self._loaded_model_instance
-
-    def _get_model_reference(self) -> str:
-        """Get the reference passed to Whisper Timestamped.
-
-        Returns:
-            model name, local path, or pinned Hugging Face snapshot path
-        """
-        if self.model.model_revision is None:
-            return self.model_name
-        if not self._model_name_is_huggingface_repo_id():
-            raise ValueError(
-                "A Whisper model revision may only be used with a Hugging Face "
-                "repository ID."
-            )
-        return str(
-            get_huggingface_snapshot_dir_path(
-                self.model_name, self.model.model_revision
-            )
-        )
 
     @staticmethod
     def _get_sample_len(audio: AudioSegment) -> int:
@@ -283,30 +248,6 @@ class WhisperTranscriber(Transcriber):
             _MAX_SAMPLE_LEN,
             max(_MIN_SAMPLE_LEN, ceil(duration_seconds * _MAX_TOKENS_PER_SECOND)),
         )
-
-    def _model_name_is_huggingface_repo_id(self) -> bool:
-        """Determine whether model name looks like a Hugging Face repo ID.
-
-        Returns:
-            whether the model name should be passed to Hugging Face Hub
-        """
-        model_path = Path(self.model_name)
-        model_path_parts = model_path.parts
-        if (
-            model_path.is_absolute()
-            or model_path.suffix
-            or (
-                len(model_path_parts) > 0
-                and model_path_parts[0] in {".", "..", "~", *_LOCAL_MODEL_PATH_PREFIXES}
-            )
-        ):
-            return False
-        huggingface_hub_utils = import_huggingface_hub_utils()
-        try:
-            huggingface_hub_utils.validate_repo_id(self.model_name)
-        except huggingface_hub_utils.HFValidationError:
-            return False
-        return "/" in self.model_name
 
     def _normalize_transcription_segments(
         self,
@@ -615,7 +556,7 @@ class WhisperTranscriber(Transcriber):
             "condition_on_previous_text": self.condition_on_previous_text,
             "language": self._whisper_language,
             "model_name": self.model_name,
-            "model_revision": self.model.model_revision,
+            "model_revision": self.model_spec.revision,
             "runtime": {
                 "openai_whisper": get_distribution_identity("openai-whisper"),
                 "whisper_timestamped": get_distribution_identity("whisper-timestamped"),
@@ -627,9 +568,9 @@ class WhisperTranscriber(Transcriber):
                 {
                     "timestamp_fallback": "ctc",
                     "timestamp_fallback_language": self.ctc_aligner.language.code,
-                    "timestamp_fallback_model_name": self.ctc_aligner.model_spec.name,
+                    "timestamp_fallback_model_name": self.ctc_aligner.model.spec.name,
                     "timestamp_fallback_model_revision": (
-                        self.ctc_aligner.model_spec.revision
+                        self.ctc_aligner.model.spec.revision
                     ),
                 }
             )
@@ -824,7 +765,7 @@ class WhisperTranscriber(Transcriber):
         assert self.ctc_aligner is not None
         logger.info(
             f"Retrying Whisper after timestamp alignment failed ({timestamp_error}) "
-            f"using native decoding and CTC model {self.ctc_aligner.model_spec.name}"
+            f"using native decoding and CTC model {self.ctc_aligner.model.spec.name}"
         )
         temperature: float | tuple[float, ...]
         if isinstance(self.temperature, int | float):

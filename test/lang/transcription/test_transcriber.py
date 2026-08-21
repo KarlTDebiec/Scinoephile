@@ -22,7 +22,7 @@ from scinoephile.audio.transcription import (
     VadMode,
 )
 from scinoephile.audio.transcription.mlx_audio.model_spec import MIMO_MODEL
-from scinoephile.audio.transcription.whisper.model import WhisperModel
+from scinoephile.audio.transcription.whisper.model_spec import WhisperModelSpec
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.aligner import TranscriptionAligner
@@ -64,7 +64,9 @@ def _get_transcriber(
     aligner.punctuation_processor = Mock()
     aligner.punctuation_processor.prune_test_cases = False
     mlx_audio_transcriber = None
-    audio_model = WhisperModel("test/model", {Language.eng: "en"})
+    audio_model = WhisperModelSpec(
+        name="test/model", revision="test-revision", languages={Language.eng: "en"}
+    )
     if model is not TranscriptionModel.WHISPER:
         mlx_audio_transcriber = Mock(spec=MlxAudioTranscriber)
         audio_model = MIMO_MODEL

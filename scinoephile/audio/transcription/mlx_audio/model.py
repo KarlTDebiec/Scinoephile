@@ -33,17 +33,17 @@ class MlxAudioModel:
     """Configured executable MLX-Audio speech-to-text model."""
 
     def __init__(
-        self, model_spec: MlxAudioModelSpec, language: Language = Language.yue_hant
+        self, spec: MlxAudioModelSpec, language: Language = Language.yue_hant
     ):
         """Initialize.
 
         Arguments:
-            model_spec: MLX-Audio model specification
+            spec: MLX-Audio model specification
             language: language to transcribe
         Raises:
             ValueError: if the model does not support the language
         """
-        self.spec = model_spec
+        self.spec = spec
         """Selected MLX-Audio model specification."""
 
         if language not in self.spec.languages:
@@ -51,8 +51,17 @@ class MlxAudioModel:
                 f"{language} is not supported by MLX-Audio "
                 f"{self.spec.model_type} transcription"
             )
-        self.language = language
-        """Language to transcribe."""
+
+        self.generate_kw: dict[str, object] = {}
+        """Model-specific keyword arguments for MLX-Audio generation."""
+        model_language = self.spec.languages[language]
+        if model_language is not None:
+            self.generate_kw["language"] = model_language
+
+        max_tokens = self.spec.max_tokens
+        if max_tokens is not None:
+            max_tokens_arg = cast(str, self.spec.max_tokens_arg)
+            self.generate_kw[max_tokens_arg] = max_tokens
 
     def __call__(self, audio_path: Path) -> MlxAudioResult:
         """Recognize speech in one audio file using MLX-Audio.
@@ -65,26 +74,6 @@ class MlxAudioModel:
             ImportError: if MLX-Audio is unavailable
         """
         return self.loaded_model.generate(str(audio_path), **self.generate_kw)
-
-    @cached_property
-    def generate_kw(self) -> dict[str, object]:
-        """Get model-specific keyword arguments for MLX-Audio generation.
-
-        Returns:
-            keyword arguments for the selected model's generate method
-        """
-        generate_kw: dict[str, object] = {}
-
-        model_language = self.spec.languages.get(self.language)
-        if model_language is not None:
-            generate_kw["language"] = model_language
-
-        max_tokens = self.spec.max_tokens
-        if max_tokens is not None:
-            max_tokens_arg = cast(str, self.spec.max_tokens_arg)
-            generate_kw[max_tokens_arg] = max_tokens
-
-        return generate_kw
 
     @cached_property
     def loaded_model(self) -> Any:

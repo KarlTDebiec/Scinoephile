@@ -94,7 +94,7 @@ def test_model_adapts_model_specific_generation_arguments(
     loaded_model.generate.return_value = SimpleNamespace(
         text="你好", generation_tokens=0
     )
-    mlx_audio_model_instance = MlxAudioModel(model_spec=model)
+    mlx_audio_model_instance = MlxAudioModel(spec=model)
     mlx_audio_model_instance.__dict__["loaded_model"] = loaded_model
 
     result = mlx_audio_model_instance(audio_path)

@@ -25,7 +25,7 @@ from scinoephile.audio.transcription.mlx_audio.model_spec import (
     SENSEVOICE_MODEL,
     MlxAudioModelSpec,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
 )
 from scinoephile.core import Language, ScinoephileError
@@ -125,7 +125,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert not hasattr(transcriber, "cache_root_path")
     assert (transcriber.audio_model, transcriber.model_name) == (
         WHISPER_LARGE_V3_CANTONESE_MODEL,
-        WHISPER_LARGE_V3_CANTONESE_MODEL.model_name,
+        WHISPER_LARGE_V3_CANTONESE_MODEL.name,
     )
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
@@ -138,7 +138,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     whisper_transcriber = transcriber.transcriber
     assert isinstance(whisper_transcriber, WhisperTranscriber)
-    assert whisper_transcriber.model is WHISPER_LARGE_V3_CANTONESE_MODEL
+    assert whisper_transcriber.model_spec is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert whisper_transcriber.language is Language.yue_hant
     assert transcriber.transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.transcriber.vad_mode is VadMode.OFF
@@ -243,7 +243,6 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
     mlx_audio_transcriber_class.assert_called_once()
     transcriber_kw = mlx_audio_transcriber_class.call_args.kwargs
     assert transcriber_kw["model"].spec is expected_mlx_audio_model
-    assert transcriber_kw["model"].language is Language.yue_hant
     assert isinstance(transcriber_kw["ctc_aligner"], CtcAligner)
     assert transcriber_kw["ctc_aligner"].language is Language.yue_hant
     assert transcriber_kw["demucs_mode"] is DemucsMode.OFF

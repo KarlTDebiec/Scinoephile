@@ -63,6 +63,7 @@ class MlxAudioTranscriber(Transcriber):
         self,
         model: MlxAudioModel,
         ctc_aligner: CtcAligner,
+        language: Language,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
         demucs_mode: DemucsMode = DemucsMode.OFF,
@@ -77,6 +78,7 @@ class MlxAudioTranscriber(Transcriber):
         Arguments:
             model: configured executable MLX-Audio model
             ctc_aligner: configured CTC timestamp aligner
+            language: language to transcribe
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
             demucs_mode: Demucs preprocessing mode
@@ -86,13 +88,16 @@ class MlxAudioTranscriber(Transcriber):
             demucs_separator: optional shared Demucs vocal separator
             vad_detector: optional shared voice activity detector
         Raises:
-            ValueError: if the component languages or numeric configuration are invalid
+            ValueError: if the aligner language or numeric configuration is invalid
         """
-        if model.language is not ctc_aligner.language:
+        if language is not ctc_aligner.language:
             raise ValueError(
-                "MLX-Audio model and CTC aligner languages must match "
-                f"({model.language} != {ctc_aligner.language})."
+                "MLX-Audio transcriber and CTC aligner languages must match "
+                f"({language} != {ctc_aligner.language})."
             )
+        self.language = language
+        """Language to transcribe."""
+
         self.model = model
         """Configured executable MLX-Audio model."""
 
@@ -117,11 +122,6 @@ class MlxAudioTranscriber(Transcriber):
             demucs_separator,
             vad_detector,
         )
-
-    @property
-    def language(self) -> Language:
-        """Get the transcription language."""
-        return self.model.language
 
     @property
     def model_name(self) -> str:
@@ -162,8 +162,8 @@ class MlxAudioTranscriber(Transcriber):
             "chunk_overlap_seconds": chunk_overlap_seconds,
             "chunk_postprocessing_version": chunk_postprocessing_version,
             "aligner": "ctc",
-            "aligner_model_name": self.ctc_aligner.model_spec.name,
-            "aligner_model_revision": self.ctc_aligner.model_spec.revision,
+            "aligner_model_name": self.ctc_aligner.model.spec.name,
+            "aligner_model_revision": self.ctc_aligner.model.spec.revision,
         }
 
     def _transcribe_attempt(

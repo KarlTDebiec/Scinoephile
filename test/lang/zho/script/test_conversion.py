@@ -6,10 +6,10 @@ from __future__ import annotations
 
 from pytest import FixtureRequest, param
 
+from scinoephile.core.script import OpenCCConfig
 from scinoephile.lang.zho.script.conversion import (
     S2HK_EXCLUSIONS,
     T2S_EXCLUSIONS,
-    OpenCCConfig,
     get_zho_character_variants,
     get_zho_converted,
     get_zho_converter,

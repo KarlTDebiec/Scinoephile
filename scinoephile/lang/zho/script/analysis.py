@@ -6,9 +6,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from scinoephile.core.script import OpenCCConfig
 from scinoephile.core.text import RE_HANZI
 
-from .conversion import OpenCCConfig, get_zho_text_converted
+from .conversion import get_zho_text_converted
 
 __all__ = [
     "ZhoScriptAnalysis",

@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from opencc import OpenCC
 from pydub import AudioSegment
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
@@ -15,45 +16,23 @@ from scinoephile.audio.transcription.transcribed_segment import TranscribedSegme
 from scinoephile.core import Language
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.ml import ModelSpec
+from scinoephile.core.script import OpenCCConfig
 
 from .model import CtcModel
+from .model_spec import CANTONESE_MODEL, CHINESE_MODEL, ENGLISH_MODEL, CtcModelSpec
 from .path import get_best_path, get_character_timings
 from .text import get_transcribed_words
 
 __all__ = ["CtcAligner"]
 
-_ENGLISH_MODEL = ModelSpec(
-    name="facebook/wav2vec2-base-960h",
-    revision="22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
-)
-"""Default English CTC model specification."""
-
-_CANTONESE_MODEL = ModelSpec(
-    name="ctl/wav2vec2-large-xlsr-cantonese",
-    revision="11cb21cb68b4ed15f4c6633494ae6cc90a89bc34",
-)
-"""Default Cantonese CTC model specification."""
-
-_CHINESE_MODEL = ModelSpec(
-    name="jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
-    revision="99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd",
-)
-"""Default Chinese CTC model specification."""
-
 _DEFAULT_MODEL_SPECS = {
-    Language.eng: _ENGLISH_MODEL,
-    Language.yue_hans: _CANTONESE_MODEL,
-    Language.yue_hant: _CANTONESE_MODEL,
-    Language.zho_hans: _CHINESE_MODEL,
-    Language.zho_hant: _CHINESE_MODEL,
+    Language.eng: ENGLISH_MODEL,
+    Language.yue_hans: CANTONESE_MODEL,
+    Language.yue_hant: CANTONESE_MODEL,
+    Language.zho_hans: CHINESE_MODEL,
+    Language.zho_hant: CHINESE_MODEL,
 }
 """Default CTC model specifications keyed by transcription language."""
-
-_SCRIPT_CONVERSION_CONFIGS = {
-    (Language.yue_hans, _CANTONESE_MODEL): "s2t",
-    (Language.zho_hant, _CHINESE_MODEL): "t2s",
-}
-"""OpenCC configurations keyed by transcription language and CTC model."""
 
 _ALIGNMENT_VERSION = 1
 """Version of the CTC forced-alignment algorithm and output shaping."""
@@ -92,18 +71,15 @@ class CtcAligner:
                 raise ValueError(
                     f"{language} is not supported by CTC alignment"
                 ) from exc
-        self.model_spec = model_spec
-        """CTC model specification."""
+        self._script_conversion_config: OpenCCConfig | None = None
+        """Conversion from transcript script to model tokenizer script."""
+        if isinstance(model_spec, CtcModelSpec):
+            if language.script == "Hans" and model_spec.script == "Hant":
+                self._script_conversion_config = OpenCCConfig.s2t
+            elif language.script == "Hant" and model_spec.script == "Hans":
+                self._script_conversion_config = OpenCCConfig.t2s
 
-        self.device = device
-        """Device identifier passed to the CTC model."""
-
-        self._script_conversion_config = _SCRIPT_CONVERSION_CONFIGS.get(
-            (language, model_spec)
-        )
-        """OpenCC configuration for adapting text to the CTC model."""
-
-        self.model = CtcModel(model_spec, device, self._script_conversion_config)
+        self.model = CtcModel(model_spec, device)
         """CTC model used to obtain token probabilities."""
 
         self.cache = TranscriptionCache(
@@ -123,32 +99,27 @@ class CtcAligner:
             text: transcription text
         Returns:
             timestamped transcription segments
-        """
-        return self.align(audio, text)
-
-    def align(self, audio: AudioSegment, text: str) -> list[TranscribedSegment]:
-        """Align transcript text to source audio.
-
-        Arguments:
-            audio: source audio to align against
-            text: transcription text
-        Returns:
-            timestamped transcription segments
         Raises:
             TranscriptionAlignmentError: if alignment cannot recover word timings
         """
-        transcript_text = text
-        if not transcript_text.strip():
+        if not text.strip():
             raise TranscriptionAlignmentError("Cannot align empty transcript.")
-        cache_identity = self._get_cache_identity(transcript_text)
+        cache_identity = self._get_cache_identity(text)
         cached = self.cache.load(audio, cache_identity)
         if cached is not None:
             return cached[1]
 
         duration_seconds = len(audio) / 1000
         try:
+            model_text = None
+            if self._script_conversion_config is not None:
+                candidate_text = OpenCC(self._script_conversion_config.code).convert(
+                    text
+                )
+                if len(candidate_text) == len(text):
+                    model_text = candidate_text
             log_probs, token_ids, char_indices, blank_token_id = self.model(
-                audio, transcript_text
+                audio, text, model_text
             )
             if token_ids:
                 path = get_best_path(log_probs, token_ids, blank_token_id)
@@ -159,7 +130,7 @@ class CtcAligner:
                 timed_chars = {}
 
             words = get_transcribed_words(
-                self.language, transcript_text, timed_chars, duration_seconds
+                self.language, text, timed_chars, duration_seconds
             )
             if not words:
                 raise TranscriptionAlignmentError(
@@ -171,7 +142,7 @@ class CtcAligner:
                     seek=0,
                     start=words[0].start,
                     end=words[-1].end,
-                    text=transcript_text,
+                    text=text,
                     words=words,
                 )
             ]
@@ -192,16 +163,19 @@ class CtcAligner:
         Returns:
             complete CTC alignment identity
         """
+        script_conversion = None
+        if self._script_conversion_config is not None:
+            script_conversion = self._script_conversion_config.code
         return {
             "alignment_version": _ALIGNMENT_VERSION,
-            "device": self.device,
+            "device": self.model.device,
             "language": self.language.code,
-            "model_name": self.model_spec.name,
-            "model_revision": self.model_spec.revision,
+            "model_name": self.model.spec.name,
+            "model_revision": self.model.spec.revision,
             "runtime": {
                 "torch": get_distribution_identity("torch"),
                 "transformers": get_distribution_identity("transformers"),
             },
-            "script_conversion": self._script_conversion_config,
+            "script_conversion": script_conversion,
             "text": text,
         }

@@ -53,11 +53,15 @@ def get_transcribed_words(
         run_end_idx = char_idx
         run_text = text[run_start_idx:run_end_idx]
 
-        boundary_pending_text = _attach_boundary_text(
-            run_text, words, char_idx < len(text)
-        )
-        if boundary_pending_text is not None:
-            pending_text = boundary_pending_text
+        if (
+            words
+            and char_idx == len(text)
+            and not any(char.isalnum() for char in run_text)
+        ):
+            words[-1].text += run_text
+            continue
+        if not words and run_text.isspace():
+            pending_text = run_text
             continue
 
         previous_end = words[-1].end if words else 0.0
@@ -98,26 +102,6 @@ def get_transcribed_words(
     if language is Language.eng:
         return _group_english_words(words)
     return words
-
-
-def _attach_boundary_text(
-    run_text: str, words: list[TranscribedWord], has_next_timing: bool
-) -> str | None:
-    """Attach unaligned boundary punctuation or whitespace to a timed character.
-
-    Arguments:
-        run_text: unaligned text at a transcript boundary
-        words: transcribed words built so far
-        has_next_timing: whether an aligned character follows the run
-    Returns:
-        pending prefix text when handled, otherwise None
-    """
-    if words and not has_next_timing and not any(char.isalnum() for char in run_text):
-        words[-1].text += run_text
-        return ""
-    if not words and run_text.isspace():
-        return run_text
-    return None
 
 
 def _group_english_words(

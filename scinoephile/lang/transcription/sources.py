@@ -27,9 +27,9 @@ from scinoephile.audio.transcription.mlx_audio.model_spec import (
     SENSEVOICE_MODEL,
     MlxAudioModelSpec,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
-    WhisperModel,
+    WhisperModelSpec,
 )
 from scinoephile.core import Language, ScinoephileError
 
@@ -45,7 +45,7 @@ class TranscriptionSourceSpec:
 
     name: str
     """Stable source name used in alignment rows and artifacts."""
-    model: WhisperModel | MlxAudioModelSpec
+    model: WhisperModelSpec | MlxAudioModelSpec
     """Configured speech-to-text model."""
 
     def __post_init__(self):
@@ -114,18 +114,15 @@ def get_transcription_sources(
     transcribers: dict[str, Transcriber] = {}
     descriptors = []
     for source in source_specs:
-        if isinstance(source.model, WhisperModel):
-            model_name = source.model.model_name
-        else:
-            model_name = source.model.name
+        model_name = source.model.name
         if language not in source.model.languages:
             raise ScinoephileError(
                 f"Transcription source {source.name!r} model "
                 f"{model_name!r} does not support {language.code}."
             )
-        if isinstance(source.model, WhisperModel):
+        if isinstance(source.model, WhisperModelSpec):
             transcriber = WhisperTranscriber(
-                model=source.model,
+                model_spec=source.model,
                 language=language,
                 demucs_mode=demucs_mode,
                 vad_mode=VadMode.OFF,
@@ -142,6 +139,7 @@ def get_transcription_sources(
                     cache_root_path=cache_root_path,
                     overwrite_cache=overwrite_cache,
                 ),
+                language=language,
                 chunk_duration_seconds=_MLX_AUDIO_CHUNK_DURATION_SECONDS,
                 demucs_mode=demucs_mode,
                 vad_mode=VadMode.OFF,

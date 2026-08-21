@@ -8,9 +8,10 @@ from pathlib import Path
 from typing import Any
 
 from scinoephile.core import Language
+from scinoephile.core.script import OpenCCConfig
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.lang.zho.script.conversion import get_zho_converted
 from scinoephile.workflows.clean import clean_series
 from scinoephile.workflows.flatten import flatten_series
 from scinoephile.workflows.review import review_series

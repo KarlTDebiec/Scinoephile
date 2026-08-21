@@ -28,7 +28,7 @@ from scinoephile.audio.transcription import (
 )
 from scinoephile.audio.transcription.mlx_audio.model_spec import MlxAudioModelSpec
 from scinoephile.audio.transcription.quality import get_transcription_quality_issue
-from scinoephile.audio.transcription.whisper.model import WhisperModel
+from scinoephile.audio.transcription.whisper.model_spec import WhisperModelSpec
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -144,7 +144,7 @@ class GuidedTranscriber:
         *,
         language: Language,
         guide_language: Language,
-        audio_model: WhisperModel | MlxAudioModelSpec,
+        audio_model: WhisperModelSpec | MlxAudioModelSpec,
         aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VadMode = VadMode.OFF,
@@ -175,10 +175,7 @@ class GuidedTranscriber:
         self.language = language
         self.guide_language = guide_language
         self.audio_model = audio_model
-        if isinstance(audio_model, MlxAudioModelSpec):
-            self.model_name = audio_model.name
-        else:
-            self.model_name = audio_model.model_name
+        self.model_name = audio_model.name
         self.aligner = aligner
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
@@ -197,7 +194,7 @@ class GuidedTranscriber:
             return
 
         # Configure standard preprocessing fallbacks
-        if not isinstance(self.audio_model, WhisperModel):
+        if not isinstance(self.audio_model, WhisperModelSpec):
             raise ValueError("Whisper backend requires a Whisper model.")
         whisper_ctc_aligner = CtcAligner(
             self.language,
@@ -205,7 +202,7 @@ class GuidedTranscriber:
             overwrite_cache=overwrite_cache,
         )
         self.transcriber = WhisperTranscriber(
-            model=self.audio_model,
+            model_spec=self.audio_model,
             language=self.language,
             demucs_mode=self.demucs_mode,
             vad_mode=self.vad_mode,
@@ -222,7 +219,7 @@ class GuidedTranscriber:
         if self.vad_mode is VadMode.ON:
             recovery_vad_mode = VadMode.ON
         self.recovery_transcriber = WhisperTranscriber(
-            model=self.audio_model,
+            model_spec=self.audio_model,
             language=self.language,
             demucs_mode=recovery_demucs_mode,
             vad_mode=recovery_vad_mode,
@@ -236,7 +233,7 @@ class GuidedTranscriber:
 
         # Configure focused recovery for missing speech near a guided tail
         self.tail_recovery_transcriber = WhisperTranscriber(
-            model=self.audio_model,
+            model_spec=self.audio_model,
             language=self.language,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VadMode.OFF,
