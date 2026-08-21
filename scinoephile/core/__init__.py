@@ -3,7 +3,7 @@
 """Core code.
 
 Package hierarchy (modules may import from any above):
-* dependencies / dictionaries / exceptions / paths
+* dependencies / dictionaries / exceptions / paths / script
 * cache / ml / subtitles / text
 * language / pairs / romanization / timing
 * cli / llms / media / synchronization
@@ -14,5 +14,6 @@ from __future__ import annotations
 
 from .exceptions import ScinoephileError, UnsupportedCharacterError
 from .language import Language
+from .script import OpenCCConfig
 
-__all__ = ["Language", "ScinoephileError", "UnsupportedCharacterError"]
+__all__ = ["Language", "OpenCCConfig", "ScinoephileError", "UnsupportedCharacterError"]

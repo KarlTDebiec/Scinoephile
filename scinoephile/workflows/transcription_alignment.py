@@ -30,7 +30,8 @@ from scinoephile.audio.transcription.alignment_sequence import (
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.vad.speech_block import SpeechBlock
 from scinoephile.audio.vad.trace import VoiceActivityTrace
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.core.script import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import get_zho_text_converted
 
 __all__ = [
     "RenderedTranscriptionAlignment",

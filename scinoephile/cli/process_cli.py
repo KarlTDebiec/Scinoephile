@@ -21,7 +21,8 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.core.script import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import get_zho_converted
 from scinoephile.workflows.clean import clean_series
 from scinoephile.workflows.flatten import flatten_series
 from scinoephile.workflows.helpers import resolve_language

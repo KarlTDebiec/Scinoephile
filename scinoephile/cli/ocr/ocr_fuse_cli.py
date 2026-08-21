@@ -34,12 +34,12 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.zho.script.conversion import (
+from scinoephile.core.script import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
     OpenCCConfig,
-    get_zho_converted,
 )
+from scinoephile.lang.zho.script.conversion import get_zho_converted
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.clean import clean_series
 from scinoephile.workflows.ocr_fusion import fuse_ocr_series
