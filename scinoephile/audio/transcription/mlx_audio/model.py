@@ -32,9 +32,7 @@ class MlxAudioResult(Protocol):
 class MlxAudioModel:
     """Configured executable MLX-Audio speech-to-text model."""
 
-    def __init__(
-        self, spec: MlxAudioModelSpec, language: Language = Language.yue_hant
-    ):
+    def __init__(self, spec: MlxAudioModelSpec, language: Language):
         """Initialize.
 
         Arguments:

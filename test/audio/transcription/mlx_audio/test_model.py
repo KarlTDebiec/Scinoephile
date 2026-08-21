@@ -57,7 +57,7 @@ def test_model_returns_loaded_model_result(tmp_path: Path):
     loaded_model = Mock()
     model_result = SimpleNamespace(text="你好", generation_tokens=7)
     loaded_model.generate.return_value = model_result
-    model = MlxAudioModel(MIMO_MODEL)
+    model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
     model.__dict__["loaded_model"] = loaded_model
 
     result = model(audio_path)
@@ -94,7 +94,7 @@ def test_model_adapts_model_specific_generation_arguments(
     loaded_model.generate.return_value = SimpleNamespace(
         text="你好", generation_tokens=0
     )
-    mlx_audio_model_instance = MlxAudioModel(spec=model)
+    mlx_audio_model_instance = MlxAudioModel(spec=model, language=Language.yue_hant)
     mlx_audio_model_instance.__dict__["loaded_model"] = loaded_model
 
     result = mlx_audio_model_instance(audio_path)
@@ -149,7 +149,7 @@ def test_model_rejects_unsupported_platform(
     """Test model loading rejects unsupported platforms."""
     monkeypatch.setattr(mlx_audio_model.platform, "system", Mock(return_value=system))
     monkeypatch.setattr(mlx_audio_model.platform, "machine", Mock(return_value=machine))
-    model = MlxAudioModel(MIMO_MODEL)
+    model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
 
     with pytest.raises(RuntimeError, match="requires macOS on Apple Silicon"):
         _ = model.loaded_model
@@ -190,7 +190,7 @@ def test_loaded_model_is_cached(
         mlx_audio_model, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
     )
 
-    mlx_audio_model_instance = MlxAudioModel(model)
+    mlx_audio_model_instance = MlxAudioModel(model, Language.yue_hant)
 
     mlx_audio_model_instance(Path("audio.wav"))
     mlx_audio_model_instance(Path("audio.wav"))
@@ -238,7 +238,7 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
         mlx_audio_model, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
     )
 
-    model = MlxAudioModel(MIMO_MODEL)
+    model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
     model(Path("audio.wav"))
     assert get_snapshot_dir_path.call_args_list == [
         call(MIMO_MODEL.name, MIMO_MODEL.revision),

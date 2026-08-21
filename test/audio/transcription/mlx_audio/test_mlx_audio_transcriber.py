@@ -70,7 +70,7 @@ def _get_cache_path(
 
 def test_init_accepts_configured_components_and_defaults_preprocessing_to_off():
     """Test MLX-Audio retains configured components with preprocessing off."""
-    model = MlxAudioModel(MIMO_MODEL)
+    model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
     ctc_aligner = CtcAligner(Language.yue_hant, _CTC_MODEL)
     transcriber = MlxAudioTranscriber(model, ctc_aligner, Language.yue_hant)
 
@@ -842,7 +842,7 @@ def _get_mlx_audio_transcriber(
         initialized transcriber
     """
     return MlxAudioTranscriber(
-        model=MlxAudioModel(model_spec),
+        model=MlxAudioModel(model_spec, Language.yue_hant),
         ctc_aligner=CtcAligner(
             Language.yue_hant, _CTC_MODEL, cache_root_path=cache_root_path
         ),
