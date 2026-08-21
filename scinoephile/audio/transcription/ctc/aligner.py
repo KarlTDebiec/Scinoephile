@@ -118,13 +118,16 @@ class CtcAligner:
                 )
                 if len(candidate_text) == len(text):
                     model_text = candidate_text
-            log_probs, token_ids, char_indices, blank_token_id = self.model(
-                audio, text, model_text
-            )
-            if token_ids:
-                path = get_best_path(log_probs, token_ids, blank_token_id)
+            result = self.model(audio, text, model_text)
+            if result.token_ids:
+                path = get_best_path(
+                    result.log_probs, result.token_ids, result.blank_token_id
+                )
                 timed_chars = get_character_timings(
-                    path, char_indices, log_probs.shape[0], duration_seconds
+                    path,
+                    result.char_indices,
+                    result.log_probs.shape[0],
+                    duration_seconds,
                 )
             else:
                 timed_chars = {}

@@ -22,6 +22,7 @@ from scinoephile.audio.transcription.ctc.model_spec import CtcModelSpec
 from scinoephile.audio.transcription.ctc.path import get_best_path
 from scinoephile.audio.transcription.ctc.text import get_transcribed_words
 from scinoephile.audio.transcription.ctc.tokenization import get_token_ids
+from scinoephile.audio.transcription.ctc.types import CtcResult
 from scinoephile.core import Language, OpenCCConfig
 from scinoephile.core.ml import ModelSpec
 
@@ -78,7 +79,9 @@ def test_ctc_aligner_expands_token_spans(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(
         CtcModel,
         "__call__",
-        lambda _self, _audio, _text, _model_text=None: (log_probs, [1, 2], [0, 1], 0),
+        lambda _self, _audio, _text, _model_text=None: CtcResult(
+            log_probs=log_probs, token_ids=[1, 2], char_indices=[0, 1], blank_token_id=0
+        ),
     )
 
     segments = aligner(AudioSegment.silent(duration=1000), "你好")
@@ -317,7 +320,11 @@ def test_ctc_aligner_persistently_caches_alignment(
     )
     audio = AudioSegment.silent(duration=1000)
     first_aligner = CtcAligner(Language.yue_hant, cache_root_path=tmp_path)
-    get_alignment_inputs = Mock(return_value=(log_probs, [1, 2], [0, 1], 0))
+    get_alignment_inputs = Mock(
+        return_value=CtcResult(
+            log_probs=log_probs, token_ids=[1, 2], char_indices=[0, 1], blank_token_id=0
+        )
+    )
     monkeypatch.setattr(CtcModel, "__call__", get_alignment_inputs)
 
     first_segments = first_aligner(audio, "你好")
@@ -448,7 +455,9 @@ def test_ctc_aligner_attaches_trailing_unaligned_punctuation(
     monkeypatch.setattr(
         CtcModel,
         "__call__",
-        lambda _self, _audio, _text, _model_text=None: (log_probs, [1, 2], [0, 1], 0),
+        lambda _self, _audio, _text, _model_text=None: CtcResult(
+            log_probs=log_probs, token_ids=[1, 2], char_indices=[0, 1], blank_token_id=0
+        ),
     )
 
     segments = aligner(AudioSegment.silent(duration=1200), "你好。")
@@ -471,7 +480,9 @@ def test_ctc_aligner_times_trailing_unsupported_speech(monkeypatch: pytest.Monke
     monkeypatch.setattr(
         CtcModel,
         "__call__",
-        lambda _self, _audio, _text, _model_text=None: (log_probs, [1], [0], 0),
+        lambda _self, _audio, _text, _model_text=None: CtcResult(
+            log_probs=log_probs, token_ids=[1], char_indices=[0], blank_token_id=0
+        ),
     )
 
     segments = aligner(AudioSegment.silent(duration=1000), "你嘅")
@@ -501,7 +512,9 @@ def test_ctc_aligner_preserves_boundary_whitespace(monkeypatch: pytest.MonkeyPat
     monkeypatch.setattr(
         CtcModel,
         "__call__",
-        lambda _self, _audio, _text, _model_text=None: (log_probs, [1, 2], [1, 2], 0),
+        lambda _self, _audio, _text, _model_text=None: CtcResult(
+            log_probs=log_probs, token_ids=[1, 2], char_indices=[1, 2], blank_token_id=0
+        ),
     )
 
     segments = aligner(AudioSegment.silent(duration=1000), " 你好 ")
@@ -520,7 +533,9 @@ def test_ctc_aligner_preserves_all_unknown_characters(monkeypatch: pytest.Monkey
     monkeypatch.setattr(
         CtcModel,
         "__call__",
-        lambda _self, _audio, _text, _model_text=None: (np.empty((1, 1)), [], [], 0),
+        lambda _self, _audio, _text, _model_text=None: CtcResult(
+            log_probs=np.empty((1, 1)), token_ids=[], char_indices=[], blank_token_id=0
+        ),
     )
 
     segments = aligner(AudioSegment.silent(duration=1500), "佢哋嘅")
@@ -564,11 +579,11 @@ def test_ctc_aligner_attaches_internal_unaligned_characters(
     monkeypatch.setattr(
         CtcModel,
         "__call__",
-        lambda _self, _audio, _text, _model_text=None: (
-            log_probs,
-            [1, 2],
-            char_indices,
-            0,
+        lambda _self, _audio, _text, _model_text=None: CtcResult(
+            log_probs=log_probs,
+            token_ids=[1, 2],
+            char_indices=char_indices,
+            blank_token_id=0,
         ),
     )
 
@@ -693,7 +708,11 @@ def test_ctc_aligner_passes_model_script_text_to_model(
     """
     audio = AudioSegment.silent(duration=1000)
     aligner = CtcAligner(language)
-    model_call = Mock(return_value=(np.empty((1, 1)), [], [], 0))
+    model_call = Mock(
+        return_value=CtcResult(
+            log_probs=np.empty((1, 1)), token_ids=[], char_indices=[], blank_token_id=0
+        )
+    )
     monkeypatch.setattr(CtcModel, "__call__", model_call)
     monkeypatch.setattr(aligner.cache, "load", Mock(return_value=None))
     monkeypatch.setattr(aligner.cache, "save", Mock())
@@ -749,7 +768,9 @@ def test_ctc_aligner_rounds_timings(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(
         CtcModel,
         "__call__",
-        lambda _self, _audio, _text, _model_text=None: (log_probs, [1, 2], [0, 1], 0),
+        lambda _self, _audio, _text, _model_text=None: CtcResult(
+            log_probs=log_probs, token_ids=[1, 2], char_indices=[0, 1], blank_token_id=0
+        ),
     )
 
     segments = aligner(AudioSegment.silent(duration=1234), "你好")

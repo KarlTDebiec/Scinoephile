@@ -19,6 +19,7 @@ from scinoephile.core.dependencies.transcription import (
 from scinoephile.core.ml import ModelSpec, get_huggingface_snapshot_dir_path
 
 from .tokenization import get_token_ids
+from .types import CtcResult
 
 __all__ = ["CtcModel"]
 
@@ -44,7 +45,7 @@ class CtcModel:
 
     def __call__(
         self, audio: AudioSegment, text: str, model_text: str | None = None
-    ) -> tuple[np.ndarray, list[int], list[int], int]:
+    ) -> CtcResult:
         """Get CTC probabilities and transcript token mapping.
 
         Arguments:
@@ -52,7 +53,7 @@ class CtcModel:
             text: transcript text to map to model tokens
             model_text: transcript converted to the model tokenizer's script
         Returns:
-            log probabilities, token IDs, text character indices, and blank token ID
+            CTC model output prepared for alignment
         Raises:
             ImportError: if CTC dependencies are unavailable
             TranscriptionAlignmentError: if audio, model, or processor configuration
@@ -84,7 +85,12 @@ class CtcModel:
         token_ids, char_indices = get_token_ids(
             text, self.processor.tokenizer, model_text
         )
-        return log_probs, token_ids, char_indices, blank_token_id
+        return CtcResult(
+            log_probs=log_probs,
+            token_ids=token_ids,
+            char_indices=char_indices,
+            blank_token_id=blank_token_id,
+        )
 
     @cached_property
     def model(self) -> PreTrainedModel:
