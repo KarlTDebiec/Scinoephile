@@ -627,9 +627,9 @@ class WhisperTranscriber(Transcriber):
                 {
                     "timestamp_fallback": "ctc",
                     "timestamp_fallback_language": self.ctc_aligner.language.code,
-                    "timestamp_fallback_model_name": self.ctc_aligner.model_name,
+                    "timestamp_fallback_model_name": self.ctc_aligner.model_spec.name,
                     "timestamp_fallback_model_revision": (
-                        self.ctc_aligner.model_revision
+                        self.ctc_aligner.model_spec.revision
                     ),
                 }
             )
@@ -824,7 +824,7 @@ class WhisperTranscriber(Transcriber):
         assert self.ctc_aligner is not None
         logger.info(
             f"Retrying Whisper after timestamp alignment failed ({timestamp_error}) "
-            f"using native decoding and CTC model {self.ctc_aligner.model_name}"
+            f"using native decoding and CTC model {self.ctc_aligner.model_spec.name}"
         )
         temperature: float | tuple[float, ...]
         if isinstance(self.temperature, int | float):

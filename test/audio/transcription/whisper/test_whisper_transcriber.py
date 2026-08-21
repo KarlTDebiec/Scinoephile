@@ -38,6 +38,7 @@ from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
 from scinoephile.core.dependencies.transcription import import_whisper_timestamped
+from scinoephile.core.ml import ModelSpec
 from test.helpers import parametrize
 
 _OPTIONAL_TRANSCRIPTION_MODULES = (
@@ -63,6 +64,9 @@ _SUBTITLE_CREDIT_TEXT = "字幕由 Amara.org 社群提供"
 _CUSTOM_MODEL = replace(
     WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model", model_revision=None
 )
+
+_CTC_MODEL_SPEC = ModelSpec(name="ctc/test-model", revision="ctc-revision")
+"""CTC model specification used by Whisper fallback tests."""
 
 
 def test_init_defaults_demucs_and_vad_to_off():
@@ -106,16 +110,13 @@ def _get_cache_path(transcriber: WhisperTranscriber, audio: AudioSegment) -> Pat
 
 
 def _get_ctc_aligner(
-    text: str = "你好",
-    model_name: str = "ctc/test-model",
-    model_revision: str | None = None,
+    text: str = "你好", model_spec: ModelSpec = _CTC_MODEL_SPEC
 ) -> Mock:
     """Get a mock CTC aligner with one aligned output segment.
 
     Arguments:
         text: transcript text retained in aligned output
-        model_name: CTC model identity
-        model_revision: immutable CTC model revision
+        model_spec: CTC model specification
     Returns:
         configured mock aligner
     """
@@ -130,10 +131,7 @@ def _get_ctc_aligner(
         )
     ]
     return Mock(
-        language=Language.yue_hant,
-        model_name=model_name,
-        model_revision=model_revision,
-        return_value=aligned_segments,
+        language=Language.yue_hant, model_spec=model_spec, return_value=aligned_segments
     )
 
 
@@ -295,13 +293,17 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
         cache_root_path=tmp_path,
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        ctc_aligner=_get_ctc_aligner(model_name="ctc/other-model"),
+        ctc_aligner=_get_ctc_aligner(
+            model_spec=ModelSpec(name="ctc/other-model", revision="ctc-other-revision")
+        ),
     )
     second_revision_fallback = WhisperTranscriber(
         cache_root_path=tmp_path,
         model=_CUSTOM_MODEL,
         demucs_mode=DemucsMode.OFF,
-        ctc_aligner=_get_ctc_aligner(model_revision="revision-two"),
+        ctc_aligner=_get_ctc_aligner(
+            model_spec=ModelSpec(name="ctc/test-model", revision="revision-two")
+        ),
     )
     second_language_aligner = _get_ctc_aligner()
     second_language_aligner.language = Language.zho_hant
@@ -329,7 +331,7 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
     assert cache_identity["timestamp_fallback"] == "ctc"
     assert cache_identity["timestamp_fallback_language"] == "yue-Hant"
     assert cache_identity["timestamp_fallback_model_name"] == "ctc/test-model"
-    assert cache_identity["timestamp_fallback_model_revision"] is None
+    assert cache_identity["timestamp_fallback_model_revision"] == "ctc-revision"
     runtime_identity = cast(Mapping[str, Mapping[str, str]], cache_identity["runtime"])
     assert runtime_identity["openai_whisper"]["distribution"] == ("openai-whisper")
     assert runtime_identity["whisper_timestamped"]["distribution"] == (
@@ -552,7 +554,8 @@ def test_transcribe_timestamp_assertion_without_ctc_remains_error(
     )
 
     with raises(
-        TranscriptionRecognitionError, match="Whisper inference failed with an assertion"
+        TranscriptionRecognitionError,
+        match="Whisper inference failed with an assertion",
     ):
         transcriber(AudioSegment.silent(duration=1000))
 
@@ -600,8 +603,8 @@ def test_transcribe_unrelated_assertion_does_not_use_ctc(
         ({"text": "   "}, TranscriptionEmptyError, "empty transcript"),
         ({"text": "你好"}, TranscriptionRecognitionError, "malformed segments"),
         (
-                {"text": "你好", "segments": [{"text": "你好"}]},
-                TranscriptionRecognitionError,
+            {"text": "你好", "segments": [{"text": "你好"}]},
+            TranscriptionRecognitionError,
             "malformed segments",
         ),
     ],

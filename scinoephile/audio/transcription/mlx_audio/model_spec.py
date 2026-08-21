@@ -7,32 +7,34 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from scinoephile.core.language import Language
-
-from .tokenizer_spec import MIMO_AUDIO_TOKENIZER, MlxAudioTokenizerSpec
+from scinoephile.core.ml import ModelSpec
 
 __all__ = [
     "FIRERED_ASR2_MODEL",
     "GLM_ASR_MODEL",
+    "MIMO_AUDIO_TOKENIZER",
     "MIMO_MODEL",
     "MlxAudioModelSpec",
     "QWEN3_ASR_MODEL",
     "SENSEVOICE_MODEL",
 ]
 
+MIMO_AUDIO_TOKENIZER = ModelSpec(
+    name="mlx-community/MiMo-Audio-Tokenizer",
+    revision="6d451ed9a73024b4d33b87afa69e0dfd40d8f306",
+)
+"""Default MLX MiMo audio-tokenizer specification."""
+
 
 @dataclass(frozen=True, slots=True)
-class MlxAudioModelSpec:
+class MlxAudioModelSpec(ModelSpec):
     """Complete specification of one MLX-Audio STT model."""
 
-    name: str
-    """Hugging Face model name."""
     model_type: str
     """Model type passed to the MLX-Audio loader."""
     languages: dict[Language, str | None]
     """Model-specific language values keyed by Scinoephile language."""
-    revision: str
-    """Required immutable model revision."""
-    tokenizer: MlxAudioTokenizerSpec | None = None
+    tokenizer: ModelSpec | None = None
     """Auxiliary audio-tokenizer specification, when required."""
     max_tokens: int | None = None
     """Maximum generated tokens, or None for the model's native behavior."""

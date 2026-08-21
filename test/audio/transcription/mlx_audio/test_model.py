@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of direct MLX-Audio speech recognition."""
+"""Tests of executable MLX-Audio speech-to-text models."""
 
 from __future__ import annotations
 
@@ -14,41 +14,40 @@ from unittest.mock import Mock, call
 
 import pytest
 
-from scinoephile.audio.transcription.mlx_audio import helpers, recognizer
+from scinoephile.audio.transcription.mlx_audio import helpers
+from scinoephile.audio.transcription.mlx_audio import model as mlx_audio_model
+from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModel
 from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
+    MIMO_AUDIO_TOKENIZER,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
     MlxAudioModelSpec,
 )
-from scinoephile.audio.transcription.mlx_audio.recognizer import MlxAudioRecognizer
-from scinoephile.audio.transcription.mlx_audio.tokenizer_spec import (
-    MIMO_AUDIO_TOKENIZER,
-    MlxAudioTokenizerSpec,
-)
 from scinoephile.core import Language
 from scinoephile.core.dependencies import transcription as transcription_dependencies
+from scinoephile.core.ml import ModelSpec
 
 
 @pytest.fixture(autouse=True)
 def use_apple_silicon_platform(monkeypatch: pytest.MonkeyPatch):
-    """Run recognizer tests as though on the supported platform."""
-    monkeypatch.setattr(recognizer.platform, "system", Mock(return_value="Darwin"))
-    monkeypatch.setattr(recognizer.platform, "machine", Mock(return_value="arm64"))
+    """Run model tests as though on the supported platform."""
+    monkeypatch.setattr(mlx_audio_model.platform, "system", Mock(return_value="Darwin"))
+    monkeypatch.setattr(mlx_audio_model.platform, "machine", Mock(return_value="arm64"))
 
 
 def test_mimo_uses_pinned_audio_tokenizer():
     """Test MiMo defines its required audio-tokenizer specification."""
     assert MIMO_MODEL.tokenizer is MIMO_AUDIO_TOKENIZER
-    assert MIMO_AUDIO_TOKENIZER == MlxAudioTokenizerSpec(
+    assert MIMO_AUDIO_TOKENIZER == ModelSpec(
         name="mlx-community/MiMo-Audio-Tokenizer",
         revision="6d451ed9a73024b4d33b87afa69e0dfd40d8f306",
     )
 
 
-def test_recognizer_returns_model_result(tmp_path: Path):
+def test_model_returns_loaded_model_result(tmp_path: Path):
     """Test the MLX-Audio model result is returned directly.
 
     Arguments:
@@ -58,10 +57,10 @@ def test_recognizer_returns_model_result(tmp_path: Path):
     loaded_model = Mock()
     model_result = SimpleNamespace(text="你好", generation_tokens=7)
     loaded_model.generate.return_value = model_result
-    mlx_audio_recognizer = MlxAudioRecognizer(MIMO_MODEL)
-    mlx_audio_recognizer.__dict__["model"] = loaded_model
+    model = MlxAudioModel(MIMO_MODEL)
+    model.__dict__["loaded_model"] = loaded_model
 
-    result = mlx_audio_recognizer(audio_path)
+    result = model(audio_path)
 
     assert result is model_result
     loaded_model.generate.assert_called_once_with(
@@ -80,7 +79,7 @@ def test_recognizer_returns_model_result(tmp_path: Path):
     ],
     ids=["mimo", "qwen3-asr", "sensevoice", "firered-asr2", "glm-asr"],
 )
-def test_recognizer_adapts_model_specific_generation_arguments(
+def test_model_adapts_model_specific_generation_arguments(
     tmp_path: Path, model: MlxAudioModelSpec, expected_kwargs: dict[str, object]
 ):
     """Test new model families receive only generation arguments they support.
@@ -95,10 +94,10 @@ def test_recognizer_adapts_model_specific_generation_arguments(
     loaded_model.generate.return_value = SimpleNamespace(
         text="你好", generation_tokens=0
     )
-    mlx_audio_recognizer = MlxAudioRecognizer(model_spec=model)
-    mlx_audio_recognizer.__dict__["model"] = loaded_model
+    mlx_audio_model_instance = MlxAudioModel(model_spec=model)
+    mlx_audio_model_instance.__dict__["loaded_model"] = loaded_model
 
-    result = mlx_audio_recognizer(audio_path)
+    result = mlx_audio_model_instance(audio_path)
 
     assert result.text == "你好"
     loaded_model.generate.assert_called_once_with(str(audio_path), **expected_kwargs)
@@ -133,11 +132,11 @@ def test_model_rejects_invalid_safe_audio_duration():
 
 
 def test_init_rejects_unsupported_language():
-    """Test the recognizer rejects unsupported languages."""
+    """Test the model rejects unsupported languages."""
     model = replace(MIMO_MODEL, languages={})
 
     with pytest.raises(ValueError, match="eng is not supported"):
-        MlxAudioRecognizer(model, Language.eng)
+        MlxAudioModel(model, Language.eng)
 
 
 @pytest.mark.parametrize(
@@ -148,12 +147,12 @@ def test_model_rejects_unsupported_platform(
     monkeypatch: pytest.MonkeyPatch, system: str, machine: str
 ):
     """Test model loading rejects unsupported platforms."""
-    monkeypatch.setattr(recognizer.platform, "system", Mock(return_value=system))
-    monkeypatch.setattr(recognizer.platform, "machine", Mock(return_value=machine))
-    mlx_audio_recognizer = MlxAudioRecognizer(MIMO_MODEL)
+    monkeypatch.setattr(mlx_audio_model.platform, "system", Mock(return_value=system))
+    monkeypatch.setattr(mlx_audio_model.platform, "machine", Mock(return_value=machine))
+    model = MlxAudioModel(MIMO_MODEL)
 
     with pytest.raises(RuntimeError, match="requires macOS on Apple Silicon"):
-        _ = mlx_audio_recognizer.model
+        _ = model.loaded_model
 
 
 @pytest.mark.parametrize(
@@ -167,10 +166,10 @@ def test_model_rejects_unsupported_platform(
     ],
     ids=["mimo", "qwen3-asr", "sensevoice", "firered-asr2", "glm-asr"],
 )
-def test_model_is_cached_by_recognizer(
+def test_loaded_model_is_cached(
     monkeypatch: pytest.MonkeyPatch, model: MlxAudioModelSpec, model_type: str
 ):
-    """Test each recognizer loads its runtime model once.
+    """Test each model loads its runtime implementation once.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -182,19 +181,19 @@ def test_model_is_cached_by_recognizer(
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     mimo_asr = SimpleNamespace(get_model_path=Mock())
     monkeypatch.setattr(
-        recognizer, "import_mlx_audio_stt_load", Mock(return_value=load)
+        mlx_audio_model, "import_mlx_audio_stt_load", Mock(return_value=load)
     )
     monkeypatch.setattr(
         helpers, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
     )
     monkeypatch.setattr(
-        recognizer, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
+        mlx_audio_model, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
     )
 
-    mlx_audio_recognizer = MlxAudioRecognizer(model)
+    mlx_audio_model_instance = MlxAudioModel(model)
 
-    mlx_audio_recognizer(Path("audio.wav"))
-    mlx_audio_recognizer(Path("audio.wav"))
+    mlx_audio_model_instance(Path("audio.wav"))
+    mlx_audio_model_instance(Path("audio.wav"))
     expected_snapshot_calls = [call(model.name, model.revision)]
     if model.tokenizer is not None:
         expected_snapshot_calls.append(
@@ -230,17 +229,17 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
 
     get_snapshot_dir_path = Mock(side_effect=(model_path, audio_tokenizer_path))
     monkeypatch.setattr(
-        recognizer, "import_mlx_audio_stt_load", Mock(return_value=load)
+        mlx_audio_model, "import_mlx_audio_stt_load", Mock(return_value=load)
     )
     monkeypatch.setattr(
         helpers, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
     )
     monkeypatch.setattr(
-        recognizer, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
+        mlx_audio_model, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
     )
 
-    mlx_audio_recognizer = MlxAudioRecognizer(MIMO_MODEL)
-    mlx_audio_recognizer(Path("audio.wav"))
+    model = MlxAudioModel(MIMO_MODEL)
+    model(Path("audio.wav"))
     assert get_snapshot_dir_path.call_args_list == [
         call(MIMO_MODEL.name, MIMO_MODEL.revision),
         call(tokenizer.name, tokenizer.revision),

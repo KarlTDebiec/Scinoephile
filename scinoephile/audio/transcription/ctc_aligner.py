@@ -20,7 +20,7 @@ from scinoephile.core.dependencies.transcription import (
     import_torch,
     import_transformers,
 )
-from scinoephile.core.ml import get_huggingface_snapshot_dir_path
+from scinoephile.core.ml import ModelSpec, get_huggingface_snapshot_dir_path
 
 from .cache import TranscriptionCache
 from .exceptions import (
@@ -35,29 +35,38 @@ __all__ = ["CtcAligner"]
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.transcription import CtcModel, CtcProcessor
 
-_DEFAULT_MODEL_NAMES = {
-    Language.eng: "facebook/wav2vec2-base-960h",
-    Language.yue_hans: "ctl/wav2vec2-large-xlsr-cantonese",
-    Language.yue_hant: "ctl/wav2vec2-large-xlsr-cantonese",
-    Language.zho_hans: "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
-    Language.zho_hant: "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
-}
-"""Default CTC model names keyed by transcription language."""
+_ENGLISH_MODEL = ModelSpec(
+    name="facebook/wav2vec2-base-960h",
+    revision="22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+)
+"""Default English CTC model specification."""
 
-_DEFAULT_MODEL_REVISIONS = {
-    "facebook/wav2vec2-base-960h": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
-    "ctl/wav2vec2-large-xlsr-cantonese": ("11cb21cb68b4ed15f4c6633494ae6cc90a89bc34"),
-    "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn": (
-        "99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd"
-    ),
+_CANTONESE_MODEL = ModelSpec(
+    name="ctl/wav2vec2-large-xlsr-cantonese",
+    revision="11cb21cb68b4ed15f4c6633494ae6cc90a89bc34",
+)
+"""Default Cantonese CTC model specification."""
+
+_CHINESE_MODEL = ModelSpec(
+    name="jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+    revision="99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd",
+)
+"""Default Chinese CTC model specification."""
+
+_DEFAULT_MODEL_SPECS = {
+    Language.eng: _ENGLISH_MODEL,
+    Language.yue_hans: _CANTONESE_MODEL,
+    Language.yue_hant: _CANTONESE_MODEL,
+    Language.zho_hans: _CHINESE_MODEL,
+    Language.zho_hant: _CHINESE_MODEL,
 }
-"""Immutable Hugging Face revisions for the default CTC models."""
+"""Default CTC model specifications keyed by transcription language."""
 
 _SCRIPT_CONVERSION_CONFIGS = {
-    (Language.yue_hans, _DEFAULT_MODEL_NAMES[Language.yue_hans]): "s2t",
-    (Language.zho_hant, _DEFAULT_MODEL_NAMES[Language.zho_hant]): "t2s",
+    (Language.yue_hans, _CANTONESE_MODEL): "s2t",
+    (Language.zho_hant, _CHINESE_MODEL): "t2s",
 }
-"""OpenCC configurations keyed by transcription language and CTC model name."""
+"""OpenCC configurations keyed by transcription language and CTC model."""
 
 _ALIGNMENT_VERSION = 1
 """Version of the CTC forced-alignment algorithm and output shaping."""
@@ -66,19 +75,18 @@ _ALIGNMENT_VERSION = 1
 class CtcAligner:
     """Aligns transcription text to audio using a CTC model."""
 
-    _models: ClassVar[dict[tuple[str, str | None, str], CtcModel]] = {}
-    """Loaded models shared by model name, revision, and device."""
+    _models: ClassVar[dict[tuple[ModelSpec, str], CtcModel]] = {}
+    """Loaded models shared by model specification and device."""
 
-    _processors: ClassVar[dict[tuple[str, str | None], CtcProcessor]] = {}
-    """Loaded processors shared by model name and revision."""
+    _processors: ClassVar[dict[ModelSpec, CtcProcessor]] = {}
+    """Loaded processors shared by model specification."""
 
     def __init__(
         self,
         language: Language,
-        model_name: str | None = None,
+        model_spec: ModelSpec | None = None,
         device: str = "cpu",
         *,
-        model_revision: str | None = None,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
     ):
@@ -86,9 +94,8 @@ class CtcAligner:
 
         Arguments:
             language: transcription language
-            model_name: optional Hugging Face CTC model name or local model path
+            model_spec: optional CTC model specification
             device: device identifier passed to the CTC model
-            model_revision: optional immutable Hugging Face model revision
             cache_root_path: root directory beneath which to cache
             overwrite_cache: whether to replace matching cache files
         Raises:
@@ -97,23 +104,18 @@ class CtcAligner:
         self.language = language
         """Transcription language."""
 
-        if model_name is None:
+        if model_spec is None:
             try:
-                model_name = _DEFAULT_MODEL_NAMES[language]
+                model_spec = _DEFAULT_MODEL_SPECS[language]
             except KeyError as exc:
                 raise ValueError(
                     f"{language} is not supported by CTC alignment"
                 ) from exc
-            if model_revision is None:
-                model_revision = _DEFAULT_MODEL_REVISIONS.get(model_name)
-        self.model_name = model_name
-        """Hugging Face CTC model name or local model path."""
-
-        self.model_revision = model_revision
-        """Immutable Hugging Face model revision, or None."""
+        self.model_spec = model_spec
+        """CTC model specification."""
 
         self._script_conversion_config = _SCRIPT_CONVERSION_CONFIGS.get(
-            (language, model_name)
+            (language, model_spec)
         )
         """OpenCC configuration for adapting text to the CTC model."""
 
@@ -157,7 +159,7 @@ class CtcAligner:
             loaded CTC model
         """
         if self._model is None:
-            model_key = (self.model_name, self.model_revision, self.device)
+            model_key = (self.model_spec, self.device)
             cached_model = self._models.get(model_key)
             if cached_model is not None:
                 self._model = cached_model
@@ -181,7 +183,7 @@ class CtcAligner:
             loaded CTC processor
         """
         if self._processor is None:
-            processor_key = (self.model_name, self.model_revision)
+            processor_key = self.model_spec
             cached_processor = self._processors.get(processor_key)
             if cached_processor is not None:
                 self._processor = cached_processor
@@ -333,13 +335,9 @@ class CtcAligner:
         if self._model_dir_path is not None:
             return self._model_dir_path
 
-        configured_path = Path(self.model_name)
-        if configured_path.is_dir():
-            self._model_dir_path = configured_path
-        else:
-            self._model_dir_path = get_huggingface_snapshot_dir_path(
-                self.model_name, self.model_revision
-            )
+        self._model_dir_path = get_huggingface_snapshot_dir_path(
+            self.model_spec.name, self.model_spec.revision
+        )
         return self._model_dir_path
 
     def _get_cache_identity(self, text: str) -> dict[str, object]:
@@ -354,8 +352,8 @@ class CtcAligner:
             "alignment_version": _ALIGNMENT_VERSION,
             "device": self.device,
             "language": self.language.code,
-            "model_name": self.model_name,
-            "model_revision": self.model_revision,
+            "model_name": self.model_spec.name,
+            "model_revision": self.model_spec.revision,
             "runtime": {
                 "torch": get_distribution_identity("torch"),
                 "transformers": get_distribution_identity("transformers"),

@@ -29,9 +29,10 @@ from scinoephile.audio.vad import VoiceActivityDetector
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
 from scinoephile.core.cache.runtime import get_distribution_identity
+from scinoephile.core.ml import ModelSpec
 
+from .model import MlxAudioModel
 from .model_spec import MlxAudioModelSpec
-from .recognizer import MlxAudioRecognizer
 from .timing import offset_core_segments, restore_vad_timestamps
 
 __all__ = ["MlxAudioTranscriber"]
@@ -64,7 +65,7 @@ class MlxAudioTranscriber(Transcriber):
         self,
         model_spec: MlxAudioModelSpec,
         language: Language = Language.yue_hant,
-        ctc_model_name: str | None = None,
+        ctc_model_spec: ModelSpec | None = None,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
         demucs_mode: DemucsMode = DemucsMode.OFF,
@@ -73,14 +74,13 @@ class MlxAudioTranscriber(Transcriber):
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,
         vad_detector: VoiceActivityDetector | None = None,
-        ctc_model_revision: str | None = None,
     ):
         """Initialize.
 
         Arguments:
             model_spec: MLX-Audio model specification
             language: language to transcribe
-            ctc_model_name: optional CTC model name or local model path
+            ctc_model_spec: optional CTC model specification
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
             demucs_mode: Demucs preprocessing mode
@@ -89,20 +89,15 @@ class MlxAudioTranscriber(Transcriber):
             overwrite_cache: whether to replace matching cache files
             demucs_separator: optional shared Demucs vocal separator
             vad_detector: optional shared voice activity detector
-            ctc_model_revision: optional immutable Hugging Face CTC model revision
         Raises:
             ValueError: if the numeric configuration is invalid
         """
-        self.model_spec = model_spec
-        """Selected MLX-Audio model specification."""
-
-        self.recognizer = MlxAudioRecognizer(self.model_spec, language)
-        """Direct MLX-Audio speech recognizer."""
+        self.model = MlxAudioModel(model_spec, language)
+        """Configured executable MLX-Audio model."""
 
         self.ctc_aligner = CtcAligner(
             language,
-            ctc_model_name,
-            model_revision=ctc_model_revision,
+            ctc_model_spec,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
         )
@@ -129,12 +124,12 @@ class MlxAudioTranscriber(Transcriber):
     @property
     def language(self) -> Language:
         """Get the transcription language."""
-        return self.recognizer.language
+        return self.model.language
 
     @property
     def model_name(self) -> str:
         """Get the MLX-Audio model name."""
-        return self.model_spec.name
+        return self.model.spec.name
 
     def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
@@ -157,21 +152,21 @@ class MlxAudioTranscriber(Transcriber):
             chunk_overlap_seconds = chunk_overlap_ms / 1000
             chunk_postprocessing_version = _CHUNK_POSTPROCESSING_VERSION
         return {
-            "model_type": self.model_spec.model_type,
+            "model_type": self.model.spec.model_type,
             "model_name": self.model_name,
-            "model_revision": self.model_spec.revision,
+            "model_revision": self.model.spec.revision,
             "runtime": {
                 **get_distribution_identity("mlx-audio"),
                 "source_revision": _MLX_AUDIO_SOURCE_REVISION,
             },
             "language": self.language.code,
-            "max_tokens": self.model_spec.max_tokens,
+            "max_tokens": self.model.spec.max_tokens,
             "chunk_duration_seconds": chunk_duration_seconds,
             "chunk_overlap_seconds": chunk_overlap_seconds,
             "chunk_postprocessing_version": chunk_postprocessing_version,
             "aligner": "ctc",
-            "aligner_model_name": self.ctc_aligner.model_name,
-            "aligner_model_revision": self.ctc_aligner.model_revision,
+            "aligner_model_name": self.ctc_aligner.model_spec.name,
+            "aligner_model_revision": self.ctc_aligner.model_spec.revision,
         }
 
     def _transcribe_attempt(
@@ -203,13 +198,13 @@ class MlxAudioTranscriber(Transcriber):
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
             try:
-                inference_result = self.recognizer(temp_audio_path)
+                inference_result = self.model(temp_audio_path)
             except (ImportError, OSError, RuntimeError, ValueError) as exc:
                 raise TranscriptionRecognitionError(
                     f"Unable to run MLX-Audio inference: {exc}"
                 ) from exc
             generation_tokens = inference_result.generation_tokens
-            max_tokens = self.model_spec.max_tokens
+            max_tokens = self.model.spec.max_tokens
             if max_tokens is not None and generation_tokens >= max_tokens:
                 raise TranscriptionRecognitionTokenLimitError(
                     f"MLX-Audio used {generation_tokens} of its {max_tokens} "
@@ -359,7 +354,7 @@ class MlxAudioTranscriber(Transcriber):
         if self.chunk_duration_seconds is not None:
             chunk_duration_ms = int(round(self.chunk_duration_seconds * 1000))
 
-        max_audio_duration_seconds = self.model_spec.max_safe_audio_duration_seconds
+        max_audio_duration_seconds = self.model.spec.max_safe_audio_duration_seconds
         if max_audio_duration_seconds is None:
             return chunk_duration_ms, chunk_overlap_ms
 

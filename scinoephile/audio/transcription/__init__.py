@@ -18,14 +18,14 @@ from logging import getLogger
 from .cache import TranscriptionCache
 from .ctc_aligner import CtcAligner
 from .exceptions import (
-    TranscriptionRecognitionTokenLimitError,
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionRecognitionError,
+    TranscriptionRecognitionTokenLimitError,
 )
-from .mlx_audio import MlxAudioModelSpec, MlxAudioTokenizerSpec, MlxAudioTranscriber
+from .mlx_audio import MlxAudioModel, MlxAudioModelSpec, MlxAudioTranscriber
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
@@ -39,8 +39,8 @@ from .whisper import WhisperModel, WhisperTranscriber
 __all__ = [
     "CtcAligner",
     "DemucsMode",
+    "MlxAudioModel",
     "MlxAudioModelSpec",
-    "MlxAudioTokenizerSpec",
     "MlxAudioTranscriber",
     "TranscriptionRecognitionTokenLimitError",
     "TranscribedSegment",

@@ -10,15 +10,14 @@ from pathlib import Path
 from typing import cast
 
 from scinoephile.core.dependencies.transcription import import_mlx_audio_mimo_asr
-
-from .tokenizer_spec import MlxAudioTokenizerSpec
+from scinoephile.core.ml import ModelSpec
 
 __all__ = ["use_local_tokenizer"]
 
 
 @contextmanager
 def use_local_tokenizer(
-    tokenizer: MlxAudioTokenizerSpec, tokenizer_dir_path: Path
+    tokenizer: ModelSpec, tokenizer_dir_path: Path
 ) -> Iterator[None]:
     """Make MLX-Audio use a pre-resolved auxiliary tokenizer directory.
 

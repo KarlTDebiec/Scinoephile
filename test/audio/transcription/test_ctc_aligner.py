@@ -20,6 +20,16 @@ from scinoephile.audio.transcription import (
     TranscriptionAlignmentIncompleteError,
 )
 from scinoephile.core import Language
+from scinoephile.core.ml import ModelSpec
+
+_CUSTOM_MODEL = ModelSpec(name="organization/model", revision="custom-revision")
+"""Custom CTC model specification used by tests."""
+
+_CUSTOM_MODEL_A = ModelSpec(name="organization/model-a", revision="revision-a")
+"""First CTC model specification used by cache tests."""
+
+_CUSTOM_MODEL_B = ModelSpec(name="organization/model-b", revision="revision-b")
+"""Second CTC model specification used by cache tests."""
 
 
 def test_ctc_aligner_allows_model_override(monkeypatch: pytest.MonkeyPatch):
@@ -29,12 +39,12 @@ def test_ctc_aligner_allows_model_override(monkeypatch: pytest.MonkeyPatch):
         monkeypatch: pytest monkeypatch fixture
     """
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.ctc_aligner._DEFAULT_MODEL_NAMES", {}
+        "scinoephile.audio.transcription.ctc_aligner._DEFAULT_MODEL_SPECS", {}
     )
-    aligner = CtcAligner(Language.eng, "organization/model", "mps")
+    aligner = CtcAligner(Language.eng, _CUSTOM_MODEL, "mps")
 
     assert aligner.language is Language.eng
-    assert aligner.model_name == "organization/model"
+    assert aligner.model_spec is _CUSTOM_MODEL
     assert aligner.device == "mps"
 
 
@@ -92,29 +102,58 @@ def test_ctc_aligner_expands_token_spans(monkeypatch: pytest.MonkeyPatch):
 
 
 @pytest.mark.parametrize(
-    ("language", "expected_model_name"),
+    ("language", "expected_model_spec"),
     [
-        (Language.eng, "facebook/wav2vec2-base-960h"),
-        (Language.yue_hans, "ctl/wav2vec2-large-xlsr-cantonese"),
-        (Language.yue_hant, "ctl/wav2vec2-large-xlsr-cantonese"),
-        (Language.zho_hans, "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn"),
-        (Language.zho_hant, "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn"),
+        (
+            Language.eng,
+            ModelSpec(
+                name="facebook/wav2vec2-base-960h",
+                revision="22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+            ),
+        ),
+        (
+            Language.yue_hans,
+            ModelSpec(
+                name="ctl/wav2vec2-large-xlsr-cantonese",
+                revision="11cb21cb68b4ed15f4c6633494ae6cc90a89bc34",
+            ),
+        ),
+        (
+            Language.yue_hant,
+            ModelSpec(
+                name="ctl/wav2vec2-large-xlsr-cantonese",
+                revision="11cb21cb68b4ed15f4c6633494ae6cc90a89bc34",
+            ),
+        ),
+        (
+            Language.zho_hans,
+            ModelSpec(
+                name="jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+                revision="99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd",
+            ),
+        ),
+        (
+            Language.zho_hant,
+            ModelSpec(
+                name="jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+                revision="99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd",
+            ),
+        ),
     ],
 )
 def test_ctc_aligner_selects_language_default_model(
-    language: Language, expected_model_name: str
+    language: Language, expected_model_spec: ModelSpec
 ):
     """Test each transcription language selects its default CTC model.
 
     Arguments:
         language: transcription language
-        expected_model_name: expected default CTC model name
+        expected_model_spec: expected default CTC model specification
     """
     aligner = CtcAligner(language)
 
     assert aligner.language is language
-    assert aligner.model_name == expected_model_name
-    assert aligner.model_revision is not None
+    assert aligner.model_spec == expected_model_spec
 
 
 def test_ctc_aligner_loads_default_model_at_pinned_revision(
@@ -163,7 +202,7 @@ def test_ctc_aligner_resolves_custom_model_snapshot_before_loading(
     Arguments:
         monkeypatch: pytest monkeypatch fixture
     """
-    aligner = CtcAligner(Language.eng, "organization/model")
+    aligner = CtcAligner(Language.eng, _CUSTOM_MODEL)
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     monkeypatch.setattr(
         "scinoephile.audio.transcription.ctc_aligner.get_huggingface_snapshot_dir_path",
@@ -175,7 +214,9 @@ def test_ctc_aligner_resolves_custom_model_snapshot_before_loading(
     result = aligner._load_pretrained(loader)
 
     assert result is loaded
-    get_snapshot_dir_path.assert_called_once_with("organization/model", None)
+    get_snapshot_dir_path.assert_called_once_with(
+        "organization/model", "custom-revision"
+    )
     loader.assert_called_once_with(Path("/cached/model"), local_files_only=True)
 
 
@@ -578,7 +619,7 @@ def test_ctc_token_ids_do_not_convert_script_for_model_override():
                 return 2
             return 3
 
-    aligner = CtcAligner(Language.yue_hans, "organization/model")
+    aligner = CtcAligner(Language.yue_hans, _CUSTOM_MODEL)
     aligner._processor = cast(Any, SimpleNamespace(tokenizer=FakeTokenizer()))
 
     token_ids, char_indices = aligner._get_token_ids("说")
@@ -654,7 +695,7 @@ def test_ctc_models_and_processors_are_cached_independently(
     monkeypatch.setattr(CtcAligner, "_models", {})
     monkeypatch.setattr(CtcAligner, "_processors", {})
 
-    def get_snapshot_dir_path(model_name: str, _revision: str | None) -> Path:
+    def get_snapshot_dir_path(model_name: str, _revision: str) -> Path:
         """Resolve a fake local model snapshot path."""
         return Path("/cached") / model_name.rsplit("/", 1)[-1]
 
@@ -670,10 +711,10 @@ def test_ctc_models_and_processors_are_cached_independently(
         ),
     )
 
-    first_aligner = CtcAligner(Language.eng, "organization/model-a")
-    second_aligner = CtcAligner(Language.eng, "organization/model-a")
-    other_model_aligner = CtcAligner(Language.eng, "organization/model-b")
-    other_device_aligner = CtcAligner(Language.eng, "organization/model-a", "mps")
+    first_aligner = CtcAligner(Language.eng, _CUSTOM_MODEL_A)
+    second_aligner = CtcAligner(Language.eng, _CUSTOM_MODEL_A)
+    other_model_aligner = CtcAligner(Language.eng, _CUSTOM_MODEL_B)
+    other_device_aligner = CtcAligner(Language.eng, _CUSTOM_MODEL_A, "mps")
 
     assert second_aligner.processor is first_aligner.processor
     assert second_aligner.model is first_aligner.model
