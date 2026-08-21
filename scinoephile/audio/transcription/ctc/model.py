@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 import numpy as np
 from pydub import AudioSegment
@@ -55,33 +55,32 @@ class CtcModel:
             log probabilities, token IDs, text character indices, and blank token ID
         Raises:
             ImportError: if CTC dependencies are unavailable
-            TranscriptionAlignmentError: if model inputs cannot be prepared
+            TranscriptionAlignmentError: if audio, model, or processor configuration
+                is invalid
         """
+        # Prepare audio samples
         sampling_rate = self.processor.feature_extractor.sampling_rate
         samples = to_mono_int16(audio, sampling_rate).astype(np.float32)
-        samples /= float(1 << 15)
+        samples /= 32768.0
         if samples.size == 0:
             raise TranscriptionAlignmentError("CTC alignment received empty audio.")
+
+        # Prepare model inputs
         inputs = self.processor(
             samples, sampling_rate=sampling_rate, return_tensors="pt"
         )
         if self.device != "cpu":
             inputs = {key: value.to(self.device) for key, value in inputs.items()}
 
+        # Run model inference
         torch = import_torch()
         with torch.no_grad():
             output = self.model(**inputs)
             logits = output.logits[0]
             log_probs = logits.log_softmax(dim=-1).detach().cpu().numpy()
 
-        blank_token_id = self.model.config.pad_token_id
-        if not isinstance(blank_token_id, int):
-            blank_token_id = self.processor.tokenizer.pad_token_id
-        if not isinstance(blank_token_id, int):
-            raise TranscriptionAlignmentError(
-                "CTC aligner did not expose a blank token ID."
-            )
-
+        # Get token IDs and character indices
+        blank_token_id = cast(int, self.model.config.pad_token_id)
         token_ids, char_indices = get_token_ids(
             text, self.processor.tokenizer, model_text
         )
@@ -93,6 +92,9 @@ class CtcModel:
 
         Returns:
             loaded CTC model
+        Raises:
+            ImportError: if CTC dependencies are unavailable
+            TranscriptionAlignmentError: if the model lacks a valid blank token ID
         """
         transformers = import_transformers()
         model_dir_path = get_huggingface_snapshot_dir_path(
@@ -102,6 +104,10 @@ class CtcModel:
             model_dir_path, local_files_only=True
         ).to(self.device)
         model.eval()
+        if not isinstance(model.config.pad_token_id, int):
+            raise TranscriptionAlignmentError(
+                "CTC aligner model did not expose a blank token ID."
+            )
         return model
 
     @cached_property
@@ -110,6 +116,9 @@ class CtcModel:
 
         Returns:
             loaded CTC processor
+        Raises:
+            ImportError: if CTC dependencies are unavailable
+            TranscriptionAlignmentError: if the processor lacks a valid sampling rate
         """
         transformers = import_transformers()
         model_dir_path = get_huggingface_snapshot_dir_path(

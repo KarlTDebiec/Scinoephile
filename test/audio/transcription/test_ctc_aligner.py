@@ -163,6 +163,7 @@ def test_ctc_aligner_loads_default_model_at_pinned_revision(
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     runtime_model = Mock()
     runtime_model.to.return_value = runtime_model
+    runtime_model.config.pad_token_id = 0
     model_factory = Mock(return_value=runtime_model)
     runtime_processor = SimpleNamespace(
         feature_extractor=SimpleNamespace(sampling_rate=16000)
@@ -197,6 +198,38 @@ def test_ctc_aligner_loads_default_model_at_pinned_revision(
     processor_factory.assert_called_once_with(
         Path("/cached/model"), local_files_only=True
     )
+
+
+@pytest.mark.parametrize("blank_token_id", [None, "0"])
+def test_ctc_model_rejects_invalid_blank_token_id(
+    blank_token_id: object, monkeypatch: pytest.MonkeyPatch
+):
+    """Test model loading rejects an invalid blank token ID.
+
+    Arguments:
+        blank_token_id: invalid model blank token ID
+        monkeypatch: pytest monkeypatch fixture
+    """
+    runtime_model = Mock()
+    runtime_model.to.return_value = runtime_model
+    runtime_model.config.pad_token_id = blank_token_id
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc.model.get_huggingface_snapshot_dir_path",
+        Mock(return_value=Path("/cached/model")),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc.model.import_transformers",
+        Mock(
+            return_value=SimpleNamespace(
+                AutoModelForCTC=SimpleNamespace(
+                    from_pretrained=Mock(return_value=runtime_model)
+                )
+            )
+        ),
+    )
+
+    with pytest.raises(TranscriptionAlignmentError, match="blank token ID"):
+        _ = CtcModel(_CUSTOM_MODEL, "cpu").model
 
 
 def test_ctc_aligner_resolves_custom_model_snapshot(monkeypatch: pytest.MonkeyPatch):
