@@ -72,6 +72,7 @@ class CtcAligner:
                 raise ValueError(
                     f"{language} is not supported by CTC alignment"
                 ) from exc
+
         self._script_conversion_config: OpenCCConfig | None = None
         """Conversion from transcript script to model tokenizer script."""
         if isinstance(model_spec, CtcModelSpec):
@@ -168,18 +169,20 @@ class CtcAligner:
             complete CTC alignment identity
         """
         script_conversion = None
+        runtime = {
+            "torch": get_distribution_identity("torch"),
+            "transformers": get_distribution_identity("transformers"),
+        }
         if self._script_conversion_config is not None:
             script_conversion = self._script_conversion_config.code
+            runtime["opencc"] = get_distribution_identity("opencc")
         return {
             "alignment_version": _ALIGNMENT_VERSION,
             "device": self.model.device,
             "language": self.language.code,
             "model_name": self.model.spec.name,
             "model_revision": self.model.spec.revision,
-            "runtime": {
-                "torch": get_distribution_identity("torch"),
-                "transformers": get_distribution_identity("transformers"),
-            },
+            "runtime": runtime,
             "script_conversion": script_conversion,
             "text": text,
         }

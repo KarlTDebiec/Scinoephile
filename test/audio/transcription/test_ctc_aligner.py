@@ -46,6 +46,33 @@ def test_ctc_aligner_allows_model_override(monkeypatch: pytest.MonkeyPatch):
     assert aligner.model.device == "mps"
 
 
+def test_ctc_aligner_cache_identity_includes_active_runtime_dependencies(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test alignment identity includes only runtime dependencies that affect it.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc.aligner.get_distribution_identity",
+        lambda name: {"distribution": name, "version": "test-version"},
+    )
+
+    converted_identity = CtcAligner(Language.yue_hans)._get_cache_identity("说")
+    unconverted_identity = CtcAligner(Language.yue_hant)._get_cache_identity("說")
+
+    assert converted_identity["runtime"] == {
+        "opencc": {"distribution": "opencc", "version": "test-version"},
+        "torch": {"distribution": "torch", "version": "test-version"},
+        "transformers": {"distribution": "transformers", "version": "test-version"},
+    }
+    assert unconverted_identity["runtime"] == {
+        "torch": {"distribution": "torch", "version": "test-version"},
+        "transformers": {"distribution": "transformers", "version": "test-version"},
+    }
+
+
 def test_ctc_aligner_groups_english_character_timings_into_words():
     """Test English CTC character timings are grouped into words."""
     text = "HI THERE"
