@@ -7,9 +7,10 @@ from __future__ import annotations
 from functools import partial
 
 from scinoephile.core import Language
+from scinoephile.core.script import OpenCCConfig
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.lang.zho.script.conversion import get_zho_text_converted
 from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.punctuation import PunctuationPrompt
 
