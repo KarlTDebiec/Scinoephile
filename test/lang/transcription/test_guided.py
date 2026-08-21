@@ -240,14 +240,16 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
     assert transcriber.tail_recovery_transcriber is None
     assert transcriber.strip_generated_punctuation
     assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
-    mlx_audio_transcriber_class.assert_called_once_with(
-        model_spec=expected_mlx_audio_model,
-        language=Language.yue_hant,
-        demucs_mode=DemucsMode.OFF,
-        vad_mode=VadMode.OFF,
-        cache_root_path=tmp_path,
-        overwrite_cache=False,
-    )
+    mlx_audio_transcriber_class.assert_called_once()
+    transcriber_kw = mlx_audio_transcriber_class.call_args.kwargs
+    assert transcriber_kw["model"].spec is expected_mlx_audio_model
+    assert transcriber_kw["model"].language is Language.yue_hant
+    assert isinstance(transcriber_kw["ctc_aligner"], CtcAligner)
+    assert transcriber_kw["ctc_aligner"].language is Language.yue_hant
+    assert transcriber_kw["demucs_mode"] is DemucsMode.OFF
+    assert transcriber_kw["vad_mode"] is VadMode.OFF
+    assert transcriber_kw["cache_root_path"] == tmp_path
+    assert not transcriber_kw["overwrite_cache"]
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path):

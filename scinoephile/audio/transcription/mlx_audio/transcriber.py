@@ -29,10 +29,8 @@ from scinoephile.audio.vad import VoiceActivityDetector
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
 from scinoephile.core.cache.runtime import get_distribution_identity
-from scinoephile.core.ml import ModelSpec
 
 from .model import MlxAudioModel
-from .model_spec import MlxAudioModelSpec
 from .timing import offset_core_segments, restore_vad_timestamps
 
 __all__ = ["MlxAudioTranscriber"]
@@ -63,9 +61,8 @@ class MlxAudioTranscriber(Transcriber):
 
     def __init__(
         self,
-        model_spec: MlxAudioModelSpec,
-        language: Language = Language.yue_hant,
-        ctc_model_spec: ModelSpec | None = None,
+        model: MlxAudioModel,
+        ctc_aligner: CtcAligner,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
         demucs_mode: DemucsMode = DemucsMode.OFF,
@@ -78,9 +75,8 @@ class MlxAudioTranscriber(Transcriber):
         """Initialize.
 
         Arguments:
-            model_spec: MLX-Audio model specification
-            language: language to transcribe
-            ctc_model_spec: optional CTC model specification
+            model: configured executable MLX-Audio model
+            ctc_aligner: configured CTC timestamp aligner
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
             demucs_mode: Demucs preprocessing mode
@@ -90,17 +86,18 @@ class MlxAudioTranscriber(Transcriber):
             demucs_separator: optional shared Demucs vocal separator
             vad_detector: optional shared voice activity detector
         Raises:
-            ValueError: if the numeric configuration is invalid
+            ValueError: if the component languages or numeric configuration are invalid
         """
-        self.model = MlxAudioModel(model_spec, language)
+        if model.language is not ctc_aligner.language:
+            raise ValueError(
+                "MLX-Audio model and CTC aligner languages must match "
+                f"({model.language} != {ctc_aligner.language})."
+            )
+        self.model = model
         """Configured executable MLX-Audio model."""
 
-        self.ctc_aligner = CtcAligner(
-            language,
-            ctc_model_spec,
-            cache_root_path=cache_root_path,
-            overwrite_cache=overwrite_cache,
-        )
+        self.ctc_aligner = ctc_aligner
+        """Configured CTC timestamp aligner."""
         self.chunk_duration_seconds = chunk_duration_seconds
         self.chunk_overlap_seconds = chunk_overlap_seconds
         if (

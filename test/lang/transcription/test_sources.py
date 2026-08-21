@@ -65,7 +65,7 @@ def test_default_cantonese_sources_use_configured_models_without_internal_vad():
     assert whisper.call_args.kwargs["language"] is Language.yue_hant
     assert whisper.call_args.kwargs["vad_mode"] is VadMode.OFF
     assert whisper.call_args.kwargs["recover_decoding"]
-    assert [call.kwargs["model_spec"] for call in mlx.call_args_list] == [
+    assert [call.kwargs["model"].spec for call in mlx.call_args_list] == [
         MIMO_MODEL,
         QWEN3_ASR_MODEL,
         SENSEVOICE_MODEL,
@@ -73,7 +73,12 @@ def test_default_cantonese_sources_use_configured_models_without_internal_vad():
         GLM_ASR_MODEL,
     ]
     assert all(
-        call.kwargs["language"] is Language.yue_hant for call in mlx.call_args_list
+        call.kwargs["model"].language is Language.yue_hant
+        for call in mlx.call_args_list
+    )
+    assert all(
+        call.kwargs["ctc_aligner"].language is Language.yue_hant
+        for call in mlx.call_args_list
     )
     assert all(call.kwargs["vad_mode"] is VadMode.OFF for call in mlx.call_args_list)
     assert all(

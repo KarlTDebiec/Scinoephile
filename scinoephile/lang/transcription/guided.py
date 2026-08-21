@@ -10,7 +10,9 @@ from pathlib import Path
 from types import MappingProxyType
 
 from scinoephile.audio.transcription import (
+    CtcAligner,
     DemucsMode,
+    MlxAudioModel,
     MlxAudioTranscriber,
     VadMode,
     get_segment_split_on_whitespace,
@@ -317,8 +319,12 @@ def get_guided_transcriber(
     mlx_audio_transcriber = None
     if isinstance(audio_model, MlxAudioModelSpec):
         mlx_audio_transcriber = MlxAudioTranscriber(
-            model_spec=audio_model,
-            language=language,
+            model=MlxAudioModel(audio_model, language),
+            ctc_aligner=CtcAligner(
+                language,
+                cache_root_path=cache_root_path,
+                overwrite_cache=overwrite_cache,
+            ),
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             cache_root_path=cache_root_path,

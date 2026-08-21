@@ -11,7 +11,9 @@ from types import MappingProxyType
 
 from scinoephile.analysis.transcription.artifact import AlignmentSource
 from scinoephile.audio.transcription import (
+    CtcAligner,
     DemucsMode,
+    MlxAudioModel,
     MlxAudioTranscriber,
     Transcriber,
     VadMode,
@@ -134,8 +136,12 @@ def get_transcription_sources(
             backend_name = WhisperTranscriber.backend_name
         elif isinstance(source.model, MlxAudioModelSpec):
             transcriber = MlxAudioTranscriber(
-                model_spec=source.model,
-                language=language,
+                model=MlxAudioModel(source.model, language),
+                ctc_aligner=CtcAligner(
+                    language,
+                    cache_root_path=cache_root_path,
+                    overwrite_cache=overwrite_cache,
+                ),
                 chunk_duration_seconds=_MLX_AUDIO_CHUNK_DURATION_SECONDS,
                 demucs_mode=demucs_mode,
                 vad_mode=VadMode.OFF,
