@@ -47,23 +47,23 @@ def test_mimo_uses_pinned_audio_tokenizer():
     )
 
 
-def test_model_returns_loaded_model_result(tmp_path: Path):
+def test_model_returns_result_directly(tmp_path: Path):
     """Test the MLX-Audio model result is returned directly.
 
     Arguments:
         tmp_path: temporary directory path
     """
     audio_path = _write_wav(tmp_path / "audio.wav")
-    loaded_model = Mock()
+    runtime_model = Mock()
     model_result = SimpleNamespace(text="你好", generation_tokens=7)
-    loaded_model.generate.return_value = model_result
+    runtime_model.generate.return_value = model_result
     model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
-    model.__dict__["loaded_model"] = loaded_model
+    model.__dict__["model"] = runtime_model
 
     result = model(audio_path)
 
     assert result is model_result
-    loaded_model.generate.assert_called_once_with(
+    runtime_model.generate.assert_called_once_with(
         str(audio_path), language="zh", max_tokens=256
     )
 
@@ -90,17 +90,17 @@ def test_model_adapts_model_specific_generation_arguments(
         expected_kwargs: model-specific generation arguments
     """
     audio_path = _write_wav(tmp_path / "audio.wav", duration_seconds=0.25)
-    loaded_model = Mock()
-    loaded_model.generate.return_value = SimpleNamespace(
+    runtime_model = Mock()
+    runtime_model.generate.return_value = SimpleNamespace(
         text="你好", generation_tokens=0
     )
     mlx_audio_model_instance = MlxAudioModel(spec=model, language=Language.yue_hant)
-    mlx_audio_model_instance.__dict__["loaded_model"] = loaded_model
+    mlx_audio_model_instance.__dict__["model"] = runtime_model
 
     result = mlx_audio_model_instance(audio_path)
 
     assert result.text == "你好"
-    loaded_model.generate.assert_called_once_with(str(audio_path), **expected_kwargs)
+    runtime_model.generate.assert_called_once_with(str(audio_path), **expected_kwargs)
 
 
 @pytest.mark.parametrize(
@@ -152,7 +152,7 @@ def test_model_rejects_unsupported_platform(
     model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
 
     with pytest.raises(RuntimeError, match="requires macOS on Apple Silicon"):
-        _ = model.loaded_model
+        _ = model.model
 
 
 @pytest.mark.parametrize(
@@ -166,7 +166,7 @@ def test_model_rejects_unsupported_platform(
     ],
     ids=["mimo", "qwen3-asr", "sensevoice", "firered-asr2", "glm-asr"],
 )
-def test_loaded_model_is_cached(
+def test_model_is_cached(
     monkeypatch: pytest.MonkeyPatch, model: MlxAudioModelSpec, model_type: str
 ):
     """Test each model loads its runtime implementation once.
@@ -176,8 +176,8 @@ def test_loaded_model_is_cached(
         model: MLX-Audio model
         model_type: expected MLX-Audio loader model type
     """
-    loaded_model = Mock()
-    load = Mock(return_value=loaded_model)
+    runtime_model = Mock()
+    load = Mock(return_value=runtime_model)
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     mimo_asr = SimpleNamespace(get_model_path=Mock())
     monkeypatch.setattr(
@@ -201,7 +201,7 @@ def test_loaded_model_is_cached(
         )
     assert get_snapshot_dir_path.call_args_list == expected_snapshot_calls
     load.assert_called_once_with(Path("/cached/model"), model_type=model_type)
-    assert loaded_model.generate.call_count == 2
+    assert runtime_model.generate.call_count == 2
 
 
 def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
@@ -216,7 +216,7 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
     audio_tokenizer_path = Path("/cached/mimo-audio-tokenizer")
     remote_get_model_path = Mock()
     mimo_asr = SimpleNamespace(get_model_path=remote_get_model_path)
-    loaded_model = Mock()
+    runtime_model = Mock()
     tokenizer = MIMO_MODEL.tokenizer
     assert tokenizer is not None
 
@@ -225,7 +225,7 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
         assert local_model_path == model_path
         assert kwargs == {"model_type": "mimo"}
         assert mimo_asr.get_model_path(tokenizer.name) == audio_tokenizer_path
-        return loaded_model
+        return runtime_model
 
     get_snapshot_dir_path = Mock(side_effect=(model_path, audio_tokenizer_path))
     monkeypatch.setattr(
@@ -246,7 +246,7 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
     ]
     assert mimo_asr.get_model_path is remote_get_model_path
     remote_get_model_path.assert_not_called()
-    loaded_model.generate.assert_called_once()
+    runtime_model.generate.assert_called_once()
 
 
 def test_mlx_audio_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):

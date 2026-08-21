@@ -161,9 +161,9 @@ def test_ctc_aligner_loads_default_model_at_pinned_revision(
 ):
     """Test default CTC assets load from their immutable Hugging Face revision."""
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
-    model = Mock()
-    model.to.return_value = model
-    model_factory = Mock(return_value=model)
+    runtime_model = Mock()
+    runtime_model.to.return_value = runtime_model
+    model_factory = Mock(return_value=runtime_model)
     processor_factory = Mock(return_value=object())
     monkeypatch.setattr(
         "scinoephile.audio.transcription.ctc.model.get_huggingface_snapshot_dir_path",
@@ -180,11 +180,10 @@ def test_ctc_aligner_loads_default_model_at_pinned_revision(
     )
     aligner = CtcAligner(Language.eng)
 
-    loaded_model = aligner.model.loaded_model
     processor = aligner.model.processor
 
-    assert loaded_model is model
-    assert aligner.model.loaded_model is loaded_model
+    assert aligner.model.model is runtime_model
+    assert aligner.model.model is runtime_model
     assert aligner.model.processor is processor
     expected_revision = "22aad52d435eb6dbaf354bdad9b0da84ce7d6156"
     assert get_snapshot_dir_path.call_args_list == [

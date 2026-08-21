@@ -54,8 +54,7 @@ class CtcModel:
             ImportError: if CTC dependencies are unavailable
             TranscriptionAlignmentError: if model inputs cannot be prepared
         """
-        processor = self.processor
-        feature_extractor = getattr(processor, "feature_extractor", None)
+        feature_extractor = getattr(self.processor, "feature_extractor", None)
         sampling_rate = getattr(feature_extractor, "sampling_rate", None)
         if not isinstance(sampling_rate, int) or sampling_rate <= 0:
             raise TranscriptionAlignmentError(
@@ -66,28 +65,28 @@ class CtcModel:
         samples /= float(1 << 15)
         if samples.size == 0:
             raise TranscriptionAlignmentError("CTC alignment received empty audio.")
-        inputs = processor(samples, sampling_rate=sampling_rate, return_tensors="pt")
+        inputs = self.processor(
+            samples, sampling_rate=sampling_rate, return_tensors="pt"
+        )
         if self.device != "cpu":
             inputs = {key: value.to(self.device) for key, value in inputs.items()}
 
         torch = import_torch()
-        loaded_model = self.loaded_model
         with torch.no_grad():
-            output = loaded_model(**inputs)
+            output = self.model(**inputs)
             logits = output.logits[0]
             log_probs = logits.log_softmax(dim=-1).detach().cpu().numpy()
 
-        config = getattr(loaded_model, "config", None)
+        config = getattr(self.model, "config", None)
         blank_token_id = getattr(config, "pad_token_id", None)
+        tokenizer = getattr(self.processor, "tokenizer", None)
         if not isinstance(blank_token_id, int):
-            tokenizer = getattr(processor, "tokenizer", None)
             blank_token_id = getattr(tokenizer, "pad_token_id", None)
         if not isinstance(blank_token_id, int):
             raise TranscriptionAlignmentError(
                 "CTC aligner did not expose a blank token ID."
             )
 
-        tokenizer = getattr(processor, "tokenizer", None)
         if tokenizer is None:
             raise TranscriptionAlignmentError(
                 "CTC aligner processor lacks a tokenizer."
@@ -96,7 +95,7 @@ class CtcModel:
         return log_probs, token_ids, char_indices, blank_token_id
 
     @cached_property
-    def loaded_model(self) -> Any:
+    def model(self) -> Any:
         """Load and get the configured CTC model.
 
         Returns:

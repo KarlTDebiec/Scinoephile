@@ -71,10 +71,10 @@ class MlxAudioModel:
         Raises:
             ImportError: if MLX-Audio is unavailable
         """
-        return self.loaded_model.generate(str(audio_path), **self.generate_kw)
+        return self.model.generate(str(audio_path), **self.generate_kw)
 
     @cached_property
-    def loaded_model(self) -> Any:
+    def model(self) -> Any:
         """Load and get the configured MLX-Audio model.
 
         Returns:
