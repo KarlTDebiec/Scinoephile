@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -25,6 +24,7 @@ from scinoephile.audio.transcription import (
 )
 from scinoephile.audio.vad import VoiceActivityError
 from scinoephile.core import ScinoephileError
+from scinoephile.core.cache.identity import CacheIdentity
 
 _DEMUCS_CACHE_IDENTITY = {
     "model_name": "htdemucs_ft",
@@ -61,7 +61,7 @@ class _TestTranscriber(Transcriber):
 
     def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> Mapping[str, object]:
+    ) -> CacheIdentity:
         """Get the test backend cache identity."""
         return {}
 
@@ -81,7 +81,7 @@ class _PerAudioCacheTranscriber(_TestTranscriber):
 
     def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> Mapping[str, object]:
+    ) -> CacheIdentity:
         """Add the audio duration to the backend cache identity."""
         cache_identity = dict(super()._get_backend_cache_identity(audio, settings))
         cache_identity["audio_duration_ms"] = len(audio)

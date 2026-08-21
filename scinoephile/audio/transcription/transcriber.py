@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Sequence
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
@@ -18,6 +18,7 @@ from scinoephile.audio.vad import (
     VoiceActivityError,
     VoiceActivityTrace,
 )
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import TranscriptionCache
@@ -291,7 +292,7 @@ class Transcriber(ABC):
     @abstractmethod
     def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> Mapping[str, object]:
+    ) -> CacheIdentity:
         """Get the backend-specific identity for one cache configuration.
 
         Arguments:
@@ -304,7 +305,7 @@ class Transcriber(ABC):
 
     def _get_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> dict[str, object]:
+    ) -> CacheIdentity:
         """Get the complete backend and preprocessing cache identity.
 
         Arguments:

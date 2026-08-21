@@ -15,6 +15,7 @@ from scinoephile.audio.diarization import (
     SpeakerDiarizationResult,
     SpeakerTurn,
 )
+from scinoephile.core.cache.identity import CacheIdentity
 
 
 def test_diarization_cache_round_trip(tmp_path: Path):
@@ -25,7 +26,7 @@ def test_diarization_cache_round_trip(tmp_path: Path):
     """
     cache = SpeakerDiarizationCache(tmp_path)
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model": "test/model"}
+    cache_identity: CacheIdentity = {"model": "test/model"}
     result = SpeakerDiarizationResult(
         turns=[SpeakerTurn(start=0.0, end=0.1, speaker="SPEAKER_00")],
         exclusive_turns=[SpeakerTurn(start=0.0, end=0.1, speaker="SPEAKER_00")],
@@ -48,7 +49,7 @@ def test_diarization_cache_discards_invalid_payload(tmp_path: Path):
     """
     cache = SpeakerDiarizationCache(tmp_path)
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model": "test/model"}
+    cache_identity: CacheIdentity = {"model": "test/model"}
     cache_path = cache.get_path(audio, cache_identity)
     cache_path.write_text("not JSON", encoding="utf-8")
 
@@ -64,7 +65,7 @@ def test_diarization_cache_discards_unsupported_version(tmp_path: Path):
     """
     cache = SpeakerDiarizationCache(tmp_path)
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model": "test/model"}
+    cache_identity: CacheIdentity = {"model": "test/model"}
     result = SpeakerDiarizationResult(turns=[], exclusive_turns=[])
     cache_path = cache.save(audio, cache_identity, result)
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
@@ -82,7 +83,7 @@ def test_diarization_cache_overwrites_matching_entry_once(tmp_path: Path):
         tmp_path: temporary cache root path
     """
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model": "test/model"}
+    cache_identity: CacheIdentity = {"model": "test/model"}
     result = SpeakerDiarizationResult(turns=[], exclusive_turns=[])
     SpeakerDiarizationCache(tmp_path).save(audio, cache_identity, result)
     overwrite_cache = SpeakerDiarizationCache(tmp_path, overwrite=True)

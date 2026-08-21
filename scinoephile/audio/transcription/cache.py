@@ -15,6 +15,7 @@ from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.cache.artifact import remove_cache_artifact
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .exceptions import TranscriptionError, TranscriptionRecognitionError
@@ -68,9 +69,7 @@ class TranscriptionCache:
         self._refreshed_paths: set[Path] = set()
         """Cache paths refreshed by this cache instance."""
 
-    def get_path(
-        self, audio: AudioSegment, cache_identity: Mapping[str, object]
-    ) -> Path:
+    def get_path(self, audio: AudioSegment, cache_identity: CacheIdentity) -> Path:
         """Get the cache path for audio and backend configuration.
 
         Arguments:
@@ -91,7 +90,7 @@ class TranscriptionCache:
         return self.cache_dir_path / f"{cache_hash.hexdigest()}.json"
 
     def load(
-        self, audio: AudioSegment, cache_identity: Mapping[str, object]
+        self, audio: AudioSegment, cache_identity: CacheIdentity
     ) -> tuple[Path, list[TranscribedSegment]] | None:
         """Load a cached transcription.
 
@@ -162,9 +161,7 @@ class TranscriptionCache:
         )
         return cache_path, segments
 
-    def remove(
-        self, audio: AudioSegment, cache_identity: Mapping[str, object]
-    ) -> Path | None:
+    def remove(self, audio: AudioSegment, cache_identity: CacheIdentity) -> Path | None:
         """Remove a cached transcription.
 
         Arguments:
@@ -182,7 +179,7 @@ class TranscriptionCache:
     def save(
         self,
         audio: AudioSegment,
-        cache_identity: Mapping[str, object],
+        cache_identity: CacheIdentity,
         segments: Sequence[TranscribedSegment],
     ) -> Path:
         """Save a transcription to the cache.
@@ -220,8 +217,8 @@ class TranscriptionCache:
         )
 
     def _get_cache_identity(
-        self, audio: AudioSegment, cache_identity: Mapping[str, object]
-    ) -> dict[str, object]:
+        self, audio: AudioSegment, cache_identity: CacheIdentity
+    ) -> CacheIdentity:
         """Get the complete cache identity.
 
         Arguments:

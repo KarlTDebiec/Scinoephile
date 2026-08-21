@@ -28,6 +28,7 @@ from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.audio.vad import VoiceActivityDetector
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 
 from .model import MlxAudioModel
@@ -130,7 +131,7 @@ class MlxAudioTranscriber(Transcriber):
 
     def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> dict[str, object]:
+    ) -> CacheIdentity:
         """Get the cache identity for configured MLX-Audio output.
 
         Arguments:

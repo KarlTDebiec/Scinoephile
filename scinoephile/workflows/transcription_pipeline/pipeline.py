@@ -12,7 +12,6 @@ from hashlib import sha256
 from logging import getLogger
 from typing import cast
 
-from pydantic import JsonValue
 from pydub import AudioSegment
 
 from scinoephile.analysis.transcription.artifact import (
@@ -50,6 +49,7 @@ from scinoephile.audio.vad import (
     VoiceActivityTrace,
 )
 from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.workflows.multisource_transcription.transcriber import (
     MultiSourceTranscriber,
 )
@@ -167,10 +167,10 @@ class TranscriptionPipeline:
         """Most recent stable full-source block plan."""
 
     @property
-    def block_vad_identity(self) -> dict[str, JsonValue]:
+    def block_vad_identity(self) -> CacheIdentity:
         """Get the block-planning configuration recorded in run manifests."""
         return cast(
-            dict[str, JsonValue],
+            CacheIdentity,
             json.loads(
                 json.dumps(
                     {

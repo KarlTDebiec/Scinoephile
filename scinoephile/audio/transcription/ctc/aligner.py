@@ -14,6 +14,7 @@ from scinoephile.audio.transcription.cache import TranscriptionCache
 from scinoephile.audio.transcription.exceptions import TranscriptionAlignmentError
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.core import Language
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.ml import ModelSpec
 from scinoephile.core.script import OpenCCConfig
@@ -158,7 +159,7 @@ class CtcAligner:
                 f"Unable to run CTC transcription alignment: {exc}"
             ) from exc
 
-    def _get_cache_identity(self, text: str) -> dict[str, object]:
+    def _get_cache_identity(self, text: str) -> CacheIdentity:
         """Get the configuration identifying reusable forced alignment.
 
         Arguments:

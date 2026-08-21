@@ -14,6 +14,7 @@ import numpy as np
 from PIL import Image
 
 from scinoephile.core import Language
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.ocr import import_paddleocr
 
@@ -121,7 +122,7 @@ class PaddleRecognizer:
             recognized text
         """
         array = np.array(image.convert("RGB"))
-        cache_identity = {
+        cache_identity: CacheIdentity = {
             "language": self.paddle_language_code,
             "runtime": self.runtime_identity,
             "text_detection_model": _TEXT_DETECTION_MODEL_NAME,

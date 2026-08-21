@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from scinoephile.audio.waveform import to_mono_int16
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
 
@@ -48,7 +49,7 @@ class TenVadProvider(VadProvider):
         """Input sample rate expected by TEN VAD."""
 
     @property
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the TEN model, runtime, and inference geometry identity."""
         return {
             "frame_size": self.frame_size,

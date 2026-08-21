@@ -33,6 +33,7 @@ from scinoephile.audio.transcription.transcribed_segment import TranscribedSegme
 from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.audio.vad import VoiceActivityDetector, VoiceActivityTrace
 from scinoephile.common.file import get_temp_file_path
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import import_whisper_timestamped
 from scinoephile.core.language import Language
@@ -540,7 +541,7 @@ class WhisperTranscriber(Transcriber):
 
     def _get_backend_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> dict[str, object]:
+    ) -> CacheIdentity:
         """Get the cache identity for configured Whisper output.
 
         Arguments:
@@ -549,10 +550,12 @@ class WhisperTranscriber(Transcriber):
         Returns:
             backend configuration identifying the output
         """
-        temperature: object = self.temperature
-        if not isinstance(self.temperature, int | float):
+        temperature: int | float | list[float]
+        if isinstance(self.temperature, int | float):
+            temperature = self.temperature
+        else:
             temperature = list(self.temperature)
-        cache_identity: dict[str, object] = {
+        cache_identity = {
             "condition_on_previous_text": self.condition_on_previous_text,
             "language": self._whisper_language,
             "model_name": self.model_name,

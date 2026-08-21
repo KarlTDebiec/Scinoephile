@@ -15,6 +15,7 @@ from PIL import Image
 from scinoephile.common.subprocess import run_command
 from scinoephile.common.validation import val_executable, val_input_dir_path
 from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.cache.identity import CacheIdentity
 
 from .cache import TesseractCache
 from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
@@ -165,7 +166,7 @@ class TesseractRecognizer:
         Returns:
             recognized text
         """
-        cache_identity = {
+        cache_identity: CacheIdentity = {
             "detect_italics": self.detect_italics,
             "language": self.tesseract_language_code,
             "legacy_tessdata_revision": self._legacy_data_cache.source_revision,
