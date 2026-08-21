@@ -1,12 +1,17 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Shared script-conversion configuration."""
+"""Shared script primitives and conversion configuration."""
 
 from __future__ import annotations
 
+from typing import Literal
+
 from scinoephile.common.described_enum import DescribedEnum
 
-__all__ = ["OpenCCConfig", "SIMPLIFIED_CONFIGS", "TRADITIONAL_CONFIGS"]
+__all__ = ["ChineseScript", "OpenCCConfig", "SIMPLIFIED_CONFIGS", "TRADITIONAL_CONFIGS"]
+
+type ChineseScript = Literal["Hans", "Hant"]
+"""Chinese script supported by text processing helpers."""
 
 
 class OpenCCConfig(DescribedEnum):
@@ -22,8 +27,18 @@ class OpenCCConfig(DescribedEnum):
     """Traditional Chinese for Taiwan to Simplified Chinese."""
     s2hk = ("s2hk", "Simplified Chinese to Traditional Chinese (Hong Kong).")
     """Simplified Chinese to Traditional Chinese for Hong Kong."""
+    s2hkp = (
+        "s2hkp",
+        "Simplified Chinese to Traditional Chinese (Hong Kong) with phrases.",
+    )
+    """Simplified Chinese to Traditional Chinese for Hong Kong with phrases."""
     hk2s = ("hk2s", "Traditional Chinese (Hong Kong) to Simplified Chinese.")
     """Traditional Chinese for Hong Kong to Simplified Chinese."""
+    hk2sp = (
+        "hk2sp",
+        "Traditional Chinese (Hong Kong) to Simplified Chinese with phrases.",
+    )
+    """Traditional Chinese for Hong Kong to Simplified Chinese with phrases."""
     s2twp = (
         "s2twp",
         "Simplified Chinese to Traditional Chinese (Taiwan) with Taiwanese idiom.",
@@ -58,6 +73,7 @@ SIMPLIFIED_CONFIGS = {
     OpenCCConfig.t2s,
     OpenCCConfig.tw2s,
     OpenCCConfig.hk2s,
+    OpenCCConfig.hk2sp,
     OpenCCConfig.tw2sp,
 }
 """OpenCC configurations that convert text toward simplified Chinese."""
@@ -66,6 +82,7 @@ TRADITIONAL_CONFIGS = {
     OpenCCConfig.s2t,
     OpenCCConfig.s2tw,
     OpenCCConfig.s2hk,
+    OpenCCConfig.s2hkp,
     OpenCCConfig.s2twp,
     OpenCCConfig.t2tw,
     OpenCCConfig.hk2t,

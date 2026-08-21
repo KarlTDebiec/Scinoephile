@@ -7,7 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from scinoephile.core.ml import ModelSpec
-from scinoephile.core.text import ChineseScript
+from scinoephile.core.script import ChineseScript
 
 __all__ = ["CANTONESE_MODEL", "CHINESE_MODEL", "ENGLISH_MODEL", "CtcModelSpec"]
 
