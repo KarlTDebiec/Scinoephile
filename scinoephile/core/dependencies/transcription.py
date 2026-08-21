@@ -33,10 +33,7 @@ __all__ = [
 if TYPE_CHECKING:
     from demucs_infer.apply import BagOfModels, Model
     from torch import Tensor
-    from transformers import PreTrainedModel, ProcessorMixin
 
-    type CtcModel = PreTrainedModel
-    type CtcProcessor = ProcessorMixin
     type DemucsModel = BagOfModels | Model
     type TorchTensor = Tensor
 

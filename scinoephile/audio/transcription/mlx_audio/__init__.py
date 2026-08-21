@@ -3,7 +3,8 @@
 """MLX-Audio transcription and timestamp alignment.
 
 Package hierarchy (modules may import from any above):
-* helpers / model_spec / timing
+* tokenization / timing
+* model_spec
 * model
 * transcriber
 """

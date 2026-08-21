@@ -13,8 +13,8 @@ from scinoephile.core.dependencies.transcription import import_mlx_audio_stt_loa
 from scinoephile.core.language import Language
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
-from .helpers import use_local_tokenizer
 from .model_spec import MlxAudioModelSpec
+from .tokenization import use_local_tokenizer
 
 __all__ = ["MlxAudioModel", "MlxAudioResult"]
 

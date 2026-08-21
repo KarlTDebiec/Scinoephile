@@ -9,21 +9,16 @@ from dataclasses import dataclass
 from scinoephile.core.language import Language
 from scinoephile.core.ml import ModelSpec
 
+from .tokenization import MIMO_AUDIO_TOKENIZER
+
 __all__ = [
     "FIRERED_ASR2_MODEL",
     "GLM_ASR_MODEL",
-    "MIMO_AUDIO_TOKENIZER",
     "MIMO_MODEL",
     "MlxAudioModelSpec",
     "QWEN3_ASR_MODEL",
     "SENSEVOICE_MODEL",
 ]
-
-MIMO_AUDIO_TOKENIZER = ModelSpec(
-    name="mlx-community/MiMo-Audio-Tokenizer",
-    revision="6d451ed9a73024b4d33b87afa69e0dfd40d8f306",
-)
-"""Default MLX MiMo audio-tokenizer specification."""
 
 
 @dataclass(frozen=True, slots=True)

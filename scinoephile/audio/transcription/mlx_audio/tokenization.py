@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""MLX-Audio compatibility helpers."""
+"""MLX-Audio tokenizer integration."""
 
 from __future__ import annotations
 
@@ -12,7 +12,13 @@ from typing import cast
 from scinoephile.core.dependencies.transcription import import_mlx_audio_mimo_asr
 from scinoephile.core.ml import ModelSpec
 
-__all__ = ["use_local_tokenizer"]
+__all__ = ["MIMO_AUDIO_TOKENIZER", "use_local_tokenizer"]
+
+MIMO_AUDIO_TOKENIZER = ModelSpec(
+    name="mlx-community/MiMo-Audio-Tokenizer",
+    revision="6d451ed9a73024b4d33b87afa69e0dfd40d8f306",
+)
+"""Default MLX MiMo audio-tokenizer specification."""
 
 
 @contextmanager

@@ -14,18 +14,18 @@ from unittest.mock import Mock, call
 
 import pytest
 
-from scinoephile.audio.transcription.mlx_audio import helpers
 from scinoephile.audio.transcription.mlx_audio import model as mlx_audio_model
+from scinoephile.audio.transcription.mlx_audio import tokenization
 from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModel
 from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
-    MIMO_AUDIO_TOKENIZER,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
     MlxAudioModelSpec,
 )
+from scinoephile.audio.transcription.mlx_audio.tokenization import MIMO_AUDIO_TOKENIZER
 from scinoephile.core import Language
 from scinoephile.core.dependencies import transcription as transcription_dependencies
 from scinoephile.core.ml import ModelSpec
@@ -184,7 +184,7 @@ def test_loaded_model_is_cached(
         mlx_audio_model, "import_mlx_audio_stt_load", Mock(return_value=load)
     )
     monkeypatch.setattr(
-        helpers, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
+        tokenization, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
     )
     monkeypatch.setattr(
         mlx_audio_model, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
@@ -232,7 +232,7 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
         mlx_audio_model, "import_mlx_audio_stt_load", Mock(return_value=load)
     )
     monkeypatch.setattr(
-        helpers, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
+        tokenization, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
     )
     monkeypatch.setattr(
         mlx_audio_model, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
