@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 from pydub import AudioSegment
 
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.dependencies.transcription import (
     import_demucs_infer_apply,
     import_demucs_infer_pretrained,
@@ -69,7 +70,7 @@ class DemucsSeparator:
         return self.separate_vocals(audio)
 
     @property
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the Demucs model and runtime cache identity."""
         return self._cache.cache_identity
 

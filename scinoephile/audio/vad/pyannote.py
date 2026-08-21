@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, cast
 import numpy as np
 
 from scinoephile.audio.waveform import to_mono_int16
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path
@@ -50,7 +51,7 @@ class PyannoteVadProvider(VadProvider):
         """Lazily loaded pyannote voice activity detection pipeline."""
 
     @property
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the pyannote model and runtime identity."""
         return {
             "model": _MODEL_ID,

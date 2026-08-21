@@ -14,6 +14,7 @@ from PIL import Image
 
 from scinoephile.common.validation import val_int
 from scinoephile.core import Language
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.dependencies.ocr import import_chrome_lens_py
 
 from .cache import LensCache
@@ -98,7 +99,7 @@ class LensRecognizer:
         Returns:
             recognized text
         """
-        cache_identity = {"language": self.lens_language_code}
+        cache_identity: CacheIdentity = {"language": self.lens_language_code}
         if (lines := self._cache.load(image, cache_identity)) is not None:
             return self._format_lens_lines(lines)
 

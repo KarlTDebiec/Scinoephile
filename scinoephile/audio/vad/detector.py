@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from scinoephile.core.cache.identity import CacheIdentity
+
 from .provider import VadImplementation, VadProvider
 from .pyannote import PyannoteVadProvider
 from .silero import SileroVadProvider
@@ -96,7 +98,7 @@ class VoiceActivityDetector:
         return self.get_speech_intervals(self.get_trace(audio))
 
     @property
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the configuration identifying reusable VAD output.
 
         Returns:
@@ -117,7 +119,7 @@ class VoiceActivityDetector:
         return self._provider.implementation
 
     @property
-    def trace_cache_identity(self) -> dict[str, object]:
+    def trace_cache_identity(self) -> CacheIdentity:
         """Get the configuration identifying reusable frame-level model scores.
 
         Returns:

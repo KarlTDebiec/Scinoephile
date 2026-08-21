@@ -9,6 +9,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import LlmCache
@@ -317,7 +318,7 @@ class Queryer[TTestCase: TestCase]:
         )
         return normalized
 
-    def _get_cache_identity(self) -> dict[str, object]:
+    def _get_cache_identity(self) -> CacheIdentity:
         """Get the provider and test-case cache identity."""
         return {
             "provider": self.provider.cache_identity,

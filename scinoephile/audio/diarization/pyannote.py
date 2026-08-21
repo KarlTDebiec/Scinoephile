@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, cast
 import numpy as np
 
 from scinoephile.audio.waveform import to_mono_int16
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.dependencies.transcription import (
     import_pyannote_audio,
     import_torch,
@@ -174,7 +175,7 @@ class PyannoteDiarizer:
         return result
 
     @property
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the pipeline, runtime, and inference configuration identity.
 
         Returns:

@@ -16,6 +16,7 @@ from pydub.exceptions import CouldntDecodeError, CouldntEncodeError
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.cache.artifact import remove_cache_artifact
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_root_path
@@ -63,7 +64,7 @@ class DemucsCache:
         """Cache paths refreshed by this cache instance."""
 
     @property
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the cache, model, and runtime identity for separated vocals."""
         return {
             "cache_version": _CACHE_VERSION,

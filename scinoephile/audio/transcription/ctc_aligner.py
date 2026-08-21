@@ -15,6 +15,7 @@ from pydub import AudioSegment
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core import Language
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import (
     import_torch,
@@ -342,7 +343,7 @@ class CtcAligner:
             )
         return self._model_dir_path
 
-    def _get_cache_identity(self, text: str) -> dict[str, object]:
+    def _get_cache_identity(self, text: str) -> CacheIdentity:
         """Get the configuration identifying reusable forced alignment.
 
         Arguments:

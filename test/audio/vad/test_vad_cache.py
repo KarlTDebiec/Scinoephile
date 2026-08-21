@@ -13,13 +13,14 @@ import pytest
 from pydub import AudioSegment
 
 from scinoephile.audio.vad import VoiceActivityCache, VoiceActivityTrace
+from scinoephile.core.cache.identity import CacheIdentity
 
 
 def test_vad_cache_round_trip(tmp_path: Path):
     """Persist score values and original-timeline geometry without loss."""
     cache = VoiceActivityCache(tmp_path)
     audio = AudioSegment.silent(duration=300, frame_rate=16000)
-    cache_identity = {"implementation": "test", "model": "one"}
+    cache_identity: CacheIdentity = {"implementation": "test", "model": "one"}
     trace = VoiceActivityTrace(
         np.asarray([0.1, 0.7, 0.2], dtype=np.float32),
         start_ms=50,
@@ -58,7 +59,7 @@ def test_vad_cache_discards_invalid_payload(tmp_path: Path):
     """Remove a malformed trace cache and allow regeneration."""
     cache = VoiceActivityCache(tmp_path)
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
-    cache_identity = {"model": "one"}
+    cache_identity: CacheIdentity = {"model": "one"}
     cache_path = cache.get_path(audio, cache_identity)
     cache_path.write_bytes(b"not an npz archive")
 
@@ -70,7 +71,7 @@ def test_vad_cache_discards_malformed_zip_archive(tmp_path: Path):
     """Remove a malformed ZIP cache and allow regeneration."""
     cache = VoiceActivityCache(tmp_path)
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
-    cache_identity = {"model": "one"}
+    cache_identity: CacheIdentity = {"model": "one"}
     cache_path = cache.get_path(audio, cache_identity)
     cache_path.write_bytes(b"PK\x03\x04not a zip")
 
@@ -93,7 +94,7 @@ def test_vad_cache_rejects_trace_for_different_audio_duration(tmp_path: Path):
 def test_vad_cache_overwrites_each_entry_once(tmp_path: Path):
     """Refresh a requested entry once, then reuse the replacement."""
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
-    cache_identity = {"model": "one"}
+    cache_identity: CacheIdentity = {"model": "one"}
     first_trace = VoiceActivityTrace(
         np.asarray([0.1], dtype=np.float32), start_ms=50, step_ms=100, duration_ms=100
     )
@@ -117,7 +118,7 @@ def test_vad_cache_atomic_write_failure_preserves_existing_entry(
     """Leave a valid cache entry intact when staging serialization fails."""
     cache = VoiceActivityCache(tmp_path)
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
-    cache_identity = {"model": "one"}
+    cache_identity: CacheIdentity = {"model": "one"}
     trace = VoiceActivityTrace(
         np.asarray([0.4], dtype=np.float32), start_ms=50, step_ms=100, duration_ms=100
     )

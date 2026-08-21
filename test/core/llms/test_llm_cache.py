@@ -9,11 +9,17 @@ from time import time
 
 from pytest import MonkeyPatch, raises
 
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms.cache import LlmCache
 from test.helpers import parametrize
 from test.helpers.files import set_mtime
 
-_CACHE_INPUTS = ("provider", "system", "[]", '{"query":"value"}')
+_CACHE_INPUTS: tuple[CacheIdentity, str, str, str] = (
+    {"provider": "provider"},
+    "system",
+    "[]",
+    '{"query":"value"}',
+)
 """Valid serialized inputs shared by LLM cache tests."""
 
 
@@ -104,8 +110,12 @@ def test_llm_cache_path_encodes_component_boundaries(tmp_path: Path):
     """Test text moved across identity fields cannot produce the same key."""
     cache = LlmCache(tmp_path, "translation")
 
-    first_path = cache.get_path("provider", "system[]", "", '{"query":"value"}')
-    second_path = cache.get_path("provider", "system", "[]", '{"query":"value"}')
+    first_path = cache.get_path(
+        {"provider": "provider"}, "system[]", "", '{"query":"value"}'
+    )
+    second_path = cache.get_path(
+        {"provider": "provider"}, "system", "[]", '{"query":"value"}'
+    )
 
     assert first_path != second_path
 

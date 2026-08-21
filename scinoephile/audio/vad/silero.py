@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, cast
 import numpy as np
 
 from scinoephile.audio.waveform import to_mono_int16
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
 
@@ -49,7 +50,7 @@ class SileroVadProvider(VadProvider):
         """Lazily loaded official Silero model."""
 
     @property
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the Silero model and runtime identity."""
         return {
             "model": "silero-vad",

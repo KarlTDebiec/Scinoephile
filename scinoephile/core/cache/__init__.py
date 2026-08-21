@@ -3,7 +3,7 @@
 """Cache inspection and invalidation helpers.
 
 Package hierarchy (modules may import from any above):
-* artifact / cache_entry / cache_namespace / cache_stats / runtime
+* artifact / cache_entry / cache_namespace / cache_stats / identity / runtime
 * cache_registry
 * operations
 """
