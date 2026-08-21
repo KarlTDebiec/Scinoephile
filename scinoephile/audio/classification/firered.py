@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, cast
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.waveform import to_mono_int16
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import (
     import_firered_aed,
@@ -208,7 +209,7 @@ class FireRedLanguageIdentifier:
 
     def _get_cache_identity(
         self, windows: Sequence[tuple[float, float]], offset_seconds: float
-    ) -> dict[str, object]:
+    ) -> CacheIdentity:
         """Get exact model identity and result-affecting settings.
 
         Arguments:
@@ -407,7 +408,7 @@ class FireRedAudioEventDetector:
         self._cache.save(audio, cache_identity, output)
         return output
 
-    def _get_cache_identity(self, offset_seconds: float) -> dict[str, object]:
+    def _get_cache_identity(self, offset_seconds: float) -> CacheIdentity:
         """Get exact model identity and result-affecting settings.
 
         Arguments:

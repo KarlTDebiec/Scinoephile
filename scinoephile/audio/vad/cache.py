@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Mapping
 from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -18,6 +17,7 @@ import numpy as np
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.cache.artifact import remove_cache_artifact
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .trace import VoiceActivityTrace
@@ -54,9 +54,7 @@ class VoiceActivityCache:
         self._refreshed_paths: set[Path] = set()
         """Cache paths refreshed by this cache instance."""
 
-    def get_path(
-        self, audio: AudioSegment, cache_identity: Mapping[str, object]
-    ) -> Path:
+    def get_path(self, audio: AudioSegment, cache_identity: CacheIdentity) -> Path:
         """Get the cache path for audio and model configuration.
 
         Arguments:
@@ -77,7 +75,7 @@ class VoiceActivityCache:
         return self.cache_dir_path / f"{cache_hash.hexdigest()}.npz"
 
     def load(
-        self, audio: AudioSegment, cache_identity: Mapping[str, object]
+        self, audio: AudioSegment, cache_identity: CacheIdentity
     ) -> VoiceActivityTrace | None:
         """Load a cached voice activity trace.
 
@@ -126,9 +124,7 @@ class VoiceActivityCache:
         logger.info(f"Loaded voice activity trace from cache: {cache_path}")
         return trace
 
-    def remove(
-        self, audio: AudioSegment, cache_identity: Mapping[str, object]
-    ) -> Path | None:
+    def remove(self, audio: AudioSegment, cache_identity: CacheIdentity) -> Path | None:
         """Remove a cached voice activity trace.
 
         Arguments:
@@ -146,7 +142,7 @@ class VoiceActivityCache:
     def save(
         self,
         audio: AudioSegment,
-        cache_identity: Mapping[str, object],
+        cache_identity: CacheIdentity,
         trace: VoiceActivityTrace,
     ) -> Path:
         """Save a voice activity trace.
@@ -189,8 +185,8 @@ class VoiceActivityCache:
 
     @staticmethod
     def _get_cache_identity(
-        audio: AudioSegment, cache_identity: Mapping[str, object]
-    ) -> dict[str, object]:
+        audio: AudioSegment, cache_identity: CacheIdentity
+    ) -> CacheIdentity:
         """Get the complete cache identity.
 
         Arguments:

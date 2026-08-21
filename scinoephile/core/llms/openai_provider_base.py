@@ -14,8 +14,9 @@ from typing import Any, ClassVar, Unpack, cast
 
 from openai import OpenAI, OpenAIError
 from openai.types.chat import ChatCompletionMessageFunctionToolCall
-from pydantic import JsonValue, ValidationError
+from pydantic import ValidationError
 
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.exceptions import ScinoephileError
 
 from .answer import Answer
@@ -88,7 +89,7 @@ class OpenAIProviderBase(LLMProvider):
         return os.environ.get(self.api_key_env_var_name)
 
     @property
-    def cache_identity(self) -> dict[str, JsonValue]:
+    def cache_identity(self) -> CacheIdentity:
         """Stable, non-secret OpenAI-compatible provider configuration."""
         identity = super().cache_identity
         base_url = None

@@ -17,6 +17,7 @@ from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.cache.artifact import remove_cache_artifact
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 __all__ = ["AudioClassificationCache"]
@@ -59,9 +60,7 @@ class AudioClassificationCache:
         self._refreshed_paths: set[Path] = set()
         """Cache paths refreshed by this cache instance."""
 
-    def get_path(
-        self, audio: AudioSegment, cache_identity: Mapping[str, object]
-    ) -> Path:
+    def get_path(self, audio: AudioSegment, cache_identity: CacheIdentity) -> Path:
         """Get the cache path for audio and model configuration.
 
         Arguments:
@@ -84,7 +83,7 @@ class AudioClassificationCache:
     def load(
         self,
         audio: AudioSegment,
-        cache_identity: Mapping[str, object],
+        cache_identity: CacheIdentity,
         result_cls: type[_ResultT],
     ) -> _ResultT | None:
         """Load a cached and validated classification result.
@@ -131,10 +130,7 @@ class AudioClassificationCache:
         return result
 
     def save(
-        self,
-        audio: AudioSegment,
-        cache_identity: Mapping[str, object],
-        result: BaseModel,
+        self, audio: AudioSegment, cache_identity: CacheIdentity, result: BaseModel
     ) -> Path:
         """Save one source-wide audio-classification result.
 
@@ -159,8 +155,8 @@ class AudioClassificationCache:
 
     @staticmethod
     def _get_cache_identity(
-        audio: AudioSegment, cache_identity: Mapping[str, object]
-    ) -> dict[str, object]:
+        audio: AudioSegment, cache_identity: CacheIdentity
+    ) -> CacheIdentity:
         """Get the complete cache identity.
 
         Arguments:
