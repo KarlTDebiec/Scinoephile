@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from functools import cached_property
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -97,20 +96,14 @@ class CtcModel:
             loaded CTC model
         """
         transformers = import_transformers()
+        model_dir_path = get_huggingface_snapshot_dir_path(
+            self.spec.name, self.spec.revision
+        )
         model = transformers.AutoModelForCTC.from_pretrained(
-            self.model_dir_path, local_files_only=True
+            model_dir_path, local_files_only=True
         ).to(self.device)
         model.eval()
         return model
-
-    @cached_property
-    def model_dir_path(self) -> Path:
-        """Resolve the model to a local directory.
-
-        Returns:
-            local model directory path
-        """
-        return get_huggingface_snapshot_dir_path(self.spec.name, self.spec.revision)
 
     @cached_property
     def processor(self) -> Any:
@@ -120,8 +113,11 @@ class CtcModel:
             loaded CTC processor
         """
         transformers = import_transformers()
+        model_dir_path = get_huggingface_snapshot_dir_path(
+            self.spec.name, self.spec.revision
+        )
         return transformers.AutoProcessor.from_pretrained(
-            self.model_dir_path, local_files_only=True
+            model_dir_path, local_files_only=True
         )
 
     def _get_token_ids(

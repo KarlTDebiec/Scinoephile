@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 
 import numpy as np
 import pytest
@@ -186,9 +186,10 @@ def test_ctc_aligner_loads_default_model_at_pinned_revision(
     assert aligner.model.loaded_model is loaded_model
     assert aligner.model.processor is processor
     expected_revision = "22aad52d435eb6dbaf354bdad9b0da84ce7d6156"
-    get_snapshot_dir_path.assert_called_once_with(
-        "facebook/wav2vec2-base-960h", expected_revision
-    )
+    assert get_snapshot_dir_path.call_args_list == [
+        call("facebook/wav2vec2-base-960h", expected_revision),
+        call("facebook/wav2vec2-base-960h", expected_revision),
+    ]
     model_factory.assert_called_once_with(Path("/cached/model"), local_files_only=True)
     processor_factory.assert_called_once_with(
         Path("/cached/model"), local_files_only=True
@@ -207,10 +208,23 @@ def test_ctc_aligner_resolves_custom_model_snapshot(monkeypatch: pytest.MonkeyPa
         "scinoephile.audio.transcription.ctc.model.get_huggingface_snapshot_dir_path",
         get_snapshot_dir_path,
     )
-    assert aligner.model.model_dir_path == Path("/cached/model")
-    assert aligner.model.model_dir_path == Path("/cached/model")
+    processor = object()
+    processor_factory = Mock(return_value=processor)
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc.model.import_transformers",
+        Mock(
+            return_value=SimpleNamespace(
+                AutoProcessor=SimpleNamespace(from_pretrained=processor_factory)
+            )
+        ),
+    )
+
+    assert aligner.model.processor is processor
     get_snapshot_dir_path.assert_called_once_with(
         "organization/model", "custom-revision"
+    )
+    processor_factory.assert_called_once_with(
+        Path("/cached/model"), local_files_only=True
     )
 
 
