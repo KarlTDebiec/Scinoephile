@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Any
+from typing import TYPE_CHECKING
 
 import numpy as np
 from pydub import AudioSegment
@@ -21,6 +21,9 @@ from scinoephile.core.ml import ModelSpec, get_huggingface_snapshot_dir_path
 from .tokenization import get_token_ids
 
 __all__ = ["CtcModel"]
+
+if TYPE_CHECKING:
+    from transformers import PreTrainedModel, ProcessorMixin
 
 
 class CtcModel:
@@ -85,7 +88,7 @@ class CtcModel:
         return log_probs, token_ids, char_indices, blank_token_id
 
     @cached_property
-    def model(self) -> Any:
+    def model(self) -> PreTrainedModel:
         """Load and get the configured CTC model.
 
         Returns:
@@ -102,7 +105,7 @@ class CtcModel:
         return model
 
     @cached_property
-    def processor(self) -> Any:
+    def processor(self) -> ProcessorMixin:
         """Load and get the configured CTC processor.
 
         Returns:

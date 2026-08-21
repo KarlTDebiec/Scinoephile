@@ -5,9 +5,10 @@
 from __future__ import annotations
 
 import platform
+from collections.abc import Callable
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Protocol, cast
+from typing import cast
 
 from scinoephile.core.dependencies.transcription import import_mlx_audio_stt_load
 from scinoephile.core.language import Language
@@ -15,18 +16,9 @@ from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
 from .model_spec import MlxAudioModelSpec
 from .tokenization import use_local_tokenizer
+from .types import MlxAudioResult, MlxAudioRuntimeModel
 
 __all__ = ["MlxAudioModel", "MlxAudioResult"]
-
-
-class MlxAudioResult(Protocol):
-    """Structural result returned by MLX-Audio recognition."""
-
-    text: str
-    """Transcript text."""
-
-    generation_tokens: int
-    """Number of generated text tokens."""
 
 
 class MlxAudioModel:
@@ -74,7 +66,7 @@ class MlxAudioModel:
         return self.model.generate(str(audio_path), **self.generate_kw)
 
     @cached_property
-    def model(self) -> Any:
+    def model(self) -> MlxAudioRuntimeModel:
         """Load and get the configured MLX-Audio model.
 
         Returns:
@@ -91,7 +83,7 @@ class MlxAudioModel:
                 f"platform.machine()={machine!r}). CUDA support is not included."
             )
 
-        load = import_mlx_audio_stt_load()
+        load = cast(Callable[..., MlxAudioRuntimeModel], import_mlx_audio_stt_load())
         model_dir_path = get_huggingface_snapshot_dir_path(
             self.spec.name, self.spec.revision
         )
