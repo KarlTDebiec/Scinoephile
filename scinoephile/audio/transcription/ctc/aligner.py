@@ -45,7 +45,7 @@ class CtcAligner:
     def __init__(
         self,
         language: Language,
-        model_spec: ModelSpec | None = None,
+        spec: ModelSpec | None = None,
         device: str = "cpu",
         *,
         cache_root_path: Path | None = None,
@@ -55,7 +55,7 @@ class CtcAligner:
 
         Arguments:
             language: transcription language
-            model_spec: optional CTC model specification
+            spec: optional CTC model specification
             device: device identifier passed to the CTC model
             cache_root_path: root directory beneath which to cache
             overwrite_cache: whether to replace matching cache files
@@ -65,9 +65,9 @@ class CtcAligner:
         self.language = language
         """Transcription language."""
 
-        if model_spec is None:
+        if spec is None:
             try:
-                model_spec = _DEFAULT_MODEL_SPECS[language]
+                spec = _DEFAULT_MODEL_SPECS[language]
             except KeyError as exc:
                 raise ValueError(
                     f"{language} is not supported by CTC alignment"
@@ -75,13 +75,13 @@ class CtcAligner:
 
         self._script_conversion_config: OpenCCConfig | None = None
         """Conversion from transcript script to model tokenizer script."""
-        if isinstance(model_spec, CtcModelSpec):
-            if language.script == "Hans" and model_spec.script == "Hant":
+        if isinstance(spec, CtcModelSpec):
+            if language.script == "Hans" and spec.script == "Hant":
                 self._script_conversion_config = OpenCCConfig.s2t
-            elif language.script == "Hant" and model_spec.script == "Hans":
+            elif language.script == "Hant" and spec.script == "Hans":
                 self._script_conversion_config = OpenCCConfig.t2s
 
-        self.model = CtcModel(model_spec, device)
+        self.model = CtcModel(spec, device)
         """CTC model used to obtain token probabilities."""
 
         self.cache = TranscriptionCache(
