@@ -844,7 +844,7 @@ def _get_mlx_audio_transcriber(
     return MlxAudioTranscriber(
         model=MlxAudioModel(model_spec, Language.yue_hant),
         ctc_aligner=CtcAligner(
-            Language.yue_hant, _CTC_MODEL, cache_root_path=cache_root_path
+            Language.yue_hant, _CTC_MODEL, device="cpu", cache_root_path=cache_root_path
         ),
         language=Language.yue_hant,
         chunk_duration_seconds=chunk_duration_seconds,

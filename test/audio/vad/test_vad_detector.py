@@ -324,14 +324,14 @@ def test_vad_cache_identity_separates_implementation_and_settings(
     )
     audio = AudioSegment.silent(duration=100)
     silero = WhisperTranscriber(
-        WhisperModel(_CUSTOM_MODEL, Language.yue_hant),
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
         Language.yue_hant,
         cache_root_path=tmp_path,
         vad_mode=VadMode.ON,
         vad_detector=VoiceActivityDetector(VadImplementation.SILERO),
     )
     ten = WhisperTranscriber(
-        WhisperModel(_CUSTOM_MODEL, Language.yue_hant),
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
         Language.yue_hant,
         cache_root_path=tmp_path,
         vad_mode=VadMode.ON,
@@ -457,7 +457,7 @@ def test_whisper_receives_explicit_ten_intervals(
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        WhisperModel(_CUSTOM_MODEL, Language.yue_hant),
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
         Language.yue_hant,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
@@ -491,7 +491,7 @@ def test_whisper_auto_retries_after_ten_unsupported_platform(
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        WhisperModel(_CUSTOM_MODEL, Language.yue_hant),
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
         Language.yue_hant,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
@@ -526,7 +526,7 @@ def test_whisper_ten_empty_output_skips_inference(
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        WhisperModel(_CUSTOM_MODEL, Language.yue_hant),
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
         Language.yue_hant,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,

@@ -75,6 +75,7 @@ _CTC_MODEL_SPEC = ModelSpec(name="ctc/test-model", revision="ctc-revision")
 def _get_whisper_transcriber(
     model_spec: WhisperModelSpec = WHISPER_LARGE_V3_CANTONESE_MODEL,
     language: Language = Language.yue_hant,
+    device: str | None = "cpu",
     **kwargs: Any,
 ) -> WhisperTranscriber:
     """Get a Whisper transcriber with a configured executable model.
@@ -82,12 +83,15 @@ def _get_whisper_transcriber(
     Arguments:
         model_spec: Whisper model specification
         language: language to transcribe
+        device: Torch device passed to the executable model
         **kwargs: additional Whisper transcriber arguments
     Returns:
         configured Whisper transcriber
     """
     return WhisperTranscriber(
-        model=WhisperModel(model_spec, language), language=language, **kwargs
+        model=WhisperModel(model_spec, language, device=device),
+        language=language,
+        **kwargs,
     )
 
 
@@ -183,7 +187,7 @@ def _get_ctc_aligner(
     ]
     return Mock(
         language=Language.yue_hant,
-        model=SimpleNamespace(spec=model_spec),
+        model=SimpleNamespace(spec=model_spec, device="cpu"),
         return_value=aligned_segments,
     )
 
@@ -303,6 +307,29 @@ def test_get_cache_path_separates_configuration(
     assert first_cache_path != second_cache_path
 
 
+def test_get_cache_path_separates_devices(tmp_path: Path):
+    """Test Whisper cache paths differ by inference device.
+
+    Arguments:
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment(data=b"audio", sample_width=1, frame_rate=8000, channels=1)
+    cpu_transcriber = WhisperTranscriber(
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
+        Language.yue_hant,
+        cache_root_path=tmp_path,
+    )
+    mps_transcriber = WhisperTranscriber(
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="mps"),
+        Language.yue_hant,
+        cache_root_path=tmp_path,
+    )
+
+    assert _get_cache_path(cpu_transcriber, audio) != _get_cache_path(
+        mps_transcriber, audio
+    )
+
+
 def test_get_cache_path_separates_audio_formats(tmp_path: Path):
     """Test Whisper cache paths include audio format identity."""
     raw_data = b"\0\1" * 100
@@ -392,6 +419,7 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
     settings = first_fallback._get_preprocessing_settings()[0]
     cache_identity = first_fallback._get_cache_identity(audio, settings)
     assert cache_identity["timestamp_fallback"] == "ctc"
+    assert cache_identity["timestamp_fallback_device"] == "cpu"
     assert cache_identity["timestamp_fallback_language"] == "yue-Hant"
     assert cache_identity["timestamp_fallback_model_name"] == "ctc/test-model"
     assert cache_identity["timestamp_fallback_model_revision"] == "ctc-revision"
@@ -818,6 +846,44 @@ def test_get_sample_len_bounds_decode_by_audio_duration(
     model = WhisperModel(_CUSTOM_MODEL, Language.yue_hant)
 
     assert model.get_sample_len(audio) == expected
+
+
+def test_model_selects_available_device_lazily(monkeypatch: MonkeyPatch):
+    """Select the available Torch device only when first needed.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    get_torch_device = Mock(return_value="mps")
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper.model.get_torch_device",
+        get_torch_device,
+    )
+
+    model = WhisperModel(_CUSTOM_MODEL, Language.yue_hant)
+
+    get_torch_device.assert_not_called()
+    assert model.device == "mps"
+    assert model.device == "mps"
+    get_torch_device.assert_called_once_with()
+
+
+def test_model_honors_explicit_device(monkeypatch: MonkeyPatch):
+    """Honor an explicit Torch device without running auto-selection.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    get_torch_device = Mock(return_value="mps")
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper.model.get_torch_device",
+        get_torch_device,
+    )
+
+    model = WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu")
+
+    assert model.device == "cpu"
+    get_torch_device.assert_not_called()
 
 
 def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch):

@@ -30,6 +30,18 @@ _CUSTOM_MODEL = ModelSpec(name="organization/model", revision="custom-revision")
 """Custom CTC model specification used by tests."""
 
 
+@pytest.fixture(autouse=True)
+def _select_cpu_by_default(monkeypatch: pytest.MonkeyPatch):
+    """Select CPU when tests exercise automatic Torch device selection.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc.model.get_torch_device", lambda: "cpu"
+    )
+
+
 def test_ctc_aligner_allows_model_override(monkeypatch: pytest.MonkeyPatch):
     """Test an explicit CTC model does not require a language default.
 
@@ -44,6 +56,25 @@ def test_ctc_aligner_allows_model_override(monkeypatch: pytest.MonkeyPatch):
     assert aligner.language is Language.eng
     assert aligner.model.spec is _CUSTOM_MODEL
     assert aligner.model.device == "mps"
+
+
+def test_ctc_aligner_selects_available_device_lazily(monkeypatch: pytest.MonkeyPatch):
+    """Test CTC selects the available Torch device only when first needed.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    get_torch_device = Mock(return_value="mps")
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc.model.get_torch_device", get_torch_device
+    )
+
+    aligner = CtcAligner(Language.eng, _CUSTOM_MODEL)
+
+    get_torch_device.assert_not_called()
+    assert aligner.model.device == "mps"
+    assert aligner.model.device == "mps"
+    get_torch_device.assert_called_once_with()
 
 
 def test_ctc_aligner_cache_identity_includes_active_runtime_dependencies(

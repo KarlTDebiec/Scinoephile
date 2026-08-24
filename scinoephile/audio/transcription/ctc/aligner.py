@@ -46,7 +46,7 @@ class CtcAligner:
         self,
         language: Language,
         spec: ModelSpec | None = None,
-        device: str = "cpu",
+        device: str | None = None,
         *,
         cache_root_path: Path | None = None,
         overwrite_cache: bool = False,
@@ -56,7 +56,7 @@ class CtcAligner:
         Arguments:
             language: transcription language
             spec: optional CTC model specification
-            device: device identifier passed to the CTC model
+            device: Torch device, or None to select the available accelerator
             cache_root_path: root directory beneath which to cache
             overwrite_cache: whether to replace matching cache files
         Raises:

@@ -206,6 +206,7 @@ class WhisperTranscriber(Transcriber):
             temperature = list(self.temperature)
         cache_identity = {
             "condition_on_previous_text": self.condition_on_previous_text,
+            "device": self.model.device,
             "language": self.model.language_code,
             "model_name": self.model_name,
             "model_revision": self.model.spec.revision,
@@ -219,6 +220,7 @@ class WhisperTranscriber(Transcriber):
             cache_identity.update(
                 {
                     "timestamp_fallback": "ctc",
+                    "timestamp_fallback_device": self.ctc_aligner.model.device,
                     "timestamp_fallback_language": self.ctc_aligner.language.code,
                     "timestamp_fallback_model_name": self.ctc_aligner.model.spec.name,
                     "timestamp_fallback_model_revision": (

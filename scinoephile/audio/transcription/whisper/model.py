@@ -43,12 +43,15 @@ if TYPE_CHECKING:
 class WhisperModel:
     """Configured executable Whisper speech-to-text model."""
 
-    def __init__(self, spec: WhisperModelSpec, language: Language):
+    def __init__(
+        self, spec: WhisperModelSpec, language: Language, device: str | None = None
+    ):
         """Initialize.
 
         Arguments:
             spec: Whisper model specification
             language: language to transcribe
+            device: Torch device, or None to select the available accelerator
         Raises:
             ValueError: if the model does not support the language
         """
@@ -63,6 +66,9 @@ class WhisperModel:
             ) from exc
         self.language_code = language_code
         """Whisper language code used for inference."""
+
+        self._device = device
+        """Explicit Torch device, or None to select one when first needed."""
 
     def __call__(
         self,
@@ -148,6 +154,13 @@ class WhisperModel:
         )
 
     @cached_property
+    def device(self) -> str:
+        """Get the Torch device used for inference."""
+        if self._device is not None:
+            return self._device
+        return get_torch_device()
+
+    @cached_property
     def model(self) -> Whisper:
         """Load and get the configured Whisper model.
 
@@ -160,9 +173,7 @@ class WhisperModel:
         model_dir_path = get_huggingface_snapshot_dir_path(
             self.spec.name, self.spec.revision
         )
-        return whisper_timestamped.load_model(
-            str(model_dir_path), device=get_torch_device()
-        )
+        return whisper_timestamped.load_model(str(model_dir_path), device=self.device)
 
     def get_sample_len(self, audio: AudioSegment) -> int:
         """Get a bounded token budget for one Whisper decode.

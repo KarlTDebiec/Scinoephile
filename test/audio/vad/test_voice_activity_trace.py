@@ -82,7 +82,7 @@ def test_trace_rejects_invalid_values(kwargs: dict[str, object], message: str):
 def test_transcriber_attaches_word_and_gap_score_summaries():
     """Combine a VAD trace with timestamped transcription words."""
     transcriber = WhisperTranscriber(
-        WhisperModel(WHISPER_LARGE_V3_CANTONESE_MODEL, Language.yue_hant),
+        WhisperModel(WHISPER_LARGE_V3_CANTONESE_MODEL, Language.yue_hant, device="cpu"),
         Language.yue_hant,
     )
     trace = VoiceActivityTrace(

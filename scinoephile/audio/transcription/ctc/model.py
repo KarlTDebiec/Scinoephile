@@ -16,7 +16,11 @@ from scinoephile.core.dependencies.transcription import (
     import_torch,
     import_transformers,
 )
-from scinoephile.core.ml import ModelSpec, get_huggingface_snapshot_dir_path
+from scinoephile.core.ml import (
+    ModelSpec,
+    get_huggingface_snapshot_dir_path,
+    get_torch_device,
+)
 
 from .tokenization import get_token_ids
 from .types import CtcResult
@@ -30,18 +34,18 @@ if TYPE_CHECKING:
 class CtcModel:
     """Configured executable Hugging Face CTC model."""
 
-    def __init__(self, spec: ModelSpec, device: str):
+    def __init__(self, spec: ModelSpec, device: str | None = None):
         """Initialize.
 
         Arguments:
             spec: CTC model specification
-            device: device identifier passed to the CTC model
+            device: Torch device, or None to select the available accelerator
         """
         self.spec = spec
         """CTC model specification."""
 
-        self.device = device
-        """Device identifier passed to the CTC model."""
+        self._device = device
+        """Explicit Torch device, or None to select one when first needed."""
 
     def __call__(
         self, audio: AudioSegment, text: str, model_text: str | None = None
@@ -91,6 +95,13 @@ class CtcModel:
             char_indices=char_indices,
             blank_token_id=blank_token_id,
         )
+
+    @cached_property
+    def device(self) -> str:
+        """Get the Torch device used for inference."""
+        if self._device is not None:
+            return self._device
+        return get_torch_device()
 
     @cached_property
     def model(self) -> PreTrainedModel:
