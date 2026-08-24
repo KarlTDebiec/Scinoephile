@@ -9,13 +9,15 @@ from collections.abc import Mapping, Sequence
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.core import Language
 
+from .types import CtcCharacterTiming
+
 __all__ = ["get_transcribed_words"]
 
 
 def get_transcribed_words(
     language: Language,
     text: str,
-    timed_chars: Mapping[int, tuple[float, float, float]],
+    timed_chars: Mapping[int, CtcCharacterTiming],
     duration_seconds: float,
 ) -> list[TranscribedWord]:
     """Build transcribed words covering aligned and unaligned characters.
@@ -34,13 +36,12 @@ def get_transcribed_words(
     while char_idx < len(text):
         timing = timed_chars.get(char_idx)
         if timing is not None:
-            start, end, confidence = timing
             words.append(
                 TranscribedWord(
                     text=f"{pending_text}{text[char_idx]}",
-                    start=start,
-                    end=end,
-                    confidence=confidence,
+                    start=timing.start,
+                    end=timing.end,
+                    confidence=timing.confidence,
                 )
             )
             pending_text = ""
@@ -69,7 +70,7 @@ def get_transcribed_words(
         if char_idx < len(text):
             next_timing = timed_chars.get(char_idx)
             if next_timing is not None:
-                next_start = next_timing[0]
+                next_start = next_timing.start
 
         gap_seconds = max(next_start - previous_end, 0.0)
         if gap_seconds == 0.0:

@@ -22,7 +22,7 @@ from scinoephile.audio.transcription.ctc.model_spec import CtcModelSpec
 from scinoephile.audio.transcription.ctc.path import get_best_path
 from scinoephile.audio.transcription.ctc.text import get_transcribed_words
 from scinoephile.audio.transcription.ctc.tokenization import get_token_ids
-from scinoephile.audio.transcription.ctc.types import CtcResult
+from scinoephile.audio.transcription.ctc.types import CtcCharacterTiming, CtcResult
 from scinoephile.core import Language, OpenCCConfig
 from scinoephile.core.ml import ModelSpec
 
@@ -77,7 +77,9 @@ def test_ctc_aligner_groups_english_character_timings_into_words():
     """Test English CTC character timings are grouped into words."""
     text = "HI THERE"
     timed_chars = {
-        char_idx: (char_idx / 10, (char_idx + 1) / 10, 0.8)
+        char_idx: CtcCharacterTiming(
+            start=char_idx / 10, end=(char_idx + 1) / 10, confidence=0.8
+        )
         for char_idx in range(len(text))
     }
 
@@ -411,7 +413,7 @@ def test_ctc_best_path_accepts_blank_between_repeated_labels():
 
     path = get_best_path(log_probs, [1, 1], 0)
 
-    assert [(token_idx, frame_idx) for token_idx, frame_idx, _ in path] == [
+    assert [(step.token_idx, step.frame_idx) for step in path] == [
         (0, 0),
         (0, 1),
         (1, 2),
@@ -455,7 +457,7 @@ def test_ctc_token_ids_include_word_delimiter():
 
     assert token_ids == [1, 2, 3]
     assert char_indices == [0, 1, 2]
-    assert [(token_idx, frame_idx) for token_idx, frame_idx, _ in path] == [
+    assert [(step.token_idx, step.frame_idx) for step in path] == [
         (0, 0),
         (1, 1),
         (2, 2),
