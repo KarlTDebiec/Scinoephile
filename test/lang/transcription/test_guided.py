@@ -138,7 +138,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     whisper_transcriber = transcriber.transcriber
     assert isinstance(whisper_transcriber, WhisperTranscriber)
-    assert whisper_transcriber.model_spec is WHISPER_LARGE_V3_CANTONESE_MODEL
+    assert whisper_transcriber.model.spec is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert whisper_transcriber.language is Language.yue_hant
     assert transcriber.transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.transcriber.vad_mode is VadMode.OFF

@@ -17,6 +17,7 @@ from scinoephile.audio.transcription import (
     MlxAudioTranscriber,
     Transcriber,
     VadMode,
+    WhisperModel,
     WhisperTranscriber,
 )
 from scinoephile.audio.transcription.mlx_audio.model_spec import (
@@ -122,7 +123,7 @@ def get_transcription_sources(
             )
         if isinstance(source.model, WhisperModelSpec):
             transcriber = WhisperTranscriber(
-                model_spec=source.model,
+                model=WhisperModel(source.model, language),
                 language=language,
                 demucs_mode=demucs_mode,
                 vad_mode=VadMode.OFF,

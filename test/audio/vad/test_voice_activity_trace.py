@@ -10,10 +10,15 @@ import pytest
 from scinoephile.audio.transcription import (
     TranscribedSegment,
     TranscribedWord,
+    WhisperModel,
     WhisperTranscriber,
     get_segment_split_at_idx,
 )
+from scinoephile.audio.transcription.whisper.model_spec import (
+    WHISPER_LARGE_V3_CANTONESE_MODEL,
+)
 from scinoephile.audio.vad import VoiceActivityTrace
+from scinoephile.core import Language
 
 
 def test_trace_summarizes_partial_frame_overlap():
@@ -76,7 +81,10 @@ def test_trace_rejects_invalid_values(kwargs: dict[str, object], message: str):
 
 def test_transcriber_attaches_word_and_gap_score_summaries():
     """Combine a VAD trace with timestamped transcription words."""
-    transcriber = WhisperTranscriber()
+    transcriber = WhisperTranscriber(
+        WhisperModel(WHISPER_LARGE_V3_CANTONESE_MODEL, Language.yue_hant),
+        Language.yue_hant,
+    )
     trace = VoiceActivityTrace(
         np.asarray([0.8, 0.8, 0.1, 0.2, 0.9], dtype=np.float32),
         start_ms=50,

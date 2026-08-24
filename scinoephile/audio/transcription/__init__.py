@@ -34,7 +34,7 @@ from .preprocessing_settings import (
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .transcriber import Transcriber
-from .whisper import WhisperModelSpec, WhisperTranscriber
+from .whisper import WhisperModel, WhisperModelSpec, WhisperTranscriber
 
 __all__ = [
     "CtcAligner",
@@ -55,6 +55,7 @@ __all__ = [
     "TranscriptionRecognitionError",
     "TranscriptionPreprocessingSettings",
     "VadMode",
+    "WhisperModel",
     "WhisperModelSpec",
     "WhisperTranscriber",
     "get_segment_merged",

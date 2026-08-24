@@ -19,6 +19,7 @@ from scinoephile.audio.transcription import DemucsMode, TranscriptionEmptyError,
 from scinoephile.audio.transcription.preprocessing_settings import (
     TranscriptionPreprocessingSettings,
 )
+from scinoephile.audio.transcription.whisper.model import WhisperModel
 from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
 )
@@ -29,6 +30,7 @@ from scinoephile.audio.vad import (
     VoiceActivityError,
     VoiceActivityTrace,
 )
+from scinoephile.core import Language
 
 _CUSTOM_MODEL = replace(
     WHISPER_LARGE_V3_CANTONESE_MODEL, name="custom/model", revision="custom-revision"
@@ -322,13 +324,15 @@ def test_vad_cache_identity_separates_implementation_and_settings(
     )
     audio = AudioSegment.silent(duration=100)
     silero = WhisperTranscriber(
-        model_spec=_CUSTOM_MODEL,
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant),
+        Language.yue_hant,
         cache_root_path=tmp_path,
         vad_mode=VadMode.ON,
         vad_detector=VoiceActivityDetector(VadImplementation.SILERO),
     )
     ten = WhisperTranscriber(
-        model_spec=_CUSTOM_MODEL,
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant),
+        Language.yue_hant,
         cache_root_path=tmp_path,
         vad_mode=VadMode.ON,
         vad_detector=VoiceActivityDetector(VadImplementation.TEN, threshold=0.6),
@@ -449,18 +453,18 @@ def test_whisper_receives_explicit_ten_intervals(
     vad_detector.get_speech_intervals.return_value = [(100, 400), (900, 1200)]
     transcribe = Mock(return_value={"segments": []})
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper.transcriber."
-        "import_whisper_timestamped",
+        "scinoephile.audio.transcription.whisper.model.import_whisper_timestamped",
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        model_spec=_CUSTOM_MODEL,
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant),
+        Language.yue_hant,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VadMode.ON,
         vad_detector=vad_detector,
     )
-    transcriber._loaded_model_instance = Mock()
+    transcriber.model.model = Mock()
     audio = AudioSegment.silent(duration=1500)
 
     assert transcriber(audio) == []
@@ -483,18 +487,18 @@ def test_whisper_auto_retries_after_ten_unsupported_platform(
     vad_detector = VoiceActivityDetector(VadImplementation.TEN)
     transcribe = Mock(return_value={"segments": []})
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper.transcriber."
-        "import_whisper_timestamped",
+        "scinoephile.audio.transcription.whisper.model.import_whisper_timestamped",
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        model_spec=_CUSTOM_MODEL,
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant),
+        Language.yue_hant,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VadMode.AUTO,
         vad_detector=vad_detector,
     )
-    transcriber._loaded_model_instance = Mock()
+    transcriber.model.model = Mock()
 
     assert transcriber(AudioSegment.silent(duration=100)) == []
     ten_vad_class.assert_called_once_with(hop_size=256, threshold=0.5)
@@ -518,12 +522,12 @@ def test_whisper_ten_empty_output_skips_inference(
     vad_detector.get_speech_intervals.return_value = []
     transcribe = Mock()
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper.transcriber."
-        "import_whisper_timestamped",
+        "scinoephile.audio.transcription.whisper.model.import_whisper_timestamped",
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        model_spec=_CUSTOM_MODEL,
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant),
+        Language.yue_hant,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VadMode.ON,

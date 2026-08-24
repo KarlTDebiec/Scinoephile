@@ -22,6 +22,7 @@ from scinoephile.audio.transcription import (
     TranscribedWord,
     TranscriptionError,
     VadMode,
+    WhisperModel,
     WhisperTranscriber,
     get_segment_split_at_idx,
     get_segment_split_on_word_timings,
@@ -201,8 +202,9 @@ class GuidedTranscriber:
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
         )
+        whisper_model = WhisperModel(self.audio_model, self.language)
         self.transcriber = WhisperTranscriber(
-            model_spec=self.audio_model,
+            model=whisper_model,
             language=self.language,
             demucs_mode=self.demucs_mode,
             vad_mode=self.vad_mode,
@@ -219,7 +221,7 @@ class GuidedTranscriber:
         if self.vad_mode is VadMode.ON:
             recovery_vad_mode = VadMode.ON
         self.recovery_transcriber = WhisperTranscriber(
-            model_spec=self.audio_model,
+            model=whisper_model,
             language=self.language,
             demucs_mode=recovery_demucs_mode,
             vad_mode=recovery_vad_mode,
@@ -233,7 +235,7 @@ class GuidedTranscriber:
 
         # Configure focused recovery for missing speech near a guided tail
         self.tail_recovery_transcriber = WhisperTranscriber(
-            model_spec=self.audio_model,
+            model=whisper_model,
             language=self.language,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VadMode.OFF,

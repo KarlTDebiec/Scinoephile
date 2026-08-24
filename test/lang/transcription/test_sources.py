@@ -61,7 +61,7 @@ def test_default_cantonese_sources_use_configured_models_without_internal_vad():
         FIRERED_ASR2_MODEL.name,
         GLM_ASR_MODEL.name,
     )
-    assert whisper.call_args.kwargs["model_spec"] is WHISPER_LARGE_V3_CANTONESE_MODEL
+    assert whisper.call_args.kwargs["model"].spec is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert whisper.call_args.kwargs["language"] is Language.yue_hant
     assert whisper.call_args.kwargs["vad_mode"] is VadMode.OFF
     assert whisper.call_args.kwargs["recover_decoding"]
