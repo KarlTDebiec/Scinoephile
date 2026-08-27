@@ -121,11 +121,14 @@ def save_test_cases_to_json[TTestCase: TestCase](
     """
     test_cases_to_save = list(test_cases)
     base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
-    base_test_case_list_type = list[base_test_case_cls]
-    base_test_case_adapter = TypeAdapter(base_test_case_list_type)
-    data = base_test_case_adapter.dump_python(
-        test_cases_to_save, mode="json", by_alias=True, exclude_defaults=True
-    )
+    data = []
+    for test_case in test_cases_to_save:
+        base_test_case = base_test_case_cls.model_validate(
+            test_case.model_dump(mode="json"), strict=True
+        )
+        data.append(
+            base_test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)
+        )
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open_atomic_text_file(output_path) as temp_file:

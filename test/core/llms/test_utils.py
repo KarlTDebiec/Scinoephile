@@ -299,6 +299,18 @@ def test_save_replaces_existing_collection(tmp_path: Path):
     ] == ["encountered"]
 
 
+def test_save_validates_mutated_test_cases(tmp_path: Path):
+    """Saving should reject test cases made invalid after initialization."""
+    output_path = tmp_path / "test_cases.json"
+    test_case = _get_test_case("original", "corrected")
+    test_case.query.subtitles.clear()
+
+    with raises(ValidationError):
+        save_test_cases_to_json(output_path, [test_case], _AliasedBaseReviewManager)
+
+    assert not output_path.exists()
+
+
 def test_save_replaces_existing_file_atomically(tmp_path: Path):
     """A failed save should leave the existing file unchanged."""
     output_path = tmp_path / "test_cases.json"

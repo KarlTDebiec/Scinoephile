@@ -78,10 +78,10 @@ def _localize_prompt_text(text: str) -> str:
         for input_path, _ in _TEST_CASE_FILES
     ],
 )
-def test_tracked_test_case_json_loads_and_canonicalizes(
+def test_tracked_test_case_json_round_trips_canonically(
     input_path: Path, manager_cls: type[Manager], tmp_path: Path
 ):
-    """Tracked JSON should load and canonicalize through localized models.
+    """Tracked JSON should round-trip canonically through localized models.
 
     Arguments:
         input_path: path to the tracked JSON fixture
@@ -98,10 +98,16 @@ def test_tracked_test_case_json_loads_and_canonicalizes(
     assert localized_test_cases
 
     base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
-    base_test_cases = [
-        base_test_case_cls.model_validate(localized_test_case.model_dump(mode="json"))
-        for localized_test_case in localized_test_cases
-    ]
+    base_test_cases = []
+    for raw_test_case, localized_test_case in zip(
+        raw_test_cases, localized_test_cases, strict=True
+    ):
+        base_test_case = base_test_case_cls.model_validate(raw_test_case)
+        base_test_cases.append(base_test_case)
+        round_tripped_test_case = base_test_case_cls.model_validate(
+            localized_test_case.model_dump(mode="json")
+        )
+        assert round_tripped_test_case == base_test_case
 
     output_path = tmp_path / input_path.name
     save_test_cases_to_json(output_path, localized_test_cases, manager_cls)
@@ -111,9 +117,6 @@ def test_tracked_test_case_json_loads_and_canonicalizes(
         for test_case in base_test_cases
     ]
     assert saved_data == canonical_data
-    assert [test_case["query"] for test_case in saved_data] == [
-        test_case["query"] for test_case in raw_test_cases
-    ]
 
     reloaded_test_cases = load_test_cases_from_json(
         output_path, manager_cls, prompt=manager_cls.base_prompt
