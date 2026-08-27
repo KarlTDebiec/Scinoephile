@@ -22,7 +22,7 @@ from .exceptions import (
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
+    TranscriptionRecognitionError,
 )
 from .mlx_audio import MlxAudioModel, MlxAudioTranscriber
 from .preprocessing_settings import (
@@ -48,7 +48,7 @@ __all__ = [
     "TranscriptionCache",
     "TranscriptionEmptyError",
     "TranscriptionError",
-    "TranscriptionInferenceError",
+    "TranscriptionRecognitionError",
     "TranscriptionPreprocessingSettings",
     "VadMode",
     "WhisperModel",

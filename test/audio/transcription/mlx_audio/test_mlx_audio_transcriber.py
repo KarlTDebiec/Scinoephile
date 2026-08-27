@@ -24,8 +24,8 @@ from scinoephile.audio.transcription import (
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
     TranscriptionPreprocessingSettings,
+    TranscriptionRecognitionError,
     VadMode,
 )
 from scinoephile.audio.transcription.mlx_audio.backend import MlxAudioInferenceResult
@@ -964,7 +964,7 @@ def test_transcribe_wraps_mlx_audio_inference_errors(monkeypatch: pytest.MonkeyP
     )
 
     with pytest.raises(
-        TranscriptionInferenceError, match="Unable to run MLX-Audio inference"
+        TranscriptionRecognitionError, match="Unable to run MLX-Audio inference"
     ):
         transcriber.transcribe(audio)
 

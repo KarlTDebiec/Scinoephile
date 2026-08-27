@@ -18,8 +18,8 @@ from scinoephile.audio.transcription import (
     TranscriptionCache,
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
     TranscriptionPreprocessingSettings,
+    TranscriptionRecognitionError,
     VadMode,
 )
 from scinoephile.audio.vad import VoiceActivityError
@@ -374,7 +374,7 @@ def test_rejected_cached_configuration_takes_precedence_over_other_error(
         transcriber._get_cache_identity(audio, vad_settings),
         [_get_segment("bad")],
     )
-    transcriber.outcomes[no_vad_settings] = TranscriptionInferenceError("failed")
+    transcriber.outcomes[no_vad_settings] = TranscriptionRecognitionError("failed")
 
     assert transcriber(audio, is_usable=lambda _segments: False) == []
     assert transcriber.calls == [(audio, no_vad_settings)]
@@ -389,7 +389,7 @@ def test_unusable_success_takes_precedence_over_other_configuration_error(
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
     transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.AUTO)
     transcriber.outcomes[vad_settings] = [_get_segment("bad")]
-    transcriber.outcomes[no_vad_settings] = TranscriptionInferenceError("failed")
+    transcriber.outcomes[no_vad_settings] = TranscriptionRecognitionError("failed")
 
     assert transcriber(audio, is_usable=lambda _segments: False) == []
     assert transcriber.last_cache_key_sha256 is None
@@ -401,10 +401,10 @@ def test_last_error_propagates_when_every_configuration_fails(tmp_path: Path):
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
     transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.AUTO)
-    transcriber.outcomes[vad_settings] = TranscriptionInferenceError("first")
-    transcriber.outcomes[no_vad_settings] = TranscriptionInferenceError("last")
+    transcriber.outcomes[vad_settings] = TranscriptionRecognitionError("first")
+    transcriber.outcomes[no_vad_settings] = TranscriptionRecognitionError("last")
 
-    with raises(TranscriptionInferenceError, match="last"):
+    with raises(TranscriptionRecognitionError, match="last"):
         transcriber(audio)
 
     for settings in (vad_settings, no_vad_settings):
@@ -445,7 +445,7 @@ def test_voice_activity_error_is_translated_at_transcription_boundary(tmp_path: 
     transcriber.vad_detector = detector
     transcriber._voice_activity_cache = cache
 
-    with raises(TranscriptionInferenceError, match="VAD failed") as exc_info:
+    with raises(TranscriptionRecognitionError, match="VAD failed") as exc_info:
         transcriber._get_voice_activity_trace(audio)
 
     assert exc_info.value.__cause__ is voice_activity_error

@@ -17,7 +17,7 @@ from scinoephile.audio.transcription.ctc_aligner import CtcAligner
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
+    TranscriptionRecognitionError,
 )
 from scinoephile.audio.transcription.preprocessing_settings import (
     DemucsMode,
@@ -702,7 +702,7 @@ class WhisperTranscriber(Transcriber):
         Returns:
             normalized transcription segments
         Raises:
-            TranscriptionInferenceError: if Whisper fails with an assertion
+            TranscriptionRecognitionError: if Whisper fails with an assertion
         """
         whisper_timestamped = import_whisper_timestamped()
         whisper_vad, voice_activity_trace = self._get_whisper_vad(audio, settings)
@@ -771,13 +771,13 @@ class WhisperTranscriber(Transcriber):
                                 fallback_segments, voice_activity_trace
                             )
                         return fallback_segments
-                    raise TranscriptionInferenceError(
+                    raise TranscriptionRecognitionError(
                         f"Whisper inference failed with an assertion: {exc}"
                     ) from exc
-            except TranscriptionInferenceError:
+            except TranscriptionRecognitionError:
                 raise
             except (ImportError, OSError, RuntimeError, ValueError) as exc:
-                raise TranscriptionInferenceError(
+                raise TranscriptionRecognitionError(
                     f"Unable to run Whisper inference: {exc}"
                 ) from exc
 
@@ -821,7 +821,7 @@ class WhisperTranscriber(Transcriber):
             CTC-aligned native Whisper transcript
         Raises:
             TranscriptionEmptyError: if native Whisper returns empty text
-            TranscriptionInferenceError: if native Whisper fails or returns malformed
+            TranscriptionRecognitionError: if native Whisper fails or returns malformed
                 output
         """
         assert self.ctc_aligner is not None
@@ -852,16 +852,16 @@ class WhisperTranscriber(Transcriber):
             TypeError,
             ValueError,
         ) as exc:
-            raise TranscriptionInferenceError(
+            raise TranscriptionRecognitionError(
                 f"Unable to run native Whisper fallback: {exc}"
             ) from exc
         if not isinstance(result, Mapping):
-            raise TranscriptionInferenceError(
+            raise TranscriptionRecognitionError(
                 "Native Whisper fallback returned malformed output."
             )
         text = result.get("text")
         if not isinstance(text, str):
-            raise TranscriptionInferenceError(
+            raise TranscriptionRecognitionError(
                 "Native Whisper fallback output is missing transcript text."
             )
         if not text.strip():
@@ -874,7 +874,7 @@ class WhisperTranscriber(Transcriber):
             or isinstance(native_segment_data, str | bytes)
             or not native_segment_data
         ):
-            raise TranscriptionInferenceError(
+            raise TranscriptionRecognitionError(
                 "Native Whisper fallback output contains malformed segments."
             )
         try:
@@ -883,7 +883,7 @@ class WhisperTranscriber(Transcriber):
                 for segment in native_segment_data
             ]
         except (TypeError, ValueError) as exc:
-            raise TranscriptionInferenceError(
+            raise TranscriptionRecognitionError(
                 "Native Whisper fallback output contains malformed segments."
             ) from exc
 

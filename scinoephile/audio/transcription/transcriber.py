@@ -25,7 +25,7 @@ from .cache import TranscriptionCache
 from .exceptions import (
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
+    TranscriptionRecognitionError,
 )
 from .preprocessing_settings import (
     DemucsMode,
@@ -364,7 +364,7 @@ class Transcriber(ABC):
         try:
             trace = self.vad_detector.get_trace(audio)
         except VoiceActivityError as exc:
-            raise TranscriptionInferenceError(str(exc)) from exc
+            raise TranscriptionRecognitionError(str(exc)) from exc
         self._voice_activity_cache.save(audio, cache_identity, trace)
         return trace
 
