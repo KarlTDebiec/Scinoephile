@@ -45,9 +45,10 @@ pull request on GitHub; this workflow requires read-only GitHub access.
    - keep surviving hand-authored edges and concise labels unchanged
    - remove nodes for PRs that are no longer open
    - when removing a parent, reconnect its surviving children to the nearest
-     surviving ancestor, or to the base branch node if none remains
+     surviving ancestor; leave them as root nodes if none remains
    - add a new PR beneath another open PR when its base branch is that PR's head
-     branch; otherwise add it beneath its GitHub base branch node
+     branch; otherwise add it as a root node
+   - include only PR nodes, with no base-branch nodes such as `master`
    - use node IDs in the form `pr<number>` and do not add labels to edges
 6. Keep the diff minimal. The table links are sufficient; do not add Mermaid
    `click` directives or restore other deleted commentary.
