@@ -2768,7 +2768,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.13.4" },
     { name = "pydub", specifier = ">=0.25.1" },
     { name = "pypinyin", specifier = ">=0.55.0" },
-    { name = "pysubs2", specifier = ">=1.8.1" },
+    { name = "pysubs2", specifier = ">=1.9.0" },
     { name = "requests", specifier = ">=2.34.2" },
     { name = "setuptools", specifier = ">=83.0.0" },
     { name = "silero-vad", marker = "extra == 'transcription'", specifier = ">=6.2.1" },
