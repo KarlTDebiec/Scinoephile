@@ -125,8 +125,9 @@ class AudioSeries(Series):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
+        *,
+        fps: float | None = None,
         **kwargs: Any,
     ):
         """Save series to an output file.
@@ -135,8 +136,8 @@ class AudioSeries(Series):
             path: output file path
             encoding: output file encoding
             format_: output file format
-            fps: frames per second
             errors: encoding error handling
+            fps: frames per second
             **kwargs: additional keyword arguments
         """
         path = Path(path)
@@ -172,8 +173,9 @@ class AudioSeries(Series):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
+        *,
+        fps: float | None = None,
         **kwargs: Any,
     ) -> Self:
         """Load series from a directory of wav files.
@@ -182,8 +184,8 @@ class AudioSeries(Series):
             path : input directory path
             encoding: input file encoding
             format_: input file format
-            fps: frames per second
             errors: encoding error handling
+            fps: frames per second
             **kwargs: additional keyword arguments
         Returns:
             loaded series
