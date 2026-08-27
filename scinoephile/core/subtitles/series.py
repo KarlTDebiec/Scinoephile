@@ -145,7 +145,6 @@ class Series(SSAFile):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
     ):
@@ -155,7 +154,6 @@ class Series(SSAFile):
             path: output file path
             encoding: output file encoding
             format_: output file format
-            fps: frames per second
             errors: encoding error handling
             **kwargs: additional keyword arguments
         """
@@ -166,7 +164,6 @@ class Series(SSAFile):
                 str(validated_path),
                 encoding=encoding,
                 format_=format_,
-                fps=fps,
                 errors=errors,
                 **kwargs,
             )
@@ -218,18 +215,17 @@ class Series(SSAFile):
         return string.rstrip()
 
     @override
-    def to_string(self, format_: str, fps: float | None = None, **kwargs: Any) -> str:
+    def to_string(self, format_: str, **kwargs: Any) -> str:
         """Serialize series to a string.
 
         Arguments:
             format_: output string format
-            fps: frames per second
             **kwargs: additional keyword arguments
         Returns:
             serialized subtitle series
         """
         try:
-            return super().to_string(format_, fps=fps, **kwargs)
+            return super().to_string(format_, **kwargs)
         except (Pysubs2Error, UnicodeError, ValueError) as exc:
             raise ScinoephileError(
                 f"Unable to serialize {type(self).__name__} to string: {exc}"
@@ -238,26 +234,19 @@ class Series(SSAFile):
     @classmethod
     @override
     def from_string(
-        cls,
-        string: str,
-        format_: str | None = None,
-        fps: float | None = None,
-        **kwargs: Any,
+        cls, string: str, format_: str | None = None, **kwargs: Any
     ) -> Self:
         """Parse series from string.
 
         Arguments:
             string: string to parse
             format_: input file format
-            fps: frames per second
             **kwargs: additional keyword arguments
         Returns:
             parsed series
         """
         try:
-            series = cast(
-                Self, super().from_string(string, format_=format_, fps=fps, **kwargs)
-            )
+            series = cast(Self, super().from_string(string, format_=format_, **kwargs))
             series.events = [
                 cls.event_class(**ssaevent.as_dict()) for ssaevent in series
             ]
@@ -275,7 +264,6 @@ class Series(SSAFile):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
     ) -> Self:
@@ -285,7 +273,6 @@ class Series(SSAFile):
             path : input file path
             encoding: input file encoding
             format_: input file format
-            fps: frames per second
             errors: encoding error handling
             **kwargs: additional keyword arguments
         Returns:
@@ -298,7 +285,7 @@ class Series(SSAFile):
                 str(validated_path), encoding=encoding, errors=errors
             ) as input_file:
                 series = cast(
-                    Self, cls.from_file(input_file, format_=format_, fps=fps, **kwargs)
+                    Self, cls.from_file(input_file, format_=format_, **kwargs)
                 )
                 series.events = [
                     cls.event_class(**ssaevent.as_dict()) for ssaevent in series
