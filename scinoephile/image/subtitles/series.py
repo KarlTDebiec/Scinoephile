@@ -191,8 +191,6 @@ class ImageSeries(Series):
         encoding: str = "utf-8",
         format_: str | None = None,
         errors: str | None = None,
-        *,
-        fps: float | None = None,
         **kwargs: Any,
     ):
         """Save series to an output file.
@@ -202,7 +200,6 @@ class ImageSeries(Series):
             encoding: output file encoding
             format_: output file format
             errors: encoding error handling
-            fps: frames per second
             **kwargs: additional keyword arguments
         """
         path = Path(path)
@@ -224,7 +221,6 @@ class ImageSeries(Series):
                 validated_output_path,
                 encoding=encoding,
                 format_=format_,
-                fps=fps,
                 errors=errors,
                 **kwargs,
             )
@@ -242,8 +238,6 @@ class ImageSeries(Series):
         encoding: str = "utf-8",
         format_: str | None = None,
         errors: str | None = None,
-        *,
-        fps: float | None = None,
         **kwargs: Any,
     ) -> Self:
         """Load series from an input file.
@@ -253,7 +247,6 @@ class ImageSeries(Series):
             encoding: input file encoding
             format_: input file format
             errors: encoding error handling
-            fps: frames per second
             **kwargs: additional keyword arguments
         Returns:
             loaded series

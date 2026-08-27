@@ -126,8 +126,6 @@ class AudioSeries(Series):
         encoding: str = "utf-8",
         format_: str | None = None,
         errors: str | None = None,
-        *,
-        fps: float | None = None,
         **kwargs: Any,
     ):
         """Save series to an output file.
@@ -137,7 +135,6 @@ class AudioSeries(Series):
             encoding: output file encoding
             format_: output file format
             errors: encoding error handling
-            fps: frames per second
             **kwargs: additional keyword arguments
         """
         path = Path(path)
@@ -156,7 +153,6 @@ class AudioSeries(Series):
                 validated_output_path,
                 encoding=encoding,
                 format_=format_,
-                fps=fps,
                 errors=errors,
                 **kwargs,
             )
@@ -174,8 +170,6 @@ class AudioSeries(Series):
         encoding: str = "utf-8",
         format_: str | None = None,
         errors: str | None = None,
-        *,
-        fps: float | None = None,
         **kwargs: Any,
     ) -> Self:
         """Load series from a directory of wav files.
@@ -185,7 +179,6 @@ class AudioSeries(Series):
             encoding: input file encoding
             format_: input file format
             errors: encoding error handling
-            fps: frames per second
             **kwargs: additional keyword arguments
         Returns:
             loaded series
@@ -200,7 +193,6 @@ class AudioSeries(Series):
                 validated_srt_path,
                 encoding=encoding,
                 format_=format_,
-                fps=fps,
                 errors=errors,
                 **kwargs,
             )
