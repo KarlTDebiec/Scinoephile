@@ -35,15 +35,15 @@ def load_test_cases_from_json[TTestCase: TestCase](
     Returns:
         list of test cases
     """
-    # Prepare prompt-specific test-case classes
+    # Build models for canonical persistence and the caller's prompt
     base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
     test_case_cls = manager_cls.get_test_case_cls(prompt)
 
-    # Load serialized test cases
+    # Decode JSON without assuming its outer shape
     with open(input_path, encoding="utf-8") as input_file:
         raw_test_cases: object = json.load(input_file)
 
-    # Retain valid queries when unverified answers fail updated semantic validation
+    # Require an array of objects before applying operation-specific validation
     raw_test_case_adapter = TypeAdapter(list[dict[str, object]])
     raw_test_case_items = raw_test_case_adapter.validate_python(
         raw_test_cases, strict=True
@@ -61,6 +61,7 @@ def load_test_cases_from_json[TTestCase: TestCase](
                 context={"alias_only": True},
             )
         except ValidationError as original_error:
+            # Recover only ordinary unverified cases whose query remains valid
             if (
                 raw_test_case.get("answer") is None
                 or raw_test_case.get("verified") is True
@@ -91,13 +92,15 @@ def load_test_cases_from_json[TTestCase: TestCase](
                 raise original_error
             stale_answer_count += 1
         base_test_cases.append(cast("TTestCase", base_test_case))
+
+    # Report all recovered stale answers once per file
     if stale_answer_count:
         logger.warning(
             f"Discarded {stale_answer_count} stale unverified answer(s) while "
             f"loading {input_path}; their valid queries will be regenerated."
         )
 
-    # Convert to the requested prompt schema
+    # Convert canonical semantic data to the caller's prompt schema
     test_cases: list[TTestCase] = []
     for base_test_case in base_test_cases:
         test_case_data = base_test_case.model_dump(mode="json")
@@ -119,6 +122,7 @@ def save_test_cases_to_json[TTestCase: TestCase](
         test_cases: test cases to save
         manager_cls: manager class used to construct test case models
     """
+    # Revalidate every case through the canonical persistence schema
     test_cases_to_save = list(test_cases)
     base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
     data = []
@@ -129,7 +133,10 @@ def save_test_cases_to_json[TTestCase: TestCase](
         data.append(
             base_test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)
         )
+
+    # Prepare the destination only after all cases pass validation
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
+    # Replace the destination atomically so failed writes preserve the prior file
     with open_atomic_text_file(output_path) as temp_file:
         json.dump(data, temp_file, ensure_ascii=False, indent=2)
