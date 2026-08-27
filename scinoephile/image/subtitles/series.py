@@ -190,7 +190,6 @@ class ImageSeries(Series):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
     ):
@@ -200,7 +199,6 @@ class ImageSeries(Series):
             path: output file path
             encoding: output file encoding
             format_: output file format
-            fps: frames per second
             errors: encoding error handling
             **kwargs: additional keyword arguments
         """
@@ -223,7 +221,6 @@ class ImageSeries(Series):
                 validated_output_path,
                 encoding=encoding,
                 format_=format_,
-                fps=fps,
                 errors=errors,
                 **kwargs,
             )
@@ -240,7 +237,6 @@ class ImageSeries(Series):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
     ) -> Self:
@@ -250,7 +246,6 @@ class ImageSeries(Series):
             path: input file path
             encoding: input file encoding
             format_: input file format
-            fps: frames per second
             errors: encoding error handling
             **kwargs: additional keyword arguments
         Returns:
