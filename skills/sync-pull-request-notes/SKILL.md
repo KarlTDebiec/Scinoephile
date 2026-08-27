@@ -48,8 +48,14 @@ pull request on GitHub; this workflow requires read-only GitHub access.
    - remove nodes for PRs that are no longer open
    - when removing a parent, reconnect its surviving children to the nearest
      surviving ancestor; leave them as root nodes if none remains
-   - add a new PR beneath another open PR when its base branch is that PR's head
-     branch; otherwise add it as a root node
+   - distinguish conceptual lineage from the Git base branch; a focused PR may
+     target `master` while still having been extracted from a larger PR
+   - add a new PR beneath another open PR when its body explicitly declares that
+     relationship with wording such as `Extracted from #123` or
+     `Split from #123`; do not infer ancestry from an incidental PR-number
+     mention
+   - when the body declares no parent, add the PR beneath another open PR when
+     its base branch is that PR's head branch; otherwise add it as a root node
    - include only PR nodes, with no base-branch nodes such as `master`
    - use node IDs in the form `pr<number>` and do not add labels to edges
 6. Keep the diff minimal. The table links are sufficient; do not add Mermaid
@@ -70,6 +76,7 @@ Before finishing, confirm that:
 - the Mermaid figure and table contain the same PR numbers
 - every open GitHub PR appears exactly once in each
 - every table title, link, branch, and state matches GitHub
+- every explicit parent relationship to an open PR is represented by an edge
 - the Mermaid graph has no dangling PR nodes or edges
 - `local/_pull_requests.md` remains local and untracked
 
