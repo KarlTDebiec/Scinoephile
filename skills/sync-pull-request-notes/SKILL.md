@@ -40,6 +40,8 @@ pull request on GitHub; this workflow requires read-only GitHub access.
    - preserve an existing role by PR number
    - for a new PR, summarize its role only when the PR body makes it explicit;
      otherwise use `Not yet categorized.`
+   - escape or encode Markdown table delimiters in every GitHub-derived cell
+     value while preserving the displayed text; a `|` must not create a new cell
    - remove rows for PRs that are no longer open
 5. Reconcile the Mermaid figure with the same open PR set:
    - keep surviving hand-authored edges and concise labels unchanged
