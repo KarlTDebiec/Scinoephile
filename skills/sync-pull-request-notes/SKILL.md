@@ -32,8 +32,8 @@ pull request on GitHub; this workflow requires read-only GitHub access.
 2. Read `local/_pull_requests.md` before querying GitHub. If it is missing, create
    a minimal note containing `# Pull Requests`, a Mermaid `flowchart LR`, and the
    four-column PR table used below.
-3. Use the GitHub MCP to list every open pull request, including drafts. Follow
-   pagination until the complete set is retrieved.
+3. Use the available GitHub tooling to list every open pull request, including
+   drafts. Follow pagination until the complete set is retrieved.
 4. Sort PRs by number and reconcile the table to exactly that set:
    - render the state as `Draft` or `Open`
    - update the full linked title and head branch from GitHub
