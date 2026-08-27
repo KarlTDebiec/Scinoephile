@@ -1,0 +1,12 @@
+interface:
+  display_name: "Sync Pull Request Notes"
+  short_description: "Sync the local map of open GitHub PRs"
+  default_prompt: "Use $sync-pull-request-notes to refresh local/_pull_requests.md from the repository’s open GitHub pull requests."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "github"
+      description: "GitHub MCP server for reading open pull requests"
+      transport: "streamable_http"
+      url: "https://api.githubcopilot.com/mcp/"
