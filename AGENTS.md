@@ -44,7 +44,6 @@ Review [docs/STYLE.md](/docs/STYLE.md) before planning or coding.
 ### Version Control
 
 * Branches should be named in the format `feature/brief-description`.
-* Interact with GitHub using the `gh` CLI.
 
 ### Linting
 
