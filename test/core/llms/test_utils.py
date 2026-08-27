@@ -160,13 +160,105 @@ def test_json_loading_rejects_non_base_fields(tmp_path: Path, test_case_data: di
         {"query": []},
         {"query": {"base_subtitles": "not a list"}},
         {"query": {"base_subtitles": [{"base_index": "1", "base_text": "original"}]}},
+        {
+            "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
+            "answer": {
+                "base_revisions": [
+                    {"base_index": 1, "base_text": "corrected", "base_note": "typo"}
+                ]
+            },
+            "verified": 1,
+        },
+        {
+            "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
+            "answer": {
+                "base_revisions": [
+                    {"base_index": 1, "base_text": "corrected", "base_note": "typo"}
+                ]
+            },
+            "few_shot": 1,
+        },
     ],
-    ids=["non-object-query", "non-list-subtitles", "coerced-index"],
+    ids=[
+        "non-object-query",
+        "non-list-subtitles",
+        "coerced-index",
+        "coerced-verified",
+        "coerced-few-shot",
+    ],
 )
 def test_json_loading_is_strict(tmp_path: Path, test_case_data: dict):
     """Repository JSON should reject values requiring type coercion."""
     input_path = tmp_path / "test_cases.json"
     input_path.write_text(json.dumps([test_case_data]), encoding="utf-8")
+
+    with raises(ValidationError):
+        load_test_cases_from_json(
+            input_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
+        )
+
+
+def test_json_loading_discards_stale_unverified_answer(tmp_path: Path):
+    """A stale generated answer should retain its valid query for regeneration."""
+    input_path = tmp_path / "test_cases.json"
+    input_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "base_subtitles": [{"base_index": 1, "base_text": "original"}]
+                    },
+                    "answer": {
+                        "base_revisions": [
+                            {
+                                "base_index": 2,
+                                "base_text": "invalid",
+                                "base_note": "stale",
+                            }
+                        ]
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    loaded = load_test_cases_from_json(
+        input_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
+    )
+
+    assert len(loaded) == 1
+    assert loaded[0].answer is None
+    assert loaded[0].query.model_dump()["subtitles"][0]["text"] == "original"
+
+
+def test_json_loading_rejects_stale_verified_answer(tmp_path: Path):
+    """A verified answer should never be silently discarded when invalid."""
+    input_path = tmp_path / "test_cases.json"
+    input_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "base_subtitles": [{"base_index": 1, "base_text": "original"}]
+                    },
+                    "answer": {
+                        "base_revisions": [
+                            {
+                                "base_index": 2,
+                                "base_text": "invalid",
+                                "base_note": "stale",
+                            }
+                        ]
+                    },
+                    "verified": True,
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
 
     with raises(ValidationError):
         load_test_cases_from_json(
@@ -186,8 +278,8 @@ def test_json_loading_requires_an_array_of_objects(tmp_path: Path, contents: obj
         )
 
 
-def test_save_preserves_existing_cases_unless_pruning(tmp_path: Path):
-    """Saving a partial run should retain unencountered persisted cases."""
+def test_save_replaces_existing_collection(tmp_path: Path):
+    """Saving should replace the persisted collection atomically."""
     output_path = tmp_path / "test_cases.json"
     existing_test_case = _get_test_case("existing", "existing corrected")
     encountered_test_case = _get_test_case("encountered", "encountered corrected")
@@ -197,17 +289,6 @@ def test_save_preserves_existing_cases_unless_pruning(tmp_path: Path):
 
     save_test_cases_to_json(
         output_path, [encountered_test_case], _AliasedBaseReviewManager
-    )
-
-    loaded = load_test_cases_from_json(
-        output_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
-    )
-    assert [
-        test_case.query.model_dump()["subtitles"][0]["text"] for test_case in loaded
-    ] == ["existing", "encountered"]
-
-    save_test_cases_to_json(
-        output_path, [encountered_test_case], _AliasedBaseReviewManager, prune=True
     )
 
     loaded = load_test_cases_from_json(

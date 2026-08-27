@@ -314,6 +314,36 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path
 
 def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: Path):
     """Test default JSON test cases are preserved between runs."""
+    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
+    delineation_json_path = test_case_dir_path / "delineation" / "test.json"
+    punctuation_json_path = test_case_dir_path / "punctuation" / "test.json"
+    delineation_test_case_data = [
+        {
+            "query": {
+                "ref_sub_1": "參考一",
+                "ref_sub_2": "參考二",
+                "target_sub_1": "目標一",
+                "target_sub_2": "目標二",
+            },
+            "answer": {},
+        }
+    ]
+    punctuation_test_case_data = [
+        {
+            "query": {"ref_sub": "參考", "target_subs": ["目標"]},
+            "answer": {"target_sub_punctuated": "目標。"},
+            "difficulty": 2,
+        }
+    ]
+    delineation_json_path.parent.mkdir(parents=True)
+    punctuation_json_path.parent.mkdir(parents=True)
+    delineation_json_path.write_text(
+        json.dumps(delineation_test_case_data), encoding="utf-8"
+    )
+    punctuation_json_path.write_text(
+        json.dumps(punctuation_test_case_data), encoding="utf-8"
+    )
+
     with (
         patch(
             "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
@@ -336,33 +366,6 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: 
             punctuation_test_cases=[],
             cache_root_path=tmp_path,
         )
-    test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
-    delineation_json_path = test_case_dir_path / "delineation" / "test.json"
-    punctuation_json_path = test_case_dir_path / "punctuation" / "test.json"
-    delineation_test_case_data = [
-        {
-            "query": {
-                "ref_sub_1": "參考一",
-                "ref_sub_2": "參考二",
-                "target_sub_1": "目標一",
-                "target_sub_2": "目標二",
-            },
-            "answer": {},
-        }
-    ]
-    punctuation_test_case_data = [
-        {
-            "query": {"ref_sub": "參考", "target_subs": ["目標"]},
-            "answer": {"target_sub_punctuated": "目標。"},
-            "difficulty": 2,
-        }
-    ]
-    delineation_json_path.write_text(
-        json.dumps(delineation_test_case_data), encoding="utf-8"
-    )
-    punctuation_json_path.write_text(
-        json.dumps(punctuation_test_case_data), encoding="utf-8"
-    )
 
     transcriber.aligner.update_all_test_cases()
 

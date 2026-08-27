@@ -104,6 +104,10 @@ class Processor(ABC):
             current_test_cases = load_test_cases_from_json(
                 current_test_cases_path, self.manager_cls, self.prompt
             )
+        self._persisted_test_cases = {
+            test_case.query.key: test_case for test_case in current_test_cases
+        }
+        """Persisted test cases keyed by semantic query identity."""
         verified_test_cases = [
             test_case
             for test_case in [*(shared_test_cases or []), *current_test_cases]
@@ -131,9 +135,14 @@ class Processor(ABC):
         """Persist encountered test cases."""
         if self.current_test_cases_path is None or self.manager_cls is None:
             return
+
+        encountered_test_cases = self.queryer.encountered_test_cases
+        if self.prune_test_cases:
+            self._persisted_test_cases = dict(encountered_test_cases)
+        else:
+            self._persisted_test_cases.update(encountered_test_cases)
         save_test_cases_to_json(
             self.current_test_cases_path,
-            self.queryer.encountered_test_cases.values(),
+            self._persisted_test_cases.values(),
             self.manager_cls,
-            prune=self.prune_test_cases,
         )
