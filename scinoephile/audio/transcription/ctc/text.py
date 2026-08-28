@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Builds timed transcription words from CTC character timings."""
+"""Shapes CTC character timings into transcribed words."""
 
 from __future__ import annotations
 
@@ -9,13 +9,15 @@ from collections.abc import Mapping, Sequence
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.core import Language
 
+from .types import CtcCharacterTiming
+
 __all__ = ["get_transcribed_words"]
 
 
 def get_transcribed_words(
     language: Language,
     text: str,
-    timed_chars: Mapping[int, tuple[float, float, float]],
+    timed_chars: Mapping[int, CtcCharacterTiming],
     duration_seconds: float,
 ) -> list[TranscribedWord]:
     """Build transcribed words covering aligned and unaligned characters.
@@ -32,35 +34,35 @@ def get_transcribed_words(
     pending_text = ""
     char_idx = 0
     while char_idx < len(text):
-        # Add a directly aligned character and any pending prefix
         timing = timed_chars.get(char_idx)
         if timing is not None:
-            start, end, confidence = timing
             words.append(
                 TranscribedWord(
                     text=f"{pending_text}{text[char_idx]}",
-                    start=start,
-                    end=end,
-                    confidence=confidence,
+                    start=timing.start,
+                    end=timing.end,
+                    confidence=timing.confidence,
                 )
             )
             pending_text = ""
             char_idx += 1
             continue
 
-        # Find the next run of characters unsupported by the CTC model
         run_start_idx = char_idx
         while char_idx < len(text) and char_idx not in timed_chars:
             char_idx += 1
         run_end_idx = char_idx
         run_text = text[run_start_idx:run_end_idx]
 
-        # Attach boundary text to the nearest aligned character
-        boundary_pending_text = _attach_boundary_text(
-            run_text, words, char_idx < len(text)
-        )
-        if boundary_pending_text is not None:
-            pending_text = boundary_pending_text
+        if (
+            words
+            and char_idx == len(text)
+            and not any(char.isalnum() for char in run_text)
+        ):
+            words[-1].text += run_text
+            continue
+        if not words and run_text.isspace():
+            pending_text = run_text
             continue
 
         previous_end = words[-1].end if words else 0.0
@@ -68,9 +70,8 @@ def get_transcribed_words(
         if char_idx < len(text):
             next_timing = timed_chars.get(char_idx)
             if next_timing is not None:
-                next_start = next_timing[0]
+                next_start = next_timing.start
 
-        # Attach zero-duration internal text to an adjacent aligned character
         gap_seconds = max(next_start - previous_end, 0.0)
         if gap_seconds == 0.0:
             if not words:
@@ -88,7 +89,6 @@ def get_transcribed_words(
             pending_text = run_text[prefix_start_idx:]
             continue
 
-        # Distribute available time evenly across otherwise unaligned characters
         run_length = run_end_idx - run_start_idx
         char_duration = gap_seconds / run_length
         for offset, unaligned_char_idx in enumerate(range(run_start_idx, run_end_idx)):
@@ -105,26 +105,6 @@ def get_transcribed_words(
     return words
 
 
-def _attach_boundary_text(
-    run_text: str, words: list[TranscribedWord], has_next_timing: bool
-) -> str | None:
-    """Attach unaligned boundary punctuation or whitespace to a timed character.
-
-    Arguments:
-        run_text: unaligned text at a transcript boundary
-        words: transcribed words built so far
-        has_next_timing: whether an aligned character follows the run
-    Returns:
-        pending prefix text when handled, otherwise None
-    """
-    if words and not has_next_timing and not any(char.isalnum() for char in run_text):
-        words[-1].text += run_text
-        return ""
-    if not words and run_text.isspace():
-        return run_text
-    return None
-
-
 def _group_english_words(
     character_words: Sequence[TranscribedWord],
 ) -> list[TranscribedWord]:
@@ -135,7 +115,6 @@ def _group_english_words(
     Returns:
         whitespace-delimited words with aggregate timings and confidence
     """
-    # Group whitespace with the word that follows it
     word_parts: list[list[TranscribedWord]] = []
     for character_word in character_words:
         if (
@@ -148,7 +127,6 @@ def _group_english_words(
             word_parts.append([])
         word_parts[-1].append(character_word)
 
-    # Preserve trailing whitespace on the preceding word
     if (
         len(word_parts) > 1
         and word_parts[-1]
@@ -156,7 +134,6 @@ def _group_english_words(
     ):
         word_parts[-2].extend(word_parts.pop())
 
-    # Combine each group using duration-weighted character confidence
     words: list[TranscribedWord] = []
     for parts in word_parts:
         durations = [max(part.end - part.start, 0.0) for part in parts]

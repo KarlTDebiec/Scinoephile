@@ -3,6 +3,7 @@
 """CTC transcription alignment.
 
 Package hierarchy (modules may import from any above):
+* model_spec / types
 * path / text / tokenization
 * model
 * aligner
@@ -11,5 +12,6 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .aligner import CtcAligner
+from .model_spec import CtcModelSpec
 
-__all__ = ["CtcAligner"]
+__all__ = ["CtcAligner", "CtcModelSpec"]

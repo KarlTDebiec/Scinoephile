@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Finds and times the best path through CTC model output."""
+"""Finds character timings through CTC output probabilities."""
 
 from __future__ import annotations
 
@@ -13,12 +13,14 @@ from scinoephile.audio.transcription.exceptions import (
     TranscriptionAlignmentIncompleteError,
 )
 
+from .types import CtcCharacterTiming, CtcPathStep
+
 __all__ = ["get_best_path", "get_character_timings"]
 
 
 def get_best_path(
     log_probs: np.ndarray, token_ids: Sequence[int], blank_token_id: int
-) -> list[tuple[int, int, float]]:
+) -> list[CtcPathStep]:
     """Get the best CTC path through a transcript-token trellis.
 
     Arguments:
@@ -30,9 +32,8 @@ def get_best_path(
     Raises:
         TranscriptionAlignmentError: if no complete path can be found
     """
-    frame_count = _validate_best_path_inputs(log_probs, token_ids, blank_token_id)
+    frame_count = _validate_inputs(log_probs, token_ids, blank_token_id)
 
-    # Insert required blanks between adjacent repeated labels
     alignment_token_ids: list[int] = []
     path_token_indices: list[int] = []
     for token_idx, token_id in enumerate(token_ids):
@@ -44,7 +45,6 @@ def get_best_path(
         alignment_token_ids.append(token_id)
         path_token_indices.append(token_idx)
 
-    # Initialize and populate the alignment trellis
     alignment_token_count = len(alignment_token_ids)
     trellis = np.empty((frame_count + 1, alignment_token_count + 1))
     trellis[0, 0] = 0.0
@@ -57,7 +57,6 @@ def get_best_path(
         change_scores = trellis[frame_idx, :-1] + token_log_probs
         trellis[frame_idx + 1, 1:] = np.maximum(stay_scores, change_scores)
 
-    # Select the best completed alignment
     final_column = trellis[:, alignment_token_count]
     if np.all(np.isneginf(final_column)):
         raise TranscriptionAlignmentIncompleteError(
@@ -65,9 +64,8 @@ def get_best_path(
         )
     frame_idx = int(np.argmax(final_column))
 
-    # Backtrack through the trellis to recover token frame spans
     alignment_token_idx = alignment_token_count
-    path: list[tuple[int, int, float]] = []
+    path: list[CtcPathStep] = []
     for trellis_frame_idx in range(frame_idx, 0, -1):
         token_id = alignment_token_ids[alignment_token_idx - 1]
         stay_score = (
@@ -83,10 +81,12 @@ def get_best_path(
         else:
             score_token_id = blank_token_id
         path.append(
-            (
-                path_token_indices[alignment_token_idx - 1],
-                trellis_frame_idx - 1,
-                float(np.exp(log_probs[trellis_frame_idx - 1, score_token_id])),
+            CtcPathStep(
+                token_idx=path_token_indices[alignment_token_idx - 1],
+                frame_idx=trellis_frame_idx - 1,
+                probability=float(
+                    np.exp(log_probs[trellis_frame_idx - 1, score_token_id])
+                ),
             )
         )
         if change_score > stay_score:
@@ -101,11 +101,11 @@ def get_best_path(
 
 
 def get_character_timings(
-    path: Sequence[tuple[int, int, float]],
+    path: Sequence[CtcPathStep],
     char_indices: Sequence[int],
     frame_count: int,
     duration_seconds: float,
-) -> dict[int, tuple[float, float, float]]:
+) -> dict[int, CtcCharacterTiming]:
     """Convert a CTC path into original-text character timings.
 
     Arguments:
@@ -122,32 +122,33 @@ def get_character_timings(
         raise TranscriptionAlignmentError("CTC alignment received no audio frames.")
     frame_duration = duration_seconds / frame_count
 
-    # Collapse consecutive frames assigned to each transcript character
-    timed_chars: dict[int, tuple[float, float, float]] = {}
+    timed_chars: dict[int, CtcCharacterTiming] = {}
     path_idx = 0
     while path_idx < len(path):
         segment_end_idx = path_idx
         while (
             segment_end_idx < len(path)
-            and path[path_idx][0] == path[segment_end_idx][0]
+            and path[path_idx].token_idx == path[segment_end_idx].token_idx
         ):
             segment_end_idx += 1
 
-        token_idx = path[path_idx][0]
+        token_idx = path[path_idx].token_idx
         if token_idx < 0 or token_idx >= len(char_indices):
             raise TranscriptionAlignmentError("CTC path token index is out of range.")
         char_idx = char_indices[token_idx]
-        start = path[path_idx][1] * frame_duration
-        end = (path[segment_end_idx - 1][1] + 1) * frame_duration
-        confidence = sum(item[2] for item in path[path_idx:segment_end_idx]) / (
-            segment_end_idx - path_idx
+        start = path[path_idx].frame_idx * frame_duration
+        end = (path[segment_end_idx - 1].frame_idx + 1) * frame_duration
+        confidence = sum(
+            step.probability for step in path[path_idx:segment_end_idx]
+        ) / (segment_end_idx - path_idx)
+        timed_chars[char_idx] = CtcCharacterTiming(
+            start=round(start, 3), end=round(end, 3), confidence=round(confidence, 3)
         )
-        timed_chars[char_idx] = (round(start, 3), round(end, 3), round(confidence, 3))
         path_idx = segment_end_idx
     return timed_chars
 
 
-def _validate_best_path_inputs(
+def _validate_inputs(
     log_probs: np.ndarray, token_ids: Sequence[int], blank_token_id: int
 ) -> int:
     """Validate CTC path inputs.

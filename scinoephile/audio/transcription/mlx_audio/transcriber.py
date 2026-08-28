@@ -35,6 +35,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
+from scinoephile.core.ml import ModelSpec
 
 from .backend import MlxAudioBackend
 from .exceptions import MlxAudioTokenLimitError
@@ -73,7 +74,7 @@ class MlxAudioTranscriber(Transcriber):
         self,
         model: MlxAudioModel = MIMO_MODEL,
         language: Language = Language.yue_hant,
-        ctc_model_name: str | None = None,
+        ctc_model_spec: ModelSpec | None = None,
         max_tokens: int | None = None,
         chunk_duration_seconds: float | None = None,
         chunk_overlap_seconds: float = 1.0,
@@ -84,14 +85,13 @@ class MlxAudioTranscriber(Transcriber):
         overwrite_cache: bool = False,
         demucs_separator: DemucsSeparator | None = None,
         vad_detector: VoiceActivityDetector | None = None,
-        ctc_model_revision: str | None = None,
     ):
         """Initialize.
 
         Arguments:
             model: MLX-Audio model
             language: language to transcribe
-            ctc_model_name: optional CTC model name or local model path
+            ctc_model_spec: optional CTC model specification
             max_tokens: optional override for the model's generation limit
             chunk_duration_seconds: optional chunk duration for inference
             chunk_overlap_seconds: context overlap applied to each chunk
@@ -102,7 +102,6 @@ class MlxAudioTranscriber(Transcriber):
             overwrite_cache: whether to replace matching cache files
             demucs_separator: optional shared Demucs vocal separator
             vad_detector: optional shared voice activity detector
-            ctc_model_revision: optional immutable Hugging Face CTC model revision
         Raises:
             TranscriptionError: if the platform does not support MLX-Audio
             ValueError: if the language or numeric configuration is invalid
@@ -126,8 +125,7 @@ class MlxAudioTranscriber(Transcriber):
 
         self.ctc_aligner = CtcAligner(
             language,
-            ctc_model_name,
-            model_revision=ctc_model_revision,
+            ctc_model_spec,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
         )
@@ -203,8 +201,8 @@ class MlxAudioTranscriber(Transcriber):
             "chunk_overlap_seconds": chunk_overlap_ms / 1000,
             "chunk_postprocessing_version": _CHUNK_POSTPROCESSING_VERSION,
             "aligner": "ctc",
-            "aligner_model_name": self.ctc_aligner.model_name,
-            "aligner_model_revision": self.ctc_aligner.model_revision,
+            "aligner_model_name": self.ctc_aligner.model.spec.name,
+            "aligner_model_revision": self.ctc_aligner.model.spec.revision,
         }
         if self._uses_token_limit_guard(audio):
             cache_identity["token_limit_guard_fraction"] = _TOKEN_LIMIT_GUARD_FRACTION

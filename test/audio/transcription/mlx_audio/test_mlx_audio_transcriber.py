@@ -8,6 +8,7 @@ import json
 from collections.abc import Mapping
 from dataclasses import replace
 from pathlib import Path
+from types import SimpleNamespace
 from typing import cast
 from unittest.mock import Mock
 
@@ -44,6 +45,10 @@ from scinoephile.audio.vad import (
     VoiceActivityTrace,
 )
 from scinoephile.core import Language
+from scinoephile.core.ml import ModelSpec
+
+_CTC_MODEL = ModelSpec(name="ctc/test-model", revision="ctc-revision")
+"""CTC model specification used by transcriber tests."""
 
 
 @pytest.fixture(autouse=True)
@@ -118,8 +123,12 @@ def test_get_cache_path_separates_ctc_model_configuration():
     audio = _get_cache_audio()
     first_transcriber = _get_mlx_audio_transcriber()
     second_transcriber = _get_mlx_audio_transcriber()
-    first_transcriber.ctc_aligner = CtcAligner(Language.yue_hant, "ctc/one")
-    second_transcriber.ctc_aligner = CtcAligner(Language.yue_hant, "ctc/two")
+    first_transcriber.ctc_aligner = CtcAligner(
+        Language.yue_hant, ModelSpec("ctc/one", "revision-one")
+    )
+    second_transcriber.ctc_aligner = CtcAligner(
+        Language.yue_hant, ModelSpec("ctc/two", "revision-two")
+    )
 
     first_cache_path = _get_cache_path(first_transcriber, audio)
     second_cache_path = _get_cache_path(second_transcriber, audio)
@@ -425,7 +434,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(monkeypatch: pytest.MonkeyPa
         model=MIMO_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.OFF
     )
     transcriber.ctc_aligner = Mock(
-        model_name="ctc/test-model", model_revision=None, return_value=expected_segments
+        model=SimpleNamespace(spec=_CTC_MODEL), return_value=expected_segments
     )
 
     def fake_transcribe(
@@ -460,7 +469,7 @@ def test_transcribe_derives_language_and_passes_max_tokens(
         max_tokens=1024,
     )
     transcriber.ctc_aligner = Mock(
-        model_name="ctc/test-model", model_revision=None, return_value=expected_segments
+        model=SimpleNamespace(spec=_CTC_MODEL), return_value=expected_segments
     )
 
     def fake_transcribe(
@@ -498,8 +507,7 @@ def test_transcribe_chunks_audio_assigns_and_clips_words(
         ]
     )
     transcriber.ctc_aligner = Mock(
-        model_name="ctc/test-model",
-        model_revision=None,
+        model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             [_get_timed_segment("one", start=0.1, end=0.9)],
             [
@@ -553,8 +561,7 @@ def test_token_limit_guard_proactively_chunks_long_mimo_audio(
         ]
     )
     transcriber.ctc_aligner = Mock(
-        model_name="ctc/test-model",
-        model_revision=None,
+        model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             [_get_timed_segment("one", start=0.1, end=52.9)],
             [_get_timed_segment("two", start=1.1, end=53.9)],
@@ -629,8 +636,7 @@ def test_transcribe_splits_audio_after_generation_token_exhaustion(
         ]
     )
     transcriber.ctc_aligner = Mock(
-        model_name="ctc/test-model",
-        model_revision=None,
+        model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             [_get_timed_segment("one", end=2.0)],
             [_get_timed_segment("two", end=2.0)],
@@ -662,8 +668,7 @@ def test_token_limit_guard_splits_audio_near_generation_limit(
         ]
     )
     transcriber.ctc_aligner = Mock(
-        model_name="ctc/test-model",
-        model_revision=None,
+        model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             [_get_timed_segment("one", end=2.0)],
             [_get_timed_segment("two", end=2.0)],
@@ -696,8 +701,7 @@ def test_transcribe_splits_audio_after_incomplete_ctc_alignment(
         ]
     )
     transcriber.ctc_aligner = Mock(
-        model_name="ctc/test-model",
-        model_revision=None,
+        model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             TranscriptionAlignmentIncompleteError(
                 "CTC alignment did not reach all tokens."
@@ -725,8 +729,7 @@ def test_transcribe_does_not_split_audio_after_other_ctc_errors(
     transcriber = MlxAudioTranscriber(demucs_mode=DemucsMode.OFF, vad_mode=VadMode.OFF)
     backend_transcribe = Mock(return_value=MlxAudioInferenceResult(text="whole"))
     transcriber.ctc_aligner = Mock(
-        model_name="ctc/test-model",
-        model_revision=None,
+        model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=TranscriptionAlignmentError("CTC backend unavailable."),
     )
     monkeypatch.setattr(transcriber.backend, "transcribe", backend_transcribe)
@@ -915,7 +918,7 @@ def test_transcribe_aligns_text_and_writes_cache(
         lambda _audio_path, _max_tokens: MlxAudioInferenceResult(text="你好"),
     )
     transcriber.ctc_aligner = Mock(
-        model_name="ctc/test-model", model_revision=None, return_value=expected_segments
+        model=SimpleNamespace(spec=_CTC_MODEL), return_value=expected_segments
     )
 
     segments = transcriber.transcribe(audio)
@@ -945,7 +948,7 @@ def test_transcribe_rejects_low_information_vocalizations(
         "transcribe",
         Mock(return_value=MlxAudioInferenceResult(text="啊！啊！")),
     )
-    transcriber.ctc_aligner = Mock(model_name="ctc/test-model", model_revision=None)
+    transcriber.ctc_aligner = Mock(model=SimpleNamespace(spec=_CTC_MODEL))
 
     with pytest.raises(TranscriptionEmptyError, match="low-information"):
         transcriber.transcribe(AudioSegment.silent(duration=1000))
