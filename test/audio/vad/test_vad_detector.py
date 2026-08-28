@@ -296,14 +296,14 @@ def test_silero_rejects_unsupported_sample_rate():
 
 
 def test_ten_missing_runtime_is_a_dependency_error(monkeypatch: pytest.MonkeyPatch):
-    """Wrap a missing TEN runtime in the shared dependency error."""
+    """Propagate the shared dependency error for a missing TEN runtime."""
     monkeypatch.setattr(
         "scinoephile.core.dependencies.transcription.import_ten_vad",
-        Mock(side_effect=ImportError("missing")),
+        Mock(side_effect=DependencyError("missing TEN VAD dependency")),
     )
     detector = VoiceActivityDetector(VadImplementation.TEN)
 
-    with pytest.raises(DependencyError, match="TEN VAD requires"):
+    with pytest.raises(DependencyError, match="missing TEN VAD dependency"):
         detector(AudioSegment.silent(duration=100))
 
 

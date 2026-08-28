@@ -64,6 +64,9 @@ class DemucsSeparator:
             audio: audio to separate
         Returns:
             vocals-only audio
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            ScinoephileError: if model loading or separation fails
         """
         return self.separate_vocals(audio)
 
@@ -74,7 +77,13 @@ class DemucsSeparator:
 
     @property
     def device(self) -> str:
-        """Get torch device identifier."""
+        """Get torch device identifier.
+
+        Returns:
+            torch device identifier
+        Raises:
+            DependencyError: if Torch is unavailable
+        """
         if self._device is None:
             self._device = get_torch_device()
         return self._device
@@ -85,6 +94,9 @@ class DemucsSeparator:
 
         Returns:
             loaded Demucs model
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            ScinoephileError: if the model cannot be loaded
         """
         demucs_infer_pretrained = import_demucs_infer_pretrained()
         device = self.device
@@ -102,6 +114,9 @@ class DemucsSeparator:
             audio: audio to separate
         Returns:
             vocals-only audio
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            ScinoephileError: if model loading or separation fails
         """
         # Load matching cached vocals before running separation
         cached_vocals = self._cache.load(audio)

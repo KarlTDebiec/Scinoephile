@@ -79,9 +79,9 @@ class PyannoteVadProvider(VadProvider):
                 duration_ms=0,
             )
 
+        torch = transcription.import_torch()
+        pipeline = self._load_pipeline(torch)
         try:
-            torch = transcription.import_torch()
-            pipeline = self._load_pipeline(torch)
             samples = to_mono_int16(audio, self.sample_rate)
             samples = samples.astype(np.float32).reshape(1, -1)
             samples /= float(1 << 15)
@@ -108,7 +108,7 @@ class PyannoteVadProvider(VadProvider):
                 step_ms=step_seconds * 1000,
                 duration_ms=len(audio),
             )
-        except (DependencyError, VoiceActivityError):
+        except VoiceActivityError:
             raise
         except Exception as exc:
             raise VoiceActivityError(f"Unable to run pyannote VAD: {exc}") from exc
@@ -147,13 +147,7 @@ class PyannoteVadProvider(VadProvider):
             pipeline = pipeline_class(segmentation=model)
             device = cast(Callable[[str], object], getattr(torch, "device"))("cpu")
             cast(Callable[[object], object], getattr(pipeline, "to"))(device)
-        except DependencyError:
-            raise
-        except ImportError as exc:
-            raise DependencyError(
-                "pyannote VAD requires the optional transcription dependencies."
-            ) from exc
-        except VoiceActivityError:
+        except (DependencyError, VoiceActivityError):
             raise
         except Exception as exc:
             exception_name = type(exc).__name__

@@ -151,8 +151,8 @@ class PyannoteDiarizer:
 
         logger.info(f"Running pyannote speaker diarization on {self.device}.")
         pipeline = self._get_pipeline()
+        torch = import_torch()
         try:
-            torch = import_torch()
             samples = to_mono_int16(audio, _WAVEFORM_FRAME_RATE)
             waveform = samples.reshape(1, -1).astype(np.float32)
             waveform /= float(1 << (8 * _WAVEFORM_SAMPLE_WIDTH - 1))
@@ -179,7 +179,7 @@ class PyannoteDiarizer:
                     getattr(output, "exclusive_speaker_diarization", None), "exclusive"
                 ),
             )
-        except (DependencyError, SpeakerDiarizationInferenceError):
+        except SpeakerDiarizationInferenceError:
             raise
         except Exception as exc:
             raise SpeakerDiarizationInferenceError(
@@ -248,14 +248,7 @@ class PyannoteDiarizer:
                 )
             torch = import_torch()
             pipeline.to(torch.device(self.device))
-        except DependencyError:
-            raise
-        except ImportError as exc:
-            raise DependencyError(
-                "Speaker diarization requires pyannote.audio. Install Scinoephile "
-                "with the 'transcription' extra."
-            ) from exc
-        except SpeakerDiarizationAuthorizationError:
+        except (DependencyError, SpeakerDiarizationAuthorizationError):
             raise
         except Exception as exc:
             exception_name = type(exc).__name__

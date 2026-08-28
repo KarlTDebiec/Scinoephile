@@ -259,8 +259,6 @@ class FireRedLanguageIdentifier:
             self._model = model_factory(model_dir_path, config)
         except DependencyError:
             raise
-        except ImportError as exc:
-            raise DependencyError(str(exc)) from exc
         except Exception as exc:
             raise AudioClassificationInferenceError(
                 f"Unable to load FireRedLID: {exc}"
@@ -465,8 +463,6 @@ class FireRedAudioEventDetector:
             self._model = model_factory(model_root / "AED", config)
         except DependencyError:
             raise
-        except ImportError as exc:
-            raise DependencyError(str(exc)) from exc
         except Exception as exc:
             raise AudioClassificationInferenceError(
                 f"Unable to load FireRed multi-label VAD: {exc}"

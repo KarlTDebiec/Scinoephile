@@ -152,6 +152,8 @@ class MlxAudioBackend:
 
         Returns:
             loaded MLX-Audio model
+        Raises:
+            DependencyError: if MLX-Audio is unavailable
         """
         if self._loaded_model_instance is not None:
             return self._loaded_model_instance

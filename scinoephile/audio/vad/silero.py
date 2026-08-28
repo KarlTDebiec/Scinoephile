@@ -15,7 +15,6 @@ from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
-from scinoephile.core.exceptions import DependencyError
 
 from .exceptions import VoiceActivityError
 from .intervals import get_padded_intervals
@@ -158,11 +157,7 @@ class SileroVadProvider(VadProvider):
                             f"Silero VAD returned score outside [0, 1]: {probability}"
                         )
                     probabilities.append(probability)
-        except ImportError as exc:
-            raise DependencyError(
-                "Silero VAD requires the optional transcription dependencies."
-            ) from exc
-        except (AssertionError, OSError, RuntimeError, ValueError) as exc:
+        except (AssertionError, ImportError, OSError, RuntimeError, ValueError) as exc:
             raise VoiceActivityError(f"Unable to run Silero VAD: {exc}") from exc
         return VoiceActivityTrace(
             np.asarray(probabilities, dtype=np.float32),
