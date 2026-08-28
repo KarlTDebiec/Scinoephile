@@ -17,6 +17,7 @@ from pytest import LogCaptureFixture, MonkeyPatch, raises
 from scinoephile.audio.diarization import (
     PyannoteDiarizer,
     SpeakerDiarizationAuthorizationError,
+    SpeakerDiarizationDependencyError,
 )
 
 
@@ -233,6 +234,7 @@ def test_custom_model_uses_repository_and_device_defaults(
         Mock(return_value=Path("/cached/custom-model")),
     )
     diarizer = PyannoteDiarizer(tmp_path, model_id="custom/model")
+    get_torch_device.assert_not_called()
 
     diarizer._get_pipeline()  # noqa: SLF001
 
@@ -241,6 +243,27 @@ def test_custom_model_uses_repository_and_device_defaults(
     assert diarizer.device == "mps"
     assert pipeline.device == "mps"
     assert diarizer.model_revision is None
+
+
+def test_default_device_dependency_failure_is_lazy(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """A missing Torch dependency should fail only when the device is needed.
+
+    Arguments:
+        tmp_path: temporary cache root path
+        monkeypatch: pytest monkeypatch fixture
+    """
+    get_torch_device = Mock(side_effect=ImportError("Torch unavailable"))
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_torch_device", get_torch_device
+    )
+
+    diarizer = PyannoteDiarizer(tmp_path)
+    get_torch_device.assert_not_called()
+
+    with raises(SpeakerDiarizationDependencyError, match="requires Torch"):
+        _ = diarizer.device
 
 
 def test_diarizer_rejects_exact_and_bounded_speaker_counts(tmp_path: Path):

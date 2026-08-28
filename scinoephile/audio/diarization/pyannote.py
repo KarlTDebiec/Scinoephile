@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Iterator
+from functools import cached_property
 from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
 from pathlib import Path
@@ -105,10 +106,8 @@ class PyannoteDiarizer:
             model_revision = _DEFAULT_MODEL_REVISION
         self.model_revision = model_revision
         """Exact Hugging Face pipeline and model-asset revision, or None."""
-        if device is None:
-            device = get_torch_device()
-        self.device = device
-        """Torch device used for local inference."""
+        self._device = device
+        """Explicit Torch device, or None to select one lazily."""
         self.num_speakers = num_speakers
         """Exact source-wide speaker count, when known."""
         self.min_speakers = min_speakers
@@ -119,6 +118,25 @@ class PyannoteDiarizer:
         """Source-wide diarization cache."""
         self._pipeline: object | None = None
         """Lazily loaded pyannote pipeline."""
+
+    @cached_property
+    def device(self) -> str:
+        """Get the Torch device used for local inference.
+
+        Returns:
+            configured or automatically selected Torch device
+        Raises:
+            SpeakerDiarizationDependencyError: if Torch is unavailable
+        """
+        if self._device is not None:
+            return self._device
+        try:
+            return get_torch_device()
+        except ImportError as exc:
+            raise SpeakerDiarizationDependencyError(
+                "Speaker diarization requires Torch. Install Scinoephile with the "
+                "'transcription' extra."
+            ) from exc
 
     def __call__(self, audio: AudioSegment) -> SpeakerDiarizationResult:
         """Diarize complete source audio.
@@ -184,7 +202,7 @@ class PyannoteDiarizer:
         Returns:
             configuration identifying reusable diarization output
         Raises:
-            SpeakerDiarizationDependencyError: if pyannote.audio is unavailable
+            SpeakerDiarizationDependencyError: if pyannote.audio or Torch is unavailable
         """
         try:
             pyannote_audio_version = version("pyannote.audio")
