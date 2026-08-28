@@ -23,7 +23,6 @@ from .exceptions import (
     TranscriptionEmptyError,
     TranscriptionError,
     TranscriptionRecognitionError,
-    TranscriptionRecognitionTokenLimitError,
 )
 from .mlx_audio import MlxAudioModel, MlxAudioModelSpec, MlxAudioTranscriber
 from .preprocessing_settings import (
@@ -43,7 +42,6 @@ __all__ = [
     "MlxAudioModel",
     "MlxAudioModelSpec",
     "MlxAudioTranscriber",
-    "TranscriptionRecognitionTokenLimitError",
     "TranscribedSegment",
     "TranscribedWord",
     "Transcriber",

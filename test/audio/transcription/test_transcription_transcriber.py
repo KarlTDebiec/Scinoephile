@@ -18,8 +18,8 @@ from scinoephile.audio.transcription import (
     TranscriptionCache,
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionRecognitionError,
     TranscriptionPreprocessingSettings,
+    TranscriptionRecognitionError,
     VadMode,
 )
 from scinoephile.audio.vad import VoiceActivityError

@@ -7,7 +7,6 @@ from __future__ import annotations
 from scinoephile.core.exceptions import ScinoephileError
 
 __all__ = [
-    "TranscriptionRecognitionTokenLimitError",
     "TranscriptionAlignmentError",
     "TranscriptionAlignmentIncompleteError",
     "TranscriptionEmptyError",
@@ -34,7 +33,3 @@ class TranscriptionEmptyError(TranscriptionError):
 
 class TranscriptionRecognitionError(TranscriptionError):
     """Raised when transcription recognition fails or returns malformed output."""
-
-
-class TranscriptionRecognitionTokenLimitError(TranscriptionRecognitionError):
-    """Raised when transcription exhausts its generation token limit."""

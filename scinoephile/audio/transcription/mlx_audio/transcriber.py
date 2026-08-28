@@ -15,7 +15,6 @@ from scinoephile.audio.transcription.exceptions import (
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionRecognitionError,
-    TranscriptionRecognitionTokenLimitError,
 )
 from scinoephile.audio.transcription.preprocessing_settings import (
     DemucsMode,
@@ -31,6 +30,7 @@ from scinoephile.core import Language
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 
+from .exceptions import MlxAudioTokenLimitError
 from .model import MlxAudioModel
 from .timing import offset_core_segments, restore_vad_timestamps
 
@@ -204,7 +204,7 @@ class MlxAudioTranscriber(Transcriber):
             generation_tokens = inference_result.generation_tokens
             max_tokens = self.model.spec.max_tokens
             if max_tokens is not None and generation_tokens >= max_tokens:
-                raise TranscriptionRecognitionTokenLimitError(
+                raise MlxAudioTokenLimitError(
                     f"MLX-Audio used {generation_tokens} of its {max_tokens} "
                     "generation tokens."
                 )
@@ -231,7 +231,7 @@ class MlxAudioTranscriber(Transcriber):
         """
         try:
             return self._transcribe_audio_window(audio)
-        except TranscriptionRecognitionTokenLimitError:
+        except MlxAudioTokenLimitError:
             if len(audio) <= 1:
                 raise
             retry_reason = "generation token exhaustion"

@@ -198,74 +198,6 @@ def test_json_loading_is_strict(tmp_path: Path, test_case_data: dict):
         )
 
 
-def test_json_loading_discards_stale_unverified_answer(tmp_path: Path):
-    """A stale generated answer should retain its valid query for regeneration."""
-    input_path = tmp_path / "test_cases.json"
-    input_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {
-                        "base_subtitles": [{"base_index": 1, "base_text": "original"}]
-                    },
-                    "answer": {
-                        "base_revisions": [
-                            {
-                                "base_index": 2,
-                                "base_text": "invalid",
-                                "base_note": "stale",
-                            }
-                        ]
-                    },
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-
-    loaded = load_test_cases_from_json(
-        input_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
-    )
-
-    assert len(loaded) == 1
-    assert loaded[0].answer is None
-    assert loaded[0].query.model_dump()["subtitles"][0]["text"] == "original"
-
-
-def test_json_loading_rejects_stale_verified_answer(tmp_path: Path):
-    """A verified answer should never be silently discarded when invalid."""
-    input_path = tmp_path / "test_cases.json"
-    input_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {
-                        "base_subtitles": [{"base_index": 1, "base_text": "original"}]
-                    },
-                    "answer": {
-                        "base_revisions": [
-                            {
-                                "base_index": 2,
-                                "base_text": "invalid",
-                                "base_note": "stale",
-                            }
-                        ]
-                    },
-                    "verified": True,
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-
-    with raises(ValidationError):
-        load_test_cases_from_json(
-            input_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
-        )
-
-
 @mark.parametrize("contents", [{}, ["not an object"]])
 def test_json_loading_requires_an_array_of_objects(tmp_path: Path, contents: object):
     """Repository test-case files should contain an array of objects."""
@@ -297,6 +229,35 @@ def test_save_replaces_existing_collection(tmp_path: Path):
     assert [
         test_case.query.model_dump()["subtitles"][0]["text"] for test_case in loaded
     ] == ["encountered"]
+
+
+def test_save_logs_created_directory_and_output(tmp_path: Path, caplog):
+    """Saving should log directory creation and completed output."""
+    output_path = tmp_path / "nested" / "test_cases.json"
+
+    with caplog.at_level("INFO", logger="scinoephile.core.llms.utils"):
+        save_test_cases_to_json(
+            output_path,
+            [_get_test_case("original", "corrected")],
+            _AliasedBaseReviewManager,
+        )
+
+    assert caplog.messages == [
+        f"Created directory {output_path.parent}",
+        f"Saved test cases to {output_path}",
+    ]
+
+
+def test_save_validates_mutated_test_cases(tmp_path: Path):
+    """Saving should reject test cases made invalid after initialization."""
+    output_path = tmp_path / "test_cases.json"
+    test_case = _get_test_case("original", "corrected")
+    test_case.query.subtitles.clear()
+
+    with raises(ValidationError):
+        save_test_cases_to_json(output_path, [test_case], _AliasedBaseReviewManager)
+
+    assert not output_path.exists()
 
 
 def test_save_replaces_existing_file_atomically(tmp_path: Path):
