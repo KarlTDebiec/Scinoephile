@@ -5,9 +5,11 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
 from types import ModuleType
 from typing import TYPE_CHECKING
+from warnings import catch_warnings, filterwarnings
 
 __all__ = [
     "import_demucs_infer_apply",
@@ -141,7 +143,8 @@ def import_pyannote_audio() -> ModuleType:
         pyannote.audio module
     """
     try:
-        import pyannote.audio
+        with _ignore_pyannote_torchcodec_warning():
+            import pyannote.audio
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return pyannote.audio
@@ -154,7 +157,8 @@ def import_pyannote_audio_voice_activity_detection() -> Callable[..., object]:
         pyannote.audio voice activity detection pipeline class
     """
     try:
-        from pyannote.audio.pipelines import VoiceActivityDetection
+        with _ignore_pyannote_torchcodec_warning():
+            from pyannote.audio.pipelines import VoiceActivityDetection
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return VoiceActivityDetection
@@ -236,3 +240,15 @@ def import_whisper_timestamped() -> ModuleType:
     except ImportError as exc:
         raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped
+
+
+@contextmanager
+def _ignore_pyannote_torchcodec_warning() -> Iterator[None]:
+    """Ignore pyannote's irrelevant optional audio-decoder warning."""
+    with catch_warnings():
+        filterwarnings(
+            "ignore",
+            message=r"\s*torchcodec is not installed correctly",
+            category=UserWarning,
+        )
+        yield
