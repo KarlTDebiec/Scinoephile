@@ -20,7 +20,7 @@ from scinoephile.audio.transcription import (
     Transcriber,
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
-    TranscriptionInferenceError,
+    TranscriptionRecognitionError,
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.lang.yue.transcription.token_similarity import YueTokenSimilarity
@@ -466,7 +466,7 @@ def test_transcribe_block_tolerates_source_inference_failure():
         sources={
             "whisper": Mock(spec=Transcriber, return_value=whisper_segments),
             "mimo": Mock(
-                spec=Transcriber, side_effect=TranscriptionInferenceError("failed")
+                spec=Transcriber, side_effect=TranscriptionRecognitionError("failed")
             ),
             "qwen": Mock(spec=Transcriber, return_value=qwen_segments),
         }

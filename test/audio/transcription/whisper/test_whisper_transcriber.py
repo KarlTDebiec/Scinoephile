@@ -23,7 +23,7 @@ from scinoephile.audio.transcription import (
     DemucsMode,
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
+    TranscriptionRecognitionError,
     VadMode,
     get_segment_split_at_idx,
 )
@@ -552,7 +552,8 @@ def test_transcribe_timestamp_assertion_without_ctc_remains_error(
     )
 
     with raises(
-        TranscriptionInferenceError, match="Whisper inference failed with an assertion"
+        TranscriptionRecognitionError,
+        match="Whisper inference failed with an assertion",
     ):
         transcriber(AudioSegment.silent(duration=1000))
 
@@ -584,7 +585,7 @@ def test_transcribe_unrelated_assertion_does_not_use_ctc(
         monkeypatch, Mock(side_effect=AssertionError("unexpected assertion"))
     )
 
-    with raises(TranscriptionInferenceError, match="unexpected assertion"):
+    with raises(TranscriptionRecognitionError, match="unexpected assertion"):
         transcriber(AudioSegment.silent(duration=1000))
 
     model.transcribe.assert_not_called()
@@ -594,14 +595,14 @@ def test_transcribe_unrelated_assertion_does_not_use_ctc(
 @parametrize(
     ("native_output", "error_type", "message"),
     [
-        (None, TranscriptionInferenceError, "malformed output"),
-        ({}, TranscriptionInferenceError, "missing transcript text"),
-        ({"text": None}, TranscriptionInferenceError, "missing transcript text"),
+        (None, TranscriptionRecognitionError, "malformed output"),
+        ({}, TranscriptionRecognitionError, "missing transcript text"),
+        ({"text": None}, TranscriptionRecognitionError, "missing transcript text"),
         ({"text": "   "}, TranscriptionEmptyError, "empty transcript"),
-        ({"text": "你好"}, TranscriptionInferenceError, "malformed segments"),
+        ({"text": "你好"}, TranscriptionRecognitionError, "malformed segments"),
         (
             {"text": "你好", "segments": [{"text": "你好"}]},
-            TranscriptionInferenceError,
+            TranscriptionRecognitionError,
             "malformed segments",
         ),
     ],
@@ -671,7 +672,7 @@ def test_transcribe_wraps_native_fallback_failure(
     )
 
     with raises(
-        TranscriptionInferenceError, match="Unable to run native Whisper fallback"
+        TranscriptionRecognitionError, match="Unable to run native Whisper fallback"
     ) as exc_info:
         transcriber(AudioSegment.silent(duration=1000))
 
