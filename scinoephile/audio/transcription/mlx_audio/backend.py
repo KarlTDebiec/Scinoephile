@@ -97,7 +97,7 @@ class MlxAudioBackend:
         Returns:
             normalized inference result
         Raises:
-            ImportError: if MLX-Audio is unavailable
+            DependencyError: if MLX-Audio is unavailable
             ValueError: if the limit is invalid or the model returns malformed output
         """
         generate_kwargs: dict[str, object] = {}

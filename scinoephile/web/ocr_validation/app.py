@@ -9,7 +9,7 @@ from socket import create_connection
 from typing import TYPE_CHECKING
 
 from scinoephile.common import package_root
-from scinoephile.core import ScinoephileError
+from scinoephile.core import DependencyError, ScinoephileError
 from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
 
 from .session import OcrValidationSession
@@ -30,13 +30,13 @@ def create_app(session: OcrValidationSession) -> FlaskApp:
     Returns:
         Flask app
     Raises:
-        ScinoephileError: if optional web dependencies are not installed
+        DependencyError: if optional web dependencies are not installed
     """
     try:
         flask = import_flask()
         from .routes import register_routes  # noqa: PLC0415
     except ImportError as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise DependencyError(str(exc)) from exc
 
     static_dir_path = package_root / "web/static"
     app = flask.Flask(__name__, static_folder=str(static_dir_path))
@@ -54,12 +54,10 @@ def run_app(session: OcrValidationSession, host: str, port: int):
         host: host address to bind
         port: port to bind
     Raises:
-        ScinoephileError: if optional dependencies are missing or server startup fails
+        DependencyError: if optional web dependencies are not installed
+        ScinoephileError: if server startup fails
     """
-    try:
-        werkzeug_serving = import_werkzeug_serving()
-    except ImportError as exc:
-        raise ScinoephileError(str(exc)) from exc
+    werkzeug_serving = import_werkzeug_serving()
 
     app = create_app(session)
     try:

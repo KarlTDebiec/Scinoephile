@@ -36,7 +36,7 @@ from scinoephile.audio.transcription.whisper.model import (
 from scinoephile.audio.transcription.whisper.transcriber import WhisperTranscriber
 from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
-from scinoephile.core import Language
+from scinoephile.core import DependencyError, Language
 from scinoephile.core.dependencies.transcription import import_whisper_timestamped
 from test.helpers import parametrize
 
@@ -1037,7 +1037,7 @@ def test_whisper_module_requires_transcription_extra(monkeypatch: MonkeyPatch):
 
     monkeypatch.setattr(builtins, "__import__", import_without_whisper)
 
-    with raises(ImportError, match="'transcription' extra"):
+    with raises(DependencyError, match="'transcription' extra"):
         import_whisper_timestamped()
 
 

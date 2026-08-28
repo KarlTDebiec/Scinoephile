@@ -18,7 +18,7 @@ from scinoephile.core.dependencies.transcription import (
     import_torch,
     import_torchaudio,
 )
-from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.exceptions import DependencyError, ScinoephileError
 from scinoephile.core.ml import get_torch_device
 
 from .cache import DemucsCache
@@ -96,6 +96,8 @@ class DemucsSeparator:
                     .to(self.device)
                     .eval()
                 )
+            except DependencyError:
+                raise
             except Exception as exc:
                 raise ScinoephileError(
                     f"Unable to load Demucs model '{self.model_name}'."

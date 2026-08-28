@@ -12,6 +12,7 @@ from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
+from scinoephile.core.exceptions import DependencyError
 
 from .exceptions import VoiceActivityError
 from .provider import VadImplementation, VadProvider
@@ -64,6 +65,9 @@ class TenVadProvider(VadProvider):
             audio: source audio
         Returns:
             model scores aligned to the source timeline
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            VoiceActivityError: if initialization or inference fails
         """
         samples = to_mono_int16(audio, self.sample_rate)
         step_ms = self.frame_size / self.sample_rate * 1000
@@ -78,13 +82,13 @@ class TenVadProvider(VadProvider):
         try:
             ten_vad = transcription.import_ten_vad()
             detector = ten_vad.TenVad(hop_size=self.frame_size, threshold=0.5)
-        except (
-            AssertionError,
-            ImportError,
-            NotImplementedError,
-            OSError,
-            RuntimeError,
-        ) as exc:
+        except DependencyError:
+            raise
+        except ImportError as exc:
+            raise DependencyError(
+                "TEN VAD requires the optional transcription dependencies."
+            ) from exc
+        except (AssertionError, NotImplementedError, OSError, RuntimeError) as exc:
             raise VoiceActivityError(f"Unable to initialize TEN VAD: {exc}") from exc
 
         probabilities: list[float] = []

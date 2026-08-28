@@ -29,6 +29,7 @@ from scinoephile.audio.vad import (
     VoiceActivityError,
     VoiceActivityTrace,
 )
+from scinoephile.core import DependencyError
 
 _CUSTOM_MODEL = replace(
     WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model", model_revision=None
@@ -294,17 +295,15 @@ def test_silero_rejects_unsupported_sample_rate():
         VoiceActivityDetector(VadImplementation.SILERO, sample_rate=8000)
 
 
-def test_ten_missing_runtime_is_a_domain_error(monkeypatch: pytest.MonkeyPatch):
-    """Wrap a missing TEN runtime in a domain error."""
+def test_ten_missing_runtime_is_a_dependency_error(monkeypatch: pytest.MonkeyPatch):
+    """Wrap a missing TEN runtime in the shared dependency error."""
     monkeypatch.setattr(
         "scinoephile.core.dependencies.transcription.import_ten_vad",
         Mock(side_effect=ImportError("missing")),
     )
     detector = VoiceActivityDetector(VadImplementation.TEN)
 
-    with pytest.raises(
-        VoiceActivityError, match="Unable to initialize TEN VAD: missing"
-    ):
+    with pytest.raises(DependencyError, match="TEN VAD requires"):
         detector(AudioSegment.silent(duration=100))
 
 

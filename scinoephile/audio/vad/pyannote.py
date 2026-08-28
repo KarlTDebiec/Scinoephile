@@ -13,6 +13,7 @@ from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies import transcription
+from scinoephile.core.exceptions import DependencyError
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
 from .exceptions import VoiceActivityError
@@ -66,6 +67,9 @@ class PyannoteVadProvider(VadProvider):
             audio: source audio
         Returns:
             model scores aligned to the source timeline
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            VoiceActivityError: if inference fails
         """
         if not len(audio):
             return VoiceActivityTrace(
@@ -104,7 +108,7 @@ class PyannoteVadProvider(VadProvider):
                 step_ms=step_seconds * 1000,
                 duration_ms=len(audio),
             )
-        except VoiceActivityError:
+        except (DependencyError, VoiceActivityError):
             raise
         except Exception as exc:
             raise VoiceActivityError(f"Unable to run pyannote VAD: {exc}") from exc
@@ -116,6 +120,9 @@ class PyannoteVadProvider(VadProvider):
             torch: imported Torch module
         Returns:
             configured pyannote VAD pipeline
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            VoiceActivityError: if pipeline loading fails
         """
         if self._pipeline is not None:
             return self._pipeline
@@ -140,8 +147,10 @@ class PyannoteVadProvider(VadProvider):
             pipeline = pipeline_class(segmentation=model)
             device = cast(Callable[[str], object], getattr(torch, "device"))("cpu")
             cast(Callable[[object], object], getattr(pipeline, "to"))(device)
+        except DependencyError:
+            raise
         except ImportError as exc:
-            raise VoiceActivityError(
+            raise DependencyError(
                 "pyannote VAD requires the optional transcription dependencies."
             ) from exc
         except VoiceActivityError:

@@ -27,7 +27,7 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     SENSEVOICE_MODEL,
     MlxAudioModel,
 )
-from scinoephile.core import Language
+from scinoephile.core import DependencyError, Language
 from scinoephile.core.dependencies import transcription as transcription_dependencies
 
 
@@ -335,7 +335,7 @@ def test_mlx_audio_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
 
     monkeypatch.setattr(builtins, "__import__", import_without_mlx_audio)
 
-    with pytest.raises(ImportError, match="'transcription' extra"):
+    with pytest.raises(DependencyError, match="'transcription' extra"):
         transcription_dependencies.import_mlx_audio_stt_load()
 
 

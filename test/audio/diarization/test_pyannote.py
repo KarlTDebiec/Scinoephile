@@ -17,8 +17,8 @@ from pytest import LogCaptureFixture, MonkeyPatch, raises
 from scinoephile.audio.diarization import (
     PyannoteDiarizer,
     SpeakerDiarizationAuthorizationError,
-    SpeakerDiarizationDependencyError,
 )
+from scinoephile.core import DependencyError
 
 
 @dataclass(frozen=True)
@@ -254,7 +254,7 @@ def test_default_device_dependency_failure_is_lazy(
         tmp_path: temporary cache root path
         monkeypatch: pytest monkeypatch fixture
     """
-    get_torch_device = Mock(side_effect=ImportError("Torch unavailable"))
+    get_torch_device = Mock(side_effect=DependencyError("Torch unavailable"))
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.get_torch_device", get_torch_device
     )
@@ -262,7 +262,7 @@ def test_default_device_dependency_failure_is_lazy(
     diarizer = PyannoteDiarizer(tmp_path)
     get_torch_device.assert_not_called()
 
-    with raises(SpeakerDiarizationDependencyError, match="requires Torch"):
+    with raises(DependencyError, match="Torch unavailable"):
         _ = diarizer.device
 
 
