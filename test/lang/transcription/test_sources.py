@@ -17,7 +17,7 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
 )
 from scinoephile.core import Language, ScinoephileError
@@ -55,14 +55,14 @@ def test_default_cantonese_sources_use_configured_models_without_internal_vad():
         "mlx-audio",
     )
     assert tuple(source.model for source in descriptors) == (
-        WHISPER_LARGE_V3_CANTONESE_MODEL.model_name,
+        WHISPER_LARGE_V3_CANTONESE_MODEL.name,
         MIMO_MODEL.model_name,
         QWEN3_ASR_MODEL.model_name,
         SENSEVOICE_MODEL.model_name,
         FIRERED_ASR2_MODEL.model_name,
         GLM_ASR_MODEL.model_name,
     )
-    assert whisper.call_args.kwargs["model"] is WHISPER_LARGE_V3_CANTONESE_MODEL
+    assert whisper.call_args.kwargs["model"].spec is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert whisper.call_args.kwargs["language"] is Language.yue_hant
     assert whisper.call_args.kwargs["vad_mode"] is VadMode.OFF
     assert whisper.call_args.kwargs["recover_decoding"]

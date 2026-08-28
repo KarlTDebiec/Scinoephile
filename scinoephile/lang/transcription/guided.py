@@ -23,9 +23,9 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     SENSEVOICE_MODEL,
     MlxAudioModel,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
-    WhisperModel,
+    WhisperModelSpec,
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
@@ -101,12 +101,12 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 class TranscriptionLanguageSpec:
     """Configuration for one transcription language."""
 
-    models: Mapping[TranscriptionModel, WhisperModel | MlxAudioModel]
+    models: Mapping[TranscriptionModel, WhisperModelSpec | MlxAudioModel]
     """Configured audio models keyed by supported transcription model."""
     segment_splitter: TranscribedSegmentSplitter | None = None
     """Strategy for splitting raw transcribed segments."""
 
-    def get_model(self, model: TranscriptionModel) -> WhisperModel | MlxAudioModel:
+    def get_model(self, model: TranscriptionModel) -> WhisperModelSpec | MlxAudioModel:
         """Get the configured audio model for a supported transcription model.
 
         Arguments:

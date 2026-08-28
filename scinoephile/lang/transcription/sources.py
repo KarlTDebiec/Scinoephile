@@ -15,6 +15,7 @@ from scinoephile.audio.transcription import (
     MlxAudioTranscriber,
     Transcriber,
     VadMode,
+    WhisperModel,
     WhisperTranscriber,
 )
 from scinoephile.audio.transcription.mlx_audio.model import (
@@ -25,9 +26,9 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     SENSEVOICE_MODEL,
     MlxAudioModel,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
-    WhisperModel,
+    WhisperModelSpec,
 )
 from scinoephile.core import Language, ScinoephileError
 
@@ -43,7 +44,7 @@ class TranscriptionSourceSpec:
 
     name: str
     """Stable source name used in alignment rows and artifacts."""
-    model: WhisperModel | MlxAudioModel
+    model: WhisperModelSpec | MlxAudioModel
     """Configured speech-to-text model."""
 
     def __post_init__(self):
@@ -112,14 +113,18 @@ def get_transcription_sources(
     transcribers: dict[str, Transcriber] = {}
     descriptors = []
     for source in source_specs:
+        if isinstance(source.model, WhisperModelSpec):
+            model_name = source.model.name
+        else:
+            model_name = source.model.model_name
         if language not in source.model.languages:
             raise ScinoephileError(
                 f"Transcription source {source.name!r} model "
-                f"{source.model.model_name!r} does not support {language.code}."
+                f"{model_name!r} does not support {language.code}."
             )
-        if isinstance(source.model, WhisperModel):
+        if isinstance(source.model, WhisperModelSpec):
             transcriber = WhisperTranscriber(
-                model=source.model,
+                model=WhisperModel(source.model, language),
                 language=language,
                 demucs_mode=demucs_mode,
                 vad_mode=VadMode.OFF,
@@ -148,8 +153,6 @@ def get_transcription_sources(
             )
         transcribers[source.name] = transcriber
         descriptors.append(
-            AlignmentSource(
-                name=source.name, backend=backend_name, model=source.model.model_name
-            )
+            AlignmentSource(name=source.name, backend=backend_name, model=model_name)
         )
     return transcribers, tuple(descriptors)
