@@ -18,13 +18,11 @@ from scinoephile.core.dependencies.transcription import (
     import_firered_aed,
     import_firered_lid,
 )
+from scinoephile.core.exceptions import DependencyError
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
 from .cache import AudioClassificationCache
-from .exceptions import (
-    AudioClassificationDependencyError,
-    AudioClassificationInferenceError,
-)
+from .exceptions import AudioClassificationInferenceError
 from .models import (
     AudioEvent,
     AudioEventDetectionResult,
@@ -130,7 +128,7 @@ class FireRedLanguageIdentifier:
         Returns:
             source-timeline language identification spans
         Raises:
-            AudioClassificationDependencyError: if optional dependencies are missing
+            DependencyError: if optional dependencies are missing
             AudioClassificationInferenceError: if model loading or inference fails
             ValueError: if the offset or speech intervals are invalid
         """
@@ -240,7 +238,7 @@ class FireRedLanguageIdentifier:
         Returns:
             loaded FireRedLID model
         Raises:
-            AudioClassificationDependencyError: if optional dependencies are missing
+            DependencyError: if optional dependencies are missing
             AudioClassificationInferenceError: if the model cannot be loaded
         """
         if self._model is not None:
@@ -259,8 +257,8 @@ class FireRedLanguageIdentifier:
             )
             config = config_factory(use_gpu=self.use_gpu, use_half=self.use_half)
             self._model = model_factory(model_dir_path, config)
-        except ImportError as exc:
-            raise AudioClassificationDependencyError(str(exc)) from exc
+        except DependencyError:
+            raise
         except Exception as exc:
             raise AudioClassificationInferenceError(
                 f"Unable to load FireRedLID: {exc}"
@@ -361,7 +359,7 @@ class FireRedAudioEventDetector:
         Returns:
             source-timeline audio event spans
         Raises:
-            AudioClassificationDependencyError: if optional dependencies are missing
+            DependencyError: if optional dependencies are missing
             AudioClassificationInferenceError: if model loading or inference fails
             ValueError: if the offset is negative
         """
@@ -439,7 +437,7 @@ class FireRedAudioEventDetector:
         Returns:
             loaded FireRed multi-label VAD model
         Raises:
-            AudioClassificationDependencyError: if optional dependencies are missing
+            DependencyError: if optional dependencies are missing
             AudioClassificationInferenceError: if the model cannot be loaded
         """
         if self._model is not None:
@@ -463,8 +461,8 @@ class FireRedAudioEventDetector:
                 music_threshold=self.thresholds[AudioEvent.MUSIC],
             )
             self._model = model_factory(model_root / "AED", config)
-        except ImportError as exc:
-            raise AudioClassificationDependencyError(str(exc)) from exc
+        except DependencyError:
+            raise
         except Exception as exc:
             raise AudioClassificationInferenceError(
                 f"Unable to load FireRed multi-label VAD: {exc}"

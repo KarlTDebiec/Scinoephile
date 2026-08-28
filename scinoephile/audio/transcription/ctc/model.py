@@ -59,7 +59,7 @@ class CtcModel:
         Returns:
             CTC model output prepared for alignment
         Raises:
-            ImportError: if CTC dependencies are unavailable
+            DependencyError: if CTC dependencies are unavailable
             TranscriptionAlignmentError: if audio, model, or processor configuration
                 is invalid
         """
@@ -99,9 +99,9 @@ class CtcModel:
     @cached_property
     def device(self) -> str:
         """Get the Torch device used for inference."""
-        if self._device is not None:
-            return self._device
-        return get_torch_device()
+        if self._device is None:
+            self._device = get_torch_device()
+        return self._device
 
     @cached_property
     def model(self) -> PreTrainedModel:
@@ -110,7 +110,7 @@ class CtcModel:
         Returns:
             loaded CTC model
         Raises:
-            ImportError: if CTC dependencies are unavailable
+            DependencyError: if CTC dependencies are unavailable
             TranscriptionAlignmentError: if the model lacks a valid blank token ID
         """
         transformers = import_transformers()
@@ -134,7 +134,7 @@ class CtcModel:
         Returns:
             loaded CTC processor
         Raises:
-            ImportError: if CTC dependencies are unavailable
+            DependencyError: if CTC dependencies are unavailable
             TranscriptionAlignmentError: if the processor lacks a valid sampling rate
         """
         transformers = import_transformers()

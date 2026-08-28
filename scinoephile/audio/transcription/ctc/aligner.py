@@ -102,6 +102,7 @@ class CtcAligner:
         Returns:
             timestamped transcription segments
         Raises:
+            DependencyError: if CTC dependencies are unavailable
             TranscriptionAlignmentError: if alignment cannot recover word timings
         """
         if not text.strip():

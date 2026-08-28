@@ -15,7 +15,7 @@ from PIL import Image
 from pytest import MonkeyPatch, raises
 
 from scinoephile.common.subprocess import run_command
-from scinoephile.core import Language
+from scinoephile.core import DependencyError, Language
 from scinoephile.core.dependencies.ocr import import_chrome_lens_py
 from scinoephile.image.ocr.lens.lens_recognizer import LensRecognizer
 from test.helpers import parametrize
@@ -508,7 +508,7 @@ def test_lens_recognizer_import_error_is_actionable(monkeypatch: MonkeyPatch):
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with raises(ImportError, match="'ocr' extra"):
+    with raises(DependencyError, match="'ocr' extra"):
         import_chrome_lens_py()
 
 

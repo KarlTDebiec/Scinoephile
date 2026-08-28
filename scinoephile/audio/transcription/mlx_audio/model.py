@@ -61,7 +61,7 @@ class MlxAudioModel:
         Returns:
             MLX-Audio recognition result
         Raises:
-            ImportError: if MLX-Audio is unavailable
+            DependencyError: if MLX-Audio is unavailable
         """
         return self.model.generate(str(audio_path), **self.generate_kw)
 
@@ -72,6 +72,7 @@ class MlxAudioModel:
         Returns:
             loaded MLX-Audio model
         Raises:
+            DependencyError: if MLX-Audio is unavailable
             RuntimeError: if MLX-Audio is unsupported on the current platform
         """
         system = platform.system()

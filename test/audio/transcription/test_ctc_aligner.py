@@ -72,7 +72,9 @@ def test_ctc_aligner_selects_available_device_lazily(monkeypatch: pytest.MonkeyP
     aligner = CtcAligner(Language.eng, _CUSTOM_MODEL)
 
     get_torch_device.assert_not_called()
+    assert aligner.model._device is None
     assert aligner.model.device == "mps"
+    assert aligner.model._device == "mps"
     assert aligner.model.device == "mps"
     get_torch_device.assert_called_once_with()
 

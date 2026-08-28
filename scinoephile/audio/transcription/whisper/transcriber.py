@@ -295,6 +295,7 @@ class WhisperTranscriber(Transcriber):
         Returns:
             normalized transcription segments
         Raises:
+            DependencyError: if Whisper dependencies are unavailable
             TranscriptionRecognitionError: if Whisper inference fails
         """
         whisper_vad, voice_activity_trace = self._get_whisper_vad(audio, settings)

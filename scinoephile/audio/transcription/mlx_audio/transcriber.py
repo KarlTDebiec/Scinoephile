@@ -190,6 +190,7 @@ class MlxAudioTranscriber(Transcriber):
         Returns:
             timestamped transcription segments
         Raises:
+            DependencyError: if MLX-Audio dependencies are unavailable
             TranscriptionError: if MLX-Audio returns unusable text
             TranscriptionAlignmentError: if forced alignment fails
         """

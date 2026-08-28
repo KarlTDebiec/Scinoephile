@@ -92,7 +92,7 @@ class WhisperModel:
             timestamped recognition result
         Raises:
             AssertionError: if Whisper Timestamped alignment fails
-            ImportError: if Whisper dependencies are unavailable
+            DependencyError: if Whisper dependencies are unavailable
             ValueError: if Whisper returns malformed output
         """
         whisper_timestamped = import_whisper_timestamped()
@@ -155,10 +155,14 @@ class WhisperModel:
 
     @cached_property
     def device(self) -> str:
-        """Get the Torch device used for inference."""
-        if self._device is not None:
-            return self._device
-        return get_torch_device()
+        """Get the Torch device used for inference.
+
+        Raises:
+            DependencyError: if Torch is unavailable
+        """
+        if self._device is None:
+            self._device = get_torch_device()
+        return self._device
 
     @cached_property
     def model(self) -> Whisper:
@@ -167,7 +171,7 @@ class WhisperModel:
         Returns:
             loaded Whisper model
         Raises:
-            ImportError: if Whisper dependencies are unavailable
+            DependencyError: if Whisper dependencies are unavailable
         """
         whisper_timestamped = import_whisper_timestamped()
         model_dir_path = get_huggingface_snapshot_dir_path(
@@ -212,6 +216,7 @@ class WhisperModel:
         Returns:
             native recognition result
         Raises:
+            DependencyError: if Whisper dependencies are unavailable
             TranscriptionEmptyError: if native Whisper returns empty text
             TranscriptionRecognitionError: if inference fails or returns malformed
                 output
