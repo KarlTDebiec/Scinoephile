@@ -16,7 +16,7 @@ from PIL import Image
 from pytest import MonkeyPatch, raises
 
 from scinoephile.common.subprocess import run_command
-from scinoephile.core import Language
+from scinoephile.core import DependencyError, Language
 from scinoephile.core.dependencies.ocr import import_paddleocr
 from scinoephile.image.ocr.paddle import PaddleCache, PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
@@ -250,7 +250,7 @@ def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: MonkeyPatch):
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with raises(ImportError, match="'ocr' extra"):
+    with raises(DependencyError, match="'ocr' extra"):
         import_paddleocr()
 
 

@@ -14,7 +14,7 @@ from pytest import LogCaptureFixture, MonkeyPatch, raises
 
 from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
-from scinoephile.core import ScinoephileError
+from scinoephile.core import DependencyError, ScinoephileError
 from scinoephile.web.ocr_validation.app import create_app, run_app
 from scinoephile.web.ocr_validation.session import OcrValidationSession
 
@@ -57,7 +57,7 @@ def test_create_app_import_error_is_actionable(monkeypatch: MonkeyPatch):
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with raises(ScinoephileError, match="'web' extra") as excinfo:
+    with raises(DependencyError, match="'web' extra") as excinfo:
         create_app(cast(OcrValidationSession, object()))
 
     assert isinstance(excinfo.value.__cause__, ImportError)
@@ -120,7 +120,7 @@ def test_run_app_import_error_is_actionable(monkeypatch: MonkeyPatch):
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with raises(ScinoephileError, match="'web' extra") as excinfo:
+    with raises(DependencyError, match="'web' extra") as excinfo:
         run_app(cast(OcrValidationSession, object()), "127.0.0.1", 5000)
 
     assert isinstance(excinfo.value.__cause__, ImportError)

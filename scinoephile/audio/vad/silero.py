@@ -14,7 +14,10 @@ import numpy as np
 from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
-from scinoephile.core.dependencies import transcription
+from scinoephile.core.dependencies.transcription import (
+    import_silero_vad_load_silero_vad,
+    import_torch,
+)
 
 from .exceptions import VoiceActivityError
 from .intervals import get_padded_intervals
@@ -120,14 +123,11 @@ class SileroVadProvider(VadProvider):
             audio: source audio
         Returns:
             model scores aligned to the source timeline
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            VoiceActivityError: if inference fails
         """
-        try:
-            load_silero_vad = transcription.import_silero_vad_load_silero_vad()
-            torch = transcription.import_torch()
-        except ImportError as exc:
-            raise VoiceActivityError(
-                "Silero VAD requires the optional transcription dependencies."
-            ) from exc
+        torch = import_torch()
 
         samples = to_mono_int16(audio, self.sample_rate).astype(np.float32)
         samples /= np.iinfo(np.int16).max
@@ -139,7 +139,7 @@ class SileroVadProvider(VadProvider):
                 duration_ms=0,
             )
         try:
-            model = self._load_model(load_silero_vad)
+            model = self._load_model()
             reset_states = cast(Callable[[], object], getattr(model, "reset_states"))
             run_model = cast(Callable[[object, int], object], model)
             no_grad = cast(
@@ -206,16 +206,17 @@ class SileroVadProvider(VadProvider):
             padding_seconds,
         )
 
-    def _load_model(self, load_silero_vad: Callable[..., object]) -> object:
+    def _load_model(self) -> object:
         """Lazily load the official packaged Silero model.
 
-        Arguments:
-            load_silero_vad: official Silero model loader
         Returns:
             configured Silero model
+        Raises:
+            DependencyError: if optional dependencies are unavailable
         """
         if self._model is not None:
             return self._model
 
+        load_silero_vad = import_silero_vad_load_silero_vad()
         self._model = load_silero_vad(onnx=True, opset_version=16)
         return self._model

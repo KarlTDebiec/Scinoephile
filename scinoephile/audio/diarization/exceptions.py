@@ -8,7 +8,6 @@ from scinoephile.core.exceptions import ScinoephileError
 
 __all__ = [
     "SpeakerDiarizationAuthorizationError",
-    "SpeakerDiarizationDependencyError",
     "SpeakerDiarizationError",
     "SpeakerDiarizationInferenceError",
 ]
@@ -20,10 +19,6 @@ class SpeakerDiarizationError(ScinoephileError):
 
 class SpeakerDiarizationAuthorizationError(SpeakerDiarizationError):
     """Raised when Hugging Face has not authorized the configured model."""
-
-
-class SpeakerDiarizationDependencyError(SpeakerDiarizationError):
-    """Raised when optional speaker diarization dependencies are unavailable."""
 
 
 class SpeakerDiarizationInferenceError(SpeakerDiarizationError):

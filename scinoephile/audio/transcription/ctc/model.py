@@ -39,7 +39,7 @@ def get_alignment_inputs(
     Returns:
         log probabilities, token IDs, text character indices, and blank token ID
     Raises:
-        ImportError: if CTC dependencies are unavailable
+        DependencyError: if CTC dependencies are unavailable
         TranscriptionAlignmentError: if transcript tokens cannot be prepared
     """
     # Prepare the audio and model inputs

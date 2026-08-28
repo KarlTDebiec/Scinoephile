@@ -42,13 +42,38 @@ def test_get_audio_segment_restores_mono_output():
     assert audio.channels == 1
 
 
+def test_model_is_loaded_once(monkeypatch: MonkeyPatch):
+    """Test the Demucs model is loaded and configured only once.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    model = Mock()
+    model.to.return_value = model
+    model.eval.return_value = model
+    get_model = Mock(return_value=model)
+    monkeypatch.setattr(
+        "scinoephile.audio.separation.demucs.separator.import_demucs_infer_pretrained",
+        Mock(return_value=Mock(get_model=get_model)),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.separation.demucs.separator.get_torch_device",
+        Mock(return_value="cpu"),
+    )
+    separator = DemucsSeparator()
+
+    assert separator.model is model
+    assert separator.model is model
+    get_model.assert_called_once_with("htdemucs_ft")
+    model.to.assert_called_once_with("cpu")
+    model.eval.assert_called_once_with()
+
+
 def test_separate_vocals_uses_default_demucs_shifts():
     """Test Demucs separation relies on library-default shift behavior."""
     torch = importorskip("torch")
     separator = DemucsSeparator()
-    separator._model = Mock(samplerate=16000, sources=["vocals"])
-    separator._model.to.return_value = separator._model
-    separator._model.eval.return_value = separator._model
+    separator.__dict__["model"] = Mock(samplerate=16000, sources=["vocals"])
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000).set_channels(1)
     separated_sources = torch.zeros((1, 1, 2, 16000), dtype=torch.float32)
     apply_model_kwargs: list[dict[str, object]] = []

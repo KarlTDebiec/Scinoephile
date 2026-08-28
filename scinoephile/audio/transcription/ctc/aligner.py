@@ -140,6 +140,9 @@ class CtcAligner:
             text: transcription text
         Returns:
             timestamped transcription segments
+        Raises:
+            DependencyError: if CTC dependencies are unavailable
+            TranscriptionAlignmentError: if alignment cannot recover word timings
         """
         return self.align(audio, text)
 
@@ -149,6 +152,8 @@ class CtcAligner:
 
         Returns:
             loaded CTC model
+        Raises:
+            DependencyError: if CTC dependencies are unavailable
         """
         if self._model is None:
             model_key = (self.model_name, self.model_revision, self.device)
@@ -173,6 +178,8 @@ class CtcAligner:
 
         Returns:
             loaded CTC processor
+        Raises:
+            DependencyError: if CTC dependencies are unavailable
         """
         if self._processor is None:
             processor_key = (self.model_name, self.model_revision)
@@ -198,6 +205,7 @@ class CtcAligner:
         Returns:
             timestamped transcription segments
         Raises:
+            DependencyError: if CTC dependencies are unavailable
             TranscriptionAlignmentError: if alignment cannot recover word timings
         """
         # Validate the transcription text
