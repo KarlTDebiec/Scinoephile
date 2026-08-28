@@ -5,13 +5,25 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
+from dataclasses import dataclass
 from functools import cache
 from pathlib import Path
 from typing import cast
 
 from .dependencies.transcription import import_huggingface_hub, import_torch
 
-__all__ = ["get_huggingface_snapshot_dir_path", "get_torch_device"]
+__all__ = ["ModelSpec", "get_huggingface_snapshot_dir_path", "get_torch_device"]
+
+
+@dataclass(frozen=True, slots=True)
+class ModelSpec:
+    """Immutable Hugging Face model specification."""
+
+    name: str
+    """Hugging Face model name."""
+    revision: str
+    """Required immutable model revision."""
+
 
 _HUGGINGFACE_MODEL_ALLOW_PATTERNS = (
     "*.ark",
