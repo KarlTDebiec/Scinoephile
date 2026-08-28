@@ -28,7 +28,7 @@ from scinoephile.audio.transcription.mlx_audio.model import (
     MlxAudioModel,
 )
 from scinoephile.core import DependencyError, Language
-from scinoephile.core.dependencies import transcription as transcription_dependencies
+from scinoephile.core.dependencies.transcription import import_mlx_audio_stt_load
 
 
 @pytest.mark.parametrize(
@@ -336,7 +336,7 @@ def test_mlx_audio_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(builtins, "__import__", import_without_mlx_audio)
 
     with pytest.raises(DependencyError, match="'transcription' extra"):
-        transcription_dependencies.import_mlx_audio_stt_load()
+        import_mlx_audio_stt_load()
 
 
 def _write_wav(path: Path, *, duration_seconds: float = 0.1) -> Path:

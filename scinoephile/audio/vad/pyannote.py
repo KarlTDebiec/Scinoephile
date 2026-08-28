@@ -12,7 +12,11 @@ import numpy as np
 from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
-from scinoephile.core.dependencies import transcription
+from scinoephile.core.dependencies.transcription import (
+    import_pyannote_audio,
+    import_pyannote_audio_voice_activity_detection,
+    import_torch,
+)
 from scinoephile.core.exceptions import DependencyError
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
@@ -79,7 +83,7 @@ class PyannoteVadProvider(VadProvider):
                 duration_ms=0,
             )
 
-        torch = transcription.import_torch()
+        torch = import_torch()
         pipeline = self._load_pipeline(torch)
         try:
             samples = to_mono_int16(audio, self.sample_rate)
@@ -127,7 +131,7 @@ class PyannoteVadProvider(VadProvider):
         if self._pipeline is not None:
             return self._pipeline
         try:
-            pyannote_audio = transcription.import_pyannote_audio()
+            pyannote_audio = import_pyannote_audio()
             model_class = getattr(pyannote_audio, "Model")
             from_pretrained = cast(
                 Callable[..., object], getattr(model_class, "from_pretrained")
@@ -141,9 +145,7 @@ class PyannoteVadProvider(VadProvider):
                     "Unable to load the gated pyannote segmentation model. Accept "
                     "its Hugging Face conditions and configure a Hugging Face token."
                 )
-            pipeline_class = (
-                transcription.import_pyannote_audio_voice_activity_detection()
-            )
+            pipeline_class = import_pyannote_audio_voice_activity_detection()
             pipeline = pipeline_class(segmentation=model)
             device = cast(Callable[[str], object], getattr(torch, "device"))("cpu")
             cast(Callable[[object], object], getattr(pipeline, "to"))(device)

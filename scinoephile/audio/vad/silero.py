@@ -14,7 +14,10 @@ import numpy as np
 from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
-from scinoephile.core.dependencies import transcription
+from scinoephile.core.dependencies.transcription import (
+    import_silero_vad_load_silero_vad,
+    import_torch,
+)
 
 from .exceptions import VoiceActivityError
 from .intervals import get_padded_intervals
@@ -124,8 +127,8 @@ class SileroVadProvider(VadProvider):
             DependencyError: if optional dependencies are unavailable
             VoiceActivityError: if inference fails
         """
-        load_silero_vad = transcription.import_silero_vad_load_silero_vad()
-        torch = transcription.import_torch()
+        load_silero_vad = import_silero_vad_load_silero_vad()
+        torch = import_torch()
 
         samples = to_mono_int16(audio, self.sample_rate).astype(np.float32)
         samples /= np.iinfo(np.int16).max

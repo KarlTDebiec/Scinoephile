@@ -11,7 +11,7 @@ import numpy as np
 from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
-from scinoephile.core.dependencies import transcription
+from scinoephile.core.dependencies.transcription import import_ten_vad
 
 from .exceptions import VoiceActivityError
 from .provider import VadImplementation, VadProvider
@@ -78,7 +78,7 @@ class TenVadProvider(VadProvider):
                 duration_ms=0,
             )
 
-        ten_vad = transcription.import_ten_vad()
+        ten_vad = import_ten_vad()
         try:
             detector = ten_vad.TenVad(hop_size=self.frame_size, threshold=0.5)
         except (
