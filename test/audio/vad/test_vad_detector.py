@@ -29,6 +29,7 @@ from scinoephile.audio.vad import (
     VoiceActivityError,
     VoiceActivityTrace,
 )
+from scinoephile.core import DependencyError
 
 _CUSTOM_MODEL = replace(
     WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model", model_revision=None
@@ -67,16 +68,15 @@ def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(
     from_numpy = Mock(return_value="waveform")
     device = Mock(return_value="cpu")
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_pyannote_audio",
+        "scinoephile.audio.vad.pyannote.import_pyannote_audio",
         Mock(return_value=SimpleNamespace(Model=model_class)),
     )
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription."
-        "import_pyannote_audio_voice_activity_detection",
+        "scinoephile.audio.vad.pyannote.import_pyannote_audio_voice_activity_detection",
         Mock(return_value=pipeline_class),
     )
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_torch",
+        "scinoephile.audio.vad.pyannote.import_torch",
         Mock(return_value=SimpleNamespace(device=device, from_numpy=from_numpy)),
     )
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
@@ -113,11 +113,11 @@ def test_pyannote_missing_authorization_is_a_domain_error(
     """Explain the gated model conditions when pyannote cannot load VAD assets."""
     model_class = SimpleNamespace(from_pretrained=Mock(return_value=None))
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_pyannote_audio",
+        "scinoephile.audio.vad.pyannote.import_pyannote_audio",
         Mock(return_value=SimpleNamespace(Model=model_class)),
     )
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_torch",
+        "scinoephile.audio.vad.pyannote.import_torch",
         Mock(return_value=SimpleNamespace()),
     )
     monkeypatch.setattr(
@@ -205,7 +205,7 @@ def test_ten_inference_pads_final_frame_and_returns_original_timeline(
     runtime_detector.process.side_effect = [(0.8, 1), (0.9, 1), (0.0, 0), (0.0, 0)]
     ten_vad_class = Mock(return_value=runtime_detector)
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_ten_vad",
+        "scinoephile.audio.vad.ten.import_ten_vad",
         Mock(return_value=SimpleNamespace(TenVad=ten_vad_class)),
     )
     detector = VoiceActivityDetector(
@@ -258,7 +258,7 @@ def test_silero_inference_uses_shared_interval_settings(
     ]
     load_silero_vad = Mock(return_value=model)
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_torch",
+        "scinoephile.audio.vad.silero.import_torch",
         Mock(
             return_value=SimpleNamespace(
                 from_numpy=Mock(side_effect=lambda x: x), no_grad=nullcontext
@@ -266,7 +266,7 @@ def test_silero_inference_uses_shared_interval_settings(
         ),
     )
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_silero_vad_load_silero_vad",
+        "scinoephile.audio.vad.silero.import_silero_vad_load_silero_vad",
         Mock(return_value=load_silero_vad),
     )
     detector = VoiceActivityDetector(
@@ -294,17 +294,15 @@ def test_silero_rejects_unsupported_sample_rate():
         VoiceActivityDetector(VadImplementation.SILERO, sample_rate=8000)
 
 
-def test_ten_missing_runtime_is_a_domain_error(monkeypatch: pytest.MonkeyPatch):
-    """Wrap a missing TEN runtime in a domain error."""
+def test_ten_missing_runtime_is_a_dependency_error(monkeypatch: pytest.MonkeyPatch):
+    """Propagate the shared dependency error for a missing TEN runtime."""
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_ten_vad",
-        Mock(side_effect=ImportError("missing")),
+        "scinoephile.audio.vad.ten.import_ten_vad",
+        Mock(side_effect=DependencyError("missing TEN VAD dependency")),
     )
     detector = VoiceActivityDetector(VadImplementation.TEN)
 
-    with pytest.raises(
-        VoiceActivityError, match="Unable to initialize TEN VAD: missing"
-    ):
+    with pytest.raises(DependencyError, match="missing TEN VAD dependency"):
         detector(AudioSegment.silent(duration=100))
 
 
@@ -477,7 +475,7 @@ def test_whisper_auto_retries_after_ten_unsupported_platform(
         side_effect=NotImplementedError("Unsupported platform: Test unknown")
     )
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_ten_vad",
+        "scinoephile.audio.vad.ten.import_ten_vad",
         Mock(return_value=SimpleNamespace(TenVad=ten_vad_class)),
     )
     vad_detector = VoiceActivityDetector(VadImplementation.TEN)

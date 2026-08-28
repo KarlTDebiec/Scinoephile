@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -53,9 +54,6 @@ class DemucsSeparator:
         self._device: str | None = None
         """Torch device identifier used for inference."""
 
-        self._model: DemucsModel | None = None
-        """Cached Demucs model."""
-
         self._cache = DemucsCache(cache_root_path, model_name, overwrite_cache)
         """Cache of vocals separated with the configured model."""
 
@@ -66,6 +64,9 @@ class DemucsSeparator:
             audio: audio to separate
         Returns:
             vocals-only audio
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            ScinoephileError: if model loading or separation fails
         """
         return self.separate_vocals(audio)
 
@@ -76,31 +77,35 @@ class DemucsSeparator:
 
     @property
     def device(self) -> str:
-        """Get torch device identifier."""
+        """Get torch device identifier.
+
+        Returns:
+            torch device identifier
+        Raises:
+            DependencyError: if Torch is unavailable
+        """
         if self._device is None:
             self._device = get_torch_device()
         return self._device
 
-    @property
+    @cached_property
     def model(self) -> DemucsModel:
         """Get the cached Demucs model, loading it if needed.
 
         Returns:
             loaded Demucs model
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            ScinoephileError: if the model cannot be loaded
         """
-        if self._model is None:
-            demucs_infer_pretrained = import_demucs_infer_pretrained()
-            try:
-                self._model = (
-                    demucs_infer_pretrained.get_model(self.model_name)
-                    .to(self.device)
-                    .eval()
-                )
-            except Exception as exc:
-                raise ScinoephileError(
-                    f"Unable to load Demucs model '{self.model_name}'."
-                ) from exc
-        return self._model
+        demucs_infer_pretrained = import_demucs_infer_pretrained()
+        device = self.device
+        try:
+            return demucs_infer_pretrained.get_model(self.model_name).to(device).eval()
+        except Exception as exc:
+            raise ScinoephileError(
+                f"Unable to load Demucs model {self.model_name!r}."
+            ) from exc
 
     def separate_vocals(self, audio: AudioSegment) -> AudioSegment:
         """Separate vocals from audio.
@@ -109,6 +114,9 @@ class DemucsSeparator:
             audio: audio to separate
         Returns:
             vocals-only audio
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            ScinoephileError: if model loading or separation fails
         """
         # Load matching cached vocals before running separation
         cached_vocals = self._cache.load(audio)

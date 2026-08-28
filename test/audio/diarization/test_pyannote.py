@@ -6,17 +6,19 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from dataclasses import dataclass
+from logging import INFO
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
 
 from pydub import AudioSegment
-from pytest import MonkeyPatch, raises
+from pytest import LogCaptureFixture, MonkeyPatch, raises
 
 from scinoephile.audio.diarization import (
     PyannoteDiarizer,
     SpeakerDiarizationAuthorizationError,
 )
+from scinoephile.core import DependencyError
 
 
 @dataclass(frozen=True)
@@ -121,13 +123,14 @@ class _FakeTorch:
 
 
 def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
-    tmp_path: Path, monkeypatch: MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
     """A mocked whole-source pipeline should run once across repeat calls.
 
     Arguments:
         tmp_path: temporary cache root path
         monkeypatch: pytest monkeypatch fixture
+        caplog: captured log records
     """
     pipeline = _FakePipeline()
     from_pretrained = Mock(return_value=pipeline)
@@ -151,6 +154,7 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     diarizer = PyannoteDiarizer(
         tmp_path, device="cpu", num_speakers=2, overwrite_cache=False
     )
+    caplog.set_level(INFO, logger="scinoephile.audio.diarization.pyannote")
 
     first = diarizer(audio)
     second = diarizer(audio)
@@ -173,6 +177,7 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     assert diarizer.cache_identity["model_revision"] == (
         "3533c8cf8e369892e6b79ff1bf80f7b0286a54ee"
     )
+    assert caplog.messages.count("Running pyannote speaker diarization on cpu.") == 1
 
 
 def test_cache_identity_separates_exact_model_revisions(
@@ -201,10 +206,10 @@ def test_cache_identity_separates_exact_model_revisions(
     assert first_path != second_path
 
 
-def test_custom_model_uses_repository_default_revision(
+def test_custom_model_uses_repository_and_device_defaults(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """A custom model without a revision should use its repository default.
+    """A custom model should use repository and detected device defaults.
 
     Arguments:
         tmp_path: temporary cache root path
@@ -220,16 +225,45 @@ def test_custom_model_uses_repository_default_revision(
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_torch", lambda: _FakeTorch
     )
+    get_torch_device = Mock(return_value="mps")
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_torch_device", get_torch_device
+    )
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.get_huggingface_snapshot_dir_path",
         Mock(return_value=Path("/cached/custom-model")),
     )
     diarizer = PyannoteDiarizer(tmp_path, model_id="custom/model")
+    get_torch_device.assert_not_called()
 
     diarizer._get_pipeline()  # noqa: SLF001
 
     from_pretrained.assert_called_once_with(Path("/cached/custom-model"))
+    get_torch_device.assert_called_once_with()
+    assert diarizer.device == "mps"
+    assert pipeline.device == "mps"
     assert diarizer.model_revision is None
+
+
+def test_default_device_dependency_failure_is_lazy(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """A missing Torch dependency should fail only when the device is needed.
+
+    Arguments:
+        tmp_path: temporary cache root path
+        monkeypatch: pytest monkeypatch fixture
+    """
+    get_torch_device = Mock(side_effect=DependencyError("Torch unavailable"))
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_torch_device", get_torch_device
+    )
+
+    diarizer = PyannoteDiarizer(tmp_path)
+    get_torch_device.assert_not_called()
+
+    with raises(DependencyError, match="Torch unavailable"):
+        _ = diarizer.device
 
 
 def test_diarizer_rejects_exact_and_bounded_speaker_counts(tmp_path: Path):

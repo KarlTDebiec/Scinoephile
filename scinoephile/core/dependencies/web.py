@@ -8,6 +8,8 @@ from __future__ import annotations
 from types import ModuleType
 from typing import TYPE_CHECKING
 
+from scinoephile.core.exceptions import DependencyError
+
 __all__ = ["import_flask", "import_werkzeug_serving"]
 
 if TYPE_CHECKING:
@@ -27,11 +29,13 @@ def import_flask() -> ModuleType:
 
     Returns:
         Flask module
+    Raises:
+        DependencyError: if web dependencies are unavailable
     """
     try:
         import flask
     except ImportError as exc:
-        raise ImportError(_WEB_EXTRA_MESSAGE) from exc
+        raise DependencyError(_WEB_EXTRA_MESSAGE) from exc
     return flask
 
 
@@ -40,9 +44,11 @@ def import_werkzeug_serving() -> ModuleType:
 
     Returns:
         Werkzeug serving module
+    Raises:
+        DependencyError: if web dependencies are unavailable
     """
     try:
         import werkzeug.serving as werkzeug_serving
     except ImportError as exc:
-        raise ImportError(_WEB_EXTRA_MESSAGE) from exc
+        raise DependencyError(_WEB_EXTRA_MESSAGE) from exc
     return werkzeug_serving

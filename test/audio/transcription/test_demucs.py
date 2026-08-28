@@ -9,6 +9,7 @@ from collections.abc import Mapping, Sequence
 
 from pytest import MonkeyPatch, raises
 
+from scinoephile.core import DependencyError
 from scinoephile.core.dependencies.transcription import import_demucs_infer_pretrained
 
 
@@ -29,5 +30,5 @@ def test_demucs_model_loader_requires_transcription_extra(monkeypatch: MonkeyPat
 
     monkeypatch.setattr(builtins, "__import__", import_without_demucs)
 
-    with raises(ImportError, match="'transcription' extra"):
+    with raises(DependencyError, match="'transcription' extra"):
         import_demucs_infer_pretrained()
