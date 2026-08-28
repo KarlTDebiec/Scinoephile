@@ -84,7 +84,7 @@ class PyannoteVadProvider(VadProvider):
             )
 
         torch = import_torch()
-        pipeline = self._load_pipeline(torch)
+        pipeline = self._load_pipeline()
         try:
             samples = to_mono_int16(audio, self.sample_rate)
             samples = samples.astype(np.float32).reshape(1, -1)
@@ -117,11 +117,9 @@ class PyannoteVadProvider(VadProvider):
         except Exception as exc:
             raise VoiceActivityError(f"Unable to run pyannote VAD: {exc}") from exc
 
-    def _load_pipeline(self, torch: object) -> object:
+    def _load_pipeline(self) -> object:
         """Lazily load and configure pyannote voice activity detection.
 
-        Arguments:
-            torch: imported Torch module
         Returns:
             configured pyannote VAD pipeline
         Raises:
@@ -147,6 +145,7 @@ class PyannoteVadProvider(VadProvider):
                 )
             pipeline_class = import_pyannote_audio_voice_activity_detection()
             pipeline = pipeline_class(segmentation=model)
+            torch = import_torch()
             device = cast(Callable[[str], object], getattr(torch, "device"))("cpu")
             cast(Callable[[object], object], getattr(pipeline, "to"))(device)
         except (DependencyError, VoiceActivityError):

@@ -127,7 +127,6 @@ class SileroVadProvider(VadProvider):
             DependencyError: if optional dependencies are unavailable
             VoiceActivityError: if inference fails
         """
-        load_silero_vad = import_silero_vad_load_silero_vad()
         torch = import_torch()
 
         samples = to_mono_int16(audio, self.sample_rate).astype(np.float32)
@@ -140,7 +139,7 @@ class SileroVadProvider(VadProvider):
                 duration_ms=0,
             )
         try:
-            model = self._load_model(load_silero_vad)
+            model = self._load_model()
             reset_states = cast(Callable[[], object], getattr(model, "reset_states"))
             run_model = cast(Callable[[object, int], object], model)
             no_grad = cast(
@@ -207,16 +206,17 @@ class SileroVadProvider(VadProvider):
             padding_seconds,
         )
 
-    def _load_model(self, load_silero_vad: Callable[..., object]) -> object:
+    def _load_model(self) -> object:
         """Lazily load the official packaged Silero model.
 
-        Arguments:
-            load_silero_vad: official Silero model loader
         Returns:
             configured Silero model
+        Raises:
+            DependencyError: if optional dependencies are unavailable
         """
         if self._model is not None:
             return self._model
 
+        load_silero_vad = import_silero_vad_load_silero_vad()
         self._model = load_silero_vad(onnx=True, opset_version=16)
         return self._model
