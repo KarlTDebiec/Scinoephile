@@ -8,7 +8,7 @@ from collections.abc import Mapping
 from pathlib import Path
 
 from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.audio.transcription.ctc_aligner import CtcAligner
+from scinoephile.audio.transcription.ctc.aligner import CtcAligner
 from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.core.language import Language
 from scinoephile.core.llms import LLMProvider, TestCase
