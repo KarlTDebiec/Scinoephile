@@ -231,6 +231,23 @@ def test_save_replaces_existing_collection(tmp_path: Path):
     ] == ["encountered"]
 
 
+def test_save_logs_created_directory_and_output(tmp_path: Path, caplog):
+    """Saving should log directory creation and completed output."""
+    output_path = tmp_path / "nested" / "test_cases.json"
+
+    with caplog.at_level("INFO", logger="scinoephile.core.llms.utils"):
+        save_test_cases_to_json(
+            output_path,
+            [_get_test_case("original", "corrected")],
+            _AliasedBaseReviewManager,
+        )
+
+    assert caplog.messages == [
+        f"Created directory {output_path.parent}",
+        f"Saved test cases to {output_path}",
+    ]
+
+
 def test_save_validates_mutated_test_cases(tmp_path: Path):
     """Saving should reject test cases made invalid after initialization."""
     output_path = tmp_path / "test_cases.json"
