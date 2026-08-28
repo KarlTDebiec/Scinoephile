@@ -6,11 +6,10 @@ from __future__ import annotations
 
 import json
 from collections.abc import Iterable
-from logging import getLogger
 from pathlib import Path
 from typing import cast
 
-from pydantic import TypeAdapter, ValidationError
+from pydantic import JsonValue, TypeAdapter
 
 from scinoephile.common.file import open_atomic_text_file
 
@@ -19,8 +18,6 @@ from .prompt import Prompt
 from .test_case import TestCase
 
 __all__ = ["load_test_cases_from_json", "save_test_cases_to_json"]
-
-logger = getLogger(__name__)
 
 
 def load_test_cases_from_json[TTestCase: TestCase](
@@ -35,72 +32,34 @@ def load_test_cases_from_json[TTestCase: TestCase](
     Returns:
         list of test cases
     """
-    # Build models for canonical persistence and the caller's prompt
-    base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
-    test_case_cls = manager_cls.get_test_case_cls(prompt)
-
-    # Decode JSON without assuming its outer shape
+    # Load input file as JSON and validate its basic shape
     with open(input_path, encoding="utf-8") as input_file:
-        raw_test_cases: object = json.load(input_file)
-
-    # Require an array of objects before applying operation-specific validation
-    raw_test_case_adapter = TypeAdapter(list[dict[str, object]])
-    raw_test_case_items = raw_test_case_adapter.validate_python(
+        raw_test_cases: JsonValue = json.load(input_file)
+    raw_test_case_items = TypeAdapter(list[dict[str, JsonValue]]).validate_python(
         raw_test_cases, strict=True
     )
-    base_test_cases: list[TTestCase] = []
-    stale_answer_count = 0
-    for raw_test_case in raw_test_case_items:
-        try:
-            base_test_case = base_test_case_cls.model_validate(
+
+    # Validate each test case. Test cases are persisted using the field names in the
+    # base prompt, so we need the test case class with that prompt to deserialize.
+    base_test_case_cls = manager_cls.get_test_case_cls(prompt=manager_cls.base_prompt)
+    base_test_cases = [
+        cast(
+            "TTestCase",
+            base_test_case_cls.model_validate(
                 raw_test_case,
                 by_alias=True,
                 by_name=False,
                 strict=True,
                 extra="forbid",
                 context={"alias_only": True},
-            )
-        except ValidationError as original_error:
-            # Recover only ordinary unverified cases whose query remains valid
-            if (
-                raw_test_case.get("answer") is None
-                or raw_test_case.get("verified") is True
-                or raw_test_case.get("few_shot") is True
-                or any(
-                    flag_name in raw_test_case
-                    and not isinstance(raw_test_case[flag_name], bool)
-                    for flag_name in ("few_shot", "verified")
-                )
-            ):
-                raise
-            unanswered_test_case_data = {
-                **raw_test_case,
-                "answer": None,
-                "few_shot": False,
-                "verified": False,
-            }
-            try:
-                base_test_case = base_test_case_cls.model_validate(
-                    unanswered_test_case_data,
-                    by_alias=True,
-                    by_name=False,
-                    strict=True,
-                    extra="forbid",
-                    context={"alias_only": True},
-                )
-            except ValidationError:
-                raise original_error
-            stale_answer_count += 1
-        base_test_cases.append(cast("TTestCase", base_test_case))
-
-    # Report all recovered stale answers once per file
-    if stale_answer_count:
-        logger.warning(
-            f"Discarded {stale_answer_count} stale unverified answer(s) while "
-            f"loading {input_path}; their valid queries will be regenerated."
+            ),
         )
+        for raw_test_case in raw_test_case_items
+    ]
 
-    # Convert canonical semantic data to the caller's prompt schema
+    # Now that test cases have been deserialized, we revalidate them using the test case
+    # class for our prompt.
+    test_case_cls = manager_cls.get_test_case_cls(prompt=prompt)
     test_cases: list[TTestCase] = []
     for base_test_case in base_test_cases:
         test_case_data = base_test_case.model_dump(mode="json")
