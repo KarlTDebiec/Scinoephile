@@ -7,7 +7,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 from types import SimpleNamespace
-from typing import Any, cast
 from unittest.mock import Mock
 
 import numpy as np
@@ -19,6 +18,10 @@ from scinoephile.audio.transcription import (
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
 )
+from scinoephile.audio.transcription.ctc import model as ctc_model
+from scinoephile.audio.transcription.ctc.path import get_best_path
+from scinoephile.audio.transcription.ctc.text import get_transcribed_words
+from scinoephile.audio.transcription.ctc.tokenization import get_token_ids
 from scinoephile.core import Language
 
 
@@ -29,7 +32,7 @@ def test_ctc_aligner_allows_model_override(monkeypatch: pytest.MonkeyPatch):
         monkeypatch: pytest monkeypatch fixture
     """
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.ctc_aligner._DEFAULT_MODEL_NAMES", {}
+        "scinoephile.audio.transcription.ctc.aligner._DEFAULT_MODEL_NAMES", {}
     )
     aligner = CtcAligner(Language.eng, "organization/model", "mps")
 
@@ -46,9 +49,7 @@ def test_ctc_aligner_groups_english_character_timings_into_words():
         for char_idx in range(len(text))
     }
 
-    words = CtcAligner(Language.eng)._get_transcribed_words(
-        text, timed_chars, len(text) / 10
-    )
+    words = get_transcribed_words(Language.eng, text, timed_chars, len(text) / 10)
 
     assert [word.text for word in words] == ["HI", " THERE"]
     assert "".join(word.text for word in words) == text
@@ -70,10 +71,11 @@ def test_ctc_aligner_expands_token_spans(monkeypatch: pytest.MonkeyPatch):
         )
     )
     aligner = CtcAligner(Language.yue_hant)
+    monkeypatch.setattr(aligner, "_processor", object())
+    monkeypatch.setattr(aligner, "_model", object())
     monkeypatch.setattr(
-        aligner,
-        "_get_alignment_inputs",
-        lambda _audio, _text: (log_probs, [1, 2], [0, 1], 0),
+        "scinoephile.audio.transcription.ctc.aligner.get_alignment_inputs",
+        lambda *_args: (log_probs, [1, 2], [0, 1], 0),
     )
 
     segments = aligner(AudioSegment.silent(duration=1000), "你好")
@@ -129,11 +131,11 @@ def test_ctc_aligner_loads_default_model_at_pinned_revision(
     monkeypatch.setattr(CtcAligner, "_models", {})
     monkeypatch.setattr(CtcAligner, "_processors", {})
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.ctc_aligner.get_huggingface_snapshot_dir_path",
+        "scinoephile.audio.transcription.ctc.aligner.get_huggingface_snapshot_dir_path",
         get_snapshot_dir_path,
     )
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.ctc_aligner.import_transformers",
+        "scinoephile.audio.transcription.ctc.aligner.import_transformers",
         Mock(
             return_value=SimpleNamespace(
                 AutoModelForCTC=SimpleNamespace(from_pretrained=model_factory),
@@ -166,7 +168,7 @@ def test_ctc_aligner_resolves_custom_model_snapshot_before_loading(
     aligner = CtcAligner(Language.eng, "organization/model")
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.ctc_aligner.get_huggingface_snapshot_dir_path",
+        "scinoephile.audio.transcription.ctc.aligner.get_huggingface_snapshot_dir_path",
         get_snapshot_dir_path,
     )
     loaded = object()
@@ -200,16 +202,16 @@ def test_ctc_aligner_persistently_caches_alignment(
     )
     audio = AudioSegment.silent(duration=1000)
     first_aligner = CtcAligner(Language.yue_hant, cache_root_path=tmp_path)
+    monkeypatch.setattr(first_aligner, "_processor", object())
+    monkeypatch.setattr(first_aligner, "_model", object())
     get_alignment_inputs = Mock(return_value=(log_probs, [1, 2], [0, 1], 0))
-    monkeypatch.setattr(first_aligner, "_get_alignment_inputs", get_alignment_inputs)
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc.aligner.get_alignment_inputs",
+        get_alignment_inputs,
+    )
 
     first_segments = first_aligner.align(audio, "你好")
     second_aligner = CtcAligner(Language.yue_hant, cache_root_path=tmp_path)
-    monkeypatch.setattr(
-        second_aligner,
-        "_get_alignment_inputs",
-        Mock(side_effect=AssertionError("inference should not run")),
-    )
     second_segments = second_aligner.align(audio, "你好")
 
     assert second_segments == first_segments
@@ -225,7 +227,7 @@ def test_ctc_audio_samples_use_requested_rate_and_float32():
         .set_sample_width(1)
     )
 
-    samples = CtcAligner._get_audio_samples(audio, 12000)
+    samples = ctc_model.get_audio_samples(audio, 12000)
 
     assert samples.ndim == 1
     assert samples.dtype == np.float32
@@ -236,22 +238,26 @@ def test_ctc_audio_samples_use_requested_rate_and_float32():
 def test_ctc_audio_samples_reject_empty_audio():
     """Test CTC audio conversion rejects empty audio."""
     with pytest.raises(TranscriptionAlignmentError, match="empty audio"):
-        CtcAligner._get_audio_samples(AudioSegment.empty(), 16000)
+        ctc_model.get_audio_samples(AudioSegment.empty(), 16000)
 
 
 def test_ctc_alignment_uses_processor_sampling_rate(monkeypatch: pytest.MonkeyPatch):
     """Test CTC alignment uses the configured processor's sampling rate."""
     aligner = CtcAligner(Language.yue_hant)
-    aligner._processor = cast(
-        Any, SimpleNamespace(feature_extractor=SimpleNamespace(sampling_rate=8000))
-    )
-    aligner._model = object()
+    processor = SimpleNamespace(feature_extractor=SimpleNamespace(sampling_rate=8000))
     get_audio_samples = Mock(side_effect=RuntimeError("stop after conversion"))
-    monkeypatch.setattr(aligner, "_get_audio_samples", get_audio_samples)
+    monkeypatch.setattr(ctc_model, "get_audio_samples", get_audio_samples)
     audio = AudioSegment.silent(duration=100)
 
     with pytest.raises(RuntimeError, match="stop after conversion"):
-        aligner._get_alignment_inputs(audio, "你")
+        ctc_model.get_alignment_inputs(
+            audio,
+            "你",
+            processor,
+            object(),
+            aligner.device,
+            aligner._script_conversion_config,
+        )
 
     get_audio_samples.assert_called_once_with(audio, 8000)
 
@@ -263,14 +269,14 @@ def test_ctc_best_path_requires_blank_between_repeated_labels():
     with pytest.raises(
         TranscriptionAlignmentIncompleteError, match="did not reach all tokens"
     ):
-        CtcAligner._get_best_path(log_probs, [1, 1], 0)
+        get_best_path(log_probs, [1, 1], 0)
 
 
 def test_ctc_best_path_accepts_blank_between_repeated_labels():
     """Test a blank-separated path can align adjacent repeated labels."""
     log_probs = np.log(np.array([[0.01, 0.99], [0.99, 0.01], [0.01, 0.99]]))
 
-    path = CtcAligner._get_best_path(log_probs, [1, 1], 0)
+    path = get_best_path(log_probs, [1, 1], 0)
 
     assert [(token_idx, frame_idx) for token_idx, frame_idx, _ in path] == [
         (0, 0),
@@ -311,12 +317,8 @@ def test_ctc_aligner_aligns_word_delimiter():
             ]
         )
     )
-    aligner = CtcAligner(Language.yue_hant)
-    aligner._processor = cast(Any, SimpleNamespace(tokenizer=FakeTokenizer()))
-    aligner._model = object()
-
-    token_ids, char_indices = aligner._get_token_ids("你 好")
-    path = aligner._get_best_path(log_probs, token_ids, 0)
+    token_ids, char_indices = get_token_ids("你 好", FakeTokenizer(), None)
+    path = get_best_path(log_probs, token_ids, 0)
 
     assert token_ids == [1, 2, 3]
     assert char_indices == [0, 1, 2]
@@ -344,10 +346,11 @@ def test_ctc_aligner_attaches_trailing_unaligned_punctuation(
         )
     )
     aligner = CtcAligner(Language.yue_hant)
+    monkeypatch.setattr(aligner, "_processor", object())
+    monkeypatch.setattr(aligner, "_model", object())
     monkeypatch.setattr(
-        aligner,
-        "_get_alignment_inputs",
-        lambda _audio, _text: (log_probs, [1, 2], [0, 1], 0),
+        "scinoephile.audio.transcription.ctc.aligner.get_alignment_inputs",
+        lambda *_args: (log_probs, [1, 2], [0, 1], 0),
     )
 
     segments = aligner.align(AudioSegment.silent(duration=1200), "你好。")
@@ -367,8 +370,11 @@ def test_ctc_aligner_times_trailing_unsupported_speech(monkeypatch: pytest.Monke
         np.array([[0.85, 0.15], [0.05, 0.95], [0.85, 0.15], [0.85, 0.15]])
     )
     aligner = CtcAligner(Language.yue_hant)
+    monkeypatch.setattr(aligner, "_processor", object())
+    monkeypatch.setattr(aligner, "_model", object())
     monkeypatch.setattr(
-        aligner, "_get_alignment_inputs", lambda _audio, _text: (log_probs, [1], [0], 0)
+        "scinoephile.audio.transcription.ctc.aligner.get_alignment_inputs",
+        lambda *_args: (log_probs, [1], [0], 0),
     )
 
     segments = aligner.align(AudioSegment.silent(duration=1000), "你嘅")
@@ -395,10 +401,11 @@ def test_ctc_aligner_preserves_boundary_whitespace(monkeypatch: pytest.MonkeyPat
         )
     )
     aligner = CtcAligner(Language.yue_hant)
+    monkeypatch.setattr(aligner, "_processor", object())
+    monkeypatch.setattr(aligner, "_model", object())
     monkeypatch.setattr(
-        aligner,
-        "_get_alignment_inputs",
-        lambda _audio, _text: (log_probs, [1, 2], [1, 2], 0),
+        "scinoephile.audio.transcription.ctc.aligner.get_alignment_inputs",
+        lambda *_args: (log_probs, [1, 2], [1, 2], 0),
     )
 
     segments = aligner.align(AudioSegment.silent(duration=1000), " 你好 ")
@@ -414,10 +421,11 @@ def test_ctc_aligner_preserves_boundary_whitespace(monkeypatch: pytest.MonkeyPat
 def test_ctc_aligner_preserves_all_unknown_characters(monkeypatch: pytest.MonkeyPatch):
     """Test a transcript outside the CTC vocabulary receives fallback timings."""
     aligner = CtcAligner(Language.yue_hant)
+    monkeypatch.setattr(aligner, "_processor", object())
+    monkeypatch.setattr(aligner, "_model", object())
     monkeypatch.setattr(
-        aligner,
-        "_get_alignment_inputs",
-        lambda _audio, _text: (np.empty((1, 1)), [], [], 0),
+        "scinoephile.audio.transcription.ctc.aligner.get_alignment_inputs",
+        lambda *_args: (np.empty((1, 1)), [], [], 0),
     )
 
     segments = aligner.align(AudioSegment.silent(duration=1500), "佢哋嘅")
@@ -458,10 +466,11 @@ def test_ctc_aligner_attaches_internal_unaligned_characters(
         )
     )
     aligner = CtcAligner(Language.yue_hant)
+    monkeypatch.setattr(aligner, "_processor", object())
+    monkeypatch.setattr(aligner, "_model", object())
     monkeypatch.setattr(
-        aligner,
-        "_get_alignment_inputs",
-        lambda _audio, _text: (log_probs, [1, 2], char_indices, 0),
+        "scinoephile.audio.transcription.ctc.aligner.get_alignment_inputs",
+        lambda *_args: (log_probs, [1, 2], char_indices, 0),
     )
 
     segments = aligner.align(AudioSegment.silent(duration=1000), text)
@@ -497,11 +506,7 @@ def test_ctc_token_ids_normalize_case_and_skip_unknown_chars():
             """
             return {"你": 1, "說": 2, "A": 4}.get(token, 3)
 
-    aligner = CtcAligner(Language.yue_hant)
-    aligner._processor = cast(Any, SimpleNamespace(tokenizer=FakeTokenizer()))
-    aligner._model = object()
-
-    token_ids, char_indices = aligner._get_token_ids(" 你 說。a嘅 ")
+    token_ids, char_indices = get_token_ids(" 你 說。a嘅 ", FakeTokenizer(), None)
 
     assert token_ids == [1, 5, 2, 4]
     assert char_indices == [1, 2, 3, 5]
@@ -548,9 +553,9 @@ def test_ctc_token_ids_use_default_model_script_conversion(
             return 3
 
     aligner = CtcAligner(language)
-    aligner._processor = cast(Any, SimpleNamespace(tokenizer=FakeTokenizer()))
-
-    token_ids, char_indices = aligner._get_token_ids(text)
+    token_ids, char_indices = get_token_ids(
+        text, FakeTokenizer(), aligner._script_conversion_config
+    )
 
     assert token_ids == expected_token_ids
     assert char_indices == list(range(len(expected_token_ids)))
@@ -579,9 +584,9 @@ def test_ctc_token_ids_do_not_convert_script_for_model_override():
             return 3
 
     aligner = CtcAligner(Language.yue_hans, "organization/model")
-    aligner._processor = cast(Any, SimpleNamespace(tokenizer=FakeTokenizer()))
-
-    token_ids, char_indices = aligner._get_token_ids("说")
+    token_ids, char_indices = get_token_ids(
+        "说", FakeTokenizer(), aligner._script_conversion_config
+    )
 
     assert token_ids == []
     assert char_indices == []
@@ -659,7 +664,7 @@ def test_ctc_models_and_processors_are_cached_independently(
         return Path("/cached") / model_name.rsplit("/", 1)[-1]
 
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.ctc_aligner.get_huggingface_snapshot_dir_path",
+        "scinoephile.audio.transcription.ctc.aligner.get_huggingface_snapshot_dir_path",
         get_snapshot_dir_path,
     )
     monkeypatch.setitem(
@@ -705,10 +710,11 @@ def test_ctc_aligner_rounds_timings(monkeypatch: pytest.MonkeyPatch):
         )
     )
     aligner = CtcAligner(Language.yue_hant)
+    monkeypatch.setattr(aligner, "_processor", object())
+    monkeypatch.setattr(aligner, "_model", object())
     monkeypatch.setattr(
-        aligner,
-        "_get_alignment_inputs",
-        lambda _audio, _text: (log_probs, [1, 2], [0, 1], 0),
+        "scinoephile.audio.transcription.ctc.aligner.get_alignment_inputs",
+        lambda *_args: (log_probs, [1, 2], [0, 1], 0),
     )
 
     segments = aligner.align(AudioSegment.silent(duration=1234), "你好")
@@ -733,8 +739,11 @@ def test_ctc_aligner_wraps_backend_errors(
 ):
     """Test low-level CTC failures are exposed as alignment errors."""
     aligner = CtcAligner(Language.yue_hant)
+    monkeypatch.setattr(aligner, "_processor", object())
+    monkeypatch.setattr(aligner, "_model", object())
     monkeypatch.setattr(
-        aligner, "_get_alignment_inputs", Mock(side_effect=backend_error)
+        "scinoephile.audio.transcription.ctc.aligner.get_alignment_inputs",
+        Mock(side_effect=backend_error),
     )
 
     with pytest.raises(

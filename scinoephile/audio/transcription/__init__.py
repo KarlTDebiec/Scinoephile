@@ -6,7 +6,7 @@ Package hierarchy (modules may import from any above):
 * exceptions / preprocessing_settings / transcribed_word
 * transcribed_segment
 * alignment_sequence / cache / quality
-* ctc_aligner
+* ctc
 * transcriber
 * mlx_audio / whisper
 """
@@ -16,7 +16,7 @@ from __future__ import annotations
 from logging import getLogger
 
 from .cache import TranscriptionCache
-from .ctc_aligner import CtcAligner
+from .ctc import CtcAligner
 from .exceptions import (
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
