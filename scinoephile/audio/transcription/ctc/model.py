@@ -99,9 +99,9 @@ class CtcModel:
     @cached_property
     def device(self) -> str:
         """Get the Torch device used for inference."""
-        if self._device is not None:
-            return self._device
-        return get_torch_device()
+        if self._device is None:
+            self._device = get_torch_device()
+        return self._device
 
     @cached_property
     def model(self) -> PreTrainedModel:
