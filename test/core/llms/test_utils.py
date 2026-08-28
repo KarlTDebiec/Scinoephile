@@ -160,8 +160,32 @@ def test_json_loading_rejects_non_base_fields(tmp_path: Path, test_case_data: di
         {"query": []},
         {"query": {"base_subtitles": "not a list"}},
         {"query": {"base_subtitles": [{"base_index": "1", "base_text": "original"}]}},
+        {
+            "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
+            "answer": {
+                "base_revisions": [
+                    {"base_index": 1, "base_text": "corrected", "base_note": "typo"}
+                ]
+            },
+            "verified": 1,
+        },
+        {
+            "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
+            "answer": {
+                "base_revisions": [
+                    {"base_index": 1, "base_text": "corrected", "base_note": "typo"}
+                ]
+            },
+            "few_shot": 1,
+        },
     ],
-    ids=["non-object-query", "non-list-subtitles", "coerced-index"],
+    ids=[
+        "non-object-query",
+        "non-list-subtitles",
+        "coerced-index",
+        "coerced-verified",
+        "coerced-few-shot",
+    ],
 )
 def test_json_loading_is_strict(tmp_path: Path, test_case_data: dict):
     """Repository JSON should reject values requiring type coercion."""
@@ -186,8 +210,8 @@ def test_json_loading_requires_an_array_of_objects(tmp_path: Path, contents: obj
         )
 
 
-def test_save_preserves_existing_cases_unless_pruning(tmp_path: Path):
-    """Saving a partial run should retain unencountered persisted cases."""
+def test_save_replaces_existing_collection(tmp_path: Path):
+    """Saving should replace the persisted collection atomically."""
     output_path = tmp_path / "test_cases.json"
     existing_test_case = _get_test_case("existing", "existing corrected")
     encountered_test_case = _get_test_case("encountered", "encountered corrected")
@@ -204,18 +228,36 @@ def test_save_preserves_existing_cases_unless_pruning(tmp_path: Path):
     )
     assert [
         test_case.query.model_dump()["subtitles"][0]["text"] for test_case in loaded
-    ] == ["existing", "encountered"]
-
-    save_test_cases_to_json(
-        output_path, [encountered_test_case], _AliasedBaseReviewManager, prune=True
-    )
-
-    loaded = load_test_cases_from_json(
-        output_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
-    )
-    assert [
-        test_case.query.model_dump()["subtitles"][0]["text"] for test_case in loaded
     ] == ["encountered"]
+
+
+def test_save_logs_created_directory_and_output(tmp_path: Path, caplog):
+    """Saving should log directory creation and completed output."""
+    output_path = tmp_path / "nested" / "test_cases.json"
+
+    with caplog.at_level("INFO", logger="scinoephile.core.llms.utils"):
+        save_test_cases_to_json(
+            output_path,
+            [_get_test_case("original", "corrected")],
+            _AliasedBaseReviewManager,
+        )
+
+    assert caplog.messages == [
+        f"Created directory {output_path.parent}",
+        f"Saved test cases to {output_path}",
+    ]
+
+
+def test_save_validates_mutated_test_cases(tmp_path: Path):
+    """Saving should reject test cases made invalid after initialization."""
+    output_path = tmp_path / "test_cases.json"
+    test_case = _get_test_case("original", "corrected")
+    test_case.query.subtitles.clear()
+
+    with raises(ValidationError):
+        save_test_cases_to_json(output_path, [test_case], _AliasedBaseReviewManager)
+
+    assert not output_path.exists()
 
 
 def test_save_replaces_existing_file_atomically(tmp_path: Path):

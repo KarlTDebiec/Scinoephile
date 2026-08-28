@@ -951,6 +951,42 @@ def test_processor_saves_encountered_cases_to_current_json(tmp_path: Path):
     assert saved[0].model_dump(mode="json") == shared.model_dump(mode="json")
 
 
+def test_processor_merges_test_cases_saved_by_another_instance(tmp_path: Path):
+    """Processor saves should merge cases saved by another instance."""
+    existing = _TestCase(query=_Query(text="existing"), answer=_Answer(output="old"))
+    untouched = _TestCase(
+        query=_Query(text="untouched"), answer=_Answer(output="retained")
+    )
+    current_test_cases_path = tmp_path / "test_cases.json"
+    save_test_cases_to_json(current_test_cases_path, [existing, untouched], _Manager)
+    processors = [
+        _Processor(
+            prompt=_PROMPT,
+            current_test_cases_path=current_test_cases_path,
+            provider=Mock(
+                spec=LLMProvider,
+                cache_identity={"implementation": "test"},
+                completion_metrics=[],
+            ),
+        )
+        for _ in range(2)
+    ]
+    updated = _TestCase(query=_Query(text="existing"), answer=_Answer(output="new"))
+    added = _TestCase(query=_Query(text="added"), answer=_Answer(output="new case"))
+
+    processors[0].queryer.log_encountered_test_case(updated)
+    processors[0].save_encountered_test_cases()
+    processors[1].queryer.log_encountered_test_case(added)
+    processors[1].save_encountered_test_cases()
+
+    saved = load_test_cases_from_json(current_test_cases_path, _Manager, _PROMPT)
+    assert [(test_case.query.text, test_case.answer.output) for test_case in saved] == [
+        ("existing", "new"),
+        ("untouched", "retained"),
+        ("added", "new case"),
+    ]
+
+
 def test_processor_passes_injected_provider_to_queryer():
     """Test processor wires injected providers into its queryer."""
     provider = Mock(

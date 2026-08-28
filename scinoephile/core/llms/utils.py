@@ -6,10 +6,10 @@ from __future__ import annotations
 
 import json
 from collections.abc import Iterable
+from logging import getLogger
 from pathlib import Path
-from typing import cast
 
-from pydantic import TypeAdapter
+from pydantic import JsonValue, TypeAdapter
 
 from scinoephile.common.file import open_atomic_text_file
 
@@ -18,6 +18,8 @@ from .prompt import Prompt
 from .test_case import TestCase
 
 __all__ = ["load_test_cases_from_json", "save_test_cases_to_json"]
+
+logger = getLogger(__name__)
 
 
 def load_test_cases_from_json[TTestCase: TestCase](
@@ -32,32 +34,34 @@ def load_test_cases_from_json[TTestCase: TestCase](
     Returns:
         list of test cases
     """
-    # Prepare prompt-specific test-case classes
-    base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
-    test_case_cls = manager_cls.get_test_case_cls(prompt)
-
-    # Load serialized test cases
+    # Load input file as JSON and validate its basic shape
     with open(input_path, encoding="utf-8") as input_file:
-        raw_test_cases: object = json.load(input_file)
-
-    # Validate using the base-prompt schema
-    base_test_case_list_type = list[base_test_case_cls]
-    base_test_case_adapter = TypeAdapter(base_test_case_list_type)
-    validated_base_test_cases = base_test_case_adapter.validate_python(
-        raw_test_cases,
-        by_alias=True,
-        by_name=False,
-        strict=True,
-        extra="forbid",
-        context={"alias_only": True},
+        raw_test_cases: JsonValue = json.load(input_file)
+    raw_test_case_items = TypeAdapter(list[dict[str, JsonValue]]).validate_python(
+        raw_test_cases, strict=True
     )
-    base_test_cases = cast("list[TTestCase]", validated_base_test_cases)
 
-    # Convert to the requested prompt schema
+    # Validate each test case. Test cases are persisted using the field names in the
+    # base prompt, so we need the test case class with that prompt to deserialize.
+    base_test_case_cls = manager_cls.get_test_case_cls(prompt=manager_cls.base_prompt)
+    base_test_cases = [
+        base_test_case_cls.model_validate(
+            raw_test_case,
+            by_alias=True,
+            by_name=False,
+            strict=True,
+            extra="forbid",
+            context={"alias_only": True},
+        )
+        for raw_test_case in raw_test_case_items
+    ]
+
+    # Now that test cases have been deserialized, we revalidate them using the test case
+    # class for our prompt.
+    test_case_cls = manager_cls.get_test_case_cls(prompt=prompt)
     test_cases: list[TTestCase] = []
     for base_test_case in base_test_cases:
-        test_case_data = base_test_case.model_dump(mode="json")
-        test_case = test_case_cls.model_validate(test_case_data)
+        test_case = test_case_cls.model_validate(base_test_case.model_dump(mode="json"))
         test_cases.append(test_case)
 
     return test_cases
@@ -67,8 +71,6 @@ def save_test_cases_to_json[TTestCase: TestCase](
     output_path: Path,
     test_cases: Iterable[TTestCase],
     manager_cls: type[Manager[TTestCase]],
-    *,
-    prune: bool = False,
 ):
     """Save test cases to JSON file.
 
@@ -76,32 +78,22 @@ def save_test_cases_to_json[TTestCase: TestCase](
         output_path: path to JSON file to which to save
         test_cases: test cases to save
         manager_cls: manager class used to construct test case models
-        prune: whether to remove existing test cases that were not provided
     """
-    test_cases_to_save = list(test_cases)
-    if output_path.exists() and not prune:
-        existing_test_cases = load_test_cases_from_json(
-            output_path, manager_cls, manager_cls.base_prompt
-        )
-        encountered_query_keys = {
-            test_case.query.key for test_case in test_cases_to_save
-        }
-        test_cases_to_save = [
-            test_case
-            for test_case in existing_test_cases
-            if test_case.query.key not in encountered_query_keys
-        ] + test_cases_to_save
-
-    base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
-    data = []
-    for test_case in test_cases_to_save:
+    # Collect JSON for each test case, using the field names in the base prompt.
+    base_test_case_cls = manager_cls.get_test_case_cls(prompt=manager_cls.base_prompt)
+    test_case_jsons = []
+    for test_case in test_cases:
         base_test_case = base_test_case_cls.model_validate(
-            test_case.model_dump(mode="json")
+            test_case.model_dump(mode="json"), strict=True
         )
-        data.append(
+        test_case_jsons.append(
             base_test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)
         )
-    output_path.parent.mkdir(parents=True, exist_ok=True)
 
+    # Write output file
+    if not output_path.parent.exists():
+        output_path.parent.mkdir(parents=True)
+        logger.info(f"Created directory {output_path.parent}")
     with open_atomic_text_file(output_path) as temp_file:
-        json.dump(data, temp_file, ensure_ascii=False, indent=2)
+        json.dump(test_case_jsons, temp_file, ensure_ascii=False, indent=2)
+    logger.info(f"Saved test cases to {output_path}")

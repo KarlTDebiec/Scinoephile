@@ -357,6 +357,8 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: 
             "difficulty": 2,
         }
     ]
+    delineation_json_path.parent.mkdir(parents=True, exist_ok=True)
+    punctuation_json_path.parent.mkdir(parents=True, exist_ok=True)
     delineation_json_path.write_text(
         json.dumps(delineation_test_case_data), encoding="utf-8"
     )
