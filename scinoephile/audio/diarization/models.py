@@ -23,11 +23,7 @@ class SpeakerTurn(BaseModel):
 
     @model_validator(mode="after")
     def _validate_duration(self) -> Self:
-        """Ensure the turn has positive duration.
-
-        Returns:
-            validated speaker turn
-        """
+        """Ensure the turn has positive duration."""
         if self.end <= self.start:
             raise ValueError("Speaker turn end must be after its start.")
         return self
@@ -82,11 +78,7 @@ class SpeakerDiarizationResult(BaseModel):
 
     @model_validator(mode="after")
     def _validate_turn_order(self) -> Self:
-        """Ensure timelines are ordered and exclusive turns do not overlap.
-
-        Returns:
-            validated speaker diarization result
-        """
+        """Ensure timelines are ordered and exclusive turns do not overlap."""
         for name, turns in (
             ("regular", self.turns),
             ("exclusive", self.exclusive_turns),

@@ -166,6 +166,7 @@ class _DocstringVisitor(ast.NodeVisitor):
         *,
         decorator_names: set[str],
         docstring: str,
+        is_after_model_validator: bool,
         node: ast.FunctionDef | ast.AsyncFunctionDef,
         qualified_name: str,
     ):
@@ -174,6 +175,7 @@ class _DocstringVisitor(ast.NodeVisitor):
         Arguments:
             decorator_names: terminal names of the callable's decorators
             docstring: cleaned callable docstring
+            is_after_model_validator: whether this is an after model validator
             node: callable definition
             qualified_name: qualified callable name
         """
@@ -220,7 +222,7 @@ class _DocstringVisitor(ast.NodeVisitor):
         is_property_getter = bool(
             {"cached_property", "getter", "property"} & decorator_names
         )
-        if not is_property_getter:
+        if not is_property_getter and not is_after_model_validator:
             if has_value_return and not has_returns_section:
                 self._add_violation(
                     line_number=node.lineno,
@@ -270,6 +272,9 @@ class _DocstringVisitor(ast.NodeVisitor):
                 definition_name = f"{definition_name}.{accessor_name}"
                 break
         qualified_name = ".".join((*self.qualified_names, definition_name))
+        is_after_model_validator = any(
+            _is_after_model_validator(decorator) for decorator in node.decorator_list
+        )
 
         if "overload" not in decorator_names:
             docstring = ast.get_docstring(node, clean=True)
@@ -284,6 +289,7 @@ class _DocstringVisitor(ast.NodeVisitor):
                 self._check_callable(
                     decorator_names=decorator_names,
                     docstring=docstring,
+                    is_after_model_validator=is_after_model_validator,
                     node=node,
                     qualified_name=qualified_name,
                 )
@@ -382,6 +388,32 @@ class Example:
             echoed value
         """
         return value
+'''
+    )
+
+    assert not violations
+
+
+def test_docstring_after_model_validators_need_no_returns_section():
+    """Test after model validators may include or omit `Returns:`."""
+    violations = _get_sample_docstring_violations(
+        '''
+class Example:
+    """Example model."""
+
+    @model_validator(mode="after")
+    def validate_direct(self):
+        """Validate the direct model."""
+        return self
+
+    @pydantic.model_validator(mode="after")
+    def validate_qualified(self):
+        """Validate the qualified model.
+
+        Returns:
+            validated model
+        """
+        return self
 '''
     )
 
@@ -546,6 +578,50 @@ def sample():
     )
 
     assert [violation.rule_id for violation in violations] == ["unexpected-returns"]
+
+
+@pytest.mark.parametrize(
+    ("mode", "signature", "argument_lines", "return_expression"),
+    [
+        ("before", "cls, data", "            data: raw model data", "data"),
+        (
+            "wrap",
+            "cls, data, handler",
+            "            data: raw model data\n"
+            "            handler: inner validation handler",
+            "handler(data)",
+        ),
+    ],
+)
+def test_docstring_other_model_validators_require_returns_section(
+    mode: str, signature: str, argument_lines: str, return_expression: str
+):
+    """Test before and wrap model validators still require `Returns:`.
+
+    Arguments:
+        mode: model validator mode
+        signature: validator signature source
+        argument_lines: validator argument documentation source
+        return_expression: validator return expression source
+    """
+    violations = _get_sample_docstring_violations(
+        f'''
+class Example:
+    """Example model."""
+
+    @model_validator(mode="{mode}")
+    @classmethod
+    def validate({signature}):
+        """Validate model input.
+
+        Arguments:
+{argument_lines}
+        """
+        return {return_expression}
+'''
+    )
+
+    assert [violation.rule_id for violation in violations] == ["missing-returns"]
 
 
 def test_docstring_only_self_and_cls_need_no_arguments_section():
@@ -970,6 +1046,26 @@ def _get_callable_parameter_names(
     if node.args.kwarg is not None:
         parameter_names.append(f"**{node.args.kwarg.arg}")
     return [name for name in parameter_names if name not in {"cls", "self"}]
+
+
+def _is_after_model_validator(decorator: ast.expr) -> bool:
+    """Check whether a decorator is an after Pydantic model validator.
+
+    Arguments:
+        decorator: decorator expression
+    Returns:
+        whether the decorator is `@model_validator(mode="after")`
+    """
+    if not isinstance(decorator, ast.Call):
+        return False
+    if _get_decorator_terminal_name(decorator) != "model_validator":
+        return False
+    return any(
+        keyword.arg == "mode"
+        and isinstance(keyword.value, ast.Constant)
+        and keyword.value.value == "after"
+        for keyword in decorator.keywords
+    )
 
 
 def _get_decorator_terminal_name(decorator: ast.expr) -> str | None:

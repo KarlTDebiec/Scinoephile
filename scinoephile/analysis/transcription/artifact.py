@@ -76,11 +76,7 @@ class AlignmentColumn(BaseModel):
 
     @model_validator(mode="after")
     def _validate_timing(self) -> AlignmentColumn:
-        """Validate the overall-time interval.
-
-        Returns:
-            validated alignment column
-        """
+        """Validate the overall-time interval."""
         if self.end_ms < self.start_ms:
             raise ValueError("Alignment column end must not precede its start.")
         if self.kind == "pause" and self.end_ms == self.start_ms:
@@ -123,11 +119,7 @@ class AlignmentSubtitle(BaseModel):
 
     @model_validator(mode="after")
     def _validate_timing(self) -> AlignmentSubtitle:
-        """Validate speech and display intervals.
-
-        Returns:
-            validated alignment subtitle
-        """
+        """Validate speech and display intervals."""
         if self.speech_end_ms <= self.speech_start_ms:
             raise ValueError("Subtitle speech duration must be positive.")
         if self.end_ms <= self.start_ms:
@@ -290,11 +282,7 @@ class AlignmentBlock(BaseModel):
 
     @model_validator(mode="after")
     def _validate_shape(self) -> AlignmentBlock:
-        """Validate block ranges, column indexes, and row widths.
-
-        Returns:
-            validated alignment block
-        """
+        """Validate block ranges, column indexes, and row widths."""
         self._validate_ranges()
         self._validate_rows()
         self._validate_annotations()
@@ -472,11 +460,7 @@ class AlignmentArtifact(BaseModel):
 
     @model_validator(mode="after")
     def _validate_document(self) -> AlignmentArtifact:
-        """Validate source identity and ordered block contents.
-
-        Returns:
-            validated alignment artifact
-        """
+        """Validate source identity and ordered block contents."""
         source_names = self._validate_sources()
         previous_block_index = 0
         previous_core_end_ms = -1

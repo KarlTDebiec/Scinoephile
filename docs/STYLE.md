@@ -199,6 +199,8 @@
     arguments.
   * Describe the value exposed by property and cached-property getters in the
     summary; a `Returns:` section is not required.
+  * Describe the validation performed by `@model_validator(mode="after")`
+    methods in the summary; a `Returns:` section is not required.
   * In argument descriptions, the first word after the colon should be
     lowercase unless it is a type name.
   * Do not include a blank line between the `Arguments:` and `Returns:`
