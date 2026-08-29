@@ -28,5 +28,7 @@ class MlxAudioRuntimeModel(Protocol):
         Arguments:
             audio: audio file path
             **kwargs: model-specific generation arguments
+        Returns:
+            speech recognition result
         """
         ...

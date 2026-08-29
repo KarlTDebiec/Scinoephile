@@ -70,5 +70,7 @@ class CtcTokenizer(Protocol):
 
         Arguments:
             token: token text
+        Returns:
+            model token ID, or `None` when unavailable
         """
         ...

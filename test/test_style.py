@@ -660,6 +660,32 @@ def load(value: int) -> int: ...
     assert not violations
 
 
+def test_docstring_typed_interface_stubs_require_returns_section():
+    """Test value-returning typed interface stubs require `Returns:`."""
+    violations = _get_sample_docstring_violations(
+        '''
+class Interface:
+    """Example interface."""
+
+    def value(self, token: str) -> int | None:
+        """Get a value.
+
+        Arguments:
+            token: token text
+        """
+        ...
+
+    def no_value(self) -> None:
+        """Perform an operation."""
+        ...
+'''
+    )
+
+    assert [
+        (violation.qualified_name, violation.rule_id) for violation in violations
+    ] == [("Interface.value", "missing-returns")]
+
+
 def test_docstring_properties_need_no_returns_section():
     """Test property and cached-property getters need no `Returns:` section."""
     violations = _get_sample_docstring_violations(
@@ -1161,13 +1187,28 @@ def _get_sample_docstring_violations(
 
 
 def _has_value_return(node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
-    """Check whether a callable's lexical body returns a value.
+    """Check whether a callable's body or typed stub contract returns a value.
 
     Arguments:
         node: callable definition
     Returns:
-        whether the callable contains an own-body value return
+        whether the callable contains an own-body value return or typed value stub
     """
+    statements = node.body
+    if ast.get_docstring(node, clean=False) is not None:
+        statements = statements[1:]
+    is_ellipsis_stub = (
+        len(statements) == 1
+        and isinstance(statements[0], ast.Expr)
+        and isinstance(statements[0].value, ast.Constant)
+        and statements[0].value.value is Ellipsis
+    )
+    return_annotation_is_none = (
+        isinstance(node.returns, ast.Constant) and node.returns.value is None
+    ) or (isinstance(node.returns, ast.Name) and node.returns.id == "None")
+    if is_ellipsis_stub and node.returns is not None and not return_annotation_is_none:
+        return True
+
     visitor = _ValueReturnVisitor()
     for statement in node.body:
         visitor.visit(statement)
