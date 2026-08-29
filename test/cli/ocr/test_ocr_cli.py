@@ -8,6 +8,7 @@ from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from os import getenv
 from pathlib import Path
+from typing import Any
 
 from pytest import MonkeyPatch, raises
 
@@ -111,7 +112,7 @@ def test_ocr_lens_cli_converts_image_subtitles_to_srt(
     input_path = _write_placeholder_sup_path(tmp_path)
     observed_kwargs = []
 
-    def fake_ocr_image_series_with_lens(*args: object, **kwargs: object) -> Series:
+    def fake_ocr_image_series_with_lens(*args: Any, **kwargs: Any) -> Series:
         """Fake Google Lens image series processing.
 
         Arguments:
@@ -200,7 +201,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
     input_path = _write_placeholder_sup_path(tmp_path)
     observed_kwargs = []
 
-    def fake_ocr_image_series_with_paddle(*args: object, **kwargs: object) -> Series:
+    def fake_ocr_image_series_with_paddle(*args: Any, **kwargs: Any) -> Series:
         """Fake PaddleOCR image series processing.
 
         Arguments:
@@ -255,7 +256,7 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
     )
     input_path = _write_placeholder_sup_path(tmp_path)
 
-    def fake_ocr_image_series_with_tesseract(*args: object, **kwargs: object) -> Series:
+    def fake_ocr_image_series_with_tesseract(*args: Any, **kwargs: Any) -> Series:
         """Fake Tesseract OCR image series processing.
 
         Arguments:
@@ -307,7 +308,7 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
     input_path = _write_placeholder_sup_path(tmp_path)
     cache_root_path = tmp_path / "cache"
 
-    def fake_ocr_image_series_with_tesseract(*args: object, **kwargs: object) -> Series:
+    def fake_ocr_image_series_with_tesseract(*args: Any, **kwargs: Any) -> Series:
         """Fake Tesseract OCR image series processing.
 
         Arguments:
@@ -351,7 +352,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
     output_path = tmp_path / "unused.srt"
     stderr = StringIO()
 
-    def fail_ocr_image_series_with_tesseract(*args: object, **kwargs: object) -> Series:
+    def fail_ocr_image_series_with_tesseract(*args: Any, **kwargs: Any) -> Series:
         """Fail if OCR is invoked before argument validation."""
         _ = args, kwargs
         raise AssertionError("unexpected OCR")
@@ -443,7 +444,7 @@ def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
     ocr_calls: list[tuple[tuple[object, ...], dict[str, object]]] = []
     writer_calls: list[tuple[object, Series, Path, bool]] = []
 
-    def fake_ocr_image_series(*args: object, **kwargs: object) -> Series:
+    def fake_ocr_image_series(*args: Any, **kwargs: Any) -> Series:
         """Fake image subtitle OCR operation.
 
         Arguments:

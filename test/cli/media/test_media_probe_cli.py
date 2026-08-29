@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 from unittest.mock import patch
 
 from pytest import CaptureFixture, raises
@@ -226,7 +227,7 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
     infile_path.touch()
     cache_root_path = tmp_path / "cache"
 
-    def analyze_script(*args: object, **kwargs: object) -> ZhoScriptAnalysisResult:
+    def analyze_script(*args: Any, **kwargs: Any) -> ZhoScriptAnalysisResult:
         """Return script analysis after checking analyzer inputs."""
         assert args[0] == infile_path
         stream = args[1]

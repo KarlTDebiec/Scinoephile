@@ -53,7 +53,7 @@ class CountingLensRecognizer(LensRecognizer):
             results = [["cached", "text"]]
         self.results = results
 
-    async def process_image(self, **kwargs: object) -> dict[str, object]:
+    async def process_image(self, **kwargs: Any) -> dict[str, object]:
         """Process an image.
 
         Arguments:
@@ -586,7 +586,7 @@ def test_lens_recognizer_creates_client_for_each_uncached_recognition(
             nonlocal init_count
             init_count += 1
 
-        async def process_image(self, **kwargs: object) -> dict[str, object]:
+        async def process_image(self, **kwargs: Any) -> dict[str, object]:
             """Process an image.
 
             Arguments:
