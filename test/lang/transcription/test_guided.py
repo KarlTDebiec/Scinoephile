@@ -17,13 +17,13 @@ from scinoephile.audio.transcription import (
     VadMode,
     WhisperTranscriber,
 )
-from scinoephile.audio.transcription.mlx_audio.model import (
+from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioModel,
+    MlxAudioModelSpec,
 )
 from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
@@ -199,7 +199,9 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     ],
 )
 def test_get_guided_transcriber_configures_mlx_audio_model(
-    tmp_path: Path, model: TranscriptionModel, expected_mlx_audio_model: MlxAudioModel
+    tmp_path: Path,
+    model: TranscriptionModel,
+    expected_mlx_audio_model: MlxAudioModelSpec,
 ):
     """Test the factory selects each complete MLX-Audio model.
 
@@ -220,7 +222,6 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
             cache_root_path=tmp_path,
             strip_generated_punctuation=True,
             mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
-            mlx_audio_token_limit_guard=True,
             provider=Mock(
                 spec=LLMProvider,
                 cache_identity={"implementation": "test"},
@@ -233,21 +234,21 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
         )
 
     assert transcriber.audio_model is expected_mlx_audio_model
-    assert transcriber.model_name == expected_mlx_audio_model.model_name
+    assert transcriber.model_name == expected_mlx_audio_model.name
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None
     assert transcriber.tail_recovery_transcriber is None
     assert transcriber.strip_generated_punctuation
     assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
-    mlx_audio_transcriber_class.assert_called_once_with(
-        model=expected_mlx_audio_model,
-        language=Language.yue_hant,
-        token_limit_guard=True,
-        demucs_mode=DemucsMode.OFF,
-        vad_mode=VadMode.OFF,
-        cache_root_path=tmp_path,
-        overwrite_cache=False,
-    )
+    mlx_audio_transcriber_class.assert_called_once()
+    transcriber_kw = mlx_audio_transcriber_class.call_args.kwargs
+    assert transcriber_kw["model"].spec is expected_mlx_audio_model
+    assert isinstance(transcriber_kw["ctc_aligner"], CtcAligner)
+    assert transcriber_kw["ctc_aligner"].language is Language.yue_hant
+    assert transcriber_kw["demucs_mode"] is DemucsMode.OFF
+    assert transcriber_kw["vad_mode"] is VadMode.OFF
+    assert transcriber_kw["cache_root_path"] == tmp_path
+    assert not transcriber_kw["overwrite_cache"]
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path):

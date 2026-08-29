@@ -4,13 +4,12 @@
 
 from __future__ import annotations
 
-from dataclasses import replace
 from unittest.mock import patch
 
 from pytest import raises
 
 from scinoephile.audio.transcription import VadMode
-from scinoephile.audio.transcription.mlx_audio.model import (
+from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
@@ -56,17 +55,17 @@ def test_default_cantonese_sources_use_configured_models_without_internal_vad():
     )
     assert tuple(source.model for source in descriptors) == (
         WHISPER_LARGE_V3_CANTONESE_MODEL.name,
-        MIMO_MODEL.model_name,
-        QWEN3_ASR_MODEL.model_name,
-        SENSEVOICE_MODEL.model_name,
-        FIRERED_ASR2_MODEL.model_name,
-        GLM_ASR_MODEL.model_name,
+        MIMO_MODEL.name,
+        QWEN3_ASR_MODEL.name,
+        SENSEVOICE_MODEL.name,
+        FIRERED_ASR2_MODEL.name,
+        GLM_ASR_MODEL.name,
     )
     assert whisper.call_args.kwargs["model"].spec is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert whisper.call_args.kwargs["language"] is Language.yue_hant
     assert whisper.call_args.kwargs["vad_mode"] is VadMode.OFF
     assert whisper.call_args.kwargs["recover_decoding"]
-    assert [call.kwargs["model"] for call in mlx.call_args_list] == [
+    assert [call.kwargs["model"].spec for call in mlx.call_args_list] == [
         MIMO_MODEL,
         QWEN3_ASR_MODEL,
         SENSEVOICE_MODEL,
@@ -74,19 +73,13 @@ def test_default_cantonese_sources_use_configured_models_without_internal_vad():
         GLM_ASR_MODEL,
     ]
     assert all(
-        call.kwargs["language"] is Language.yue_hant for call in mlx.call_args_list
+        call.kwargs["ctc_aligner"].language is Language.yue_hant
+        for call in mlx.call_args_list
     )
     assert all(call.kwargs["vad_mode"] is VadMode.OFF for call in mlx.call_args_list)
     assert all(
         call.kwargs["chunk_duration_seconds"] == 30.0 for call in mlx.call_args_list
     )
-    assert [call.kwargs["token_limit_guard"] for call in mlx.call_args_list] == [
-        True,
-        False,
-        False,
-        False,
-        False,
-    ]
 
 
 def test_source_spec_normalizes_name():
@@ -96,25 +89,6 @@ def test_source_spec_normalizes_name():
     )
 
     assert source.name == "whisper"
-
-
-def test_source_uses_model_capability_for_token_limit_guard():
-    """Test customized constrained models retain token-limit protection."""
-    customized_mimo_model = replace(MIMO_MODEL, model_revision="custom-revision")
-    source_specs = [
-        TranscriptionSourceSpec(name="mimo", model=customized_mimo_model),
-        TranscriptionSourceSpec(name="whisper", model=WHISPER_LARGE_V3_CANTONESE_MODEL),
-    ]
-    with (
-        patch("scinoephile.lang.transcription.sources.WhisperTranscriber") as whisper,
-        patch("scinoephile.lang.transcription.sources.MlxAudioTranscriber") as mlx,
-    ):
-        whisper.backend_name = "whisper"
-        mlx.backend_name = "mlx-audio"
-        get_transcription_sources(Language.yue_hant, source_specs=source_specs)
-
-    assert mlx.call_args.kwargs["model"] is customized_mimo_model
-    assert mlx.call_args.kwargs["token_limit_guard"]
 
 
 def test_source_validation_rejects_invalid_registries():

@@ -313,7 +313,16 @@ def test_vad_cache_identity_separates_implementation_and_settings(
     """Separate transcription caches by VAD model, runtime, and postprocessing."""
     monkeypatch.setattr(
         "scinoephile.audio.vad.silero.get_distribution_identity",
-        Mock(return_value={"distribution": "silero-vad", "version": "6.2.1"}),
+        Mock(
+            side_effect=lambda distribution_name: {
+                "distribution": distribution_name,
+                "version": {
+                    "onnxruntime": "1.28.0",
+                    "silero-vad": "6.2.1",
+                    "torch": "2.10.0",
+                }[distribution_name],
+            }
+        ),
     )
     monkeypatch.setattr(
         "scinoephile.audio.vad.ten.get_distribution_identity",
@@ -362,7 +371,11 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "min_speech_duration_seconds": 0.1,
         "padding_seconds": 0.5,
         "postprocessing_version": "2",
-        "runtime": {"distribution": "silero-vad", "version": "6.2.1"},
+        "runtime": {
+            "onnxruntime": {"distribution": "onnxruntime", "version": "1.28.0"},
+            "silero_vad": {"distribution": "silero-vad", "version": "6.2.1"},
+            "torch": {"distribution": "torch", "version": "2.10.0"},
+        },
         "sample_rate": 16000,
         "threshold": 0.5,
         "trace_identity_version": "2",
@@ -409,7 +422,14 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
     """Identify pyannote VAD by its pinned model and installed runtime version."""
     monkeypatch.setattr(
         "scinoephile.audio.vad.pyannote.get_distribution_identity",
-        Mock(return_value={"distribution": "pyannote.audio", "version": "4.0.7"}),
+        Mock(
+            side_effect=lambda distribution_name: {
+                "distribution": distribution_name,
+                "version": {"pyannote.audio": "4.0.7", "torch": "2.10.0"}[
+                    distribution_name
+                ],
+            }
+        ),
     )
     detector = VoiceActivityDetector(
         VadImplementation.PYANNOTE,
@@ -426,7 +446,10 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
         "model_revision": "e66f3d3b9eb0873085418a7b813d3b369bf160bb",
         "padding_seconds": 0.1,
         "postprocessing_version": "2",
-        "runtime": {"distribution": "pyannote.audio", "version": "4.0.7"},
+        "runtime": {
+            "pyannote_audio": {"distribution": "pyannote.audio", "version": "4.0.7"},
+            "torch": {"distribution": "torch", "version": "2.10.0"},
+        },
         "sample_rate": 16000,
         "threshold": 0.5,
         "trace_identity_version": "2",
