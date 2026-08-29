@@ -217,11 +217,12 @@ class _DocstringVisitor(ast.NodeVisitor):
                     rule_id="arguments-mismatch",
                 )
 
-        has_value_return, has_yield = _get_callable_flow(
+        has_value_return, has_yield, has_explicit_raise = _get_callable_flow(
             node, is_abstract_method="abstractmethod" in decorator_names
         )
         has_returns_section = any(section.name == "Returns" for section in sections)
         has_yields_section = any(section.name == "Yields" for section in sections)
+        has_raises_section = any(section.name == "Raises" for section in sections)
         is_property_getter = bool(
             {"cached_property", "getter", "property"} & decorator_names
         )
@@ -254,11 +255,18 @@ class _DocstringVisitor(ast.NodeVisitor):
                 qualified_name=qualified_name,
                 rule_id="unexpected-yields",
             )
+        if has_explicit_raise and not has_raises_section:
+            self._add_violation(
+                line_number=node.lineno,
+                message="contains an explicit raise but lacks a `Raises:` section",
+                qualified_name=qualified_name,
+                rule_id="missing-raises",
+            )
 
         for section, next_section in zip(sections, sections[1:], strict=False):
             if (
                 section.name == "Arguments"
-                and next_section.name in {"Returns", "Yields"}
+                and next_section.name in {"Raises", "Returns", "Yields"}
                 and section.content_lines
                 and not section.content_lines[-1].strip()
             ):
@@ -317,10 +325,11 @@ class _DocstringVisitor(ast.NodeVisitor):
 
 
 class _CallableFlowVisitor(ast.NodeVisitor):
-    """Detect returns and yields without entering nested lexical scopes."""
+    """Detect returns, yields, and raises without entering nested lexical scopes."""
 
     def __init__(self):
         """Initialize the visitor."""
+        self.has_explicit_raise = False
         self.has_value_return = False
         self.has_yield = False
 
@@ -351,6 +360,14 @@ class _CallableFlowVisitor(ast.NodeVisitor):
         Arguments:
             node: nested lambda
         """
+
+    def visit_Raise(self, node: ast.Raise):
+        """Record an explicit raise statement.
+
+        Arguments:
+            node: raise statement
+        """
+        self.has_explicit_raise = True
 
     def visit_Return(self, node: ast.Return):
         """Record a value-returning return statement.
@@ -752,6 +769,7 @@ class Interface:
     ] == [
         ("Interface.value", "missing-returns"),
         ("Interface.unavailable", "missing-returns"),
+        ("Interface.unavailable", "missing-raises"),
     ]
 
 
@@ -852,7 +870,12 @@ def sample():
 
 
 @pytest.mark.parametrize(
-    ("section_name", "body"), [("Returns", "return value"), ("Yields", "yield value")]
+    ("section_name", "body"),
+    [
+        ("Raises", "raise ValueError"),
+        ("Returns", "return value"),
+        ("Yields", "yield value"),
+    ],
 )
 def test_docstring_section_spacing_is_enforced(section_name: str, body: str):
     """Test adjacent output sections reject a preceding blank line.
@@ -920,6 +943,89 @@ def documented():
         ("asynchronous", "missing-yields"),
         ("unexpected", "unexpected-yields"),
     ]
+
+
+def test_docstring_raises_sections_cover_explicit_raises():
+    """Test named, dynamic, and bare raises require documentation."""
+    violations = _get_sample_docstring_violations(
+        '''
+def named():
+    """Raise a named exception."""
+    raise ValueError
+
+def dynamic(exception):
+    """Raise a dynamic exception.
+
+    Arguments:
+        exception: exception to raise
+    """
+    raise exception
+
+def reraised():
+    """Reraise an exception."""
+    try:
+        dependency()
+    except ValueError:
+        raise
+
+def documented():
+    """Raise a documented exception.
+
+    Raises:
+        ValueError: always
+    """
+    raise ValueError
+
+def propagated():
+    """Propagate a documented exception.
+
+    Raises:
+        ValueError: when raised by the dependency
+    """
+    dependency()
+'''
+    )
+
+    assert [
+        (violation.qualified_name, violation.rule_id) for violation in violations
+    ] == [
+        ("named", "missing-raises"),
+        ("dynamic", "missing-raises"),
+        ("reraised", "missing-raises"),
+    ]
+
+
+def test_docstring_raises_ignore_nested_scopes_and_abstract_placeholders():
+    """Test nested raises and abstract contract stubs do not affect a callable."""
+    violations = _get_sample_docstring_violations(
+        '''
+from abc import abstractmethod
+
+def outer():
+    """Define a nested function."""
+
+    def inner():
+        """Raise a documented exception.
+
+        Raises:
+            ValueError: always
+        """
+        raise ValueError
+
+    inner()
+
+@abstractmethod
+def abstract() -> int:
+    """Return a concrete implementation's value.
+
+    Returns:
+        implementation value
+    """
+    raise NotImplementedError()
+'''
+    )
+
+    assert not violations
 
 
 def test_docstring_violation_format():
@@ -1316,14 +1422,14 @@ def _get_sample_docstring_violations(
 
 def _get_callable_flow(
     node: ast.FunctionDef | ast.AsyncFunctionDef, *, is_abstract_method: bool
-) -> tuple[bool, bool]:
-    """Check whether a callable returns a value or contains a lexical yield.
+) -> tuple[bool, bool, bool]:
+    """Check whether a callable returns, yields, or explicitly raises.
 
     Arguments:
         node: callable definition
         is_abstract_method: whether the callable is an abstract method contract
     Returns:
-        whether the callable returns a value and whether it contains a yield
+        whether the callable returns, yields, and explicitly raises
     """
     statements = node.body
     if ast.get_docstring(node, clean=False) is not None:
@@ -1357,4 +1463,7 @@ def _get_callable_flow(
     for statement in node.body:
         visitor.visit(statement)
     has_value_return = has_value_return or visitor.has_value_return
-    return has_value_return, visitor.has_yield
+    has_explicit_raise = visitor.has_explicit_raise and not (
+        is_abstract_method and is_not_implemented_stub
+    )
+    return has_value_return, visitor.has_yield, has_explicit_raise

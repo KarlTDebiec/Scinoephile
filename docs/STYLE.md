@@ -204,12 +204,16 @@
   * In argument descriptions, the first word after the colon should be
     lowercase unless it is a type name.
   * Do not include a blank line between `Arguments:` and an immediately following
-    `Returns:` or `Yields:` section.
+    `Raises:`, `Returns:`, or `Yields:` section.
   * Do not include a `Returns:` section for functions or methods that return
     None.
   * Include a `Yields:` section for generator functions and methods, including
     context managers, that contain `yield` or `yield from`. Do not include one
     for callables that do not yield.
+  * Include a `Raises:` section for functions and methods that contain an
+    explicit `raise` statement. A `Raises:` section may also document exceptions
+    propagated from callees. A sole `raise NotImplementedError` in an abstract
+    method is a contract placeholder and does not require a `Raises:` section.
   * In the `Returns:` section, the first word should be lowercase unless it is a
     type name.
   * In the `Yields:` section, the first word should be lowercase unless it is a
