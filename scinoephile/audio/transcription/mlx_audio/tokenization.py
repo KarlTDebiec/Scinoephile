@@ -35,11 +35,13 @@ def use_local_tokenizer(
     mimo_asr = import_mlx_audio_mimo_asr()
     get_model_path = cast(Callable[..., Path], mimo_asr.get_model_path)
 
-    def get_local_model_path(path_or_hf_repo: str, **kwargs: Any) -> Path:
+    def get_local_model_path(
+        path_or_hf_repo: str, *args: object, **kwargs: Any
+    ) -> Path:
         """Resolve the configured tokenizer locally and delegate other models."""
         if path_or_hf_repo == tokenizer.name:
             return tokenizer_dir_path
-        return get_model_path(path_or_hf_repo, **kwargs)
+        return get_model_path(path_or_hf_repo, *args, **kwargs)
 
     setattr(mimo_asr, "get_model_path", get_local_model_path)
     try:

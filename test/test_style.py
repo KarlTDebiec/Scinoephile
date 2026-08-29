@@ -180,6 +180,14 @@ def outer():
 
 async def asynchronous(**values: object):
     pass
+
+
+def qualified(**values: builtins.object):
+    pass
+
+
+def quoted(**values: "object"):
+    pass
 """
     )
 
@@ -191,6 +199,8 @@ async def asynchronous(**values: object):
         "sample.py:2: ordinary uses **kwargs: object",
         "sample.py:7: nested uses **options: object",
         "sample.py:11: asynchronous uses **values: object",
+        "sample.py:15: qualified uses **values: object",
+        "sample.py:19: quoted uses **values: object",
     ]
 
 
@@ -308,7 +318,21 @@ def get_variadic_keyword_annotation_violations(
         if keyword_argument is None:
             continue
         annotation = keyword_argument.annotation
-        if not isinstance(annotation, ast.Name) or annotation.id != "object":
+        is_object_annotation = (
+            (isinstance(annotation, ast.Name) and annotation.id == "object")
+            or (
+                isinstance(annotation, ast.Attribute)
+                and isinstance(annotation.value, ast.Name)
+                and annotation.value.id == "builtins"
+                and annotation.attr == "object"
+            )
+            or (
+                isinstance(annotation, ast.Constant)
+                and isinstance(annotation.value, str)
+                and annotation.value.strip() in {"builtins.object", "object"}
+            )
+        )
+        if not is_object_annotation:
             continue
         violations.append(
             VariadicKeywordAnnotationViolation(
