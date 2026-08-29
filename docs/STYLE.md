@@ -197,6 +197,8 @@
   * Use `Arguments:` instead of `Args:`.
   * Do not include an `Arguments:` section for functions or methods that take no
     arguments.
+  * Describe the value exposed by property and cached-property getters in the
+    summary; a `Returns:` section is not required.
   * In argument descriptions, the first word after the colon should be
     lowercase unless it is a type name.
   * Do not include a blank line between the `Arguments:` and `Returns:`
