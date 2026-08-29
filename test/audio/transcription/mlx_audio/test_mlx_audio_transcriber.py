@@ -157,9 +157,7 @@ def test_get_cache_path_separates_ctc_model_configuration():
     assert first_cache_path != second_cache_path
     settings = TranscriptionPreprocessingSettings(False, False)
     first_identity = first_transcriber._get_cache_identity(audio, settings)
-    assert (
-        first_identity["aligner"] == first_transcriber.ctc_aligner.cache_configuration
-    )
+    assert first_identity["aligner"] == first_transcriber.ctc_aligner.cache_identity
 
 
 def test_get_cache_path_separates_model_revisions():
@@ -417,7 +415,7 @@ def test_transcribe_uses_direct_mlx_audio_inference(monkeypatch: pytest.MonkeyPa
     expected_segments = [_get_timed_segment("你好")]
     transcriber = _get_mlx_audio_transcriber()
     transcriber.ctc_aligner = Mock(
-        cache_configuration=_CTC_CACHE_CONFIGURATION,
+        cache_identity=_CTC_CACHE_CONFIGURATION,
         model=SimpleNamespace(spec=_CTC_MODEL),
         return_value=expected_segments,
     )
@@ -450,7 +448,7 @@ def test_transcribe_chunks_audio_assigns_and_clips_words(
         ]
     )
     transcriber.ctc_aligner = Mock(
-        cache_configuration=_CTC_CACHE_CONFIGURATION,
+        cache_identity=_CTC_CACHE_CONFIGURATION,
         model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             [_get_timed_segment("one", start=0.1, end=0.9)],
@@ -498,7 +496,7 @@ def test_long_mimo_audio_is_automatically_chunked(monkeypatch: pytest.MonkeyPatc
         ]
     )
     transcriber.ctc_aligner = Mock(
-        cache_configuration=_CTC_CACHE_CONFIGURATION,
+        cache_identity=_CTC_CACHE_CONFIGURATION,
         model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             [_get_timed_segment("one", start=0.1, end=52.9)],
@@ -564,7 +562,7 @@ def test_transcribe_splits_audio_after_generation_token_exhaustion(
         ]
     )
     transcriber.ctc_aligner = Mock(
-        cache_configuration=_CTC_CACHE_CONFIGURATION,
+        cache_identity=_CTC_CACHE_CONFIGURATION,
         model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             [_get_timed_segment("one", end=2.0)],
@@ -589,7 +587,7 @@ def test_audio_near_generation_limit_is_not_split(monkeypatch: pytest.MonkeyPatc
         return_value=SimpleNamespace(text="compressed", generation_tokens=244)
     )
     transcriber.ctc_aligner = Mock(
-        cache_configuration=_CTC_CACHE_CONFIGURATION,
+        cache_identity=_CTC_CACHE_CONFIGURATION,
         model=SimpleNamespace(spec=_CTC_MODEL),
         return_value=[_get_timed_segment("compressed", end=4.0)],
     )
@@ -616,7 +614,7 @@ def test_transcribe_splits_audio_after_incomplete_ctc_alignment(
         ]
     )
     transcriber.ctc_aligner = Mock(
-        cache_configuration=_CTC_CACHE_CONFIGURATION,
+        cache_identity=_CTC_CACHE_CONFIGURATION,
         model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             TranscriptionAlignmentIncompleteError(
@@ -645,7 +643,7 @@ def test_transcribe_does_not_split_audio_after_other_ctc_errors(
     transcriber = _get_mlx_audio_transcriber()
     model_call = Mock(return_value=SimpleNamespace(text="whole", generation_tokens=0))
     transcriber.ctc_aligner = Mock(
-        cache_configuration=_CTC_CACHE_CONFIGURATION,
+        cache_identity=_CTC_CACHE_CONFIGURATION,
         model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=TranscriptionAlignmentError("CTC backend unavailable."),
     )
@@ -819,7 +817,7 @@ def test_transcribe_aligns_text_and_writes_cache(
         lambda _model, _audio_path: SimpleNamespace(text="你好", generation_tokens=0),
     )
     transcriber.ctc_aligner = Mock(
-        cache_configuration=_CTC_CACHE_CONFIGURATION,
+        cache_identity=_CTC_CACHE_CONFIGURATION,
         model=SimpleNamespace(spec=_CTC_MODEL),
         return_value=expected_segments,
     )
@@ -852,8 +850,7 @@ def test_transcribe_rejects_low_information_vocalizations(
         Mock(return_value=SimpleNamespace(text="啊！啊！", generation_tokens=0)),
     )
     transcriber.ctc_aligner = Mock(
-        cache_configuration=_CTC_CACHE_CONFIGURATION,
-        model=SimpleNamespace(spec=_CTC_MODEL),
+        cache_identity=_CTC_CACHE_CONFIGURATION, model=SimpleNamespace(spec=_CTC_MODEL)
     )
 
     with pytest.raises(TranscriptionEmptyError, match="low-information"):

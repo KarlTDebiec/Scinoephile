@@ -210,7 +210,7 @@ class WhisperTranscriber(Transcriber):
             "temperature": temperature,
         }
         if self.ctc_aligner is not None:
-            cache_identity["timestamp_fallback"] = self.ctc_aligner.cache_configuration
+            cache_identity["timestamp_fallback"] = self.ctc_aligner.cache_identity
         return cache_identity
 
     def _get_whisper_vad(

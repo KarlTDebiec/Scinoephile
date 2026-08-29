@@ -189,7 +189,7 @@ class MlxAudioTranscriber(Transcriber):
             "chunk_duration_seconds": chunk_duration_seconds,
             "chunk_overlap_seconds": chunk_overlap_seconds,
             "chunk_postprocessing_version": chunk_postprocessing_version,
-            "aligner": self.ctc_aligner.cache_configuration,
+            "aligner": self.ctc_aligner.cache_identity,
         }
 
     def _transcribe_attempt(
