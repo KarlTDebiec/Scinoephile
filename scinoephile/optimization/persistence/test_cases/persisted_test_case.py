@@ -48,7 +48,6 @@ class PersistedTestCase:
             manager_cls: manager defining the test case's operation and base prompt
         Returns:
             persisted test case
-
         Raises:
             ScinoephileError: if the operation fails
         """

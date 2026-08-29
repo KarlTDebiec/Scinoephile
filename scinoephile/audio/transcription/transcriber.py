@@ -330,7 +330,6 @@ class Transcriber(ABC):
             audio: original audio to separate
         Returns:
             separated audio, or None after an automatic-mode failure
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -354,7 +353,6 @@ class Transcriber(ABC):
             audio: original or Demucs-separated audio
         Returns:
             frame-level voice activity model scores
-
         Raises:
             RuntimeError: if the operation cannot be completed
             TranscriptionRecognitionError: if transcription fails
@@ -409,7 +407,6 @@ class Transcriber(ABC):
             is_usable: optional callback used to reject output and trigger retries
         Returns:
             first usable transcription, or an empty list when output was rejected
-
         Raises:
             Exception: if the operation fails
         """

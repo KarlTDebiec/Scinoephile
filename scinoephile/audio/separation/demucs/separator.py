@@ -135,7 +135,6 @@ class DemucsSeparator:
             audio: audio to separate
         Returns:
             vocals-only audio
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -201,7 +200,6 @@ class DemucsSeparator:
             channels: output channel count
         Returns:
             audio segment containing the separated vocals
-
         Raises:
             ScinoephileError: if the operation fails
         """

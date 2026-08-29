@@ -39,7 +39,6 @@ def ocr_image_series_with_lens(
         **kwargs: additional keyword arguments for LensRecognizer
     Returns:
         text subtitle series
-
     Raises:
         ScinoephileError: if the operation fails
     """

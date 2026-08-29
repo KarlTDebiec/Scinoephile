@@ -110,31 +110,19 @@ output_dir = title_root / "output"
 
 @fixture
 def mlamd_eng_ocr_sup_path() -> Path:
-    """Path to MLAMD English SUP subtitles.
-
-    Returns:
-        path to MLAMD English SUP subtitles
-    """
+    """Path to MLAMD English SUP subtitles."""
     return input_dir / "eng_ocr/source.sup"
 
 
 @fixture
 def mlamd_zho_hans_ocr_sup_path() -> Path:
-    """Path to MLAMD zho-Hans SUP subtitles.
-
-    Returns:
-        path to MLAMD zho-Hans SUP subtitles
-    """
+    """Path to MLAMD zho-Hans SUP subtitles."""
     return input_dir / "zho-Hans_ocr/source.sup"
 
 
 @fixture
 def mlamd_zho_hant_ocr_sup_path() -> Path:
-    """Path to MLAMD zho-Hant SUP subtitles.
-
-    Returns:
-        path to MLAMD zho-Hant SUP subtitles
-    """
+    """Path to MLAMD zho-Hant SUP subtitles."""
     return input_dir / "zho-Hant_ocr/source.sup"
 
 
@@ -348,161 +336,97 @@ def get_mlamd_zho_hant_simplify_review_test_cases(
 
 @fixture
 def mlamd_eng_fuse() -> Series:
-    """MLAMD English fused subtitles.
-
-    Returns:
-        MLAMD English fused subtitles
-    """
+    """MLAMD English fused subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse.srt")
 
 
 @fixture
 def mlamd_eng_fuse_clean() -> Series:
-    """MLAMD English fused and cleaned subtitles.
-
-    Returns:
-        MLAMD English fused and cleaned subtitles
-    """
+    """MLAMD English fused and cleaned subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean.srt")
 
 
 @fixture
 def mlamd_eng_fuse_clean_validate() -> Series:
-    """MLAMD English fused, cleaned, and validated subtitles.
-
-    Returns:
-        MLAMD English fused, cleaned, and validated subtitles
-    """
+    """MLAMD English fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def mlamd_eng_fuse_clean_validate_review() -> Series:
-    """MLAMD English fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        MLAMD English fused, cleaned, validated, and reviewed subtitles
-    """
+    """MLAMD English fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def mlamd_eng_fuse_clean_validate_review_flatten() -> Series:
-    """MLAMD English fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        MLAMD English fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """MLAMD English fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review_flatten.srt")
 
 
 @fixture
 def mlamd_eng_image() -> ImageSeries:
-    """MLAMD English image subtitles.
-
-    Returns:
-        MLAMD English image subtitles
-    """
+    """MLAMD English image subtitles."""
     return ImageSeries.load(output_dir / "eng_ocr/image", encoding="utf-8")
 
 
 @fixture
 def mlamd_eng_image_path() -> Path:
-    """Path to MLAMD English image subtitles.
-
-    Returns:
-        path to MLAMD English image subtitles
-    """
+    """Path to MLAMD English image subtitles."""
     return output_dir / "eng_ocr/image"
 
 
 @fixture
 def mlamd_eng_ocr_lens() -> Series:
-    """MLAMD English subtitles OCRed using Google Lens.
-
-    Returns:
-        MLAMD English subtitles OCRed using Google Lens
-    """
+    """MLAMD English subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "eng_ocr/lens.srt")
 
 
 @fixture
 def mlamd_eng_ocr_lens_clean() -> Series:
-    """MLAMD English Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        MLAMD English Google Lens OCR subtitles, cleaned
-    """
+    """MLAMD English Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "eng_ocr/lens_clean.srt")
 
 
 @fixture
 def mlamd_eng_ocr_tesseract() -> Series:
-    """MLAMD English subtitles OCRed using Tesseract.
-
-    Returns:
-        MLAMD English subtitles OCRed using Tesseract
-    """
+    """MLAMD English subtitles OCRed using Tesseract."""
     return Series.load(output_dir / "eng_ocr/tesseract.srt")
 
 
 @fixture
 def mlamd_eng_ocr_tesseract_clean() -> Series:
-    """MLAMD English Tesseract OCR subtitles, cleaned.
-
-    Returns:
-        MLAMD English Tesseract OCR subtitles, cleaned
-    """
+    """MLAMD English Tesseract OCR subtitles, cleaned."""
     return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
 
 
 @fixture
 def mlamd_yue_hans_audio() -> AudioSeries:
-    """MLAMD yue-Hans audio subtitles.
-
-    Returns:
-        MLAMD yue-Hans audio subtitles
-    """
+    """MLAMD yue-Hans audio subtitles."""
     return AudioSeries.load(output_dir / "yue-Hans_transcribe/audio")
 
 
 @fixture
 def mlamd_yue_hans_audio_path() -> Path:
-    """Path to MLAMD yue-Hans audio subtitles.
-
-    Returns:
-        path to MLAMD yue-Hans audio subtitles
-    """
+    """Path to MLAMD yue-Hans audio subtitles."""
     return output_dir / "yue-Hans_transcribe/audio"
 
 
 @fixture
 def mlamd_yue_hans_eng() -> Series:
-    """MLAMD Bilingual yue-Hans and English subtitles.
-
-    Returns:
-        MLAMD Bilingual yue-Hans and English subtitles
-    """
+    """MLAMD Bilingual yue-Hans and English subtitles."""
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 @fixture
 def mlamd_yue_hans_transcribe() -> Series:
-    """MLAMD yue-Hans transcribed subtitles.
-
-    Returns:
-        MLAMD yue-Hans transcribed subtitles
-    """
+    """MLAMD yue-Hans transcribed subtitles."""
     return Series.load(output_dir / "yue-Hans_transcribe/transcribe.srt")
 
 
 @fixture
 def mlamd_yue_hans_transcribe_translation_input() -> Series:
-    """MLAMD yue-Hans transcription curated as gap-translation input.
-
-    Returns:
-        MLAMD yue-Hans transcription curated as gap-translation input
-    """
+    """MLAMD yue-Hans transcription curated as gap-translation input."""
     return Series.load(
         output_dir / "yue-Hans_transcribe/transcribe_translation_input.srt"
     )
@@ -510,21 +434,13 @@ def mlamd_yue_hans_transcribe_translation_input() -> Series:
 
 @fixture
 def mlamd_yue_hans_transcribe_translate() -> Series:
-    """MLAMD yue-Hans transcribed and gap-translated subtitles.
-
-    Returns:
-        MLAMD yue-Hans transcribed and gap-translated subtitles
-    """
+    """MLAMD yue-Hans transcribed and gap-translated subtitles."""
     return Series.load(output_dir / "yue-Hans_transcribe/transcribe_translate.srt")
 
 
 @fixture
 def mlamd_yue_hans_transcribe_translate_guided_review() -> Series:
-    """MLAMD yue-Hans transcribed, gap-translated, and guided-reviewed subtitles.
-
-    Returns:
-        MLAMD yue-Hans transcribed, gap-translated, and guided-reviewed subtitles
-    """
+    """MLAMD yue-Hans transcribed, gap-translated, and guided-reviewed subtitles."""
     return Series.load(
         output_dir / "yue-Hans_transcribe/transcribe_translate_guided_review.srt"
     )
@@ -532,61 +448,37 @@ def mlamd_yue_hans_transcribe_translate_guided_review() -> Series:
 
 @fixture
 def mlamd_zho_hans_eng() -> Series:
-    """MLAMD Bilingual zho-Hans and English series.
-
-    Returns:
-        MLAMD Bilingual zho-Hans and English series
-    """
+    """MLAMD Bilingual zho-Hans and English series."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 @fixture
 def mlamd_zho_hans_fuse() -> Series:
-    """MLAMD zho-Hans fused subtitles.
-
-    Returns:
-        MLAMD zho-Hans fused subtitles
-    """
+    """MLAMD zho-Hans fused subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse.srt")
 
 
 @fixture
 def mlamd_zho_hans_fuse_clean() -> Series:
-    """MLAMD zho-Hans fused and cleaned subtitles.
-
-    Returns:
-        MLAMD zho-Hans fused and cleaned subtitles
-    """
+    """MLAMD zho-Hans fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean.srt")
 
 
 @fixture
 def mlamd_zho_hans_fuse_clean_validate() -> Series:
-    """MLAMD zho-Hans fused, cleaned, and validated subtitles.
-
-    Returns:
-        MLAMD zho-Hans fused, cleaned, and validated subtitles
-    """
+    """MLAMD zho-Hans fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def mlamd_zho_hans_fuse_clean_validate_review() -> Series:
-    """MLAMD zho-Hans fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        MLAMD zho-Hans fused, cleaned, validated, and reviewed subtitles
-    """
+    """MLAMD zho-Hans fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def mlamd_zho_hans_fuse_clean_validate_review_flatten() -> Series:
-    """MLAMD zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        MLAMD zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """MLAMD zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -600,8 +492,6 @@ def mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539(
 
     Arguments:
         mlamd_zho_hans_fuse_clean_validate_review_flatten: mlamd zho hans fuse clean validate review flatten value
-    Returns:
-        MLAMD zho-Hans flattened subtitles with subtitle 539 merged
     """
     return get_series_with_subs_merged(
         mlamd_zho_hans_fuse_clean_validate_review_flatten, 539
@@ -610,11 +500,7 @@ def mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539(
 
 @fixture
 def mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
-    """MLAMD zho-Hans fused/cleaned/validated/reviewed/flattened romanized subs.
-
-    Returns:
-        MLAMD zho-Hans fused/cleaned/validated/reviewed/flattened romanized subs
-    """
+    """MLAMD zho-Hans fused/cleaned/validated/reviewed/flattened romanized subs."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt"
     )
@@ -622,111 +508,67 @@ def mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
 
 @fixture
 def mlamd_zho_hans_image() -> ImageSeries:
-    """MLAMD zho-Hans image subtitles.
-
-    Returns:
-        MLAMD zho-Hans image subtitles
-    """
+    """MLAMD zho-Hans image subtitles."""
     return ImageSeries.load(output_dir / "zho-Hans_ocr/image", encoding="utf-8")
 
 
 @fixture
 def mlamd_zho_hans_image_path() -> Path:
-    """Path to MLAMD zho-Hans image subtitles.
-
-    Returns:
-        path to MLAMD zho-Hans image subtitles
-    """
+    """Path to MLAMD zho-Hans image subtitles."""
     return output_dir / "zho-Hans_ocr/image"
 
 
 @fixture
 def mlamd_zho_hans_ocr_lens() -> Series:
-    """MLAMD zho-Hans subtitles OCRed using Google Lens.
-
-    Returns:
-        MLAMD zho-Hans subtitles OCRed using Google Lens
-    """
+    """MLAMD zho-Hans subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "zho-Hans_ocr/lens.srt")
 
 
 @fixture
 def mlamd_zho_hans_ocr_lens_clean() -> Series:
-    """MLAMD zho-Hans Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        MLAMD zho-Hans Google Lens OCR subtitles, cleaned
-    """
+    """MLAMD zho-Hans Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hans_ocr/lens_clean.srt")
 
 
 @fixture
 def mlamd_zho_hans_ocr_paddle() -> Series:
-    """MLAMD zho-Hans subtitles OCRed using PaddleOCR.
-
-    Returns:
-        MLAMD zho-Hans subtitles OCRed using PaddleOCR
-    """
+    """MLAMD zho-Hans subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "zho-Hans_ocr/paddle.srt")
 
 
 @fixture
 def mlamd_zho_hans_ocr_paddle_clean() -> Series:
-    """MLAMD zho-Hans PaddleOCR subtitles, cleaned.
-
-    Returns:
-        MLAMD zho-Hans PaddleOCR subtitles, cleaned
-    """
+    """MLAMD zho-Hans PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
 
 
 @fixture
 def mlamd_zho_hant_fuse() -> Series:
-    """MLAMD zho-Hant fused subtitles.
-
-    Returns:
-        MLAMD zho-Hant fused subtitles
-    """
+    """MLAMD zho-Hant fused subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
 
 
 @fixture
 def mlamd_zho_hant_fuse_clean() -> Series:
-    """MLAMD zho-Hant fused and cleaned subtitles.
-
-    Returns:
-        MLAMD zho-Hant fused and cleaned subtitles
-    """
+    """MLAMD zho-Hant fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean.srt")
 
 
 @fixture
 def mlamd_zho_hant_fuse_clean_validate() -> Series:
-    """MLAMD zho-Hant fused, cleaned, and validated subtitles.
-
-    Returns:
-        MLAMD zho-Hant fused, cleaned, and validated subtitles
-    """
+    """MLAMD zho-Hant fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def mlamd_zho_hant_fuse_clean_validate_review() -> Series:
-    """MLAMD zho-Hant fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        MLAMD zho-Hant fused, cleaned, validated, and reviewed subtitles
-    """
+    """MLAMD zho-Hant fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def mlamd_zho_hant_fuse_clean_validate_review_flatten() -> Series:
-    """MLAMD zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        MLAMD zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """MLAMD zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -734,11 +576,7 @@ def mlamd_zho_hant_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """MLAMD zho-Hant simplified fused/cleaned/validated/reviewed/flattened subs.
-
-    Returns:
-        MLAMD zho-Hant simplified fused/cleaned/validated/reviewed/flattened subs
-    """
+    """MLAMD zho-Hant simplified fused/cleaned/validated/reviewed/flattened subs."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -746,11 +584,7 @@ def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
 
 @fixture
 def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """MLAMD zho-Hant simplified/reviewed fused/cleaned subtitles.
-
-    Returns:
-        MLAMD zho-Hant simplified/reviewed fused/cleaned subtitles
-    """
+    """MLAMD zho-Hant simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -762,11 +596,7 @@ def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Serie
 def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize() -> (
     Series
 ):
-    """MLAMD zho-Hant simplified/reviewed fused/cleaned romanized subtitles.
-
-    Returns:
-        MLAMD zho-Hant simplified/reviewed fused/cleaned romanized subtitles
-    """
+    """MLAMD zho-Hant simplified/reviewed fused/cleaned romanized subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -776,71 +606,43 @@ def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize()
 
 @fixture
 def mlamd_zho_hant_image() -> ImageSeries:
-    """MLAMD zho-Hant image subtitles.
-
-    Returns:
-        MLAMD zho-Hant image subtitles
-    """
+    """MLAMD zho-Hant image subtitles."""
     return ImageSeries.load(output_dir / "zho-Hant_ocr/image", encoding="utf-8")
 
 
 @fixture
 def mlamd_zho_hant_image_path() -> Path:
-    """Path to MLAMD zho-Hant image subtitles.
-
-    Returns:
-        path to MLAMD zho-Hant image subtitles
-    """
+    """Path to MLAMD zho-Hant image subtitles."""
     return output_dir / "zho-Hant_ocr/image"
 
 
 @fixture
 def mlamd_zho_hant_ocr_lens() -> Series:
-    """MLAMD zho-Hant subtitles OCRed using Google Lens.
-
-    Returns:
-        MLAMD zho-Hant subtitles OCRed using Google Lens
-    """
+    """MLAMD zho-Hant subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
 
 
 @fixture
 def mlamd_zho_hant_ocr_lens_clean() -> Series:
-    """MLAMD zho-Hant Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        MLAMD zho-Hant Google Lens OCR subtitles, cleaned
-    """
+    """MLAMD zho-Hant Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
 
 
 @fixture
 def mlamd_zho_hant_ocr_paddle() -> Series:
-    """MLAMD zho-Hant subtitles OCRed using PaddleOCR.
-
-    Returns:
-        MLAMD zho-Hant subtitles OCRed using PaddleOCR
-    """
+    """MLAMD zho-Hant subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
 
 
 @fixture
 def mlamd_zho_hant_ocr_paddle_clean() -> Series:
-    """MLAMD zho-Hant PaddleOCR subtitles, cleaned.
-
-    Returns:
-        MLAMD zho-Hant PaddleOCR subtitles, cleaned
-    """
+    """MLAMD zho-Hant PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
 
 
 @fixture
 def mlamd_zho_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for MLAMD Simplified vs Traditional subtitles.
-
-    Returns:
-        expected differences for MLAMD Simplified vs Traditional subtitles
-    """
+    """Expected differences for MLAMD Simplified vs Traditional subtitles."""
     return [
         "edit: SIMP[90] -> TRAD[90]: '就是有点游魂的 Miss Chan' -> '就是有点游魂的Miss Chan'",
         "edit: SIMP[161] -> TRAD[161]: '看著自己每天屙烂煮⋯' -> '看着自己每天屙烂煮⋯'",

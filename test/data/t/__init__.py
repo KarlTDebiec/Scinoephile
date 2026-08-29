@@ -79,31 +79,19 @@ output_dir = title_root / "output"
 
 @fixture
 def t_eng() -> Series:
-    """T English series.
-
-    Returns:
-        T English series
-    """
+    """T English series."""
     return Series.load(input_dir / "eng.srt")
 
 
 @fixture
 def t_zho_hans() -> Series:
-    """T zho-Hans series.
-
-    Returns:
-        T zho-Hans series
-    """
+    """T zho-Hans series."""
     return Series.load(input_dir / "zho-Hans.srt")
 
 
 @fixture
 def t_zho_hant() -> Series:
-    """T zho-Hant series.
-
-    Returns:
-        T zho-Hant series
-    """
+    """T zho-Hant series."""
     return Series.load(input_dir / "zho-Hant.srt")
 
 
@@ -221,151 +209,91 @@ def get_t_zho_hant_simplify_review_test_cases(
 
 @fixture
 def t_eng_fuse() -> Series:
-    """T English fused subtitles.
-
-    Returns:
-        T English fused subtitles
-    """
+    """T English fused subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse.srt")
 
 
 @fixture
 def t_eng_fuse_clean() -> Series:
-    """T English fused and cleaned subtitles.
-
-    Returns:
-        T English fused and cleaned subtitles
-    """
+    """T English fused and cleaned subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean.srt")
 
 
 @fixture
 def t_eng_fuse_clean_validate() -> Series:
-    """T English fused, cleaned, and validated subtitles.
-
-    Returns:
-        T English fused, cleaned, and validated subtitles
-    """
+    """T English fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def t_eng_fuse_clean_validate_review() -> Series:
-    """T English fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        T English fused, cleaned, validated, and reviewed subtitles
-    """
+    """T English fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def t_eng_fuse_clean_validate_review_flatten() -> Series:
-    """T English fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        T English fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """T English fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review_flatten.srt")
 
 
 @fixture
 def t_eng_ocr_lens() -> Series:
-    """T English subtitles OCRed using Google Lens.
-
-    Returns:
-        T English subtitles OCRed using Google Lens
-    """
+    """T English subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "eng_ocr/lens.srt")
 
 
 @fixture
 def t_eng_ocr_lens_clean() -> Series:
-    """T English Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        T English Google Lens OCR subtitles, cleaned
-    """
+    """T English Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "eng_ocr/lens_clean.srt")
 
 
 @fixture
 def t_eng_ocr_tesseract() -> Series:
-    """T English subtitles OCRed using Tesseract.
-
-    Returns:
-        T English subtitles OCRed using Tesseract
-    """
+    """T English subtitles OCRed using Tesseract."""
     return Series.load(output_dir / "eng_ocr/tesseract.srt")
 
 
 @fixture
 def t_eng_ocr_tesseract_clean() -> Series:
-    """T English Tesseract OCR subtitles, cleaned.
-
-    Returns:
-        T English Tesseract OCR subtitles, cleaned
-    """
+    """T English Tesseract OCR subtitles, cleaned."""
     return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
 
 
 @fixture
 def t_zho_hans_eng() -> Series:
-    """T Bilingual zho-Hans and English series.
-
-    Returns:
-        T Bilingual zho-Hans and English series
-    """
+    """T Bilingual zho-Hans and English series."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 @fixture
 def t_zho_hans_fuse() -> Series:
-    """T zho-Hans fused subtitles.
-
-    Returns:
-        T zho-Hans fused subtitles
-    """
+    """T zho-Hans fused subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse.srt")
 
 
 @fixture
 def t_zho_hans_fuse_clean() -> Series:
-    """T zho-Hans fused and cleaned subtitles.
-
-    Returns:
-        T zho-Hans fused and cleaned subtitles
-    """
+    """T zho-Hans fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean.srt")
 
 
 @fixture
 def t_zho_hans_fuse_clean_validate() -> Series:
-    """T zho-Hans fused, cleaned, and validated subtitles.
-
-    Returns:
-        T zho-Hans fused, cleaned, and validated subtitles
-    """
+    """T zho-Hans fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def t_zho_hans_fuse_clean_validate_review() -> Series:
-    """T zho-Hans fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        T zho-Hans fused, cleaned, validated, and reviewed subtitles
-    """
+    """T zho-Hans fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def t_zho_hans_fuse_clean_validate_review_flatten() -> Series:
-    """T zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        T zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """T zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -373,11 +301,7 @@ def t_zho_hans_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def t_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
-    """T zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles.
-
-    Returns:
-        T zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles
-    """
+    """T zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt"
     )
@@ -385,91 +309,55 @@ def t_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
 
 @fixture
 def t_zho_hans_ocr_lens() -> Series:
-    """T zho-Hans subtitles OCRed using Google Lens.
-
-    Returns:
-        T zho-Hans subtitles OCRed using Google Lens
-    """
+    """T zho-Hans subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "zho-Hans_ocr/lens.srt")
 
 
 @fixture
 def t_zho_hans_ocr_lens_clean() -> Series:
-    """T zho-Hans Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        T zho-Hans Google Lens OCR subtitles, cleaned
-    """
+    """T zho-Hans Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hans_ocr/lens_clean.srt")
 
 
 @fixture
 def t_zho_hans_ocr_paddle() -> Series:
-    """T zho-Hans subtitles OCRed using PaddleOCR.
-
-    Returns:
-        T zho-Hans subtitles OCRed using PaddleOCR
-    """
+    """T zho-Hans subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "zho-Hans_ocr/paddle.srt")
 
 
 @fixture
 def t_zho_hans_ocr_paddle_clean() -> Series:
-    """T zho-Hans PaddleOCR subtitles, cleaned.
-
-    Returns:
-        T zho-Hans PaddleOCR subtitles, cleaned
-    """
+    """T zho-Hans PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
 
 
 @fixture
 def t_zho_hant_fuse() -> Series:
-    """T zho-Hant fused subtitles.
-
-    Returns:
-        T zho-Hant fused subtitles
-    """
+    """T zho-Hant fused subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
 
 
 @fixture
 def t_zho_hant_fuse_clean() -> Series:
-    """T zho-Hant fused and cleaned subtitles.
-
-    Returns:
-        T zho-Hant fused and cleaned subtitles
-    """
+    """T zho-Hant fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean.srt")
 
 
 @fixture
 def t_zho_hant_fuse_clean_validate() -> Series:
-    """T zho-Hant fused, cleaned, and validated subtitles.
-
-    Returns:
-        T zho-Hant fused, cleaned, and validated subtitles
-    """
+    """T zho-Hant fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def t_zho_hant_fuse_clean_validate_review() -> Series:
-    """T zho-Hant fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        T zho-Hant fused, cleaned, validated, and reviewed subtitles
-    """
+    """T zho-Hant fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def t_zho_hant_fuse_clean_validate_review_flatten() -> Series:
-    """T zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        T zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """T zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -477,11 +365,7 @@ def t_zho_hant_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def t_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """T zho-Hant fused/cleaned/validated/reviewed/flattened/simplified subtitles.
-
-    Returns:
-        T zho-Hant fused/cleaned/validated/reviewed/flattened/simplified subtitles
-    """
+    """T zho-Hant fused/cleaned/validated/reviewed/flattened/simplified subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -489,11 +373,7 @@ def t_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
 
 @fixture
 def t_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """T zho-Hant simplified/reviewed fused/cleaned subtitles.
-
-    Returns:
-        T zho-Hant simplified/reviewed fused/cleaned subtitles
-    """
+    """T zho-Hant simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -503,11 +383,7 @@ def t_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
 
 @fixture
 def t_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize() -> Series:
-    """T zho-Hant simplified/reviewed fused/cleaned romanized subtitles.
-
-    Returns:
-        T zho-Hant simplified/reviewed fused/cleaned romanized subtitles
-    """
+    """T zho-Hant simplified/reviewed fused/cleaned romanized subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -517,51 +393,31 @@ def t_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize() -> 
 
 @fixture
 def t_zho_hant_ocr_lens() -> Series:
-    """T zho-Hant subtitles OCRed using Google Lens.
-
-    Returns:
-        T zho-Hant subtitles OCRed using Google Lens
-    """
+    """T zho-Hant subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
 
 
 @fixture
 def t_zho_hant_ocr_lens_clean() -> Series:
-    """T zho-Hant Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        T zho-Hant Google Lens OCR subtitles, cleaned
-    """
+    """T zho-Hant Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
 
 
 @fixture
 def t_zho_hant_ocr_paddle() -> Series:
-    """T zho-Hant subtitles OCRed using PaddleOCR.
-
-    Returns:
-        T zho-Hant subtitles OCRed using PaddleOCR
-    """
+    """T zho-Hant subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
 
 
 @fixture
 def t_zho_hant_ocr_paddle_clean() -> Series:
-    """T zho-Hant PaddleOCR subtitles, cleaned.
-
-    Returns:
-        T zho-Hant PaddleOCR subtitles, cleaned
-    """
+    """T zho-Hant PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
 
 
 @fixture
 def t_zho_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for T Simplified vs Traditional subtitles.
-
-    Returns:
-        expected differences for T Simplified vs Traditional subtitles
-    """
+    """Expected differences for T Simplified vs Traditional subtitles."""
     return [
         "edit: SIMP[4] -> TRAD[4]: '袋子里装什么？\\u3000\\u3000总机' -> '袋子里装甚么？ 总机'",
         "edit: SIMP[5] -> TRAD[5]: '打开来看看\\u3000\\u3000身份证号码 C 5 3 2 7 4 3' -> '打开来看看 身份证号码C 5 3 2 7 4 3'",

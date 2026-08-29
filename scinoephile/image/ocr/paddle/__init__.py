@@ -41,7 +41,6 @@ def ocr_image_series_with_paddle(
         **kwargs: additional keyword arguments for PaddleRecognizer
     Returns:
         text subtitle series
-
     Raises:
         ScinoephileError: if the operation fails
     """

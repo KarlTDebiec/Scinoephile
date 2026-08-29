@@ -420,7 +420,6 @@ class TesseractRecognizer:
             output_base_path: output base path without extension
         Returns:
             recognized text
-
         Raises:
             ScinoephileError: if the operation fails
         """

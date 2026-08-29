@@ -84,7 +84,6 @@ class SpeakerDiarizationCache:
             cache_identity: pipeline configuration identifying the output
         Returns:
             validated diarization result, if present
-
         Raises:
             ValueError: if a value is invalid
         """

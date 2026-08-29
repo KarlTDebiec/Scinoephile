@@ -161,7 +161,6 @@ def val_float(
             value_to_validate: value to validate
         Returns:
             value as a float
-
         Raises:
             TypeError: if a value has an invalid type
             ValueError: if a value is invalid
@@ -464,7 +463,6 @@ def val_int(
             value_to_validate: Value to validate
         Returns:
             Value as an int
-
         Raises:
             TypeError: if a value has an invalid type
             ValueError: if a value is invalid

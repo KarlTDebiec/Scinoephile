@@ -203,12 +203,14 @@
     arguments.
   * Describe the value exposed by property and cached-property getters in the
     summary; a `Returns:` section is not required.
+  * Describe the value provided by pytest fixtures in the summary; a `Returns:`
+    section is not required.
   * Describe the validation performed by `@model_validator(mode="after")`
     methods in the summary; a `Returns:` section is not required.
   * In argument descriptions, the first word after the colon should be
     lowercase unless it is a type name.
-  * Do not include a blank line between `Arguments:` and an immediately following
-    `Raises:`, `Returns:`, or `Yields:` section.
+  * Do not include a blank line between adjacent `Arguments:`, `Raises:`,
+    `Returns:`, or `Yields:` sections.
   * Do not include a `Returns:` section for functions or methods that return
     None.
   * Include a `Yields:` section for generator functions and methods, including

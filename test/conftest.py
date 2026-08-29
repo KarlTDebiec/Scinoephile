@@ -30,8 +30,6 @@ def runtime_cache_root_path(tmp_path: Path, monkeypatch: MonkeyPatch) -> Path:
     Arguments:
         tmp_path: temporary directory provided by pytest
         monkeypatch: pytest monkeypatch fixture
-    Returns:
-        runtime cache root path
     """
     cache_root_path = tmp_path / "runtime-cache"
     monkeypatch.setenv("SCINOEPHILE_CACHE_DIR", str(cache_root_path))
@@ -73,11 +71,7 @@ def runtime_data_dir_path() -> Generator[Path]:
 
 @fixture
 def tiny_image_series() -> ImageSeries:
-    """Small image subtitle series for tests that do not need full fixtures.
-
-    Returns:
-        small image subtitle series for tests that do not need full fixtures
-    """
+    """Small image subtitle series for tests that do not need full fixtures."""
     return ImageSeries(
         events=[
             ImageSubtitle(

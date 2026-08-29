@@ -40,7 +40,6 @@ class TesseractCache(OcrCacheBase[str]):
             payload: decoded JSON payload
         Returns:
             recognized text
-
         Raises:
             ValueError: if a value is invalid
         """

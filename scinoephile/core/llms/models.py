@@ -65,7 +65,6 @@ class LLMModel(BaseModel):
             info: Pydantic validation context
         Returns:
             value after canonical field-name validation
-
         Raises:
             PydanticCustomError: if the operation fails
         """
@@ -106,7 +105,6 @@ def get_model_name(base_name: str, suffix: str) -> str:
         suffix: descriptive suffix
     Returns:
         valid class name string
-
     Raises:
         ValueError: if a value is invalid
     """

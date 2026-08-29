@@ -73,7 +73,6 @@ class TestCase(LLMModel, ABC):
 
         Returns:
             validated test case
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -87,7 +86,6 @@ class TestCase(LLMModel, ABC):
 
         Returns:
             validated test case
-
         Raises:
             ValueError: if a value is invalid
         """

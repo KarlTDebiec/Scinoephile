@@ -35,7 +35,6 @@ class OcrFusionQuery(Query):
 
         Returns:
             validated query
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -56,7 +55,6 @@ class OcrFusionQuery(Query):
             value: raw query data
         Returns:
             raw query data after presence validation
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -95,7 +93,6 @@ class OcrFusionAnswer(Answer):
 
         Returns:
             validated answer
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -114,7 +111,6 @@ class OcrFusionAnswer(Answer):
             value: raw answer data
         Returns:
             raw answer data after presence validation
-
         Raises:
             ValueError: if a value is invalid
         """

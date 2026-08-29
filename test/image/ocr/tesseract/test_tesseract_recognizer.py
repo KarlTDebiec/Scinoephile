@@ -619,7 +619,6 @@ def test_tesseract_detect_italics_raises_clear_legacy_error(tmp_path: Path):
                 command: command arguments
             Returns:
                 fake process result
-
             Raises:
                 ValueError: if a value is invalid
             """

@@ -84,7 +84,6 @@ class VoiceActivityCache:
             cache_identity: model configuration identifying the score trace
         Returns:
             validated trace, if present
-
         Raises:
             ValueError: if a value is invalid
         """

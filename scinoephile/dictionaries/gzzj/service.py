@@ -73,7 +73,6 @@ class GzzjDictionaryService:
             limit: max results to return
         Returns:
             dictionary entries
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -139,7 +138,6 @@ class GzzjDictionaryService:
 
         Returns:
             validated source JSON path
-
         Raises:
             FileNotFoundError: if a required file is missing
         """

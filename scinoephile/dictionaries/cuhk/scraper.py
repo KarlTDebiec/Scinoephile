@@ -131,7 +131,6 @@ class CuhkDictionaryScraper:
             max_words: optional max number of words to discover
         Returns:
             list of (word, url)
-
         Raises:
             RuntimeError: if the operation cannot be completed
         """

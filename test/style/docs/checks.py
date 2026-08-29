@@ -39,11 +39,6 @@ class DocstringViolation:
     message: str
     """Violation message."""
 
-    @property
-    def fingerprint(self) -> str:
-        """Stable fingerprint used by the checked-in baseline."""
-        return f"{self.file_path.as_posix()}|{self.qualified_name}|{self.rule_id}"
-
     def __str__(self) -> str:
         """Format the violation for assertion output.
 
@@ -62,9 +57,6 @@ class _DocstringSection:
 
     name: str
     """Section name without its trailing colon."""
-
-    header_line_index: int
-    """Zero-based header line index within the cleaned docstring."""
 
     content_lines: tuple[str, ...]
     """Lines between this header and the next top-level header."""
@@ -106,6 +98,34 @@ class _DocstringVisitor(ast.NodeVisitor):
                 qualified_name=qualified_name,
                 rule_id="missing-docstring",
             )
+
+        is_typed_dict = any(
+            (isinstance(base, ast.Name) and base.id == "TypedDict")
+            or (isinstance(base, ast.Attribute) and base.attr == "TypedDict")
+            for base in node.bases
+        )
+        if is_typed_dict:
+            for statement_index, statement in enumerate(node.body):
+                if not isinstance(statement, ast.AnnAssign) or not isinstance(
+                    statement.target, ast.Name
+                ):
+                    continue
+                next_statement_index = statement_index + 1
+                next_statement = None
+                if next_statement_index < len(node.body):
+                    next_statement = node.body[next_statement_index]
+                has_docstring = (
+                    isinstance(next_statement, ast.Expr)
+                    and isinstance(next_statement.value, ast.Constant)
+                    and isinstance(next_statement.value.value, str)
+                )
+                if not has_docstring:
+                    self._add_violation(
+                        line_number=statement.lineno,
+                        message="TypedDict field lacks documentation",
+                        qualified_name=f"{qualified_name}.{statement.target.id}",
+                        rule_id="missing-typed-dict-field-docstring",
+                    )
 
         self.qualified_names.append(node.name)
         self.scope_kinds.append("class")
@@ -223,10 +243,11 @@ class _DocstringVisitor(ast.NodeVisitor):
         has_returns_section = any(section.name == "Returns" for section in sections)
         has_yields_section = any(section.name == "Yields" for section in sections)
         has_raises_section = any(section.name == "Raises" for section in sections)
-        is_property_getter = bool(
-            {"cached_property", "getter", "property"} & decorator_names
+        has_summary_return_exemption = (
+            bool({"cached_property", "fixture", "getter", "property"} & decorator_names)
+            or is_after_model_validator
         )
-        if not is_property_getter and not is_after_model_validator:
+        if not has_summary_return_exemption:
             if has_value_return and not has_returns_section:
                 self._add_violation(
                     line_number=node.lineno,
@@ -263,18 +284,19 @@ class _DocstringVisitor(ast.NodeVisitor):
                 rule_id="missing-raises",
             )
 
+        compact_section_names = {"Arguments", "Raises", "Returns", "Yields"}
         for section, next_section in zip(sections, sections[1:], strict=False):
             if (
-                section.name == "Arguments"
-                and next_section.name in {"Raises", "Returns", "Yields"}
+                section.name in compact_section_names
+                and next_section.name in compact_section_names
                 and section.content_lines
                 and not section.content_lines[-1].strip()
             ):
                 self._add_violation(
                     line_number=node.lineno,
                     message=(
-                        "has a blank line between adjacent `Arguments:` and "
-                        f"`{next_section.name}:` sections"
+                        "has a blank line between adjacent "
+                        f"`{section.name}:` and `{next_section.name}:` sections"
                     ),
                     qualified_name=qualified_name,
                     rule_id="section-spacing",
@@ -337,33 +359,17 @@ class _CallableFlowVisitor(ast.NodeVisitor):
         self.has_value_return = False
         self.has_yield = False
 
-    def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef):
-        """Skip a nested async function.
+    def generic_visit(self, node: ast.AST):
+        """Visit child nodes unless the node opens a nested lexical scope.
 
         Arguments:
-            node: nested async function definition
+            node: AST node
         """
-
-    def visit_ClassDef(self, node: ast.ClassDef):
-        """Skip a nested class.
-
-        Arguments:
-            node: nested class definition
-        """
-
-    def visit_FunctionDef(self, node: ast.FunctionDef):
-        """Skip a nested function.
-
-        Arguments:
-            node: nested function definition
-        """
-
-    def visit_Lambda(self, node: ast.Lambda):
-        """Skip a nested lambda.
-
-        Arguments:
-            node: nested lambda
-        """
+        if isinstance(
+            node, (ast.AsyncFunctionDef, ast.ClassDef, ast.FunctionDef, ast.Lambda)
+        ):
+            return
+        super().generic_visit(node)
 
     def visit_Raise(self, node: ast.Raise):
         """Record an explicit raise statement.
@@ -512,15 +518,15 @@ def _get_docstring_sections(docstring: str) -> list[_DocstringSection]:
         and SECTION_HEADER_RE.fullmatch(line.strip()) is not None
     ]
     sections = []
-    for header_index_idx, header_line_index in enumerate(header_line_indexes):
-        next_header_index_idx = header_index_idx + 1
-        content_end_index = len(lines)
-        if next_header_index_idx < len(header_line_indexes):
-            content_end_index = header_line_indexes[next_header_index_idx]
+    content_end_indexes = header_line_indexes[1:]
+    if header_line_indexes:
+        content_end_indexes.append(len(lines))
+    for header_line_index, content_end_index in zip(
+        header_line_indexes, content_end_indexes, strict=True
+    ):
         sections.append(
             _DocstringSection(
                 name=lines[header_line_index].strip()[:-1],
-                header_line_index=header_line_index,
                 content_lines=tuple(lines[header_line_index + 1 : content_end_index]),
             )
         )

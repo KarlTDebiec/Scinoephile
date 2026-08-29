@@ -120,7 +120,6 @@ class OcrValidationSession:
             dev: whether validation data updates should write to repo data
         Returns:
             OCR validation session
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -270,7 +269,6 @@ class OcrValidationSession:
             n_bboxes: number of selected bboxes
         Returns:
             updated subtitle row view model
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -303,7 +301,6 @@ class OcrValidationSession:
             action: user action to apply
         Returns:
             updated subtitle row view model
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -348,7 +345,6 @@ class OcrValidationSession:
             state: subtitle validation state
         Returns:
             character cursor
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -385,7 +381,6 @@ class OcrValidationSession:
             state: subtitle validation state
         Returns:
             gap cursor
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -422,7 +417,6 @@ class OcrValidationSession:
             kind: gap concern kind
         Returns:
             gap concern
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -703,7 +697,6 @@ class OcrValidationSession:
             action: selected action
         Returns:
             replacement gap text
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -729,7 +722,6 @@ class OcrValidationSession:
             action: selected action
         Returns:
             replacement gap text
-
         Raises:
             ValueError: if a value is invalid
         """

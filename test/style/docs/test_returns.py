@@ -64,6 +64,29 @@ class Example:
     assert not violations
 
 
+def test_docstring_fixtures_need_no_returns_section():
+    """Test direct and qualified fixtures may include or omit `Returns:`."""
+    violations = get_sample_docstring_violations(
+        '''
+@fixture
+def direct() -> Series:
+    """Provide direct subtitles."""
+    return Series()
+
+@pytest.fixture(scope="session")
+def configured() -> Series:
+    """Provide configured subtitles.
+
+    Returns:
+        configured subtitles
+    """
+    return Series()
+'''
+    )
+
+    assert not violations
+
+
 @pytest.mark.parametrize("return_statement", ["return", "return None"])
 def test_docstring_non_value_returns_reject_returns_section(return_statement: str):
     """Test bare and literal-None returns reject `Returns:` documentation.

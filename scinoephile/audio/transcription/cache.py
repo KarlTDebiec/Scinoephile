@@ -99,7 +99,6 @@ class TranscriptionCache:
             cache_identity: backend configuration identifying the output
         Returns:
             cache path and cached segments, if present
-
         Raises:
             TranscriptionRecognitionError: if transcription fails
         """

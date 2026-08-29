@@ -5,38 +5,56 @@
 
 from __future__ import annotations
 
+from itertools import permutations
+
 import pytest
 
 from test.style.docs.checks import get_sample_docstring_violations
 
 
 @pytest.mark.parametrize(
-    ("section_name", "body"),
-    [
-        ("Raises", "raise ValueError"),
-        ("Returns", "return value"),
-        ("Yields", "yield value"),
-    ],
+    ("first_section_name", "second_section_name"),
+    list(permutations(("Arguments", "Raises", "Returns", "Yields"), 2)),
 )
-def test_docstring_section_spacing_is_enforced(section_name: str, body: str):
-    """Test adjacent output sections reject a preceding blank line.
+def test_docstring_section_spacing_is_enforced(
+    first_section_name: str, second_section_name: str
+):
+    """Test adjacent structured sections reject a preceding blank line.
 
     Arguments:
-        section_name: output section name
-        body: callable body source
+        first_section_name: first section name
+        second_section_name: second section name
     """
+    section_content_by_name = {
+        "Arguments": "        value: sample value",
+        "Raises": "        ValueError: always",
+        "Returns": "        returned value",
+        "Yields": "        generated value",
+    }
+    section_names = {first_section_name, second_section_name}
+    signature = ""
+    if "Arguments" in section_names:
+        signature = "value"
+    body_lines = []
+    if "Raises" in section_names:
+        body_lines.extend(("    if False:", "        raise ValueError"))
+    if "Yields" in section_names:
+        body_lines.append("    yield 1")
+    if "Returns" in section_names:
+        body_lines.append("    return 1")
+
     violations = get_sample_docstring_violations(
         f'''
-def sample(value):
+def sample({signature}):
     """Sample function.
 
-    Arguments:
-        value: sample value
+    {first_section_name}:
+{section_content_by_name[first_section_name]}
 
-    {section_name}:
-        sample value
+    {second_section_name}:
+{section_content_by_name[second_section_name]}
     """
-    {body}
+{"\n".join(body_lines)}
 '''
     )
 

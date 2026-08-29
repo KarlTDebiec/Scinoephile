@@ -383,7 +383,6 @@ def _get_filtered_indexes(
         characters: optional character filter
     Returns:
         selected subtitle indexes
-
     Raises:
         AssertionError: if an internal invariant is violated
     """

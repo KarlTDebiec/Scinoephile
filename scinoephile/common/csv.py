@@ -15,7 +15,6 @@ def parse_csv_int_list(values: str, *, name: str) -> list[int]:
         name: argument name for error context
     Returns:
         list of parsed integers
-
     Raises:
         ValueError: if a value is invalid
     """

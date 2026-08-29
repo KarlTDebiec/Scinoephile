@@ -24,7 +24,6 @@ def get_grayscale_and_alpha_arrs(img: Image.Image) -> tuple[np.ndarray, np.ndarr
         img: Image from which to extract grayscale and alpha
     Returns:
         grayscale values and alpha mask
-
     Raises:
         ScinoephileError: if the operation fails
     """

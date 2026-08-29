@@ -93,7 +93,6 @@ class OcrCacheBase[TResult](ABC):
             cache_identity: backend configuration identifying the result
         Returns:
             cached result, if present and valid
-
         Raises:
             ValueError: if a value is invalid
         """

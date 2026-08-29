@@ -41,7 +41,6 @@ def load_html_entries(dir_path: Path) -> list[HtmlSubtitleEntry]:
         dir_path: directory containing index.html and subtitle images
     Returns:
         subtitle entries parsed from the HTML index
-
     Raises:
         ScinoephileError: if the operation fails
     """

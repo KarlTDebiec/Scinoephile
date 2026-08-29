@@ -46,8 +46,6 @@ def service(database_path: Path, source_json_path: Path) -> GzzjDictionaryServic
     Arguments:
         database_path: database path
         source_json_path: source json path
-    Returns:
-        a GZZJ service backed by deterministic JSON fixture data
     """
     service = GzzjDictionaryService(
         database_path=database_path, source_json_path=source_json_path

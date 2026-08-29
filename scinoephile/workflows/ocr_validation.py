@@ -43,7 +43,6 @@ def validate_ocr(
         port: OCR validation web UI port
     Returns:
         validated subtitle series
-
     Raises:
         ScinoephileError: if the operation fails
     """

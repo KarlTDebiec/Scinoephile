@@ -157,7 +157,6 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
             dry_run: if True, compute changes without writing
         Returns:
             test case IDs whose source association was inserted or removed
-
         Raises:
             ScinoephileError: if the operation fails
         """

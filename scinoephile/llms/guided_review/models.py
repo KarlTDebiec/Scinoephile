@@ -119,7 +119,6 @@ class GuidedReviewTestCase(TestCase):
 
         Returns:
             validated test case
-
         Raises:
             ValueError: if a value is invalid
         """

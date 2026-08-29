@@ -92,7 +92,6 @@ class _TestTranscriber(Transcriber):
             settings: settings
         Returns:
             or raise the configured outcome for preprocessing settings
-
         Raises:
             Exception: if the operation fails
         """

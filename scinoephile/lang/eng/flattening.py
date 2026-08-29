@@ -20,7 +20,6 @@ def get_eng_text_flattened(text: str) -> str:
         text: text to flatten
     Returns:
         flattened text
-
     Raises:
         ScinoephileError: if the operation fails
     """

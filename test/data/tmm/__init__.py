@@ -301,151 +301,91 @@ def get_tmm_zho_hant_simplify_review_test_cases(
 
 @fixture
 def tmm_eng_ocr_fuse() -> Series:
-    """TMM English fused subtitles.
-
-    Returns:
-        TMM English fused subtitles
-    """
+    """TMM English fused subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse.srt")
 
 
 @fixture
 def tmm_eng_ocr_fuse_clean() -> Series:
-    """TMM English fused and cleaned subtitles.
-
-    Returns:
-        TMM English fused and cleaned subtitles
-    """
+    """TMM English fused and cleaned subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean.srt")
 
 
 @fixture
 def tmm_eng_ocr_fuse_clean_validate() -> Series:
-    """TMM English fused, cleaned, and validated subtitles.
-
-    Returns:
-        TMM English fused, cleaned, and validated subtitles
-    """
+    """TMM English fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def tmm_eng_ocr_fuse_clean_validate_review() -> Series:
-    """TMM English fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        TMM English fused, cleaned, validated, and reviewed subtitles
-    """
+    """TMM English fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def tmm_eng_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """TMM English fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        TMM English fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """TMM English fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review_flatten.srt")
 
 
 @fixture
 def tmm_eng_ocr_lens() -> Series:
-    """TMM English subtitles OCRed using Google Lens.
-
-    Returns:
-        TMM English subtitles OCRed using Google Lens
-    """
+    """TMM English subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "eng_ocr/lens.srt")
 
 
 @fixture
 def tmm_eng_ocr_lens_clean() -> Series:
-    """TMM English Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        TMM English Google Lens OCR subtitles, cleaned
-    """
+    """TMM English Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "eng_ocr/lens_clean.srt")
 
 
 @fixture
 def tmm_eng_ocr_tesseract() -> Series:
-    """TMM English subtitles OCRed using Tesseract.
-
-    Returns:
-        TMM English subtitles OCRed using Tesseract
-    """
+    """TMM English subtitles OCRed using Tesseract."""
     return Series.load(output_dir / "eng_ocr/tesseract.srt")
 
 
 @fixture
 def tmm_eng_ocr_tesseract_clean() -> Series:
-    """TMM English Tesseract OCR subtitles, cleaned.
-
-    Returns:
-        TMM English Tesseract OCR subtitles, cleaned
-    """
+    """TMM English Tesseract OCR subtitles, cleaned."""
     return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
 
 
 @fixture
 def tmm_yue_hans_eng() -> Series:
-    """TMM bilingual yue-Hans and English subtitles.
-
-    Returns:
-        TMM bilingual yue-Hans and English subtitles
-    """
+    """TMM bilingual yue-Hans and English subtitles."""
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 @fixture
 def tmm_yue_hans_ocr_fuse() -> Series:
-    """TMM yue-Hans fused subtitles.
-
-    Returns:
-        TMM yue-Hans fused subtitles
-    """
+    """TMM yue-Hans fused subtitles."""
     return Series.load(output_dir / "yue-Hans_ocr/fuse.srt")
 
 
 @fixture
 def tmm_yue_hans_ocr_fuse_clean() -> Series:
-    """TMM yue-Hans fused and cleaned subtitles.
-
-    Returns:
-        TMM yue-Hans fused and cleaned subtitles
-    """
+    """TMM yue-Hans fused and cleaned subtitles."""
     return Series.load(output_dir / "yue-Hans_ocr/fuse_clean.srt")
 
 
 @fixture
 def tmm_yue_hans_ocr_fuse_clean_validate() -> Series:
-    """TMM yue-Hans fused, cleaned, and validated subtitles.
-
-    Returns:
-        TMM yue-Hans fused, cleaned, and validated subtitles
-    """
+    """TMM yue-Hans fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "yue-Hans_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def tmm_yue_hans_ocr_fuse_clean_validate_review() -> Series:
-    """TMM yue-Hans fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        TMM yue-Hans fused, cleaned, validated, and reviewed subtitles
-    """
+    """TMM yue-Hans fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "yue-Hans_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def tmm_yue_hans_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """TMM yue-Hans fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        TMM yue-Hans fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """TMM yue-Hans fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "yue-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -453,11 +393,7 @@ def tmm_yue_hans_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def tmm_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize() -> Series:
-    """TMM yue-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles.
-
-    Returns:
-        TMM yue-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles
-    """
+    """TMM yue-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles."""
     return Series.load(
         output_dir / "yue-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt"
     )
@@ -465,91 +401,55 @@ def tmm_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize() -> Series:
 
 @fixture
 def tmm_yue_hans_ocr_lens() -> Series:
-    """TMM yue-Hans subtitles OCRed using Google Lens.
-
-    Returns:
-        TMM yue-Hans subtitles OCRed using Google Lens
-    """
+    """TMM yue-Hans subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "yue-Hans_ocr/lens.srt")
 
 
 @fixture
 def tmm_yue_hans_ocr_lens_clean() -> Series:
-    """TMM yue-Hans Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        TMM yue-Hans Google Lens OCR subtitles, cleaned
-    """
+    """TMM yue-Hans Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "yue-Hans_ocr/lens_clean.srt")
 
 
 @fixture
 def tmm_yue_hans_ocr_paddle() -> Series:
-    """TMM yue-Hans subtitles OCRed using PaddleOCR.
-
-    Returns:
-        TMM yue-Hans subtitles OCRed using PaddleOCR
-    """
+    """TMM yue-Hans subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "yue-Hans_ocr/paddle.srt")
 
 
 @fixture
 def tmm_yue_hans_ocr_paddle_clean() -> Series:
-    """TMM yue-Hans PaddleOCR subtitles, cleaned.
-
-    Returns:
-        TMM yue-Hans PaddleOCR subtitles, cleaned
-    """
+    """TMM yue-Hans PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "yue-Hans_ocr/paddle_clean.srt")
 
 
 @fixture
 def tmm_yue_hant_ocr_fuse() -> Series:
-    """TMM yue-Hant fused subtitles.
-
-    Returns:
-        TMM yue-Hant fused subtitles
-    """
+    """TMM yue-Hant fused subtitles."""
     return Series.load(output_dir / "yue-Hant_ocr/fuse.srt")
 
 
 @fixture
 def tmm_yue_hant_ocr_fuse_clean() -> Series:
-    """TMM yue-Hant fused and cleaned subtitles.
-
-    Returns:
-        TMM yue-Hant fused and cleaned subtitles
-    """
+    """TMM yue-Hant fused and cleaned subtitles."""
     return Series.load(output_dir / "yue-Hant_ocr/fuse_clean.srt")
 
 
 @fixture
 def tmm_yue_hant_ocr_fuse_clean_validate() -> Series:
-    """TMM yue-Hant fused, cleaned, and validated subtitles.
-
-    Returns:
-        TMM yue-Hant fused, cleaned, and validated subtitles
-    """
+    """TMM yue-Hant fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "yue-Hant_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def tmm_yue_hant_ocr_fuse_clean_validate_review() -> Series:
-    """TMM yue-Hant fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        TMM yue-Hant fused, cleaned, validated, and reviewed subtitles
-    """
+    """TMM yue-Hant fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "yue-Hant_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def tmm_yue_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """TMM yue-Hant fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        TMM yue-Hant fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """TMM yue-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "yue-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -557,11 +457,7 @@ def tmm_yue_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """TMM yue-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles.
-
-    Returns:
-        TMM yue-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles
-    """
+    """TMM yue-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles."""
     return Series.load(
         output_dir / "yue-Hant_ocr" / "fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -569,11 +465,7 @@ def tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
 
 @fixture
 def tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """TMM yue-Hant simplified/reviewed fused/cleaned subtitles.
-
-    Returns:
-        TMM yue-Hant simplified/reviewed fused/cleaned subtitles
-    """
+    """TMM yue-Hant simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
         output_dir
         / "yue-Hant_ocr"
@@ -585,11 +477,7 @@ def tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Ser
 def tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize() -> (
     Series
 ):
-    """TMM yue-Hant simplified/reviewed fused/cleaned romanized subtitles.
-
-    Returns:
-        TMM yue-Hant simplified/reviewed fused/cleaned romanized subtitles
-    """
+    """TMM yue-Hant simplified/reviewed fused/cleaned romanized subtitles."""
     return Series.load(
         output_dir
         / "yue-Hant_ocr"
@@ -599,101 +487,61 @@ def tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize
 
 @fixture
 def tmm_yue_hant_ocr_lens() -> Series:
-    """TMM yue-Hant subtitles OCRed using Google Lens.
-
-    Returns:
-        TMM yue-Hant subtitles OCRed using Google Lens
-    """
+    """TMM yue-Hant subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "yue-Hant_ocr/lens.srt")
 
 
 @fixture
 def tmm_yue_hant_ocr_lens_clean() -> Series:
-    """TMM yue-Hant Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        TMM yue-Hant Google Lens OCR subtitles, cleaned
-    """
+    """TMM yue-Hant Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "yue-Hant_ocr/lens_clean.srt")
 
 
 @fixture
 def tmm_yue_hant_ocr_paddle() -> Series:
-    """TMM yue-Hant subtitles OCRed using PaddleOCR.
-
-    Returns:
-        TMM yue-Hant subtitles OCRed using PaddleOCR
-    """
+    """TMM yue-Hant subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "yue-Hant_ocr/paddle.srt")
 
 
 @fixture
 def tmm_yue_hant_ocr_paddle_clean() -> Series:
-    """TMM yue-Hant PaddleOCR subtitles, cleaned.
-
-    Returns:
-        TMM yue-Hant PaddleOCR subtitles, cleaned
-    """
+    """TMM yue-Hant PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "yue-Hant_ocr/paddle_clean.srt")
 
 
 @fixture
 def tmm_zho_hans_eng() -> Series:
-    """TMM bilingual zho-Hans and English subtitles.
-
-    Returns:
-        TMM bilingual zho-Hans and English subtitles
-    """
+    """TMM bilingual zho-Hans and English subtitles."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 @fixture
 def tmm_zho_hans_ocr_fuse() -> Series:
-    """TMM zho-Hans fused subtitles.
-
-    Returns:
-        TMM zho-Hans fused subtitles
-    """
+    """TMM zho-Hans fused subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse.srt")
 
 
 @fixture
 def tmm_zho_hans_ocr_fuse_clean() -> Series:
-    """TMM zho-Hans fused and cleaned subtitles.
-
-    Returns:
-        TMM zho-Hans fused and cleaned subtitles
-    """
+    """TMM zho-Hans fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean.srt")
 
 
 @fixture
 def tmm_zho_hans_ocr_fuse_clean_validate() -> Series:
-    """TMM zho-Hans fused, cleaned, and validated subtitles.
-
-    Returns:
-        TMM zho-Hans fused, cleaned, and validated subtitles
-    """
+    """TMM zho-Hans fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def tmm_zho_hans_ocr_fuse_clean_validate_review() -> Series:
-    """TMM zho-Hans fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        TMM zho-Hans fused, cleaned, validated, and reviewed subtitles
-    """
+    """TMM zho-Hans fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def tmm_zho_hans_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """TMM zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        TMM zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """TMM zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -701,11 +549,7 @@ def tmm_zho_hans_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def tmm_zho_hans_ocr_fuse_clean_validate_review_flatten_romanize() -> Series:
-    """TMM zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles.
-
-    Returns:
-        TMM zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles
-    """
+    """TMM zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt"
     )
@@ -713,91 +557,55 @@ def tmm_zho_hans_ocr_fuse_clean_validate_review_flatten_romanize() -> Series:
 
 @fixture
 def tmm_zho_hans_ocr_lens() -> Series:
-    """TMM zho-Hans subtitles OCRed using Google Lens.
-
-    Returns:
-        TMM zho-Hans subtitles OCRed using Google Lens
-    """
+    """TMM zho-Hans subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "zho-Hans_ocr/lens.srt")
 
 
 @fixture
 def tmm_zho_hans_ocr_lens_clean() -> Series:
-    """TMM zho-Hans Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        TMM zho-Hans Google Lens OCR subtitles, cleaned
-    """
+    """TMM zho-Hans Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hans_ocr/lens_clean.srt")
 
 
 @fixture
 def tmm_zho_hans_ocr_paddle() -> Series:
-    """TMM zho-Hans subtitles OCRed using PaddleOCR.
-
-    Returns:
-        TMM zho-Hans subtitles OCRed using PaddleOCR
-    """
+    """TMM zho-Hans subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "zho-Hans_ocr/paddle.srt")
 
 
 @fixture
 def tmm_zho_hans_ocr_paddle_clean() -> Series:
-    """TMM zho-Hans PaddleOCR subtitles, cleaned.
-
-    Returns:
-        TMM zho-Hans PaddleOCR subtitles, cleaned
-    """
+    """TMM zho-Hans PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
 
 
 @fixture
 def tmm_zho_hant_ocr_fuse() -> Series:
-    """TMM zho-Hant fused subtitles.
-
-    Returns:
-        TMM zho-Hant fused subtitles
-    """
+    """TMM zho-Hant fused subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
 
 
 @fixture
 def tmm_zho_hant_ocr_fuse_clean() -> Series:
-    """TMM zho-Hant fused and cleaned subtitles.
-
-    Returns:
-        TMM zho-Hant fused and cleaned subtitles
-    """
+    """TMM zho-Hant fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean.srt")
 
 
 @fixture
 def tmm_zho_hant_ocr_fuse_clean_validate() -> Series:
-    """TMM zho-Hant fused, cleaned, and validated subtitles.
-
-    Returns:
-        TMM zho-Hant fused, cleaned, and validated subtitles
-    """
+    """TMM zho-Hant fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def tmm_zho_hant_ocr_fuse_clean_validate_review() -> Series:
-    """TMM zho-Hant fused, cleaned, validated, and reviewed subtitles.
-
-    Returns:
-        TMM zho-Hant fused, cleaned, validated, and reviewed subtitles
-    """
+    """TMM zho-Hant fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def tmm_zho_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """TMM zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles.
-
-    Returns:
-        TMM zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles
-    """
+    """TMM zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -805,11 +613,7 @@ def tmm_zho_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """TMM zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles.
-
-    Returns:
-        TMM zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles
-    """
+    """TMM zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -817,11 +621,7 @@ def tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
 
 @fixture
 def tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """TMM zho-Hant simplified/reviewed fused/cleaned subtitles.
-
-    Returns:
-        TMM zho-Hant simplified/reviewed fused/cleaned subtitles
-    """
+    """TMM zho-Hant simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -833,11 +633,7 @@ def tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Ser
 def tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize() -> (
     Series
 ):
-    """TMM zho-Hant simplified/reviewed fused/cleaned romanized subtitles.
-
-    Returns:
-        TMM zho-Hant simplified/reviewed fused/cleaned romanized subtitles
-    """
+    """TMM zho-Hant simplified/reviewed fused/cleaned romanized subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -847,61 +643,37 @@ def tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize
 
 @fixture
 def tmm_zho_hant_ocr_lens() -> Series:
-    """TMM zho-Hant subtitles OCRed using Google Lens.
-
-    Returns:
-        TMM zho-Hant subtitles OCRed using Google Lens
-    """
+    """TMM zho-Hant subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
 
 
 @fixture
 def tmm_zho_hant_ocr_lens_clean() -> Series:
-    """TMM zho-Hant Google Lens OCR subtitles, cleaned.
-
-    Returns:
-        TMM zho-Hant Google Lens OCR subtitles, cleaned
-    """
+    """TMM zho-Hant Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
 
 
 @fixture
 def tmm_zho_hant_ocr_paddle() -> Series:
-    """TMM zho-Hant subtitles OCRed using PaddleOCR.
-
-    Returns:
-        TMM zho-Hant subtitles OCRed using PaddleOCR
-    """
+    """TMM zho-Hant subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
 
 
 @fixture
 def tmm_zho_hant_ocr_paddle_clean() -> Series:
-    """TMM zho-Hant PaddleOCR subtitles, cleaned.
-
-    Returns:
-        TMM zho-Hant PaddleOCR subtitles, cleaned
-    """
+    """TMM zho-Hant PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
 
 
 @fixture
 def tmm_yue_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for TMM Yue Simplified vs Traditional subtitles.
-
-    Returns:
-        expected differences for TMM Yue Simplified vs Traditional subtitles
-    """
+    """Expected differences for TMM Yue Simplified vs Traditional subtitles."""
     return []
 
 
 @fixture
 def tmm_zho_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for TMM Zho Simplified vs Traditional subtitles.
-
-    Returns:
-        expected differences for TMM Zho Simplified vs Traditional subtitles
-    """
+    """Expected differences for TMM Zho Simplified vs Traditional subtitles."""
     return [
         "edit: SIMP[15] -> TRAD[15]: '搞得皇帝要去追〝野鸡〞' -> '搞得皇帝要去追「野鸡」'",
         "edit: SIMP[175] -> TRAD[175]: '一个做九世〝野鸡〞' -> '一个做九世「野鸡」'",

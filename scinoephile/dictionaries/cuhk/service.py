@@ -74,7 +74,6 @@ class CuhkDictionaryService:
             limit: max results to return
         Returns:
             dictionary entries
-
         Raises:
             ValueError: if a value is invalid
         """

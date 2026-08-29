@@ -94,7 +94,6 @@ class AudioClassificationCache:
             result_cls: Pydantic model used to validate the cached result
         Returns:
             validated classification result, if present
-
         Raises:
             ValueError: if a value is invalid
         """

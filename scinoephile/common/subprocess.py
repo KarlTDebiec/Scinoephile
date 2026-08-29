@@ -245,7 +245,6 @@ def _wait_for_live_process(
         stderr_chunks: standard error chunks read so far
     Returns:
         exitcode
-
     Raises:
         TimeoutExpired: if the subprocess times out
     """

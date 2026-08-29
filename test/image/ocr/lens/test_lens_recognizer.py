@@ -60,7 +60,6 @@ class CountingLensRecognizer(LensRecognizer):
             **kwargs: process image keyword arguments
         Returns:
             fake LensAPI result
-
         Raises:
             Exception: if the operation fails
         """

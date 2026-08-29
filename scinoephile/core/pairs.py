@@ -114,7 +114,6 @@ def get_pair_with_zero_start(one: Series, two: Series) -> tuple[Series, Series]:
         two: second series
     Returns:
         pair with their start times shifted to zero
-
     Raises:
         ScinoephileError: if the operation fails
     """
@@ -143,7 +142,6 @@ def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
         two: second series
     Returns:
         strings of each series
-
     Raises:
         ScinoephileError: if the operation fails
     """

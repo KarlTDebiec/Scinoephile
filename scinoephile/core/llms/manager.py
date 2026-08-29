@@ -104,7 +104,6 @@ class Manager(Generic[TTestCase_co], ABC):  # noqa: UP046
             prompt: text for LLM correspondence
         Returns:
             answer model class
-
         Raises:
             NotImplementedError: if the operation is not implemented
         """
@@ -118,7 +117,6 @@ class Manager(Generic[TTestCase_co], ABC):  # noqa: UP046
             prompt: text for LLM correspondence
         Returns:
             query model class
-
         Raises:
             NotImplementedError: if the operation is not implemented
         """

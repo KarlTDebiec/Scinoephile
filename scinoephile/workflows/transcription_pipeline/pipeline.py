@@ -225,7 +225,6 @@ class TranscriptionPipeline:
             stop_at_idx: exclusive zero-based block index at which to stop
         Returns:
             merged and timed audio subtitle series
-
         Raises:
             ValueError: if a value is invalid
             RuntimeError: if the operation cannot be completed
@@ -429,7 +428,6 @@ class TranscriptionPipeline:
             blocks: selected VAD block outcomes and cache identities
         Returns:
             compact run manifest
-
         Raises:
             RuntimeError: if the operation cannot be completed
         """
@@ -458,7 +456,6 @@ class TranscriptionPipeline:
             audio: complete source audio, if the range contains blocks
         Returns:
             audio events, or None when disabled or unavailable in auto mode
-
         Raises:
             AudioClassificationError: if the operation fails
         """
@@ -486,7 +483,6 @@ class TranscriptionPipeline:
             has_selected_blocks: whether the requested range contains blocks
         Returns:
             speaker diarization, or None when disabled or unavailable in auto mode
-
         Raises:
             SpeakerDiarizationError: if the operation fails
         """
@@ -514,7 +510,6 @@ class TranscriptionPipeline:
             speech_intervals_ms: source-timeline speech intervals
         Returns:
             language identification, or None when disabled or unavailable in auto mode
-
         Raises:
             AudioClassificationError: if the operation fails
         """

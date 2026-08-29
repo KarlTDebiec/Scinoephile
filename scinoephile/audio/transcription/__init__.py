@@ -84,7 +84,6 @@ def get_segment_split_at_idx(
         idx: index at which to split the segment
     Returns:
         tuple of two new segments created by splitting the original segment
-
     Raises:
         ValueError: if a value is invalid
     """

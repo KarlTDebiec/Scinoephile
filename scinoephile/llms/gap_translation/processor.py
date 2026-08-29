@@ -52,7 +52,6 @@ class GapTranslationProcessor(Processor):
             start_at_idx: inclusive zero-based block index at which to start processing
         Returns:
             primary subtitles with gaps filled
-
         Raises:
             ScinoephileError: if the operation fails
         """

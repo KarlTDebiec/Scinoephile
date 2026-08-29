@@ -103,7 +103,7 @@ def load(value: int) -> int: ...
 
 
 def test_docstring_violation_format():
-    """Test docstring violations have stable fingerprints and useful output."""
+    """Test docstring violations have useful assertion output."""
     violation = DocstringViolation(
         file_path=Path("sample.py"),
         line_number=3,
@@ -112,5 +112,4 @@ def test_docstring_violation_format():
         rule_id="missing-docstring",
     )
 
-    assert violation.fingerprint == ("sample.py|Example.method|missing-docstring")
     assert str(violation) == "sample.py:3: Example.method: lacks a docstring"

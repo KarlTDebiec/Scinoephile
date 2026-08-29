@@ -186,7 +186,6 @@ class AudioSeries(Series):
             **kwargs: additional keyword arguments
         Returns:
             loaded series
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -321,7 +320,6 @@ class AudioSeries(Series):
             events: events to include in the copied series
         Returns:
             copied audio series
-
         Raises:
             TypeError: if a value has an invalid type
         """

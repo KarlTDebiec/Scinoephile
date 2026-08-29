@@ -179,7 +179,6 @@ class TranscriptionAlignmentScorer:
             source_count: total number of transcription sources
         Returns:
             profile column index for each answer character, when mapped
-
         Raises:
             RuntimeError: if the operation cannot be completed
         """

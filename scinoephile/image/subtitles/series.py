@@ -266,7 +266,6 @@ class ImageSeries(Series):
             **kwargs: additional keyword arguments
         Returns:
             loaded series
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -293,7 +292,6 @@ class ImageSeries(Series):
             events: events to include in the copied series
         Returns:
             copied image series
-
         Raises:
             TypeError: if a value has an invalid type
         """
@@ -405,7 +403,6 @@ class ImageSeries(Series):
             errors: encoding error handling
         Returns:
             loaded series
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -441,7 +438,6 @@ class ImageSeries(Series):
             file_path: path to sup file
         Returns:
             loaded series
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -475,7 +471,6 @@ class ImageSeries(Series):
             dir_path: directory containing images
         Returns:
             list of parsed event data
-
         Raises:
             ValueError: if a value is invalid
             ScinoephileError: if the operation fails
@@ -583,7 +578,6 @@ class ImageSeries(Series):
             time_str: time string
         Returns:
             time in milliseconds
-
         Raises:
             ValueError: if a value is invalid
         """

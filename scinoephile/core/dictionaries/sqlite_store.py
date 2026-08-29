@@ -546,7 +546,6 @@ class DictionarySqliteStore:
             source_id: related source identifier
         Returns:
             definition identifier
-
         Raises:
             RuntimeError: if the operation cannot be completed
         """
@@ -587,7 +586,6 @@ class DictionarySqliteStore:
             entry: dictionary entry
         Returns:
             entry identifier
-
         Raises:
             RuntimeError: if the operation cannot be completed
         """
@@ -629,7 +627,6 @@ class DictionarySqliteStore:
             source: source metadata
         Returns:
             source identifier
-
         Raises:
             RuntimeError: if the operation cannot be completed
         """

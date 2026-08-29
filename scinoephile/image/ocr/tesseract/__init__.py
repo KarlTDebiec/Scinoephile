@@ -41,7 +41,6 @@ def ocr_image_series_with_tesseract(
         **kwargs: additional keyword arguments for TesseractRecognizer
     Returns:
         text subtitle series
-
     Raises:
         ScinoephileError: if the operation fails
     """

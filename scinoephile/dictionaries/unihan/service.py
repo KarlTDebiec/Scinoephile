@@ -114,7 +114,6 @@ class UnihanDictionaryService:
             limit: max results to return
         Returns:
             dictionary entries
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -194,7 +193,6 @@ class UnihanDictionaryService:
 
         Returns:
             validated extracted file paths keyed by filename
-
         Raises:
             FileNotFoundError: if a required file is missing
         """

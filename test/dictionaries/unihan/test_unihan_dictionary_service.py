@@ -231,7 +231,6 @@ def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
                 mode: zipfile open mode
             Returns:
                 source reader
-
             Raises:
                 KeyError: if a required key is missing
             """

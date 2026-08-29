@@ -104,7 +104,6 @@ class TranscriptionAligner:
             alignment: nascent alignment
         Returns:
             whether delineation must restart after splitting a subtitle
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -150,7 +149,6 @@ class TranscriptionAligner:
             answer: LLM answer payload for the pair
         Returns:
             whether delineation requires restarting group traversal
-
         Raises:
             ScinoephileError: if the operation fails
         """

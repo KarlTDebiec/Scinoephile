@@ -39,7 +39,6 @@ class OcrFusionProcessor(Processor):
             stop_at_idx: stop processing at this index
         Returns:
             processed subtitles
-
         Raises:
             ScinoephileError: if the operation fails
             ValueError: if a value is invalid

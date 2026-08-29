@@ -32,7 +32,6 @@ def get_series_with_subs_merged(series: Series, idx: int) -> Series:
         idx: Index of subtitle to merge with its successor
     Returns:
         Modified series with merged subtitle
-
     Raises:
         ScinoephileError: if the operation fails
     """
@@ -72,7 +71,6 @@ def get_concatenated_series(blocks: list[Series]) -> Series:
         blocks: Series to concatenate
     Returns:
         Concatenated series
-
     Raises:
         ScinoephileError: if the operation fails
     """

@@ -311,7 +311,6 @@ def test_mlx_audio_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
             level: relative import level
         Returns:
             imported module
-
         Raises:
             ImportError: if the operation fails
         """

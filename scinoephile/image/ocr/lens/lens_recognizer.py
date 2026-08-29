@@ -252,7 +252,6 @@ class LensRecognizer:
 
             Returns:
                 normalized OCR lines
-
             Raises:
                 chrome_lens_py.LensAPIError: if the operation fails
                 _GoogleLensRequestError: if the operation fails

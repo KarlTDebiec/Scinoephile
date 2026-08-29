@@ -46,7 +46,6 @@ class PaddleCache(OcrCacheBase[list[PaddleOcrTextResult]]):
             payload: decoded JSON payload
         Returns:
             normalized PaddleOCR results
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -94,7 +93,6 @@ class PaddleCache(OcrCacheBase[list[PaddleOcrTextResult]]):
             payload: decoded JSON point payload
         Returns:
             normalized x and y coordinates
-
         Raises:
             ValueError: if a value is invalid
         """

@@ -436,7 +436,6 @@ class AlignmentArtifact(BaseModel):
 
         Returns:
             stable source names in row order
-
         Raises:
             ValueError: if a value is invalid
         """
@@ -463,7 +462,6 @@ class AlignmentArtifact(BaseModel):
             previous_display_end_ms: preceding SRT display end
         Returns:
             updated subtitle index, speech end, and display end
-
         Raises:
             ValueError: if a value is invalid
         """

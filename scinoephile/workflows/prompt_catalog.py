@@ -34,7 +34,6 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
 
     Returns:
         read-only prompt specifications keyed by stable alias
-
     Raises:
         ValueError: if a value is invalid
     """

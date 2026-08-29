@@ -252,7 +252,6 @@ def _aggregate_window_results(
         frame_duration: reference frame duration in seconds
     Returns:
         aggregate result
-
     Raises:
         ScinoephileError: if the operation fails
     """
@@ -405,7 +404,6 @@ def _get_video_offset_window(
         height: sampled frame height in pixels
     Returns:
         window offset result
-
     Raises:
         ScinoephileError: if the operation fails
     """

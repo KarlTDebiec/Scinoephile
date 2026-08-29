@@ -229,7 +229,6 @@ class Series(SSAFile):
             **kwargs: additional keyword arguments
         Returns:
             serialized subtitle series
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -253,7 +252,6 @@ class Series(SSAFile):
             **kwargs: additional keyword arguments
         Returns:
             parsed series
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -289,7 +287,6 @@ class Series(SSAFile):
             **kwargs: additional keyword arguments
         Returns:
             loaded series
-
         Raises:
             ScinoephileError: if the operation fails
         """
@@ -361,7 +358,6 @@ class Series(SSAFile):
             events: events to include in the copied series
         Returns:
             copied series
-
         Raises:
             NotImplementedError: if the operation is not implemented
         """

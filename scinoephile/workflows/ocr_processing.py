@@ -203,7 +203,6 @@ class OcrProcessingWorkflow:
 
         Returns:
             image subtitle series
-
         Raises:
             ScinoephileError: if the operation fails
         """

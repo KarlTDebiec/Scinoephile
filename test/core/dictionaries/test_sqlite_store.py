@@ -21,11 +21,7 @@ from scinoephile.core.dictionaries import (
 
 @fixture
 def sample_entries() -> list[DictionaryEntry]:
-    """Provide deterministic dictionary entries for SQLite tests.
-
-    Returns:
-        deterministic dictionary entries for SQLite tests
-    """
+    """Provide deterministic dictionary entries for SQLite tests."""
     return [
         DictionaryEntry(
             traditional="山坑",
@@ -51,11 +47,7 @@ def sample_entries() -> list[DictionaryEntry]:
 
 @fixture
 def sample_source() -> DictionarySource:
-    """Provide deterministic dictionary source metadata.
-
-    Returns:
-        deterministic dictionary source metadata
-    """
+    """Provide deterministic dictionary source metadata."""
     return DictionarySource(
         name="Test Dictionary",
         shortname="test",

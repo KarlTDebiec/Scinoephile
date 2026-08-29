@@ -292,7 +292,6 @@ def _session() -> OcrValidationSession:
 
     Returns:
         OCR validation session
-
     Raises:
         TypeError: if a value has an invalid type
     """

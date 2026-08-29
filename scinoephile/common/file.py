@@ -81,7 +81,6 @@ def open_atomic_text_file(
         encoding: text encoding
     Yields:
         writable temporary text file
-
     Raises:
         BaseException: if the operation fails
     """

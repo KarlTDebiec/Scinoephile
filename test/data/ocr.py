@@ -144,7 +144,6 @@ def _ocr(
         overwrite: whether to overwrite existing outputs
     Returns:
         validated series
-
     Raises:
         ScinoephileError: if the operation fails
     """
