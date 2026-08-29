@@ -16,9 +16,7 @@ from scinoephile.audio.transcription import (
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
 )
-from scinoephile.audio.transcription.ctc import CtcAligner
-from scinoephile.audio.transcription.ctc.model import CtcModel
-from scinoephile.audio.transcription.ctc.model_spec import CtcModelSpec
+from scinoephile.audio.transcription.ctc import CtcAligner, CtcModel, CtcModelSpec
 from scinoephile.audio.transcription.ctc.path import get_best_path
 from scinoephile.audio.transcription.ctc.text import get_transcribed_words
 from scinoephile.audio.transcription.ctc.tokenization import get_token_ids
