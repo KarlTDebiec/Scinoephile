@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Annotated, Literal
 
@@ -18,12 +19,47 @@ from pydantic import (
 
 from scinoephile.core.language import Language
 
-__all__ = ["ProcessorIdentity", "RunBlock", "RunManifest"]
+__all__ = ["ProcessorIdentity", "RunBlock", "RunManifest", "normalize_excluded_blocks"]
 
 _NonBlankString = Annotated[str, StringConstraints(min_length=1, strip_whitespace=True)]
 """String normalized by trimming whitespace and rejecting blank values."""
 _Sha256 = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
 """Lowercase hexadecimal SHA-256 digest."""
+_StrictPositiveInt = Annotated[int, Field(strict=True, ge=1)]
+"""Positive integer that rejects coercion from booleans and other types."""
+
+
+def normalize_excluded_blocks(
+    exclude_blocks: Sequence[object], planned_block_count: int | None = None
+) -> tuple[int, ...]:
+    """Validate and normalize configured block exclusions.
+
+    Arguments:
+        exclude_blocks: one-based block numbers to skip
+        planned_block_count: optional number of blocks in the complete plan
+    Returns:
+        unique excluded block numbers in ascending order
+    Raises:
+        ValueError: if a block number is not an integer or lies outside the plan
+    """
+    validated_blocks = []
+    for block_number in exclude_blocks:
+        if isinstance(block_number, bool) or not isinstance(block_number, int):
+            raise ValueError("Excluded transcription blocks must be integers.")
+        validated_blocks.append(block_number)
+    excluded_blocks = tuple(sorted(set(validated_blocks)))
+    if excluded_blocks and excluded_blocks[0] < 1:
+        raise ValueError("Excluded transcription blocks must be positive.")
+    if (
+        planned_block_count is not None
+        and excluded_blocks
+        and excluded_blocks[-1] > planned_block_count
+    ):
+        raise ValueError(
+            f"Excluded transcription blocks must lie between 1 and "
+            f"{planned_block_count}."
+        )
+    return excluded_blocks
 
 
 class ProcessorIdentity(BaseModel):
@@ -44,13 +80,13 @@ class ProcessorIdentity(BaseModel):
 
 
 class RunBlock(BaseModel):
-    """Cache references and outcome for one selected VAD block."""
+    """Cache references and outcome for one selected transcription block."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     index: int = Field(ge=1)
-    """One-based VAD block index."""
-    status: Literal["transcribed", "empty", "no-core-text"]
+    """One-based block index."""
+    status: Literal["transcribed", "empty", "excluded"]
     """Outcome of processing this selected block."""
     reason: _NonBlankString | None = None
     """Human-readable omission reason, when applicable."""
@@ -69,7 +105,7 @@ class RunManifest(BaseModel):
 
     format: Literal["scinoephile-transcription-run"] = "scinoephile-transcription-run"
     """Stable manifest format identifier."""
-    version: Literal[1] = 1
+    version: Literal[3] = 3
     """Manifest schema version."""
     language: Language
     """Transcription output language."""
@@ -86,7 +122,9 @@ class RunManifest(BaseModel):
     block_vad_identity: dict[str, JsonValue] = Field(min_length=1)
     """Block-planning VAD model and postprocessing identity."""
     planned_block_count: int = Field(ge=0)
-    """Number of blocks in the complete VAD plan."""
+    """Number of blocks in the complete hard-cut plan."""
+    excluded_blocks: tuple[_StrictPositiveInt, ...] = ()
+    """One-based block numbers excluded by configuration."""
     blocks: tuple[RunBlock, ...]
     """Selected blocks and their run outcomes."""
     processor: ProcessorIdentity
@@ -121,11 +159,28 @@ class RunManifest(BaseModel):
         Raises:
             ValueError: if a value is invalid
         """
+        if self.excluded_blocks != tuple(sorted(set(self.excluded_blocks))):
+            raise ValueError(
+                "Excluded transcription block numbers must be unique and ordered."
+            )
+        if self.excluded_blocks and (
+            self.excluded_blocks[0] < 1
+            or self.excluded_blocks[-1] > self.planned_block_count
+        ):
+            raise ValueError("Excluded transcription block exceeds the block plan.")
         indexes = tuple(block.index for block in self.blocks)
         if indexes != tuple(sorted(set(indexes))):
             raise ValueError(
                 "Transcription run block indexes must be unique and ordered."
             )
         if indexes and indexes[-1] > self.planned_block_count:
-            raise ValueError("Transcription run block index exceeds the VAD plan.")
+            raise ValueError("Transcription run block index exceeds the block plan.")
+        excluded_blocks = set(self.excluded_blocks)
+        if any(
+            (block.status == "excluded") != (block.index in excluded_blocks)
+            for block in self.blocks
+        ):
+            raise ValueError(
+                "Transcription run block statuses must match configured exclusions."
+            )
         return self

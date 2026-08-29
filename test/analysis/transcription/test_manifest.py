@@ -169,3 +169,61 @@ def test_run_manifest_round_trip(tmp_path: Path):
     manifest.save(manifest_path)
 
     assert RunManifest.load(manifest_path) == manifest
+
+
+def test_run_manifest_validates_excluded_block_statuses():
+    """Configured exclusions and selected block statuses should agree."""
+    digest = "a" * 64
+
+    with pytest.raises(ValidationError, match="statuses must match"):
+        RunManifest(
+            language=Language.yue_hant,
+            audio_sha256=digest,
+            audio_duration_ms=1_000,
+            audio_channels=1,
+            audio_frame_rate=16_000,
+            audio_sample_width=2,
+            block_vad_identity={"implementation": "pyannote"},
+            planned_block_count=1,
+            excluded_blocks=(1,),
+            blocks=(RunBlock(index=1, status="transcribed"),),
+            processor=ProcessorIdentity(
+                operation="transcription",
+                prompt_name="test",
+                system_prompt_sha256=digest,
+                provider_identity={"implementation": "test"},
+                no_op=False,
+            ),
+            alignment_sha256=digest,
+        )
+
+
+def test_run_manifest_rejects_boolean_block_exclusions():
+    """Persisted block exclusions should use strict integer values."""
+    digest = "a" * 64
+
+    with pytest.raises(ValidationError, match="valid integer"):
+        RunManifest(
+            language=Language.yue_hant,
+            audio_sha256=digest,
+            audio_duration_ms=1_000,
+            audio_channels=1,
+            audio_frame_rate=16_000,
+            audio_sample_width=2,
+            block_vad_identity={"implementation": "pyannote"},
+            planned_block_count=1,
+            excluded_blocks=(True,),
+            blocks=(
+                RunBlock(
+                    index=1, status="excluded", reason="Excluded by configuration."
+                ),
+            ),
+            processor=ProcessorIdentity(
+                operation="transcription",
+                prompt_name="test",
+                system_prompt_sha256=digest,
+                provider_identity={"implementation": "test"},
+                no_op=False,
+            ),
+            alignment_sha256=digest,
+        )

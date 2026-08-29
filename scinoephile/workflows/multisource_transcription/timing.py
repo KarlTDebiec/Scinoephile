@@ -17,6 +17,7 @@ from scinoephile.audio.transcription import (
     TranscriptionEmptyError,
     get_segment_merged,
     get_segment_split_at_idx,
+    get_segment_with_offset,
 )
 from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.llms.transcription import (
@@ -169,7 +170,8 @@ def get_timed_request_segments(  # noqa: PLR0912, PLR0915
         aligned_segment = get_segment_merged(aligned)
         request_segments = _split_aligned_segment(aligned_segment, answer)
         offset_segments = [
-            _get_offset_segment(segment, start_seconds) for segment in request_segments
+            get_segment_with_offset(segment, start_seconds)
+            for segment in request_segments
         ]
         output_segments.extend(offset_segments)
         output_timing_sources.extend([timing_source] * len(offset_segments))
@@ -189,37 +191,6 @@ def get_timed_request_segments(  # noqa: PLR0912, PLR0915
         )
     }
     return numbered_segments, timing_sources
-
-
-def _get_offset_segment(
-    segment: TranscribedSegment, offset_seconds: float
-) -> TranscribedSegment:
-    """Add an audio-slice offset to one CTC-aligned segment.
-
-    Arguments:
-        segment: segment timed against an audio slice
-        offset_seconds: slice start on the complete block timeline
-    Returns:
-        segment timed against the complete block
-    """
-    words = None
-    if segment.words is not None:
-        words = [
-            word.model_copy(
-                update={
-                    "start": word.start + offset_seconds,
-                    "end": word.end + offset_seconds,
-                }
-            )
-            for word in segment.words
-        ]
-    return segment.model_copy(
-        update={
-            "start": segment.start + offset_seconds,
-            "end": segment.end + offset_seconds,
-            "words": words,
-        }
-    )
 
 
 def _split_aligned_segment(

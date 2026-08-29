@@ -221,7 +221,9 @@ def test_language_identifier_reuses_cached_result(tmp_path: Path):
     second_identifier._model.process.assert_not_called()  # noqa: SLF001
 
 
-def test_language_identifier_windows_vad_and_applies_source_offset(tmp_path: Path):
+def test_language_identifier_windows_intervals_and_applies_source_offset(
+    tmp_path: Path,
+):
     """FireRedLID results should retain their selected source-timeline position.
 
     Arguments:
