@@ -17,7 +17,11 @@ from test.helpers import parametrize
 
 @fixture
 def source_json_path() -> Generator[Path]:
-    """Provide a minimal temporary GZZJ source JSON file."""
+    """Provide a minimal temporary GZZJ source JSON file.
+
+    Yields:
+        temporary GZZJ source JSON path
+    """
     with get_temp_file_path(".json") as temp_path:
         temp_path.write_text(
             (

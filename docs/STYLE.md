@@ -203,9 +203,14 @@
     methods in the summary; a `Returns:` section is not required.
   * In argument descriptions, the first word after the colon should be
     lowercase unless it is a type name.
-  * Do not include a blank line between the `Arguments:` and `Returns:`
-    sections.
+  * Do not include a blank line between `Arguments:` and an immediately following
+    `Returns:` or `Yields:` section.
   * Do not include a `Returns:` section for functions or methods that return
     None.
+  * Include a `Yields:` section for generator functions and methods, including
+    context managers, that contain `yield` or `yield from`. Do not include one
+    for callables that do not yield.
   * In the `Returns:` section, the first word should be lowercase unless it is a
+    type name.
+  * In the `Yields:` section, the first word should be lowercase unless it is a
     type name.

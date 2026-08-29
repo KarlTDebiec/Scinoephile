@@ -217,10 +217,11 @@ class _DocstringVisitor(ast.NodeVisitor):
                     rule_id="arguments-mismatch",
                 )
 
-        has_value_return = _has_value_return(
+        has_value_return, has_yield = _get_callable_flow(
             node, is_abstract_method="abstractmethod" in decorator_names
         )
         has_returns_section = any(section.name == "Returns" for section in sections)
+        has_yields_section = any(section.name == "Yields" for section in sections)
         is_property_getter = bool(
             {"cached_property", "getter", "property"} & decorator_names
         )
@@ -239,11 +240,25 @@ class _DocstringVisitor(ast.NodeVisitor):
                     qualified_name=qualified_name,
                     rule_id="unexpected-returns",
                 )
+        if has_yield and not has_yields_section:
+            self._add_violation(
+                line_number=node.lineno,
+                message="contains a yield but lacks a `Yields:` section",
+                qualified_name=qualified_name,
+                rule_id="missing-yields",
+            )
+        if not has_yield and has_yields_section:
+            self._add_violation(
+                line_number=node.lineno,
+                message="has a `Yields:` section but contains no yield",
+                qualified_name=qualified_name,
+                rule_id="unexpected-yields",
+            )
 
         for section, next_section in zip(sections, sections[1:], strict=False):
             if (
                 section.name == "Arguments"
-                and next_section.name == "Returns"
+                and next_section.name in {"Returns", "Yields"}
                 and section.content_lines
                 and not section.content_lines[-1].strip()
             ):
@@ -251,7 +266,7 @@ class _DocstringVisitor(ast.NodeVisitor):
                     line_number=node.lineno,
                     message=(
                         "has a blank line between adjacent `Arguments:` and "
-                        "`Returns:` sections"
+                        f"`{next_section.name}:` sections"
                     ),
                     qualified_name=qualified_name,
                     rule_id="section-spacing",
@@ -301,12 +316,13 @@ class _DocstringVisitor(ast.NodeVisitor):
         self.qualified_names.pop()
 
 
-class _ValueReturnVisitor(ast.NodeVisitor):
-    """Detect value returns without entering nested lexical scopes."""
+class _CallableFlowVisitor(ast.NodeVisitor):
+    """Detect returns and yields without entering nested lexical scopes."""
 
     def __init__(self):
         """Initialize the visitor."""
         self.has_value_return = False
+        self.has_yield = False
 
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef):
         """Skip a nested async function.
@@ -347,6 +363,22 @@ class _ValueReturnVisitor(ast.NodeVisitor):
         if isinstance(node.value, ast.Constant) and node.value.value is None:
             return
         self.has_value_return = True
+
+    def visit_Yield(self, node: ast.Yield):
+        """Record a yield expression.
+
+        Arguments:
+            node: yield expression
+        """
+        self.has_yield = True
+
+    def visit_YieldFrom(self, node: ast.YieldFrom):
+        """Record a delegated yield expression.
+
+        Arguments:
+            node: delegated yield expression
+        """
+        self.has_yield = True
 
 
 @dataclass(frozen=True)
@@ -754,8 +786,8 @@ class Example:
     assert not violations
 
 
-def test_docstring_return_detection_stops_at_nested_scopes():
-    """Test nested function and class returns do not affect their parent."""
+def test_docstring_flow_detection_stops_at_nested_scopes():
+    """Test nested function and class flow does not affect their parent."""
     violations = _get_sample_docstring_violations(
         '''
 def outer():
@@ -779,6 +811,14 @@ def outer():
                 method value
             """
             return 2
+
+    def generator():
+        """Yield values.
+
+        Yields:
+            generated value
+        """
+        yield 3
 '''
     )
 
@@ -811,24 +851,75 @@ def sample():
     assert [violation.rule_id for violation in violations] == ["missing-returns"]
 
 
-def test_docstring_section_spacing_is_enforced():
-    """Test adjacent `Arguments:` and `Returns:` reject a blank line."""
+@pytest.mark.parametrize(
+    ("section_name", "body"), [("Returns", "return value"), ("Yields", "yield value")]
+)
+def test_docstring_section_spacing_is_enforced(section_name: str, body: str):
+    """Test adjacent output sections reject a preceding blank line.
+
+    Arguments:
+        section_name: output section name
+        body: callable body source
+    """
     violations = _get_sample_docstring_violations(
-        '''
+        f'''
 def sample(value):
     """Sample function.
 
     Arguments:
         value: sample value
 
-    Returns:
+    {section_name}:
         sample value
     """
-    return value
+    {body}
 '''
     )
 
     assert [violation.rule_id for violation in violations] == ["section-spacing"]
+
+
+def test_docstring_yields_sections_match_generator_bodies():
+    """Test sync, delegated, and async yields require matching documentation."""
+    violations = _get_sample_docstring_violations(
+        '''
+def missing():
+    """Yield a value."""
+    yield 1
+
+def delegated():
+    """Delegate generated values."""
+    yield from ()
+
+async def asynchronous():
+    """Yield a value asynchronously."""
+    yield 1
+
+def unexpected():
+    """Do nothing.
+
+    Yields:
+        nonexistent value
+    """
+
+def documented():
+    """Yield a documented value.
+
+    Yields:
+        generated value
+    """
+    yield 1
+'''
+    )
+
+    assert [
+        (violation.qualified_name, violation.rule_id) for violation in violations
+    ] == [
+        ("missing", "missing-yields"),
+        ("delegated", "missing-yields"),
+        ("asynchronous", "missing-yields"),
+        ("unexpected", "unexpected-yields"),
+    ]
 
 
 def test_docstring_violation_format():
@@ -1223,16 +1314,16 @@ def _get_sample_docstring_violations(
     return get_docstring_violations(file_path=Path("sample.py"), tree=ast.parse(source))
 
 
-def _has_value_return(
+def _get_callable_flow(
     node: ast.FunctionDef | ast.AsyncFunctionDef, *, is_abstract_method: bool
-) -> bool:
-    """Check whether a callable's body or typed stub contract returns a value.
+) -> tuple[bool, bool]:
+    """Check whether a callable returns a value or contains a lexical yield.
 
     Arguments:
         node: callable definition
         is_abstract_method: whether the callable is an abstract method contract
     Returns:
-        whether the callable contains an own-body value return or typed value stub
+        whether the callable returns a value and whether it contains a yield
     """
     statements = node.body
     if ast.get_docstring(node, clean=False) is not None:
@@ -1258,12 +1349,12 @@ def _has_value_return(
     has_value_return_annotation = (
         node.returns is not None and not return_annotation_is_none
     )
-    if has_value_return_annotation and (
+    has_value_return = has_value_return_annotation and (
         is_abstract_method or is_ellipsis_stub or is_not_implemented_stub
-    ):
-        return True
+    )
 
-    visitor = _ValueReturnVisitor()
+    visitor = _CallableFlowVisitor()
     for statement in node.body:
         visitor.visit(statement)
-    return visitor.has_value_return
+    has_value_return = has_value_return or visitor.has_value_return
+    return has_value_return, visitor.has_yield

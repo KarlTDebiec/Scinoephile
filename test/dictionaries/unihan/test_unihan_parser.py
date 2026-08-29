@@ -15,7 +15,11 @@ from scinoephile.dictionaries.unihan.parser import UnihanDictionaryParser
 
 @fixture
 def source_dir_path() -> Generator[Path]:
-    """Provide a temporary directory for Unihan source fixtures."""
+    """Provide a temporary directory for Unihan source fixtures.
+
+    Yields:
+        temporary Unihan source directory
+    """
     with get_temp_directory_path() as dir_path:
         yield dir_path
 

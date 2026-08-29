@@ -30,6 +30,8 @@ def use_local_tokenizer(
     Arguments:
         tokenizer: auxiliary tokenizer specification
         tokenizer_dir_path: pinned local tokenizer directory
+    Yields:
+        control while local tokenizer resolution is installed
     """
     # Keep MLX-Audio from resolving the manifest's mutable tokenizer remotely
     mimo_asr = import_mlx_audio_mimo_asr()

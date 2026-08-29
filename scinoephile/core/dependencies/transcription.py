@@ -292,7 +292,11 @@ def import_whisper_timestamped() -> ModuleType:
 
 @contextmanager
 def _ignore_pyannote_torchcodec_warning() -> Iterator[None]:
-    """Ignore pyannote's irrelevant optional audio-decoder warning."""
+    """Ignore pyannote's irrelevant optional audio-decoder warning.
+
+    Yields:
+        control while the warning filter is active
+    """
     with catch_warnings():
         filterwarnings(
             "ignore",

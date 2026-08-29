@@ -534,7 +534,6 @@ test/data/tmm/__init__.py|tmm_zho_hant_ocr_lens|missing-returns
 test/data/tmm/__init__.py|tmm_zho_hant_ocr_paddle_clean|missing-returns
 test/data/tmm/__init__.py|tmm_zho_hant_ocr_paddle|missing-returns
 test/data/tmm/__init__.py|tmm_zho_simplify_expected_series_diff|missing-returns
-test/data/transcription.py|_relog_cantonese_transcription_mismatch|unexpected-returns
 test/dictionaries/cuhk/test_cuhk_dictionary_service.py|sample_entries|missing-returns
 test/dictionaries/cuhk/test_cuhk_dictionary_service.py|sample_source|missing-returns
 test/dictionaries/cuhk/test_cuhk_dictionary_service.py|service|missing-arguments

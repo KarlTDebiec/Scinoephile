@@ -32,7 +32,11 @@ from scinoephile.llms.providers.registry import (
 
 @fixture(autouse=True)
 def restore_provider_registry():
-    """Restore registered LLM providers after each test."""
+    """Restore registered LLM providers after each test.
+
+    Yields:
+        control before restoring the provider registry
+    """
     provider_factories = provider_registry._PROVIDER_FACTORIES.copy()
     yield
     provider_registry._PROVIDER_FACTORIES.clear()

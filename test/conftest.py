@@ -40,21 +40,33 @@ def runtime_cache_root_path(tmp_path: Path, monkeypatch: MonkeyPatch) -> Path:
 
 @fixture
 def database_path() -> Generator[Path]:
-    """Provide a temporary SQLite database path."""
+    """Provide a temporary SQLite database path.
+
+    Yields:
+        temporary database path
+    """
     with get_temp_file_path(".db") as temp_path:
         yield temp_path
 
 
 @fixture
 def local_data_dir_path() -> Generator[Path]:
-    """Provide a temporary canonical local data directory."""
+    """Provide a temporary canonical local data directory.
+
+    Yields:
+        temporary local data directory
+    """
     with get_temp_directory_path() as dir_path:
         yield dir_path
 
 
 @fixture
 def runtime_data_dir_path() -> Generator[Path]:
-    """Provide a temporary runtime canonical data directory."""
+    """Provide a temporary runtime canonical data directory.
+
+    Yields:
+        temporary runtime data directory
+    """
     with get_temp_directory_path() as dir_path:
         yield dir_path
 
