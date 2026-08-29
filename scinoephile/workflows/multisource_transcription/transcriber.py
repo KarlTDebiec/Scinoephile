@@ -19,7 +19,6 @@ from scinoephile.audio.classification import (
 )
 from scinoephile.audio.diarization.models import SpeakerDiarizationResult
 from scinoephile.audio.transcription import (
-    CtcAligner,
     TranscribedSegment,
     Transcriber,
     TranscriptionEmptyError,
@@ -28,6 +27,7 @@ from scinoephile.audio.transcription import (
 from scinoephile.audio.transcription.alignment_sequence import (
     get_transcription_sequence,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.quality import (
     get_transcription_quality_issue,
     is_low_information_text,

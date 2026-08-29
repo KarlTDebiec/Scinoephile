@@ -14,7 +14,6 @@ from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
 from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
 from scinoephile.analysis.alignment.timed_msa.models import Column, Token
 from scinoephile.audio.transcription import (
-    CtcAligner,
     TranscribedSegment,
     TranscribedWord,
     Transcriber,
@@ -22,6 +21,7 @@ from scinoephile.audio.transcription import (
     TranscriptionEmptyError,
     TranscriptionRecognitionError,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.lang.yue.transcription.token_similarity import YueTokenSimilarity
 from scinoephile.llms.transcription import (

@@ -10,13 +10,13 @@ from pathlib import Path
 from types import MappingProxyType
 
 from scinoephile.audio.transcription import (
-    CtcAligner,
     DemucsMode,
     MlxAudioModel,
     MlxAudioTranscriber,
     VadMode,
     get_segment_split_on_whitespace,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,

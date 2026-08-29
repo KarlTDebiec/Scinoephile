@@ -16,7 +16,7 @@ from __future__ import annotations
 from logging import getLogger
 
 from .cache import TranscriptionCache
-from .ctc import CtcAligner, CtcModelSpec
+from .ctc import CtcModelSpec
 from .exceptions import (
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
@@ -36,7 +36,6 @@ from .transcriber import Transcriber
 from .whisper import WhisperModel, WhisperModelSpec, WhisperTranscriber
 
 __all__ = [
-    "CtcAligner",
     "CtcModelSpec",
     "DemucsMode",
     "MlxAudioModel",

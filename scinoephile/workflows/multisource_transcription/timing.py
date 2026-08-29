@@ -12,13 +12,13 @@ from pydub import AudioSegment
 from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
 from scinoephile.analysis.transcription.artifact import TimingSource
 from scinoephile.audio.transcription import (
-    CtcAligner,
     TranscribedSegment,
     TranscriptionAlignmentError,
     TranscriptionEmptyError,
     get_segment_merged,
     get_segment_split_at_idx,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.llms.transcription import (
     TranscriptionAnswer,
     TranscriptionRequestResult,

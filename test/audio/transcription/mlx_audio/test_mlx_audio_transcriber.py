@@ -15,7 +15,6 @@ import pytest
 from pydub import AudioSegment
 
 from scinoephile.audio.transcription import (
-    CtcAligner,
     DemucsMode,
     TranscribedSegment,
     TranscribedWord,
@@ -26,6 +25,7 @@ from scinoephile.audio.transcription import (
     TranscriptionRecognitionError,
     VadMode,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.mlx_audio.model import (
     MlxAudioModel,
     MlxAudioResult,

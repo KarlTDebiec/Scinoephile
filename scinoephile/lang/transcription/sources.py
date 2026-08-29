@@ -11,7 +11,6 @@ from types import MappingProxyType
 
 from scinoephile.analysis.transcription.artifact import AlignmentSource
 from scinoephile.audio.transcription import (
-    CtcAligner,
     DemucsMode,
     MlxAudioModel,
     MlxAudioTranscriber,
@@ -20,6 +19,7 @@ from scinoephile.audio.transcription import (
     WhisperModel,
     WhisperTranscriber,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,

@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.separation import DemucsSeparator
-from scinoephile.audio.transcription.ctc.aligner import CtcAligner
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,

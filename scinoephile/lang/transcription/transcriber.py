@@ -15,7 +15,6 @@ from pydub.effects import normalize
 
 from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
-    CtcAligner,
     DemucsMode,
     MlxAudioTranscriber,
     TranscribedSegment,
@@ -27,6 +26,7 @@ from scinoephile.audio.transcription import (
     get_segment_split_at_idx,
     get_segment_split_on_word_timings,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.mlx_audio.model_spec import MlxAudioModelSpec
 from scinoephile.audio.transcription.quality import get_transcription_quality_issue
 from scinoephile.audio.transcription.whisper.model_spec import WhisperModelSpec
