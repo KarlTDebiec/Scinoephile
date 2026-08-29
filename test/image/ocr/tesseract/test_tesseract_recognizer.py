@@ -430,7 +430,7 @@ def test_tesseract_detect_italics_reuses_existing_legacy_tessdata(
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(traineddata_path, old_timestamp)
 
-    def fail_get(*args: object, **kwargs: Any) -> object:
+    def fail_get(*args: Any, **kwargs: Any) -> object:
         """Fail if a download is attempted.
 
         Arguments:

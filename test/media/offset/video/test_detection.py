@@ -490,7 +490,7 @@ class _FakeFfmpegInput:
         """
         self.output_bytes = output
 
-    def filter(self, *args: object, **kwargs: Any) -> _FakeFfmpegInput:
+    def filter(self, *args: Any, **kwargs: Any) -> _FakeFfmpegInput:
         """Return self for chained ffmpeg filters.
 
         Arguments:
@@ -501,7 +501,7 @@ class _FakeFfmpegInput:
         """
         return self
 
-    def output(self, *args: object, **kwargs: Any) -> _FakeFfmpegInput:
+    def output(self, *args: Any, **kwargs: Any) -> _FakeFfmpegInput:
         """Return self for chained ffmpeg output configuration.
 
         Arguments:

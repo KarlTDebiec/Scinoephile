@@ -27,7 +27,7 @@ class FakeFfmpegInput:
         self.run_exception = run_exception
         """Exception to raise when run."""
 
-    def output(self, *args: object, **kwargs: Any) -> FakeFfmpegInput:
+    def output(self, *args: Any, **kwargs: Any) -> FakeFfmpegInput:
         """Record ffmpeg output arguments.
 
         Arguments:

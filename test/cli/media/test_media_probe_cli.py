@@ -227,7 +227,7 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
     infile_path.touch()
     cache_root_path = tmp_path / "cache"
 
-    def analyze_script(*args: object, **kwargs: Any) -> ZhoScriptAnalysisResult:
+    def analyze_script(*args: Any, **kwargs: Any) -> ZhoScriptAnalysisResult:
         """Return script analysis after checking analyzer inputs."""
         assert args[0] == infile_path
         stream = args[1]

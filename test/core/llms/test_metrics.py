@@ -32,7 +32,7 @@ def test_completion_metrics_persistence_is_atomic(
     output_path = tmp_path / "llm_usage.json"
     output_path.write_text("original", encoding="utf-8")
 
-    def fail_dump(*args: object, **kwargs: Any):
+    def fail_dump(*args: Any, **kwargs: Any):
         """Fail while serializing the replacement JSON.
 
         Arguments:

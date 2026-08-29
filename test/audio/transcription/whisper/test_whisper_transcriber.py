@@ -440,7 +440,7 @@ def test_transcribe_overwrites_matching_cache(monkeypatch: MonkeyPatch, tmp_path
     cache_path = _get_cache_path(transcriber, audio)
     cache_path.write_text("cached", encoding="utf-8")
 
-    def transcribe(*_args: object, **_kwargs: Any) -> dict[str, list[object]]:
+    def transcribe(*_args: Any, **_kwargs: Any) -> dict[str, list[object]]:
         """Return empty output after confirming the old cache was removed.
 
         Arguments:

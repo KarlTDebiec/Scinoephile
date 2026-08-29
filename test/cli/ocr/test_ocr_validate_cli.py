@@ -190,7 +190,7 @@ def test_ocr_validate_cli_web_delegates_image_dir_validation(
     infile_path = tmp_path / "image"
     infile_path.mkdir()
 
-    def fake_validate_ocr(*args: object, **kwargs: Any):
+    def fake_validate_ocr(*args: Any, **kwargs: Any):
         """Raise the workflow-level validation error."""
         raise ScinoephileError("session checked OCR image directory")
 
