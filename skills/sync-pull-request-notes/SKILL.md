@@ -1,12 +1,18 @@
 ---
 name: sync-pull-request-notes
-description: Sync Scinoephile's local/_pull_requests.md map with the repository's currently open GitHub pull requests while preserving manually curated stack relationships and role notes. Use when asked to refresh, reconcile, or update the local pull-request map.
+description: Sync Scinoephile's local/_pull_requests.md map with the repository's open and draft GitHub pull requests while removing merged and closed PRs from both the Mermaid graph and table. Use when asked to refresh, reconcile, or update the local pull-request map.
 ---
 
 # Sync Pull Request Notes
 
 Update `local/_pull_requests.md` from live GitHub data without discarding the
 user's hand-maintained view of how the work was split.
+
+## Active PR scope
+
+The Mermaid graph and table are both views of active work. Include a PR only
+when GitHub reports it as open, whether ready for review or draft. Remove merged
+and closed PRs from both views; do not retain them as history.
 
 ## Sources of truth
 
