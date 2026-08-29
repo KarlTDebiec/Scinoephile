@@ -182,45 +182,5 @@
   without them.
 
 ## Documentation
-* Include a module docstring at the top of each file.
-* Use Markdown for formatting.
-* Do **not** include any reStructuredText markup such as double backticks.
-* Provide docstrings for all modules, classes, properties, and functions,
-  including internal helpers prefixed with an underscore.
-* Provide docstrings for all modules, classes, properties, and functions,
-  including internal helpers prefixed with an underscore.
-  * Provide docstrings for property setters as well as getters when they are
-    defined.
-  * Provide docstrings for `TypedDict` classes, enums, and other public type
-    definitions.
-  * `@overload` stubs do not need docstrings when the concrete implementation
-    is documented.
-* Document class attributes using triple-quoted strings immediately below each
-  instead of relying only on an `Attributes` section in the class docstring.
-* Format docstrings using Google style, with the following tweaks:
-  * Use `Arguments:` instead of `Args:`.
-  * Do not include an `Arguments:` section for functions or methods that take no
-    arguments.
-  * Describe the value exposed by property and cached-property getters in the
-    summary; a `Returns:` section is not required.
-  * Describe the value provided by pytest fixtures in the summary; a `Returns:`
-    section is not required.
-  * Describe the validation performed by `@model_validator(mode="after")`
-    methods in the summary; a `Returns:` section is not required.
-  * In argument descriptions, the first word after the colon should be
-    lowercase unless it is a type name.
-  * Do not include a blank line between adjacent `Arguments:`, `Raises:`,
-    `Returns:`, or `Yields:` sections.
-  * Do not include a `Returns:` section for functions or methods that return
-    None.
-  * Include a `Yields:` section for generator functions and methods, including
-    context managers, that contain `yield` or `yield from`. Do not include one
-    for callables that do not yield.
-  * Include a `Raises:` section for functions and methods that contain an
-    explicit `raise` statement. A `Raises:` section may also document exceptions
-    propagated from callees. A sole `raise NotImplementedError` in an abstract
-    method is a contract placeholder and does not require a `Raises:` section.
-  * In the `Returns:` section, the first word should be lowercase unless it is a
-    type name.
-  * In the `Yields:` section, the first word should be lowercase unless it is a
-    type name.
+* Follow [`DOCSTRINGS.md`](DOCSTRINGS.md) for documentation coverage, formatting,
+  sections, and decorator-specific exemptions.
