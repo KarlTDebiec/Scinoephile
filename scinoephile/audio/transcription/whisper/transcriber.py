@@ -598,16 +598,13 @@ class WhisperTranscriber(Transcriber):
             prefix.end = prefix_words[-1].end
         return prefix
 
-    def _get_backend_cache_identity(
-        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> CacheIdentity:
+    def _get_transcriber_cache_identity(self, audio: AudioSegment) -> CacheIdentity:
         """Get the cache identity for configured Whisper output.
 
         Arguments:
-            audio: audio whose properties may affect backend behavior
-            settings: preprocessing settings
+            audio: audio whose properties may affect transcriber behavior
         Returns:
-            backend configuration identifying the output
+            transcriber configuration identifying the output
         """
         temperature: int | float | list[float]
         if isinstance(self.temperature, int | float):

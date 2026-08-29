@@ -11,19 +11,21 @@ from types import MappingProxyType
 
 from scinoephile.analysis.transcription.artifact import AlignmentSource
 from scinoephile.audio.transcription import (
+    CtcAligner,
     DemucsMode,
+    MlxAudioModel,
     MlxAudioTranscriber,
     Transcriber,
     VadMode,
     WhisperTranscriber,
 )
-from scinoephile.audio.transcription.mlx_audio.model import (
+from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioModel,
+    MlxAudioModelSpec,
 )
 from scinoephile.audio.transcription.whisper.model import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
@@ -43,7 +45,7 @@ class TranscriptionSourceSpec:
 
     name: str
     """Stable source name used in alignment rows and artifacts."""
-    model: WhisperModel | MlxAudioModel
+    model: WhisperModel | MlxAudioModelSpec
     """Configured speech-to-text model."""
 
     def __post_init__(self):
@@ -112,10 +114,14 @@ def get_transcription_sources(
     transcribers: dict[str, Transcriber] = {}
     descriptors = []
     for source in source_specs:
+        if isinstance(source.model, MlxAudioModelSpec):
+            model_name = source.model.name
+        else:
+            model_name = source.model.model_name
         if language not in source.model.languages:
             raise ScinoephileError(
                 f"Transcription source {source.name!r} model "
-                f"{source.model.model_name!r} does not support {language.code}."
+                f"{model_name!r} does not support {language.code}."
             )
         if isinstance(source.model, WhisperModel):
             transcriber = WhisperTranscriber(
@@ -128,14 +134,16 @@ def get_transcription_sources(
                 recover_decoding=True,
             )
             backend_name = WhisperTranscriber.backend_name
-        elif isinstance(source.model, MlxAudioModel):
+        elif isinstance(source.model, MlxAudioModelSpec):
             transcriber = MlxAudioTranscriber(
-                model=source.model,
+                model=MlxAudioModel(source.model, language),
+                ctc_aligner=CtcAligner(
+                    language,
+                    cache_root_path=cache_root_path,
+                    overwrite_cache=overwrite_cache,
+                ),
                 language=language,
                 chunk_duration_seconds=_MLX_AUDIO_CHUNK_DURATION_SECONDS,
-                token_limit_guard=(
-                    source.model.max_safe_audio_duration_seconds is not None
-                ),
                 demucs_mode=demucs_mode,
                 vad_mode=VadMode.OFF,
                 cache_root_path=cache_root_path,
@@ -148,8 +156,6 @@ def get_transcription_sources(
             )
         transcribers[source.name] = transcriber
         descriptors.append(
-            AlignmentSource(
-                name=source.name, backend=backend_name, model=source.model.model_name
-            )
+            AlignmentSource(name=source.name, backend=backend_name, model=model_name)
         )
     return transcribers, tuple(descriptors)

@@ -10,18 +10,20 @@ from pathlib import Path
 from types import MappingProxyType
 
 from scinoephile.audio.transcription import (
+    CtcAligner,
     DemucsMode,
+    MlxAudioModel,
     MlxAudioTranscriber,
     VadMode,
     get_segment_split_on_whitespace,
 )
-from scinoephile.audio.transcription.mlx_audio.model import (
+from scinoephile.audio.transcription.mlx_audio.model_spec import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioModel,
+    MlxAudioModelSpec,
 )
 from scinoephile.audio.transcription.whisper.model import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
@@ -101,12 +103,12 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 class TranscriptionLanguageSpec:
     """Configuration for one transcription language."""
 
-    models: Mapping[TranscriptionModel, WhisperModel | MlxAudioModel]
+    models: Mapping[TranscriptionModel, WhisperModel | MlxAudioModelSpec]
     """Configured audio models keyed by supported transcription model."""
     segment_splitter: TranscribedSegmentSplitter | None = None
     """Strategy for splitting raw transcribed segments."""
 
-    def get_model(self, model: TranscriptionModel) -> WhisperModel | MlxAudioModel:
+    def get_model(self, model: TranscriptionModel) -> WhisperModel | MlxAudioModelSpec:
         """Get the configured audio model for a supported transcription model.
 
         Arguments:
@@ -204,7 +206,6 @@ def get_guided_transcriber(
     overwrite_cache: bool = False,
     strip_generated_punctuation: bool = False,
     mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
-    mlx_audio_token_limit_guard: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     no_op: bool = False,
@@ -229,7 +230,6 @@ def get_guided_transcriber(
         strip_generated_punctuation: whether to remove generated sentence
             punctuation after timing and before guided alignment
         mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
-        mlx_audio_token_limit_guard: whether to guard constrained MLX-Audio models
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         no_op: use neutral answers instead of querying an LLM
@@ -317,11 +317,15 @@ def get_guided_transcriber(
 
     # Configure the selected audio transcription backend
     mlx_audio_transcriber = None
-    if isinstance(audio_model, MlxAudioModel):
+    if isinstance(audio_model, MlxAudioModelSpec):
         mlx_audio_transcriber = MlxAudioTranscriber(
-            model=audio_model,
+            model=MlxAudioModel(audio_model, language),
+            ctc_aligner=CtcAligner(
+                language,
+                cache_root_path=cache_root_path,
+                overwrite_cache=overwrite_cache,
+            ),
             language=language,
-            token_limit_guard=mlx_audio_token_limit_guard,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             cache_root_path=cache_root_path,

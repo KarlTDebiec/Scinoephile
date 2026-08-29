@@ -42,14 +42,30 @@ def test_get_path_separates_model_configuration(tmp_path: Path):
 def test_get_path_separates_runtime_versions(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test Demucs cache paths differ by installed runtime version."""
     audio = AudioSegment.silent(duration=100)
+    first_versions = {
+        "demucs-infer": "4.2.2",
+        "torch": "stable",
+        "torchaudio": "stable",
+    }
     monkeypatch.setattr(
         "scinoephile.audio.separation.demucs.cache.get_distribution_identity",
-        Mock(return_value={"distribution": "demucs-infer", "version": "4.2.2"}),
+        Mock(
+            side_effect=lambda distribution_name: {
+                "distribution": distribution_name,
+                "version": first_versions[distribution_name],
+            }
+        ),
     )
     first_cache_path = DemucsCache(tmp_path, "model").get_path(audio)
+    second_versions = {**first_versions, "demucs-infer": "4.3.0"}
     monkeypatch.setattr(
         "scinoephile.audio.separation.demucs.cache.get_distribution_identity",
-        Mock(return_value={"distribution": "demucs-infer", "version": "4.3.0"}),
+        Mock(
+            side_effect=lambda distribution_name: {
+                "distribution": distribution_name,
+                "version": second_versions[distribution_name],
+            }
+        ),
     )
     second_cache_path = DemucsCache(tmp_path, "model").get_path(audio)
 

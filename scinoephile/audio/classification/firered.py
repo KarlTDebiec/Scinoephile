@@ -38,8 +38,6 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
-_FIRERED_RUNTIME_REVISION = "4e7d9aaf4482a47cec1724807026b9b151926eb5"
-"""Pinned FireRedASR2S runtime revision."""
 _LANGUAGE_MODEL_ID = "FireRedTeam/FireRedLID"
 """Official FireRed spoken-language identification model."""
 _LANGUAGE_MODEL_REVISION = "1bb4d285c8456429385d9c0810300df4297bc11b"
@@ -220,10 +218,7 @@ class FireRedLanguageIdentifier:
             "model_id": _LANGUAGE_MODEL_ID,
             "model_revision": _LANGUAGE_MODEL_REVISION,
             "offset_seconds": offset_seconds,
-            "runtime": {
-                **get_distribution_identity("fireredasr2s"),
-                "source_revision": _FIRERED_RUNTIME_REVISION,
-            },
+            "runtime": get_distribution_identity("fireredasr2s"),
             "speech_windows": [[start, end] for start, end in windows],
             "use_gpu": self.use_gpu,
             "use_half": self.use_half,
@@ -418,10 +413,7 @@ class FireRedAudioEventDetector:
             "model_id": _EVENT_MODEL_ID,
             "model_revision": _EVENT_MODEL_REVISION,
             "offset_seconds": offset_seconds,
-            "runtime": {
-                **get_distribution_identity("fireredasr2s"),
-                "source_revision": _FIRERED_RUNTIME_REVISION,
-            },
+            "runtime": get_distribution_identity("fireredasr2s"),
             "thresholds": {
                 event.value: threshold for event, threshold in self.thresholds.items()
             },

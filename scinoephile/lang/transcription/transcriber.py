@@ -26,7 +26,7 @@ from scinoephile.audio.transcription import (
     get_segment_split_at_idx,
     get_segment_split_on_word_timings,
 )
-from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModel
+from scinoephile.audio.transcription.mlx_audio.model_spec import MlxAudioModelSpec
 from scinoephile.audio.transcription.quality import get_transcription_quality_issue
 from scinoephile.audio.transcription.whisper.model import WhisperModel
 from scinoephile.common.validation import val_index_range
@@ -144,7 +144,7 @@ class GuidedTranscriber:
         *,
         language: Language,
         guide_language: Language,
-        audio_model: WhisperModel | MlxAudioModel,
+        audio_model: WhisperModel | MlxAudioModelSpec,
         aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VadMode = VadMode.OFF,
@@ -175,7 +175,10 @@ class GuidedTranscriber:
         self.language = language
         self.guide_language = guide_language
         self.audio_model = audio_model
-        self.model_name = audio_model.model_name
+        if isinstance(audio_model, MlxAudioModelSpec):
+            self.model_name = audio_model.name
+        else:
+            self.model_name = audio_model.model_name
         self.aligner = aligner
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
@@ -185,7 +188,7 @@ class GuidedTranscriber:
         self.strip_generated_punctuation = strip_generated_punctuation
 
         # Use MLX-Audio's shared preprocessing fallbacks without Whisper recovery
-        if isinstance(self.audio_model, MlxAudioModel):
+        if isinstance(self.audio_model, MlxAudioModelSpec):
             if self.mlx_audio_transcriber is None:
                 raise ValueError("MLX-Audio backend requires a MLX-Audio transcriber.")
             self.transcriber = self.mlx_audio_transcriber
@@ -326,7 +329,7 @@ class GuidedTranscriber:
                 split_segments.extend(self.segment_splitter(segment))
 
         # Expose the configured MLX-Audio timing granularity to guided alignment
-        if isinstance(self.audio_model, MlxAudioModel):
+        if isinstance(self.audio_model, MlxAudioModelSpec):
             timed_segments = []
             for segment in split_segments:
                 if self.mlx_audio_timing_mode is MlxAudioTimingMode.SEGMENT:
@@ -365,7 +368,7 @@ class GuidedTranscriber:
         Returns:
             transcribed segments
         """
-        if isinstance(self.audio_model, MlxAudioModel):
+        if isinstance(self.audio_model, MlxAudioModelSpec):
             return self._transcribe_block_audio_with_mlx_audio(audio)
 
         audio_duration = len(audio) / 1000
