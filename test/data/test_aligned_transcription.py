@@ -31,6 +31,9 @@ from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.media.audio import AudioExtractionMode
 from scinoephile.workflows.transcription_pipeline import TranscriptionPipeline
+from scinoephile.workflows.transcription_pipeline.pipeline import (
+    log_transcription_blocks,
+)
 
 
 def test_evaluation_writes_standardized_metrics_and_audit(
@@ -228,9 +231,6 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
     provider = Mock(completion_metrics=[])
     pipeline = Mock(spec=TranscriptionPipeline)
     pipeline.last_alignment_artifact = artifact
-    pipeline.plan_blocks.return_value = (
-        SpeechBlock(index=0, start_ms=0, end_ms=3_000),
-    )
 
     with (
         patch(
@@ -285,8 +285,9 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
         alignment_outfile_path=json_dir_path / "alignment.json",
         run_manifest_outfile_path=json_dir_path / "run.json",
         exclude_blocks=(),
-        stop_at_idx=1,
+        stop_at_idx=None,
     )
+    pipeline.plan_blocks.assert_not_called()
     save_usage.assert_called_once_with(json_dir_path / "llm_usage.json", [])
     clean.assert_called_once_with(
         output, output_dir_path / "transcribe_clean.srt", Language.yue_hant, True
@@ -405,9 +406,11 @@ def test_reused_transcription_blocks_are_logged(caplog: LogCaptureFixture):
     manifest = _get_manifest(
         audio, artifact, _get_processor_identity(), planned_block_count=2
     )
-    caplog.set_level("INFO", logger="test.data.aligned_transcription")
+    caplog.set_level(
+        "INFO", logger="scinoephile.workflows.transcription_pipeline.pipeline"
+    )
 
-    transcription_data._log_reused_blocks(artifact, manifest)  # noqa: SLF001
+    log_transcription_blocks(artifact, manifest)
 
     assert "BLOCK 1:" in caplog.text
     assert "TRANSCRIPTION (yue-Hant):" in caplog.text

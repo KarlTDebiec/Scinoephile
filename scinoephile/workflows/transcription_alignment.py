@@ -44,7 +44,7 @@ class RenderedTranscriptionAlignment:
     rows: tuple[AlignmentRow, ...]
     """Named ASR rows in alignment source order."""
     speaker: str
-    """Speaker and unattributed-speech annotation row."""
+    """Speaker annotation row."""
     language: str | None
     """Spoken-language annotation row, when available."""
     language_legend: Mapping[str, str]

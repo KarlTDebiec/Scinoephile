@@ -121,6 +121,8 @@ def test_block_rejects_invalid_speaker_and_inconsistent_pause_rows():
     block_data = _get_artifact().blocks[0].model_dump()
     with raises(ValueError, match="invalid character"):
         AlignmentBlock.model_validate({**block_data, "speaker": "Ａ-Ａ"})
+    with raises(ValueError, match="invalid character"):
+        AlignmentBlock.model_validate({**block_data, "speaker": "Ａ＊Ａ"})
 
     rows = block_data["rows"]
     rows[0]["text"] = "係　呀"

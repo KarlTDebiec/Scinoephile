@@ -615,7 +615,7 @@ def test_audit_retains_merged_text_without_source_support():
             AlignmentRow(name="whisper", text="　"),
             AlignmentRow(name="mimo", text="　"),
         ),
-        speaker="＊",
+        speaker="　",
         merged="甲",
         subtitles=(
             AlignmentSubtitle(

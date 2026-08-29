@@ -56,7 +56,7 @@ def test_evaluation_calculates_cer_across_subtitle_boundaries():
                     AlignmentRow(name="one", text=combined_text),
                     AlignmentRow(name="two", text=combined_text),
                 ),
-                speaker="＊" * len(combined_text),
+                speaker="　" * len(combined_text),
                 merged=combined_text,
                 subtitles=subtitles,
             ),

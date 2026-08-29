@@ -24,6 +24,7 @@ from scinoephile.analysis.transcription.manifest import (
     ProcessorIdentity,
     RunBlock,
     RunManifest,
+    normalize_excluded_blocks,
 )
 from scinoephile.analysis.transcription.timing import retime_alignment
 from scinoephile.audio.classification import (
@@ -60,9 +61,37 @@ from scinoephile.workflows.transcription_alignment import (
     build_transcription_alignment_block,
 )
 
-__all__ = ["AudioAnalysisMode", "TranscriptionPipeline"]
+__all__ = ["AudioAnalysisMode", "TranscriptionPipeline", "log_transcription_blocks"]
 
 logger = getLogger(__name__)
+
+
+def log_transcription_blocks(artifact: AlignmentArtifact, manifest: RunManifest):
+    """Log finalized outcomes for selected transcription blocks.
+
+    Arguments:
+        artifact: finalized aligned transcription output
+        manifest: outcomes for every selected block
+    """
+    alignment_blocks = {block.index: block for block in artifact.blocks}
+    for run_block in manifest.blocks:
+        if run_block.status == "empty":
+            reason = run_block.reason or "TranscriptionEmptyError"
+            logger.info(
+                f"Transcription block {run_block.index} contains no transcribed "
+                f"speech: {reason}"
+            )
+            continue
+        if run_block.status == "excluded":
+            logger.info(f"Transcription block {run_block.index} is excluded.")
+            continue
+
+        block_output = alignment_blocks[run_block.index].get_series()
+        logger.info(
+            f"BLOCK {run_block.index}:\n"
+            f"TRANSCRIPTION ({artifact.language.code}):\n"
+            f"{block_output.to_simple_string()}"
+        )
 
 
 class AudioAnalysisMode(StrEnum):
@@ -239,7 +268,9 @@ class TranscriptionPipeline:
         self.last_blocks = []
         trace = self._get_voice_activity_trace(audio_series.audio)
         self.last_blocks = self.block_splitter(trace)
-        excluded_blocks = self._get_excluded_blocks(exclude_blocks)
+        excluded_blocks = normalize_excluded_blocks(
+            exclude_blocks, planned_block_count=len(self.last_blocks)
+        )
         processed_blocks, block_records = self._apply_block_exclusions(
             self._get_selected_blocks(start_at_idx, stop_at_idx), excluded_blocks
         )
@@ -285,10 +316,6 @@ class TranscriptionPipeline:
                         query_key_sha256s=self.transcriber.last_query_key_sha256s,
                     )
                 )
-                logger.info(
-                    f"Transcription block {block_index} contains no transcribed "
-                    f"speech: {reason}"
-                )
                 continue
             source_cache_key_sha256s = dict(
                 self.transcriber.last_source_cache_key_sha256s
@@ -314,9 +341,6 @@ class TranscriptionPipeline:
                         source_cache_key_sha256s=source_cache_key_sha256s,
                         query_key_sha256s=query_key_sha256s,
                     )
-                )
-                logger.info(
-                    f"Transcription block {block_index} contains no usable text."
                 )
                 continue
             if self.transcriber.last_lexical_alignment is None:
@@ -347,13 +371,6 @@ class TranscriptionPipeline:
                 )
             )
             output_segments.extend(block_segments)
-            logger.info(
-                f"BLOCK {block_index}:\n"
-                f"TRANSCRIPTION ({self.language.code}):\n"
-                + get_series_from_segments(
-                    block_segments, audio_series.audio
-                ).to_simple_string()
-            )
 
         self.last_alignment_artifact = retime_alignment(
             AlignmentArtifact(
@@ -392,6 +409,7 @@ class TranscriptionPipeline:
             tuple(sorted(block_records, key=lambda block: block.index)),
             excluded_blocks,
         )
+        log_transcription_blocks(self.last_alignment_artifact, self.last_run_manifest)
         return get_series_from_segments(output_segments, audio=audio_series.audio)
 
     def _apply_block_exclusions(
@@ -419,7 +437,6 @@ class TranscriptionPipeline:
                     reason="Excluded by configuration.",
                 )
             )
-            logger.info(f"Transcription block {block_index} is excluded.")
         return processed_blocks, block_records
 
     def _build_run_manifest(
@@ -508,31 +525,6 @@ class TranscriptionPipeline:
                 f"evidence: {exc}"
             )
             return None
-
-    def _get_excluded_blocks(self, exclude_blocks: Sequence[int]) -> tuple[int, ...]:
-        """Validate and normalize configured block exclusions.
-
-        Arguments:
-            exclude_blocks: one-based block numbers to skip
-        Returns:
-            unique excluded block numbers in ascending order
-        Raises:
-            ValueError: if a block number is not an integer or lies outside the plan
-        """
-        if any(
-            isinstance(block_number, bool) or not isinstance(block_number, int)
-            for block_number in exclude_blocks
-        ):
-            raise ValueError("Excluded transcription blocks must be integers.")
-        excluded_blocks = tuple(sorted(set(exclude_blocks)))
-        if excluded_blocks and (
-            excluded_blocks[0] < 1 or excluded_blocks[-1] > len(self.last_blocks)
-        ):
-            raise ValueError(
-                f"Excluded transcription blocks must lie between 1 and "
-                f"{len(self.last_blocks)}."
-            )
-        return excluded_blocks
 
     def _get_language_identification(
         self, audio: AudioSegment | None, block_intervals_ms: Sequence[tuple[int, int]]

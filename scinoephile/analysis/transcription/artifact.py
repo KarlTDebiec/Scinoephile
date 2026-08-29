@@ -171,6 +171,24 @@ class AlignmentBlock(BaseModel):
     source_errors: dict[str, str] = Field(default_factory=dict)
     """Source failures that were tolerated while processing the block."""
 
+    def get_series(self) -> Series:
+        """Get this block's merged subtitles as a subtitle series.
+
+        Returns:
+            merged subtitle series using final display timings
+        """
+        return Series(
+            events=[
+                Subtitle(
+                    start=subtitle.start_ms,
+                    end=subtitle.end_ms,
+                    text=subtitle.text,
+                    name=subtitle.speaker or "",
+                )
+                for subtitle in self.subtitles
+            ]
+        )
+
     def _validate_annotation_characters(self) -> None:
         """Validate speaker, language, singing, and music row characters.
 
@@ -178,7 +196,7 @@ class AlignmentBlock(BaseModel):
             ValueError: if a value is invalid
         """
         if any(
-            character not in {"　", "・", "＊"} and not "Ａ" <= character <= "Ｚ"
+            character not in {"　", "・"} and not "Ａ" <= character <= "Ｚ"
             for character in self.speaker
         ):
             raise ValueError("Alignment speaker row contains an invalid character.")
@@ -350,14 +368,9 @@ class AlignmentArtifact(BaseModel):
         """
         return Series(
             events=[
-                Subtitle(
-                    start=subtitle.start_ms,
-                    end=subtitle.end_ms,
-                    text=subtitle.text,
-                    name=subtitle.speaker or "",
-                )
+                subtitle
                 for block in self.blocks
-                for subtitle in block.subtitles
+                for subtitle in block.get_series().events
             ]
         )
 

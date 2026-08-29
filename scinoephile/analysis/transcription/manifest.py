@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Annotated, Literal
 
@@ -18,12 +19,47 @@ from pydantic import (
 
 from scinoephile.core.language import Language
 
-__all__ = ["ProcessorIdentity", "RunBlock", "RunManifest"]
+__all__ = ["ProcessorIdentity", "RunBlock", "RunManifest", "normalize_excluded_blocks"]
 
 _NonBlankString = Annotated[str, StringConstraints(min_length=1, strip_whitespace=True)]
 """String normalized by trimming whitespace and rejecting blank values."""
 _Sha256 = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
 """Lowercase hexadecimal SHA-256 digest."""
+_StrictPositiveInt = Annotated[int, Field(strict=True, ge=1)]
+"""Positive integer that rejects coercion from booleans and other types."""
+
+
+def normalize_excluded_blocks(
+    exclude_blocks: Sequence[object], planned_block_count: int | None = None
+) -> tuple[int, ...]:
+    """Validate and normalize configured block exclusions.
+
+    Arguments:
+        exclude_blocks: one-based block numbers to skip
+        planned_block_count: optional number of blocks in the complete plan
+    Returns:
+        unique excluded block numbers in ascending order
+    Raises:
+        ValueError: if a block number is not an integer or lies outside the plan
+    """
+    validated_blocks = []
+    for block_number in exclude_blocks:
+        if isinstance(block_number, bool) or not isinstance(block_number, int):
+            raise ValueError("Excluded transcription blocks must be integers.")
+        validated_blocks.append(block_number)
+    excluded_blocks = tuple(sorted(set(validated_blocks)))
+    if excluded_blocks and excluded_blocks[0] < 1:
+        raise ValueError("Excluded transcription blocks must be positive.")
+    if (
+        planned_block_count is not None
+        and excluded_blocks
+        and excluded_blocks[-1] > planned_block_count
+    ):
+        raise ValueError(
+            f"Excluded transcription blocks must lie between 1 and "
+            f"{planned_block_count}."
+        )
+    return excluded_blocks
 
 
 class ProcessorIdentity(BaseModel):
@@ -87,7 +123,7 @@ class RunManifest(BaseModel):
     """Block-planning VAD model and postprocessing identity."""
     planned_block_count: int = Field(ge=0)
     """Number of blocks in the complete hard-cut plan."""
-    excluded_blocks: tuple[int, ...] = ()
+    excluded_blocks: tuple[_StrictPositiveInt, ...] = ()
     """One-based block numbers excluded by configuration."""
     blocks: tuple[RunBlock, ...]
     """Selected blocks and their run outcomes."""
