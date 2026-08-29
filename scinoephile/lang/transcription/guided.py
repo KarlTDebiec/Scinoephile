@@ -25,9 +25,9 @@ from scinoephile.audio.transcription.mlx_audio.model_spec import (
     SENSEVOICE_MODEL,
     MlxAudioModelSpec,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
-    WhisperModel,
+    WhisperModelSpec,
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, TestCase
@@ -103,32 +103,34 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 class TranscriptionLanguageSpec:
     """Configuration for one transcription language."""
 
-    models: Mapping[TranscriptionModel, WhisperModel | MlxAudioModelSpec]
-    """Configured audio models keyed by supported transcription model."""
+    specs: Mapping[TranscriptionModel, WhisperModelSpec | MlxAudioModelSpec]
+    """Audio model specifications keyed by supported transcription model."""
     segment_splitter: TranscribedSegmentSplitter | None = None
     """Strategy for splitting raw transcribed segments."""
 
-    def get_model(self, model: TranscriptionModel) -> WhisperModel | MlxAudioModelSpec:
-        """Get the configured audio model for a supported transcription model.
+    def get_spec(
+        self, model: TranscriptionModel
+    ) -> WhisperModelSpec | MlxAudioModelSpec:
+        """Get the audio model specification for a transcription model.
 
         Arguments:
             model: supported transcription model
         Returns:
-            configured audio model
+            audio model specification
         Raises:
             ScinoephileError: if the transcription model is not configured
         """
         try:
-            audio_model = self.models[model]
+            spec = self.specs[model]
         except KeyError as exc:
             raise ScinoephileError(
                 f"Transcription model {model} is not configured for this language."
             ) from exc
-        return audio_model
+        return spec
 
 
 _YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
-    models=MappingProxyType(
+    specs=MappingProxyType(
         {
             TranscriptionModel.WHISPER: WHISPER_LARGE_V3_CANTONESE_MODEL,
             TranscriptionModel.MIMO: MIMO_MODEL,
@@ -254,7 +256,7 @@ def get_guided_transcriber(
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec
 
-    audio_model = language_spec.get_model(model)
+    audio_spec = language_spec.get_spec(model)
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
@@ -317,9 +319,9 @@ def get_guided_transcriber(
 
     # Configure the selected audio transcription backend
     mlx_audio_transcriber = None
-    if isinstance(audio_model, MlxAudioModelSpec):
+    if isinstance(audio_spec, MlxAudioModelSpec):
         mlx_audio_transcriber = MlxAudioTranscriber(
-            model=MlxAudioModel(audio_model, language),
+            model=MlxAudioModel(audio_spec, language),
             ctc_aligner=CtcAligner(
                 language,
                 cache_root_path=cache_root_path,
@@ -334,7 +336,7 @@ def get_guided_transcriber(
     return GuidedTranscriber(
         language=language,
         guide_language=guide_language,
-        audio_model=audio_model,
+        spec=audio_spec,
         aligner=aligner,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
