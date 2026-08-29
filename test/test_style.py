@@ -44,6 +44,34 @@ class StringInterpolationViolation:
         )
 
 
+@dataclass(frozen=True)
+class VariadicKeywordAnnotationViolation:
+    """Variadic keyword argument annotation violation."""
+
+    file_path: Path
+    """Source file path."""
+
+    line_number: int
+    """Source line number."""
+
+    callable_name: str
+    """Name of the callable containing the annotation."""
+
+    argument_name: str
+    """Name of the variadic keyword argument."""
+
+    def __str__(self) -> str:
+        """Format the violation for assertion output.
+
+        Returns:
+            formatted violation
+        """
+        return (
+            f"{self.file_path}:{self.line_number}: {self.callable_name} uses "
+            f"**{self.argument_name}: object"
+        )
+
+
 def test_percent_interpolation_arguments_are_detected():
     """Test logging-style percent interpolation arguments are detected."""
     tree = ast.parse('logger.warning("hello %s", name)')
@@ -111,6 +139,78 @@ def test_typed_dict_fields_are_documented():
         )
 
     assert not violations, "Document TypedDict fields:\n" + "\n".join(violations)
+
+
+def test_variadic_keyword_annotations_accept_intentional_types():
+    """Test intentional variadic keyword annotations are accepted."""
+    tree = ast.parse(
+        """
+def accepts_any(**kwargs: Any):
+    pass
+
+
+def accepts_unpack(**kwargs: Unpack[Options]):
+    pass
+
+
+def accepts_narrow_type(**kwargs: str):
+    pass
+"""
+    )
+
+    violations = get_variadic_keyword_annotation_violations(
+        file_path=Path("sample.py"), tree=tree
+    )
+
+    assert not violations
+
+
+def test_variadic_keyword_object_annotations_are_detected():
+    """Test object-annotated variadic keyword arguments are detected."""
+    tree = ast.parse(
+        """
+def ordinary(**kwargs: object):
+    pass
+
+
+def outer():
+    def nested(**options: object):
+        pass
+
+
+async def asynchronous(**values: object):
+    pass
+"""
+    )
+
+    violations = get_variadic_keyword_annotation_violations(
+        file_path=Path("sample.py"), tree=tree
+    )
+
+    assert [str(violation) for violation in violations] == [
+        "sample.py:2: ordinary uses **kwargs: object",
+        "sample.py:7: nested uses **options: object",
+        "sample.py:11: asynchronous uses **values: object",
+    ]
+
+
+def test_variadic_keyword_object_annotations_are_not_used():
+    """Test Python sources intentionally annotate variadic keyword arguments."""
+    violations: list[VariadicKeywordAnnotationViolation] = []
+    for file_path in get_python_files(package_root.parent):
+        tree = ast.parse(
+            file_path.read_text(encoding="utf-8"), filename=file_path.as_posix()
+        )
+        violations.extend(
+            get_variadic_keyword_annotation_violations(
+                file_path=file_path.relative_to(package_root.parent), tree=tree
+            )
+        )
+
+    assert not violations, (
+        "Use Any, Unpack[TypedDict], or a narrower type for variadic keyword "
+        "arguments:\n" + "\n".join(str(violation) for violation in violations)
+    )
 
 
 def get_string_interpolation_violations(
@@ -186,6 +286,39 @@ def get_typed_dict_field_documentation_violations(
                     f"{file_path}:{statement.lineno}: TypedDict field "
                     f"{node.name}.{statement.target.id} lacks documentation"
                 )
+    return violations
+
+
+def get_variadic_keyword_annotation_violations(
+    file_path: Path, tree: ast.Module
+) -> list[VariadicKeywordAnnotationViolation]:
+    """Get object-annotated variadic keyword arguments in a parsed Python file.
+
+    Arguments:
+        file_path: source file path
+        tree: parsed Python module
+    Returns:
+        variadic keyword argument annotation violations
+    """
+    violations = []
+    for node in ast.walk(tree):
+        if not isinstance(node, (ast.AsyncFunctionDef, ast.FunctionDef)):
+            continue
+        keyword_argument = node.args.kwarg
+        if keyword_argument is None:
+            continue
+        annotation = keyword_argument.annotation
+        if not isinstance(annotation, ast.Name) or annotation.id != "object":
+            continue
+        violations.append(
+            VariadicKeywordAnnotationViolation(
+                file_path=file_path,
+                line_number=keyword_argument.lineno,
+                callable_name=node.name,
+                argument_name=keyword_argument.arg,
+            )
+        )
+    violations.sort(key=lambda violation: violation.line_number)
     return violations
 
 

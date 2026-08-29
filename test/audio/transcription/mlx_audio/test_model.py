@@ -10,6 +10,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any
 from unittest.mock import Mock, call
 
 import pytest
@@ -220,7 +221,7 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
     tokenizer = MIMO_MODEL.tokenizer
     assert tokenizer is not None
 
-    def load(local_model_path: Path, **kwargs: object) -> object:
+    def load(local_model_path: Path, **kwargs: Any) -> object:
         """Check the replacement resolver while simulating model loading."""
         assert local_model_path == model_path
         assert kwargs == {"model_type": "mimo"}

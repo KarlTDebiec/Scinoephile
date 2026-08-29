@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from logging import INFO
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any
 from unittest.mock import Mock
 
 from pydub import AudioSegment
@@ -84,7 +85,7 @@ class _FakePipeline:
         self.device = None
         self.kwargs: dict[str, object] = {}
 
-    def __call__(self, audio: object, **kwargs: object) -> object:
+    def __call__(self, audio: object, **kwargs: Any) -> object:
         """Return regular and exclusive mocked annotations.
 
         Arguments:

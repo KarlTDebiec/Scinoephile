@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 from dataclasses import replace
 from pathlib import Path
+from typing import Any
 
 from pytest import MonkeyPatch, raises
 
@@ -31,7 +32,7 @@ def test_completion_metrics_persistence_is_atomic(
     output_path = tmp_path / "llm_usage.json"
     output_path.write_text("original", encoding="utf-8")
 
-    def fail_dump(*args: object, **kwargs: object):
+    def fail_dump(*args: object, **kwargs: Any):
         """Fail while serializing the replacement JSON.
 
         Arguments:

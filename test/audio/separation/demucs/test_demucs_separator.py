@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 from unittest.mock import Mock, patch
 
 import numpy as np
@@ -78,7 +79,7 @@ def test_separate_vocals_uses_default_demucs_shifts():
     separated_sources = torch.zeros((1, 1, 2, 16000), dtype=torch.float32)
     apply_model_kwargs: list[dict[str, object]] = []
 
-    def apply_model(*args: object, **kwargs: object) -> object:
+    def apply_model(*args: object, **kwargs: Any) -> object:
         """Record Demucs apply_model keyword arguments."""
         assert args
         apply_model_kwargs.append(kwargs)

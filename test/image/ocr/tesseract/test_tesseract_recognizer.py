@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from time import time
+from typing import Any
 
 import requests
 from PIL import Image
@@ -429,7 +430,7 @@ def test_tesseract_detect_italics_reuses_existing_legacy_tessdata(
     old_timestamp = time() - 60 * 60 * 24 * 40
     set_mtime(traineddata_path, old_timestamp)
 
-    def fail_get(*args: object, **kwargs: object) -> object:
+    def fail_get(*args: object, **kwargs: Any) -> object:
         """Fail if a download is attempted.
 
         Arguments:
