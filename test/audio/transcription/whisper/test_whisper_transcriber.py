@@ -137,7 +137,7 @@ def _get_ctc_aligner(text: str = "你好", spec: ModelSpec = _CTC_MODEL_SPEC) ->
         )
     ]
     return Mock(
-        cache_identity={
+        cache_config_identity={
             "alignment_version": 1,
             "device": "cpu",
             "language": Language.yue_hant.code,
@@ -327,8 +327,8 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
     )
     second_language_aligner = _get_ctc_aligner()
     second_language_aligner.language = Language.zho_hant
-    second_language_aligner.cache_identity = {
-        **second_language_aligner.cache_identity,
+    second_language_aligner.cache_config_identity = {
+        **second_language_aligner.cache_config_identity,
         "language": Language.zho_hant.code,
     }
     second_language_fallback = _get_whisper_transcriber(
@@ -354,7 +354,7 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
     cache_identity = first_fallback._get_cache_identity(audio, settings)
     fallback_identity = cast(Mapping[str, object], cache_identity["timestamp_fallback"])
     assert first_fallback.ctc_aligner is not None
-    assert fallback_identity == first_fallback.ctc_aligner.cache_identity
+    assert fallback_identity == first_fallback.ctc_aligner.cache_config_identity
     assert fallback_identity["alignment_version"] == 1
     assert fallback_identity["device"] == "cpu"
     assert fallback_identity["language"] == "yue-Hant"

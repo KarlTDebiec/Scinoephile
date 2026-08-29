@@ -97,8 +97,14 @@ def test_ctc_aligner_cache_identity_includes_active_runtime_dependencies(
     converted_identity = converted_aligner._get_cache_identity("说")
     unconverted_identity = unconverted_aligner._get_cache_identity("說")
 
-    assert converted_identity == {**converted_aligner.cache_identity, "text": "说"}
-    assert unconverted_identity == {**unconverted_aligner.cache_identity, "text": "說"}
+    assert converted_identity == {
+        **converted_aligner.cache_config_identity,
+        "text": "说",
+    }
+    assert unconverted_identity == {
+        **unconverted_aligner.cache_config_identity,
+        "text": "說",
+    }
     assert converted_identity["runtime"] == {
         "opencc": {"distribution": "opencc", "version": "test-version"},
         "torch": {"distribution": "torch", "version": "test-version"},

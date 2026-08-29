@@ -162,8 +162,8 @@ class CtcAligner:
             ) from exc
 
     @property
-    def cache_identity(self) -> CacheIdentity:
-        """Get the configuration identifying this CTC aligner."""
+    def cache_config_identity(self) -> CacheIdentity:
+        """Get the cache identity of this CTC aligner's configuration."""
         script_conversion = None
         runtime = {
             "torch": get_distribution_identity("torch"),
@@ -190,6 +190,4 @@ class CtcAligner:
         Returns:
             complete CTC alignment identity
         """
-        cache_identity = dict(self.cache_identity)
-        cache_identity["text"] = text
-        return cache_identity
+        return {**self.cache_config_identity, "text": text}
