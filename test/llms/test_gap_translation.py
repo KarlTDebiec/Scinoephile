@@ -486,8 +486,7 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
         current_test_cases_path, GapTranslationManager, prompt
     )
     assert len(persisted) == 2
-    persisted_cases = cast("list[GapTranslationTestCase]", persisted)
-    assert [item.query.targets[0].text for item in persisted_cases] == [
+    assert [item.query.targets[0].text for item in persisted] == [
         "old target",
         "new target",
     ]
@@ -527,7 +526,5 @@ def test_repository_json_fixtures_load():
 
     assert fixture_paths
     assert test_cases
-    assert all(
-        cast(GapTranslationTestCase, test_case).query.guides for test_case in test_cases
-    )
+    assert all(test_case.query.guides for test_case in test_cases)
     assert all(test_case.answer is not None for test_case in test_cases)
