@@ -10,6 +10,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any
 from unittest.mock import Mock, call
 
 import pytest
@@ -220,13 +221,14 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
     """
     model_path = Path("/cached/mimo")
     audio_tokenizer_path = Path("/cached/mimo-audio-tokenizer")
-    remote_get_model_path = Mock()
+    other_model_path = Path("/cached/other")
+    remote_get_model_path = Mock(return_value=other_model_path)
     mimo_asr = SimpleNamespace(get_model_path=remote_get_model_path)
     runtime_model = Mock()
     tokenizer = MIMO_MODEL.tokenizer
     assert tokenizer is not None
 
-    def load(local_model_path: Path, **kwargs: object) -> object:
+    def load(local_model_path: Path, **kwargs: Any) -> object:
         """Check the replacement resolver while simulating model loading.
 
         Arguments:
@@ -238,6 +240,10 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
         assert local_model_path == model_path
         assert kwargs == {"model_type": "mimo"}
         assert mimo_asr.get_model_path(tokenizer.name) == audio_tokenizer_path
+        assert (
+            mimo_asr.get_model_path("other/model", "revision", local_only=True)
+            == other_model_path
+        )
         return runtime_model
 
     get_snapshot_dir_path = Mock(side_effect=(model_path, audio_tokenizer_path))
@@ -258,7 +264,9 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
         call(tokenizer.name, tokenizer.revision),
     ]
     assert mimo_asr.get_model_path is remote_get_model_path
-    remote_get_model_path.assert_not_called()
+    remote_get_model_path.assert_called_once_with(
+        "other/model", "revision", local_only=True
+    )
     runtime_model.generate.assert_called_once()
 
 

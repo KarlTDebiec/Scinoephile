@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import Protocol
+from typing import Any, Protocol
 
 __all__ = ["MlxAudioResult", "MlxAudioRuntimeModel"]
 
@@ -22,7 +22,7 @@ class MlxAudioResult(Protocol):
 class MlxAudioRuntimeModel(Protocol):
     """Loaded MLX-Audio model capable of speech recognition."""
 
-    def generate(self, audio: str, **kwargs: object) -> MlxAudioResult:
+    def generate(self, audio: str, **kwargs: Any) -> MlxAudioResult:
         """Recognize speech in an audio file and return the result.
 
         Arguments:

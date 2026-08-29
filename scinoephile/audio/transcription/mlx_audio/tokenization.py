@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import cast
+from typing import Any, cast
 
 from scinoephile.core.dependencies.transcription import import_mlx_audio_mimo_asr
 from scinoephile.core.ml import ModelSpec
@@ -37,9 +37,7 @@ def use_local_tokenizer(
     mimo_asr = import_mlx_audio_mimo_asr()
     get_model_path = cast(Callable[..., Path], mimo_asr.get_model_path)
 
-    def get_local_model_path(
-        path_or_hf_repo: str, *args: object, **kwargs: object
-    ) -> Path:
+    def get_local_model_path(path_or_hf_repo: str, *args: Any, **kwargs: Any) -> Path:
         """Resolve the configured tokenizer locally and delegate other models.
 
         Arguments:

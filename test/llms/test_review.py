@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import cast
 from unittest.mock import Mock
 
 from pydantic import ValidationError
@@ -18,7 +17,6 @@ from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.zho.review import ReviewPromptZhoHant
 from scinoephile.llms.review import (
-    ReviewAnswer,
     ReviewManager,
     ReviewProcessor,
     ReviewPrompt,
@@ -109,8 +107,7 @@ def test_queryer_rejects_type_coercion_at_llm_boundary():
     result = queryer(test_case)
 
     assert result.answer is not None
-    answer = cast(ReviewAnswer, result.answer)
-    assert answer.revisions[0].index == 1
+    assert result.answer.revisions[0].index == 1
     assert provider.chat_completion.call_count == 2
 
 
