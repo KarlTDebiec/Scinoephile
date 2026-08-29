@@ -11,11 +11,11 @@ from statistics import median
 
 from scinoephile.core.text import is_lexical_character
 
-__all__ = ["AlignmentSequence", "Column", "Token"]
+__all__ = ["MsaColumn", "MsaSequence", "MsaToken"]
 
 
 @dataclass(frozen=True, slots=True)
-class Token:
+class MsaToken:
     """One display token with a source-local time interval."""
 
     text: str
@@ -42,12 +42,12 @@ class Token:
 
 
 @dataclass(frozen=True, slots=True)
-class AlignmentSequence:
+class MsaSequence:
     """Named ordered sequence of timestamped characters."""
 
     name: str
     """Stable source name."""
-    tokens: tuple[Token, ...]
+    tokens: tuple[MsaToken, ...]
     """Timestamped source characters in transcription order."""
 
     def __post_init__(self):
@@ -69,7 +69,7 @@ class AlignmentSequence:
     @classmethod
     def from_timed_texts(
         cls, name: str, timed_texts: Iterable[tuple[str, float, float]]
-    ) -> AlignmentSequence:
+    ) -> MsaSequence:
         """Create a sequence by uniformly timing lexical characters.
 
         Multi-character timing units are divided uniformly so their characters
@@ -102,15 +102,15 @@ class AlignmentSequence:
             for character_idx, character in enumerate(characters):
                 character_start = start_seconds + character_idx * step_seconds
                 character_end = start_seconds + (character_idx + 1) * step_seconds
-                tokens.append(Token(character, character_start, character_end))
+                tokens.append(MsaToken(character, character_start, character_end))
         return cls(name=name, tokens=tuple(tokens))
 
 
 @dataclass(frozen=True, slots=True)
-class Column:
+class MsaColumn:
     """One multiple-alignment column containing source tokens or gaps."""
 
-    tokens: tuple[Token | None, ...]
+    tokens: tuple[MsaToken | None, ...]
     """Source-ordered token cells; None represents an alignment gap."""
     pause_interval_seconds: tuple[float, float] | None = None
     """Explicit local interval for a shared timed-pause column."""

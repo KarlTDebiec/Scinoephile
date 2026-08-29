@@ -10,22 +10,22 @@ from pathlib import Path
 from types import MappingProxyType
 
 from scinoephile.audio.transcription import (
-    CtcAligner,
     DemucsMode,
-    MlxAudioModel,
-    MlxAudioTranscriber,
     VadMode,
     get_segment_split_on_whitespace,
 )
-from scinoephile.audio.transcription.mlx_audio.model_spec import (
+from scinoephile.audio.transcription.ctc import CtcAligner
+from scinoephile.audio.transcription.mlx_audio import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
+    MlxAudioModel,
     MlxAudioModelSpec,
+    MlxAudioTranscriber,
 )
-from scinoephile.audio.transcription.whisper.model_spec import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
     WhisperModelSpec,
 )

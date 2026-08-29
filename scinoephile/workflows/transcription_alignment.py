@@ -8,9 +8,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from math import isfinite
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column
+from scinoephile.analysis.alignment.timed_msa import MsaAligner, MsaAlignment, MsaColumn
 from scinoephile.analysis.transcription.artifact import (
     AlignmentBlock,
     AlignmentColumn,
@@ -62,9 +60,9 @@ class RenderedTranscriptionAlignment:
 
 
 def build_transcription_alignment_block(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     merged_segments: Sequence[TranscribedSegment],
-    aligner: Aligner,
+    aligner: MsaAligner,
     *,
     speech_block: SpeechBlock,
     audio_events: AudioEventDetectionResult | None = None,
@@ -173,7 +171,7 @@ def build_transcription_alignment_block(
 
 
 def render_transcription_alignment(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     *,
     audio_events: AudioEventDetectionResult | None = None,
     diarization: SpeakerDiarizationResult | None = None,
@@ -247,7 +245,7 @@ def render_transcription_alignment(
 
 
 def _get_annotation_cell(
-    column: Column,
+    column: MsaColumn,
     diarization: SpeakerDiarizationResult | None,
     speaker_symbols: dict[str, str],
     source_offset_seconds: float,
@@ -284,7 +282,7 @@ def _get_annotation_cell(
 
 
 def _get_event_row(
-    columns: Sequence[Column],
+    columns: Sequence[MsaColumn],
     audio_events: AudioEventDetectionResult | None,
     event: AudioEvent,
     marker: str,
@@ -319,7 +317,7 @@ def _get_event_row(
 
 
 def _get_language_cell(
-    column: Column,
+    column: MsaColumn,
     language_identification: LanguageIdentificationResult,
     offset_seconds: float,
     language_symbols: Mapping[str, str],
@@ -383,7 +381,7 @@ def _get_language_symbols(
 
 
 def _get_row_text(
-    columns: Sequence[Column], source_idx: int, traditionalize: bool
+    columns: Sequence[MsaColumn], source_idx: int, traditionalize: bool
 ) -> str:
     """Get one source's display text while preserving its alignment gaps.
 

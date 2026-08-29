@@ -19,11 +19,11 @@ from scinoephile.audio.transcription import DemucsMode, TranscriptionEmptyError,
 from scinoephile.audio.transcription.preprocessing_settings import (
     TranscriptionPreprocessingSettings,
 )
-from scinoephile.audio.transcription.whisper.model import WhisperModel
-from scinoephile.audio.transcription.whisper.model_spec import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
+    WhisperModel,
+    WhisperTranscriber,
 )
-from scinoephile.audio.transcription.whisper.transcriber import WhisperTranscriber
 from scinoephile.audio.vad import (
     VadImplementation,
     VoiceActivityDetector,

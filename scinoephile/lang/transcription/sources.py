@@ -10,27 +10,23 @@ from pathlib import Path
 from types import MappingProxyType
 
 from scinoephile.analysis.transcription.artifact import AlignmentSource
-from scinoephile.audio.transcription import (
-    CtcAligner,
-    DemucsMode,
-    MlxAudioModel,
-    MlxAudioTranscriber,
-    Transcriber,
-    VadMode,
-    WhisperModel,
-    WhisperTranscriber,
-)
-from scinoephile.audio.transcription.mlx_audio.model_spec import (
+from scinoephile.audio.transcription import DemucsMode, Transcriber, VadMode
+from scinoephile.audio.transcription.ctc import CtcAligner
+from scinoephile.audio.transcription.mlx_audio import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
+    MlxAudioModel,
     MlxAudioModelSpec,
+    MlxAudioTranscriber,
 )
-from scinoephile.audio.transcription.whisper.model_spec import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
+    WhisperModel,
     WhisperModelSpec,
+    WhisperTranscriber,
 )
 from scinoephile.core import Language, ScinoephileError
 

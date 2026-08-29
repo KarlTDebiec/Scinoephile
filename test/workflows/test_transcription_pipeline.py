@@ -13,9 +13,12 @@ from pydantic import ValidationError
 from pydub import AudioSegment
 from pytest import LogCaptureFixture, MonkeyPatch, mark, raises
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column, Token
+from scinoephile.analysis.alignment.timed_msa import (
+    MsaAligner,
+    MsaAlignment,
+    MsaColumn,
+    MsaToken,
+)
 from scinoephile.analysis.transcription.artifact import AlignmentSource
 from scinoephile.audio.classification.exceptions import AudioClassificationError
 from scinoephile.audio.diarization.exceptions import SpeakerDiarizationError
@@ -123,14 +126,14 @@ def _get_pipeline(
         transcriber.transcribe_block.return_value = [segment]
     else:
         transcriber.transcribe_block.side_effect = transcription_error
-    transcriber.aligner = Aligner(YueTokenSimilarity())
-    transcriber.last_lexical_alignment = Alignment(
+    transcriber.aligner = MsaAligner(YueTokenSimilarity())
+    transcriber.last_lexical_alignment = MsaAlignment(
         source_names=("one", "two"),
         columns=(
-            Column(
+            MsaColumn(
                 (
-                    Token("甲", segment.start, segment.end),
-                    Token("甲", segment.start, segment.end),
+                    MsaToken("甲", segment.start, segment.end),
+                    MsaToken("甲", segment.start, segment.end),
                 )
             ),
         ),

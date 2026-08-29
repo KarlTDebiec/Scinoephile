@@ -7,7 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from math import isfinite
 
-from scinoephile.analysis.alignment.timed_msa.models import Token
+from scinoephile.analysis.alignment.timed_msa import MsaToken
 from scinoephile.core.text import normalize_nfkc
 from scinoephile.lang.yue.character_features import CharacterFeatures
 
@@ -35,7 +35,7 @@ class YueTokenSimilarity:
     timing_tolerance_seconds: float = 1.0
     """Midpoint distance over which positive temporal support decays to zero."""
 
-    def __call__(self, one: Token, two: Token) -> float:
+    def __call__(self, one: MsaToken, two: MsaToken) -> float:
         """Score two timestamped characters.
 
         Arguments:

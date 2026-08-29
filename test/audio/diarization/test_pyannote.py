@@ -237,6 +237,7 @@ def test_custom_model_uses_repository_and_device_defaults(
     pipeline = _FakePipeline()
     from_pretrained = Mock(return_value=pipeline)
     pipeline_cls = SimpleNamespace(from_pretrained=from_pretrained)
+
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_pyannote_audio",
         lambda: SimpleNamespace(Pipeline=pipeline_cls),

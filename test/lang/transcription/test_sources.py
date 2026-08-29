@@ -9,16 +9,14 @@ from unittest.mock import patch
 from pytest import raises
 
 from scinoephile.audio.transcription import VadMode
-from scinoephile.audio.transcription.mlx_audio.model_spec import (
+from scinoephile.audio.transcription.mlx_audio import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
 )
-from scinoephile.audio.transcription.whisper.model_spec import (
-    WHISPER_LARGE_V3_CANTONESE_MODEL,
-)
+from scinoephile.audio.transcription.whisper import WHISPER_LARGE_V3_CANTONESE_MODEL
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.lang.transcription.sources import (
     TranscriptionSourceSpec,

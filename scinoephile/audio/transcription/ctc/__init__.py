@@ -12,6 +12,7 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .aligner import CtcAligner
+from .model import CtcModel
 from .model_spec import CtcModelSpec
 
-__all__ = ["CtcAligner", "CtcModelSpec"]
+__all__ = ["CtcAligner", "CtcModel", "CtcModelSpec"]
