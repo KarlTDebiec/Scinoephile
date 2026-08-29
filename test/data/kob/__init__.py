@@ -150,10 +150,10 @@ def get_kob_eng_review_test_cases(
     """
     ocr_path = output_dir / "eng_ocr/lang/eng/review.json"
     srt_path = output_dir / "eng/lang/eng/review.json"
-    ocr_test_cases = load_test_cases_from_json(
+    ocr_test_cases: list[TestCase] = load_test_cases_from_json(
         ocr_path, ReviewManager, prompt=prompt, **kwargs
     )
-    srt_test_cases = load_test_cases_from_json(
+    srt_test_cases: list[TestCase] = load_test_cases_from_json(
         srt_path, ReviewManager, prompt=prompt, **kwargs
     )
     return ocr_test_cases + srt_test_cases
@@ -221,7 +221,9 @@ def get_kob_yue_hans_review_test_cases(
         test cases
     """
     path = output_dir / "yue-Hans/lang/yue/review.json"
-    test_cases = load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
+    test_cases: list[TestCase] = load_test_cases_from_json(
+        path, ReviewManager, prompt=prompt, **kwargs
+    )
     for test_case in test_cases:
         test_case.verified = True
     return test_cases
@@ -240,7 +242,9 @@ def get_kob_yue_hant_review_test_cases(
         test cases
     """
     path = output_dir / "yue-Hant/lang/yue/review.json"
-    test_cases = load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
+    test_cases: list[TestCase] = load_test_cases_from_json(
+        path, ReviewManager, prompt=prompt, **kwargs
+    )
     for test_case in test_cases:
         test_case.verified = True
     return test_cases
@@ -259,7 +263,9 @@ def get_kob_yue_hant_simplify_review_test_cases(
         test cases
     """
     path = output_dir / "yue-Hant/lang/yue/simplify_review.json"
-    test_cases = load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
+    test_cases: list[TestCase] = load_test_cases_from_json(
+        path, ReviewManager, prompt=prompt, **kwargs
+    )
     for test_case in test_cases:
         test_case.verified = True
     return test_cases
