@@ -5,11 +5,9 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Mapping
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
-from typing import cast
 from unittest.mock import Mock
 
 import numpy as np
@@ -180,19 +178,29 @@ def test_get_cache_path_separates_model_languages():
     )
 
 
-def test_get_cache_path_uses_mlx_runtime_on_apple_silicon():
-    """Test the cache identity includes MLX-Audio runtime provenance."""
+def test_get_cache_path_uses_installed_mlx_runtime(monkeypatch: pytest.MonkeyPatch):
+    """Test the cache identity includes installed MLX-Audio provenance.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    runtime_identity = {
+        "distribution": "mlx-audio",
+        "version": "test-version",
+        "source_revision": "test-revision",
+    }
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.mlx_audio.transcriber."
+        "get_distribution_identity",
+        lambda _distribution_name: runtime_identity,
+    )
     transcriber = _get_mlx_audio_transcriber(model_spec=MIMO_MODEL)
 
     cache_identity = transcriber._get_cache_identity(
         _get_cache_audio(), TranscriptionPreprocessingSettings(False, False)
     )
 
-    runtime_identity = cast(Mapping[str, object], cache_identity["runtime"])
-    assert runtime_identity["distribution"] == "mlx-audio"
-    assert runtime_identity["source_revision"] == (
-        "ff0197c0ae9f9fd02072904c696f2533e329c06e"
-    )
+    assert cache_identity["runtime"] == runtime_identity
 
 
 def test_get_cache_path_separates_generation_options():

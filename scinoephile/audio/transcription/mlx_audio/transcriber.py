@@ -44,9 +44,6 @@ logger = getLogger(__name__)
 _CHUNK_POSTPROCESSING_VERSION = "2"
 """Version of overlapping chunk ownership and timestamp clipping."""
 
-_MLX_AUDIO_SOURCE_REVISION = "ff0197c0ae9f9fd02072904c696f2533e329c06e"
-"""Pinned MLX-Audio source revision."""
-
 
 class MlxAudioTranscriber(Transcriber):
     """Transcribes audio using MLX-Audio and a timestamp alignment stage."""
@@ -186,10 +183,7 @@ class MlxAudioTranscriber(Transcriber):
             "model_type": self.model.spec.model_type,
             "model_name": self.model.spec.name,
             "model_revision": self.model.spec.revision,
-            "runtime": {
-                **get_distribution_identity("mlx-audio"),
-                "source_revision": _MLX_AUDIO_SOURCE_REVISION,
-            },
+            "runtime": get_distribution_identity("mlx-audio"),
             "language": self.language.code,
             "generate_kw": dict(self.model.generate_kw),
             "chunk_duration_seconds": chunk_duration_seconds,
