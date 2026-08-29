@@ -207,7 +207,18 @@ class MultiStackCli(ScinoephileCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Stack two subtitle series and write the result.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            top_infile_path: top subtitle file or `-` for stdin
+            bottom_infile_path: bottom subtitle file or `-` for stdin
+            sync_cutoff: minimum similarity used for synchronization
+            pause_length: pause length used to split synchronization blocks
+            sync_mode: stacking synchronization mode
+            outfile_path: optional output subtitle file
+            overwrite: whether to overwrite an existing output file
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if top_infile_path == "-" and bottom_infile_path == "-":

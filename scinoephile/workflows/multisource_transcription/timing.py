@@ -9,16 +9,17 @@ from logging import getLogger
 
 from pydub import AudioSegment
 
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
+from scinoephile.analysis.alignment.timed_msa import MsaAlignment
 from scinoephile.analysis.transcription.artifact import TimingSource
 from scinoephile.audio.transcription import (
-    CtcAligner,
     TranscribedSegment,
     TranscriptionAlignmentError,
     TranscriptionEmptyError,
     get_segment_merged,
     get_segment_split_at_idx,
+    get_segment_with_offset,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.core.text import is_lexical_character
 from scinoephile.llms.transcription import (
     TranscriptionAnswer,
@@ -40,7 +41,7 @@ _MINIMUM_EVIDENCE_DEVIATION_SECONDS = 2.0
 
 
 def get_request_interval(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     span: tuple[int, int],
     duration_seconds: float,
     *,
@@ -124,7 +125,7 @@ def get_request_interval(
 
 def get_timed_request_segments(  # noqa: PLR0912, PLR0915
     audio: AudioSegment,
-    alignment: Alignment,
+    alignment: MsaAlignment,
     request_results: Sequence[TranscriptionRequestResult],
     ctc_aligner: CtcAligner,
 ) -> tuple[list[TranscribedSegment], dict[int, TimingSource]]:
@@ -218,7 +219,7 @@ def get_timed_request_segments(  # noqa: PLR0912, PLR0915
         aligned_segment = get_segment_merged(aligned)
         request_segments = _split_aligned_segment(aligned_segment, answer)
         offset_segments = [
-            _get_segment_with_offset(segment, start_seconds)
+            get_segment_with_offset(segment, start_seconds)
             for segment in request_segments
         ]
         previous_end_seconds = 0.0
@@ -253,37 +254,6 @@ def get_timed_request_segments(  # noqa: PLR0912, PLR0915
         )
     }
     return numbered_segments, timing_sources
-
-
-def _get_segment_with_offset(
-    segment: TranscribedSegment, offset_seconds: float
-) -> TranscribedSegment:
-    """Add a source-time offset to a transcription segment.
-
-    Arguments:
-        segment: segment timed against an audio slice
-        offset_seconds: slice start on the containing audio timeline
-    Returns:
-        segment timed against the containing audio
-    """
-    words = None
-    if segment.words is not None:
-        words = [
-            word.model_copy(
-                update={
-                    "start": word.start + offset_seconds,
-                    "end": word.end + offset_seconds,
-                }
-            )
-            for word in segment.words
-        ]
-    return segment.model_copy(
-        update={
-            "start": segment.start + offset_seconds,
-            "end": segment.end + offset_seconds,
-            "words": words,
-        }
-    )
 
 
 def _get_subtitle_evidence_column_indexes(
@@ -327,24 +297,6 @@ def _get_subtitle_evidence_column_indexes(
     return tuple(evidence_by_subtitle)
 
 
-def _is_stretched(segment: TranscribedSegment) -> bool:
-    """Check whether a CTC interval is implausibly long for its lexical text.
-
-    Arguments:
-        segment: CTC-aligned subtitle candidate
-    Returns:
-        whether the interval is disproportionately long
-    """
-    lexical_character_count = sum(
-        is_lexical_character(character) for character in segment.text
-    )
-    maximum_seconds = max(
-        _MINIMUM_STRETCHED_CTC_SECONDS,
-        lexical_character_count * _MAXIMUM_CTC_SECONDS_PER_CHARACTER,
-    )
-    return segment.end - segment.start > maximum_seconds
-
-
 def _is_stretched_beyond_evidence(
     segment: TranscribedSegment, evidence_interval: tuple[float, float]
 ) -> bool:
@@ -356,7 +308,14 @@ def _is_stretched_beyond_evidence(
     Returns:
         whether CTC timing is long and materially outside its evidence
     """
-    if not _is_stretched(segment):
+    lexical_character_count = sum(
+        is_lexical_character(character) for character in segment.text
+    )
+    maximum_seconds = max(
+        _MINIMUM_STRETCHED_CTC_SECONDS,
+        lexical_character_count * _MAXIMUM_CTC_SECONDS_PER_CHARACTER,
+    )
+    if segment.end - segment.start <= maximum_seconds:
         return False
     evidence_start_seconds, evidence_end_seconds = evidence_interval
     evidence_duration_seconds = evidence_end_seconds - evidence_start_seconds
@@ -371,7 +330,7 @@ def _is_stretched_beyond_evidence(
 
 def _repair_stretched_segments(  # noqa: PLR0913
     audio: AudioSegment,
-    alignment: Alignment,
+    alignment: MsaAlignment,
     request_result: TranscriptionRequestResult,
     segments: Sequence[TranscribedSegment],
     ctc_aligner: CtcAligner,
@@ -400,6 +359,8 @@ def _repair_stretched_segments(  # noqa: PLR0913
         timing_source: origin of the request-level CTC timing
     Returns:
         repaired segments and their timing sources
+    Raises:
+        RuntimeError: if subtitle-local CTC changes the requested text
     """
     evidence_by_subtitle = _get_subtitle_evidence_column_indexes(request_result)
     repaired_segments = list(segments)
@@ -450,7 +411,7 @@ def _repair_stretched_segments(  # noqa: PLR0913
                 f"{segment.text!r}: CTC alignment produced no timed text."
             )
             continue
-        repaired = _get_segment_with_offset(get_segment_merged(aligned), start_seconds)
+        repaired = get_segment_with_offset(get_segment_merged(aligned), start_seconds)
         if repaired.text != segment.text:
             raise RuntimeError(
                 "Subtitle-local CTC text does not match the requested consensus."

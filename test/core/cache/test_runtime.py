@@ -13,9 +13,16 @@ from scinoephile.core.cache.runtime import get_distribution_identity
 
 
 def test_get_distribution_identity(monkeypatch: MonkeyPatch):
-    """Test distribution identities include the installed version."""
+    """Test distribution identities include the installed version.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    installed_distribution = Mock(version="1.2.3")
+    installed_distribution.read_text.return_value = None
     monkeypatch.setattr(
-        "scinoephile.core.cache.runtime.version", Mock(return_value="1.2.3")
+        "scinoephile.core.cache.runtime.distribution",
+        Mock(return_value=installed_distribution),
     )
 
     assert get_distribution_identity("test-runtime") == {
@@ -24,12 +31,44 @@ def test_get_distribution_identity(monkeypatch: MonkeyPatch):
     }
 
 
+def test_get_distribution_identity_includes_vcs_revision(monkeypatch: MonkeyPatch):
+    """Test VCS distributions include their installed commit revision.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    installed_distribution = Mock(version="1.2.3")
+    installed_distribution.read_text.return_value = """{
+        "url": "https://example.com/runtime.git",
+        "vcs_info": {
+            "commit_id": "immutable-commit",
+            "requested_revision": "main",
+            "vcs": "git"
+        }
+    }"""
+    monkeypatch.setattr(
+        "scinoephile.core.cache.runtime.distribution",
+        Mock(return_value=installed_distribution),
+    )
+
+    assert get_distribution_identity("test-runtime") == {
+        "distribution": "test-runtime",
+        "version": "1.2.3",
+        "source_revision": "immutable-commit",
+    }
+
+
 def test_get_distribution_identity_handles_missing_distribution(
     monkeypatch: MonkeyPatch,
 ):
-    """Test missing distributions produce a stable unavailable identity."""
+    """Test missing distributions produce a stable unavailable identity.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setattr(
-        "scinoephile.core.cache.runtime.version", Mock(side_effect=PackageNotFoundError)
+        "scinoephile.core.cache.runtime.distribution",
+        Mock(side_effect=PackageNotFoundError),
     )
 
     assert get_distribution_identity("test-runtime") == {

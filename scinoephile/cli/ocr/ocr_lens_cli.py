@@ -154,7 +154,17 @@ class OcrLensCli(ScinoephileCliBase):
         cache_args: CacheArguments,
         retries: int,
     ):
-        """Execute with provided keyword arguments."""
+        """Recognize subtitle images with Google Lens and write the series.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_path: subtitle image directory
+            language: subtitle language
+            outfile_path: output subtitle file
+            overwrite: whether to overwrite the output file
+            cache_args: cache configuration
+            retries: maximum recognition attempts per image
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:

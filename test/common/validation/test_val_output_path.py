@@ -13,7 +13,11 @@ from scinoephile.common.validation import val_output_path
 
 
 def test_val_output_path_accepts_path_values_and_creates_parents(tmp_path: Path):
-    """Test output file validation accepts path values and creates parents."""
+    """Test output file validation accepts path values and creates parents.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     file_path = tmp_path / "subdir" / "output.txt"
 
     assert val_output_path(file_path) == file_path.resolve()
@@ -22,7 +26,11 @@ def test_val_output_path_accepts_path_values_and_creates_parents(tmp_path: Path)
 
 
 def test_val_output_path_respects_create_and_exist_ok(tmp_path: Path):
-    """Test output file validation respects creation and overwrite options."""
+    """Test output file validation respects creation and overwrite options.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     file_path = tmp_path / "output.txt"
     file_path.write_text("existing content", encoding="utf-8")
     nested_path = tmp_path / "missing" / "output.txt"
@@ -35,13 +43,21 @@ def test_val_output_path_respects_create_and_exist_ok(tmp_path: Path):
 
 
 def test_val_output_path_rejects_directories(tmp_path: Path):
-    """Test output file validation rejects directory paths."""
+    """Test output file validation rejects directory paths.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     with raises(NotAFileError):
         val_output_path(tmp_path, exist_ok=True)
 
 
 def test_val_output_path_handles_iterables(tmp_path: Path):
-    """Test output file validation handles iterable values."""
+    """Test output file validation handles iterable values.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     file_paths = [tmp_path / f"output{idx}.txt" for idx in range(2)]
     existing_path = tmp_path / "existing.txt"
     existing_path.write_text("existing content", encoding="utf-8")
@@ -61,7 +77,12 @@ def test_val_output_path_handles_iterables(tmp_path: Path):
 def test_val_output_path_expands_environment_variables(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test output file validation expands environment variables."""
+    """Test output file validation expands environment variables.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     file_path = tmp_path / "output.txt"
     monkeypatch.setenv("OUTPUT_FILE", str(file_path))
 

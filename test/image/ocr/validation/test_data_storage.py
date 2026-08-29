@@ -16,7 +16,12 @@ from scinoephile.image.ocr.validation.char_pair_gaps import (
 
 
 def test_validation_manager_layers_runtime_data_over_repo_data(tmp_path, monkeypatch):
-    """Test loading OCR validation data from repo and runtime directories."""
+    """Test loading OCR validation data from repo and runtime directories.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
@@ -54,7 +59,12 @@ def test_validation_manager_layers_runtime_data_over_repo_data(tmp_path, monkeyp
 
 
 def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path, monkeypatch):
-    """Test dev mode loads active OCR validation data from the repo."""
+    """Test dev mode loads active OCR validation data from the repo.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
@@ -96,7 +106,12 @@ def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path, monkeypatc
 def test_validation_manager_writes_updates_to_runtime_data_by_default(
     tmp_path, monkeypatch
 ):
-    """Test OCR validation data updates write to runtime data by default."""
+    """Test OCR validation data updates write to runtime data by default.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
@@ -115,7 +130,12 @@ def test_validation_manager_writes_updates_to_runtime_data_by_default(
 
 
 def test_validation_manager_writes_only_runtime_updates_to_data(tmp_path, monkeypatch):
-    """Test runtime writes do not snapshot repo validation data."""
+    """Test runtime writes do not snapshot repo validation data.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
@@ -148,7 +168,12 @@ def test_validation_manager_writes_only_runtime_updates_to_data(tmp_path, monkey
 
 
 def test_validation_manager_does_not_persist_default_pair_gaps(tmp_path, monkeypatch):
-    """Test default character pair gaps are remembered without runtime writes."""
+    """Test default character pair gaps are remembered without runtime writes.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
@@ -166,7 +191,12 @@ def test_validation_manager_does_not_persist_default_pair_gaps(tmp_path, monkeyp
 def test_validation_manager_does_not_persist_new_default_pair_gaps_in_dev_mode(
     tmp_path, monkeypatch
 ):
-    """Test new default character pair gaps do not trigger repo writes."""
+    """Test new default character pair gaps do not trigger repo writes.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
@@ -192,7 +222,12 @@ def test_validation_manager_does_not_persist_new_default_pair_gaps_in_dev_mode(
 def test_validation_manager_removes_default_pair_gap_user_override(
     tmp_path, monkeypatch
 ):
-    """Test resetting a user pair gap override to default removes it from disk."""
+    """Test resetting a user pair gap override to default removes it from disk.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
@@ -214,7 +249,12 @@ def test_validation_manager_removes_default_pair_gap_user_override(
 def test_validation_manager_removes_default_pair_gap_repo_override_in_dev_mode(
     tmp_path, monkeypatch
 ):
-    """Test dev-mode reset of a repo pair gap override removes it from disk."""
+    """Test dev-mode reset of a repo pair gap override removes it from disk.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
@@ -232,7 +272,12 @@ def test_validation_manager_removes_default_pair_gap_repo_override_in_dev_mode(
 
 
 def test_validation_manager_allows_new_custom_data_dir(tmp_path, monkeypatch):
-    """Test missing custom data directories are created on first write."""
+    """Test missing custom data directories are created on first write.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
@@ -266,7 +311,12 @@ def test_validation_manager_wraps_data_path_errors(tmp_path):
 
 
 def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path, monkeypatch):
-    """Test dev mode writes OCR validation data updates to repo data."""
+    """Test dev mode writes OCR validation data updates to repo data.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     repo_root_path = tmp_path / "repo"
     repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)

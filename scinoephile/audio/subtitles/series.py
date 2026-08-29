@@ -63,6 +63,8 @@ class AudioSeries(Series):
         Arguments:
             audio: Series audio
             events: individual subtitle events
+        Raises:
+            ValueError: if a value is invalid
         """
         if audio is None:
             raise ValueError("AudioSeries requires audio")
@@ -125,7 +127,6 @@ class AudioSeries(Series):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
     ):
@@ -135,9 +136,10 @@ class AudioSeries(Series):
             path: output file path
             encoding: output file encoding
             format_: output file format
-            fps: frames per second
             errors: encoding error handling
             **kwargs: additional keyword arguments
+        Raises:
+            ScinoephileError: if the operation fails
         """
         path = Path(path)
 
@@ -155,7 +157,6 @@ class AudioSeries(Series):
                 validated_output_path,
                 encoding=encoding,
                 format_=format_,
-                fps=fps,
                 errors=errors,
                 **kwargs,
             )
@@ -172,21 +173,21 @@ class AudioSeries(Series):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
     ) -> Self:
         """Load series from a directory of wav files.
 
         Arguments:
-            path : input directory path
+            path: input directory path
             encoding: input file encoding
             format_: input file format
-            fps: frames per second
             errors: encoding error handling
             **kwargs: additional keyword arguments
         Returns:
             loaded series
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             validated_path = val_input_dir_path(path)
@@ -198,7 +199,6 @@ class AudioSeries(Series):
                 validated_srt_path,
                 encoding=encoding,
                 format_=format_,
-                fps=fps,
                 errors=errors,
                 **kwargs,
             )
@@ -320,6 +320,8 @@ class AudioSeries(Series):
             events: events to include in the copied series
         Returns:
             copied audio series
+        Raises:
+            TypeError: if a value has an invalid type
         """
         audio_events: list[AudioSubtitle] = []
         for event in events:

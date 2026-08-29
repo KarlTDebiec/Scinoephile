@@ -15,20 +15,25 @@ from pydub.effects import normalize
 
 from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
-    CtcAligner,
     DemucsMode,
-    MlxAudioTranscriber,
     TranscribedSegment,
     TranscribedWord,
     TranscriptionError,
     VadMode,
-    WhisperTranscriber,
     get_segment_split_at_idx,
     get_segment_split_on_word_timings,
 )
-from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModel
+from scinoephile.audio.transcription.ctc import CtcAligner
+from scinoephile.audio.transcription.mlx_audio import (
+    MlxAudioModelSpec,
+    MlxAudioTranscriber,
+)
 from scinoephile.audio.transcription.quality import get_transcription_quality_issue
-from scinoephile.audio.transcription.whisper.model import WhisperModel
+from scinoephile.audio.transcription.whisper import (
+    WhisperModel,
+    WhisperModelSpec,
+    WhisperTranscriber,
+)
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -144,7 +149,7 @@ class GuidedTranscriber:
         *,
         language: Language,
         guide_language: Language,
-        audio_model: WhisperModel | MlxAudioModel,
+        spec: WhisperModelSpec | MlxAudioModelSpec,
         aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VadMode = VadMode.OFF,
@@ -160,7 +165,7 @@ class GuidedTranscriber:
         Arguments:
             language: transcription language
             guide_language: guide subtitle language
-            audio_model: configured transcription model
+            spec: speech-to-text model specification
             aligner: transcription aligner
             demucs_mode: Demucs preprocessing mode
             vad_mode: voice activity detection mode
@@ -171,11 +176,14 @@ class GuidedTranscriber:
             segment_splitter: optional strategy for splitting transcribed segments
             strip_generated_punctuation: whether to remove generated sentence
                 punctuation after timing and before guided alignment
+        Raises:
+            ValueError: if a value is invalid
         """
         self.language = language
         self.guide_language = guide_language
-        self.audio_model = audio_model
-        self.model_name = audio_model.model_name
+        self.spec = spec
+        """Speech-to-text model specification."""
+
         self.aligner = aligner
         self.demucs_mode = demucs_mode
         self.vad_mode = vad_mode
@@ -185,7 +193,7 @@ class GuidedTranscriber:
         self.strip_generated_punctuation = strip_generated_punctuation
 
         # Use MLX-Audio's shared preprocessing fallbacks without Whisper recovery
-        if isinstance(self.audio_model, MlxAudioModel):
+        if isinstance(self.spec, MlxAudioModelSpec):
             if self.mlx_audio_transcriber is None:
                 raise ValueError("MLX-Audio backend requires a MLX-Audio transcriber.")
             self.transcriber = self.mlx_audio_transcriber
@@ -194,15 +202,16 @@ class GuidedTranscriber:
             return
 
         # Configure standard preprocessing fallbacks
-        if not isinstance(self.audio_model, WhisperModel):
+        if not isinstance(self.spec, WhisperModelSpec):
             raise ValueError("Whisper backend requires a Whisper model.")
         whisper_ctc_aligner = CtcAligner(
             self.language,
             cache_root_path=cache_root_path,
             overwrite_cache=overwrite_cache,
         )
+        whisper_model = WhisperModel(self.spec, self.language)
         self.transcriber = WhisperTranscriber(
-            model=self.audio_model,
+            model=whisper_model,
             language=self.language,
             demucs_mode=self.demucs_mode,
             vad_mode=self.vad_mode,
@@ -219,7 +228,7 @@ class GuidedTranscriber:
         if self.vad_mode is VadMode.ON:
             recovery_vad_mode = VadMode.ON
         self.recovery_transcriber = WhisperTranscriber(
-            model=self.audio_model,
+            model=whisper_model,
             language=self.language,
             demucs_mode=recovery_demucs_mode,
             vad_mode=recovery_vad_mode,
@@ -233,7 +242,7 @@ class GuidedTranscriber:
 
         # Configure focused recovery for missing speech near a guided tail
         self.tail_recovery_transcriber = WhisperTranscriber(
-            model=self.audio_model,
+            model=whisper_model,
             language=self.language,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VadMode.OFF,
@@ -326,7 +335,7 @@ class GuidedTranscriber:
                 split_segments.extend(self.segment_splitter(segment))
 
         # Expose the configured MLX-Audio timing granularity to guided alignment
-        if isinstance(self.audio_model, MlxAudioModel):
+        if isinstance(self.spec, MlxAudioModelSpec):
             timed_segments = []
             for segment in split_segments:
                 if self.mlx_audio_timing_mode is MlxAudioTimingMode.SEGMENT:
@@ -365,13 +374,19 @@ class GuidedTranscriber:
         Returns:
             transcribed segments
         """
-        if isinstance(self.audio_model, MlxAudioModel):
+        if isinstance(self.spec, MlxAudioModelSpec):
             return self._transcribe_block_audio_with_mlx_audio(audio)
 
         audio_duration = len(audio) / 1000
 
         def is_usable(candidate: list[TranscribedSegment]) -> bool:
-            """Determine whether a transcription candidate is usable."""
+            """Determine whether a transcription candidate is usable.
+
+            Arguments:
+                candidate: transcription candidate
+            Returns:
+                whether the candidate is usable
+            """
             return self._segments_are_usable(candidate, audio_duration=audio_duration)
 
         # Inspect standard and recovery caches before invoking Demucs
@@ -421,7 +436,13 @@ class GuidedTranscriber:
         audio_duration = len(audio) / 1000
 
         def is_usable(segments: list[TranscribedSegment]) -> bool:
-            """Determine whether an MLX-Audio attempt is usable."""
+            """Determine whether an MLX-Audio attempt is usable.
+
+            Arguments:
+                segments: transcribed segments from one attempt
+            Returns:
+                whether the attempt is usable
+            """
             return self._segments_are_usable(segments, audio_duration=audio_duration)
 
         try:
@@ -689,7 +710,16 @@ def _get_phrase_boundary_scores(
     durations: list[float],
     pause_threshold: float,
 ) -> dict[int, int]:
-    """Score phrase boundaries using punctuation and CTC hold durations."""
+    """Score phrase boundaries using punctuation and CTC hold durations.
+
+    Arguments:
+        text: transcription text
+        words: timed transcription words
+        durations: hold durations corresponding to the words
+        pause_threshold: minimum hold duration treated as a pause
+    Returns:
+        boundary scores keyed by character offset
+    """
     boundary_scores: dict[int, int] = {}
     for character_index, character in enumerate(text, 1):
         if character in _MLX_PHRASE_STRONG_PUNCTUATION:

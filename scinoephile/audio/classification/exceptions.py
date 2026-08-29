@@ -6,19 +6,11 @@ from __future__ import annotations
 
 from scinoephile.core import ScinoephileError
 
-__all__ = [
-    "AudioClassificationDependencyError",
-    "AudioClassificationError",
-    "AudioClassificationInferenceError",
-]
+__all__ = ["AudioClassificationError", "AudioClassificationInferenceError"]
 
 
 class AudioClassificationError(ScinoephileError):
     """Base exception for source-wide audio classification failures."""
-
-
-class AudioClassificationDependencyError(AudioClassificationError):
-    """Raised when an optional audio-classification dependency is unavailable."""
 
 
 class AudioClassificationInferenceError(AudioClassificationError):

@@ -118,7 +118,15 @@ class OptimizationSyncPromptsCli(ScinoephileCliBase):
         dry_run: bool,
         outfile_path: Path,
     ):
-        """Execute with provided keyword arguments."""
+        """Synchronize prompt definitions to a catalog file.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            prompt_aliases: optional prompt aliases to synchronize
+            all_prompts: whether to synchronize all prompts
+            dry_run: whether to report changes without writing
+            outfile_path: output prompt catalog path
+        """
         parser = _parser or cls.argparser()
 
         # Perform operations

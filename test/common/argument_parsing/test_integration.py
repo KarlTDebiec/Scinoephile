@@ -11,7 +11,11 @@ from scinoephile.common.argument_parsing import input_file_arg, int_arg
 
 
 def test_validators_in_argparse(tmp_path: Path):
-    """Test using validators in ArgumentParser."""
+    """Test using validators in ArgumentParser.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     parser = ArgumentParser()
 
     test_file = tmp_path / "input.txt"

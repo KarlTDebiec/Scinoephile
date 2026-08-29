@@ -15,6 +15,8 @@ def assert_series_equal(actual: SSAFile, expected: SSAFile):
     Arguments:
         actual: actual subtitle series
         expected: expected subtitle series
+    Raises:
+        AssertionError: if an internal invariant is violated
     """
     _assert_subtitle_series(actual, "actual")
     _assert_subtitle_series(expected, "expected")
@@ -53,6 +55,8 @@ def _assert_subtitle_series(value: object, label: str):
     Arguments:
         value: value to validate
         label: name of the validated value
+    Raises:
+        AssertionError: if an internal invariant is violated
     """
     if not isinstance(value, SSAFile):
         raise AssertionError(

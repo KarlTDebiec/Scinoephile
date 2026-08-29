@@ -55,15 +55,6 @@ class TranscriptionValidation:
     """Corroborating profile column for each lexical answer character."""
 
     @property
-    def answer_evidence_column_indexes(self) -> tuple[int, ...]:
-        """Get all profile columns corroborating answer characters."""
-        return tuple(
-            column_idx
-            for column_idx in self.answer_character_evidence_column_indexes
-            if column_idx is not None
-        )
-
-    @property
     def longest_unpreserved_consensus_run(self) -> int:
         """Get the longest consecutive run of unpreserved consensus columns."""
         return len(self.longest_unpreserved_consensus_text)
@@ -102,10 +93,6 @@ class TranscriptionValidation:
                 "Maximum unsupported character count must be non-negative."
             )
         return self.longest_unsupported_answer_run <= maximum_unsupported_characters
-
-    def has_supported_boundary(self) -> bool:
-        """Whether a short answer avoids a fragile source-unsupported boundary."""
-        return not self.fragile_boundary_answer_text
 
     def preserves_consensus(self, maximum_unpreserved_columns: int) -> bool:
         """Whether the answer avoids a long omission of strong consensus evidence.
@@ -156,7 +143,7 @@ class TranscriptionAlignmentScorer:
         """
         consensus_character = None
         consensus_count = required_source_count - 1
-        for candidate in source_characters:
+        for candidate in dict.fromkeys(source_characters):
             count = sum(
                 self.get_character_relationship(candidate, character)
                 >= TranscriptionCharacterRelationship.EQUIVALENT
@@ -304,7 +291,17 @@ class TranscriptionAlignmentScorer:
         answer_characters: Sequence[str],
         source_count: int,
     ) -> tuple[int | None, ...]:
-        """Project answer characters onto fixed profile columns."""
+        """Project answer characters onto fixed profile columns.
+
+        Arguments:
+            profile_columns: indexed source-character profile columns
+            answer_characters: answer characters to project
+            source_count: total number of transcription sources
+        Returns:
+            profile column index for each answer character, when mapped
+        Raises:
+            RuntimeError: if the operation cannot be completed
+        """
         profile_length = len(profile_columns)
         answer_length = len(answer_characters)
         scores = [
@@ -376,7 +373,13 @@ class TranscriptionAlignmentScorer:
     def _get_relationship_score(
         relationship: TranscriptionCharacterRelationship,
     ) -> float:
-        """Get the profile-alignment substitution score for a relationship."""
+        """Get the profile-alignment substitution score for a relationship.
+
+        Arguments:
+            relationship: relationship between answer and source characters
+        Returns:
+            substitution score
+        """
         if relationship is TranscriptionCharacterRelationship.EXACT:
             return 6.0
         if relationship is TranscriptionCharacterRelationship.EQUIVALENT:
@@ -391,7 +394,15 @@ def _get_fragile_boundary_text(
     answer_support_counts: Sequence[int],
     corroborating_source_count: int,
 ) -> str:
-    """Get a short boundary phrase mixing invented and single-source text."""
+    """Get a short boundary phrase mixing invented and single-source text.
+
+    Arguments:
+        answer_characters: lexical answer characters
+        answer_support_counts: supporting source count for each answer character
+        corroborating_source_count: support count required for corroboration
+    Returns:
+        longest fragile boundary phrase, or an empty string
+    """
     if len(answer_characters) > 4:
         return ""
 
@@ -448,7 +459,13 @@ def _get_longest_run_text(
 
 
 def _validate_rows(source_texts: Sequence[str]):
-    """Validate aligned source row widths."""
+    """Validate aligned source row widths.
+
+    Arguments:
+        source_texts: aligned source rows
+    Raises:
+        ValueError: if a value is invalid
+    """
     if not source_texts:
         raise ValueError("Transcription validation requires at least one source.")
     row_lengths = {len(source_text) for source_text in source_texts}

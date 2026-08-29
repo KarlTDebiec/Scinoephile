@@ -7,12 +7,13 @@ from __future__ import annotations
 from functools import partial
 
 from scinoephile.core import Language
+from scinoephile.core.script import OpenCCConfig
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.llms.guided_review import GuidedReviewPrompt
 from scinoephile.llms.review import ReviewPrompt
 
 from .prompts import ZHO_HANT_PROMPT_FIELDS
-from .script.conversion import OpenCCConfig, get_zho_text_converted
+from .script.conversion import get_zho_text_converted
 
 __all__ = [
     "GuidedReviewPromptZhoHans",

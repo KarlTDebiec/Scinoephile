@@ -97,6 +97,8 @@ def get_img_with_white_bg(img: Image.Image) -> Image.Image:
         img: Image with transparency
     Returns:
         Image on white background
+    Raises:
+        ScinoephileError: if the operation fails
     """
     if img.mode == "LA":
         img_la = Image.new("LA", img.size, (255, 255))

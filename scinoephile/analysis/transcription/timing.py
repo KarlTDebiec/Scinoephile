@@ -297,13 +297,13 @@ def get_display_intervals(
 def get_reference_for_alignment(
     artifact: AlignmentArtifact, reference: Series
 ) -> Series:
-    """Select reference subtitles owned by the artifact's VAD block cores.
+    """Select reference subtitles owned by the artifact's processed blocks.
 
     Arguments:
         artifact: alignment artifact whose processed block range is authoritative
         reference: complete independent reference series
     Returns:
-        reference subtitles whose midpoint lies within a processed block core
+        reference subtitles whose midpoint lies within a processed block
     """
     return Series(
         events=[
@@ -376,7 +376,14 @@ def _get_blocks_with_display_timing(
 def _get_candidate_series(
     artifact: AlignmentArtifact, settings: TimingSettings | None
 ) -> Series:
-    """Get candidate subtitles using stored or recalculated display timing."""
+    """Get candidate subtitles using stored or recalculated display timing.
+
+    Arguments:
+        artifact: alignment artifact containing candidate subtitles
+        settings: display-timing settings, or None to use stored timing
+    Returns:
+        candidate subtitle series
+    """
     if settings is None:
         return artifact.get_series()
     return retime_alignment(artifact, settings).get_series()
@@ -432,21 +439,25 @@ def _get_reference_selection(
     Returns:
         selected original indexes and reference subtitles
     """
-    core_ranges = tuple(
-        (block.core_start_ms, block.core_end_ms) for block in artifact.blocks
-    )
+    block_ranges = tuple((block.start_ms, block.end_ms) for block in artifact.blocks)
     return tuple(
         (index, subtitle)
         for index, subtitle in enumerate(reference)
         if any(
             start_ms <= (subtitle.start + subtitle.end) / 2 < end_ms
-            for start_ms, end_ms in core_ranges
+            for start_ms, end_ms in block_ranges
         )
     )
 
 
 def _get_speech_series(artifact: AlignmentArtifact) -> Series:
-    """Get merged text at immutable CTC speech bounds for evaluation pairing."""
+    """Get merged text at immutable CTC speech bounds for evaluation pairing.
+
+    Arguments:
+        artifact: alignment artifact containing merged subtitles
+    Returns:
+        merged subtitle series using immutable speech bounds
+    """
     return Series(
         events=[
             Subtitle(

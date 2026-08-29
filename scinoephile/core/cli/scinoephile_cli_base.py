@@ -65,7 +65,13 @@ class ScinoephileCliBase(CommandLineInterface):
         """
 
         def normalize(locale_name: str | None) -> str | None:
-            """Normalize locale names to supported values."""
+            """Normalize a locale name to a supported value.
+
+            Arguments:
+                locale_name: locale name to normalize
+            Returns:
+                normalized locale, or `None` when unavailable
+            """
             if locale_name is None:
                 return None
             compact = locale_name.strip().split("@", maxsplit=1)[0]
@@ -114,7 +120,11 @@ class ScinoephileCliBase(CommandLineInterface):
 
     @classmethod
     def description(cls) -> str:
-        """Long description of this tool displayed below usage."""
+        """Get the localized long description displayed below usage.
+
+        Returns:
+            localized long tool description
+        """
         if cls.__doc__ is None:
             return ""
         return "\n\n".join(
@@ -145,7 +155,13 @@ class ScinoephileCliBase(CommandLineInterface):
     def argparser(
         cls, *, subparsers: _SubParsersAction | None = None
     ) -> ArgumentParser:
-        """Construct localized argument parser."""
+        """Construct a localized argument parser.
+
+        Arguments:
+            subparsers: optional parent subparser collection
+        Returns:
+            localized argument parser
+        """
         parser = super().argparser(subparsers=subparsers)
         cls.localize_parser(parser)
         return parser

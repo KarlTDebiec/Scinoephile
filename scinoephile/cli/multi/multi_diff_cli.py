@@ -151,7 +151,16 @@ class MultiDiffCli(ScinoephileCliBase):
         reference_label: str,
         candidate_label: str,
     ):
-        """Execute with provided keyword arguments."""
+        """Compare two subtitle series and print their differences.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            reference_infile_path: reference subtitle file or `-` for stdin
+            candidate_infile_path: candidate subtitle file or `-` for stdin
+            similarity_cutoff: minimum similarity for aligned text
+            reference_label: label for reference output
+            candidate_label: label for candidate output
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if reference_infile_path == "-" and candidate_infile_path == "-":

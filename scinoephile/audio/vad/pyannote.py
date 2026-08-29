@@ -10,8 +10,14 @@ from typing import TYPE_CHECKING, cast
 import numpy as np
 
 from scinoephile.audio.waveform import to_mono_int16
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
-from scinoephile.core.dependencies import transcription
+from scinoephile.core.dependencies.transcription import (
+    import_pyannote_audio,
+    import_pyannote_audio_voice_activity_detection,
+    import_torch,
+)
+from scinoephile.core.exceptions import DependencyError
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
 from .exceptions import VoiceActivityError
@@ -50,12 +56,15 @@ class PyannoteVadProvider(VadProvider):
         """Lazily loaded pyannote voice activity detection pipeline."""
 
     @property
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the pyannote model and runtime identity."""
         return {
             "model": _MODEL_ID,
             "model_revision": _MODEL_REVISION,
-            "runtime": get_distribution_identity("pyannote.audio"),
+            "runtime": {
+                "pyannote_audio": get_distribution_identity("pyannote.audio"),
+                "torch": get_distribution_identity("torch"),
+            },
         }
 
     def get_trace(self, audio: AudioSegment) -> VoiceActivityTrace:
@@ -65,6 +74,9 @@ class PyannoteVadProvider(VadProvider):
             audio: source audio
         Returns:
             model scores aligned to the source timeline
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            VoiceActivityError: if inference fails
         """
         if not len(audio):
             return VoiceActivityTrace(
@@ -74,9 +86,9 @@ class PyannoteVadProvider(VadProvider):
                 duration_ms=0,
             )
 
+        torch = import_torch()
+        pipeline = self._load_pipeline()
         try:
-            torch = transcription.import_torch()
-            pipeline = self._load_pipeline(torch)
             samples = to_mono_int16(audio, self.sample_rate)
             samples = samples.astype(np.float32).reshape(1, -1)
             samples /= float(1 << 15)
@@ -108,18 +120,19 @@ class PyannoteVadProvider(VadProvider):
         except Exception as exc:
             raise VoiceActivityError(f"Unable to run pyannote VAD: {exc}") from exc
 
-    def _load_pipeline(self, torch: object) -> object:
+    def _load_pipeline(self) -> object:
         """Lazily load and configure pyannote voice activity detection.
 
-        Arguments:
-            torch: imported Torch module
         Returns:
             configured pyannote VAD pipeline
+        Raises:
+            DependencyError: if optional dependencies are unavailable
+            VoiceActivityError: if pipeline loading fails
         """
         if self._pipeline is not None:
             return self._pipeline
         try:
-            pyannote_audio = transcription.import_pyannote_audio()
+            pyannote_audio = import_pyannote_audio()
             model_class = getattr(pyannote_audio, "Model")
             from_pretrained = cast(
                 Callable[..., object], getattr(model_class, "from_pretrained")
@@ -133,17 +146,12 @@ class PyannoteVadProvider(VadProvider):
                     "Unable to load the gated pyannote segmentation model. Accept "
                     "its Hugging Face conditions and configure a Hugging Face token."
                 )
-            pipeline_class = (
-                transcription.import_pyannote_audio_voice_activity_detection()
-            )
+            pipeline_class = import_pyannote_audio_voice_activity_detection()
             pipeline = pipeline_class(segmentation=model)
+            torch = import_torch()
             device = cast(Callable[[str], object], getattr(torch, "device"))("cpu")
             cast(Callable[[object], object], getattr(pipeline, "to"))(device)
-        except ImportError as exc:
-            raise VoiceActivityError(
-                "pyannote VAD requires the optional transcription dependencies."
-            ) from exc
-        except VoiceActivityError:
+        except (DependencyError, VoiceActivityError):
             raise
         except Exception as exc:
             exception_name = type(exc).__name__

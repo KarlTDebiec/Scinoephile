@@ -105,12 +105,20 @@ class CommandLineInterface(ABC):
 
     @classmethod
     def description(cls) -> str:
-        """Long description of this tool displayed below usage."""
+        """Get the long description displayed below usage.
+
+        Returns:
+            long tool description
+        """
         return cleandoc(cls.__doc__) if cls.__doc__ else ""
 
     @classmethod
     def help(cls) -> str:
-        """Short description of this tool used when it is a subparser."""
+        """Get the short description used when this tool is a subparser.
+
+        Returns:
+            short tool description
+        """
         text = re.split(r"\.\s+", str(cls.description()))[0].rstrip(".")
         return text[0].lower() + text[1:]
 
@@ -139,7 +147,11 @@ class CommandLineInterface(ABC):
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Get the name used to define this tool as a subparser.
+
+        Returns:
+            subparser name
+        """
         name = cls.__name__
         if name.endswith("Cli"):
             name = name[:-3]
@@ -160,5 +172,9 @@ class CommandLineInterface(ABC):
         @classmethod
         @abstractmethod
         def _main(cls, **kwargs: Any):
-            """Execute with provided keyword arguments."""
+            """Execute with provided keyword arguments.
+
+            Arguments:
+                **kwargs: parsed command-line arguments
+            """
             raise NotImplementedError()

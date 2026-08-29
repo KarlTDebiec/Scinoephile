@@ -113,7 +113,15 @@ class MediaProbeCli(ScinoephileCliBase):
         force_check_script: bool,
         cache_args: CacheArguments,
     ):
-        """Execute with provided keyword arguments."""
+        """Probe a media file and print its streams.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_path: video file containing media streams
+            details: whether to include additional stream details
+            force_check_script: whether to analyze a standalone SUP file's script
+            cache_args: cache configuration
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if force_check_script and infile_path.suffix.lower() != ".sup":

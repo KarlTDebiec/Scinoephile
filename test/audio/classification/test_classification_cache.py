@@ -15,6 +15,7 @@ from scinoephile.audio.classification import (
     AudioClassificationCache,
     LanguageIdentificationResult,
 )
+from scinoephile.core.cache.identity import CacheIdentity
 
 
 def test_classification_cache_discards_invalid_payload(tmp_path: Path):
@@ -25,7 +26,7 @@ def test_classification_cache_discards_invalid_payload(tmp_path: Path):
     """
     cache = AudioClassificationCache(tmp_path, AudioCacheNamespace.CLASSIFICATION_EVENT)
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model": "test/model"}
+    cache_identity: CacheIdentity = {"model": "test/model"}
     cache_path = cache.get_path(audio, cache_identity)
     cache_path.write_text("not JSON", encoding="utf-8")
 
@@ -43,7 +44,7 @@ def test_classification_cache_discards_unsupported_version(tmp_path: Path):
         tmp_path, AudioCacheNamespace.CLASSIFICATION_LANGUAGE
     )
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model": "test/model"}
+    cache_identity: CacheIdentity = {"model": "test/model"}
     result = LanguageIdentificationResult(spans=[])
     cache_path = cache.save(audio, cache_identity, result)
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
@@ -61,7 +62,7 @@ def test_classification_cache_overwrites_matching_entry_once(tmp_path: Path):
         tmp_path: temporary cache root path
     """
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model": "test/model"}
+    cache_identity: CacheIdentity = {"model": "test/model"}
     result = LanguageIdentificationResult(spans=[])
     AudioClassificationCache(
         tmp_path, AudioCacheNamespace.CLASSIFICATION_LANGUAGE
@@ -92,7 +93,7 @@ def test_classification_cache_round_trip(tmp_path: Path):
         tmp_path, AudioCacheNamespace.CLASSIFICATION_LANGUAGE
     )
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model": "test/model"}
+    cache_identity: CacheIdentity = {"model": "test/model"}
     result = LanguageIdentificationResult(spans=[])
 
     cache_path = cache.save(audio, cache_identity, result)

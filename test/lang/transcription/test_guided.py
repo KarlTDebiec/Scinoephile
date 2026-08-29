@@ -11,22 +11,19 @@ from unittest.mock import Mock, patch
 
 from pytest import mark, raises
 
-from scinoephile.audio.transcription import (
-    CtcAligner,
-    DemucsMode,
-    VadMode,
-    WhisperTranscriber,
-)
-from scinoephile.audio.transcription.mlx_audio.model import (
+from scinoephile.audio.transcription import DemucsMode, VadMode
+from scinoephile.audio.transcription.ctc import CtcAligner
+from scinoephile.audio.transcription.mlx_audio import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioModel,
+    MlxAudioModelSpec,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
+    WhisperTranscriber,
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
@@ -66,9 +63,9 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)].language_spec
     )
     language_spec = DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
-    whisper_model = language_spec.models[TranscriptionModel.WHISPER]
-    assert set(language_spec.models) == set(TranscriptionModel)
-    assert whisper_model is WHISPER_LARGE_V3_CANTONESE_MODEL
+    whisper_spec = language_spec.specs[TranscriptionModel.WHISPER]
+    assert set(language_spec.specs) == set(TranscriptionModel)
+    assert whisper_spec is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert any(
         path.parts[0] == "kob"
         for path in DEFAULT_SPECS[
@@ -81,18 +78,22 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
             (Language.yue_hant, Language.zho_hant)
         ].punctuation_json_paths
     )
-    mutable_specs = cast(dict, DEFAULT_SPECS)
+    mutable_default_specs = cast(dict, DEFAULT_SPECS)
     with raises(TypeError):
-        mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[
+        mutable_default_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[
             (Language.yue_hans, Language.zho_hans)
         ]
-    mutable_models = cast(dict, language_spec.models)
+    mutable_model_specs = cast(dict, language_spec.specs)
     with raises(TypeError):
-        mutable_models[TranscriptionModel.WHISPER] = whisper_model
+        mutable_model_specs[TranscriptionModel.WHISPER] = whisper_spec
 
 
-def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path):
-    """Test factory configures language-specific prompts and Whisper language."""
+def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path: Path):
+    """Test factory configures language-specific prompts and Whisper language.
+
+    Arguments:
+        tmp_path: temporary cache directory path
+    """
     with (
         patch(
             "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
@@ -123,10 +124,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.vad_mode is VadMode.OFF
     assert not hasattr(transcriber, "overwrite_cache")
     assert not hasattr(transcriber, "cache_root_path")
-    assert (transcriber.audio_model, transcriber.model_name) == (
-        WHISPER_LARGE_V3_CANTONESE_MODEL,
-        WHISPER_LARGE_V3_CANTONESE_MODEL.model_name,
-    )
+    assert transcriber.spec is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert transcriber.segment_splitter is not None
     assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
     assert isinstance(transcriber.aligner.punctuation_processor, PunctuationProcessor)
@@ -138,7 +136,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     )
     whisper_transcriber = transcriber.transcriber
     assert isinstance(whisper_transcriber, WhisperTranscriber)
-    assert whisper_transcriber.model is WHISPER_LARGE_V3_CANTONESE_MODEL
+    assert whisper_transcriber.model.spec is WHISPER_LARGE_V3_CANTONESE_MODEL
     assert whisper_transcriber.language is Language.yue_hant
     assert transcriber.transcriber.demucs_mode is DemucsMode.OFF
     assert transcriber.transcriber.vad_mode is VadMode.OFF
@@ -189,7 +187,7 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
 
 
 @mark.parametrize(
-    ("model", "expected_mlx_audio_model"),
+    ("model", "expected_spec"),
     [
         (TranscriptionModel.MIMO, MIMO_MODEL),
         (TranscriptionModel.QWEN3_ASR, QWEN3_ASR_MODEL),
@@ -199,14 +197,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     ],
 )
 def test_get_guided_transcriber_configures_mlx_audio_model(
-    tmp_path: Path, model: TranscriptionModel, expected_mlx_audio_model: MlxAudioModel
+    tmp_path: Path, model: TranscriptionModel, expected_spec: MlxAudioModelSpec
 ):
     """Test the factory selects each complete MLX-Audio model.
 
     Arguments:
         tmp_path: temporary directory path
         model: supported transcription model
-        expected_mlx_audio_model: expected explicit MLX-Audio model
+        expected_spec: expected MLX-Audio model specification
     """
     mlx_audio_transcriber = Mock()
     with patch(
@@ -220,7 +218,6 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
             cache_root_path=tmp_path,
             strip_generated_punctuation=True,
             mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
-            mlx_audio_token_limit_guard=True,
             provider=Mock(
                 spec=LLMProvider,
                 cache_identity={"implementation": "test"},
@@ -232,26 +229,29 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
             punctuation_test_cases=[],
         )
 
-    assert transcriber.audio_model is expected_mlx_audio_model
-    assert transcriber.model_name == expected_mlx_audio_model.model_name
+    assert transcriber.spec is expected_spec
     assert transcriber.transcriber is mlx_audio_transcriber
     assert transcriber.recovery_transcriber is None
     assert transcriber.tail_recovery_transcriber is None
     assert transcriber.strip_generated_punctuation
     assert transcriber.mlx_audio_timing_mode is MlxAudioTimingMode.PHRASE
-    mlx_audio_transcriber_class.assert_called_once_with(
-        model=expected_mlx_audio_model,
-        language=Language.yue_hant,
-        token_limit_guard=True,
-        demucs_mode=DemucsMode.OFF,
-        vad_mode=VadMode.OFF,
-        cache_root_path=tmp_path,
-        overwrite_cache=False,
-    )
+    mlx_audio_transcriber_class.assert_called_once()
+    transcriber_kw = mlx_audio_transcriber_class.call_args.kwargs
+    assert transcriber_kw["model"].spec is expected_spec
+    assert isinstance(transcriber_kw["ctc_aligner"], CtcAligner)
+    assert transcriber_kw["ctc_aligner"].language is Language.yue_hant
+    assert transcriber_kw["demucs_mode"] is DemucsMode.OFF
+    assert transcriber_kw["vad_mode"] is VadMode.OFF
+    assert transcriber_kw["cache_root_path"] == tmp_path
+    assert not transcriber_kw["overwrite_cache"]
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path):
-    """Test requested pruning retains only cases encountered by the current run."""
+    """Test requested pruning retains only cases encountered by the current run.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     delineation_json_path = tmp_path / "custom" / "delineation.json"
     punctuation_json_path = tmp_path / "other" / "punctuation.json"
     transcriber = get_guided_transcriber(
@@ -313,7 +313,11 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path
 
 
 def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: Path):
-    """Test default JSON test cases are preserved between runs."""
+    """Test default JSON test cases are preserved between runs.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     with (
         patch(
             "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
@@ -357,6 +361,8 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: 
             "difficulty": 2,
         }
     ]
+    delineation_json_path.parent.mkdir(parents=True, exist_ok=True)
+    punctuation_json_path.parent.mkdir(parents=True, exist_ok=True)
     delineation_json_path.write_text(
         json.dumps(delineation_test_case_data), encoding="utf-8"
     )
@@ -375,7 +381,11 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: 
 
 
 def test_get_guided_transcriber_loads_verified_cases_from_exact_json(tmp_path: Path):
-    """Test an exact JSON's verified cases bypass the provider and few-shot prompt."""
+    """Test an exact JSON's verified cases bypass the provider and few-shot prompt.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = DelineationManager.get_test_case_cls(YueZhoDelineationPromptYueHant)
     verified_test_case = test_case_cls.model_validate(
         {

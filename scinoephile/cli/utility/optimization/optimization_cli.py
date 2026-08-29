@@ -68,7 +68,12 @@ class OptimizationCli(ScinoephileCliBase):
 
     @classmethod
     def _main(cls, *, optimization_subcommand_name: str, **kwargs: Any):
-        """Execute with provided keyword arguments."""
+        """Dispatch to a prompt-optimization subcommand.
+
+        Arguments:
+            optimization_subcommand_name: selected optimization subcommand
+            **kwargs: arguments forwarded to the selected subcommand
+        """
         cls.subcommands()[optimization_subcommand_name]._main(**kwargs)
 
 

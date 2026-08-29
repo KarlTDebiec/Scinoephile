@@ -60,7 +60,7 @@ class LanguageIdentificationResult(BaseModel):
     """Ordered source-timeline spoken-language classifications."""
 
     spans: list[LanguageSpan]
-    """VAD-derived utterance windows with FireRed language labels."""
+    """Selected utterance windows with FireRed language labels."""
 
     def get_language(self, start: float, end: float) -> str | None:
         """Get the language span with greatest overlap with an interval.

@@ -35,7 +35,11 @@ class ArgsCaptureCli(CommandLineInterface):
 
     @classmethod
     def _main(cls, *, name: str):
-        """Execute test CLI."""
+        """Execute test CLI.
+
+        Arguments:
+            name: name
+        """
         cls.captured["name"] = name
 
 
@@ -54,7 +58,11 @@ class RequiredArgCli(CommandLineInterface):
 
     @classmethod
     def _main(cls, *, name: str):
-        """Execute test CLI."""
+        """Execute test CLI.
+
+        Arguments:
+            name: name
+        """
 
 
 class TestCli(CommandLineInterface):
@@ -228,7 +236,11 @@ def test_main_with_verbosity():
 
 
 def test_main_with_log_file(tmp_path: Path):
-    """Test main() method handles log file."""
+    """Test main() method handles log file.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     log_file = tmp_path / "test.log"
 
     with patch.object(TestCli, "_main") as mock_main:

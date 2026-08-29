@@ -13,7 +13,6 @@ from __future__ import annotations
 from .cache import SpeakerDiarizationCache
 from .exceptions import (
     SpeakerDiarizationAuthorizationError,
-    SpeakerDiarizationDependencyError,
     SpeakerDiarizationError,
     SpeakerDiarizationInferenceError,
 )
@@ -24,7 +23,6 @@ __all__ = [
     "PyannoteDiarizer",
     "SpeakerDiarizationAuthorizationError",
     "SpeakerDiarizationCache",
-    "SpeakerDiarizationDependencyError",
     "SpeakerDiarizationError",
     "SpeakerDiarizationInferenceError",
     "SpeakerDiarizationResult",

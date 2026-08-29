@@ -5,9 +5,13 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
 from types import ModuleType
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
+from warnings import catch_warnings, filterwarnings
+
+from scinoephile.core.exceptions import DependencyError
 
 __all__ = [
     "import_demucs_infer_apply",
@@ -16,6 +20,7 @@ __all__ = [
     "import_firered_lid",
     "import_huggingface_hub",
     "import_huggingface_hub_utils",
+    "import_mlx_audio_mimo_asr",
     "import_mlx_audio_stt_load",
     "import_pyannote_audio",
     "import_pyannote_audio_voice_activity_detection",
@@ -48,11 +53,13 @@ def import_demucs_infer_apply() -> ModuleType:
 
     Returns:
         Demucs model application module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         import demucs_infer.apply as demucs_infer_apply
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return demucs_infer_apply
 
 
@@ -61,11 +68,13 @@ def import_demucs_infer_pretrained() -> ModuleType:
 
     Returns:
         Demucs pretrained-model module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         import demucs_infer.pretrained as demucs_infer_pretrained
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return demucs_infer_pretrained
 
 
@@ -74,11 +83,13 @@ def import_firered_aed() -> tuple[type[object], type[object]]:
 
     Returns:
         FireRed AED model and configuration classes
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         from fireredasr2s.fireredvad import FireRedAed, FireRedAedConfig
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return FireRedAed, FireRedAedConfig
 
 
@@ -87,11 +98,13 @@ def import_firered_lid() -> tuple[type[object], type[object]]:
 
     Returns:
         FireRed LID model and configuration classes
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         from fireredasr2s.fireredlid import FireRedLid, FireRedLidConfig
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return FireRedLid, FireRedLidConfig
 
 
@@ -100,11 +113,13 @@ def import_huggingface_hub() -> ModuleType:
 
     Returns:
         Hugging Face Hub module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         import huggingface_hub
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return huggingface_hub
 
 
@@ -113,24 +128,43 @@ def import_huggingface_hub_utils() -> ModuleType:
 
     Returns:
         Hugging Face Hub utilities module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         import huggingface_hub.utils as huggingface_hub_utils
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return huggingface_hub_utils
 
 
-def import_mlx_audio_stt_load() -> Callable[..., object]:
+def import_mlx_audio_mimo_asr() -> ModuleType:
+    """Import the MLX-Audio MiMo ASR implementation on demand.
+
+    Returns:
+        MLX-Audio MiMo ASR module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
+    """
+    try:
+        import mlx_audio.stt.models.mimo_v2_asr.asr as mimo_asr
+    except ImportError as exc:
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+    return mimo_asr
+
+
+def import_mlx_audio_stt_load() -> Callable[..., Any]:
     """Import the MLX-Audio STT model loader on demand.
 
     Returns:
         MLX-Audio model loader
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         from mlx_audio.stt import load
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return load
 
 
@@ -139,11 +173,14 @@ def import_pyannote_audio() -> ModuleType:
 
     Returns:
         pyannote.audio module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
-        import pyannote.audio
+        with _ignore_pyannote_torchcodec_warning():
+            import pyannote.audio
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return pyannote.audio
 
 
@@ -152,11 +189,14 @@ def import_pyannote_audio_voice_activity_detection() -> Callable[..., object]:
 
     Returns:
         pyannote.audio voice activity detection pipeline class
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
-        from pyannote.audio.pipelines import VoiceActivityDetection
+        with _ignore_pyannote_torchcodec_warning():
+            from pyannote.audio.pipelines import VoiceActivityDetection
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return VoiceActivityDetection
 
 
@@ -165,11 +205,13 @@ def import_silero_vad_load_silero_vad() -> Callable[..., object]:
 
     Returns:
         Silero model loader
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         from silero_vad import load_silero_vad
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return load_silero_vad
 
 
@@ -178,11 +220,13 @@ def import_ten_vad() -> ModuleType:
 
     Returns:
         TEN VAD module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         import ten_vad
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return ten_vad
 
 
@@ -191,11 +235,13 @@ def import_torch() -> ModuleType:
 
     Returns:
         Torch module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         import torch
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return torch
 
 
@@ -204,11 +250,13 @@ def import_torchaudio() -> ModuleType:
 
     Returns:
         Torchaudio module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         import torchaudio
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return torchaudio
 
 
@@ -217,11 +265,13 @@ def import_transformers() -> ModuleType:
 
     Returns:
         Transformers module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         import transformers
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return transformers
 
 
@@ -230,9 +280,27 @@ def import_whisper_timestamped() -> ModuleType:
 
     Returns:
         Whisper Timestamped module
+    Raises:
+        DependencyError: if transcription dependencies are unavailable
     """
     try:
         import whisper_timestamped
     except ImportError as exc:
-        raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return whisper_timestamped
+
+
+@contextmanager
+def _ignore_pyannote_torchcodec_warning() -> Iterator[None]:
+    """Ignore pyannote's irrelevant optional audio-decoder warning.
+
+    Yields:
+        control while the warning filter is active
+    """
+    with catch_warnings():
+        filterwarnings(
+            "ignore",
+            message=r"\s*torchcodec is not installed correctly",
+            category=UserWarning,
+        )
+        yield

@@ -43,7 +43,18 @@ def test_multi_timewarp_cli_passes_arguments_and_writes_file(tmp_path: Path):
         two_start_idx: int,
         two_end_idx: int,
     ) -> Series:
-        """Validate timewarp inputs."""
+        """Validate timewarp inputs.
+
+        Arguments:
+            source_one: source one value
+            source_two: source two value
+            one_start_idx: one start idx value
+            one_end_idx: one end idx value
+            two_start_idx: two start idx value
+            two_end_idx: two end idx value
+        Returns:
+            timewarped
+        """
         nonlocal timewarp_calls
         timewarp_calls += 1
         assert_series_equal(source_one, anchor_series)

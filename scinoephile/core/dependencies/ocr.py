@@ -7,6 +7,8 @@ from __future__ import annotations
 
 from types import ModuleType
 
+from scinoephile.core.exceptions import DependencyError
+
 __all__ = ["import_chrome_lens_py", "import_paddleocr"]
 
 _OCR_EXTRA_MESSAGE = (
@@ -20,11 +22,13 @@ def import_chrome_lens_py() -> ModuleType:
 
     Returns:
         chrome-lens-py module
+    Raises:
+        DependencyError: if OCR dependencies are unavailable
     """
     try:
         import chrome_lens_py
     except ImportError as exc:
-        raise ImportError(_OCR_EXTRA_MESSAGE) from exc
+        raise DependencyError(_OCR_EXTRA_MESSAGE) from exc
     return chrome_lens_py
 
 
@@ -33,9 +37,11 @@ def import_paddleocr() -> ModuleType:
 
     Returns:
         PaddleOCR module
+    Raises:
+        DependencyError: if OCR dependencies are unavailable
     """
     try:
         import paddleocr
     except ImportError as exc:
-        raise ImportError(_OCR_EXTRA_MESSAGE) from exc
+        raise DependencyError(_OCR_EXTRA_MESSAGE) from exc
     return paddleocr

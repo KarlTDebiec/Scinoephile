@@ -15,7 +15,11 @@ from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
 
 def test_get_media_subtitle_stream_returns_matching_sup_stream(tmp_path: Path):
-    """Test media subtitle stream selection returns the matching SUP stream."""
+    """Test media subtitle stream selection returns the matching SUP stream.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     stream = SubtitleStream(index=5, codec_name="hdmv_pgs_subtitle")
@@ -30,7 +34,11 @@ def test_get_media_subtitle_stream_returns_matching_sup_stream(tmp_path: Path):
 
 
 def test_get_media_subtitle_stream_requires_stream_index(tmp_path: Path):
-    """Test media subtitle stream selection requires a stream index."""
+    """Test media subtitle stream selection requires a stream index.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
@@ -39,7 +47,11 @@ def test_get_media_subtitle_stream_requires_stream_index(tmp_path: Path):
 
 
 def test_get_media_subtitle_stream_rejects_non_sup_stream(tmp_path: Path):
-    """Test media subtitle stream selection rejects non-SUP subtitle streams."""
+    """Test media subtitle stream selection rejects non-SUP subtitle streams.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
@@ -56,7 +68,11 @@ def test_get_media_subtitle_stream_rejects_non_sup_stream(tmp_path: Path):
 
 
 def test_get_media_subtitle_stream_wraps_probe_errors(tmp_path: Path):
-    """Test media subtitle stream selection wraps probe failures."""
+    """Test media subtitle stream selection wraps probe failures.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 

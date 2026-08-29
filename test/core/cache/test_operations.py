@@ -119,7 +119,11 @@ def test_get_cache_entries_supports_nested_namespaces(tmp_path: Path):
 
 
 def test_get_cache_entries_supports_grouped_llm_namespaces(tmp_path: Path):
-    """Test each LLM operation is exposed as an independent namespace."""
+    """Test each LLM operation is exposed as an independent namespace.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     write_cache_file(tmp_path / "llms/translation/one.json", "one")
     write_cache_file(tmp_path / "llms/review/two.json", "two")
 
@@ -135,7 +139,11 @@ def test_get_cache_entries_supports_grouped_llm_namespaces(tmp_path: Path):
 
 
 def test_get_cache_entries_supports_grouped_audio_namespaces(tmp_path: Path):
-    """Test audio analyses are exposed as independent cache namespaces."""
+    """Test audio analyses are exposed as independent cache namespaces.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     write_cache_file(tmp_path / "audio/classification/language/one.json", "one")
     write_cache_file(tmp_path / "audio/diarization/one.json", "one")
     write_cache_file(tmp_path / "audio/separation/demucs/one.wav", "one")

@@ -48,6 +48,8 @@ class PersistedTestCase:
             manager_cls: manager defining the test case's operation and base prompt
         Returns:
             persisted test case
+        Raises:
+            ScinoephileError: if the operation fails
         """
         if test_case.answer is None:
             raise ScinoephileError("Optimization test cases must include an answer.")

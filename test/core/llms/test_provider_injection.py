@@ -71,7 +71,11 @@ class _TestCase(TestCase):
     """Optional answer fixture."""
 
     def get_no_op_answer(self) -> _Answer:
-        """Get an answer that echoes the query text."""
+        """Get an answer that echoes the query text.
+
+        Returns:
+            an answer that echoes the query text
+        """
         return _Answer(output=self.query.text)
 
 
@@ -130,13 +134,25 @@ class _Manager(Manager):
     @classmethod
     @cache
     def get_query_cls(cls, prompt: Prompt) -> type[Query]:
-        """Get test query class."""
+        """Get test query class.
+
+        Arguments:
+            prompt: prompt value
+        Returns:
+            test query class
+        """
         return _Query
 
     @classmethod
     @cache
     def get_answer_cls(cls, prompt: Prompt) -> type[Answer]:
-        """Get test answer class."""
+        """Get test answer class.
+
+        Arguments:
+            prompt: prompt value
+        Returns:
+            test answer class
+        """
         return _Answer
 
 
@@ -191,7 +207,19 @@ class _RecordingProvider(LLMProvider):
         query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
-        """Record messages and return a fixed completion response."""
+        """Record messages and return a fixed completion response.
+
+        Arguments:
+            messages: messages value
+            response_format: response format value
+            tool_box: tool box value
+            operation: operation value
+            query_key_sha256: query key sha256 value
+            query_attempt: query attempt value
+            **kwargs: additional keyword arguments
+        Returns:
+            fixed completion response
+        """
         _ = (tool_box, kwargs)
         self.calls.append(messages)
         self.response_formats.append(response_format)
@@ -228,6 +256,8 @@ class _SequenceRecordingProvider(_RecordingProvider):
 
         Arguments:
             responses: completion responses to return in order
+        Raises:
+            ValueError: if a value is invalid
         """
         if not responses:
             raise ValueError("responses must not be empty.")
@@ -245,7 +275,19 @@ class _SequenceRecordingProvider(_RecordingProvider):
         query_attempt: int = 1,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
-        """Record messages and return the next completion response."""
+        """Record messages and return the next completion response.
+
+        Arguments:
+            messages: messages value
+            response_format: response format value
+            tool_box: tool box value
+            operation: operation value
+            query_key_sha256: query key sha256 value
+            query_attempt: query attempt value
+            **kwargs: additional keyword arguments
+        Returns:
+            next completion response
+        """
         self.response = self.responses.pop(0)
         return super().chat_completion(
             messages,
@@ -500,7 +542,11 @@ def test_queryer_clears_stale_verified_metadata_after_generating_answer():
 
 
 def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
-    """Test queryer preserves auto-verified encountered test cases."""
+    """Test queryer preserves auto-verified encountered test cases.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},
@@ -671,7 +717,11 @@ def test_queryer_snapshots_verified_test_cases():
 
 
 def test_queryer_cache_is_namespaced_by_provider_model(tmp_path):
-    """Test one provider model cannot load another model's cached answer."""
+    """Test one provider model cannot load another model's cached answer.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     provider_one = _RecordingProvider('{"output":"one"}', model="model-one")
     queryer_one = Queryer(
         _TestCase, provider=provider_one, cache_root_path=tmp_path, max_attempts=1
@@ -693,7 +743,11 @@ def test_queryer_cache_is_namespaced_by_provider_model(tmp_path):
 
 
 def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_path):
-    """Test cached answers are attached to the current normalized test case."""
+    """Test cached answers are attached to the current normalized test case.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     provider = _RecordingProvider('{"output":"cached"}')
     queryer = Queryer(
         _TestCase, provider=provider, cache_root_path=tmp_path, max_attempts=1
@@ -758,7 +812,11 @@ def test_queryer_public_cache_lifecycle_normalizes_and_reuses_answer(tmp_path: P
 
 
 def test_queryer_overwrites_matching_cache(tmp_path):
-    """Test cache overwrite queries the provider and replaces the cached answer."""
+    """Test cache overwrite queries the provider and replaces the cached answer.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cached_provider = _RecordingProvider('{"output":"cached"}')
     test_case = _TestCase(query=_Query(text="input"))
     Queryer(
@@ -782,7 +840,11 @@ def test_queryer_overwrites_matching_cache(tmp_path):
 
 
 def test_queryer_cache_is_namespaced_by_test_case_class(tmp_path):
-    """Test compatible test-case classes do not share cached answers."""
+    """Test compatible test-case classes do not share cached answers.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     provider_one = _RecordingProvider('{"output":"one"}')
     queryer_one = Queryer(
         _TestCase, provider=provider_one, cache_root_path=tmp_path, max_attempts=1
@@ -807,7 +869,11 @@ def test_queryer_cache_is_namespaced_by_test_case_class(tmp_path):
 
 
 def test_queryer_cache_is_namespaced_by_provider_implementation(tmp_path):
-    """Test different provider implementations have different cache paths."""
+    """Test different provider implementations have different cache paths.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     queryer_one = Queryer(
         _TestCase, provider=_RecordingProvider(), cache_root_path=tmp_path
     )
@@ -830,7 +896,11 @@ def test_queryer_cache_is_namespaced_by_provider_implementation(tmp_path):
 
 
 def test_queryer_cache_is_namespaced_by_provider_base_url(tmp_path):
-    """Test OpenAI-compatible endpoints do not share cached answers."""
+    """Test OpenAI-compatible endpoints do not share cached answers.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     provider_one = _RecordingProvider(
         '{"output":"one"}', base_url="https://one.example/v1"
     )
@@ -853,7 +923,11 @@ def test_queryer_cache_is_namespaced_by_provider_base_url(tmp_path):
 
 
 def test_cache_path_does_not_retain_queryer(tmp_path):
-    """Test calculating a cache path does not retain the Queryer instance."""
+    """Test calculating a cache path does not retain the Queryer instance.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     queryer = Queryer(
         _TestCase, provider=_RecordingProvider(), cache_root_path=tmp_path
     )
@@ -875,7 +949,11 @@ def test_cache_path_does_not_retain_queryer(tmp_path):
 def test_processor_preserves_shared_verified_cases_from_current_unverified_case(
     tmp_path: Path,
 ):
-    """All shared verified cases should reach the nascent Queryer."""
+    """All shared verified cases should reach the nascent Queryer.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     shared_verified = _TestCase(
         query=_Query(text="input"), answer=_Answer(output="verified"), verified=True
     )
@@ -903,7 +981,11 @@ def test_processor_preserves_shared_verified_cases_from_current_unverified_case(
 def test_processor_rejects_conflicting_shared_and_current_verified_cases(
     tmp_path: Path,
 ):
-    """Conflicting shared and current verified answers should abort construction."""
+    """Conflicting shared and current verified answers should abort construction.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     shared = _TestCase(
         query=_Query(text="input"), answer=_Answer(output="shared"), verified=True
     )
@@ -927,7 +1009,11 @@ def test_processor_rejects_conflicting_shared_and_current_verified_cases(
 
 
 def test_processor_saves_encountered_cases_to_current_json(tmp_path: Path):
-    """Encountered cases should be saved to the current configuration's JSON."""
+    """Encountered cases should be saved to the current configuration's JSON.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     shared = _TestCase(
         query=_Query(text="input"), answer=_Answer(output="verified"), verified=True
     )
@@ -949,6 +1035,46 @@ def test_processor_saves_encountered_cases_to_current_json(tmp_path: Path):
     saved = load_test_cases_from_json(current_test_cases_path, _Manager, _PROMPT)
     assert len(saved) == 1
     assert saved[0].model_dump(mode="json") == shared.model_dump(mode="json")
+
+
+def test_processor_merges_test_cases_saved_by_another_instance(tmp_path: Path):
+    """Processor saves should merge cases saved by another instance.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    existing = _TestCase(query=_Query(text="existing"), answer=_Answer(output="old"))
+    untouched = _TestCase(
+        query=_Query(text="untouched"), answer=_Answer(output="retained")
+    )
+    current_test_cases_path = tmp_path / "test_cases.json"
+    save_test_cases_to_json(current_test_cases_path, [existing, untouched], _Manager)
+    processors = [
+        _Processor(
+            prompt=_PROMPT,
+            current_test_cases_path=current_test_cases_path,
+            provider=Mock(
+                spec=LLMProvider,
+                cache_identity={"implementation": "test"},
+                completion_metrics=[],
+            ),
+        )
+        for _ in range(2)
+    ]
+    updated = _TestCase(query=_Query(text="existing"), answer=_Answer(output="new"))
+    added = _TestCase(query=_Query(text="added"), answer=_Answer(output="new case"))
+
+    processors[0].queryer.log_encountered_test_case(updated)
+    processors[0].save_encountered_test_cases()
+    processors[1].queryer.log_encountered_test_case(added)
+    processors[1].save_encountered_test_cases()
+
+    saved = load_test_cases_from_json(current_test_cases_path, _Manager, _PROMPT)
+    assert [(test_case.query.text, test_case.answer.output) for test_case in saved] == [
+        ("existing", "new"),
+        ("untouched", "retained"),
+        ("added", "new case"),
+    ]
 
 
 def test_processor_passes_injected_provider_to_queryer():

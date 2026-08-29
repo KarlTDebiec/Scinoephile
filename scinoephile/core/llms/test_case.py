@@ -50,7 +50,11 @@ class TestCase(LLMModel, ABC):
     """Whether the test case answer has been verified."""
 
     def __str__(self) -> str:
-        """String representation."""
+        """Get the JSON string representation.
+
+        Returns:
+            formatted JSON
+        """
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
 
     @model_validator(mode="after")
@@ -69,6 +73,8 @@ class TestCase(LLMModel, ABC):
 
         Returns:
             validated test case
+        Raises:
+            ValueError: if a value is invalid
         """
         if self.answer is None and self.verified:
             raise ValueError("Verified test cases must include an answer.")
@@ -80,6 +86,8 @@ class TestCase(LLMModel, ABC):
 
         Returns:
             validated test case
+        Raises:
+            ValueError: if a value is invalid
         """
         if self.few_shot and not self.verified:
             raise ValueError("Few-shot test cases must be verified.")

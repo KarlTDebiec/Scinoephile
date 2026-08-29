@@ -15,7 +15,7 @@ from PIL import Image
 from pytest import MonkeyPatch, raises
 
 from scinoephile.common.subprocess import run_command
-from scinoephile.core import Language
+from scinoephile.core import DependencyError, Language
 from scinoephile.core.dependencies.ocr import import_chrome_lens_py
 from scinoephile.image.ocr.lens.lens_recognizer import LensRecognizer
 from test.helpers import parametrize
@@ -53,13 +53,15 @@ class CountingLensRecognizer(LensRecognizer):
             results = [["cached", "text"]]
         self.results = results
 
-    async def process_image(self, **kwargs: object) -> dict[str, object]:
+    async def process_image(self, **kwargs: Any) -> dict[str, object]:
         """Process an image.
 
         Arguments:
             **kwargs: process image keyword arguments
         Returns:
             fake LensAPI result
+        Raises:
+            Exception: if the operation fails
         """
         self.predict_count += 1
         if self.exceptions is not None:
@@ -214,7 +216,12 @@ def test_lens_recognizer_caches_results_by_image(
 def test_lens_recognizer_regenerates_invalid_cache(
     monkeypatch: MonkeyPatch, tmp_path: Path
 ):
-    """Test structurally invalid Google Lens cache data is treated as a miss."""
+    """Test structurally invalid Google Lens cache data is treated as a miss.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary directory path
+    """
     recognizer = CountingLensRecognizer(cache_root_path=tmp_path)
     patch_chrome_lens_py(monkeypatch, recognizer)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
@@ -225,6 +232,43 @@ def test_lens_recognizer_regenerates_invalid_cache(
     assert recognizer.recognize_image(image) == "cached\ntext"
 
     assert recognizer.predict_count == 2
+
+
+def test_lens_recognizer_separates_runtime_versions(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test Google Lens cache paths include the installed client runtime.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary path fixture
+    """
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.lens_recognizer.get_distribution_identity",
+        lambda _distribution_name: {
+            "distribution": "chrome-lens-py",
+            "version": "first",
+        },
+    )
+    first = CountingLensRecognizer(cache_root_path=tmp_path)
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.lens_recognizer.get_distribution_identity",
+        lambda _distribution_name: {
+            "distribution": "chrome-lens-py",
+            "version": "second",
+        },
+    )
+    second = CountingLensRecognizer(cache_root_path=tmp_path)
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+
+    patch_chrome_lens_py(monkeypatch, first)
+    assert first.recognize_image(image) == "cached\ntext"
+    patch_chrome_lens_py(monkeypatch, second)
+    assert second.recognize_image(image) == "cached\ntext"
+
+    assert first.predict_count == 1
+    assert second.predict_count == 1
+    assert len(list((tmp_path / "image/ocr/lens").glob("*.json"))) == 2
 
 
 def test_lens_recognizer_overwrites_matching_cache(
@@ -508,7 +552,7 @@ def test_lens_recognizer_import_error_is_actionable(monkeypatch: MonkeyPatch):
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with raises(ImportError, match="'ocr' extra"):
+    with raises(DependencyError, match="'ocr' extra"):
         import_chrome_lens_py()
 
 
@@ -549,7 +593,7 @@ def test_lens_recognizer_creates_client_for_each_uncached_recognition(
             nonlocal init_count
             init_count += 1
 
-        async def process_image(self, **kwargs: object) -> dict[str, object]:
+        async def process_image(self, **kwargs: Any) -> dict[str, object]:
             """Process an image.
 
             Arguments:

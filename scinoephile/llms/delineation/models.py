@@ -34,7 +34,11 @@ class DelineationQuery(Query):
 
     @model_validator(mode="after")
     def validate_target_presence(self) -> Self:
-        """Ensure at least one initial target subtitle is nonempty."""
+        """Ensure at least one initial target subtitle is nonempty.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if not self.target_one and not self.target_two:
             raise ValueError(self.prompt.target_subs_missing_err)
         return self
@@ -88,7 +92,11 @@ class DelineationTestCase(TestCase):
 
     @model_validator(mode="after")
     def validate_output_boundary(self) -> Self:
-        """Ensure adjusted outputs represent a valid target boundary change."""
+        """Ensure adjusted outputs represent a valid target boundary change.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if self.answer is None:
             return self
 

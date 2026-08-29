@@ -49,7 +49,11 @@ def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):
 
 
 def test_analyze_text_subtitle_stream_marks_cached_analysis_used(tmp_path: Path):
-    """Test a subtitle-analysis cache hit refreshes its pruning timestamp."""
+    """Test a subtitle-analysis cache hit refreshes its pruning timestamp.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
@@ -85,7 +89,11 @@ def test_analyze_text_subtitle_stream_marks_cached_analysis_used(tmp_path: Path)
 def test_analyze_text_subtitle_stream_regenerates_invalid_analysis_cache(
     tmp_path: Path,
 ):
-    """Test invalid subtitle-analysis cache data is treated as a miss."""
+    """Test invalid subtitle-analysis cache data is treated as a miss.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
@@ -167,6 +175,16 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
         language: Language,
         overwrite_cache: bool,
     ) -> Series:
+        """Return a fake PaddleOCR subtitle series.
+
+        Arguments:
+            sampled_series: sampled series
+            cache_root_path: cache root path
+            language: language
+            overwrite_cache: overwrite cache
+        Returns:
+            fake OCR subtitle series
+        """
         assert cache_root_path == tmp_path / "cache"
         assert language in (Language.zho_hans, Language.zho_hant)
         assert overwrite_cache is False

@@ -40,7 +40,11 @@ def register_routes(app: FlaskApp):
 
     @app.get("/")
     def index() -> str:
-        """Render the subtitle list."""
+        """Render the subtitle list.
+
+        Returns:
+            rendered subtitle list
+        """
         session = _session()
         session.reset_states()
         return _render_index(session)
@@ -288,6 +292,8 @@ def _session() -> OcrValidationSession:
 
     Returns:
         OCR validation session
+    Raises:
+        TypeError: if a value has an invalid type
     """
     session = current_app.config["OCR_VALIDATION_SESSION"]
     if not isinstance(session, OcrValidationSession):

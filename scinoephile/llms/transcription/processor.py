@@ -46,11 +46,11 @@ class TranscriptionRequestResult:
     query_key_sha256: str
     """Digest of the request's semantic query key."""
     answer_character_evidence_column_indexes: tuple[int | None, ...] = ()
-    """Corroborating complete-alignment column for each answer character."""
+    """Corroborating complete-alignment column for each lexical answer character."""
 
     @property
     def answer_evidence_column_indexes(self) -> tuple[int, ...]:
-        """Get all complete-alignment columns corroborating answer characters."""
+        """Get complete-alignment columns corroborating lexical answer characters."""
         return tuple(
             column_idx
             for column_idx in self.answer_character_evidence_column_indexes
@@ -111,7 +111,10 @@ class TranscriptionProcessor(Processor):
             validated_query, pause_intervals_seconds
         ):
             omission_reason = None
-            if _get_usable_source_count(query) < 2:
+            usable_source_count = sum(
+                _has_usable_content(source.text) for source in query.sources
+            )
+            if usable_source_count < 2:
                 omission_reason = "fewer than two sources contain usable text"
             elif _contains_only_low_information_text(query):
                 omission_reason = "sources contain only low-information vocalizations"
@@ -133,7 +136,7 @@ class TranscriptionProcessor(Processor):
             try:
                 test_case = self.queryer(test_case)
             except ValidationError:
-                answer = cast(TranscriptionAnswer, test_case.get_no_op_answer())
+                answer = test_case.get_no_op_answer()
                 try:
                     test_case = test_case_cls.model_validate(
                         {
@@ -350,17 +353,6 @@ def _get_timed_content_spans(
     if content_start < width:
         content_spans.append((content_start, width))
     return tuple(content_spans)
-
-
-def _get_usable_source_count(query: TranscriptionQuery) -> int:
-    """Count sources containing usable content in one request.
-
-    Arguments:
-        query: one pause-delimited transcription query
-    Returns:
-        number of sources containing nonblank, non-pause text
-    """
-    return sum(_has_usable_content(source.text) for source in query.sources)
 
 
 def _has_usable_content(text: str) -> bool:

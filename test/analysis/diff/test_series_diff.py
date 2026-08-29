@@ -486,7 +486,12 @@ def test_series_diff_reports_edited_split_with_distributed_prefix():
 def test_series_diff_reports_temporally_aligned_weak_split(
     candidate_text: str, reference_texts: tuple[str, str]
 ):
-    """Test timing preserves a split whose paraphrased text is weakly similar."""
+    """Test timing preserves a split whose paraphrased text is weakly similar.
+
+    Arguments:
+        candidate_text: candidate text spanning the split
+        reference_texts: reference text on each side of the split
+    """
     diff = SeriesDiff(
         get_text_series(candidate_text, start_ms=708, duration_ms=1600),
         get_text_series(*reference_texts, duration_ms=700, step_ms=800),

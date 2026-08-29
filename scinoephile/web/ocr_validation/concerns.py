@@ -125,7 +125,11 @@ class GapConcern:
 
     @property
     def action_options(self) -> tuple[tuple[str, str], ...]:
-        """Form actions available for this gap prompt."""
+        """Form actions available for this gap prompt.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if self.kind == ConcernKind.SPACE_GAP:
             return (("adjacent", "Adjacent"), ("space", "Space"))
         if self.kind == ConcernKind.TAB_GAP:
