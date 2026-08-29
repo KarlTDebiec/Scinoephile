@@ -20,9 +20,8 @@ from scinoephile.audio.transcription import (
     TranscriptionError,
     VadMode,
 )
-from scinoephile.audio.transcription.mlx_audio import MlxAudioTranscriber
-from scinoephile.audio.transcription.mlx_audio.model_spec import MIMO_MODEL
-from scinoephile.audio.transcription.whisper.model_spec import WhisperModelSpec
+from scinoephile.audio.transcription.mlx_audio import MIMO_MODEL, MlxAudioTranscriber
+from scinoephile.audio.transcription.whisper import WhisperModelSpec
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.aligner import TranscriptionAligner

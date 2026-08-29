@@ -26,11 +26,11 @@ from scinoephile.audio.transcription import (
 from scinoephile.audio.transcription.quality import get_transcription_quality_issue
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
-from scinoephile.audio.transcription.whisper.model import WhisperModel
-from scinoephile.audio.transcription.whisper.model_spec import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
     WhisperModelSpec,
 )
+from scinoephile.audio.transcription.whisper.model import WhisperModel
 from scinoephile.audio.transcription.whisper.transcriber import WhisperTranscriber
 from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
@@ -542,11 +542,9 @@ def test_transcription_imports_without_optional_runtime_dependencies():
             get_segment_split_at_idx,
         )
         from scinoephile.audio.transcription.whisper import (
+            WHISPER_LARGE_V3_CANTONESE_MODEL,
             WhisperModel,
             WhisperTranscriber,
-        )
-        from scinoephile.audio.transcription.whisper.model_spec import (
-            WHISPER_LARGE_V3_CANTONESE_MODEL,
         )
         from scinoephile.cli.transcribe_cli import TranscribeCli
         from scinoephile.core import Language

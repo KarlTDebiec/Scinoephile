@@ -12,7 +12,12 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .model import WhisperModel
-from .model_spec import WhisperModelSpec
+from .model_spec import WHISPER_LARGE_V3_CANTONESE_MODEL, WhisperModelSpec
 from .transcriber import WhisperTranscriber
 
-__all__ = ["WhisperModel", "WhisperModelSpec", "WhisperTranscriber"]
+__all__ = [
+    "WHISPER_LARGE_V3_CANTONESE_MODEL",
+    "WhisperModel",
+    "WhisperModelSpec",
+    "WhisperTranscriber",
+]

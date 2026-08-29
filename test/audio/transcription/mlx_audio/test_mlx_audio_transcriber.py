@@ -26,17 +26,17 @@ from scinoephile.audio.transcription import (
     VadMode,
 )
 from scinoephile.audio.transcription.ctc import CtcAligner
-from scinoephile.audio.transcription.mlx_audio.model import (
-    MlxAudioModel,
-    MlxAudioResult,
-)
-from scinoephile.audio.transcription.mlx_audio.model_spec import (
+from scinoephile.audio.transcription.mlx_audio import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
     MlxAudioModelSpec,
+)
+from scinoephile.audio.transcription.mlx_audio.model import (
+    MlxAudioModel,
+    MlxAudioResult,
 )
 from scinoephile.audio.transcription.mlx_audio.transcriber import MlxAudioTranscriber
 from scinoephile.audio.vad import (

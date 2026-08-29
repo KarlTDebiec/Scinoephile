@@ -24,11 +24,16 @@ from scinoephile.audio.transcription import (
     get_segment_split_on_word_timings,
 )
 from scinoephile.audio.transcription.ctc import CtcAligner
-from scinoephile.audio.transcription.mlx_audio import MlxAudioTranscriber
-from scinoephile.audio.transcription.mlx_audio.model_spec import MlxAudioModelSpec
+from scinoephile.audio.transcription.mlx_audio import (
+    MlxAudioModelSpec,
+    MlxAudioTranscriber,
+)
 from scinoephile.audio.transcription.quality import get_transcription_quality_issue
-from scinoephile.audio.transcription.whisper import WhisperModel, WhisperTranscriber
-from scinoephile.audio.transcription.whisper.model_spec import WhisperModelSpec
+from scinoephile.audio.transcription.whisper import (
+    WhisperModel,
+    WhisperModelSpec,
+    WhisperTranscriber,
+)
 from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series

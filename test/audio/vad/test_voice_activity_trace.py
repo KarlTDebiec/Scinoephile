@@ -12,9 +12,10 @@ from scinoephile.audio.transcription import (
     TranscribedWord,
     get_segment_split_at_idx,
 )
-from scinoephile.audio.transcription.whisper import WhisperModel, WhisperTranscriber
-from scinoephile.audio.transcription.whisper.model_spec import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
+    WhisperModel,
+    WhisperTranscriber,
 )
 from scinoephile.audio.vad import VoiceActivityTrace
 from scinoephile.core import Language

@@ -23,11 +23,11 @@ from scinoephile.audio.transcription import (
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
-from scinoephile.audio.transcription.whisper.model import WhisperModel
-from scinoephile.audio.transcription.whisper.model_spec import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
     WhisperModelSpec,
 )
+from scinoephile.audio.transcription.whisper.model import WhisperModel
 from scinoephile.audio.transcription.whisper.transcriber import WhisperTranscriber
 from scinoephile.core import Language
 from scinoephile.core.ml import ModelSpec

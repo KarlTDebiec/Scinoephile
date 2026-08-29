@@ -13,7 +13,7 @@ from pytest import mark, raises
 
 from scinoephile.audio.transcription import DemucsMode, VadMode
 from scinoephile.audio.transcription.ctc import CtcAligner
-from scinoephile.audio.transcription.mlx_audio.model_spec import (
+from scinoephile.audio.transcription.mlx_audio import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
@@ -21,9 +21,9 @@ from scinoephile.audio.transcription.mlx_audio.model_spec import (
     SENSEVOICE_MODEL,
     MlxAudioModelSpec,
 )
-from scinoephile.audio.transcription.whisper import WhisperTranscriber
-from scinoephile.audio.transcription.whisper.model_spec import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
+    WhisperTranscriber,
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
