@@ -1,13 +1,3 @@
-scinoephile/audio/vad/trace.py|VoiceActivityTrace.__len__|missing-returns
-scinoephile/cli/dictionary/dictionary_cli.py|DictionaryCli._main|missing-arguments
-scinoephile/cli/dictionary/dictionary_search_cli.py|DictionarySearchCli._main|missing-arguments
-scinoephile/cli/media/media_cli.py|MediaCli._main|missing-arguments
-scinoephile/cli/media/media_extract_audio_cli.py|MediaExtractAudioCli._main|missing-arguments
-scinoephile/cli/media/media_extract_subs_cli.py|MediaExtractSubsCli._main|missing-arguments
-scinoephile/cli/media/media_offset_cli.py|MediaOffsetCli._main|missing-arguments
-scinoephile/cli/media/media_probe_cli.py|MediaProbeCli._main|missing-arguments
-scinoephile/cli/multi/multi_cer_cli.py|MultiCerCli._main|missing-arguments
-scinoephile/cli/multi/multi_cli.py|MultiCli._main|missing-arguments
 scinoephile/cli/multi/multi_diff_cli.py|MultiDiffCli._main|missing-arguments
 scinoephile/cli/multi/multi_stack_cli.py|MultiStackCli._main|missing-arguments
 scinoephile/cli/multi/multi_sync_cli.py|MultiSyncCli._main|missing-arguments

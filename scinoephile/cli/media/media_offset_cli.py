@@ -182,7 +182,18 @@ class MediaOffsetCli(ScinoephileCliBase):
         coarse_step: float,
         sample_windows: int,
     ):
-        """Execute with provided keyword arguments."""
+        """Estimate and print the visual offset between two media files.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            reference_infile_path: reference video file
+            target_infile_path: target video file
+            max_offset: maximum absolute offset to search in seconds
+            sample_rate: sampling rate in frames per second
+            duration: duration to sample in seconds
+            coarse_step: coarse search step in seconds
+            sample_windows: number of sample windows
+        """
         parser = _parser or cls.argparser()
         try:
             result = get_video_offset(

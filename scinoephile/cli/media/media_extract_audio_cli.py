@@ -133,7 +133,16 @@ class MediaExtractAudioCli(ScinoephileCliBase):
         outfile_path: Path,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Extract an audio stream and print its output path.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_path: media file containing audio streams
+            stream_index: optional media stream index
+            mode: audio extraction mode
+            outfile_path: WAV output file path
+            overwrite: whether to overwrite an existing output file
+        """
         parser = _parser or cls.argparser()
         try:
             stream = extract_audio(
