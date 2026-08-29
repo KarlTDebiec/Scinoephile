@@ -57,8 +57,8 @@ transcription = [
     "pyannote.audio>=4.0.7,<5.0.0",
     "silero-vad>=6.2.1",
     "ten-vad>=1.0.6.8",
-    "torch>=2.10.0",
-    "torchaudio>=2.10.0,<2.11.0",
+    "torch>=2.13.0",
+    "torchaudio>=2.11.0",
     "transformers>=5.15.0",
     "whisper-timestamped>=1.15.9",
 ]
@@ -173,6 +173,8 @@ scinoephile = [
 [tool.uv]
 override-dependencies = [
     "numpy>=2.5.2",
+    "torch>=2.13.0",
+    "torchaudio>=2.11.0",
     "transformers>=5.15.0",
 ]
 package = true
