@@ -146,7 +146,13 @@ def test_init_rejects_unsupported_language():
 def test_model_rejects_unsupported_platform(
     monkeypatch: pytest.MonkeyPatch, system: str, machine: str
 ):
-    """Test model loading rejects unsupported platforms."""
+    """Test model loading rejects unsupported platforms.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        system: operating system name
+        machine: machine architecture
+    """
     monkeypatch.setattr(mlx_audio_model.platform, "system", Mock(return_value=system))
     monkeypatch.setattr(mlx_audio_model.platform, "machine", Mock(return_value=machine))
     model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
@@ -221,7 +227,14 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
     assert tokenizer is not None
 
     def load(local_model_path: Path, **kwargs: object) -> object:
-        """Check the replacement resolver while simulating model loading."""
+        """Check the replacement resolver while simulating model loading.
+
+        Arguments:
+            local_model_path: resolved local model path
+            **kwargs: model loading arguments
+        Returns:
+            simulated runtime model
+        """
         assert local_model_path == model_path
         assert kwargs == {"model_type": "mimo"}
         assert mimo_asr.get_model_path(tokenizer.name) == audio_tokenizer_path
@@ -264,7 +277,17 @@ def test_mlx_audio_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
         fromlist: Sequence[str] | None = (),
         level: int = 0,
     ) -> object:
-        """Reject MLX-Audio while delegating all other imports."""
+        """Reject MLX-Audio while delegating all other imports.
+
+        Arguments:
+            name: module name
+            globals: optional global namespace
+            locals: optional local namespace
+            fromlist: optional imported names
+            level: relative import level
+        Returns:
+            imported module
+        """
         if name == "mlx_audio.stt":
             raise ImportError("blocked optional dependency")
         return original_import(name, globals, locals, fromlist, level)

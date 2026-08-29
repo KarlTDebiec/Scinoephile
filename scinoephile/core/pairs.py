@@ -38,7 +38,11 @@ def get_block_pair_indexes_by_pause(
         two_start_idx = two_idx
 
         def get_cutoff() -> int:
-            """Get the latest event end plus the selected pause length."""
+            """Get the latest event end plus the selected pause length.
+
+            Returns:
+                cutoff timestamp in milliseconds
+            """
             cutoff = 0
             if one_idx > one_start_idx:
                 cutoff = max(cutoff, one[one_idx - 1].end)

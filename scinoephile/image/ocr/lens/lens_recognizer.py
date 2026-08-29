@@ -85,7 +85,11 @@ class LensRecognizer:
 
     @override
     def __repr__(self) -> str:
-        """String representation."""
+        """Get a reconstructable representation of this recognizer.
+
+        Returns:
+            constructor-like representation
+        """
         return (
             f"{self.__class__.__name__}("
             f"cache_root_path={self._cache.cache_root_path!r}, "
@@ -242,7 +246,11 @@ class LensRecognizer:
         api = chrome_lens_py.LensAPI()
 
         async def recognize() -> list[str]:
-            """Run Google Lens OCR retries in one event loop."""
+            """Run Google Lens OCR retries in one event loop.
+
+            Returns:
+                normalized OCR lines
+            """
             for attempt in range(1, self.retries + 1):
                 try:
                     result = await api.process_image(

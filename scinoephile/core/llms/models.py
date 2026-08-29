@@ -99,9 +99,8 @@ def get_model_name(base_name: str, suffix: str) -> str:
     Arguments:
         base_name: name of base class
         suffix: descriptive suffix
-
     Returns:
-        Valid class name string
+        valid class name string
     """
     # Base name and suffix are short enough to use directly
     if len(base_name) + 1 + len(suffix) <= 64:

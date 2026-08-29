@@ -45,7 +45,11 @@ class CacheRegistry:
         object.__setattr__(self, "namespaces", namespace_tuple)
 
     def __iter__(self) -> Iterator[CacheNamespace]:
-        """Iterate over registered cache namespace declarations."""
+        """Iterate over registered cache namespace declarations.
+
+        Returns:
+            iterator over namespace declarations
+        """
         return iter(self.namespaces)
 
     def discover_names(self, cache_root_path: Path) -> list[str]:

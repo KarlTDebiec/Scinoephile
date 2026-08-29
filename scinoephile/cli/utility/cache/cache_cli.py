@@ -58,7 +58,12 @@ class CacheCli(ScinoephileCliBase):
 
     @classmethod
     def _main(cls, *, cache_subcommand_name: str, **kwargs: Any):
-        """Execute with provided keyword arguments."""
+        """Dispatch to a cache subcommand.
+
+        Arguments:
+            cache_subcommand_name: selected cache subcommand
+            **kwargs: arguments forwarded to the selected subcommand
+        """
         cls.subcommands()[cache_subcommand_name]._main(**kwargs)
 
 

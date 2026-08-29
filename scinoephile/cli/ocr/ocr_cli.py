@@ -82,7 +82,12 @@ class OcrCli(ScinoephileCliBase):
 
     @classmethod
     def _main(cls, *, ocr_subcommand_name: str, **kwargs: Any):
-        """Execute with provided keyword arguments."""
+        """Dispatch to an OCR subcommand.
+
+        Arguments:
+            ocr_subcommand_name: selected OCR subcommand
+            **kwargs: arguments forwarded to the selected subcommand
+        """
         cls.subcommands()[ocr_subcommand_name]._main(**kwargs)
 
 

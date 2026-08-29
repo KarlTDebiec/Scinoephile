@@ -82,7 +82,11 @@ class _AuditResult:
 
 
 def main(argv: Sequence[str] | None = None):
-    """Run the conversion exclusion audit."""
+    """Run the conversion exclusion audit.
+
+    Arguments:
+        argv: optional command-line arguments
+    """
     args = _parse_args(argv)
     root_path = args.root.resolve()
     result = _audit(root_path)

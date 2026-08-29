@@ -95,7 +95,11 @@ class Series(SSAFile):
 
     @override
     def __repr__(self) -> str:
-        """Representation."""
+        """Get a concise representation of this series.
+
+        Returns:
+            series summary
+        """
         if self.events:
             max_time = max(ev.end for ev in self)
             return (
@@ -270,7 +274,7 @@ class Series(SSAFile):
         """Load series from an input file.
 
         Arguments:
-            path : input file path
+            path: input file path
             encoding: input file encoding
             format_: input file format
             errors: encoding error handling
@@ -356,7 +360,11 @@ class Series(SSAFile):
         return copied
 
     def _get_blocks_signature(self) -> tuple[tuple[int, str], ...]:
-        """Get event identity and SSA state used to detect block mutations."""
+        """Get event identity and SSA state used to detect block mutations.
+
+        Returns:
+            event identities and serialized states
+        """
         return tuple((id(event), repr(event.as_dict())) for event in self.events)
 
     def _init_blocks(self):

@@ -169,7 +169,13 @@ def _get_query_slice(
 def _get_request_queries(
     query: TranscriptionQuery,
 ) -> tuple[tuple[TranscriptionQuery, tuple[int, int]], ...]:
-    """Split a validated alignment query at long shared pause runs."""
+    """Split a validated alignment query at long shared pause runs.
+
+    Arguments:
+        query: validated alignment query
+    Returns:
+        request queries paired with their source-column spans
+    """
     requests = []
     content_spans = []
     content_start = 0

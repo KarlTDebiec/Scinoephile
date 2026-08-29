@@ -163,7 +163,18 @@ class OcrValidateCli(ScinoephileCliBase):
         outfile_path: Path,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Validate OCR subtitles and write the corrected series.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_path: OCR subtitle input file
+            interactive: whether to launch interactive validation
+            dev: whether to enable development mode
+            validation_data_dir_path: validation data directory
+            web_args: web server configuration
+            outfile_path: output subtitle file
+            overwrite: whether to overwrite the output file
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:

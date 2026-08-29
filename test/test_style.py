@@ -705,6 +705,10 @@ class Interface:
         """
         ...
 
+    def unavailable(self) -> str:
+        """Get an unavailable value."""
+        raise NotImplementedError
+
     def no_value(self) -> None:
         """Perform an operation."""
         ...
@@ -713,7 +717,10 @@ class Interface:
 
     assert [
         (violation.qualified_name, violation.rule_id) for violation in violations
-    ] == [("Interface.value", "missing-returns")]
+    ] == [
+        ("Interface.value", "missing-returns"),
+        ("Interface.unavailable", "missing-returns"),
+    ]
 
 
 def test_docstring_properties_need_no_returns_section():
@@ -1236,13 +1243,24 @@ def _has_value_return(
         and isinstance(statements[0].value, ast.Constant)
         and statements[0].value.value is Ellipsis
     )
+    raised_exception = None
+    if len(statements) == 1 and isinstance(statements[0], ast.Raise):
+        raised_exception = statements[0].exc
+        if isinstance(raised_exception, ast.Call):
+            raised_exception = raised_exception.func
+    is_not_implemented_stub = (
+        isinstance(raised_exception, ast.Name)
+        and raised_exception.id == "NotImplementedError"
+    )
     return_annotation_is_none = (
         isinstance(node.returns, ast.Constant) and node.returns.value is None
     ) or (isinstance(node.returns, ast.Name) and node.returns.id == "None")
     has_value_return_annotation = (
         node.returns is not None and not return_annotation_is_none
     )
-    if has_value_return_annotation and (is_abstract_method or is_ellipsis_stub):
+    if has_value_return_annotation and (
+        is_abstract_method or is_ellipsis_stub or is_not_implemented_stub
+    ):
         return True
 
     visitor = _ValueReturnVisitor()

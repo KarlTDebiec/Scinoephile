@@ -50,7 +50,11 @@ class TestCase(LLMModel, ABC):
     """Whether the test case answer has been verified."""
 
     def __str__(self) -> str:
-        """String representation."""
+        """Get the JSON string representation.
+
+        Returns:
+            formatted JSON
+        """
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
 
     @model_validator(mode="after")

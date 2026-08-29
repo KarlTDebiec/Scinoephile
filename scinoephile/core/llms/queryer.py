@@ -237,7 +237,11 @@ class Queryer[TTestCase: TestCase]:
         return self.store_answered_test_case(test_case)
 
     def get_few_shot_test_cases_str(self) -> str:
-        """String representation of all test cases in the log."""
+        """Get the string representation of all few-shot test cases.
+
+        Returns:
+            formatted few-shot examples, or an empty string when none are configured
+        """
         if not self.few_shot_test_cases:
             return ""
         few_shot = f"\n\n{self.prompt.few_shot_intro}"
@@ -319,7 +323,11 @@ class Queryer[TTestCase: TestCase]:
         return normalized
 
     def _get_cache_identity(self) -> CacheIdentity:
-        """Get the provider and test-case cache identity."""
+        """Get the provider and test-case cache identity.
+
+        Returns:
+            semantic cache identity
+        """
         return {
             "provider": self.provider.cache_identity,
             "test_case": {

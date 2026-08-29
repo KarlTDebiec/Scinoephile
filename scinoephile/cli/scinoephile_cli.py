@@ -158,7 +158,12 @@ class ScinoephileCli(ScinoephileCliBase):
 
     @classmethod
     def _main(cls, *, subcommand_name: str, **kwargs: Any):
-        """Execute with provided keyword arguments."""
+        """Dispatch to a top-level Scinoephile subcommand.
+
+        Arguments:
+            subcommand_name: selected top-level subcommand
+            **kwargs: arguments forwarded to the selected subcommand
+        """
         cls.subcommands()[subcommand_name]._main(**kwargs)
 
 

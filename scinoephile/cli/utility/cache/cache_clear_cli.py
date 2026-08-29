@@ -155,7 +155,18 @@ class CacheClearCli(ScinoephileCliBase):
         limit: int,
         yes: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Remove selected cache entries and print a summary.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            cache_root_path: cache root directory
+            namespace: optional cache namespace
+            entire_cache: whether to select the entire cache
+            older_than: optional minimum entry age
+            dry_run: whether to report without deleting entries
+            limit: maximum number of entries to remove
+            yes: whether to skip interactive confirmation
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if not dry_run and not yes:

@@ -26,7 +26,11 @@ class _NumpyBackedTensor:
         self._array = array
 
     def numpy(self) -> np.ndarray:
-        """Return the wrapped numpy array."""
+        """Return the wrapped numpy array.
+
+        Returns:
+            wrapped array
+        """
         return self._array
 
 
@@ -79,7 +83,14 @@ def test_separate_vocals_uses_default_demucs_shifts():
     apply_model_kwargs: list[dict[str, object]] = []
 
     def apply_model(*args: object, **kwargs: object) -> object:
-        """Record Demucs apply_model keyword arguments."""
+        """Record Demucs apply-model arguments and return separated sources.
+
+        Arguments:
+            *args: positional model arguments
+            **kwargs: keyword model arguments
+        Returns:
+            separated source tensor
+        """
         assert args
         apply_model_kwargs.append(kwargs)
         return separated_sources
@@ -99,7 +110,12 @@ def test_separate_vocals_uses_default_demucs_shifts():
 def test_separate_vocals_overwrites_matching_cache(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test cache overwrite regenerates a matching Demucs separation."""
+    """Test cache overwrite regenerates a matching Demucs separation.
+
+    Arguments:
+        tmp_path: temporary cache root
+        monkeypatch: pytest monkeypatch fixture
+    """
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000)
     cached_audio = AudioSegment.silent(duration=900, frame_rate=16000)
     fresh_audio = AudioSegment.silent(duration=800, frame_rate=16000)
@@ -122,7 +138,12 @@ def test_separate_vocals_overwrites_matching_cache(
 def test_separate_vocals_recovers_from_corrupt_cache(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test malformed cached vocals are replaced by fresh separation output."""
+    """Test malformed cached vocals are replaced by fresh separation output.
+
+    Arguments:
+        tmp_path: temporary cache root
+        monkeypatch: pytest monkeypatch fixture
+    """
     separator = DemucsSeparator(cache_root_path=tmp_path)
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000)
     fresh_audio = AudioSegment.silent(duration=800, frame_rate=16000)

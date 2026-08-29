@@ -173,7 +173,19 @@ class MultiTimewarpCli(ScinoephileCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Timewarp a mobile subtitle range to an anchor range.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            anchor_infile_path: anchor subtitle file or `-` for stdin
+            mobile_infile_path: mobile subtitle file or `-` for stdin
+            anchor_start_idx: optional first anchor subtitle index
+            anchor_end_idx: optional last anchor subtitle index
+            mobile_start_idx: optional first mobile subtitle index
+            mobile_end_idx: optional last mobile subtitle index
+            outfile_path: optional output subtitle file
+            overwrite: whether to overwrite an existing output file
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if anchor_infile_path == "-" and mobile_infile_path == "-":

@@ -104,7 +104,11 @@ class PaddleRecognizer:
 
     @override
     def __repr__(self) -> str:
-        """String representation."""
+        """Get a reconstructable representation of this recognizer.
+
+        Returns:
+            constructor-like representation
+        """
         return (
             f"{self.__class__.__name__}("
             f"cache_root_path={self._cache.cache_root_path!r}, "
