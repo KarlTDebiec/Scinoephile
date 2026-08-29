@@ -14,7 +14,7 @@ from pathlib import Path
 from textwrap import dedent
 from types import SimpleNamespace
 from typing import Any, cast
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 
 from pydub import AudioSegment
 from pytest import LogCaptureFixture, MonkeyPatch, raises
@@ -945,6 +945,39 @@ def test_default_model_loads_from_pinned_snapshot(monkeypatch: MonkeyPatch):
     )
     whisper_timestamped.load_model.assert_called_once_with(
         "/cached/snapshot", device="cpu"
+    )
+
+
+def test_model_retries_with_complete_snapshot_after_missing_cached_file(
+    monkeypatch: MonkeyPatch,
+):
+    """Retry model loading with the complete snapshot after a cached file is missing."""
+    loaded_model = Mock()
+    load_model = Mock(side_effect=[FileNotFoundError, loaded_model])
+    whisper_timestamped = SimpleNamespace(load_model=load_model)
+    snapshot_download = Mock(return_value="/downloaded/snapshot")
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper.model.import_whisper_timestamped",
+        Mock(return_value=whisper_timestamped),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper.model.import_huggingface_hub",
+        Mock(return_value=SimpleNamespace(snapshot_download=snapshot_download)),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper.model."
+        "get_huggingface_snapshot_dir_path",
+        Mock(return_value=Path("/cached/snapshot")),
+    )
+    model = WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu")
+
+    assert model.model is loaded_model
+    assert load_model.call_args_list == [
+        call("/cached/snapshot", device="cpu"),
+        call("/downloaded/snapshot", device="cpu"),
+    ]
+    snapshot_download.assert_called_once_with(
+        repo_id=_CUSTOM_MODEL.name, revision=_CUSTOM_MODEL.revision
     )
 
 

@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from functools import cached_property
+from logging import getLogger
 from math import ceil
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
@@ -15,7 +16,10 @@ from scinoephile.audio.transcription.exceptions import (
     TranscriptionRecognitionError,
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
-from scinoephile.core.dependencies.transcription import import_whisper_timestamped
+from scinoephile.core.dependencies.transcription import (
+    import_huggingface_hub,
+    import_whisper_timestamped,
+)
 from scinoephile.core.language import Language
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path, get_torch_device
 
@@ -23,6 +27,8 @@ from .model_spec import WhisperModelSpec
 from .types import WhisperNativeResult, WhisperResult
 
 __all__ = ["WhisperModel"]
+
+logger = getLogger(__name__)
 
 _MAX_SAMPLE_LEN = 224
 """Maximum token budget supported by the configured Whisper models."""
@@ -177,7 +183,25 @@ class WhisperModel:
         model_dir_path = get_huggingface_snapshot_dir_path(
             self.spec.name, self.spec.revision
         )
-        return whisper_timestamped.load_model(str(model_dir_path), device=self.device)
+        try:
+            return whisper_timestamped.load_model(
+                str(model_dir_path), device=self.device
+            )
+        except FileNotFoundError:
+            logger.warning(
+                "Whisper model load failed due to a missing cache file; "
+                "downloading the complete Hugging Face snapshot and retrying."
+            )
+            huggingface_hub = import_huggingface_hub()
+            snapshot_download = cast(
+                "Callable[..., str]", huggingface_hub.snapshot_download
+            )
+            model_dir_path = Path(
+                snapshot_download(repo_id=self.spec.name, revision=self.spec.revision)
+            )
+            return whisper_timestamped.load_model(
+                str(model_dir_path), device=self.device
+            )
 
     def get_sample_len(self, audio: AudioSegment) -> int:
         """Get a bounded token budget for one Whisper decode.
