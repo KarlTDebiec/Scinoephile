@@ -10,10 +10,10 @@ from itertools import permutations
 
 import numpy as np
 
-from .alignment import Alignment
+from .alignment import MsaAlignment
 from .models import AlignmentSequence, Column, Token
 
-__all__ = ["Aligner", "Settings"]
+__all__ = ["MsaAligner", "MsaSettings"]
 
 type _TokenSimilarity = Callable[[Token, Token], float]
 """Callable returning a substitution score for two timestamped tokens."""
@@ -25,7 +25,7 @@ _STATE_NONE = 255
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
-class Settings:
+class MsaSettings:
     """Affine-gap settings for progressive multiple alignment."""
 
     exhaustive_order_source_limit: int = 4
@@ -49,10 +49,12 @@ class Settings:
             raise ValueError("Timed alignment gap scores must be non-positive.")
 
 
-class Aligner:
+class MsaAligner:
     """Align timestamped sequences using progressive affine-gap alignment."""
 
-    def __init__(self, similarity: _TokenSimilarity, settings: Settings | None = None):
+    def __init__(
+        self, similarity: _TokenSimilarity, settings: MsaSettings | None = None
+    ):
         """Initialize.
 
         Arguments:
@@ -62,11 +64,11 @@ class Aligner:
         self.similarity = similarity
         """Timestamp-aware token substitution scoring function."""
         if settings is None:
-            settings = Settings()
+            settings = MsaSettings()
         self.settings = settings
         """Affine-gap scoring configuration."""
 
-    def __call__(self, sequences: Sequence[AlignmentSequence]) -> Alignment:
+    def __call__(self, sequences: Sequence[AlignmentSequence]) -> MsaAlignment:
         """Align two or more named timestamped sequences.
 
         For small source sets, all progressive source orders are considered and
@@ -104,8 +106,8 @@ class Aligner:
         return best_alignment
 
     def add_sequence(
-        self, alignment: Alignment, sequence: AlignmentSequence
-    ) -> Alignment:
+        self, alignment: MsaAlignment, sequence: AlignmentSequence
+    ) -> MsaAlignment:
         """Align one non-authoritative sequence onto a fixed existing profile.
 
         Existing rows retain their mutual alignment. The added sequence may place
@@ -125,7 +127,7 @@ class Aligner:
             raise ValueError("Additional sequences must be aligned before annotations.")
         return self._align_profile_to_sequence(alignment, sequence)
 
-    def _align_in_order(self, sequences: Sequence[AlignmentSequence]) -> Alignment:
+    def _align_in_order(self, sequences: Sequence[AlignmentSequence]) -> MsaAlignment:
         """Progressively align sequences in one specified order.
 
         Arguments:
@@ -134,7 +136,7 @@ class Aligner:
             multiple alignment in the specified row order
         """
         first = sequences[0]
-        alignment = Alignment(
+        alignment = MsaAlignment(
             source_names=(first.name,),
             columns=tuple(Column((token,)) for token in first.tokens),
         )
@@ -143,8 +145,8 @@ class Aligner:
         return alignment
 
     def _align_profile_to_sequence(  # noqa: PLR0912, PLR0915
-        self, profile: Alignment, sequence: AlignmentSequence
-    ) -> Alignment:
+        self, profile: MsaAlignment, sequence: AlignmentSequence
+    ) -> MsaAlignment:
         """Align one existing profile to one additional sequence.
 
         Arguments:
@@ -274,7 +276,7 @@ class Aligner:
             else:
                 raise RuntimeError("Timed multiple alignment backtrace is incomplete.")
         columns.reverse()
-        return Alignment(
+        return MsaAlignment(
             source_names=(*profile.source_names, sequence.name), columns=tuple(columns)
         )
 
@@ -341,8 +343,8 @@ class Aligner:
         return sum(similarities) / len(similarities)
 
     def _get_reordered(
-        self, alignment: Alignment, source_names: tuple[str, ...]
-    ) -> Alignment:
+        self, alignment: MsaAlignment, source_names: tuple[str, ...]
+    ) -> MsaAlignment:
         """Reorder alignment rows to a requested stable source order.
 
         Arguments:
@@ -352,7 +354,7 @@ class Aligner:
             alignment with rows in the requested order
         """
         indexes = tuple(alignment.source_names.index(name) for name in source_names)
-        return Alignment(
+        return MsaAlignment(
             source_names=source_names,
             columns=tuple(
                 Column(tuple(column.tokens[idx] for idx in indexes))
@@ -360,7 +362,7 @@ class Aligner:
             ),
         )
 
-    def _get_sum_of_pairs_score(self, alignment: Alignment) -> float:
+    def _get_sum_of_pairs_score(self, alignment: MsaAlignment) -> float:
         """Score a completed alignment across every projected source pair.
 
         Arguments:

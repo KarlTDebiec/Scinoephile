@@ -8,9 +8,12 @@ import unicodedata
 from collections.abc import Callable, Mapping, Sequence
 from statistics import median
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column, Token
+from scinoephile.analysis.alignment.timed_msa import (
+    Column,
+    MsaAligner,
+    MsaAlignment,
+    Token,
+)
 from scinoephile.analysis.transcription.alignment_sequence import get_reference_sequence
 from scinoephile.analysis.transcription.artifact import AlignmentBlock
 from scinoephile.core.subtitles import Series
@@ -30,7 +33,7 @@ _MERGE_SUPPORT_CHARACTERS = "０１２３４５６７８９"
 def render_transcription_alignment_block(
     block: AlignmentBlock,
     references: Mapping[str, Series],
-    aligner: Aligner,
+    aligner: MsaAligner,
     *,
     request_pause_columns: int,
     include_audio_events: bool,
@@ -92,7 +95,7 @@ def render_transcription_alignment_block(
         profile_column_anchor_ids.append(
             id(next(token for token in lexical_column.tokens if token is not None))
         )
-    alignment = Alignment(source_names=row_names, columns=tuple(lexical_columns))
+    alignment = MsaAlignment(source_names=row_names, columns=tuple(lexical_columns))
 
     for reference_name, reference in references.items():
         reference_sequence = get_reference_sequence(reference_name, reference)
@@ -230,10 +233,10 @@ def _get_alignment_characters(text: str) -> tuple[str, ...]:
 
 
 def _get_alignment_with_profile_pauses(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     profile_column_anchor_ids: tuple[int, ...],
     pause_intervals_by_profile_boundary: Mapping[int, Sequence[tuple[float, float]]],
-) -> Alignment:
+) -> MsaAlignment:
     """Restore artifact pauses at their fixed production profile boundaries.
 
     Arguments:
@@ -275,12 +278,14 @@ def _get_alignment_with_profile_pauses(
         )
         if boundary < len(alignment.columns):
             output_columns.append(alignment.columns[boundary])
-    return Alignment(source_names=alignment.source_names, columns=tuple(output_columns))
+    return MsaAlignment(
+        source_names=alignment.source_names, columns=tuple(output_columns)
+    )
 
 
 def _get_alignment_with_track_markers(
-    alignment: Alignment, markers_by_source: dict[str, tuple[tuple[int, float], ...]]
-) -> tuple[Alignment, dict[int, frozenset[int]]]:
+    alignment: MsaAlignment, markers_by_source: dict[str, tuple[tuple[int, float], ...]]
+) -> tuple[MsaAlignment, dict[int, frozenset[int]]]:
     """Insert and collapse row-owned markers at aligned lexical boundaries.
 
     Arguments:
@@ -337,7 +342,9 @@ def _get_alignment_with_track_markers(
         if boundary < len(alignment.columns):
             output_columns.append(alignment.columns[boundary])
     return (
-        Alignment(source_names=alignment.source_names, columns=tuple(output_columns)),
+        MsaAlignment(
+            source_names=alignment.source_names, columns=tuple(output_columns)
+        ),
         marker_source_indexes_by_column_id,
     )
 
@@ -602,7 +609,7 @@ def _get_track_markers(
 
 def _render_chunk(
     columns: Sequence[Column],
-    alignment: Alignment,
+    alignment: MsaAlignment,
     *,
     annotation_rows: Sequence[tuple[str, str]],
     annotations_by_token_id: dict[int, tuple[str, ...]],

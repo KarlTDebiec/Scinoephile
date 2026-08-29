@@ -10,9 +10,12 @@ from unittest.mock import Mock, patch
 from pydub import AudioSegment
 from pytest import approx, raises
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column, Token
+from scinoephile.analysis.alignment.timed_msa import (
+    Column,
+    MsaAligner,
+    MsaAlignment,
+    Token,
+)
 from scinoephile.audio.transcription import (
     TranscribedSegment,
     TranscribedWord,
@@ -109,7 +112,7 @@ def _get_transcriber(
     return MultiSourceTranscriber(
         language=Language.yue_hant,
         transcribers=sources,
-        aligner=Aligner(YueTokenSimilarity()),
+        aligner=MsaAligner(YueTokenSimilarity()),
         processor=processor,
         ctc_aligner=ctc_aligner,
     )
@@ -209,7 +212,7 @@ def test_timing_omits_empty_request_and_retains_later_consensus():
     """Test CTC timing skips empty request answers without losing later output."""
     audio = AudioSegment.silent(duration=3_000)
     ctc_aligner = Mock(spec=CtcAligner, return_value=[_get_segment("乙", 0.2, 0.7)])
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
             Column((Token("甲", 0.1, 0.4), Token("丙", 0.1, 0.4))),
@@ -240,7 +243,7 @@ def test_timing_omits_empty_request_and_retains_later_consensus():
 
 def test_request_interval_falls_back_to_in_audio_lexical_timing():
     """Test invalid pause bounds fall back to usable lexical evidence."""
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
             Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
@@ -266,7 +269,7 @@ def test_timing_retries_incomplete_request_against_unconsumed_block():
             [_get_segment("丙", 0.1, 0.3)],
         ],
     )
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
             Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),

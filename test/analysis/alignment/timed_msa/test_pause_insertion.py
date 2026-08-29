@@ -9,7 +9,7 @@ from scinoephile.analysis.alignment import timed_msa
 
 def test_explicit_pause_prefers_matching_source_gap():
     """A real source gap should override correlated forced-alignment timing."""
-    alignment = timed_msa.Alignment(
+    alignment = timed_msa.MsaAlignment(
         source_names=("native", "ctc-one", "ctc-two"),
         columns=(
             timed_msa.Column(
@@ -55,7 +55,7 @@ def test_explicit_pause_prefers_matching_source_gap():
 
 def test_explicit_pauses_are_inserted_at_source_time():
     """Externally detected pauses should become shared profile columns."""
-    alignment = timed_msa.Alignment(
+    alignment = timed_msa.MsaAlignment(
         source_names=("one", "two"),
         columns=(
             timed_msa.Column(
@@ -83,7 +83,7 @@ def test_explicit_pauses_are_inserted_at_source_time():
 
 def test_inferred_pauses_are_split_at_marker_time():
     """Inferred pauses should remain chronological around timed markers."""
-    alignment = timed_msa.Alignment(
+    alignment = timed_msa.MsaAlignment(
         source_names=("one",),
         columns=(
             timed_msa.Column((timed_msa.Token("甲", 0.0, 0.1),)),
@@ -109,7 +109,7 @@ def test_inferred_pauses_are_split_at_marker_time():
 
 def test_pause_columns_encode_point_two_five_second_buckets():
     """Pause columns should increase once for each 0.25-second duration bucket."""
-    alignment = timed_msa.Alignment(
+    alignment = timed_msa.MsaAlignment(
         source_names=("one", "two"),
         columns=(
             timed_msa.Column(
@@ -133,7 +133,7 @@ def test_pause_columns_encode_point_two_five_second_buckets():
 
 def test_pause_default_threshold_is_point_two_five_seconds():
     """Default pause rendering should include 0.25 seconds but exclude shorter gaps."""
-    alignment = timed_msa.Alignment(
+    alignment = timed_msa.MsaAlignment(
         source_names=("one", "two"),
         columns=(
             timed_msa.Column(
@@ -155,7 +155,7 @@ def test_pause_default_threshold_is_point_two_five_seconds():
 
 def test_pauses_are_shared_columns_with_explicit_duration():
     """Test shared timing gaps become bounded pause-unit columns."""
-    alignment = timed_msa.Alignment(
+    alignment = timed_msa.MsaAlignment(
         source_names=("whisper", "qwen", "reference"),
         columns=(
             timed_msa.Column(

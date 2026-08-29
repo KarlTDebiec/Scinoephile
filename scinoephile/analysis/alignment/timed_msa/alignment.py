@@ -11,11 +11,11 @@ from statistics import median
 
 from .models import Column
 
-__all__ = ["Alignment"]
+__all__ = ["MsaAlignment"]
 
 
 @dataclass(frozen=True, slots=True)
-class Alignment:
+class MsaAlignment:
     """Multiple alignment of named timestamped character sequences."""
 
     source_names: tuple[str, ...]
@@ -64,7 +64,7 @@ class Alignment:
         end_seconds: float | None = None,
         minimum_pause_seconds: float = 0.25,
         pause_unit_seconds: float = 0.25,
-    ) -> Alignment:
+    ) -> MsaAlignment:
         """Insert shared timed gaps from explicit intervals or source timing.
 
         The first pause column represents the interval beginning at
@@ -135,16 +135,18 @@ class Alignment:
                 if latest_end is None or column_end > latest_end:
                     latest_end = column_end
 
-        return Alignment(source_names=self.source_names, columns=tuple(output_columns))
+        return MsaAlignment(
+            source_names=self.source_names, columns=tuple(output_columns)
+        )
 
 
 def _get_alignment_with_explicit_pauses(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     pause_intervals_seconds: Sequence[tuple[float, float]],
     source_indexes: tuple[int, ...],
     minimum_pause_seconds: float,
     pause_unit_seconds: float,
-) -> Alignment:
+) -> MsaAlignment:
     """Insert externally detected pauses at approximate temporal positions.
 
     Arguments:
@@ -188,11 +190,13 @@ def _get_alignment_with_explicit_pauses(
         output_columns.extend(pauses_by_boundary.get(boundary, ()))
         if boundary < len(alignment.columns):
             output_columns.append(alignment.columns[boundary])
-    return Alignment(source_names=alignment.source_names, columns=tuple(output_columns))
+    return MsaAlignment(
+        source_names=alignment.source_names, columns=tuple(output_columns)
+    )
 
 
 def _get_explicit_pause_insertion_boundary(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     source_indexes: tuple[int, ...],
     pause_interval: tuple[float, float],
 ) -> int:
@@ -255,7 +259,7 @@ def _get_explicit_pause_insertion_boundary(
 
 
 def _get_future_source_starts(
-    alignment: Alignment, source_indexes: tuple[int, ...], end_seconds: float | None
+    alignment: MsaAlignment, source_indexes: tuple[int, ...], end_seconds: float | None
 ) -> tuple[float | None, ...]:
     """Get the earliest selected-source token start after each boundary.
 
@@ -287,7 +291,7 @@ def _get_future_source_starts(
 
 
 def _get_future_starts_by_source(
-    alignment: Alignment, source_indexes: tuple[int, ...]
+    alignment: MsaAlignment, source_indexes: tuple[int, ...]
 ) -> tuple[tuple[float | None, ...], ...]:
     """Get each selected source's next token start after every boundary.
 
@@ -351,7 +355,7 @@ def _get_pause_columns(
 
 
 def _get_pause_source_indexes(
-    alignment: Alignment, source_names: Sequence[str] | None
+    alignment: MsaAlignment, source_names: Sequence[str] | None
 ) -> tuple[int, ...]:
     """Resolve and validate rows whose shared gaps define pauses.
 
@@ -376,7 +380,7 @@ def _get_pause_source_indexes(
 
 
 def _get_timed_insertion_boundary(
-    alignment: Alignment, source_indexes: tuple[int, ...], target_time: float
+    alignment: MsaAlignment, source_indexes: tuple[int, ...], target_time: float
 ) -> int:
     """Locate the profile boundary following a local target time.
 
@@ -406,7 +410,7 @@ def _get_timed_insertion_boundary(
 
 
 def _validate_timed_pause_arguments(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     pause_intervals_seconds: Sequence[tuple[float, float]] | None,
     start_seconds: float | None,
     end_seconds: float | None,

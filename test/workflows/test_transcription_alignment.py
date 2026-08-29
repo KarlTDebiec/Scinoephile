@@ -6,7 +6,12 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.alignment.timed_msa import Aligner, Alignment, Column, Token
+from scinoephile.analysis.alignment.timed_msa import (
+    Column,
+    MsaAligner,
+    MsaAlignment,
+    Token,
+)
 from scinoephile.audio.classification import (
     AudioEvent,
     AudioEventDetectionResult,
@@ -25,7 +30,7 @@ from scinoephile.workflows.transcription_alignment import (
 
 def test_build_transcription_alignment_block_uses_current_artifact_models():
     """Test a lexical alignment becomes a validated portable artifact block."""
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("merged", "two"),
         columns=(
             Column((Token("係", 0.1, 0.2), Token("是", 0.1, 0.2))),
@@ -58,7 +63,7 @@ def test_build_transcription_alignment_block_uses_current_artifact_models():
     block = build_transcription_alignment_block(
         alignment,
         merged_segments,
-        Aligner(YueTokenSimilarity()),
+        MsaAligner(YueTokenSimilarity()),
         speech_block=SpeechBlock(
             index=0,
             start_ms=10_000,
@@ -84,7 +89,7 @@ def test_build_transcription_alignment_block_uses_current_artifact_models():
 
 def test_build_transcription_alignment_block_adds_classification_rows():
     """FireRed classifications should project onto every alignment column."""
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("one", "two"),
         columns=(
             Column((Token("甲", 0.0, 0.2), Token("甲", 0.0, 0.2))),
@@ -120,7 +125,7 @@ def test_build_transcription_alignment_block_adds_classification_rows():
     block = build_transcription_alignment_block(
         alignment,
         merged_segments,
-        Aligner(YueTokenSimilarity()),
+        MsaAligner(YueTokenSimilarity()),
         speech_block=SpeechBlock(
             index=0,
             start_ms=10_000,
@@ -141,7 +146,7 @@ def test_build_transcription_alignment_block_adds_classification_rows():
 
 def test_build_transcription_alignment_block_rejects_invalid_segment_timing():
     """Malformed merged segment timing should not be repaired in the artifact."""
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("one", "two"),
         columns=(Column((Token("甲", 0.0, 0.2), Token("甲", 0.0, 0.2))),),
     )
@@ -153,7 +158,7 @@ def test_build_transcription_alignment_block_rejects_invalid_segment_timing():
         build_transcription_alignment_block(
             alignment,
             merged_segments,
-            Aligner(YueTokenSimilarity()),
+            MsaAligner(YueTokenSimilarity()),
             speech_block=SpeechBlock(
                 index=0,
                 start_ms=10_000,

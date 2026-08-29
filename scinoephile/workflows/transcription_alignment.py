@@ -8,9 +8,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from math import isfinite
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column
+from scinoephile.analysis.alignment.timed_msa import Column, MsaAligner, MsaAlignment
 from scinoephile.analysis.transcription.artifact import (
     AlignmentBlock,
     AlignmentColumn,
@@ -62,9 +60,9 @@ class RenderedTranscriptionAlignment:
 
 
 def build_transcription_alignment_block(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     merged_segments: Sequence[TranscribedSegment],
-    aligner: Aligner,
+    aligner: MsaAligner,
     *,
     speech_block: SpeechBlock,
     audio_events: AudioEventDetectionResult | None = None,
@@ -173,7 +171,7 @@ def build_transcription_alignment_block(
 
 
 def render_transcription_alignment(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     *,
     audio_events: AudioEventDetectionResult | None = None,
     diarization: SpeakerDiarizationResult | None = None,
