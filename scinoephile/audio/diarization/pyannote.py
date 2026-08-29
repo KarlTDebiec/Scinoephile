@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterator
 from functools import cached_property
-from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
@@ -15,6 +14,7 @@ import numpy as np
 
 from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.identity import CacheIdentity
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import (
     import_pyannote_audio,
     import_torch,
@@ -198,13 +198,12 @@ class PyannoteDiarizer:
         Raises:
             DependencyError: if pyannote.audio or Torch is unavailable
         """
-        try:
-            pyannote_audio_version = version("pyannote.audio")
-        except PackageNotFoundError as exc:
+        pyannote_audio_identity = get_distribution_identity("pyannote.audio")
+        if pyannote_audio_identity["version"] == "unavailable":
             raise DependencyError(
                 "Speaker diarization requires pyannote.audio. Install Scinoephile "
                 "with the 'transcription' extra."
-            ) from exc
+            )
         return {
             "device": self.device,
             "max_speakers": self.max_speakers,
@@ -213,8 +212,8 @@ class PyannoteDiarizer:
             "model_revision": self.model_revision,
             "num_speakers": self.num_speakers,
             "runtime": {
-                "distribution": "pyannote.audio",
-                "version": pyannote_audio_version,
+                "pyannote_audio": pyannote_audio_identity,
+                "torch": get_distribution_identity("torch"),
             },
             "waveform_channels": _WAVEFORM_CHANNELS,
             "waveform_frame_rate": _WAVEFORM_FRAME_RATE,

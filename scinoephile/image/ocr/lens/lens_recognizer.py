@@ -15,6 +15,7 @@ from PIL import Image
 from scinoephile.common.validation import val_int
 from scinoephile.core import Language
 from scinoephile.core.cache.identity import CacheIdentity
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.ocr import import_chrome_lens_py
 
 from .cache import LensCache
@@ -79,6 +80,8 @@ class LensRecognizer:
         except (KeyError, ValueError) as exc:
             raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
         self.retries = val_int(retries, min_value=1)
+        self.runtime_identity = get_distribution_identity("chrome-lens-py")
+        """Installed chrome-lens-py runtime identity."""
 
     @override
     def __repr__(self) -> str:
@@ -99,7 +102,10 @@ class LensRecognizer:
         Returns:
             recognized text
         """
-        cache_identity: CacheIdentity = {"language": self.lens_language_code}
+        cache_identity: CacheIdentity = {
+            "language": self.lens_language_code,
+            "runtime": self.runtime_identity,
+        }
         if (lines := self._cache.load(image, cache_identity)) is not None:
             return self._format_lens_lines(lines)
 
