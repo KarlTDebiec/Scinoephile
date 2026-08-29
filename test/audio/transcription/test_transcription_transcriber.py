@@ -146,15 +146,17 @@ def test_demucs_runtime_separates_transcription_cache_paths(tmp_path: Path):
     transcriber = _TestTranscriber(tmp_path, DemucsMode.ON, VadMode.OFF)
     assert transcriber.demucs_separator is not None
     transcriber.demucs_separator._cache.runtime_identity = {
-        "distribution": "demucs-infer",
-        "version": "4.2.2",
+        "demucs_infer": {"distribution": "demucs-infer", "version": "4.2.2"},
+        "torch": {"distribution": "torch", "version": "stable"},
+        "torchaudio": {"distribution": "torchaudio", "version": "stable"},
     }
     first_path = transcriber._cache.get_path(
         audio, transcriber._get_cache_identity(audio, settings)
     )
     transcriber.demucs_separator._cache.runtime_identity = {
-        "distribution": "demucs-infer",
-        "version": "4.3.0",
+        "demucs_infer": {"distribution": "demucs-infer", "version": "4.3.0"},
+        "torch": {"distribution": "torch", "version": "stable"},
+        "torchaudio": {"distribution": "torchaudio", "version": "stable"},
     }
     second_path = transcriber._cache.get_path(
         audio, transcriber._get_cache_identity(audio, settings)
