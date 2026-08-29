@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 from unittest.mock import Mock
 
 from pydub import AudioSegment
@@ -148,7 +149,7 @@ def test_save_failure_preserves_existing_cached_vocals(
     cache_path = cache.save(audio, audio)
     existing_payload = cache_path.read_bytes()
 
-    def fail_export(*_args: object, **_kwargs: object):
+    def fail_export(*_args: Any, **_kwargs: Any):
         """Raise a simulated audio export failure."""
         raise OSError("simulated failure")
 

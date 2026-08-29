@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import cast
 from unittest.mock import Mock
 
 from pydantic import ValidationError
@@ -139,11 +138,7 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
         current_test_cases_path, GuidedReviewManager, _LOCALIZED_PROMPT
     )
     assert len(persisted) == 2
-    persisted_cases = cast("list[GuidedReviewTestCase]", persisted)
-    assert [item.query.targets[0].text for item in persisted_cases] == [
-        "舊原文",
-        "新原文",
-    ]
+    assert [item.query.targets[0].text for item in persisted] == ["舊原文", "新原文"]
 
 
 def test_processor_honors_start_index():

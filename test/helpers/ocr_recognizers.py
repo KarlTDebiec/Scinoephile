@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from PIL import Image
 
@@ -17,7 +17,7 @@ class FailingOcrRecognizer:
     exception: ClassVar[Exception | None] = None
     """Exception raised during recognition."""
 
-    def __init__(self, **kwargs: object):
+    def __init__(self, **kwargs: Any):
         """Initialize.
 
         Arguments:
@@ -48,7 +48,7 @@ class RecordingOcrRecognizer:
     instances: ClassVar[list[RecordingOcrRecognizer]] = []
     """Fake recognizer instances created by the OCR helper."""
 
-    def __init__(self, **kwargs: object):
+    def __init__(self, **kwargs: Any):
         """Initialize.
 
         Arguments:

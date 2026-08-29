@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from time import time
+from typing import Any
 from unittest.mock import Mock, patch
 
 import ffmpeg
@@ -206,7 +207,7 @@ def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
     cache = SubtitleCache(tmp_path / "cache")
     input_stream = Mock()
 
-    def write_partial_output(outfile_path: str, **_: object) -> Mock:
+    def write_partial_output(outfile_path: str, **_: Any) -> Mock:
         """Write a partial ffmpeg output before extraction fails."""
         Path(outfile_path).write_bytes(b"partial")
         return Mock()
@@ -415,7 +416,7 @@ class _RecordingFfmpegInput:
         """Initialize."""
         self.output_calls: list[tuple[str, str, str]] = []
 
-    def output(self, outfile_path: str, **kwargs: object) -> Path:
+    def output(self, outfile_path: str, **kwargs: Any) -> Path:
         """Record an ffmpeg output stream.
 
         Arguments:
@@ -440,7 +441,7 @@ class _RecordingMergedFfmpegStream:
         self.outputs = outputs
         self.run_count = 0
 
-    def run(self, **kwargs: object):
+    def run(self, **kwargs: Any):
         """Record ffmpeg execution.
 
         Arguments:

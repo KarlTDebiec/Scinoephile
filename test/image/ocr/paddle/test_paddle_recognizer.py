@@ -175,7 +175,7 @@ def test_paddle_recognizer_preserves_root_logger_level(monkeypatch: MonkeyPatch)
     class FakePaddleOCR:
         """Fake PaddleOCR implementation that mutates root logging."""
 
-        def __init__(self, **kwargs: object):
+        def __init__(self, **kwargs: Any):
             """Initialize.
 
             Arguments:

@@ -110,6 +110,10 @@
   before type-specific use; use `Any` only for intentionally unchecked
   passthrough values, and use a narrower type, protocol, `TypedDict`, or alias
   when the shape is known.
+* Annotate variadic arguments intentionally. Do not use `*args: object` or
+  `**kwargs: object`: use `Any` for intentionally unchecked, ignored, or
+  passthrough values; use `Unpack[...]` when the argument shape is known; or use
+  a narrower value type when every collected value accepts the same type.
 
 ## Caching
 * Follow the cache ownership, layout, lifecycle, and testing conventions in
