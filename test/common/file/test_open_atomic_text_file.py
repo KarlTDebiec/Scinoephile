@@ -12,7 +12,11 @@ from scinoephile.common.file import open_atomic_text_file
 
 
 def test_open_atomic_text_file_replaces_output_on_success(tmp_path: Path):
-    """Test output is replaced only after the context exits successfully."""
+    """Test output is replaced only after the context exits successfully.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "output.txt"
     output_path.write_text("original", encoding="utf-8")
 
@@ -25,7 +29,13 @@ def test_open_atomic_text_file_replaces_output_on_success(tmp_path: Path):
 
 
 def test_open_atomic_text_file_preserves_output_on_failure(tmp_path: Path):
-    """Test failed writes preserve output and remove the temporary file."""
+    """Test failed writes preserve output and remove the temporary file.
+
+    Arguments:
+        tmp_path: temporary directory path
+    Raises:
+        OSError: if a filesystem operation fails
+    """
     output_path = tmp_path / "output.txt"
     output_path.write_text("original", encoding="utf-8")
 

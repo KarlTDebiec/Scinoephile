@@ -73,7 +73,11 @@ def runtime_data_dir_path() -> Generator[Path]:
 
 @fixture
 def tiny_image_series() -> ImageSeries:
-    """Small image subtitle series for tests that do not need full fixtures."""
+    """Small image subtitle series for tests that do not need full fixtures.
+
+    Returns:
+        small image subtitle series for tests that do not need full fixtures
+    """
     return ImageSeries(
         events=[
             ImageSubtitle(

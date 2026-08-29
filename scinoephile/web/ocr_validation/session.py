@@ -120,6 +120,9 @@ class OcrValidationSession:
             dev: whether validation data updates should write to repo data
         Returns:
             OCR validation session
+
+        Raises:
+            ScinoephileError: if the operation fails
         """
         dir_path = Path(dir_path).resolve()
         if not dir_path.is_dir():
@@ -267,6 +270,9 @@ class OcrValidationSession:
             n_bboxes: number of selected bboxes
         Returns:
             updated subtitle row view model
+
+        Raises:
+            ValueError: if a value is invalid
         """
         state = self._state(sub_idx)
         if not isinstance(state.concern, CharDimsConcern):
@@ -297,6 +303,9 @@ class OcrValidationSession:
             action: user action to apply
         Returns:
             updated subtitle row view model
+
+        Raises:
+            ValueError: if a value is invalid
         """
         state = self._state(sub_idx)
         if not isinstance(state.concern, GapConcern):
@@ -339,6 +348,9 @@ class OcrValidationSession:
             state: subtitle validation state
         Returns:
             character cursor
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if state.char_cursor is None:
             raise ValueError("Character cursor is not initialized.")
@@ -373,6 +385,9 @@ class OcrValidationSession:
             state: subtitle validation state
         Returns:
             gap cursor
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if state.gap_cursor is None:
             raise ValueError("Gap cursor is not initialized.")
@@ -407,6 +422,9 @@ class OcrValidationSession:
             kind: gap concern kind
         Returns:
             gap concern
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if kind == ConcernKind.SPACE_GAP:
             expected = cursor.expected_space
@@ -685,6 +703,9 @@ class OcrValidationSession:
             action: selected action
         Returns:
             replacement gap text
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if action == "space":
             if cutoffs[0] < cursor.gap < cutoffs[1]:
@@ -708,6 +729,9 @@ class OcrValidationSession:
             action: selected action
         Returns:
             replacement gap text
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if action == "tab":
             if cutoffs[2] < cursor.gap < cutoffs[3]:
@@ -743,6 +767,8 @@ class OcrValidationSession:
 
         Arguments:
             sub_idx: zero-based subtitle index
+        Raises:
+            IndexError: if an index is outside the valid range
         """
         if sub_idx < 0 or sub_idx >= len(self.entries):
             raise IndexError(f"Subtitle index {sub_idx} out of range.")

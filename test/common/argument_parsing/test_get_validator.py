@@ -39,8 +39,6 @@ def test_get_validator_type_error():
 
         Arguments:
             value: input value
-        Returns:
-            validated value
         Raises:
             TypeError: always
         """
@@ -60,8 +58,6 @@ def test_get_validator_os_error():
 
         Arguments:
             value: input value
-        Returns:
-            validated value
         Raises:
             OSError: always
         """

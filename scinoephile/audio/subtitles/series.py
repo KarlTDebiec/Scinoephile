@@ -63,6 +63,8 @@ class AudioSeries(Series):
         Arguments:
             audio: Series audio
             events: individual subtitle events
+        Raises:
+            ValueError: if a value is invalid
         """
         if audio is None:
             raise ValueError("AudioSeries requires audio")
@@ -136,6 +138,8 @@ class AudioSeries(Series):
             format_: output file format
             errors: encoding error handling
             **kwargs: additional keyword arguments
+        Raises:
+            ScinoephileError: if the operation fails
         """
         path = Path(path)
 
@@ -182,6 +186,9 @@ class AudioSeries(Series):
             **kwargs: additional keyword arguments
         Returns:
             loaded series
+
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             validated_path = val_input_dir_path(path)
@@ -314,6 +321,9 @@ class AudioSeries(Series):
             events: events to include in the copied series
         Returns:
             copied audio series
+
+        Raises:
+            TypeError: if a value has an invalid type
         """
         audio_events: list[AudioSubtitle] = []
         for event in events:

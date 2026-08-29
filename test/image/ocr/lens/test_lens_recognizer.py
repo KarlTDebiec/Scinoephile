@@ -60,6 +60,9 @@ class CountingLensRecognizer(LensRecognizer):
             **kwargs: process image keyword arguments
         Returns:
             fake LensAPI result
+
+        Raises:
+            Exception: if the operation fails
         """
         self.predict_count += 1
         if self.exceptions is not None:
@@ -214,7 +217,12 @@ def test_lens_recognizer_caches_results_by_image(
 def test_lens_recognizer_regenerates_invalid_cache(
     monkeypatch: MonkeyPatch, tmp_path: Path
 ):
-    """Test structurally invalid Google Lens cache data is treated as a miss."""
+    """Test structurally invalid Google Lens cache data is treated as a miss.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary directory path
+    """
     recognizer = CountingLensRecognizer(cache_root_path=tmp_path)
     patch_chrome_lens_py(monkeypatch, recognizer)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))

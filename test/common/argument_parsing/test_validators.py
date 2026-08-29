@@ -68,7 +68,11 @@ def test_str_arg():
 
 
 def test_input_file_arg(tmp_path: Path):
-    """Test input_file_arg validator."""
+    """Test input_file_arg validator.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_file = tmp_path / "test.txt"
     test_file.write_text("test content")
 
@@ -83,7 +87,11 @@ def test_input_file_arg(tmp_path: Path):
 
 
 def test_input_file_or_dir_arg(tmp_path: Path):
-    """Test input_file_or_dir_arg validator."""
+    """Test input_file_or_dir_arg validator.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_file = tmp_path / "test.txt"
     test_file.write_text("test content")
     test_dir = tmp_path / "testdir"
@@ -121,7 +129,11 @@ def test_named_input_file_arg(tmp_path: Path):
 
 
 def test_input_dir_arg(tmp_path: Path):
-    """Test input_dir_arg validator."""
+    """Test input_dir_arg validator.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_dir = tmp_path / "testdir"
     test_dir.mkdir()
 
@@ -136,7 +148,11 @@ def test_input_dir_arg(tmp_path: Path):
 
 
 def test_output_file_arg(tmp_path: Path):
-    """Test output_file_arg validator."""
+    """Test output_file_arg validator.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_file = tmp_path / "output.txt"
 
     validator = output_file_arg()
@@ -147,7 +163,11 @@ def test_output_file_arg(tmp_path: Path):
 
 
 def test_output_file_arg_rejects_existing_file_with_argparse_error(tmp_path: Path):
-    """Test output_file_arg reports existing files as argparse errors."""
+    """Test output_file_arg reports existing files as argparse errors.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_file = tmp_path / "output.txt"
     test_file.write_text("existing", encoding="utf-8")
 
@@ -158,7 +178,11 @@ def test_output_file_arg_rejects_existing_file_with_argparse_error(tmp_path: Pat
 
 
 def test_output_dir_arg(tmp_path: Path):
-    """Test output_dir_arg validator."""
+    """Test output_dir_arg validator.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_dir = tmp_path / "outputdir"
 
     validator = output_dir_arg()
@@ -170,7 +194,11 @@ def test_output_dir_arg(tmp_path: Path):
 
 
 def test_output_dir_arg_without_create(tmp_path: Path):
-    """Test output_dir_arg validator without directory creation."""
+    """Test output_dir_arg validator without directory creation.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_dir = tmp_path / "outputdir"
     assert not test_dir.exists()
 
@@ -183,7 +211,11 @@ def test_output_dir_arg_without_create(tmp_path: Path):
 
 
 def test_output_dir_arg_without_create_rejects_file_ancestor(tmp_path: Path):
-    """Test output_dir_arg rejects paths below a file when create is False."""
+    """Test output_dir_arg rejects paths below a file when create is False.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     file_path = tmp_path / "parent"
     file_path.write_text("test content")
     test_dir = file_path / "child"

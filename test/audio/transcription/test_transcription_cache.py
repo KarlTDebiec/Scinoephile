@@ -79,7 +79,11 @@ def test_transcription_cache_discards_mismatched_version(tmp_path: Path):
 
 
 def test_transcription_cache_overwrites_matching_entry_once(tmp_path: Path):
-    """Test overwrite refreshes a matching transcription once per instance."""
+    """Test overwrite refreshes a matching transcription once per instance.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     cache_identity: CacheIdentity = {"model_name": "test/model"}
     cache = TranscriptionCache(

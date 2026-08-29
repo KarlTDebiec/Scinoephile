@@ -19,6 +19,7 @@ from scinoephile.core.romanization import (
     join_romanized_tokens,
     normalize_romanized_punctuation,
 )
+from scinoephile.core.script import OpenCCConfig
 from scinoephile.core.text import RE_WESTERN, get_char_type
 from scinoephile.lang.zho.script.conversion import get_zho_converter
 
@@ -255,7 +256,7 @@ def _romanize_yue_hanzi_run(text: str) -> str:
     Returns:
         Yale romanization with unmatched chunks preserved
     """
-    trad_text = get_zho_converter("s2t").convert(text)
+    trad_text = get_zho_converter(OpenCCConfig.s2t).convert(text)
     segments = pycantonese.segment(trad_text, offsets=True)
     jyutping_segments = pycantonese.characters_to_jyutping(
         [segment for segment, _ in segments]

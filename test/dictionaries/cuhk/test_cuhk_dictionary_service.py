@@ -20,7 +20,11 @@ from test.helpers import parametrize
 
 
 def test_cuhk_service_keeps_cache_paths_on_scraper(tmp_path: Path):
-    """Test resolved CUHK cache paths remain owned by the scraper."""
+    """Test resolved CUHK cache paths remain owned by the scraper.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     service = CuhkDictionaryService(
         database_path=tmp_path / "cuhk.db", cache_root_path=tmp_path / "cache"
     )
@@ -37,7 +41,11 @@ def test_cuhk_service_keeps_cache_paths_on_scraper(tmp_path: Path):
 
 @fixture
 def sample_entries() -> list[DictionaryEntry]:
-    """Provide deterministic dictionary entries for CUHK service tests."""
+    """Provide deterministic dictionary entries for CUHK service tests.
+
+    Returns:
+        deterministic dictionary entries for CUHK service tests
+    """
     return [
         DictionaryEntry(
             traditional="山坑",
@@ -79,7 +87,11 @@ def sample_entries() -> list[DictionaryEntry]:
 
 @fixture
 def sample_source() -> DictionarySource:
-    """Provide deterministic dictionary source metadata."""
+    """Provide deterministic dictionary source metadata.
+
+    Returns:
+        deterministic dictionary source metadata
+    """
     return DictionarySource(
         name="Test Dictionary",
         shortname="test",
@@ -98,7 +110,15 @@ def service(
     sample_entries: list[DictionaryEntry],
     sample_source: DictionarySource,
 ) -> CuhkDictionaryService:
-    """Provide a CUHK service backed by deterministic SQLite fixture data."""
+    """Provide a CUHK service backed by deterministic SQLite fixture data.
+
+    Arguments:
+        database_path: database path
+        sample_entries: sample entries value
+        sample_source: sample source value
+    Returns:
+        a CUHK service backed by deterministic SQLite fixture data
+    """
     store = DictionarySqliteStore(database_path=database_path)
     store.persist((sample_source, sample_entries))
     return CuhkDictionaryService(database_path=database_path)
@@ -124,7 +144,14 @@ def test_lookup(
     expected: list[str] | None,
     expectation: AbstractContextManager[object],
 ):
-    """Infer searchable query formats or reject unsupported queries."""
+    """Infer searchable query formats or reject unsupported queries.
+
+    Arguments:
+        service: service value
+        query: query
+        expected: expected value
+        expectation: expectation value
+    """
     with expectation:
         entries = service.lookup(query, limit=5)
         assert [entry.traditional for entry in entries] == expected

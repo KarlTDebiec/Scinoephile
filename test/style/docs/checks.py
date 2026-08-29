@@ -81,6 +81,7 @@ class _DocstringVisitor(ast.NodeVisitor):
         """
         self.file_path = file_path
         self.qualified_names: list[str] = []
+        self.scope_kinds: list[str] = []
         self.violations: list[DocstringViolation] = []
 
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef):
@@ -107,7 +108,9 @@ class _DocstringVisitor(ast.NodeVisitor):
             )
 
         self.qualified_names.append(node.name)
+        self.scope_kinds.append("class")
         self.generic_visit(node)
+        self.scope_kinds.pop()
         self.qualified_names.pop()
 
     def visit_FunctionDef(self, node: ast.FunctionDef):
@@ -160,6 +163,7 @@ class _DocstringVisitor(ast.NodeVisitor):
         decorator_names: set[str],
         docstring: str,
         is_after_model_validator: bool,
+        is_method: bool,
         node: ast.FunctionDef | ast.AsyncFunctionDef,
         qualified_name: str,
     ):
@@ -169,6 +173,7 @@ class _DocstringVisitor(ast.NodeVisitor):
             decorator_names: terminal names of the callable's decorators
             docstring: cleaned callable docstring
             is_after_model_validator: whether this is an after model validator
+            is_method: whether the callable is defined directly on a class
             node: callable definition
             qualified_name: qualified callable name
         """
@@ -177,7 +182,9 @@ class _DocstringVisitor(ast.NodeVisitor):
             section for section in sections if section.name == "Arguments"
         ]
         args_sections = [section for section in sections if section.name == "Args"]
-        expected_argument_names = _get_callable_parameter_names(node)
+        expected_argument_names = _get_callable_parameter_names(
+            node, is_method=is_method
+        )
 
         if args_sections:
             self._add_violation(
@@ -290,6 +297,7 @@ class _DocstringVisitor(ast.NodeVisitor):
                 definition_name = f"{definition_name}.{accessor_name}"
                 break
         qualified_name = ".".join((*self.qualified_names, definition_name))
+        is_method = bool(self.scope_kinds and self.scope_kinds[-1] == "class")
         is_after_model_validator = any(
             _is_after_model_validator(decorator) for decorator in node.decorator_list
         )
@@ -308,12 +316,15 @@ class _DocstringVisitor(ast.NodeVisitor):
                     decorator_names=decorator_names,
                     docstring=docstring,
                     is_after_model_validator=is_after_model_validator,
+                    is_method=is_method,
                     node=node,
                     qualified_name=qualified_name,
                 )
 
         self.qualified_names.append(definition_name)
+        self.scope_kinds.append("callable")
         self.generic_visit(node)
+        self.scope_kinds.pop()
         self.qualified_names.pop()
 
 
@@ -424,24 +435,27 @@ def get_sample_docstring_violations(
 
 
 def _get_callable_parameter_names(
-    node: ast.FunctionDef | ast.AsyncFunctionDef,
+    node: ast.FunctionDef | ast.AsyncFunctionDef, *, is_method: bool
 ) -> list[str]:
     """Get documented parameter names in signature order.
 
     Arguments:
         node: callable definition
+        is_method: whether the callable is defined directly on a class
     Returns:
-        parameter names excluding `self` and `cls`
+        parameter names excluding an implicit method receiver
     """
     parameter_names = [
         argument.arg for argument in (*node.args.posonlyargs, *node.args.args)
     ]
+    if is_method and parameter_names and parameter_names[0] in {"cls", "self"}:
+        parameter_names.pop(0)
     if node.args.vararg is not None:
         parameter_names.append(f"*{node.args.vararg.arg}")
     parameter_names.extend(argument.arg for argument in node.args.kwonlyargs)
     if node.args.kwarg is not None:
         parameter_names.append(f"**{node.args.kwarg.arg}")
-    return [name for name in parameter_names if name not in {"cls", "self"}]
+    return parameter_names
 
 
 def _is_after_model_validator(decorator: ast.expr) -> bool:

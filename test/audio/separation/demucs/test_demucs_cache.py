@@ -191,6 +191,8 @@ def test_save_failure_preserves_existing_cached_vocals(
         Arguments:
             *_args: ignored positional arguments
             **_kwargs: ignored keyword arguments
+        Raises:
+            OSError: if a filesystem operation fails
         """
         raise OSError("simulated failure")
 

@@ -180,6 +180,8 @@ class DictionarySearchCli(ScinoephileCliBase):
             dictionary_name: dictionary to search, or all dictionaries
             query: lookup query
             limit: maximum results per dictionary
+        Raises:
+            SystemExit: if command execution cannot continue
         """
         parser = _parser or cls.argparser()
         if dictionary_name == "all" and database_path is not None:

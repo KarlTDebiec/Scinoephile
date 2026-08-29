@@ -157,6 +157,9 @@ class TranscriptionAlignment:
             prompt: text and field aliases for LLM correspondence
         Returns:
             test case, or None if there are no transcribed subtitles to shift
+
+        Raises:
+            ScinoephileError: if the operation fails
         """
         if sync_group_one_idx < 0 or sync_group_one_idx >= len(self.sync_groups):
             raise ScinoephileError(
@@ -226,6 +229,9 @@ class TranscriptionAlignment:
             prompt: text and field aliases for LLM correspondence
         Returns:
             test case, or None if there are no transcribed subtitles to punctuate
+
+        Raises:
+            ScinoephileError: if the operation fails
         """
         if sync_group_idx < 0 or sync_group_idx >= len(self.sync_groups):
             raise ScinoephileError(

@@ -93,6 +93,9 @@ class OcrCacheBase[TResult](ABC):
             cache_identity: backend configuration identifying the result
         Returns:
             cached result, if present and valid
+
+        Raises:
+            ValueError: if a value is invalid
         """
         cache_path = self.get_path(image, cache_identity)
         # An overwrite request converts a matching entry into a cache miss

@@ -91,6 +91,9 @@ def get_stacked_series_from_groups(
     Returns:
         Series whose subtitles are composed of the text of the subtitles from the two
         input series as indicated by the sync groups
+
+    Raises:
+        ScinoephileError: if the operation fails
     """
     stacked = Series()
 

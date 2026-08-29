@@ -160,6 +160,8 @@ class Series(SSAFile):
             format_: output file format
             errors: encoding error handling
             **kwargs: additional keyword arguments
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             validated_path = val_output_path(path, exist_ok=True)
@@ -227,6 +229,9 @@ class Series(SSAFile):
             **kwargs: additional keyword arguments
         Returns:
             serialized subtitle series
+
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             return super().to_string(format_, **kwargs)
@@ -248,6 +253,9 @@ class Series(SSAFile):
             **kwargs: additional keyword arguments
         Returns:
             parsed series
+
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             series = cast(Self, super().from_string(string, format_=format_, **kwargs))
@@ -281,6 +289,9 @@ class Series(SSAFile):
             **kwargs: additional keyword arguments
         Returns:
             loaded series
+
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             validated_path = val_input_path(path)
@@ -350,6 +361,9 @@ class Series(SSAFile):
             events: events to include in the copied series
         Returns:
             copied series
+
+        Raises:
+            NotImplementedError: if the operation is not implemented
         """
         if type(self) is not Series:
             raise NotImplementedError(

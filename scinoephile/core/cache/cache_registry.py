@@ -59,6 +59,9 @@ class CacheRegistry:
             cache_root_path: cache root directory path
         Returns:
             sorted portable namespace names
+
+        Raises:
+            NotADirectoryError: if a required path is not a directory
         """
         if not cache_root_path.exists():
             return []

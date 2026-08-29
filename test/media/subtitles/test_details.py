@@ -14,7 +14,11 @@ from scinoephile.media.subtitles.details import get_detailed_subtitle_streams
 
 
 def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
-    """Test detailed subtitle stream probing includes neutral subtitle stats."""
+    """Test detailed subtitle stream probing includes neutral subtitle stats.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     cache_root_path = tmp_path / "cache"

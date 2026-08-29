@@ -69,7 +69,11 @@ def test_subtitle_script_analysis_cache_discards_invalid_entry(tmp_path: Path):
 
 
 def test_subtitle_script_analysis_cache_discards_mismatched_version(tmp_path: Path):
-    """Test script analysis cache version mismatches are discarded."""
+    """Test script analysis cache version mismatches are discarded.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
@@ -117,7 +121,11 @@ def test_subtitle_script_analysis_cache_overwrite_removes_entry(tmp_path: Path):
 
 
 def test_subtitle_script_analysis_cache_overwrites_entry_once(tmp_path: Path):
-    """Test overwrite refreshes a matching analysis once per instance."""
+    """Test overwrite refreshes a matching analysis once per instance.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")

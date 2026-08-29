@@ -10,11 +10,13 @@ from unittest.mock import Mock, patch
 from pydub import AudioSegment
 from pytest import approx, raises
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column, Token
+from scinoephile.analysis.alignment.timed_msa import (
+    MsaAligner,
+    MsaAlignment,
+    MsaColumn,
+    MsaToken,
+)
 from scinoephile.audio.transcription import (
-    CtcAligner,
     TranscribedSegment,
     TranscribedWord,
     Transcriber,
@@ -22,6 +24,7 @@ from scinoephile.audio.transcription import (
     TranscriptionEmptyError,
     TranscriptionRecognitionError,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.lang.yue.transcription.token_similarity import YueTokenSimilarity
 from scinoephile.llms.transcription import (
@@ -109,7 +112,7 @@ def _get_transcriber(
     return MultiSourceTranscriber(
         language=Language.yue_hant,
         transcribers=sources,
-        aligner=Aligner(YueTokenSimilarity()),
+        aligner=MsaAligner(YueTokenSimilarity()),
         processor=processor,
         ctc_aligner=ctc_aligner,
     )
@@ -209,15 +212,15 @@ def test_timing_omits_empty_request_and_retains_later_consensus():
     """Test CTC timing skips empty request answers without losing later output."""
     audio = AudioSegment.silent(duration=3_000)
     ctc_aligner = Mock(spec=CtcAligner, return_value=[_get_segment("乙", 0.2, 0.7)])
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("丙", 0.1, 0.4))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("丙", 0.1, 0.4))),
             *(
-                Column((None, None), pause_interval_seconds=(0.5, 1.5))
+                MsaColumn((None, None), pause_interval_seconds=(0.5, 1.5))
                 for _ in range(4)
             ),
-            Column((Token("乙", 1.8, 2.4), Token("乙", 1.8, 2.4))),
+            MsaColumn((MsaToken("乙", 1.8, 2.4), MsaToken("乙", 1.8, 2.4))),
         ),
     )
 
@@ -240,12 +243,12 @@ def test_timing_omits_empty_request_and_retains_later_consensus():
 
 def test_request_interval_falls_back_to_in_audio_lexical_timing():
     """Test invalid pause bounds fall back to usable lexical evidence."""
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
-            Column((None, None), pause_interval_seconds=(1.2, 1.5)),
-            Column((Token("乙", 0.6, 0.8), Token("乙", 0.6, 0.8))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("甲", 0.1, 0.4))),
+            MsaColumn((None, None), pause_interval_seconds=(1.2, 1.5)),
+            MsaColumn((MsaToken("乙", 0.6, 0.8), MsaToken("乙", 0.6, 0.8))),
         ),
     )
 
@@ -266,14 +269,14 @@ def test_timing_retries_incomplete_request_against_unconsumed_block():
             [_get_segment("丙", 0.1, 0.3)],
         ],
     )
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
-            Column((None, None), pause_interval_seconds=(0.5, 1.5)),
-            Column((Token("乙", 1.8, 2.4), Token("乙", 1.8, 2.4))),
-            Column((None, None), pause_interval_seconds=(2.0, 2.1)),
-            Column((Token("丙", 2.5, 2.8), Token("丙", 2.5, 2.8))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("甲", 0.1, 0.4))),
+            MsaColumn((None, None), pause_interval_seconds=(0.5, 1.5)),
+            MsaColumn((MsaToken("乙", 1.8, 2.4), MsaToken("乙", 1.8, 2.4))),
+            MsaColumn((None, None), pause_interval_seconds=(2.0, 2.1)),
+            MsaColumn((MsaToken("丙", 2.5, 2.8), MsaToken("丙", 2.5, 2.8))),
         ),
     )
 
@@ -396,7 +399,14 @@ def test_transcribe_block_excludes_pathological_source():
         *,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
     ) -> list[TranscribedSegment]:
-        """Simulate a transcriber exhausting attempts after quality rejection."""
+        """Simulate a transcriber exhausting attempts after quality rejection.
+
+        Arguments:
+            _audio: audio
+            is_usable: whether usable
+        Returns:
+            empty segment list after rejection
+        """
         assert is_usable is not None
         assert not is_usable(pathological_segments)
         return []

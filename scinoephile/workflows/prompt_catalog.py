@@ -34,6 +34,9 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
 
     Returns:
         read-only prompt specifications keyed by stable alias
+
+    Raises:
+        ValueError: if a value is invalid
     """
     prompt_spec_groups = (
         _build_monolingual_prompt_specs(ReviewManager, review.DEFAULT_PROMPTS),

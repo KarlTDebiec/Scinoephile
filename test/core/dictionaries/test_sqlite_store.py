@@ -21,7 +21,11 @@ from scinoephile.core.dictionaries import (
 
 @fixture
 def sample_entries() -> list[DictionaryEntry]:
-    """Provide deterministic dictionary entries for SQLite tests."""
+    """Provide deterministic dictionary entries for SQLite tests.
+
+    Returns:
+        deterministic dictionary entries for SQLite tests
+    """
     return [
         DictionaryEntry(
             traditional="山坑",
@@ -47,7 +51,11 @@ def sample_entries() -> list[DictionaryEntry]:
 
 @fixture
 def sample_source() -> DictionarySource:
-    """Provide deterministic dictionary source metadata."""
+    """Provide deterministic dictionary source metadata.
+
+    Returns:
+        deterministic dictionary source metadata
+    """
     return DictionarySource(
         name="Test Dictionary",
         shortname="test",
@@ -65,7 +73,13 @@ def test_sqlite_store_field_lookups(
     sample_entries: list[DictionaryEntry],
     sample_source: DictionarySource,
 ):
-    """Test direct field-specific SQLite lookup helpers."""
+    """Test direct field-specific SQLite lookup helpers.
+
+    Arguments:
+        database_path: database path
+        sample_entries: sample entries value
+        sample_source: sample source value
+    """
     store = DictionarySqliteStore(database_path=database_path)
     store.persist((sample_source, sample_entries))
 
@@ -86,7 +100,13 @@ def test_sqlite_store_preserves_expected_schema(
     sample_entries: list[DictionaryEntry],
     sample_source: DictionarySource,
 ):
-    """Test SQLite schema compatibility details are preserved."""
+    """Test SQLite schema compatibility details are preserved.
+
+    Arguments:
+        database_path: database path
+        sample_entries: sample entries value
+        sample_source: sample source value
+    """
     store = DictionarySqliteStore(database_path=database_path)
     store.persist((sample_source, sample_entries))
 
@@ -116,7 +136,12 @@ def test_sqlite_store_preserves_expected_schema(
 def test_sqlite_store_literal_like_lookups(
     database_path: Path, sample_source: DictionarySource
 ):
-    """Test literal matching of LIKE wildcard characters in romanization."""
+    """Test literal matching of LIKE wildcard characters in romanization.
+
+    Arguments:
+        database_path: database path
+        sample_source: sample source value
+    """
     entries = [
         DictionaryEntry(
             traditional="百分號",
@@ -156,7 +181,13 @@ def test_sqlite_store_preserves_existing_database_when_rebuild_fails(
     sample_entries: list[DictionaryEntry],
     sample_source: DictionarySource,
 ):
-    """Test a failed rebuild leaves the existing database unchanged."""
+    """Test a failed rebuild leaves the existing database unchanged.
+
+    Arguments:
+        database_path: database path
+        sample_entries: sample entries value
+        sample_source: sample source value
+    """
     store = DictionarySqliteStore(database_path=database_path)
     store.persist((sample_source, sample_entries))
     original_database = database_path.read_bytes()
@@ -179,7 +210,12 @@ def test_sqlite_store_preserves_existing_database_when_rebuild_fails(
 def test_sqlite_store_collapses_duplicate_entries_and_definitions(
     database_path: Path, sample_source: DictionarySource
 ):
-    """Test duplicate entries and definitions collapse through uniqueness rules."""
+    """Test duplicate entries and definitions collapse through uniqueness rules.
+
+    Arguments:
+        database_path: database path
+        sample_source: sample source value
+    """
     definition = DictionaryDefinition(text="duplicate definition", label="noun")
     duplicate = DictionaryEntry(
         traditional="重複",

@@ -72,6 +72,8 @@ class LensRecognizer:
             language: Scinoephile language
             overwrite_cache: whether to replace matching OCR cache files
             retries: Google Lens OCR request attempts per uncached image
+        Raises:
+            ValueError: if a value is invalid
         """
         self._cache = LensCache(cache_root_path, overwrite_cache)
         try:
@@ -250,6 +252,11 @@ class LensRecognizer:
 
             Returns:
                 normalized OCR lines
+
+            Raises:
+                chrome_lens_py.LensAPIError: if the operation fails
+                _GoogleLensRequestError: if the operation fails
+                RuntimeError: if the operation cannot be completed
             """
             for attempt in range(1, self.retries + 1):
                 try:

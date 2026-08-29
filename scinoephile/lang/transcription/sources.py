@@ -10,27 +10,23 @@ from pathlib import Path
 from types import MappingProxyType
 
 from scinoephile.analysis.transcription.artifact import AlignmentSource
-from scinoephile.audio.transcription import (
-    CtcAligner,
-    DemucsMode,
-    MlxAudioModel,
-    MlxAudioTranscriber,
-    Transcriber,
-    VadMode,
-    WhisperModel,
-    WhisperTranscriber,
-)
-from scinoephile.audio.transcription.mlx_audio.model_spec import (
+from scinoephile.audio.transcription import DemucsMode, Transcriber, VadMode
+from scinoephile.audio.transcription.ctc import CtcAligner
+from scinoephile.audio.transcription.mlx_audio import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
+    MlxAudioModel,
     MlxAudioModelSpec,
+    MlxAudioTranscriber,
 )
-from scinoephile.audio.transcription.whisper.model_spec import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
+    WhisperModel,
     WhisperModelSpec,
+    WhisperTranscriber,
 )
 from scinoephile.core import Language, ScinoephileError
 
@@ -50,7 +46,11 @@ class TranscriptionSourceSpec:
     """Speech-to-text model specification."""
 
     def __post_init__(self):
-        """Normalize and validate the source name."""
+        """Normalize and validate the source name.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         name = self.name.strip()
         if not name:
             raise ValueError("Transcription source name must be nonblank.")

@@ -34,7 +34,11 @@ class PunctuationQuery(Query):
 
     @model_validator(mode="after")
     def validate_required_fields(self) -> Self:
-        """Ensure subtitle lines and their guide are nonempty."""
+        """Ensure subtitle lines and their guide are nonempty.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if not self.guide:
             raise ValueError(self.prompt.ref_sub_missing_err)
         if not self.subtitles:
@@ -52,7 +56,11 @@ class PunctuationAnswer(Answer):
 
     @model_validator(mode="after")
     def validate_output(self) -> Self:
-        """Ensure output text is nonempty."""
+        """Ensure output text is nonempty.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if not self.output:
             raise ValueError(self.prompt.target_sub_punctuated_missing_err)
         return self
@@ -104,6 +112,9 @@ class PunctuationTestCase(TestCase):
 
         Returns:
             validated test case
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if self.answer is None:
             return self

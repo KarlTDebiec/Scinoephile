@@ -10,7 +10,7 @@ from pathlib import Path
 
 from pydub import AudioSegment
 
-from scinoephile.audio.transcription.ctc.aligner import CtcAligner
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 
 from .model import WhisperModel

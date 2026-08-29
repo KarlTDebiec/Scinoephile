@@ -40,6 +40,9 @@ class TesseractCache(OcrCacheBase[str]):
             payload: decoded JSON payload
         Returns:
             recognized text
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if not isinstance(payload, dict):
             raise ValueError("Tesseract OCR cache must contain an object")

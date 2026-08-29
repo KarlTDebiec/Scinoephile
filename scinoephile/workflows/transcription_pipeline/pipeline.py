@@ -225,6 +225,10 @@ class TranscriptionPipeline:
             stop_at_idx: exclusive zero-based block index at which to stop
         Returns:
             merged and timed audio subtitle series
+
+        Raises:
+            ValueError: if a value is invalid
+            RuntimeError: if the operation cannot be completed
         """
         self.last_alignment_artifact = None
         self.last_run_manifest = None
@@ -425,6 +429,9 @@ class TranscriptionPipeline:
             blocks: selected VAD block outcomes and cache identities
         Returns:
             compact run manifest
+
+        Raises:
+            RuntimeError: if the operation cannot be completed
         """
         if self.last_alignment_artifact is None:
             raise RuntimeError("Cannot build run provenance without an artifact.")
@@ -451,6 +458,9 @@ class TranscriptionPipeline:
             audio: complete source audio, if the range contains blocks
         Returns:
             audio events, or None when disabled or unavailable in auto mode
+
+        Raises:
+            AudioClassificationError: if the operation fails
         """
         if self.audio_event_mode is AudioAnalysisMode.OFF or audio is None:
             return None
@@ -476,6 +486,9 @@ class TranscriptionPipeline:
             has_selected_blocks: whether the requested range contains blocks
         Returns:
             speaker diarization, or None when disabled or unavailable in auto mode
+
+        Raises:
+            SpeakerDiarizationError: if the operation fails
         """
         if self.diarization_mode is AudioAnalysisMode.OFF or not has_selected_blocks:
             return None
@@ -501,6 +514,9 @@ class TranscriptionPipeline:
             speech_intervals_ms: source-timeline speech intervals
         Returns:
             language identification, or None when disabled or unavailable in auto mode
+
+        Raises:
+            AudioClassificationError: if the operation fails
         """
         if self.language_identification_mode is AudioAnalysisMode.OFF or audio is None:
             return None

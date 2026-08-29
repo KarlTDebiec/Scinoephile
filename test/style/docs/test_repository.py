@@ -6,18 +6,14 @@
 from __future__ import annotations
 
 import ast
-from pathlib import Path
 
 from scinoephile.common import package_root
 from test.helpers.files import get_python_files
 from test.style.docs.checks import DocstringViolation, get_docstring_violations
 
-DOCSTRING_BASELINE_PATH = Path(__file__).with_name("docstring_violations.txt")
-"""Path to the checked-in docstring violation baseline."""
-
 
 def test_python_docstrings_follow_repository_structure():
-    """Test Python docstring violations match the exact checked-in baseline."""
+    """Test Python docstrings satisfy every repository structure rule."""
     violations: list[DocstringViolation] = []
     for file_path in get_python_files(package_root.parent):
         tree = ast.parse(
@@ -29,29 +25,6 @@ def test_python_docstrings_follow_repository_structure():
             )
         )
 
-    violations_by_fingerprint = {
-        violation.fingerprint: violation for violation in violations
-    }
-    actual_fingerprints = set(violations_by_fingerprint)
-    expected_fingerprints = set(
-        DOCSTRING_BASELINE_PATH.read_text(encoding="utf-8").splitlines()
+    assert not violations, "Fix docstring violations:\n" + "\n".join(
+        str(violation) for violation in violations
     )
-    unexpected_fingerprints = sorted(actual_fingerprints - expected_fingerprints)
-    resolved_fingerprints = sorted(expected_fingerprints - actual_fingerprints)
-
-    failure_sections = []
-    if unexpected_fingerprints:
-        failure_sections.append(
-            "Unexpected docstring violations (fix these, do not add them to the "
-            "baseline):\n"
-            + "\n".join(
-                str(violations_by_fingerprint[fingerprint])
-                for fingerprint in unexpected_fingerprints
-            )
-        )
-    if resolved_fingerprints:
-        failure_sections.append(
-            "Resolved docstring violations (remove these from the baseline):\n"
-            + "\n".join(resolved_fingerprints)
-        )
-    assert not failure_sections, "\n\n".join(failure_sections)

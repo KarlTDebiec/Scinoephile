@@ -20,6 +20,9 @@ def get_eng_text_flattened(text: str) -> str:
         text: text to flatten
     Returns:
         flattened text
+
+    Raises:
+        ScinoephileError: if the operation fails
     """
     line_sep = "\\N"
     flattened = text.replace("\r\n", "\n").replace("\n", line_sep)

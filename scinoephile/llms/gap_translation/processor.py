@@ -52,6 +52,9 @@ class GapTranslationProcessor(Processor):
             start_at_idx: inclusive zero-based block index at which to start processing
         Returns:
             primary subtitles with gaps filled
+
+        Raises:
+            ScinoephileError: if the operation fails
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)

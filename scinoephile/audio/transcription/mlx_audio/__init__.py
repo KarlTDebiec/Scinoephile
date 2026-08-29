@@ -12,7 +12,27 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .model import MlxAudioModel
-from .model_spec import MlxAudioModelSpec
+from .model_spec import (
+    FIRERED_ASR2_MODEL,
+    GLM_ASR_MODEL,
+    MIMO_MODEL,
+    QWEN3_ASR_MODEL,
+    SENSEVOICE_MODEL,
+    MlxAudioModelSpec,
+)
+from .tokenization import MIMO_AUDIO_TOKENIZER
 from .transcriber import MlxAudioTranscriber
+from .types import MlxAudioResult
 
-__all__ = ["MlxAudioModel", "MlxAudioModelSpec", "MlxAudioTranscriber"]
+__all__ = [
+    "FIRERED_ASR2_MODEL",
+    "GLM_ASR_MODEL",
+    "MIMO_AUDIO_TOKENIZER",
+    "MIMO_MODEL",
+    "MlxAudioModel",
+    "MlxAudioModelSpec",
+    "MlxAudioResult",
+    "MlxAudioTranscriber",
+    "QWEN3_ASR_MODEL",
+    "SENSEVOICE_MODEL",
+]

@@ -40,6 +40,9 @@ def _get_test_case_files() -> list[tuple[Path, type[Manager]]]:
 
     Returns:
         test-case file and manager pairs
+
+    Raises:
+        ValueError: if a value is invalid
     """
     test_case_files: list[tuple[Path, type[Manager]]] = []
     for pattern, manager_cls in _TEST_CASE_FAMILIES:

@@ -21,7 +21,7 @@ class FailingOcrRecognizer:
         """Initialize.
 
         Arguments:
-            kwargs: ignored recognizer keyword arguments
+            **kwargs: additional keyword arguments
         """
         self.kwargs = kwargs
 
@@ -52,7 +52,7 @@ class RecordingOcrRecognizer:
         """Initialize.
 
         Arguments:
-            kwargs: recognizer keyword arguments
+            **kwargs: additional keyword arguments
         """
         self.kwargs = kwargs
         self.remaining_texts = list(type(self).texts)
@@ -64,7 +64,7 @@ class RecordingOcrRecognizer:
         """Reset recognizer state.
 
         Arguments:
-            texts: texts to return from subsequent recognitions
+            *texts: additional positional arguments
         """
         cls.texts = list(texts)
         cls.instances = []

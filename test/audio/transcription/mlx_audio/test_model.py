@@ -15,18 +15,18 @@ from unittest.mock import Mock, call
 
 import pytest
 
-from scinoephile.audio.transcription.mlx_audio import model as mlx_audio_model
-from scinoephile.audio.transcription.mlx_audio import tokenization
-from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModel
-from scinoephile.audio.transcription.mlx_audio.model_spec import (
+import scinoephile.audio.transcription.mlx_audio.model as mlx_audio_model_module
+from scinoephile.audio.transcription.mlx_audio import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
+    MIMO_AUDIO_TOKENIZER,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
+    MlxAudioModel,
     MlxAudioModelSpec,
+    tokenization,
 )
-from scinoephile.audio.transcription.mlx_audio.tokenization import MIMO_AUDIO_TOKENIZER
 from scinoephile.core import DependencyError, Language
 from scinoephile.core.dependencies.transcription import import_mlx_audio_stt_load
 from scinoephile.core.ml import ModelSpec
@@ -34,9 +34,17 @@ from scinoephile.core.ml import ModelSpec
 
 @pytest.fixture(autouse=True)
 def use_apple_silicon_platform(monkeypatch: pytest.MonkeyPatch):
-    """Run model tests as though on the supported platform."""
-    monkeypatch.setattr(mlx_audio_model.platform, "system", Mock(return_value="Darwin"))
-    monkeypatch.setattr(mlx_audio_model.platform, "machine", Mock(return_value="arm64"))
+    """Run model tests as though on the supported platform.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    monkeypatch.setattr(
+        mlx_audio_model_module.platform, "system", Mock(return_value="Darwin")
+    )
+    monkeypatch.setattr(
+        mlx_audio_model_module.platform, "machine", Mock(return_value="arm64")
+    )
 
 
 def test_mimo_uses_pinned_audio_tokenizer():
@@ -154,8 +162,12 @@ def test_model_rejects_unsupported_platform(
         system: operating system name
         machine: machine architecture
     """
-    monkeypatch.setattr(mlx_audio_model.platform, "system", Mock(return_value=system))
-    monkeypatch.setattr(mlx_audio_model.platform, "machine", Mock(return_value=machine))
+    monkeypatch.setattr(
+        mlx_audio_model_module.platform, "system", Mock(return_value=system)
+    )
+    monkeypatch.setattr(
+        mlx_audio_model_module.platform, "machine", Mock(return_value=machine)
+    )
     model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
 
     with pytest.raises(RuntimeError, match="requires macOS on Apple Silicon"):
@@ -188,13 +200,15 @@ def test_model_is_cached(
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     mimo_asr = SimpleNamespace(get_model_path=Mock())
     monkeypatch.setattr(
-        mlx_audio_model, "import_mlx_audio_stt_load", Mock(return_value=load)
+        mlx_audio_model_module, "import_mlx_audio_stt_load", Mock(return_value=load)
     )
     monkeypatch.setattr(
         tokenization, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
     )
     monkeypatch.setattr(
-        mlx_audio_model, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
+        mlx_audio_model_module,
+        "get_huggingface_snapshot_dir_path",
+        get_snapshot_dir_path,
     )
 
     mlx_audio_model_instance = MlxAudioModel(model, Language.yue_hant)
@@ -248,13 +262,15 @@ def test_mimo_audio_tokenizer_uses_pinned_local_snapshot(
 
     get_snapshot_dir_path = Mock(side_effect=(model_path, audio_tokenizer_path))
     monkeypatch.setattr(
-        mlx_audio_model, "import_mlx_audio_stt_load", Mock(return_value=load)
+        mlx_audio_model_module, "import_mlx_audio_stt_load", Mock(return_value=load)
     )
     monkeypatch.setattr(
         tokenization, "import_mlx_audio_mimo_asr", Mock(return_value=mimo_asr)
     )
     monkeypatch.setattr(
-        mlx_audio_model, "get_huggingface_snapshot_dir_path", get_snapshot_dir_path
+        mlx_audio_model_module,
+        "get_huggingface_snapshot_dir_path",
+        get_snapshot_dir_path,
     )
 
     model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
@@ -295,6 +311,9 @@ def test_mlx_audio_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
             level: relative import level
         Returns:
             imported module
+
+        Raises:
+            ImportError: if the operation fails
         """
         if name == "mlx_audio.stt":
             raise ImportError("blocked optional dependency")

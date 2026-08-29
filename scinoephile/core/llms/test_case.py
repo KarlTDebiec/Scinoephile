@@ -73,6 +73,9 @@ class TestCase(LLMModel, ABC):
 
         Returns:
             validated test case
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if self.answer is None and self.verified:
             raise ValueError("Verified test cases must include an answer.")
@@ -84,6 +87,9 @@ class TestCase(LLMModel, ABC):
 
         Returns:
             validated test case
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if self.few_shot and not self.verified:
             raise ValueError("Few-shot test cases must be verified.")

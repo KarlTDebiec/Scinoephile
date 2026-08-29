@@ -31,7 +31,11 @@ _LOCALIZED_PROMPT = DelineationPrompt(
 
 
 def _get_alignment() -> TranscriptionAlignment:
-    """Get a two-group alignment that can shift target text."""
+    """Get a two-group alignment that can shift target text.
+
+    Returns:
+        a two-group alignment that can shift target text
+    """
     reference = Series(
         events=[
             Subtitle(start=0, end=1000, text="參考一"),
@@ -82,7 +86,13 @@ def test_aligner_uses_queryer_prompt_and_semantic_shift_output():
     delineation_processor.queryer = delineation_queryer
 
     def add_answer(test_case: DelineationTestCase) -> DelineationTestCase:
-        """Move the second target subtitle into the first sync group."""
+        """Move the second target subtitle into the first sync group.
+
+        Arguments:
+            test_case: test case value
+        Returns:
+            test case with a shifted delineation answer
+        """
         return type(test_case).model_validate(
             {**test_case.model_dump(), "answer": {"output_one": "甲乙"}}
         )
@@ -126,7 +136,13 @@ def test_aligner_restarts_to_propagate_text_across_multiple_boundaries():
     delineation_processor.queryer = delineation_queryer
 
     def shift_left(test_case: DelineationTestCase) -> DelineationTestCase:
-        """Move text leftward until all targets reach the first group."""
+        """Move text leftward until all targets reach the first group.
+
+        Arguments:
+            test_case: test case value
+        Returns:
+            test case with text shifted leftward
+        """
         answer: dict[str, str] = {}
         if test_case.query.target_one == "乙":
             answer = {"output_one": "乙丙"}
@@ -157,7 +173,13 @@ def test_aligner_stops_when_delineation_states_repeat():
     delineation_processor.queryer = delineation_queryer
 
     def oscillate(test_case: DelineationTestCase) -> DelineationTestCase:
-        """Move the second target left, then move it back right."""
+        """Move the second target left, then move it back right.
+
+        Arguments:
+            test_case: test case value
+        Returns:
+            test case with an oscillating delineation answer
+        """
         answer = {"output_one": "甲乙"}
         if not test_case.query.target_two:
             answer = {"output_one": "甲", "output_two": "乙"}

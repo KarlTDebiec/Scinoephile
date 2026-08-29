@@ -83,6 +83,9 @@ def transcribe_series(
         stop_at_idx: exclusive zero-based VAD block index at which to stop
     Returns:
         merged and timed audio subtitle series
+
+    Raises:
+        RuntimeError: if the operation cannot be completed
     """
     if pipeline is None:
         pipeline = get_transcription_pipeline(

@@ -172,6 +172,8 @@ def _handle_live_timeout(
         stderr_thread: thread reading standard error
         stdout_chunks: standard output chunks read so far
         stderr_chunks: standard error chunks read so far
+    Raises:
+        TimeoutExpired: if the subprocess times out
     """
     child.kill()
     child.wait()
@@ -243,6 +245,9 @@ def _wait_for_live_process(
         stderr_chunks: standard error chunks read so far
     Returns:
         exitcode
+
+    Raises:
+        TimeoutExpired: if the subprocess times out
     """
     if timeout is None:
         exitcode = child.wait()

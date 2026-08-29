@@ -84,6 +84,9 @@ class SpeakerDiarizationCache:
             cache_identity: pipeline configuration identifying the output
         Returns:
             validated diarization result, if present
+
+        Raises:
+            ValueError: if a value is invalid
         """
         cache_path = self.get_path(audio, cache_identity)
         if self.overwrite and cache_path not in self._refreshed_paths:

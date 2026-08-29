@@ -109,6 +109,10 @@ class Queryer[TTestCase: TestCase]:
             test_case: test case containing query for LLM
         Returns:
             test case including LLM's answer
+
+        Raises:
+            ScinoephileError: if the operation fails
+            ValidationError: if the operation fails
         """
         test_case = self.test_case_cls.model_validate(test_case.model_dump(mode="json"))
 
@@ -404,6 +408,9 @@ class Queryer[TTestCase: TestCase]:
             verified_test_cases: verified test cases to prepare
         Returns:
             verified test cases keyed by query
+
+        Raises:
+            ValueError: if a value is invalid
         """
         verified_test_cases_by_query: dict[tuple, TTestCase] = {}
         for test_case in verified_test_cases:

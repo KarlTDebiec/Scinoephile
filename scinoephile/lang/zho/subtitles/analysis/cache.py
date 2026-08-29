@@ -195,6 +195,9 @@ class ZhoScriptAnalysisCache:
             payload: decoded JSON payload
         Returns:
             validated script analysis
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if not isinstance(payload, Mapping):
             raise ValueError("Subtitle script analysis cache must contain an object")

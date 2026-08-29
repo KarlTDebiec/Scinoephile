@@ -36,7 +36,11 @@ class GuidedReviewQuery(Query):
 
     @model_validator(mode="after")
     def validate_guide_indices(self) -> Self:
-        """Ensure guide indexes are consecutive, ordered, and begin at 1."""
+        """Ensure guide indexes are consecutive, ordered, and begin at 1.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         indexes = [guide.index for guide in self.guides]
         if indexes != list(range(1, len(indexes) + 1)):
             raise ValueError(self.prompt.guide_indices_err)
@@ -44,7 +48,11 @@ class GuidedReviewQuery(Query):
 
     @model_validator(mode="after")
     def validate_target_indices(self) -> Self:
-        """Ensure target indexes are consecutive, ordered, and begin at 1."""
+        """Ensure target indexes are consecutive, ordered, and begin at 1.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         indexes = [target.index for target in self.targets]
         if indexes != list(range(1, len(indexes) + 1)):
             raise ValueError(self.prompt.target_indices_err)
@@ -61,7 +69,11 @@ class GuidedReviewAnswer(Answer):
 
     @model_validator(mode="after")
     def validate_revision_indices(self) -> Self:
-        """Ensure revision indexes are unique and in ascending order."""
+        """Ensure revision indexes are unique and in ascending order.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         indexes = [revision.index for revision in self.revisions]
         if indexes != sorted(set(indexes)):
             raise ValueError(self.prompt.revision_indices_err)
@@ -107,6 +119,9 @@ class GuidedReviewTestCase(TestCase):
 
         Returns:
             validated test case
+
+        Raises:
+            ValueError: if a value is invalid
         """
         if self.answer is None:
             return self

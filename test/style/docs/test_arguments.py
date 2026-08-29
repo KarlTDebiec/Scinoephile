@@ -112,3 +112,15 @@ class Example:
     )
 
     assert not violations
+
+
+def test_docstring_plain_self_and_cls_parameters_require_documentation():
+    """Test ordinary functions must document parameters named `self` or `cls`."""
+    violations = get_sample_docstring_violations(
+        '''
+def ordinary(self, cls):
+    """Run an ordinary function."""
+'''
+    )
+
+    assert [violation.rule_id for violation in violations] == ["missing-arguments"]

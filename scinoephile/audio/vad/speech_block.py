@@ -29,7 +29,11 @@ class SpeechBlockSettings:
     """Minimum active run retained when locating speech-free gaps."""
 
     def __post_init__(self):
-        """Validate block-splitting configuration."""
+        """Validate block-splitting configuration.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if self.speech_free_gap_seconds <= 0.0:
             raise ValueError("Speech-free block gap must be positive.")
         if self.context_padding_seconds < 0.0:

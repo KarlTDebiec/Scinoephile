@@ -111,6 +111,9 @@ class WiktionaryDictionaryService:
             limit: max results to return
         Returns:
             dictionary entries
+
+        Raises:
+            ValueError: if a value is invalid
         """
         query = query.strip()
         if not query:
@@ -203,7 +206,11 @@ class WiktionaryDictionaryService:
         return val_input_path(runtime_jsonl_path)
 
     def _ensure_database(self):
-        """Ensure the SQLite database exists, building it if configured."""
+        """Ensure the SQLite database exists, building it if configured.
+
+        Raises:
+            FileNotFoundError: if a required file is missing
+        """
         if self.database_path.exists():
             return
         if not self.auto_build_missing:

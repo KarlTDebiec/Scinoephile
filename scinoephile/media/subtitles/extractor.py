@@ -46,6 +46,9 @@ class SubtitleExtractor:
             render_images: whether to render SUP streams to image directories
         Returns:
             cached subtitle stream paths in input order
+
+        Raises:
+            ScinoephileError: if the operation fails
         """
         # Identify the subtitle streams absent from the cache
         missing = [

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from math import isfinite
 
-from scinoephile.analysis.alignment.timed_msa.models import AlignmentSequence
+from scinoephile.analysis.alignment.timed_msa import MsaSequence
 from scinoephile.core.subtitles.series import Series
 
 __all__ = ["get_reference_sequence"]
@@ -14,7 +14,7 @@ __all__ = ["get_reference_sequence"]
 
 def get_reference_sequence(
     name: str, series: Series, *, offset_seconds: float = 0.0
-) -> AlignmentSequence:
+) -> MsaSequence:
     """Convert subtitle reference text into approximately timed characters.
 
     Arguments:
@@ -28,7 +28,7 @@ def get_reference_sequence(
     """
     if not isfinite(offset_seconds) or offset_seconds < 0.0:
         raise ValueError("Reference alignment offset must be finite and non-negative.")
-    return AlignmentSequence.from_timed_texts(
+    return MsaSequence.from_timed_texts(
         name,
         (
             (

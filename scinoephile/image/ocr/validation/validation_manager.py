@@ -72,6 +72,8 @@ class ValidationManager:
         Arguments:
             validation_data_dir_path: local OCR validation data directory
             dev: whether validation data updates should write to repo data
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             self._init_data(validation_data_dir_path, dev)

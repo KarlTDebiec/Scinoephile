@@ -179,6 +179,9 @@ class TranscriptionAlignmentScorer:
             source_count: total number of transcription sources
         Returns:
             profile column index for each answer character, when mapped
+
+        Raises:
+            RuntimeError: if the operation cannot be completed
         """
         profile_length = len(profile_columns)
         answer_length = len(answer_characters)
@@ -287,6 +290,8 @@ def _validate_rows(source_texts: Sequence[str]):
 
     Arguments:
         source_texts: aligned source rows
+    Raises:
+        ValueError: if a value is invalid
     """
     if not source_texts:
         raise ValueError("Transcription validation requires at least one source.")

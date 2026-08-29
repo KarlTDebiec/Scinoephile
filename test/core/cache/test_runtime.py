@@ -13,7 +13,11 @@ from scinoephile.core.cache.runtime import get_distribution_identity
 
 
 def test_get_distribution_identity(monkeypatch: MonkeyPatch):
-    """Test distribution identities include the installed version."""
+    """Test distribution identities include the installed version.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     installed_distribution = Mock(version="1.2.3")
     installed_distribution.read_text.return_value = None
     monkeypatch.setattr(
@@ -28,7 +32,11 @@ def test_get_distribution_identity(monkeypatch: MonkeyPatch):
 
 
 def test_get_distribution_identity_includes_vcs_revision(monkeypatch: MonkeyPatch):
-    """Test VCS distributions include their installed commit revision."""
+    """Test VCS distributions include their installed commit revision.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     installed_distribution = Mock(version="1.2.3")
     installed_distribution.read_text.return_value = """{
         "url": "https://example.com/runtime.git",
@@ -53,7 +61,11 @@ def test_get_distribution_identity_includes_vcs_revision(monkeypatch: MonkeyPatc
 def test_get_distribution_identity_handles_missing_distribution(
     monkeypatch: MonkeyPatch,
 ):
-    """Test missing distributions produce a stable unavailable identity."""
+    """Test missing distributions produce a stable unavailable identity.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setattr(
         "scinoephile.core.cache.runtime.distribution",
         Mock(side_effect=PackageNotFoundError),

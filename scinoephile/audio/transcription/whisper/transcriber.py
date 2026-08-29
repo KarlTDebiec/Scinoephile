@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.separation import DemucsSeparator
-from scinoephile.audio.transcription.ctc.aligner import CtcAligner
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionEmptyError,
     TranscriptionError,
@@ -166,6 +166,9 @@ class WhisperTranscriber(Transcriber):
             is_usable: optional callback used to reject output and trigger retries
         Returns:
             first usable deterministic or recovered transcription
+
+        Raises:
+            TranscriptionError: if transcription fails
         """
         try:
             segments = super().transcribe(audio, is_usable=is_usable)

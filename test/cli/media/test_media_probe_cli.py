@@ -228,7 +228,14 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
     cache_root_path = tmp_path / "cache"
 
     def analyze_script(*args: Any, **kwargs: Any) -> ZhoScriptAnalysisResult:
-        """Return script analysis after checking analyzer inputs."""
+        """Return script analysis after checking analyzer inputs.
+
+        Arguments:
+            *args: additional positional arguments
+            **kwargs: additional keyword arguments
+        Returns:
+            script analysis after checking analyzer inputs
+        """
         assert args[0] == infile_path
         stream = args[1]
         assert isinstance(stream, SubtitleStream)

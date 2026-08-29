@@ -15,7 +15,13 @@ from test.helpers.series_files import get_ocr_text_series
 def test_validate_ocr_runs_noninteractive_validation(
     monkeypatch, tmp_path: Path, tiny_image_series: ImageSeries
 ):
-    """Test path-based OCR validation loads, validates, and writes output."""
+    """Test path-based OCR validation loads, validates, and writes output.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary directory path
+        tiny_image_series: tiny image series
+    """
     infile_path = tmp_path / "source.sup"
     infile_path.write_bytes(b"unused")
     outfile_path = tmp_path / "validated.srt"
@@ -34,17 +40,34 @@ def test_validate_ocr_runs_noninteractive_validation(
             validation_data_dir_path: Path | str | None = None,
             dev: bool = False,
         ):
-            """Initialize."""
+            """Initialize.
+
+            Arguments:
+                validation_data_dir_path: validation data dir path
+                dev: dev value
+            """
             manager_instances.append(self)
             manager_calls.append((validation_data_dir_path, dev))
 
         def validate(self, series: ImageSeries) -> Series:
-            """Validate an image series."""
+            """Validate an image series.
+
+            Arguments:
+                series: series
+            Returns:
+                validated subtitle series
+            """
             validate_calls.append((series, self))
             return get_ocr_text_series("validated")
 
     def fake_load(path: Path) -> ImageSeries:
-        """Fake image subtitle loading."""
+        """Fake image subtitle loading.
+
+        Arguments:
+            path: path
+        Returns:
+            loaded image subtitle series
+        """
         load_calls.append(path)
         return tiny_image_series
 
@@ -74,7 +97,12 @@ def test_validate_ocr_runs_noninteractive_validation(
 
 
 def test_validate_ocr_runs_interactive_validation(monkeypatch, tmp_path: Path):
-    """Test path-based OCR validation launches interactive validation."""
+    """Test path-based OCR validation launches interactive validation.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "image"
     infile_path.mkdir()
     outfile_path = tmp_path / "validated.srt"
@@ -89,14 +117,29 @@ def test_validate_ocr_runs_interactive_validation(monkeypatch, tmp_path: Path):
         validation_data_dir_path: Path | str | None = None,
         dev: bool = False,
     ) -> object:
-        """Capture web session construction arguments."""
+        """Capture web session construction arguments.
+
+        Arguments:
+            dir_path: dir path
+            outfile_path: outfile path
+            validation_data_dir_path: validation data dir path
+            dev: dev value
+        Returns:
+            recording validation session
+        """
         run_calls.append(
             ("from_dir_path", dir_path, outfile_path, validation_data_dir_path, dev)
         )
         return session
 
     def fake_run_app(value: object, host: str, port: int):
-        """Capture web app run arguments and write validation output."""
+        """Capture web app run arguments and write validation output.
+
+        Arguments:
+            value: value
+            host: host value
+            port: port value
+        """
         run_calls.append(("run_app", value, host, port))
         get_ocr_text_series("interactive validated").save(outfile_path)
 

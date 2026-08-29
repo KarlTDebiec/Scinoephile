@@ -203,6 +203,9 @@ class OcrProcessingWorkflow:
 
         Returns:
             image subtitle series
+
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             if self.infile_path.is_dir() or self.infile_path.suffix.lower() == ".sup":

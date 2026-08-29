@@ -25,6 +25,8 @@ class LLMModel(BaseModel):
 
         Arguments:
             **kwargs: arguments passed through Pydantic subclass initialization
+        Raises:
+            ValueError: if a value is invalid
         """
         super().__pydantic_init_subclass__(**kwargs)
 
@@ -63,6 +65,9 @@ class LLMModel(BaseModel):
             info: Pydantic validation context
         Returns:
             value after canonical field-name validation
+
+        Raises:
+            PydanticCustomError: if the operation fails
         """
         if not info.context or not info.context.get("alias_only"):
             return value
@@ -101,6 +106,9 @@ def get_model_name(base_name: str, suffix: str) -> str:
         suffix: descriptive suffix
     Returns:
         valid class name string
+
+    Raises:
+        ValueError: if a value is invalid
     """
     # Base name and suffix are short enough to use directly
     if len(base_name) + 1 + len(suffix) <= 64:

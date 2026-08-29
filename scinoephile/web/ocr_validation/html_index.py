@@ -41,6 +41,9 @@ def load_html_entries(dir_path: Path) -> list[HtmlSubtitleEntry]:
         dir_path: directory containing index.html and subtitle images
     Returns:
         subtitle entries parsed from the HTML index
+
+    Raises:
+        ScinoephileError: if the operation fails
     """
     html_path = dir_path / "index.html"
     if not html_path.exists():
@@ -67,6 +70,8 @@ def update_html_entry_text(dir_path: Path, sub_idx: int, text: str):
         dir_path: directory containing index.html and subtitle images
         sub_idx: zero-based subtitle index to update
         text: replacement subtitle text using ASS newline escapes
+    Raises:
+        IndexError: if an index is outside the valid range
     """
     entries = load_html_entries(dir_path)
     if sub_idx < 0 or sub_idx >= len(entries):

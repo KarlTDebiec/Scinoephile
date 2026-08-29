@@ -38,7 +38,18 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
         host: str = "127.0.0.1",
         port: int = 5000,
     ):
-        """Capture OCR validation workflow arguments."""
+        """Capture OCR validation workflow arguments.
+
+        Arguments:
+            infile_path_arg: infile path arg value
+            outfile_path_arg: outfile path arg value
+            validation_data_dir_path: validation data dir path
+            interactive: interactive value
+            dev: dev value
+            overwrite: overwrite value
+            host: host value
+            port: port value
+        """
         validate_calls.append(
             {
                 "infile_path": infile_path_arg,
@@ -103,7 +114,18 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
         host: str = "127.0.0.1",
         port: int = 5000,
     ):
-        """Capture OCR validation workflow arguments."""
+        """Capture OCR validation workflow arguments.
+
+        Arguments:
+            infile_path_arg: infile path arg value
+            outfile_path_arg: outfile path arg value
+            validation_data_dir_path: validation data dir path
+            interactive: interactive value
+            dev: dev value
+            overwrite: overwrite value
+            host: host value
+            port: port value
+        """
         validate_calls.append(
             {
                 "infile_path": infile_path_arg,
@@ -191,7 +213,14 @@ def test_ocr_validate_cli_web_delegates_image_dir_validation(
     infile_path.mkdir()
 
     def fake_validate_ocr(*args: Any, **kwargs: Any):
-        """Raise the workflow-level validation error."""
+        """Raise the workflow-level validation error.
+
+        Arguments:
+            *args: additional positional arguments
+            **kwargs: additional keyword arguments
+        Raises:
+            ScinoephileError: if the operation fails
+        """
         raise ScinoephileError("session checked OCR image directory")
 
     monkeypatch.setattr(

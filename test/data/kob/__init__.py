@@ -104,19 +104,31 @@ class _KobTestCaseKwargs(TypedDict, total=False):
 
 @fixture
 def kob_eng() -> Series:
-    """KOB English subtitles."""
+    """KOB English subtitles.
+
+    Returns:
+        KOB English subtitles
+    """
     return Series.load(input_dir / "eng.srt")
 
 
 @fixture
 def kob_yue_hans() -> Series:
-    """KOB yue-Hans subtitles (input)."""
+    """KOB yue-Hans subtitles (input).
+
+    Returns:
+        KOB yue-Hans subtitles (input)
+    """
     return Series.load(input_dir / "yue-Hans.srt")
 
 
 @fixture
 def kob_yue_hant() -> Series:
-    """KOB yue-Hant subtitles."""
+    """KOB yue-Hant subtitles.
+
+    Returns:
+        KOB yue-Hant subtitles
+    """
     return Series.load(input_dir / "yue-Hant.srt")
 
 
@@ -347,7 +359,11 @@ def get_kob_zho_hant_simplify_review_test_cases(
 
 @fixture
 def kob_eng_expected_series_diff() -> list[str]:
-    """Expected differences for KOB OCR English vs SRT English subtitles."""
+    """Expected differences for KOB OCR English vs SRT English subtitles.
+
+    Returns:
+        expected differences for KOB OCR English vs SRT English subtitles
+    """
     return [
         "insert: SRT[8] 'Damn!' not present in OCR",
         "insert: SRT[31] 'What?' not present in OCR",
@@ -499,109 +515,181 @@ def kob_eng_expected_series_diff() -> list[str]:
 
 @fixture
 def kob_eng_ocr_fuse() -> Series:
-    """KOB English fused subtitles."""
+    """KOB English fused subtitles.
+
+    Returns:
+        KOB English fused subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse.srt")
 
 
 @fixture
 def kob_eng_ocr_fuse_clean() -> Series:
-    """KOB English fused and cleaned subtitles."""
+    """KOB English fused and cleaned subtitles.
+
+    Returns:
+        KOB English fused and cleaned subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean.srt")
 
 
 @fixture
 def kob_eng_ocr_fuse_clean_validate() -> Series:
-    """KOB English fused, cleaned, and validated subtitles."""
+    """KOB English fused, cleaned, and validated subtitles.
+
+    Returns:
+        KOB English fused, cleaned, and validated subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def kob_eng_ocr_fuse_clean_validate_review() -> Series:
-    """KOB English fused, cleaned, validated, and reviewed subtitles."""
+    """KOB English fused, cleaned, validated, and reviewed subtitles.
+
+    Returns:
+        KOB English fused, cleaned, validated, and reviewed subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def kob_eng_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """KOB English fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """KOB English fused, cleaned, validated, reviewed, and flattened subtitles.
+
+    Returns:
+        KOB English fused, cleaned, validated, reviewed, and flattened subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review_flatten.srt")
 
 
 @fixture
 def kob_eng_ocr_lens() -> Series:
-    """KOB English subtitles OCRed using Google Lens."""
+    """KOB English subtitles OCRed using Google Lens.
+
+    Returns:
+        KOB English subtitles OCRed using Google Lens
+    """
     return Series.load(output_dir / "eng_ocr/lens.srt")
 
 
 @fixture
 def kob_eng_ocr_lens_clean() -> Series:
-    """KOB English Google Lens OCR subtitles, cleaned."""
+    """KOB English Google Lens OCR subtitles, cleaned.
+
+    Returns:
+        KOB English Google Lens OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "eng_ocr/lens_clean.srt")
 
 
 @fixture
 def kob_eng_ocr_tesseract() -> Series:
-    """KOB English subtitles OCRed using Tesseract."""
+    """KOB English subtitles OCRed using Tesseract.
+
+    Returns:
+        KOB English subtitles OCRed using Tesseract
+    """
     return Series.load(output_dir / "eng_ocr/tesseract.srt")
 
 
 @fixture
 def kob_eng_ocr_tesseract_clean() -> Series:
-    """KOB English Tesseract OCR subtitles, cleaned."""
+    """KOB English Tesseract OCR subtitles, cleaned.
+
+    Returns:
+        KOB English Tesseract OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
 
 
 @fixture
 def kob_eng_clean() -> Series:
-    """KOB English cleaned SRT subtitles."""
+    """KOB English cleaned SRT subtitles.
+
+    Returns:
+        KOB English cleaned SRT subtitles
+    """
     return Series.load(output_dir / "eng/clean.srt")
 
 
 @fixture
 def kob_eng_clean_review() -> Series:
-    """KOB English cleaned and reviewed SRT subtitles."""
+    """KOB English cleaned and reviewed SRT subtitles.
+
+    Returns:
+        KOB English cleaned and reviewed SRT subtitles
+    """
     return Series.load(output_dir / "eng/clean_review.srt")
 
 
 @fixture
 def kob_eng_clean_review_flatten() -> Series:
-    """KOB English cleaned, reviewed, and flattened SRT subtitles."""
+    """KOB English cleaned, reviewed, and flattened SRT subtitles.
+
+    Returns:
+        KOB English cleaned, reviewed, and flattened SRT subtitles
+    """
     return Series.load(output_dir / "eng/clean_review_flatten.srt")
 
 
 @fixture
 def kob_eng_clean_review_flatten_timewarp() -> Series:
-    """KOB English cleaned, reviewed, flattened, and timewarped SRT subtitles."""
+    """KOB English cleaned, reviewed, flattened, and timewarped SRT subtitles.
+
+    Returns:
+        KOB English cleaned, reviewed, flattened, and timewarped SRT subtitles
+    """
     return Series.load(output_dir / "eng/clean_review_flatten_timewarp.srt")
 
 
 @fixture
 def kob_yue_hans_clean() -> Series:
-    """KOB yue-Hans cleaned SRT subtitles."""
+    """KOB yue-Hans cleaned SRT subtitles.
+
+    Returns:
+        KOB yue-Hans cleaned SRT subtitles
+    """
     return Series.load(output_dir / "yue-Hans/clean.srt")
 
 
 @fixture
 def kob_yue_hans_clean_review() -> Series:
-    """KOB yue-Hans cleaned and reviewed SRT subtitles."""
+    """KOB yue-Hans cleaned and reviewed SRT subtitles.
+
+    Returns:
+        KOB yue-Hans cleaned and reviewed SRT subtitles
+    """
     return Series.load(output_dir / "yue-Hans/clean_review.srt")
 
 
 @fixture
 def kob_yue_hans_clean_review_flatten() -> Series:
-    """KOB yue-Hans cleaned, reviewed, and flattened SRT subtitles."""
+    """KOB yue-Hans cleaned, reviewed, and flattened SRT subtitles.
+
+    Returns:
+        KOB yue-Hans cleaned, reviewed, and flattened SRT subtitles
+    """
     return Series.load(output_dir / "yue-Hans/clean_review_flatten.srt")
 
 
 @fixture
 def kob_yue_hans_clean_review_flatten_timewarp() -> Series:
-    """KOB yue-Hans cleaned, reviewed, flattened, and timewarped SRT subtitles."""
+    """KOB yue-Hans cleaned, reviewed, flattened, and timewarped SRT subtitles.
+
+    Returns:
+        KOB yue-Hans cleaned, reviewed, flattened, and timewarped SRT subtitles
+    """
     return Series.load(output_dir / "yue-Hans/clean_review_flatten_timewarp.srt")
 
 
 @fixture
 def kob_yue_hans_clean_review_flatten_timewarp_romanize() -> Series:
-    """KOB yue-Hans cleaned, reviewed, flattened, timewarped, and romanized subtitles."""
+    """KOB yue-Hans cleaned, reviewed, flattened, timewarped, and romanized subtitles.
+
+    Returns:
+        KOB yue-Hans cleaned, reviewed, flattened, timewarped, and romanized subtitles
+    """
     return Series.load(
         output_dir / "yue-Hans/clean_review_flatten_timewarp_romanize.srt"
     )
@@ -609,43 +697,71 @@ def kob_yue_hans_clean_review_flatten_timewarp_romanize() -> Series:
 
 @fixture
 def kob_yue_hans_eng() -> Series:
-    """KOB bilingual yue-Hans and English subtitles."""
+    """KOB bilingual yue-Hans and English subtitles.
+
+    Returns:
+        KOB bilingual yue-Hans and English subtitles
+    """
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 @fixture
 def kob_yue_hant_audio() -> AudioSeries:
-    """KOB yue-Hant transcription audio guided by zho-Hant subtitles."""
+    """KOB yue-Hant transcription audio guided by zho-Hant subtitles.
+
+    Returns:
+        KOB yue-Hant transcription audio guided by zho-Hant subtitles
+    """
     return AudioSeries.load(output_dir / "yue-Hant_transcribe/audio")
 
 
 @fixture
 def kob_yue_hant_clean() -> Series:
-    """KOB yue-Hant cleaned SRT subtitles."""
+    """KOB yue-Hant cleaned SRT subtitles.
+
+    Returns:
+        KOB yue-Hant cleaned SRT subtitles
+    """
     return Series.load(output_dir / "yue-Hant/clean.srt")
 
 
 @fixture
 def kob_yue_hant_clean_review() -> Series:
-    """KOB yue-Hant cleaned and reviewed SRT subtitles."""
+    """KOB yue-Hant cleaned and reviewed SRT subtitles.
+
+    Returns:
+        KOB yue-Hant cleaned and reviewed SRT subtitles
+    """
     return Series.load(output_dir / "yue-Hant/clean_review.srt")
 
 
 @fixture
 def kob_yue_hant_clean_review_flatten() -> Series:
-    """KOB yue-Hant cleaned, reviewed, and flattened SRT subtitles."""
+    """KOB yue-Hant cleaned, reviewed, and flattened SRT subtitles.
+
+    Returns:
+        KOB yue-Hant cleaned, reviewed, and flattened SRT subtitles
+    """
     return Series.load(output_dir / "yue-Hant/clean_review_flatten.srt")
 
 
 @fixture
 def kob_yue_hant_clean_review_flatten_timewarp() -> Series:
-    """KOB yue-Hant cleaned, reviewed, flattened, and timewarped SRT subtitles."""
+    """KOB yue-Hant cleaned, reviewed, flattened, and timewarped SRT subtitles.
+
+    Returns:
+        KOB yue-Hant cleaned, reviewed, flattened, and timewarped SRT subtitles
+    """
     return Series.load(output_dir / "yue-Hant/clean_review_flatten_timewarp.srt")
 
 
 @fixture
 def kob_yue_hant_clean_review_flatten_timewarp_simplify() -> Series:
-    """KOB yue-Hant simplified cleaned/reviewed/flattened/timewarped subtitles."""
+    """KOB yue-Hant simplified cleaned/reviewed/flattened/timewarped subtitles.
+
+    Returns:
+        KOB yue-Hant simplified cleaned/reviewed/flattened/timewarped subtitles
+    """
     return Series.load(
         output_dir / "yue-Hant/clean_review_flatten_timewarp_simplify.srt"
     )
@@ -653,7 +769,11 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify() -> Series:
 
 @fixture
 def kob_yue_hant_clean_review_flatten_timewarp_simplify_review() -> Series:
-    """KOB yue-Hant simplified and reviewed SRT subtitles."""
+    """KOB yue-Hant simplified and reviewed SRT subtitles.
+
+    Returns:
+        KOB yue-Hant simplified and reviewed SRT subtitles
+    """
     return Series.load(
         output_dir / "yue-Hant/clean_review_flatten_timewarp_simplify_review.srt"
     )
@@ -661,7 +781,11 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify_review() -> Series:
 
 @fixture
 def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Series:
-    """KOB yue-Hant simplified, reviewed, and romanized SRT subtitles."""
+    """KOB yue-Hant simplified, reviewed, and romanized SRT subtitles.
+
+    Returns:
+        KOB yue-Hant simplified, reviewed, and romanized SRT subtitles
+    """
     return Series.load(
         output_dir
         / "yue-Hant"
@@ -671,7 +795,11 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Ser
 
 @fixture
 def kob_yue_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for KOB Yue Simplified vs Traditional subtitles."""
+    """Expected differences for KOB Yue Simplified vs Traditional subtitles.
+
+    Returns:
+        expected differences for KOB Yue Simplified vs Traditional subtitles
+    """
     return [
         "edit: SIMP[1229] -> TRAD[1229]: '但系第十八式〝杀龙有悔〞' -> '但系第十八式「杀龙有悔」'"
     ]
@@ -679,37 +807,61 @@ def kob_yue_simplify_expected_series_diff() -> list[str]:
 
 @fixture
 def kob_zho_hans_eng() -> Series:
-    """KOB Bilingual zho-Hans and English subtitles."""
+    """KOB Bilingual zho-Hans and English subtitles.
+
+    Returns:
+        KOB Bilingual zho-Hans and English subtitles
+    """
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_fuse() -> Series:
-    """KOB zho-Hant fused subtitles."""
+    """KOB zho-Hant fused subtitles.
+
+    Returns:
+        KOB zho-Hant fused subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean() -> Series:
-    """KOB zho-Hant fused and cleaned subtitles."""
+    """KOB zho-Hant fused and cleaned subtitles.
+
+    Returns:
+        KOB zho-Hant fused and cleaned subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate() -> Series:
-    """KOB zho-Hant fused, cleaned, and validated subtitles."""
+    """KOB zho-Hant fused, cleaned, and validated subtitles.
+
+    Returns:
+        KOB zho-Hant fused, cleaned, and validated subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review() -> Series:
-    """KOB zho-Hant fused, cleaned, validated, and reviewed subtitles."""
+    """KOB zho-Hant fused, cleaned, validated, and reviewed subtitles.
+
+    Returns:
+        KOB zho-Hant fused, cleaned, validated, and reviewed subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """KOB zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """KOB zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles.
+
+    Returns:
+        KOB zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles
+    """
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -717,7 +869,11 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """KOB zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles."""
+    """KOB zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles.
+
+    Returns:
+        KOB zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles
+    """
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -725,7 +881,11 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """KOB zho-Hant simplified/reviewed fused/cleaned subtitles."""
+    """KOB zho-Hant simplified/reviewed fused/cleaned subtitles.
+
+    Returns:
+        KOB zho-Hant simplified/reviewed fused/cleaned subtitles
+    """
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -736,7 +896,11 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Ser
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize(  # noqa: E501
 ) -> Series:
-    """KOB zho-Hans simplified/reviewed fused/cleaned romanized subtitles."""
+    """KOB zho-Hans simplified/reviewed fused/cleaned romanized subtitles.
+
+    Returns:
+        KOB zho-Hans simplified/reviewed fused/cleaned romanized subtitles
+    """
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -746,23 +910,39 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize
 
 @fixture
 def kob_zho_hant_ocr_lens() -> Series:
-    """KOB zho-Hant subtitles OCRed using Google Lens."""
+    """KOB zho-Hant subtitles OCRed using Google Lens.
+
+    Returns:
+        KOB zho-Hant subtitles OCRed using Google Lens
+    """
     return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_lens_clean() -> Series:
-    """KOB zho-Hant Google Lens OCR subtitles, cleaned."""
+    """KOB zho-Hant Google Lens OCR subtitles, cleaned.
+
+    Returns:
+        KOB zho-Hant Google Lens OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_paddle() -> Series:
-    """KOB zho-Hant subtitles OCRed using PaddleOCR."""
+    """KOB zho-Hant subtitles OCRed using PaddleOCR.
+
+    Returns:
+        KOB zho-Hant subtitles OCRed using PaddleOCR
+    """
     return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_paddle_clean() -> Series:
-    """KOB zho-Hant PaddleOCR subtitles, cleaned."""
+    """KOB zho-Hant PaddleOCR subtitles, cleaned.
+
+    Returns:
+        KOB zho-Hant PaddleOCR subtitles, cleaned
+    """
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")

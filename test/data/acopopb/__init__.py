@@ -123,19 +123,31 @@ output_dir = title_root / "output"
 
 @fixture
 def acopopb_eng() -> Series:
-    """ACOPOPB English subtitles."""
+    """ACOPOPB English subtitles.
+
+    Returns:
+        ACOPOPB English subtitles
+    """
     return Series.load(input_dir / "eng.srt")
 
 
 @fixture
 def acopopb_zho_hans() -> Series:
-    """ACOPOPB zho-Hans subtitles."""
+    """ACOPOPB zho-Hans subtitles.
+
+    Returns:
+        ACOPOPB zho-Hans subtitles
+    """
     return Series.load(input_dir / "zho-Hans.srt")
 
 
 @fixture
 def acopopb_zho_hant() -> Series:
-    """ACOPOPB zho-Hant subtitles."""
+    """ACOPOPB zho-Hant subtitles.
+
+    Returns:
+        ACOPOPB zho-Hant subtitles
+    """
     return Series.load(input_dir / "zho-Hant.srt")
 
 
@@ -144,13 +156,21 @@ def acopopb_zho_hant() -> Series:
 
 @fixture
 def acopopb_yue_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for ACOPOPB Yue Simplified vs Traditional subtitles."""
+    """Expected differences for ACOPOPB Yue Simplified vs Traditional subtitles.
+
+    Returns:
+        expected differences for ACOPOPB Yue Simplified vs Traditional subtitles
+    """
     return []
 
 
 @fixture
 def acopopb_zho_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for ACOPOPB Zho Simplified vs Traditional subtitles."""
+    """Expected differences for ACOPOPB Zho Simplified vs Traditional subtitles.
+
+    Returns:
+        expected differences for ACOPOPB Zho Simplified vs Traditional subtitles
+    """
     return []
 
 
@@ -351,91 +371,151 @@ def get_acopopb_zho_hant_simplify_review_test_cases(
 
 @fixture
 def acopopb_eng_ocr_fuse() -> Series:
-    """ACOPOPB English fused subtitles."""
+    """ACOPOPB English fused subtitles.
+
+    Returns:
+        ACOPOPB English fused subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse.srt")
 
 
 @fixture
 def acopopb_eng_ocr_fuse_clean() -> Series:
-    """ACOPOPB English fused and cleaned subtitles."""
+    """ACOPOPB English fused and cleaned subtitles.
+
+    Returns:
+        ACOPOPB English fused and cleaned subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean.srt")
 
 
 @fixture
 def acopopb_eng_ocr_fuse_clean_validate() -> Series:
-    """ACOPOPB English fused, cleaned, and validated subtitles."""
+    """ACOPOPB English fused, cleaned, and validated subtitles.
+
+    Returns:
+        ACOPOPB English fused, cleaned, and validated subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def acopopb_eng_ocr_fuse_clean_validate_review() -> Series:
-    """ACOPOPB English fused, cleaned, validated, and reviewed subtitles."""
+    """ACOPOPB English fused, cleaned, validated, and reviewed subtitles.
+
+    Returns:
+        ACOPOPB English fused, cleaned, validated, and reviewed subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def acopopb_eng_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """ACOPOPB English fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """ACOPOPB English fused, cleaned, validated, reviewed, and flattened subtitles.
+
+    Returns:
+        ACOPOPB English fused, cleaned, validated, reviewed, and flattened subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review_flatten.srt")
 
 
 @fixture
 def acopopb_eng_ocr_lens() -> Series:
-    """ACOPOPB English subtitles OCRed using Google Lens."""
+    """ACOPOPB English subtitles OCRed using Google Lens.
+
+    Returns:
+        ACOPOPB English subtitles OCRed using Google Lens
+    """
     return Series.load(output_dir / "eng_ocr/lens.srt")
 
 
 @fixture
 def acopopb_eng_ocr_lens_clean() -> Series:
-    """ACOPOPB English Google Lens OCR subtitles, cleaned."""
+    """ACOPOPB English Google Lens OCR subtitles, cleaned.
+
+    Returns:
+        ACOPOPB English Google Lens OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "eng_ocr/lens_clean.srt")
 
 
 @fixture
 def acopopb_eng_ocr_tesseract() -> Series:
-    """ACOPOPB English subtitles OCRed using Tesseract."""
+    """ACOPOPB English subtitles OCRed using Tesseract.
+
+    Returns:
+        ACOPOPB English subtitles OCRed using Tesseract
+    """
     return Series.load(output_dir / "eng_ocr/tesseract.srt")
 
 
 @fixture
 def acopopb_eng_ocr_tesseract_clean() -> Series:
-    """ACOPOPB English Tesseract OCR subtitles, cleaned."""
+    """ACOPOPB English Tesseract OCR subtitles, cleaned.
+
+    Returns:
+        ACOPOPB English Tesseract OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
 
 
 @fixture
 def acopopb_yue_hans_eng() -> Series:
-    """ACOPOPB bilingual yue-Hans and English subtitles."""
+    """ACOPOPB bilingual yue-Hans and English subtitles.
+
+    Returns:
+        ACOPOPB bilingual yue-Hans and English subtitles
+    """
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 @fixture
 def acopopb_yue_hans_ocr_fuse() -> Series:
-    """ACOPOPB yue-Hans fused subtitles."""
+    """ACOPOPB yue-Hans fused subtitles.
+
+    Returns:
+        ACOPOPB yue-Hans fused subtitles
+    """
     return Series.load(output_dir / "yue-Hans_ocr/fuse.srt")
 
 
 @fixture
 def acopopb_yue_hans_ocr_fuse_clean() -> Series:
-    """ACOPOPB yue-Hans fused and cleaned subtitles."""
+    """ACOPOPB yue-Hans fused and cleaned subtitles.
+
+    Returns:
+        ACOPOPB yue-Hans fused and cleaned subtitles
+    """
     return Series.load(output_dir / "yue-Hans_ocr/fuse_clean.srt")
 
 
 @fixture
 def acopopb_yue_hans_ocr_fuse_clean_validate() -> Series:
-    """ACOPOPB yue-Hans fused, cleaned, and validated subtitles."""
+    """ACOPOPB yue-Hans fused, cleaned, and validated subtitles.
+
+    Returns:
+        ACOPOPB yue-Hans fused, cleaned, and validated subtitles
+    """
     return Series.load(output_dir / "yue-Hans_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def acopopb_yue_hans_ocr_fuse_clean_validate_review() -> Series:
-    """ACOPOPB yue-Hans fused, cleaned, validated, and reviewed subtitles."""
+    """ACOPOPB yue-Hans fused, cleaned, validated, and reviewed subtitles.
+
+    Returns:
+        ACOPOPB yue-Hans fused, cleaned, validated, and reviewed subtitles
+    """
     return Series.load(output_dir / "yue-Hans_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """ACOPOPB yue-Hans fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """ACOPOPB yue-Hans fused, cleaned, validated, reviewed, and flattened subtitles.
+
+    Returns:
+        ACOPOPB yue-Hans fused, cleaned, validated, reviewed, and flattened subtitles
+    """
     return Series.load(
         output_dir / "yue-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -443,7 +523,11 @@ def acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize() -> Series:
-    """ACOPOPB yue-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles."""
+    """ACOPOPB yue-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles.
+
+    Returns:
+        ACOPOPB yue-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles
+    """
     return Series.load(
         output_dir / "yue-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt"
     )
@@ -451,55 +535,91 @@ def acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize() -> Series
 
 @fixture
 def acopopb_yue_hans_ocr_lens() -> Series:
-    """ACOPOPB yue-Hans subtitles OCRed using Google Lens."""
+    """ACOPOPB yue-Hans subtitles OCRed using Google Lens.
+
+    Returns:
+        ACOPOPB yue-Hans subtitles OCRed using Google Lens
+    """
     return Series.load(output_dir / "yue-Hans_ocr/lens.srt")
 
 
 @fixture
 def acopopb_yue_hans_ocr_lens_clean() -> Series:
-    """ACOPOPB yue-Hans Google Lens OCR subtitles, cleaned."""
+    """ACOPOPB yue-Hans Google Lens OCR subtitles, cleaned.
+
+    Returns:
+        ACOPOPB yue-Hans Google Lens OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "yue-Hans_ocr/lens_clean.srt")
 
 
 @fixture
 def acopopb_yue_hans_ocr_paddle() -> Series:
-    """ACOPOPB yue-Hans subtitles OCRed using PaddleOCR."""
+    """ACOPOPB yue-Hans subtitles OCRed using PaddleOCR.
+
+    Returns:
+        ACOPOPB yue-Hans subtitles OCRed using PaddleOCR
+    """
     return Series.load(output_dir / "yue-Hans_ocr/paddle.srt")
 
 
 @fixture
 def acopopb_yue_hans_ocr_paddle_clean() -> Series:
-    """ACOPOPB yue-Hans PaddleOCR subtitles, cleaned."""
+    """ACOPOPB yue-Hans PaddleOCR subtitles, cleaned.
+
+    Returns:
+        ACOPOPB yue-Hans PaddleOCR subtitles, cleaned
+    """
     return Series.load(output_dir / "yue-Hans_ocr/paddle_clean.srt")
 
 
 @fixture
 def acopopb_yue_hant_ocr_fuse() -> Series:
-    """ACOPOPB yue-Hant fused subtitles."""
+    """ACOPOPB yue-Hant fused subtitles.
+
+    Returns:
+        ACOPOPB yue-Hant fused subtitles
+    """
     return Series.load(output_dir / "yue-Hant_ocr/fuse.srt")
 
 
 @fixture
 def acopopb_yue_hant_ocr_fuse_clean() -> Series:
-    """ACOPOPB yue-Hant fused and cleaned subtitles."""
+    """ACOPOPB yue-Hant fused and cleaned subtitles.
+
+    Returns:
+        ACOPOPB yue-Hant fused and cleaned subtitles
+    """
     return Series.load(output_dir / "yue-Hant_ocr/fuse_clean.srt")
 
 
 @fixture
 def acopopb_yue_hant_ocr_fuse_clean_validate() -> Series:
-    """ACOPOPB yue-Hant fused, cleaned, and validated subtitles."""
+    """ACOPOPB yue-Hant fused, cleaned, and validated subtitles.
+
+    Returns:
+        ACOPOPB yue-Hant fused, cleaned, and validated subtitles
+    """
     return Series.load(output_dir / "yue-Hant_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def acopopb_yue_hant_ocr_fuse_clean_validate_review() -> Series:
-    """ACOPOPB yue-Hant fused, cleaned, validated, and reviewed subtitles."""
+    """ACOPOPB yue-Hant fused, cleaned, validated, and reviewed subtitles.
+
+    Returns:
+        ACOPOPB yue-Hant fused, cleaned, validated, and reviewed subtitles
+    """
     return Series.load(output_dir / "yue-Hant_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """ACOPOPB yue-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """ACOPOPB yue-Hant fused, cleaned, validated, reviewed, and flattened subtitles.
+
+    Returns:
+        ACOPOPB yue-Hant fused, cleaned, validated, reviewed, and flattened subtitles
+    """
     return Series.load(
         output_dir / "yue-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -507,7 +627,11 @@ def acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """ACOPOPB yue-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles."""
+    """ACOPOPB yue-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles.
+
+    Returns:
+        ACOPOPB yue-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles
+    """
     return Series.load(
         output_dir / "yue-Hant_ocr" / "fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -515,7 +639,11 @@ def acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series
 
 @fixture
 def acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """ACOPOPB yue-Hant simplified/reviewed fused/cleaned subtitles."""
+    """ACOPOPB yue-Hant simplified/reviewed fused/cleaned subtitles.
+
+    Returns:
+        ACOPOPB yue-Hant simplified/reviewed fused/cleaned subtitles
+    """
     return Series.load(
         output_dir
         / "yue-Hant_ocr"
@@ -527,7 +655,11 @@ def acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() ->
 def acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize() -> (
     Series
 ):
-    """ACOPOPB yue-Hant simplified/reviewed fused/cleaned romanized subtitles."""
+    """ACOPOPB yue-Hant simplified/reviewed fused/cleaned romanized subtitles.
+
+    Returns:
+        ACOPOPB yue-Hant simplified/reviewed fused/cleaned romanized subtitles
+    """
     return Series.load(
         output_dir
         / "yue-Hant_ocr"
@@ -537,49 +669,81 @@ def acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_roma
 
 @fixture
 def acopopb_yue_hant_ocr_lens() -> Series:
-    """ACOPOPB yue-Hant subtitles OCRed using Google Lens."""
+    """ACOPOPB yue-Hant subtitles OCRed using Google Lens.
+
+    Returns:
+        ACOPOPB yue-Hant subtitles OCRed using Google Lens
+    """
     return Series.load(output_dir / "yue-Hant_ocr/lens.srt")
 
 
 @fixture
 def acopopb_yue_hant_ocr_lens_clean() -> Series:
-    """ACOPOPB yue-Hant Google Lens OCR subtitles, cleaned."""
+    """ACOPOPB yue-Hant Google Lens OCR subtitles, cleaned.
+
+    Returns:
+        ACOPOPB yue-Hant Google Lens OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "yue-Hant_ocr/lens_clean.srt")
 
 
 @fixture
 def acopopb_yue_hant_ocr_paddle() -> Series:
-    """ACOPOPB yue-Hant subtitles OCRed using PaddleOCR."""
+    """ACOPOPB yue-Hant subtitles OCRed using PaddleOCR.
+
+    Returns:
+        ACOPOPB yue-Hant subtitles OCRed using PaddleOCR
+    """
     return Series.load(output_dir / "yue-Hant_ocr/paddle.srt")
 
 
 @fixture
 def acopopb_yue_hant_ocr_paddle_clean() -> Series:
-    """ACOPOPB yue-Hant PaddleOCR subtitles, cleaned."""
+    """ACOPOPB yue-Hant PaddleOCR subtitles, cleaned.
+
+    Returns:
+        ACOPOPB yue-Hant PaddleOCR subtitles, cleaned
+    """
     return Series.load(output_dir / "yue-Hant_ocr/paddle_clean.srt")
 
 
 @fixture
 def acopopb_yue_hant_transcribe() -> Series:
-    """ACOPOPB yue-Hant transcribed subtitles."""
+    """ACOPOPB yue-Hant transcribed subtitles.
+
+    Returns:
+        ACOPOPB yue-Hant transcribed subtitles
+    """
     return Series.load(output_dir / "yue-Hant_transcribe/transcribe.srt")
 
 
 @fixture
 def acopopb_yue_hant_transcribe_clean() -> Series:
-    """ACOPOPB yue-Hant transcribed subtitles, cleaned."""
+    """ACOPOPB yue-Hant transcribed subtitles, cleaned.
+
+    Returns:
+        ACOPOPB yue-Hant transcribed subtitles, cleaned
+    """
     return Series.load(output_dir / "yue-Hant_transcribe/transcribe_clean.srt")
 
 
 @fixture
 def acopopb_yue_hant_transcribe_clean_simplify() -> Series:
-    """ACOPOPB yue-Hant transcribed subtitles, cleaned and simplified."""
+    """ACOPOPB yue-Hant transcribed subtitles, cleaned and simplified.
+
+    Returns:
+        ACOPOPB yue-Hant transcribed subtitles, cleaned and simplified
+    """
     return Series.load(output_dir / "yue-Hant_transcribe/transcribe_clean_simplify.srt")
 
 
 @fixture
 def acopopb_yue_hant_transcribe_clean_simplify_romanize() -> Series:
-    """ACOPOPB yue-Hant transcribed subtitles, cleaned, simplified, and romanized."""
+    """ACOPOPB yue-Hant transcribed subtitles, cleaned, simplified, and romanized.
+
+    Returns:
+        ACOPOPB yue-Hant transcribed subtitles, cleaned, simplified, and romanized
+    """
     return Series.load(
         output_dir / "yue-Hant_transcribe/transcribe_clean_simplify_romanize.srt"
     )
@@ -587,37 +751,61 @@ def acopopb_yue_hant_transcribe_clean_simplify_romanize() -> Series:
 
 @fixture
 def acopopb_zho_hans_eng() -> Series:
-    """ACOPOPB bilingual zho-Hans and English subtitles."""
+    """ACOPOPB bilingual zho-Hans and English subtitles.
+
+    Returns:
+        ACOPOPB bilingual zho-Hans and English subtitles
+    """
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 @fixture
 def acopopb_zho_hans_ocr_fuse() -> Series:
-    """ACOPOPB zho-Hans fused subtitles."""
+    """ACOPOPB zho-Hans fused subtitles.
+
+    Returns:
+        ACOPOPB zho-Hans fused subtitles
+    """
     return Series.load(output_dir / "zho-Hans_ocr/fuse.srt")
 
 
 @fixture
 def acopopb_zho_hans_ocr_fuse_clean() -> Series:
-    """ACOPOPB zho-Hans fused and cleaned subtitles."""
+    """ACOPOPB zho-Hans fused and cleaned subtitles.
+
+    Returns:
+        ACOPOPB zho-Hans fused and cleaned subtitles
+    """
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean.srt")
 
 
 @fixture
 def acopopb_zho_hans_ocr_fuse_clean_validate() -> Series:
-    """ACOPOPB zho-Hans fused, cleaned, and validated subtitles."""
+    """ACOPOPB zho-Hans fused, cleaned, and validated subtitles.
+
+    Returns:
+        ACOPOPB zho-Hans fused, cleaned, and validated subtitles
+    """
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def acopopb_zho_hans_ocr_fuse_clean_validate_review() -> Series:
-    """ACOPOPB zho-Hans fused, cleaned, validated, and reviewed subtitles."""
+    """ACOPOPB zho-Hans fused, cleaned, validated, and reviewed subtitles.
+
+    Returns:
+        ACOPOPB zho-Hans fused, cleaned, validated, and reviewed subtitles
+    """
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def acopopb_zho_hans_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """ACOPOPB zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """ACOPOPB zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles.
+
+    Returns:
+        ACOPOPB zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles
+    """
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -625,7 +813,11 @@ def acopopb_zho_hans_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def acopopb_zho_hans_ocr_fuse_clean_validate_review_flatten_romanize() -> Series:
-    """ACOPOPB zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles."""
+    """ACOPOPB zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles.
+
+    Returns:
+        ACOPOPB zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles
+    """
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt"
     )
@@ -633,55 +825,91 @@ def acopopb_zho_hans_ocr_fuse_clean_validate_review_flatten_romanize() -> Series
 
 @fixture
 def acopopb_zho_hans_ocr_lens() -> Series:
-    """ACOPOPB zho-Hans subtitles OCRed using Google Lens."""
+    """ACOPOPB zho-Hans subtitles OCRed using Google Lens.
+
+    Returns:
+        ACOPOPB zho-Hans subtitles OCRed using Google Lens
+    """
     return Series.load(output_dir / "zho-Hans_ocr/lens.srt")
 
 
 @fixture
 def acopopb_zho_hans_ocr_lens_clean() -> Series:
-    """ACOPOPB zho-Hans Google Lens OCR subtitles, cleaned."""
+    """ACOPOPB zho-Hans Google Lens OCR subtitles, cleaned.
+
+    Returns:
+        ACOPOPB zho-Hans Google Lens OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "zho-Hans_ocr/lens_clean.srt")
 
 
 @fixture
 def acopopb_zho_hans_ocr_paddle() -> Series:
-    """ACOPOPB zho-Hans subtitles OCRed using PaddleOCR."""
+    """ACOPOPB zho-Hans subtitles OCRed using PaddleOCR.
+
+    Returns:
+        ACOPOPB zho-Hans subtitles OCRed using PaddleOCR
+    """
     return Series.load(output_dir / "zho-Hans_ocr/paddle.srt")
 
 
 @fixture
 def acopopb_zho_hans_ocr_paddle_clean() -> Series:
-    """ACOPOPB zho-Hans PaddleOCR subtitles, cleaned."""
+    """ACOPOPB zho-Hans PaddleOCR subtitles, cleaned.
+
+    Returns:
+        ACOPOPB zho-Hans PaddleOCR subtitles, cleaned
+    """
     return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
 
 
 @fixture
 def acopopb_zho_hant_ocr_fuse() -> Series:
-    """ACOPOPB zho-Hant fused subtitles."""
+    """ACOPOPB zho-Hant fused subtitles.
+
+    Returns:
+        ACOPOPB zho-Hant fused subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
 
 
 @fixture
 def acopopb_zho_hant_ocr_fuse_clean() -> Series:
-    """ACOPOPB zho-Hant fused and cleaned subtitles."""
+    """ACOPOPB zho-Hant fused and cleaned subtitles.
+
+    Returns:
+        ACOPOPB zho-Hant fused and cleaned subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean.srt")
 
 
 @fixture
 def acopopb_zho_hant_ocr_fuse_clean_validate() -> Series:
-    """ACOPOPB zho-Hant fused, cleaned, and validated subtitles."""
+    """ACOPOPB zho-Hant fused, cleaned, and validated subtitles.
+
+    Returns:
+        ACOPOPB zho-Hant fused, cleaned, and validated subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def acopopb_zho_hant_ocr_fuse_clean_validate_review() -> Series:
-    """ACOPOPB zho-Hant fused, cleaned, validated, and reviewed subtitles."""
+    """ACOPOPB zho-Hant fused, cleaned, validated, and reviewed subtitles.
+
+    Returns:
+        ACOPOPB zho-Hant fused, cleaned, validated, and reviewed subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """ACOPOPB zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """ACOPOPB zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles.
+
+    Returns:
+        ACOPOPB zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles
+    """
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -689,7 +917,11 @@ def acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """ACOPOPB zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles."""
+    """ACOPOPB zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles.
+
+    Returns:
+        ACOPOPB zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles
+    """
     return Series.load(
         output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -697,7 +929,11 @@ def acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series
 
 @fixture
 def acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """ACOPOPB zho-Hant simplified/reviewed fused/cleaned subtitles."""
+    """ACOPOPB zho-Hant simplified/reviewed fused/cleaned subtitles.
+
+    Returns:
+        ACOPOPB zho-Hant simplified/reviewed fused/cleaned subtitles
+    """
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -709,7 +945,11 @@ def acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() ->
 def acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize() -> (
     Series
 ):
-    """ACOPOPB zho-Hant simplified/reviewed fused/cleaned romanized subtitles."""
+    """ACOPOPB zho-Hant simplified/reviewed fused/cleaned romanized subtitles.
+
+    Returns:
+        ACOPOPB zho-Hant simplified/reviewed fused/cleaned romanized subtitles
+    """
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -719,23 +959,39 @@ def acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_roma
 
 @fixture
 def acopopb_zho_hant_ocr_lens() -> Series:
-    """ACOPOPB zho-Hant subtitles OCRed using Google Lens."""
+    """ACOPOPB zho-Hant subtitles OCRed using Google Lens.
+
+    Returns:
+        ACOPOPB zho-Hant subtitles OCRed using Google Lens
+    """
     return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
 
 
 @fixture
 def acopopb_zho_hant_ocr_lens_clean() -> Series:
-    """ACOPOPB zho-Hant Google Lens OCR subtitles, cleaned."""
+    """ACOPOPB zho-Hant Google Lens OCR subtitles, cleaned.
+
+    Returns:
+        ACOPOPB zho-Hant Google Lens OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
 
 
 @fixture
 def acopopb_zho_hant_ocr_paddle() -> Series:
-    """ACOPOPB zho-Hant subtitles OCRed using PaddleOCR."""
+    """ACOPOPB zho-Hant subtitles OCRed using PaddleOCR.
+
+    Returns:
+        ACOPOPB zho-Hant subtitles OCRed using PaddleOCR
+    """
     return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
 
 
 @fixture
 def acopopb_zho_hant_ocr_paddle_clean() -> Series:
-    """ACOPOPB zho-Hant PaddleOCR subtitles, cleaned."""
+    """ACOPOPB zho-Hant PaddleOCR subtitles, cleaned.
+
+    Returns:
+        ACOPOPB zho-Hant PaddleOCR subtitles, cleaned
+    """
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")

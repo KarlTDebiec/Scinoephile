@@ -256,7 +256,11 @@ def test_minimum_difficulty_tracks_generated_text(
 def test_test_case_requires_outputs_to_exactly_fill_gaps(
     test_case_cls: type[GapTranslationTestCase],
 ):
-    """Output indexes should exactly complement target indexes within guides."""
+    """Output indexes should exactly complement target indexes within guides.
+
+    Arguments:
+        test_case_cls: test case cls value
+    """
     query = {
         "targets": [{"index": 1, "text": "one"}],
         "guides": [
@@ -290,7 +294,11 @@ def test_test_case_requires_outputs_to_exactly_fill_gaps(
 
 
 def test_json_persistence_uses_base_prompt_fields(tmp_path: Path):
-    """JSON should persist base fields and load prompt-specific aliases."""
+    """JSON should persist base fields and load prompt-specific aliases.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = GapTranslationManager.get_test_case_cls(_LOCALIZED_PROMPT)
     test_case = test_case_cls.model_validate(
         {
@@ -440,7 +448,11 @@ def test_processor_honors_start_index():
 
 
 def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
-    """A run should preserve unencountered reusable cases by default."""
+    """A run should preserve unencountered reusable cases by default.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     prompt = GapTranslationManager.base_prompt
     test_case_cls = GapTranslationManager.get_test_case_cls(prompt)
     old_test_case = test_case_cls.model_validate(

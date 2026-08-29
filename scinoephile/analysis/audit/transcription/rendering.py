@@ -8,9 +8,12 @@ import unicodedata
 from collections.abc import Callable, Mapping, Sequence
 from statistics import median
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column, Token
+from scinoephile.analysis.alignment.timed_msa import (
+    MsaAligner,
+    MsaAlignment,
+    MsaColumn,
+    MsaToken,
+)
 from scinoephile.analysis.transcription.alignment_sequence import get_reference_sequence
 from scinoephile.analysis.transcription.artifact import AlignmentBlock
 from scinoephile.core.subtitles import Series
@@ -30,7 +33,7 @@ _MERGE_SUPPORT_CHARACTERS = "０１２３４５６７８９"
 def render_transcription_alignment_block(
     block: AlignmentBlock,
     references: Mapping[str, Series],
-    aligner: Aligner,
+    aligner: MsaAligner,
     *,
     request_pause_columns: int,
     include_audio_events: bool,
@@ -82,17 +85,19 @@ def render_transcription_alignment_block(
             character = row_text[column_idx]
             token = None
             if character != "　":
-                token = Token(character, column.start_ms / 1000, column.end_ms / 1000)
+                token = MsaToken(
+                    character, column.start_ms / 1000, column.end_ms / 1000
+                )
                 annotations_by_token_id[id(token)] = tuple(
                     row[column_idx] for _, row in annotation_rows
                 )
             tokens.append(token)
-        lexical_column = Column(tuple(tokens))
+        lexical_column = MsaColumn(tuple(tokens))
         lexical_columns.append(lexical_column)
         profile_column_anchor_ids.append(
             id(next(token for token in lexical_column.tokens if token is not None))
         )
-    alignment = Alignment(source_names=row_names, columns=tuple(lexical_columns))
+    alignment = MsaAlignment(source_names=row_names, columns=tuple(lexical_columns))
 
     for reference_name, reference in references.items():
         reference_sequence = get_reference_sequence(reference_name, reference)
@@ -138,7 +143,7 @@ def render_transcription_alignment_block(
 
 
 def _get_alignment_cell(
-    column: Column,
+    column: MsaColumn,
     source_idx: int,
     marker_source_indexes_by_column_id: dict[int, frozenset[int]],
 ) -> str:
@@ -164,7 +169,7 @@ def _get_alignment_cell(
 
 
 def _get_alignment_cell_color(
-    column: Column,
+    column: MsaColumn,
     source_idx: int,
     authoritative_source_idx: int,
     marker_source_indexes_by_column_id: dict[int, frozenset[int]],
@@ -230,10 +235,10 @@ def _get_alignment_characters(text: str) -> tuple[str, ...]:
 
 
 def _get_alignment_with_profile_pauses(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     profile_column_anchor_ids: tuple[int, ...],
     pause_intervals_by_profile_boundary: Mapping[int, Sequence[tuple[float, float]]],
-) -> Alignment:
+) -> MsaAlignment:
     """Restore artifact pauses at their fixed production profile boundaries.
 
     Arguments:
@@ -267,7 +272,7 @@ def _get_alignment_with_profile_pauses(
     output_columns = []
     for boundary in range(len(alignment.columns) + 1):
         output_columns.extend(
-            Column(
+            MsaColumn(
                 (None,) * len(alignment.source_names),
                 pause_interval_seconds=pause_interval,
             )
@@ -275,12 +280,14 @@ def _get_alignment_with_profile_pauses(
         )
         if boundary < len(alignment.columns):
             output_columns.append(alignment.columns[boundary])
-    return Alignment(source_names=alignment.source_names, columns=tuple(output_columns))
+    return MsaAlignment(
+        source_names=alignment.source_names, columns=tuple(output_columns)
+    )
 
 
 def _get_alignment_with_track_markers(
-    alignment: Alignment, markers_by_source: dict[str, tuple[tuple[int, float], ...]]
-) -> tuple[Alignment, dict[int, frozenset[int]]]:
+    alignment: MsaAlignment, markers_by_source: dict[str, tuple[tuple[int, float], ...]]
+) -> tuple[MsaAlignment, dict[int, frozenset[int]]]:
     """Insert and collapse row-owned markers at aligned lexical boundaries.
 
     Arguments:
@@ -325,7 +332,7 @@ def _get_alignment_with_track_markers(
                 markers_at_boundary[source_idx][marker_idx]
                 for source_idx in marker_source_indexes
             ]
-            marker_column = Column(
+            marker_column = MsaColumn(
                 (None,) * len(alignment.source_names),
                 marker="｜",
                 marker_time_seconds=median(marker_times),
@@ -337,13 +344,15 @@ def _get_alignment_with_track_markers(
         if boundary < len(alignment.columns):
             output_columns.append(alignment.columns[boundary])
     return (
-        Alignment(source_names=alignment.source_names, columns=tuple(output_columns)),
+        MsaAlignment(
+            source_names=alignment.source_names, columns=tuple(output_columns)
+        ),
         marker_source_indexes_by_column_id,
     )
 
 
 def _get_annotation_cell(
-    column: Column,
+    column: MsaColumn,
     annotations_by_token_id: dict[int, tuple[str, ...]],
     annotation_idx: int,
 ) -> str:
@@ -369,7 +378,7 @@ def _get_annotation_cell(
 def _get_annotation_rows(
     block: AlignmentBlock,
     *,
-    token_similarity: Callable[[Token, Token], float],
+    token_similarity: Callable[[MsaToken, MsaToken], float],
     include_audio_events: bool,
     include_language: bool,
     include_merge_support: bool,
@@ -485,7 +494,7 @@ def _get_merge_support_display_cell(character: str) -> str:
 
 
 def _get_merge_support_row(
-    block: AlignmentBlock, token_similarity: Callable[[Token, Token], float]
+    block: AlignmentBlock, token_similarity: Callable[[MsaToken, MsaToken], float]
 ) -> str:
     """Get normalized source agreement for each merged column.
 
@@ -509,11 +518,11 @@ def _get_merge_support_row(
                 row.text[column_idx] == "　" for row in block.rows
             )
         else:
-            merged_token = Token(merged_character, start_seconds, end_seconds)
+            merged_token = MsaToken(merged_character, start_seconds, end_seconds)
             matching_source_count = sum(
                 row.text[column_idx] not in {"　", "・"}
                 and token_similarity(
-                    Token(row.text[column_idx], start_seconds, end_seconds),
+                    MsaToken(row.text[column_idx], start_seconds, end_seconds),
                     merged_token,
                 )
                 > 0.0
@@ -532,7 +541,7 @@ def _get_merge_support_row(
 
 
 def _get_rendered_annotation_lines(
-    columns: Sequence[Column],
+    columns: Sequence[MsaColumn],
     annotation_rows: Sequence[tuple[str, str]],
     annotations_by_token_id: dict[int, tuple[str, ...]],
     *,
@@ -601,8 +610,8 @@ def _get_track_markers(
 
 
 def _render_chunk(
-    columns: Sequence[Column],
-    alignment: Alignment,
+    columns: Sequence[MsaColumn],
+    alignment: MsaAlignment,
     *,
     annotation_rows: Sequence[tuple[str, str]],
     annotations_by_token_id: dict[int, tuple[str, ...]],

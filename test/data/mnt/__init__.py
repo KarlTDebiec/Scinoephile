@@ -87,19 +87,31 @@ output_dir = title_root / "output"
 
 @fixture
 def mnt_jpn_eng() -> Series:
-    """MNT Bilingual Japanese and English subtitles."""
+    """MNT Bilingual Japanese and English subtitles.
+
+    Returns:
+        MNT Bilingual Japanese and English subtitles
+    """
     return Series.load(input_dir / "jpn_eng.srt")
 
 
 @fixture
 def mnt_yue_zho_hant() -> Series:
-    """MNT yue audio track zho-Hant subtitles."""
+    """MNT yue audio track zho-Hant subtitles.
+
+    Returns:
+        MNT yue audio track zho-Hant subtitles
+    """
     return Series.load(input_dir / "yue_zho-Hant.srt")
 
 
 @fixture
 def mnt_zho_hant() -> Series:
-    """MNT zho-Hant series."""
+    """MNT zho-Hant series.
+
+    Returns:
+        MNT zho-Hant series
+    """
     return Series.load(input_dir / "zho-Hant.srt")
 
 
@@ -235,103 +247,171 @@ def get_mnt_zho_hant_simplify_review_test_cases(
 
 @fixture
 def mnt_eng_fuse() -> Series:
-    """MNT English fused subtitles."""
+    """MNT English fused subtitles.
+
+    Returns:
+        MNT English fused subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse.srt")
 
 
 @fixture
 def mnt_eng_fuse_clean() -> Series:
-    """MNT English fused and cleaned subtitles."""
+    """MNT English fused and cleaned subtitles.
+
+    Returns:
+        MNT English fused and cleaned subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean.srt")
 
 
 @fixture
 def mnt_eng_fuse_clean_validate() -> Series:
-    """MNT English fused, cleaned, and validated subtitles."""
+    """MNT English fused, cleaned, and validated subtitles.
+
+    Returns:
+        MNT English fused, cleaned, and validated subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def mnt_eng_fuse_clean_validate_review() -> Series:
-    """MNT English fused, cleaned, validated, and reviewed subtitles."""
+    """MNT English fused, cleaned, validated, and reviewed subtitles.
+
+    Returns:
+        MNT English fused, cleaned, validated, and reviewed subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def mnt_eng_fuse_clean_validate_review_flatten() -> Series:
-    """MNT English fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """MNT English fused, cleaned, validated, reviewed, and flattened subtitles.
+
+    Returns:
+        MNT English fused, cleaned, validated, reviewed, and flattened subtitles
+    """
     return Series.load(output_dir / "eng_ocr/fuse_clean_validate_review_flatten.srt")
 
 
 @fixture
 def mnt_eng_ocr_lens() -> Series:
-    """MNT English subtitles OCRed using Google Lens."""
+    """MNT English subtitles OCRed using Google Lens.
+
+    Returns:
+        MNT English subtitles OCRed using Google Lens
+    """
     return Series.load(output_dir / "eng_ocr/lens.srt")
 
 
 @fixture
 def mnt_eng_ocr_lens_clean() -> Series:
-    """MNT English Google Lens OCR subtitles, cleaned."""
+    """MNT English Google Lens OCR subtitles, cleaned.
+
+    Returns:
+        MNT English Google Lens OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "eng_ocr/lens_clean.srt")
 
 
 @fixture
 def mnt_eng_ocr_tesseract() -> Series:
-    """MNT English subtitles OCRed using Tesseract."""
+    """MNT English subtitles OCRed using Tesseract.
+
+    Returns:
+        MNT English subtitles OCRed using Tesseract
+    """
     return Series.load(output_dir / "eng_ocr/tesseract.srt")
 
 
 @fixture
 def mnt_eng_ocr_tesseract_clean() -> Series:
-    """MNT English Tesseract OCR subtitles, cleaned."""
+    """MNT English Tesseract OCR subtitles, cleaned.
+
+    Returns:
+        MNT English Tesseract OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
 
 
 @fixture
 def mnt_yue_eng() -> Series:
-    """MNT English subtitles translated from yue audio track subtitles."""
+    """MNT English subtitles translated from yue audio track subtitles.
+
+    Returns:
+        MNT English subtitles translated from yue audio track subtitles
+    """
     return Series.load(output_dir / "yue_eng/eng.srt")
 
 
 @fixture
 def mnt_yue_zho_hans_eng() -> Series:
-    """MNT Bilingual yue-Hans and English subtitles for the yue audio track."""
+    """MNT Bilingual yue-Hans and English subtitles for the yue audio track.
+
+    Returns:
+        MNT Bilingual yue-Hans and English subtitles for the yue audio track
+    """
     return Series.load(output_dir / "yue_eng/zho-Hans_eng.srt")
 
 
 @fixture
 def mnt_zho_hans_eng() -> Series:
-    """MNT bilingual zho-Hans and English subtitles."""
+    """MNT bilingual zho-Hans and English subtitles.
+
+    Returns:
+        MNT bilingual zho-Hans and English subtitles
+    """
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 @fixture
 def mnt_zho_hans_fuse() -> Series:
-    """MNT zho-Hans fused subtitles."""
+    """MNT zho-Hans fused subtitles.
+
+    Returns:
+        MNT zho-Hans fused subtitles
+    """
     return Series.load(output_dir / "zho-Hans_ocr/fuse.srt")
 
 
 @fixture
 def mnt_zho_hans_fuse_clean() -> Series:
-    """MNT zho-Hans fused and cleaned subtitles."""
+    """MNT zho-Hans fused and cleaned subtitles.
+
+    Returns:
+        MNT zho-Hans fused and cleaned subtitles
+    """
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean.srt")
 
 
 @fixture
 def mnt_zho_hans_fuse_clean_validate() -> Series:
-    """MNT zho-Hans fused, cleaned, and validated subtitles."""
+    """MNT zho-Hans fused, cleaned, and validated subtitles.
+
+    Returns:
+        MNT zho-Hans fused, cleaned, and validated subtitles
+    """
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def mnt_zho_hans_fuse_clean_validate_review() -> Series:
-    """MNT zho-Hans fused, cleaned, validated, and reviewed subtitles."""
+    """MNT zho-Hans fused, cleaned, validated, and reviewed subtitles.
+
+    Returns:
+        MNT zho-Hans fused, cleaned, validated, and reviewed subtitles
+    """
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def mnt_zho_hans_fuse_clean_validate_review_flatten() -> Series:
-    """MNT zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """MNT zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles.
+
+    Returns:
+        MNT zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles
+    """
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -339,7 +419,11 @@ def mnt_zho_hans_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def mnt_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
-    """MNT zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles."""
+    """MNT zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles.
+
+    Returns:
+        MNT zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles
+    """
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt"
     )
@@ -347,55 +431,91 @@ def mnt_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
 
 @fixture
 def mnt_zho_hans_ocr_lens() -> Series:
-    """MNT zho-Hans subtitles OCRed using Google Lens."""
+    """MNT zho-Hans subtitles OCRed using Google Lens.
+
+    Returns:
+        MNT zho-Hans subtitles OCRed using Google Lens
+    """
     return Series.load(output_dir / "zho-Hans_ocr/lens.srt")
 
 
 @fixture
 def mnt_zho_hans_ocr_lens_clean() -> Series:
-    """MNT zho-Hans Google Lens OCR subtitles, cleaned."""
+    """MNT zho-Hans Google Lens OCR subtitles, cleaned.
+
+    Returns:
+        MNT zho-Hans Google Lens OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "zho-Hans_ocr/lens_clean.srt")
 
 
 @fixture
 def mnt_zho_hans_ocr_paddle() -> Series:
-    """MNT zho-Hans subtitles OCRed using PaddleOCR."""
+    """MNT zho-Hans subtitles OCRed using PaddleOCR.
+
+    Returns:
+        MNT zho-Hans subtitles OCRed using PaddleOCR
+    """
     return Series.load(output_dir / "zho-Hans_ocr/paddle.srt")
 
 
 @fixture
 def mnt_zho_hans_ocr_paddle_clean() -> Series:
-    """MNT zho-Hans PaddleOCR subtitles, cleaned."""
+    """MNT zho-Hans PaddleOCR subtitles, cleaned.
+
+    Returns:
+        MNT zho-Hans PaddleOCR subtitles, cleaned
+    """
     return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
 
 
 @fixture
 def mnt_zho_hant_fuse() -> Series:
-    """MNT zho-Hant fused subtitles."""
+    """MNT zho-Hant fused subtitles.
+
+    Returns:
+        MNT zho-Hant fused subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
 
 
 @fixture
 def mnt_zho_hant_fuse_clean() -> Series:
-    """MNT zho-Hant fused and cleaned subtitles."""
+    """MNT zho-Hant fused and cleaned subtitles.
+
+    Returns:
+        MNT zho-Hant fused and cleaned subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean.srt")
 
 
 @fixture
 def mnt_zho_hant_fuse_clean_validate() -> Series:
-    """MNT zho-Hant fused, cleaned, and validated subtitles."""
+    """MNT zho-Hant fused, cleaned, and validated subtitles.
+
+    Returns:
+        MNT zho-Hant fused, cleaned, and validated subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def mnt_zho_hant_fuse_clean_validate_review() -> Series:
-    """MNT zho-Hant fused, cleaned, validated, and reviewed subtitles."""
+    """MNT zho-Hant fused, cleaned, validated, and reviewed subtitles.
+
+    Returns:
+        MNT zho-Hant fused, cleaned, validated, and reviewed subtitles
+    """
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten() -> Series:
-    """MNT zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """MNT zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles.
+
+    Returns:
+        MNT zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles
+    """
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -403,7 +523,11 @@ def mnt_zho_hant_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """MNT zho-Hant fused/cleaned/validated/reviewed/flattened/simplified subtitles."""
+    """MNT zho-Hant fused/cleaned/validated/reviewed/flattened/simplified subtitles.
+
+    Returns:
+        MNT zho-Hant fused/cleaned/validated/reviewed/flattened/simplified subtitles
+    """
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -411,7 +535,11 @@ def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
 
 @fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """MNT zho-Hant simplified/reviewed fused/cleaned subtitles."""
+    """MNT zho-Hant simplified/reviewed fused/cleaned subtitles.
+
+    Returns:
+        MNT zho-Hant simplified/reviewed fused/cleaned subtitles
+    """
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -423,7 +551,11 @@ def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
 def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize() -> (
     Series
 ):
-    """MNT zho-Hant simplified/reviewed fused/cleaned romanized subtitles."""
+    """MNT zho-Hant simplified/reviewed fused/cleaned romanized subtitles.
+
+    Returns:
+        MNT zho-Hant simplified/reviewed fused/cleaned romanized subtitles
+    """
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -433,31 +565,51 @@ def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize() -
 
 @fixture
 def mnt_zho_hant_ocr_lens() -> Series:
-    """MNT zho-Hant subtitles OCRed using Google Lens."""
+    """MNT zho-Hant subtitles OCRed using Google Lens.
+
+    Returns:
+        MNT zho-Hant subtitles OCRed using Google Lens
+    """
     return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
 
 
 @fixture
 def mnt_zho_hant_ocr_lens_clean() -> Series:
-    """MNT zho-Hant Google Lens OCR subtitles, cleaned."""
+    """MNT zho-Hant Google Lens OCR subtitles, cleaned.
+
+    Returns:
+        MNT zho-Hant Google Lens OCR subtitles, cleaned
+    """
     return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
 
 
 @fixture
 def mnt_zho_hant_ocr_paddle() -> Series:
-    """MNT zho-Hant subtitles OCRed using PaddleOCR."""
+    """MNT zho-Hant subtitles OCRed using PaddleOCR.
+
+    Returns:
+        MNT zho-Hant subtitles OCRed using PaddleOCR
+    """
     return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
 
 
 @fixture
 def mnt_zho_hant_ocr_paddle_clean() -> Series:
-    """MNT zho-Hant PaddleOCR subtitles, cleaned."""
+    """MNT zho-Hant PaddleOCR subtitles, cleaned.
+
+    Returns:
+        MNT zho-Hant PaddleOCR subtitles, cleaned
+    """
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
 
 
 @fixture
 def mnt_zho_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for MNT Simplified vs Traditional subtitles."""
+    """Expected differences for MNT Simplified vs Traditional subtitles.
+
+    Returns:
+        expected differences for MNT Simplified vs Traditional subtitles
+    """
     return [
         "edit: SIMP[1] -> TRAD[1]: '《龙猫》' -> '龙猫'",
         "edit: SIMP[4] -> TRAD[4]: '你们两个累不累啊' -> '妳们两个累不累啊'",

@@ -277,6 +277,9 @@ def _extract_sup_file(
         subtitle_cache: subtitle stream cache shared across the workflow
     Returns:
         outputs handled for the SUP file
+
+    Raises:
+        ScinoephileError: if the operation fails
     """
     # Probe the standalone SUP file and optionally enrich stream details
     streams = _get_workflow_subtitle_streams(

@@ -84,6 +84,9 @@ class VoiceActivityCache:
             cache_identity: model configuration identifying the score trace
         Returns:
             validated trace, if present
+
+        Raises:
+            ValueError: if a value is invalid
         """
         cache_path = self.get_path(audio, cache_identity)
         if self.overwrite and cache_path not in self._refreshed_paths:

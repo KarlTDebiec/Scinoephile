@@ -347,13 +347,25 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
 def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
     monkeypatch: MonkeyPatch, tmp_path: Path
 ):
-    """Test Tesseract OCR CLI rejects italic detection for non-English OCR."""
+    """Test Tesseract OCR CLI rejects italic detection for non-English OCR.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary directory path
+    """
     input_path = test_data_root / "mlamd/input/zho-Hans_ocr/source.sup"
     output_path = tmp_path / "unused.srt"
     stderr = StringIO()
 
     def fail_ocr_image_series_with_tesseract(*args: Any, **kwargs: Any) -> Series:
-        """Fail if OCR is invoked before argument validation."""
+        """Fail if OCR is invoked before argument validation.
+
+        Arguments:
+            *args: additional positional arguments
+            **kwargs: additional keyword arguments
+        Raises:
+            AssertionError: if an internal invariant is violated
+        """
         _ = args, kwargs
         raise AssertionError("unexpected OCR")
 

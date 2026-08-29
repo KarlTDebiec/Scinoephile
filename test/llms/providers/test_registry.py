@@ -169,7 +169,16 @@ class _DummyProvider(LLMProvider):
         tool_box: ToolBox | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
-        """Return a fixed completion value."""
+        """Return a fixed completion value.
+
+        Arguments:
+            messages: messages value
+            response_format: response format value
+            tool_box: tool box value
+            **kwargs: additional keyword arguments
+        Returns:
+            a fixed completion value
+        """
         _ = (messages, response_format, tool_box, kwargs)
         return "{}"
 

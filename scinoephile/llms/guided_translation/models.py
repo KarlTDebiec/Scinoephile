@@ -42,7 +42,11 @@ class GuidedTranslationQuery(Query):
 
     @model_validator(mode="after")
     def validate_guide_indices(self) -> Self:
-        """Ensure guide indexes are consecutive, ordered, and begin at 1."""
+        """Ensure guide indexes are consecutive, ordered, and begin at 1.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         indexes = [guide.index for guide in self.guides]
         if indexes != list(range(1, len(indexes) + 1)):
             raise ValueError(self.prompt.guide_indices_err)
@@ -50,7 +54,11 @@ class GuidedTranslationQuery(Query):
 
     @model_validator(mode="after")
     def validate_subtitle_indices(self) -> Self:
-        """Ensure subtitle indexes are consecutive, ordered, and begin at 1."""
+        """Ensure subtitle indexes are consecutive, ordered, and begin at 1.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         indexes = [subtitle.index for subtitle in self.subtitles]
         if indexes != list(range(1, len(indexes) + 1)):
             raise ValueError(self.prompt.subtitle_indices_err)
@@ -67,7 +75,11 @@ class GuidedTranslationAnswer(Answer):
 
     @model_validator(mode="after")
     def validate_output_indices(self) -> Self:
-        """Ensure output indexes are consecutive, ordered, and begin at 1."""
+        """Ensure output indexes are consecutive, ordered, and begin at 1.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         indexes = [output.index for output in self.outputs]
         if indexes != list(range(1, len(indexes) + 1)):
             raise ValueError(self.prompt.output_indices_err)
@@ -103,7 +115,11 @@ class GuidedTranslationTestCase(TestCase):
 
     @model_validator(mode="after")
     def validate_output_correspondence(self) -> Self:
-        """Ensure answer outputs correspond exactly to query subtitles."""
+        """Ensure answer outputs correspond exactly to query subtitles.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if self.answer is None:
             return self
         subtitle_indexes = [subtitle.index for subtitle in self.query.subtitles]
