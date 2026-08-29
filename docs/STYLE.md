@@ -182,5 +182,5 @@
   without them.
 
 ## Documentation
-* Follow [`DOCSTRINGS.md`](DOCSTRINGS.md) for documentation coverage, formatting,
-  sections, and decorator-specific exemptions.
+* Follow [`DOCUMENTATION.md`](DOCUMENTATION.md) for documentation coverage,
+  formatting, sections, and decorator-specific exemptions.

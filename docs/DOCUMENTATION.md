@@ -1,4 +1,4 @@
-# Docstring Guide
+# Documentation Guide
 
 ## Coverage
 
