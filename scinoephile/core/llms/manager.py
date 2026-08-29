@@ -21,7 +21,7 @@ from .test_case import TestCase
 
 __all__ = ["Manager", "PromptModelField"]
 
-TTestCase = TypeVar("TTestCase", bound=TestCase, covariant=True)  # noqa: PLC0105
+TTestCase_co = TypeVar("TTestCase_co", bound=TestCase, covariant=True)
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -36,7 +36,7 @@ class PromptModelField:
     """JSON schema description, or None to retain the semantic description."""
 
 
-class Manager(Generic[TTestCase], ABC):  # noqa: UP046
+class Manager(Generic[TTestCase_co], ABC):  # noqa: UP046
     """ABC for LLM managers."""
 
     operation: ClassVar[str]
@@ -120,7 +120,7 @@ class Manager(Generic[TTestCase], ABC):  # noqa: UP046
 
     @classmethod
     @cache
-    def get_test_case_cls(cls, prompt: Prompt) -> type[TTestCase]:
+    def get_test_case_cls(cls, prompt: Prompt) -> type[TTestCase_co]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
@@ -149,4 +149,4 @@ class Manager(Generic[TTestCase], ABC):  # noqa: UP046
         model.query_cls = query_cls
         model.answer_cls = answer_cls
         model.operation = cls.operation
-        return cast("type[TTestCase]", model)
+        return cast("type[TTestCase_co]", model)
