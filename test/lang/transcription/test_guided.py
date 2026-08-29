@@ -91,8 +91,12 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         mutable_model_specs[TranscriptionModel.WHISPER] = whisper_spec
 
 
-def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path):
-    """Test factory configures language-specific prompts and Whisper language."""
+def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path: Path):
+    """Test factory configures language-specific prompts and Whisper language.
+
+    Arguments:
+        tmp_path: temporary cache directory path
+    """
     with (
         patch(
             "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
@@ -246,7 +250,11 @@ def test_get_guided_transcriber_configures_mlx_audio_model(
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path):
-    """Test requested pruning retains only cases encountered by the current run."""
+    """Test requested pruning retains only cases encountered by the current run.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     delineation_json_path = tmp_path / "custom" / "delineation.json"
     punctuation_json_path = tmp_path / "other" / "punctuation.json"
     transcriber = get_guided_transcriber(
@@ -308,7 +316,11 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(tmp_path: Path
 
 
 def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: Path):
-    """Test default JSON test cases are preserved between runs."""
+    """Test default JSON test cases are preserved between runs.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     with (
         patch(
             "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
@@ -372,7 +384,11 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: 
 
 
 def test_get_guided_transcriber_loads_verified_cases_from_exact_json(tmp_path: Path):
-    """Test an exact JSON's verified cases bypass the provider and few-shot prompt."""
+    """Test an exact JSON's verified cases bypass the provider and few-shot prompt.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = DelineationManager.get_test_case_cls(YueZhoDelineationPromptYueHant)
     verified_test_case = test_case_cls.model_validate(
         {

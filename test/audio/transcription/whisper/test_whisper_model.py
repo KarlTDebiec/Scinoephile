@@ -88,7 +88,11 @@ def test_model_honors_explicit_device(monkeypatch: MonkeyPatch):
 
 
 def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch):
-    """Share one executable model across transcription configurations."""
+    """Share one executable model across transcription configurations.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     loaded_model = Mock()
     whisper_timestamped = Mock()
     whisper_timestamped.load_model.return_value = loaded_model
@@ -121,7 +125,11 @@ def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch
 
 
 def test_default_model_loads_from_pinned_snapshot(monkeypatch: MonkeyPatch):
-    """Resolve the default model's immutable revision before Whisper loading."""
+    """Resolve the default model's immutable revision before Whisper loading.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     loaded_model = Mock()
     whisper_timestamped = SimpleNamespace(load_model=Mock(return_value=loaded_model))
     get_snapshot_dir_path = Mock(return_value=Path("/cached/snapshot"))
@@ -152,7 +160,11 @@ def test_default_model_loads_from_pinned_snapshot(monkeypatch: MonkeyPatch):
 def test_model_retries_with_complete_snapshot_after_missing_cached_file(
     monkeypatch: MonkeyPatch,
 ):
-    """Retry model loading with the complete snapshot after a cached file is missing."""
+    """Retry model loading with a complete snapshot after a missing cached file.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     loaded_model = Mock()
     load_model = Mock(side_effect=[FileNotFoundError, loaded_model])
     whisper_timestamped = SimpleNamespace(load_model=load_model)
@@ -183,7 +195,11 @@ def test_model_retries_with_complete_snapshot_after_missing_cached_file(
 
 
 def test_whisper_module_requires_transcription_extra(monkeypatch: MonkeyPatch):
-    """Test Whisper import errors mention the transcription extra."""
+    """Test Whisper import errors mention the transcription extra.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     original_import = builtins.__import__
 
     def import_without_whisper(
@@ -193,6 +209,20 @@ def test_whisper_module_requires_transcription_extra(monkeypatch: MonkeyPatch):
         fromlist: Sequence[str] | None = (),
         level: int = 0,
     ) -> object:
+        """Import modules while simulating an unavailable Whisper dependency.
+
+        Arguments:
+            name: module name
+            globals: calling module globals
+            locals: calling module locals
+            fromlist: requested names imported from the module
+            level: relative import level
+        Returns:
+            imported module or object
+
+        Raises:
+            ImportError: if Whisper Timestamped is requested
+        """
         if name == "whisper_timestamped":
             raise ImportError("blocked optional dependency")
         return original_import(name, globals, locals, fromlist, level)

@@ -374,7 +374,13 @@ class GuidedTranscriber:
         audio_duration = len(audio) / 1000
 
         def is_usable(candidate: list[TranscribedSegment]) -> bool:
-            """Determine whether a transcription candidate is usable."""
+            """Determine whether a transcription candidate is usable.
+
+            Arguments:
+                candidate: transcription candidate
+            Returns:
+                whether the candidate is usable
+            """
             return self._segments_are_usable(candidate, audio_duration=audio_duration)
 
         # Inspect standard and recovery caches before invoking Demucs
@@ -424,7 +430,13 @@ class GuidedTranscriber:
         audio_duration = len(audio) / 1000
 
         def is_usable(segments: list[TranscribedSegment]) -> bool:
-            """Determine whether an MLX-Audio attempt is usable."""
+            """Determine whether an MLX-Audio attempt is usable.
+
+            Arguments:
+                segments: transcribed segments from one attempt
+            Returns:
+                whether the attempt is usable
+            """
             return self._segments_are_usable(segments, audio_duration=audio_duration)
 
         try:
@@ -692,7 +704,16 @@ def _get_phrase_boundary_scores(
     durations: list[float],
     pause_threshold: float,
 ) -> dict[int, int]:
-    """Score phrase boundaries using punctuation and CTC hold durations."""
+    """Score phrase boundaries using punctuation and CTC hold durations.
+
+    Arguments:
+        text: transcription text
+        words: timed transcription words
+        durations: hold durations corresponding to the words
+        pause_threshold: minimum hold duration treated as a pause
+    Returns:
+        boundary scores keyed by character offset
+    """
     boundary_scores: dict[int, int] = {}
     for character_index, character in enumerate(text, 1):
         if character in _MLX_PHRASE_STRONG_PUNCTUATION:

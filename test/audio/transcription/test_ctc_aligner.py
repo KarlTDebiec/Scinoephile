@@ -136,7 +136,11 @@ def test_ctc_aligner_groups_english_character_timings_into_words():
 
 
 def test_ctc_aligner_expands_token_spans(monkeypatch: pytest.MonkeyPatch):
-    """Test CTC alignment expands token spans."""
+    """Test CTC alignment expands token spans.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     log_probs = np.log(
         np.array(
             [
@@ -234,7 +238,11 @@ def test_ctc_aligner_selects_language_default_model(
 def test_ctc_aligner_loads_default_model_at_pinned_revision(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test default CTC assets load from their immutable Hugging Face revision."""
+    """Test default CTC assets load from their immutable Hugging Face revision.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     runtime_model = Mock()
     runtime_model.to.return_value = runtime_model
@@ -409,7 +417,11 @@ def test_ctc_aligner_persistently_caches_alignment(
 
 
 def test_ctc_model_uses_processor_sampling_rate(monkeypatch: pytest.MonkeyPatch):
-    """Test CTC inference prepares audio at the processor's sampling rate."""
+    """Test CTC inference prepares audio at the processor's sampling rate.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     model = CtcModel(_CUSTOM_MODEL, "cpu")
     processor = Mock(side_effect=RuntimeError("stop after conversion"))
     processor.feature_extractor = SimpleNamespace(sampling_rate=8000)
@@ -430,7 +442,11 @@ def test_ctc_model_uses_processor_sampling_rate(monkeypatch: pytest.MonkeyPatch)
 
 
 def test_ctc_model_rejects_empty_audio(monkeypatch: pytest.MonkeyPatch):
-    """Test CTC inference rejects empty audio."""
+    """Test CTC inference rejects empty audio.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     model = CtcModel(_CUSTOM_MODEL, "cpu")
     processor = Mock()
     processor.feature_extractor = SimpleNamespace(sampling_rate=16000)
@@ -510,7 +526,11 @@ def test_ctc_token_ids_include_word_delimiter():
 def test_ctc_aligner_attaches_trailing_unaligned_punctuation(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test trailing punctuation inherits the final aligned word timing."""
+    """Test trailing punctuation inherits the final aligned word timing.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     log_probs = np.log(
         np.array(
             [
@@ -544,7 +564,11 @@ def test_ctc_aligner_attaches_trailing_unaligned_punctuation(
 
 
 def test_ctc_aligner_times_trailing_unsupported_speech(monkeypatch: pytest.MonkeyPatch):
-    """Test trailing unsupported speech retains fallback timing."""
+    """Test trailing unsupported speech retains fallback timing.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     log_probs = np.log(
         np.array([[0.85, 0.15], [0.05, 0.95], [0.85, 0.15], [0.85, 0.15]])
     )
@@ -569,7 +593,11 @@ def test_ctc_aligner_times_trailing_unsupported_speech(monkeypatch: pytest.Monke
 
 
 def test_ctc_aligner_preserves_boundary_whitespace(monkeypatch: pytest.MonkeyPatch):
-    """Test CTC alignment preserves whitespace around the transcript."""
+    """Test CTC alignment preserves whitespace around the transcript.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     log_probs = np.log(
         np.array(
             [
@@ -600,7 +628,11 @@ def test_ctc_aligner_preserves_boundary_whitespace(monkeypatch: pytest.MonkeyPat
 
 
 def test_ctc_aligner_preserves_all_unknown_characters(monkeypatch: pytest.MonkeyPatch):
-    """Test a transcript outside the CTC vocabulary receives fallback timings."""
+    """Test a transcript outside the CTC vocabulary receives fallback timings.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     aligner = CtcAligner(Language.yue_hant)
     monkeypatch.setattr(
         CtcModel,
@@ -636,7 +668,14 @@ def test_ctc_aligner_attaches_internal_unaligned_characters(
     char_indices: list[int],
     expected_words: list[str],
 ):
-    """Test unsupported internal characters inherit an adjacent word timing."""
+    """Test unsupported internal characters inherit an adjacent word timing.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        text: transcript text
+        char_indices: indices of characters recognized by the tokenizer
+        expected_words: expected grouped transcription words
+    """
     log_probs = np.log(
         np.array(
             [
@@ -825,7 +864,11 @@ def test_ctc_token_ids_do_not_convert_script_for_model_override():
 
 
 def test_ctc_aligner_rounds_timings(monkeypatch: pytest.MonkeyPatch):
-    """Test CTC alignment rounds character timings."""
+    """Test CTC alignment rounds character timings.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     log_probs = np.log(
         np.array(
             [
@@ -865,7 +908,12 @@ def test_ctc_aligner_rejects_empty_text():
 def test_ctc_aligner_wraps_backend_errors(
     monkeypatch: pytest.MonkeyPatch, backend_error: Exception
 ):
-    """Test low-level CTC failures are exposed as alignment errors."""
+    """Test low-level CTC failures are exposed as alignment errors.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        backend_error: simulated low-level CTC failure
+    """
     aligner = CtcAligner(Language.yue_hant)
     monkeypatch.setattr(CtcModel, "__call__", Mock(side_effect=backend_error))
 

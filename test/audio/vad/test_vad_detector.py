@@ -40,7 +40,11 @@ _CUSTOM_MODEL = replace(
 def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Run mocked pyannote VAD with pinned assets and shared interval settings."""
+    """Run mocked pyannote VAD with pinned assets and shared interval settings.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     segmentation = SimpleNamespace(
         data=np.asarray(
             [
@@ -111,7 +115,11 @@ def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(
 def test_pyannote_missing_authorization_is_a_domain_error(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Explain the gated model conditions when pyannote cannot load VAD assets."""
+    """Explain the gated model conditions when pyannote cannot load VAD assets.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     model_class = SimpleNamespace(from_pretrained=Mock(return_value=None))
     monkeypatch.setattr(
         "scinoephile.audio.vad.pyannote.import_pyannote_audio",
@@ -201,7 +209,11 @@ def test_ten_probabilities_are_converted_to_padded_intervals():
 def test_ten_inference_pads_final_frame_and_returns_original_timeline(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Run mocked TEN inference without downloading models or native artifacts."""
+    """Run mocked TEN inference without downloading models or native artifacts.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     runtime_detector = Mock()
     runtime_detector.process.side_effect = [(0.8, 1), (0.9, 1), (0.0, 0), (0.0, 0)]
     ten_vad_class = Mock(return_value=runtime_detector)
@@ -250,7 +262,11 @@ def test_ten_configuration_rejects_unsupported_audio_geometry(
 def test_silero_inference_uses_shared_interval_settings(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Derive Silero intervals from its reusable frame-level score trace."""
+    """Derive Silero intervals from its reusable frame-level score trace.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     probabilities = [0.0] * 7 + [0.8] * 15 + [0.0] * 10
     model = Mock()
     model.side_effect = [
@@ -296,7 +312,11 @@ def test_silero_rejects_unsupported_sample_rate():
 
 
 def test_ten_missing_runtime_is_a_dependency_error(monkeypatch: pytest.MonkeyPatch):
-    """Propagate the shared dependency error for a missing TEN runtime."""
+    """Propagate the shared dependency error for a missing TEN runtime.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setattr(
         "scinoephile.audio.vad.ten.import_ten_vad",
         Mock(side_effect=DependencyError("missing TEN VAD dependency")),
@@ -310,7 +330,12 @@ def test_ten_missing_runtime_is_a_dependency_error(monkeypatch: pytest.MonkeyPat
 def test_vad_cache_identity_separates_implementation_and_settings(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Separate transcription caches by VAD model, runtime, and postprocessing."""
+    """Separate transcription caches by VAD model, runtime, and postprocessing.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     monkeypatch.setattr(
         "scinoephile.audio.vad.silero.get_distribution_identity",
         Mock(
@@ -388,7 +413,11 @@ def test_vad_cache_identity_separates_implementation_and_settings(
 def test_vad_trace_cache_identity_excludes_interval_postprocessing(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Reuse one TEN score trace across threshold and interval parameter sweeps."""
+    """Reuse one TEN score trace across threshold and interval parameter sweeps.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setattr(
         "scinoephile.audio.vad.ten.get_distribution_identity",
         Mock(return_value={"distribution": "ten-vad", "version": "1.0.6.8"}),
@@ -419,7 +448,11 @@ def test_vad_trace_cache_identity_excludes_interval_postprocessing(
 def test_vad_cache_identity_pins_pyannote_model_and_runtime(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Identify pyannote VAD by its pinned model and installed runtime version."""
+    """Identify pyannote VAD by its pinned model and installed runtime version.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setattr(
         "scinoephile.audio.vad.pyannote.get_distribution_identity",
         Mock(
@@ -459,7 +492,12 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
 def test_whisper_receives_explicit_ten_intervals(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Supply TEN intervals to Whisper Timestamped on the original timeline."""
+    """Supply TEN intervals to Whisper Timestamped on the original timeline.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     trace = VoiceActivityTrace(
         np.ones(47, dtype=np.float32), start_ms=8, step_ms=16, duration_ms=1500
     )
@@ -496,7 +534,12 @@ def test_whisper_receives_explicit_ten_intervals(
 def test_whisper_auto_retries_after_ten_unsupported_platform(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Retry without VAD when official TEN rejects the current platform."""
+    """Retry without VAD when official TEN rejects the current platform.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     ten_vad_class = Mock(
         side_effect=NotImplementedError("Unsupported platform: Test unknown")
     )
@@ -528,7 +571,12 @@ def test_whisper_auto_retries_after_ten_unsupported_platform(
 def test_whisper_ten_empty_output_skips_inference(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Treat TEN audio without detected speech as an empty VAD attempt."""
+    """Treat TEN audio without detected speech as an empty VAD attempt.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     trace = VoiceActivityTrace(
         np.zeros(7, dtype=np.float32), start_ms=8, step_ms=16, duration_ms=100
     )

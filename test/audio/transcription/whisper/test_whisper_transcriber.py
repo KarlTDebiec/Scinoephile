@@ -109,7 +109,14 @@ def test_init_rejects_unsupported_language():
 
 
 def _get_cache_path(transcriber: WhisperTranscriber, audio: AudioSegment) -> Path:
-    """Get the cache path for the transcriber's first preprocessing settings."""
+    """Get the cache path for the transcriber's first preprocessing settings.
+
+    Arguments:
+        transcriber: Whisper transcriber
+        audio: audio whose cache path is requested
+    Returns:
+        cache path for the first preprocessing settings
+    """
     settings = transcriber._get_preprocessing_settings()[0]
     cache_path = transcriber._cache.get_path(
         audio, transcriber._get_cache_identity(audio, settings)
@@ -263,7 +270,11 @@ def test_get_cache_path_separates_devices(tmp_path: Path):
 
 
 def test_get_cache_path_separates_audio_formats(tmp_path: Path):
-    """Test Whisper cache paths include audio format identity."""
+    """Test Whisper cache paths include audio format identity.
+
+    Arguments:
+        tmp_path: temporary cache directory path
+    """
     raw_data = b"\0\1" * 100
     first_audio = AudioSegment(
         data=raw_data, sample_width=2, frame_rate=16000, channels=1
@@ -279,7 +290,11 @@ def test_get_cache_path_separates_audio_formats(tmp_path: Path):
 
 
 def test_get_cache_path_accepts_list_temperature_schedule(tmp_path: Path):
-    """Test list and tuple temperature schedules use the same cache key."""
+    """Test list and tuple temperature schedules use the same cache key.
+
+    Arguments:
+        tmp_path: temporary cache directory path
+    """
     audio = AudioSegment(data=b"audio", sample_width=1, frame_rate=8000, channels=1)
     list_transcriber = _get_whisper_transcriber(
         cache_root_path=tmp_path, spec=_CUSTOM_MODEL, temperature=[0.0, 0.2, 0.4]
@@ -371,7 +386,12 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
 def test_transcribe_forwards_recovery_decoding_options(
     monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
-    """Test Whisper receives configured defensive decoding options."""
+    """Test Whisper receives configured defensive decoding options.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        caplog: pytest log-capture fixture
+    """
     caplog.set_level(
         "DEBUG", logger="scinoephile.audio.transcription.whisper.transcriber"
     )
@@ -421,7 +441,14 @@ def test_transcribe_overwrites_matching_cache(monkeypatch: MonkeyPatch, tmp_path
     cache_path.write_text("cached", encoding="utf-8")
 
     def transcribe(*_args: object, **_kwargs: object) -> dict[str, list[object]]:
-        """Return empty output after confirming the old cache was removed."""
+        """Return empty output after confirming the old cache was removed.
+
+        Arguments:
+            *_args: ignored positional arguments
+            **_kwargs: ignored keyword arguments
+        Returns:
+            empty Whisper output
+        """
         assert not cache_path.exists()
         return {"segments": []}
 

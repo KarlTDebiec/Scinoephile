@@ -142,8 +142,6 @@ class WhisperModel:
     def model(self) -> Whisper:
         """Load and get the configured Whisper model.
 
-        Returns:
-            loaded Whisper model
         Raises:
             DependencyError: if Whisper dependencies are unavailable
         """

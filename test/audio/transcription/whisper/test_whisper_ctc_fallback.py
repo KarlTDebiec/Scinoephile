@@ -45,7 +45,14 @@ _TIMESTAMP_ALIGNMENT_ERROR = (
 
 
 def _get_cache_path(transcriber: WhisperTranscriber, audio: AudioSegment) -> Path:
-    """Get the cache path for the transcriber's first preprocessing settings."""
+    """Get the cache path for the transcriber's first preprocessing settings.
+
+    Arguments:
+        transcriber: Whisper transcriber
+        audio: audio whose cache path is requested
+    Returns:
+        cache path for the first preprocessing settings
+    """
     settings = transcriber._get_preprocessing_settings()[0]
     return transcriber._cache.get_path(
         audio, transcriber._get_cache_identity(audio, settings)
@@ -93,7 +100,16 @@ def _get_whisper_transcriber(
     device: str | None = "cpu",
     **kwargs: Any,
 ) -> WhisperTranscriber:
-    """Get a Whisper transcriber with a configured executable model."""
+    """Get a Whisper transcriber with a configured executable model.
+
+    Arguments:
+        spec: Whisper model specification
+        language: transcription language
+        device: Torch device used for inference
+        **kwargs: additional transcriber configuration
+    Returns:
+        configured Whisper transcriber
+    """
     return WhisperTranscriber(
         model=WhisperModel(spec, language, device=device), language=language, **kwargs
     )
@@ -102,7 +118,12 @@ def _get_whisper_transcriber(
 def _patch_whisper_timestamped(
     monkeypatch: MonkeyPatch, transcribe: Callable[..., object]
 ):
-    """Patch Whisper Timestamped with the provided transcribe callable."""
+    """Patch Whisper Timestamped with the provided transcribe callable.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        transcribe: replacement transcription callable
+    """
     monkeypatch.setattr(
         "scinoephile.audio.transcription.whisper.model.import_whisper_timestamped",
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
@@ -112,7 +133,12 @@ def _patch_whisper_timestamped(
 def test_transcribe_timestamped_success_does_not_use_ctc(
     monkeypatch: MonkeyPatch, tmp_path: Path
 ):
-    """Test successful Whisper Timestamped output bypasses native CTC fallback."""
+    """Test successful Whisper Timestamped output bypasses native CTC fallback.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     ctc_aligner = _get_ctc_aligner()
     timestamped_transcribe = Mock(return_value={"segments": []})
     model = Mock()
@@ -135,7 +161,12 @@ def test_transcribe_timestamped_success_does_not_use_ctc(
 def test_transcribe_falls_back_to_native_text_with_ctc_alignment(
     monkeypatch: MonkeyPatch, tmp_path: Path
 ):
-    """Test failed Whisper timestamping falls back to native text plus CTC."""
+    """Test failed Whisper timestamping falls back to native text plus CTC.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     audio = AudioSegment.silent(duration=1000)
     transcript_text = " 你好 "
     ctc_aligner = _get_ctc_aligner(transcript_text)
@@ -207,7 +238,12 @@ def test_transcribe_falls_back_to_native_text_with_ctc_alignment(
 def test_transcribe_discards_ctc_aligned_terminal_credit(
     monkeypatch: MonkeyPatch, tmp_path: Path
 ):
-    """Test CTC-aligned fallback output receives Whisper normalization."""
+    """Test CTC-aligned fallback output receives Whisper normalization.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     audio = AudioSegment.silent(duration=1000)
     transcript_text = _SUBTITLE_CREDIT_TEXT
     ctc_aligner = _get_ctc_aligner(transcript_text)
@@ -243,7 +279,12 @@ def test_transcribe_discards_ctc_aligned_terminal_credit(
 def test_transcribe_timestamp_assertion_without_ctc_remains_error(
     monkeypatch: MonkeyPatch, tmp_path: Path
 ):
-    """Test timestamping assertions retain existing no-aligner behavior."""
+    """Test timestamping assertions retain existing no-aligner behavior.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     model = Mock()
     transcriber = _get_whisper_transcriber(
         cache_root_path=tmp_path,
@@ -268,7 +309,12 @@ def test_transcribe_timestamp_assertion_without_ctc_remains_error(
 def test_transcribe_unrelated_assertion_does_not_use_ctc(
     monkeypatch: MonkeyPatch, tmp_path: Path
 ):
-    """Test only the known timestamping assertion triggers CTC fallback."""
+    """Test only the known timestamping assertion triggers CTC fallback.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     ctc_aligner = _get_ctc_aligner()
     model = Mock()
     transcriber = _get_whisper_transcriber(
@@ -312,7 +358,15 @@ def test_transcribe_rejects_invalid_native_fallback_output(
     error_type: type[TranscriptionError],
     message: str,
 ):
-    """Test malformed and empty native fallback output is rejected."""
+    """Test malformed and empty native fallback output is rejected.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+        native_output: simulated native Whisper output
+        error_type: expected transcription exception type
+        message: expected exception message fragment
+    """
     ctc_aligner = _get_ctc_aligner()
     model = Mock()
     model.transcribe.return_value = native_output
@@ -337,7 +391,12 @@ def test_transcribe_rejects_invalid_native_fallback_output(
 def test_transcribe_wraps_native_fallback_failure(
     monkeypatch: MonkeyPatch, tmp_path: Path
 ):
-    """Test native Whisper decoding failures become transcription errors."""
+    """Test native Whisper decoding failures become transcription errors.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     ctc_aligner = _get_ctc_aligner()
     model = Mock()
     native_error = RuntimeError("decoder failed")
