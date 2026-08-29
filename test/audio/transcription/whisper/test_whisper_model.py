@@ -15,9 +15,11 @@ from pydub import AudioSegment
 from pytest import MonkeyPatch, raises
 
 from scinoephile.audio.transcription import DemucsMode, VadMode
-from scinoephile.audio.transcription.whisper import WHISPER_LARGE_V3_CANTONESE_MODEL
-from scinoephile.audio.transcription.whisper.model import WhisperModel
-from scinoephile.audio.transcription.whisper.transcriber import WhisperTranscriber
+from scinoephile.audio.transcription.whisper import (
+    WHISPER_LARGE_V3_CANTONESE_MODEL,
+    WhisperModel,
+    WhisperTranscriber,
+)
 from scinoephile.core import DependencyError, Language
 from scinoephile.core.dependencies.transcription import import_whisper_timestamped
 from test.helpers import parametrize

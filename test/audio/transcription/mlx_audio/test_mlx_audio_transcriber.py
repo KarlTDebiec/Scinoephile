@@ -32,13 +32,11 @@ from scinoephile.audio.transcription.mlx_audio import (
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
-    MlxAudioModelSpec,
-)
-from scinoephile.audio.transcription.mlx_audio.model import (
     MlxAudioModel,
+    MlxAudioModelSpec,
     MlxAudioResult,
+    MlxAudioTranscriber,
 )
-from scinoephile.audio.transcription.mlx_audio.transcriber import MlxAudioTranscriber
 from scinoephile.audio.vad import (
     VadImplementation,
     VoiceActivityDetector,

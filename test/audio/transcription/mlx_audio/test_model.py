@@ -17,15 +17,15 @@ import pytest
 from scinoephile.audio.transcription.mlx_audio import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
+    MIMO_AUDIO_TOKENIZER,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
+    MlxAudioModel,
     MlxAudioModelSpec,
     tokenization,
 )
 from scinoephile.audio.transcription.mlx_audio import model as mlx_audio_model
-from scinoephile.audio.transcription.mlx_audio.model import MlxAudioModel
-from scinoephile.audio.transcription.mlx_audio.tokenization import MIMO_AUDIO_TOKENIZER
 from scinoephile.core import DependencyError, Language
 from scinoephile.core.dependencies.transcription import import_mlx_audio_stt_load
 from scinoephile.core.ml import ModelSpec
