@@ -376,7 +376,14 @@ def _get_blocks_with_display_timing(
 def _get_candidate_series(
     artifact: AlignmentArtifact, settings: TimingSettings | None
 ) -> Series:
-    """Get candidate subtitles using stored or recalculated display timing."""
+    """Get candidate subtitles using stored or recalculated display timing.
+
+    Arguments:
+        artifact: alignment artifact containing candidate subtitles
+        settings: display-timing settings, or None to use stored timing
+    Returns:
+        candidate subtitle series
+    """
     if settings is None:
         return artifact.get_series()
     return retime_alignment(artifact, settings).get_series()
@@ -446,7 +453,13 @@ def _get_reference_selection(
 
 
 def _get_speech_series(artifact: AlignmentArtifact) -> Series:
-    """Get merged text at immutable CTC speech bounds for evaluation pairing."""
+    """Get merged text at immutable CTC speech bounds for evaluation pairing.
+
+    Arguments:
+        artifact: alignment artifact containing merged subtitles
+    Returns:
+        merged subtitle series using immutable speech bounds
+    """
     return Series(
         events=[
             Subtitle(

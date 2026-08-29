@@ -23,12 +23,10 @@ class MlxAudioRuntimeModel(Protocol):
     """Loaded MLX-Audio model capable of speech recognition."""
 
     def generate(self, audio: str, **kwargs: object) -> MlxAudioResult:
-        """Recognize speech in an audio file.
+        """Recognize speech in an audio file and return the result.
 
         Arguments:
             audio: audio file path
             **kwargs: model-specific generation arguments
-        Returns:
-            MLX-Audio recognition result
         """
         ...

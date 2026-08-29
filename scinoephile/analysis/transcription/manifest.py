@@ -116,7 +116,11 @@ class RunManifest(BaseModel):
 
     @model_validator(mode="after")
     def _validate_document(self) -> RunManifest:
-        """Validate selected block order and bounds."""
+        """Validate selected block order and bounds.
+
+        Returns:
+            validated run manifest
+        """
         indexes = tuple(block.index for block in self.blocks)
         if indexes != tuple(sorted(set(indexes))):
             raise ValueError(

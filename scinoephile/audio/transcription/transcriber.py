@@ -295,8 +295,6 @@ class Transcriber(ABC):
 
         Arguments:
             audio: audio whose properties may affect transcriber behavior
-        Returns:
-            transcriber configuration identifying the output
         """
         raise NotImplementedError()
 
@@ -442,12 +440,10 @@ class Transcriber(ABC):
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
-        """Run one uncached transcription attempt.
+        """Run one uncached transcription attempt and return timestamped segments.
 
         Arguments:
             audio: original or Demucs-separated audio to transcribe
             settings: preprocessing settings
-        Returns:
-            timestamped transcription segments
         """
         raise NotImplementedError()

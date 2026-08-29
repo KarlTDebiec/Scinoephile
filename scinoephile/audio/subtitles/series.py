@@ -175,7 +175,7 @@ class AudioSeries(Series):
         """Load series from a directory of wav files.
 
         Arguments:
-            path : input directory path
+            path: input directory path
             encoding: input file encoding
             format_: input file format
             errors: encoding error handling

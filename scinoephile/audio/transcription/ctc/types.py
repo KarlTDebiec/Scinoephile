@@ -66,11 +66,9 @@ class CtcTokenizer(Protocol):
         ...
 
     def convert_tokens_to_ids(self, token: str) -> int | None:
-        """Convert one token to its model ID.
+        """Convert one token to its model ID, if available.
 
         Arguments:
             token: token text
-        Returns:
-            model token ID, or None when unavailable
         """
         ...

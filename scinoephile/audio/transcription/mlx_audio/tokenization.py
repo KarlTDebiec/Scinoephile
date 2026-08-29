@@ -38,7 +38,15 @@ def use_local_tokenizer(
     def get_local_model_path(
         path_or_hf_repo: str, *args: object, **kwargs: object
     ) -> Path:
-        """Resolve the configured tokenizer locally and delegate other models."""
+        """Resolve the configured tokenizer locally and delegate other models.
+
+        Arguments:
+            path_or_hf_repo: local path or Hugging Face repository identifier
+            *args: additional positional arguments for MLX-Audio
+            **kwargs: additional keyword arguments for MLX-Audio
+        Returns:
+            resolved local model path
+        """
         if path_or_hf_repo == tokenizer.name:
             return tokenizer_dir_path
         return get_model_path(path_or_hf_repo, *args, **kwargs)
