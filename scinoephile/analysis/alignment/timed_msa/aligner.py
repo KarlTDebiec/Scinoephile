@@ -11,11 +11,11 @@ from itertools import permutations
 import numpy as np
 
 from .alignment import MsaAlignment
-from .models import AlignmentSequence, Column, Token
+from .models import MsaColumn, MsaSequence, MsaToken
 
 __all__ = ["MsaAligner", "MsaSettings"]
 
-type _TokenSimilarity = Callable[[Token, Token], float]
+type _TokenSimilarity = Callable[[MsaToken, MsaToken], float]
 """Callable returning a substitution score for two timestamped tokens."""
 
 _STATE_MATCH = 0
@@ -68,7 +68,7 @@ class MsaAligner:
         self.settings = settings
         """Affine-gap scoring configuration."""
 
-    def __call__(self, sequences: Sequence[AlignmentSequence]) -> MsaAlignment:
+    def __call__(self, sequences: Sequence[MsaSequence]) -> MsaAlignment:
         """Align two or more named timestamped sequences.
 
         For small source sets, all progressive source orders are considered and
@@ -106,7 +106,7 @@ class MsaAligner:
         return best_alignment
 
     def add_sequence(
-        self, alignment: MsaAlignment, sequence: AlignmentSequence
+        self, alignment: MsaAlignment, sequence: MsaSequence
     ) -> MsaAlignment:
         """Align one non-authoritative sequence onto a fixed existing profile.
 
@@ -127,7 +127,7 @@ class MsaAligner:
             raise ValueError("Additional sequences must be aligned before annotations.")
         return self._align_profile_to_sequence(alignment, sequence)
 
-    def _align_in_order(self, sequences: Sequence[AlignmentSequence]) -> MsaAlignment:
+    def _align_in_order(self, sequences: Sequence[MsaSequence]) -> MsaAlignment:
         """Progressively align sequences in one specified order.
 
         Arguments:
@@ -138,14 +138,14 @@ class MsaAligner:
         first = sequences[0]
         alignment = MsaAlignment(
             source_names=(first.name,),
-            columns=tuple(Column((token,)) for token in first.tokens),
+            columns=tuple(MsaColumn((token,)) for token in first.tokens),
         )
         for sequence in sequences[1:]:
             alignment = self._align_profile_to_sequence(alignment, sequence)
         return alignment
 
     def _align_profile_to_sequence(  # noqa: PLR0912, PLR0915
-        self, profile: MsaAlignment, sequence: AlignmentSequence
+        self, profile: MsaAlignment, sequence: MsaSequence
     ) -> MsaAlignment:
         """Align one existing profile to one additional sequence.
 
@@ -248,7 +248,7 @@ class MsaAligner:
         while profile_idx > 0 or sequence_idx > 0:
             if state == _STATE_MATCH:
                 columns.append(
-                    Column(
+                    MsaColumn(
                         (
                             *profile.columns[profile_idx - 1].tokens,
                             sequence.tokens[sequence_idx - 1],
@@ -259,12 +259,14 @@ class MsaAligner:
                 profile_idx -= 1
                 sequence_idx -= 1
             elif state == _STATE_GAP_IN_SEQUENCE:
-                columns.append(Column((*profile.columns[profile_idx - 1].tokens, None)))
+                columns.append(
+                    MsaColumn((*profile.columns[profile_idx - 1].tokens, None))
+                )
                 state = int(gap_in_sequence_backpointers[profile_idx, sequence_idx])
                 profile_idx -= 1
             elif state == _STATE_GAP_IN_PROFILE:
                 columns.append(
-                    Column(
+                    MsaColumn(
                         (
                             *(None for _ in profile.source_names),
                             sequence.tokens[sequence_idx - 1],
@@ -281,8 +283,8 @@ class MsaAligner:
         )
 
     def _get_guide_orders(
-        self, sequences: Sequence[AlignmentSequence]
-    ) -> tuple[tuple[AlignmentSequence, ...], ...]:
+        self, sequences: Sequence[MsaSequence]
+    ) -> tuple[tuple[MsaSequence, ...], ...]:
         """Get pairwise-affinity progressive orders for a large source set.
 
         Arguments:
@@ -326,7 +328,7 @@ class MsaAligner:
             orders.append(tuple(sequences[idx] for idx in order))
         return tuple(orders)
 
-    def _get_profile_similarity(self, column: Column, token: Token) -> float:
+    def _get_profile_similarity(self, column: MsaColumn, token: MsaToken) -> float:
         """Get mean similarity between a profile column and one token.
 
         Arguments:
@@ -357,7 +359,7 @@ class MsaAligner:
         return MsaAlignment(
             source_names=source_names,
             columns=tuple(
-                Column(tuple(column.tokens[idx] for idx in indexes))
+                MsaColumn(tuple(column.tokens[idx] for idx in indexes))
                 for column in alignment.columns
             ),
         )

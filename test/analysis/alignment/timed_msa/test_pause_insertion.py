@@ -12,25 +12,25 @@ def test_explicit_pause_prefers_matching_source_gap():
     alignment = timed_msa.MsaAlignment(
         source_names=("native", "ctc-one", "ctc-two"),
         columns=(
-            timed_msa.Column(
+            timed_msa.MsaColumn(
                 (
-                    timed_msa.Token("三", 0.0, 0.2),
-                    timed_msa.Token("三", 0.0, 1.4),
-                    timed_msa.Token("三", 0.0, 1.4),
+                    timed_msa.MsaToken("三", 0.0, 0.2),
+                    timed_msa.MsaToken("三", 0.0, 1.4),
+                    timed_msa.MsaToken("三", 0.0, 1.4),
                 )
             ),
-            timed_msa.Column(
+            timed_msa.MsaColumn(
                 (
-                    timed_msa.Token("夜", 0.2, 0.4),
-                    timed_msa.Token("夜", 1.4, 1.5),
-                    timed_msa.Token("夜", 1.4, 1.5),
+                    timed_msa.MsaToken("夜", 0.2, 0.4),
+                    timed_msa.MsaToken("夜", 1.4, 1.5),
+                    timed_msa.MsaToken("夜", 1.4, 1.5),
                 )
             ),
-            timed_msa.Column(
+            timed_msa.MsaColumn(
                 (
-                    timed_msa.Token("見", 1.2, 1.4),
-                    timed_msa.Token("見", 1.5, 1.7),
-                    timed_msa.Token("見", 1.5, 1.7),
+                    timed_msa.MsaToken("見", 1.2, 1.4),
+                    timed_msa.MsaToken("見", 1.5, 1.7),
+                    timed_msa.MsaToken("見", 1.5, 1.7),
                 )
             ),
         ),
@@ -58,11 +58,11 @@ def test_explicit_pauses_are_inserted_at_source_time():
     alignment = timed_msa.MsaAlignment(
         source_names=("one", "two"),
         columns=(
-            timed_msa.Column(
-                (timed_msa.Token("甲", 0.0, 0.2), timed_msa.Token("甲", 0.0, 0.2))
+            timed_msa.MsaColumn(
+                (timed_msa.MsaToken("甲", 0.0, 0.2), timed_msa.MsaToken("甲", 0.0, 0.2))
             ),
-            timed_msa.Column(
-                (timed_msa.Token("乙", 1.2, 1.4), timed_msa.Token("乙", 1.2, 1.4))
+            timed_msa.MsaColumn(
+                (timed_msa.MsaToken("乙", 1.2, 1.4), timed_msa.MsaToken("乙", 1.2, 1.4))
             ),
         ),
     )
@@ -86,9 +86,9 @@ def test_inferred_pauses_are_split_at_marker_time():
     alignment = timed_msa.MsaAlignment(
         source_names=("one",),
         columns=(
-            timed_msa.Column((timed_msa.Token("甲", 0.0, 0.1),)),
-            timed_msa.Column((None,), marker="|", marker_time_seconds=1.0),
-            timed_msa.Column((timed_msa.Token("乙", 2.0, 2.1),)),
+            timed_msa.MsaColumn((timed_msa.MsaToken("甲", 0.0, 0.1),)),
+            timed_msa.MsaColumn((None,), marker="|", marker_time_seconds=1.0),
+            timed_msa.MsaColumn((timed_msa.MsaToken("乙", 2.0, 2.1),)),
         ),
     )
 
@@ -112,8 +112,8 @@ def test_pause_columns_encode_point_two_five_second_buckets():
     alignment = timed_msa.MsaAlignment(
         source_names=("one", "two"),
         columns=(
-            timed_msa.Column(
-                (timed_msa.Token("甲", 0.0, 0.1), timed_msa.Token("甲", 0.0, 0.1))
+            timed_msa.MsaColumn(
+                (timed_msa.MsaToken("甲", 0.0, 0.1), timed_msa.MsaToken("甲", 0.0, 0.1))
             ),
         ),
     )
@@ -136,8 +136,8 @@ def test_pause_default_threshold_is_point_two_five_seconds():
     alignment = timed_msa.MsaAlignment(
         source_names=("one", "two"),
         columns=(
-            timed_msa.Column(
-                (timed_msa.Token("甲", 0.0, 0.1), timed_msa.Token("甲", 0.0, 0.1))
+            timed_msa.MsaColumn(
+                (timed_msa.MsaToken("甲", 0.0, 0.1), timed_msa.MsaToken("甲", 0.0, 0.1))
             ),
         ),
     )
@@ -158,18 +158,18 @@ def test_pauses_are_shared_columns_with_explicit_duration():
     alignment = timed_msa.MsaAlignment(
         source_names=("whisper", "qwen", "reference"),
         columns=(
-            timed_msa.Column(
+            timed_msa.MsaColumn(
                 (
-                    timed_msa.Token("甲", 0.0, 0.1),
-                    timed_msa.Token("甲", 0.0, 0.1),
-                    timed_msa.Token("甲", 0.0, 0.1),
+                    timed_msa.MsaToken("甲", 0.0, 0.1),
+                    timed_msa.MsaToken("甲", 0.0, 0.1),
+                    timed_msa.MsaToken("甲", 0.0, 0.1),
                 )
             ),
-            timed_msa.Column(
+            timed_msa.MsaColumn(
                 (
-                    timed_msa.Token("乙", 2.6, 2.7),
-                    timed_msa.Token("乙", 2.6, 2.7),
-                    timed_msa.Token("乙", 2.6, 2.7),
+                    timed_msa.MsaToken("乙", 2.6, 2.7),
+                    timed_msa.MsaToken("乙", 2.6, 2.7),
+                    timed_msa.MsaToken("乙", 2.6, 2.7),
                 )
             ),
         ),

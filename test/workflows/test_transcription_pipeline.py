@@ -14,10 +14,10 @@ from pydub import AudioSegment
 from pytest import LogCaptureFixture, MonkeyPatch, mark, raises
 
 from scinoephile.analysis.alignment.timed_msa import (
-    Column,
     MsaAligner,
     MsaAlignment,
-    Token,
+    MsaColumn,
+    MsaToken,
 )
 from scinoephile.analysis.transcription.artifact import AlignmentSource
 from scinoephile.audio.classification.exceptions import AudioClassificationError
@@ -130,10 +130,10 @@ def _get_pipeline(
     transcriber.last_lexical_alignment = MsaAlignment(
         source_names=("one", "two"),
         columns=(
-            Column(
+            MsaColumn(
                 (
-                    Token("甲", segment.start, segment.end),
-                    Token("甲", segment.start, segment.end),
+                    MsaToken("甲", segment.start, segment.end),
+                    MsaToken("甲", segment.start, segment.end),
                 )
             ),
         ),

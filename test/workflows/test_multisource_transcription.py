@@ -11,10 +11,10 @@ from pydub import AudioSegment
 from pytest import approx, raises
 
 from scinoephile.analysis.alignment.timed_msa import (
-    Column,
     MsaAligner,
     MsaAlignment,
-    Token,
+    MsaColumn,
+    MsaToken,
 )
 from scinoephile.audio.transcription import (
     TranscribedSegment,
@@ -215,12 +215,12 @@ def test_timing_omits_empty_request_and_retains_later_consensus():
     alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("丙", 0.1, 0.4))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("丙", 0.1, 0.4))),
             *(
-                Column((None, None), pause_interval_seconds=(0.5, 1.5))
+                MsaColumn((None, None), pause_interval_seconds=(0.5, 1.5))
                 for _ in range(4)
             ),
-            Column((Token("乙", 1.8, 2.4), Token("乙", 1.8, 2.4))),
+            MsaColumn((MsaToken("乙", 1.8, 2.4), MsaToken("乙", 1.8, 2.4))),
         ),
     )
 
@@ -246,9 +246,9 @@ def test_request_interval_falls_back_to_in_audio_lexical_timing():
     alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
-            Column((None, None), pause_interval_seconds=(1.2, 1.5)),
-            Column((Token("乙", 0.6, 0.8), Token("乙", 0.6, 0.8))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("甲", 0.1, 0.4))),
+            MsaColumn((None, None), pause_interval_seconds=(1.2, 1.5)),
+            MsaColumn((MsaToken("乙", 0.6, 0.8), MsaToken("乙", 0.6, 0.8))),
         ),
     )
 
@@ -272,11 +272,11 @@ def test_timing_retries_incomplete_request_against_unconsumed_block():
     alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
-            Column((None, None), pause_interval_seconds=(0.5, 1.5)),
-            Column((Token("乙", 1.8, 2.4), Token("乙", 1.8, 2.4))),
-            Column((None, None), pause_interval_seconds=(2.0, 2.1)),
-            Column((Token("丙", 2.5, 2.8), Token("丙", 2.5, 2.8))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("甲", 0.1, 0.4))),
+            MsaColumn((None, None), pause_interval_seconds=(0.5, 1.5)),
+            MsaColumn((MsaToken("乙", 1.8, 2.4), MsaToken("乙", 1.8, 2.4))),
+            MsaColumn((None, None), pause_interval_seconds=(2.0, 2.1)),
+            MsaColumn((MsaToken("丙", 2.5, 2.8), MsaToken("丙", 2.5, 2.8))),
         ),
     )
 

@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from math import floor
 from statistics import median
 
-from .models import Column
+from .models import MsaColumn
 
 __all__ = ["MsaAlignment"]
 
@@ -20,7 +20,7 @@ class MsaAlignment:
 
     source_names: tuple[str, ...]
     """Source names in row order."""
-    columns: tuple[Column, ...]
+    columns: tuple[MsaColumn, ...]
     """Alignment columns in reading order."""
 
     def __post_init__(self):
@@ -160,7 +160,7 @@ def _get_alignment_with_explicit_pauses(
     Raises:
         ValueError: if pause intervals are not ordered and disjoint
     """
-    pauses_by_boundary: dict[int, list[Column]] = {}
+    pauses_by_boundary: dict[int, list[MsaColumn]] = {}
     previous_end = 0.0
     previous_boundary = 0
     for pause_interval in pause_intervals_seconds:
@@ -319,7 +319,7 @@ def _get_pause_columns(
     interval_seconds: tuple[float, float],
     minimum_pause_seconds: float,
     pause_unit_seconds: float,
-) -> tuple[Column, ...]:
+) -> tuple[MsaColumn, ...]:
     """Encode one shared timing gap as duration-bucketed pause columns.
 
     Arguments:
@@ -343,7 +343,7 @@ def _get_pause_columns(
         if pause_idx == pause_count - 1:
             pause_end_seconds = end_seconds
         columns.append(
-            Column(
+            MsaColumn(
                 (None,) * source_count,
                 pause_interval_seconds=(
                     start_seconds + pause_idx * pause_unit_seconds,

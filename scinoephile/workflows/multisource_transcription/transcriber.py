@@ -9,7 +9,7 @@ from logging import getLogger
 
 from pydub import AudioSegment
 
-from scinoephile.analysis.alignment.timed_msa import Column, MsaAligner, MsaAlignment
+from scinoephile.analysis.alignment.timed_msa import MsaAligner, MsaAlignment, MsaColumn
 from scinoephile.analysis.transcription.artifact import TimingSource
 from scinoephile.audio.classification import (
     AudioEventDetectionResult,
@@ -298,7 +298,7 @@ class MultiSourceTranscriber:
             sequence = get_transcription_sequence(source_name, segments)
             self.last_lexical_alignment = MsaAlignment(
                 source_names=(source_name,),
-                columns=tuple(Column((token,)) for token in sequence.tokens),
+                columns=tuple(MsaColumn((token,)) for token in sequence.tokens),
             )
             self.last_alignment = self.last_lexical_alignment
             logger.warning(

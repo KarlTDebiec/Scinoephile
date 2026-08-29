@@ -12,13 +12,13 @@ from __future__ import annotations
 
 from .aligner import MsaAligner, MsaSettings
 from .alignment import MsaAlignment
-from .models import AlignmentSequence, Column, Token
+from .models import MsaColumn, MsaSequence, MsaToken
 
 __all__ = [
-    "AlignmentSequence",
-    "Column",
     "MsaAligner",
     "MsaAlignment",
+    "MsaColumn",
+    "MsaSequence",
     "MsaSettings",
-    "Token",
+    "MsaToken",
 ]

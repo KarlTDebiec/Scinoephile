@@ -7,10 +7,10 @@ from __future__ import annotations
 from pytest import raises
 
 from scinoephile.analysis.alignment.timed_msa import (
-    Column,
     MsaAligner,
     MsaAlignment,
-    Token,
+    MsaColumn,
+    MsaToken,
 )
 from scinoephile.audio.classification import (
     AudioEvent,
@@ -33,8 +33,8 @@ def test_build_transcription_alignment_block_uses_current_artifact_models():
     alignment = MsaAlignment(
         source_names=("merged", "two"),
         columns=(
-            Column((Token("係", 0.1, 0.2), Token("是", 0.1, 0.2))),
-            Column((Token("好", 0.7, 0.8), Token("好", 0.7, 0.8))),
+            MsaColumn((MsaToken("係", 0.1, 0.2), MsaToken("是", 0.1, 0.2))),
+            MsaColumn((MsaToken("好", 0.7, 0.8), MsaToken("好", 0.7, 0.8))),
         ),
     )
     merged_segments = [
@@ -92,8 +92,8 @@ def test_build_transcription_alignment_block_adds_classification_rows():
     alignment = MsaAlignment(
         source_names=("one", "two"),
         columns=(
-            Column((Token("甲", 0.0, 0.2), Token("甲", 0.0, 0.2))),
-            Column((Token("乙", 0.5, 0.7), Token("乙", 0.5, 0.7))),
+            MsaColumn((MsaToken("甲", 0.0, 0.2), MsaToken("甲", 0.0, 0.2))),
+            MsaColumn((MsaToken("乙", 0.5, 0.7), MsaToken("乙", 0.5, 0.7))),
         ),
     )
     merged_segments = [
@@ -148,7 +148,7 @@ def test_build_transcription_alignment_block_rejects_invalid_segment_timing():
     """Malformed merged segment timing should not be repaired in the artifact."""
     alignment = MsaAlignment(
         source_names=("one", "two"),
-        columns=(Column((Token("甲", 0.0, 0.2), Token("甲", 0.0, 0.2))),),
+        columns=(MsaColumn((MsaToken("甲", 0.0, 0.2), MsaToken("甲", 0.0, 0.2))),),
     )
     merged_segments = [
         TranscribedSegment(id=9, seek=0, start=10.2, end=10.0, text="甲")
