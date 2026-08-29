@@ -92,15 +92,19 @@ def test_ctc_aligner_cache_identity_includes_active_runtime_dependencies(
         lambda name: {"distribution": name, "version": "test-version"},
     )
 
-    converted_identity = CtcAligner(Language.yue_hans)._get_cache_identity("说")
-    unconverted_identity = CtcAligner(Language.yue_hant)._get_cache_identity("說")
+    converted_aligner = CtcAligner(Language.yue_hans)
+    converted_identity = converted_aligner._get_cache_identity("说")
+    unconverted_aligner = CtcAligner(Language.yue_hant)
+    unconverted_identity = unconverted_aligner._get_cache_identity("說")
 
-    assert converted_identity["runtime"] == {
+    assert converted_identity == {**converted_aligner.cache_identity, "text": "说"}
+    assert converted_aligner.cache_identity["runtime"] == {
         "opencc": {"distribution": "opencc", "version": "test-version"},
         "torch": {"distribution": "torch", "version": "test-version"},
         "transformers": {"distribution": "transformers", "version": "test-version"},
     }
-    assert unconverted_identity["runtime"] == {
+    assert unconverted_identity == {**unconverted_aligner.cache_identity, "text": "說"}
+    assert unconverted_aligner.cache_identity["runtime"] == {
         "torch": {"distribution": "torch", "version": "test-version"},
         "transformers": {"distribution": "transformers", "version": "test-version"},
     }

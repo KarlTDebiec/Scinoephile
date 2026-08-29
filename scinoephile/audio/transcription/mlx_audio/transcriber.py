@@ -89,12 +89,24 @@ class MlxAudioTranscriber(Transcriber):
             demucs_separator: optional shared Demucs vocal separator
             vad_detector: optional shared voice activity detector
         Raises:
-            ValueError: if the aligner language or numeric configuration is invalid
+            ValueError: if a component language or numeric configuration is invalid
         """
         if language is not ctc_aligner.language:
             raise ValueError(
                 "MLX-Audio transcriber and CTC aligner languages must match "
                 f"({language} != {ctc_aligner.language})."
+            )
+        try:
+            model_language = model.spec.languages[language]
+        except KeyError as exc:
+            raise ValueError(
+                f"{language} is not supported by MLX-Audio "
+                f"{model.spec.model_type} transcription"
+            ) from exc
+        if model.generate_kw.get("language") != model_language:
+            raise ValueError(
+                "MLX-Audio model and transcriber languages must match "
+                f"({model.generate_kw.get('language')} != {model_language})."
             )
         self.language = language
         """Language to transcribe."""
@@ -124,48 +136,66 @@ class MlxAudioTranscriber(Transcriber):
             vad_detector,
         )
 
-    @property
-    def model_name(self) -> str:
-        """Get the MLX-Audio model name."""
-        return self.model.spec.name
+    def _get_effective_chunking(self, audio: AudioSegment) -> tuple[int | None, int]:
+        """Get effective core and overlap durations for one audio input.
 
-    def _get_backend_cache_identity(
-        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> CacheIdentity:
+        Arguments:
+            audio: audio whose duration may require model-safe chunking
+        Returns:
+            core chunk duration and overlap in milliseconds
+        """
+        chunk_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
+        chunk_duration_ms = None
+        if self.chunk_duration_seconds is not None:
+            chunk_duration_ms = int(round(self.chunk_duration_seconds * 1000))
+
+        max_audio_duration_seconds = self.model.spec.max_safe_audio_duration_seconds
+        if max_audio_duration_seconds is None:
+            return chunk_duration_ms, chunk_overlap_ms
+
+        max_audio_duration_ms = int(round(max_audio_duration_seconds * 1000))
+        if len(audio) <= max_audio_duration_ms:
+            return chunk_duration_ms, chunk_overlap_ms
+
+        if chunk_duration_ms is not None and chunk_duration_ms < max_audio_duration_ms:
+            maximum_overlap_ms = (max_audio_duration_ms - chunk_duration_ms) // 2
+            return chunk_duration_ms, min(chunk_overlap_ms, maximum_overlap_ms)
+
+        maximum_overlap_ms = (max_audio_duration_ms - 1) // 2
+        chunk_overlap_ms = min(chunk_overlap_ms, maximum_overlap_ms)
+        chunk_duration_ms = max_audio_duration_ms - (2 * chunk_overlap_ms)
+        return chunk_duration_ms, chunk_overlap_ms
+
+    def _get_transcriber_cache_identity(self, audio: AudioSegment) -> CacheIdentity:
         """Get the cache identity for configured MLX-Audio output.
 
         Arguments:
             audio: audio whose duration selects effective chunking
-            settings: preprocessing settings
         Returns:
             cache identity
         """
         chunk_duration_ms, chunk_overlap_ms = self._get_effective_chunking(audio)
         chunk_duration_seconds = None
-        if chunk_duration_ms is not None:
-            chunk_duration_seconds = chunk_duration_ms / 1000
         chunk_overlap_seconds = None
         chunk_postprocessing_version = None
         if chunk_duration_ms is not None:
+            chunk_duration_seconds = chunk_duration_ms / 1000
             chunk_overlap_seconds = chunk_overlap_ms / 1000
             chunk_postprocessing_version = _CHUNK_POSTPROCESSING_VERSION
         return {
             "model_type": self.model.spec.model_type,
-            "model_name": self.model_name,
+            "model_name": self.model.spec.name,
             "model_revision": self.model.spec.revision,
             "runtime": {
                 **get_distribution_identity("mlx-audio"),
                 "source_revision": _MLX_AUDIO_SOURCE_REVISION,
             },
             "language": self.language.code,
-            "model_language": self.model.generate_kw.get("language"),
-            "max_tokens": self.model.spec.max_tokens,
+            "generate_kw": dict(self.model.generate_kw),
             "chunk_duration_seconds": chunk_duration_seconds,
             "chunk_overlap_seconds": chunk_overlap_seconds,
             "chunk_postprocessing_version": chunk_postprocessing_version,
-            "aligner": "ctc",
-            "aligner_model_name": self.ctc_aligner.model.spec.name,
-            "aligner_model_revision": self.ctc_aligner.model.spec.revision,
+            "aligner": self.ctc_aligner.cache_identity,
         }
 
     def _transcribe_attempt(
@@ -178,10 +208,38 @@ class MlxAudioTranscriber(Transcriber):
             settings: preprocessing settings
         Returns:
             timestamped transcription segments
+        Raises:
+            TranscriptionEmptyError: if VAD finds no speech
         """
+        trace = None
+        speech_intervals = None
         if settings.use_vad:
-            return self._transcribe_vad_audio(audio)
-        return self._transcribe_unfiltered_audio(audio)
+            trace = self._get_voice_activity_trace(audio)
+            speech_intervals = self.vad_detector.get_speech_intervals(trace)
+            if not speech_intervals:
+                raise TranscriptionEmptyError("MLX-Audio VAD found no speech.")
+
+            logger.info(
+                f"MLX-Audio VAD retained {len(speech_intervals)} speech interval(s) "
+                f"from {len(audio) / 1000:.2f}s of audio"
+            )
+            speech_audio = audio[0:0]
+            for start_ms, end_ms in speech_intervals:
+                speech_audio += audio[start_ms:end_ms]
+            audio = speech_audio
+
+        chunk_duration_ms, chunk_overlap_ms = self._get_effective_chunking(audio)
+        if chunk_duration_ms is None or len(audio) <= chunk_duration_ms:
+            segments = self._transcribe_audio_window_with_retry(audio)
+        else:
+            segments = self._transcribe_chunked_audio(
+                audio, chunk_duration_ms, chunk_overlap_ms
+            )
+
+        if trace is None or speech_intervals is None:
+            return segments
+        restored_segments = restore_vad_timestamps(segments, speech_intervals)
+        return self._add_voice_activity_scores(restored_segments, trace)
 
     def _transcribe_audio_window(self, audio: AudioSegment) -> list[TranscribedSegment]:
         """Run MLX-Audio transcription and timestamp alignment for one audio window.
@@ -296,77 +354,3 @@ class MlxAudioTranscriber(Transcriber):
                 "MLX-Audio returned no transcript across audio chunks."
             )
         return segments
-
-    def _transcribe_unfiltered_audio(
-        self, audio: AudioSegment
-    ) -> list[TranscribedSegment]:
-        """Transcribe audio without applying VAD.
-
-        Arguments:
-            audio: audio to transcribe
-        Returns:
-            timestamped transcription segments
-        """
-        chunk_duration_ms, chunk_overlap_ms = self._get_effective_chunking(audio)
-        if chunk_duration_ms is None or len(audio) <= chunk_duration_ms:
-            return self._transcribe_audio_window_with_retry(audio)
-        return self._transcribe_chunked_audio(
-            audio, chunk_duration_ms, chunk_overlap_ms
-        )
-
-    def _transcribe_vad_audio(self, audio: AudioSegment) -> list[TranscribedSegment]:
-        """Transcribe detected speech and restore original-audio timestamps.
-
-        Arguments:
-            audio: original audio containing speech and non-speech regions
-        Returns:
-            timestamped transcription segments on the original audio timeline
-        Raises:
-            TranscriptionEmptyError: if VAD finds no speech
-        """
-        trace = self._get_voice_activity_trace(audio)
-        speech_intervals = self.vad_detector.get_speech_intervals(trace)
-        if not speech_intervals:
-            raise TranscriptionEmptyError("MLX-Audio VAD found no speech.")
-
-        logger.info(
-            f"MLX-Audio VAD retained {len(speech_intervals)} speech interval(s) "
-            f"from {len(audio) / 1000:.2f}s of audio"
-        )
-        speech_audio = audio[0:0]
-        for start_ms, end_ms in speech_intervals:
-            speech_audio += audio[start_ms:end_ms]
-
-        speech_segments = self._transcribe_unfiltered_audio(speech_audio)
-        restored_segments = restore_vad_timestamps(speech_segments, speech_intervals)
-        return self._add_voice_activity_scores(restored_segments, trace)
-
-    def _get_effective_chunking(self, audio: AudioSegment) -> tuple[int | None, int]:
-        """Get effective core and overlap durations for one audio input.
-
-        Arguments:
-            audio: audio whose duration may require model-safe chunking
-        Returns:
-            core chunk duration and overlap in milliseconds
-        """
-        chunk_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
-        chunk_duration_ms = None
-        if self.chunk_duration_seconds is not None:
-            chunk_duration_ms = int(round(self.chunk_duration_seconds * 1000))
-
-        max_audio_duration_seconds = self.model.spec.max_safe_audio_duration_seconds
-        if max_audio_duration_seconds is None:
-            return chunk_duration_ms, chunk_overlap_ms
-
-        max_audio_duration_ms = int(round(max_audio_duration_seconds * 1000))
-        if len(audio) <= max_audio_duration_ms:
-            return chunk_duration_ms, chunk_overlap_ms
-
-        if chunk_duration_ms is not None and chunk_duration_ms < max_audio_duration_ms:
-            maximum_overlap_ms = (max_audio_duration_ms - chunk_duration_ms) // 2
-            return chunk_duration_ms, min(chunk_overlap_ms, maximum_overlap_ms)
-
-        maximum_overlap_ms = (max_audio_duration_ms - 1) // 2
-        chunk_overlap_ms = min(chunk_overlap_ms, maximum_overlap_ms)
-        chunk_duration_ms = max_audio_duration_ms - (2 * chunk_overlap_ms)
-        return chunk_duration_ms, chunk_overlap_ms

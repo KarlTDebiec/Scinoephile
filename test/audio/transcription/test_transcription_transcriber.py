@@ -59,10 +59,8 @@ class _TestTranscriber(Transcriber):
         self.calls: list[tuple[AudioSegment, TranscriptionPreprocessingSettings]] = []
         super().__init__(cache_root_path, demucs_mode, vad_mode, overwrite_cache)
 
-    def _get_backend_cache_identity(
-        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> CacheIdentity:
-        """Get the test backend cache identity."""
+    def _get_transcriber_cache_identity(self, audio: AudioSegment) -> CacheIdentity:
+        """Get the test transcriber cache identity."""
         return {}
 
     def _transcribe_attempt(
@@ -79,11 +77,9 @@ class _TestTranscriber(Transcriber):
 class _PerAudioCacheTranscriber(_TestTranscriber):
     """Test transcriber whose cache identity depends on audio duration."""
 
-    def _get_backend_cache_identity(
-        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> CacheIdentity:
-        """Add the audio duration to the backend cache identity."""
-        cache_identity = dict(super()._get_backend_cache_identity(audio, settings))
+    def _get_transcriber_cache_identity(self, audio: AudioSegment) -> CacheIdentity:
+        """Add the audio duration to the transcriber cache identity."""
+        cache_identity = dict(super()._get_transcriber_cache_identity(audio))
         cache_identity["audio_duration_ms"] = len(audio)
         return cache_identity
 
