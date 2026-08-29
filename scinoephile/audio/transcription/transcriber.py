@@ -295,6 +295,8 @@ class Transcriber(ABC):
 
         Arguments:
             audio: audio whose properties may affect transcriber behavior
+        Returns:
+            transcriber configuration identifying the output
         """
         raise NotImplementedError()
 
@@ -445,5 +447,7 @@ class Transcriber(ABC):
         Arguments:
             audio: original or Demucs-separated audio to transcribe
             settings: preprocessing settings
+        Returns:
+            timestamped transcription segments
         """
         raise NotImplementedError()

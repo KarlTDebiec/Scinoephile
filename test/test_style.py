@@ -217,7 +217,9 @@ class _DocstringVisitor(ast.NodeVisitor):
                     rule_id="arguments-mismatch",
                 )
 
-        has_value_return = _has_value_return(node)
+        has_value_return = _has_value_return(
+            node, is_abstract_method="abstractmethod" in decorator_names
+        )
         has_returns_section = any(section.name == "Returns" for section in sections)
         is_property_getter = bool(
             {"cached_property", "getter", "property"} & decorator_names
@@ -392,6 +394,34 @@ class Example:
     )
 
     assert not violations
+
+
+def test_docstring_abstract_methods_require_returns_section():
+    """Test value-returning abstract method contracts require `Returns:`."""
+    violations = _get_sample_docstring_violations(
+        '''
+class Interface:
+    """Example interface."""
+
+    @abstractmethod
+    def value(self, token: str) -> int | None:
+        """Get a value.
+
+        Arguments:
+            token: token text
+        """
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def no_value(self) -> None:
+        """Perform an operation."""
+        raise NotImplementedError()
+'''
+    )
+
+    assert [
+        (violation.qualified_name, violation.rule_id) for violation in violations
+    ] == [("Interface.value", "missing-returns")]
 
 
 def test_docstring_after_model_validators_need_no_returns_section():
@@ -1186,11 +1216,14 @@ def _get_sample_docstring_violations(
     return get_docstring_violations(file_path=Path("sample.py"), tree=ast.parse(source))
 
 
-def _has_value_return(node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
+def _has_value_return(
+    node: ast.FunctionDef | ast.AsyncFunctionDef, *, is_abstract_method: bool
+) -> bool:
     """Check whether a callable's body or typed stub contract returns a value.
 
     Arguments:
         node: callable definition
+        is_abstract_method: whether the callable is an abstract method contract
     Returns:
         whether the callable contains an own-body value return or typed value stub
     """
@@ -1206,7 +1239,10 @@ def _has_value_return(node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
     return_annotation_is_none = (
         isinstance(node.returns, ast.Constant) and node.returns.value is None
     ) or (isinstance(node.returns, ast.Name) and node.returns.id == "None")
-    if is_ellipsis_stub and node.returns is not None and not return_annotation_is_none:
+    has_value_return_annotation = (
+        node.returns is not None and not return_annotation_is_none
+    )
+    if has_value_return_annotation and (is_abstract_method or is_ellipsis_stub):
         return True
 
     visitor = _ValueReturnVisitor()
