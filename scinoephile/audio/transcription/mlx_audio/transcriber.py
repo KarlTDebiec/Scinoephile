@@ -158,6 +158,7 @@ class MlxAudioTranscriber(Transcriber):
                 "source_revision": _MLX_AUDIO_SOURCE_REVISION,
             },
             "language": self.language.code,
+            "model_language": self.model.generate_kw.get("language"),
             "max_tokens": self.model.spec.max_tokens,
             "chunk_duration_seconds": chunk_duration_seconds,
             "chunk_overlap_seconds": chunk_overlap_seconds,

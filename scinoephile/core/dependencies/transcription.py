@@ -8,7 +8,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from types import ModuleType
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from warnings import catch_warnings, filterwarnings
 
 from scinoephile.core.exceptions import DependencyError
@@ -153,7 +153,7 @@ def import_mlx_audio_mimo_asr() -> ModuleType:
     return mimo_asr
 
 
-def import_mlx_audio_stt_load() -> Callable[..., object]:
+def import_mlx_audio_stt_load() -> Callable[..., Any]:
     """Import the MLX-Audio STT model loader on demand.
 
     Returns:

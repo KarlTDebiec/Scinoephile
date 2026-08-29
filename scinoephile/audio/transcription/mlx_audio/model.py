@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import platform
-from collections.abc import Callable
 from functools import cached_property
 from pathlib import Path
 from typing import cast
@@ -42,7 +41,7 @@ class MlxAudioModel:
                 f"{self.spec.model_type} transcription"
             )
 
-        self.generate_kw: dict[str, object] = {}
+        self.generate_kw: dict[str, str | int] = {}
         """Model-specific keyword arguments for MLX-Audio generation."""
         model_language = self.spec.languages[language]
         if model_language is not None:
@@ -84,7 +83,7 @@ class MlxAudioModel:
                 f"platform.machine()={machine!r}). CUDA support is not included."
             )
 
-        load = cast(Callable[..., MlxAudioRuntimeModel], import_mlx_audio_stt_load())
+        load = import_mlx_audio_stt_load()
         model_dir_path = get_huggingface_snapshot_dir_path(
             self.spec.name, self.spec.revision
         )

@@ -154,6 +154,23 @@ def test_get_cache_path_separates_model_revisions():
     )
 
 
+def test_get_cache_path_separates_model_languages():
+    """Test model-specific language values contribute to cache identity."""
+    audio = _get_cache_audio()
+    first_languages = {**MIMO_MODEL.languages, Language.yue_hant: "zh"}
+    second_languages = {**MIMO_MODEL.languages, Language.yue_hant: "yue"}
+    first_transcriber = _get_mlx_audio_transcriber(
+        model_spec=replace(MIMO_MODEL, languages=first_languages)
+    )
+    second_transcriber = _get_mlx_audio_transcriber(
+        model_spec=replace(MIMO_MODEL, languages=second_languages)
+    )
+
+    assert _get_cache_path(first_transcriber, audio) != _get_cache_path(
+        second_transcriber, audio
+    )
+
+
 def test_get_cache_path_uses_mlx_runtime_on_apple_silicon():
     """Test the cache identity includes MLX-Audio runtime provenance."""
     transcriber = _get_mlx_audio_transcriber(model_spec=MIMO_MODEL)
