@@ -89,6 +89,8 @@ class Processor(ABC):
             overwrite_cache: whether to replace matching LLM response cache files
             prune_test_cases: remove persisted cases not encountered in this run
             tool_box: available tools and handlers
+        Raises:
+            ValueError: if a value is invalid
         """
         self.prompt = prompt
         if self.manager_cls is None:

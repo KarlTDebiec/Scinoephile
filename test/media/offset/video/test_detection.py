@@ -494,8 +494,8 @@ class _FakeFfmpegInput:
         """Return self for chained ffmpeg filters.
 
         Arguments:
-            args: positional filter arguments
-            kwargs: keyword filter arguments
+            *args: additional positional arguments
+            **kwargs: additional keyword arguments
         Returns:
             self
         """
@@ -505,8 +505,8 @@ class _FakeFfmpegInput:
         """Return self for chained ffmpeg output configuration.
 
         Arguments:
-            args: positional output arguments
-            kwargs: keyword output arguments
+            *args: additional positional arguments
+            **kwargs: additional keyword arguments
         Returns:
             self
         """
@@ -516,7 +516,7 @@ class _FakeFfmpegInput:
         """Return fixed raw video bytes.
 
         Arguments:
-            kwargs: ffmpeg run options
+            **kwargs: additional keyword arguments
         Returns:
             raw stdout and empty stderr
         """

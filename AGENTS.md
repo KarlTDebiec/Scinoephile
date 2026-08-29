@@ -1,13 +1,16 @@
 # Instructions
 
-Review [docs/STYLE.md](/docs/STYLE.md) before planning or coding.
+Review [docs/STYLE.md](/docs/STYLE.md) and
+[docs/DOCUMENTATION.md](/docs/DOCUMENTATION.md) before planning or coding.
 
 ## Code
 
 * Review [docs/ARCHITECTURE.md](/docs/ARCHITECTURE.md) for package boundaries,
   dependency direction, and how the CLI maps onto `core` and domain modules.
-* Review [docs/STYLE.md](/docs/STYLE.md) for code style and documentation
-  conventions (docstrings, typing, `__all__`, etc.).
+* Review [docs/STYLE.md](/docs/STYLE.md) for code style conventions (typing,
+  `__all__`, etc.).
+* Review [docs/DOCUMENTATION.md](/docs/DOCUMENTATION.md) for documentation
+  coverage, formatting, sections, and exemptions.
 
 ## Tools
 
@@ -48,7 +51,8 @@ Review [docs/STYLE.md](/docs/STYLE.md) before planning or coding.
 ### Linting
 
 * Before running `ruff` or `ty`, reread [docs/STYLE.md](/docs/STYLE.md) and
-  check changed files for compliance.
+  [docs/DOCUMENTATION.md](/docs/DOCUMENTATION.md), then check changed files for
+  compliance.
 * Run the following checks on **only the Python files you have changed or been
   asked to**:
   1. `uv run ruff format`

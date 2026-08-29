@@ -43,6 +43,8 @@ def read_sup_image_array(  # noqa: PLR0912, PLR0915
         width: width of image
     Returns:
         compressed image
+    Raises:
+        ValueError: if a value is invalid
     """
     array = np.zeros((height, width), np.uint8)
     byte_i = 0
@@ -137,6 +139,8 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
         bytes_: block of bytes
     Returns:
         subtitle starts, ends, and images
+    Raises:
+        ValueError: if a value is invalid
     """
     starts = []
     ends = []

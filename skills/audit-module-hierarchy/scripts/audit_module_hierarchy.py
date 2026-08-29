@@ -427,7 +427,11 @@ def print_result(result: PackageAuditResult, target_dir_path: Path):
 
 
 def main():
-    """Run hierarchy audit for selected package directory."""
+    """Run hierarchy audit for selected package directory.
+
+    Raises:
+        FileNotFoundError: if a required file is missing
+    """
     basicConfig(format="%(message)s", level=INFO)
     args = parse_args()
     target_dir_path = Path(args.target).resolve()

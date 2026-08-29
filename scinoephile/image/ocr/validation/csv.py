@@ -54,6 +54,8 @@ def _replace_with_retry(source_path: Path, target_path: Path):
     Arguments:
         source_path: temporary source path
         target_path: target path to replace
+    Raises:
+        PermissionError: if the operation fails
     """
     for attempt in range(_REPLACE_ATTEMPTS):
         try:

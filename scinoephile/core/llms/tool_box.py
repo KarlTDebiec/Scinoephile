@@ -27,11 +27,19 @@ class ToolBox:
             self.add(tool)
 
     def __bool__(self) -> bool:
-        """Return whether this tool box contains any tools."""
+        """Return whether this tool box contains any tools.
+
+        Returns:
+            whether any tools are configured
+        """
         return bool(self._tools_by_name)
 
     def __iter__(self) -> Iterator[Tool]:
-        """Iterate over contained tools."""
+        """Iterate over contained tools.
+
+        Returns:
+            iterator over configured tools
+        """
         return iter(self._tools_by_name.values())
 
     @property
@@ -99,7 +107,11 @@ class ToolBox:
         return handler(parsed_arguments)
 
     def to_json(self) -> str:
-        """Return a deterministic JSON representation of configured tools."""
+        """Return a deterministic JSON representation of configured tools.
+
+        Returns:
+            serialized tool configuration, or an empty string when empty
+        """
         if not self:
             return ""
         return json.dumps(

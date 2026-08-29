@@ -99,6 +99,8 @@ class TranscriptionCache:
             cache_identity: backend configuration identifying the output
         Returns:
             cache path and cached segments, if present
+        Raises:
+            TranscriptionRecognitionError: if transcription fails
         """
         cache_path = self.get_path(audio, cache_identity)
         if self.overwrite and cache_path not in self._refreshed_paths:

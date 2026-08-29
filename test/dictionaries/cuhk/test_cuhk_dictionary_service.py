@@ -20,7 +20,11 @@ from test.helpers import parametrize
 
 
 def test_cuhk_service_keeps_cache_paths_on_scraper(tmp_path: Path):
-    """Test resolved CUHK cache paths remain owned by the scraper."""
+    """Test resolved CUHK cache paths remain owned by the scraper.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     service = CuhkDictionaryService(
         database_path=tmp_path / "cuhk.db", cache_root_path=tmp_path / "cache"
     )
@@ -98,7 +102,13 @@ def service(
     sample_entries: list[DictionaryEntry],
     sample_source: DictionarySource,
 ) -> CuhkDictionaryService:
-    """Provide a CUHK service backed by deterministic SQLite fixture data."""
+    """Provide a CUHK service backed by deterministic SQLite fixture data.
+
+    Arguments:
+        database_path: database path
+        sample_entries: sample entries value
+        sample_source: sample source value
+    """
     store = DictionarySqliteStore(database_path=database_path)
     store.persist((sample_source, sample_entries))
     return CuhkDictionaryService(database_path=database_path)
@@ -124,7 +134,14 @@ def test_lookup(
     expected: list[str] | None,
     expectation: AbstractContextManager[object],
 ):
-    """Infer searchable query formats or reject unsupported queries."""
+    """Infer searchable query formats or reject unsupported queries.
+
+    Arguments:
+        service: service value
+        query: query
+        expected: expected value
+        expectation: expectation value
+    """
     with expectation:
         entries = service.lookup(query, limit=5)
         assert [entry.traditional for entry in entries] == expected

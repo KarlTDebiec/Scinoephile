@@ -12,7 +12,11 @@ class EmptyCli(CommandLineInterface):
 
     @classmethod
     def _main(cls, **kwargs):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: additional keyword arguments
+        """
 
 
 class NoncallableSubcommandsCli(CommandLineInterface):
@@ -23,7 +27,11 @@ class NoncallableSubcommandsCli(CommandLineInterface):
 
     @classmethod
     def _main(cls, **kwargs):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: additional keyword arguments
+        """
 
 
 class NonmappingSubcommandsCli(CommandLineInterface):
@@ -31,12 +39,20 @@ class NonmappingSubcommandsCli(CommandLineInterface):
 
     @classmethod
     def subcommands(cls) -> list[str]:
-        """Get invalid subcommands."""
+        """Get invalid subcommands.
+
+        Returns:
+            invalid subcommands
+        """
         return []
 
     @classmethod
     def _main(cls, **kwargs):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: additional keyword arguments
+        """
 
 
 class InvalidSubcommandCli(CommandLineInterface):
@@ -44,12 +60,20 @@ class InvalidSubcommandCli(CommandLineInterface):
 
     @classmethod
     def subcommands(cls) -> dict[str, object]:
-        """Get invalid subcommands."""
+        """Get invalid subcommands.
+
+        Returns:
+            invalid subcommands
+        """
         return {"invalid": object()}
 
     @classmethod
     def _main(cls, **kwargs):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: additional keyword arguments
+        """
 
 
 def test_format_all_commands_handles_empty_hierarchy():

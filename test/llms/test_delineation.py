@@ -157,7 +157,11 @@ def test_queryer_corresponds_using_prompt_aliases():
     ids=["semantic-name", "misspelled-alias"],
 )
 def test_queryer_rejects_noncanonical_answer_fields(answer: dict[str, str]):
-    """LLM answers should contain only the localized schema's field aliases."""
+    """LLM answers should contain only the localized schema's field aliases.
+
+    Arguments:
+        answer: answer value
+    """
     test_case_cls = DelineationManager.get_test_case_cls(_LOCALIZED_PROMPT)
     test_case = test_case_cls.model_validate(
         {
@@ -248,7 +252,11 @@ def test_generated_models_use_prompt_specific_validation_errors():
 
 
 def test_persistence_uses_base_prompt_aliases_and_omits_defaults(tmp_path: Path):
-    """Persisted JSON should use base aliases and omit default-valued fields."""
+    """Persisted JSON should use base aliases and omit default-valued fields.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = DelineationManager.get_test_case_cls(_LOCALIZED_PROMPT)
     test_case = test_case_cls.model_validate(
         {
@@ -306,7 +314,12 @@ def test_persistence_uses_base_prompt_aliases_and_omits_defaults(tmp_path: Path)
 def test_tracked_fixture_round_trips_without_migration(
     input_path: Path, tmp_path: Path
 ):
-    """Tracked JSON should round-trip exactly and to equivalent static models."""
+    """Tracked JSON should round-trip exactly and to equivalent static models.
+
+    Arguments:
+        input_path: input path
+        tmp_path: temporary directory path
+    """
     raw_data = json.loads(input_path.read_text(encoding="utf-8"))
     test_cases = load_test_cases_from_json(
         input_path, DelineationManager, YueZhoDelineationPromptYueHans

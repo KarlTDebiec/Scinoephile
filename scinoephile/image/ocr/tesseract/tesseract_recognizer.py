@@ -104,6 +104,8 @@ class TesseractRecognizer:
             scale: image preprocessing scale
             skip_executable_validation: whether to skip executable validation
             tessdata_dir_path: optional tessdata directory
+        Raises:
+            ValueError: if a value is invalid
         """
         self.language = language
         if detect_italics and self.language is not Language.eng:
@@ -144,7 +146,11 @@ class TesseractRecognizer:
 
     @override
     def __repr__(self) -> str:
-        """String representation."""
+        """Get a reconstructable representation of this recognizer.
+
+        Returns:
+            constructor-like representation
+        """
         return (
             f"{self.__class__.__name__}("
             f"cache_root_path={self._cache.cache_root_path!r}, "
@@ -414,6 +420,8 @@ class TesseractRecognizer:
             output_base_path: output base path without extension
         Returns:
             recognized text
+        Raises:
+            ScinoephileError: if the operation fails
         """
         self._run_command(self._build_command(image_path, output_base_path))
         hocr = self._read_hocr_output(output_base_path)

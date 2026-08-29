@@ -86,7 +86,11 @@ def test_subtitle_stream_supports_eia_608_output():
 
 
 def test_subtitle_stream_outfile_filename_requires_language():
-    """Test subtitle stream output filename rejects missing language."""
+    """Test subtitle stream output filename rejects missing language.
+
+    Raises:
+        AssertionError: if an internal invariant is violated
+    """
     stream = SubtitleStream(index=2, language=None, codec_name="subrip")
 
     try:

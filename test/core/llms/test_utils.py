@@ -69,7 +69,11 @@ def _get_test_case(original: str, corrected: str):
 
 
 def test_json_uses_base_prompt_fields(tmp_path: Path):
-    """JSON should persist base fields and load them into a concrete prompt."""
+    """JSON should persist base fields and load them into a concrete prompt.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = _AliasedBaseReviewManager.get_test_case_cls(
         _LOCALIZED_REVIEW_PROMPT
     )
@@ -142,7 +146,12 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
     ],
 )
 def test_json_loading_rejects_non_base_fields(tmp_path: Path, test_case_data: dict):
-    """Repository JSON should contain only base prompt aliases."""
+    """Repository JSON should contain only base prompt aliases.
+
+    Arguments:
+        tmp_path: temporary directory path
+        test_case_data: test case data
+    """
     input_path = tmp_path / "test_cases.json"
     input_path.write_text(
         json.dumps([test_case_data], ensure_ascii=False), encoding="utf-8"
@@ -188,7 +197,12 @@ def test_json_loading_rejects_non_base_fields(tmp_path: Path, test_case_data: di
     ],
 )
 def test_json_loading_is_strict(tmp_path: Path, test_case_data: dict):
-    """Repository JSON should reject values requiring type coercion."""
+    """Repository JSON should reject values requiring type coercion.
+
+    Arguments:
+        tmp_path: temporary directory path
+        test_case_data: test case data
+    """
     input_path = tmp_path / "test_cases.json"
     input_path.write_text(json.dumps([test_case_data]), encoding="utf-8")
 
@@ -200,7 +214,12 @@ def test_json_loading_is_strict(tmp_path: Path, test_case_data: dict):
 
 @mark.parametrize("contents", [{}, ["not an object"]])
 def test_json_loading_requires_an_array_of_objects(tmp_path: Path, contents: object):
-    """Repository test-case files should contain an array of objects."""
+    """Repository test-case files should contain an array of objects.
+
+    Arguments:
+        tmp_path: temporary directory path
+        contents: contents value
+    """
     input_path = tmp_path / "test_cases.json"
     input_path.write_text(json.dumps(contents), encoding="utf-8")
 
@@ -211,7 +230,11 @@ def test_json_loading_requires_an_array_of_objects(tmp_path: Path, contents: obj
 
 
 def test_save_replaces_existing_collection(tmp_path: Path):
-    """Saving should replace the persisted collection atomically."""
+    """Saving should replace the persisted collection atomically.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "test_cases.json"
     existing_test_case = _get_test_case("existing", "existing corrected")
     encountered_test_case = _get_test_case("encountered", "encountered corrected")
@@ -232,7 +255,12 @@ def test_save_replaces_existing_collection(tmp_path: Path):
 
 
 def test_save_logs_created_directory_and_output(tmp_path: Path, caplog):
-    """Saving should log directory creation and completed output."""
+    """Saving should log directory creation and completed output.
+
+    Arguments:
+        tmp_path: temporary directory path
+        caplog: pytest log-capture fixture
+    """
     output_path = tmp_path / "nested" / "test_cases.json"
 
     with caplog.at_level("INFO", logger="scinoephile.core.llms.utils"):
@@ -249,7 +277,11 @@ def test_save_logs_created_directory_and_output(tmp_path: Path, caplog):
 
 
 def test_save_validates_mutated_test_cases(tmp_path: Path):
-    """Saving should reject test cases made invalid after initialization."""
+    """Saving should reject test cases made invalid after initialization.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "test_cases.json"
     test_case = _get_test_case("original", "corrected")
     test_case.query.subtitles.clear()
@@ -261,7 +293,11 @@ def test_save_validates_mutated_test_cases(tmp_path: Path):
 
 
 def test_save_replaces_existing_file_atomically(tmp_path: Path):
-    """A failed save should leave the existing file unchanged."""
+    """A failed save should leave the existing file unchanged.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "test_cases.json"
     save_test_cases_to_json(
         output_path,

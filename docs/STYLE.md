@@ -182,30 +182,5 @@
   without them.
 
 ## Documentation
-* Include a module docstring at the top of each file.
-* Use Markdown for formatting.
-* Do **not** include any reStructuredText markup such as double backticks.
-* Provide docstrings for all modules, classes, properties, and functions,
-  including internal helpers prefixed with an underscore.
-* Provide docstrings for all modules, classes, properties, and functions,
-  including internal helpers prefixed with an underscore.
-  * Provide docstrings for property setters as well as getters when they are
-    defined.
-  * Provide docstrings for `TypedDict` classes, enums, and other public type
-    definitions.
-  * `@overload` stubs do not need docstrings when the concrete implementation
-    is documented.
-* Document class attributes using triple-quoted strings immediately below each
-  instead of relying only on an `Attributes` section in the class docstring.
-* Format docstrings using Google style, with the following tweaks:
-  * Use `Arguments:` instead of `Args:`.
-  * Do not include an `Arguments:` section for functions or methods that take no
-    arguments.
-  * In argument descriptions, the first word after the colon should be
-    lowercase unless it is a type name.
-  * Do not include a blank line between the `Arguments:` and `Returns:`
-    sections.
-  * Do not include a `Returns:` section for functions or methods that return
-    None.
-  * In the `Returns:` section, the first word should be lowercase unless it is a
-    type name.
+* Follow [`DOCUMENTATION.md`](DOCUMENTATION.md) for documentation coverage,
+  formatting, sections, and decorator-specific exemptions.

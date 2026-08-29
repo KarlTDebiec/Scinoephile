@@ -116,7 +116,11 @@ def test_query_and_answer_require_consecutive_ordered_indexes():
 def test_outputs_must_correspond_to_query_subtitles(
     test_case_cls: type[GuidedTranslationTestCase],
 ):
-    """Every query subtitle should have exactly one same-index output."""
+    """Every query subtitle should have exactly one same-index output.
+
+    Arguments:
+        test_case_cls: test case cls value
+    """
     with raises(ValidationError, match="correspond exactly"):
         test_case_cls.model_validate(
             {
@@ -174,7 +178,11 @@ def test_processor_maps_indexed_outputs_to_subtitle_timing():
 
 
 def test_persistence_uses_base_prompt_field_names(tmp_path: Path):
-    """Persistence should use canonical names and reload localized aliases."""
+    """Persistence should use canonical names and reload localized aliases.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = GuidedTranslationManager.get_test_case_cls(_LOCALIZED_PROMPT)
     test_case = test_case_cls.model_validate(
         {

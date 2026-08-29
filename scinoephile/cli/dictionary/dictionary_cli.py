@@ -64,7 +64,12 @@ class DictionaryCli(ScinoephileCliBase):
 
     @classmethod
     def _main(cls, *, dictionary_subcommand_name: str, **kwargs: Any):
-        """Execute with provided keyword arguments."""
+        """Dispatch to a dictionary subcommand.
+
+        Arguments:
+            dictionary_subcommand_name: selected dictionary subcommand
+            **kwargs: arguments forwarded to the selected subcommand
+        """
         cls.subcommands()[dictionary_subcommand_name]._main(**kwargs)
 
 

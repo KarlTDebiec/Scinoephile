@@ -176,6 +176,8 @@ class GuidedTranscriber:
             segment_splitter: optional strategy for splitting transcribed segments
             strip_generated_punctuation: whether to remove generated sentence
                 punctuation after timing and before guided alignment
+        Raises:
+            ValueError: if a value is invalid
         """
         self.language = language
         self.guide_language = guide_language

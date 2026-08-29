@@ -16,7 +16,12 @@ from test.helpers import parametrize
 
 @parametrize(("value", "expected"), [(5, 5), (5.0, 5), ("5", 5), (-3, -3)])
 def test_val_int_accepts_scalar_values(value: float | int | str, expected: int):
-    """Test int validation accepts scalar values."""
+    """Test int validation accepts scalar values.
+
+    Arguments:
+        value: value
+        expected: expected value
+    """
     assert val_int(value) == expected
 
 
@@ -31,7 +36,12 @@ def test_val_int_accepts_scalar_values(value: float | int | str, expected: int):
 def test_val_int_rejects_scalar_constraint_violations(
     constraint: str, expected_error: str
 ):
-    """Test int validation rejects scalar constraint violations."""
+    """Test int validation rejects scalar constraint violations.
+
+    Arguments:
+        constraint: constraint value
+        expected_error: expected error
+    """
     with raises(ValueError, match=expected_error):
         if constraint == "min":
             val_int(-1, min_value=0)
@@ -60,7 +70,12 @@ def test_val_int_rejects_invalid_values_and_conflicting_constraints():
     ],
 )
 def test_val_int_accepts_iterables(value: Iterable[Any], expected: list[int]):
-    """Test int validation accepts iterable values."""
+    """Test int validation accepts iterable values.
+
+    Arguments:
+        value: value
+        expected: expected value
+    """
     assert val_int(value) == expected
 
 

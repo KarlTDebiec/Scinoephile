@@ -94,6 +94,8 @@ class AudioClassificationCache:
             result_cls: Pydantic model used to validate the cached result
         Returns:
             validated classification result, if present
+        Raises:
+            ValueError: if a value is invalid
         """
         cache_path = self.get_path(audio, cache_identity)
         if self.overwrite and cache_path not in self._refreshed_paths:

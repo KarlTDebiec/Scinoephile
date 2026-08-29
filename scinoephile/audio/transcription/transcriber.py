@@ -330,6 +330,8 @@ class Transcriber(ABC):
             audio: original audio to separate
         Returns:
             separated audio, or None after an automatic-mode failure
+        Raises:
+            ScinoephileError: if the operation fails
         """
         assert self.demucs_separator is not None
         logger.info(f"Applying Demucs vocal separation before {self.backend_label}")
@@ -351,6 +353,9 @@ class Transcriber(ABC):
             audio: original or Demucs-separated audio
         Returns:
             frame-level voice activity model scores
+        Raises:
+            RuntimeError: if the operation cannot be completed
+            TranscriptionRecognitionError: if transcription fails
         """
         if self._voice_activity_cache is None:
             raise RuntimeError("Voice activity trace requested while VAD is disabled.")
@@ -402,6 +407,8 @@ class Transcriber(ABC):
             is_usable: optional callback used to reject output and trigger retries
         Returns:
             first usable transcription, or an empty list when output was rejected
+        Raises:
+            Exception: if the operation fails
         """
         successful_result = bool(rejected_settings)
         last_error: TranscriptionError | None = None
@@ -442,7 +449,7 @@ class Transcriber(ABC):
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
-        """Run one uncached transcription attempt.
+        """Run one uncached transcription attempt and return timestamped segments.
 
         Arguments:
             audio: original or Demucs-separated audio to transcribe

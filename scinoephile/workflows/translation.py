@@ -44,8 +44,8 @@ def translate_series(
 
     Arguments:
         source: source-language subtitle series
-        source_language: explicit source language, or None to detect it
         target_language: target language
+        source_language: explicit source language, or None to detect it
         prompt: prompt override
         shared_test_cases: shared test cases
         provider: LLM provider to use

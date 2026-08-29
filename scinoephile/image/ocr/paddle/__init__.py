@@ -41,6 +41,8 @@ def ocr_image_series_with_paddle(
         **kwargs: additional keyword arguments for PaddleRecognizer
     Returns:
         text subtitle series
+    Raises:
+        ScinoephileError: if the operation fails
     """
     try:
         from .preprocessing import preprocess_paddle_ocr_image  # noqa: PLC0415

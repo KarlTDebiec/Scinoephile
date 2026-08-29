@@ -14,7 +14,11 @@ class DummyOpenAI:
     """Dummy OpenAI client capturing constructor kwargs."""
 
     def __init__(self, **kwargs: Any):
-        """Initialize and capture kwargs."""
+        """Initialize and capture kwargs.
+
+        Arguments:
+            **kwargs: additional keyword arguments
+        """
         self.kwargs = kwargs
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=None))
         self.beta = SimpleNamespace(

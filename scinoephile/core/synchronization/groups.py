@@ -49,6 +49,8 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
         List of sync groups, each of which is a list of two lists of subtitle indexes,
         the first list corresponding to subtitles in series one and the second list
         corresponding to subtitles in series two.
+    Raises:
+        ScinoephileError: if the operation fails
     """
     if len(one) == 0:
         return [([], [j]) for j in range(len(two))]
@@ -107,6 +109,8 @@ def _compare_sync_groups(  # noqa: PLR0912
     Returns:
         -1 if first is less than second, 0 if they are equal, 1 if first is greater,
         and None if they cannot be compared
+    Raises:
+        ScinoephileError: if the operation fails
     """
     first_min_one = min(first[0]) if first[0] else None
     first_min_two = min(first[1]) if first[1] else None
@@ -184,6 +188,8 @@ def _get_sync_group_timing(
         sync_group: Sync group
     Returns:
         Start and end times of subtitles in the sync group
+    Raises:
+        ScinoephileError: if the operation fails
     """
     subtitles = [one.events[i] for i in sync_group[0]]
     subtitles.extend(two.events[j] for j in sync_group[1])
@@ -208,6 +214,8 @@ def _get_sync_groups(  # noqa: PLR0912, PLR0915
         cutoff: overlap cutoff used when pruning matrix values
     Returns:
         list of sync groups derived from the overlap matrix
+    Raises:
+        ScinoephileError: if the operation fails
     """
     sync_groups = []
 
@@ -317,6 +325,8 @@ def _sort_sync_groups(
         sync_groups: Sync groups to sort
     Returns:
         Sorted sync groups
+    Raises:
+        ScinoephileError: if the operation fails
     """
     sorted_groups = []
 

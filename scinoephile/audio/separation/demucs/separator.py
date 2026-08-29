@@ -135,6 +135,8 @@ class DemucsSeparator:
             audio: audio to separate
         Returns:
             vocals-only audio
+        Raises:
+            ScinoephileError: if the operation fails
         """
         # Normalize input samples and channel layout for Demucs
         normalized_audio = audio.set_sample_width(2)
@@ -198,6 +200,8 @@ class DemucsSeparator:
             channels: output channel count
         Returns:
             audio segment containing the separated vocals
+        Raises:
+            ScinoephileError: if the operation fails
         """
         array = vocals.numpy()
         if array.ndim != 2:

@@ -16,7 +16,11 @@ from test.helpers.openai import DummyOpenAI
 
 
 def _get_tool_box() -> ToolBox:
-    """Build a tool box for one lookup tool."""
+    """Build a tool box for one lookup tool.
+
+    Returns:
+        a tool box for one lookup tool
+    """
     return ToolBox(
         [
             Tool(
@@ -34,7 +38,11 @@ def _get_tool_box() -> ToolBox:
 def test_deepseek_constructs_client_with_base_url_and_env_api_key(
     monkeypatch: MonkeyPatch,
 ):
-    """Test DeepSeekProvider uses base_url and DEEPSEEK_API_KEY by default."""
+    """Test DeepSeekProvider uses base_url and DEEPSEEK_API_KEY by default.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setenv("DEEPSEEK_API_KEY", "dummy")
 
     monkeypatch.setattr(openai_provider_base, "OpenAI", DummyOpenAI)
@@ -48,7 +56,11 @@ def test_deepseek_constructs_client_with_base_url_and_env_api_key(
 
 
 def test_deepseek_api_key_override_wins_over_env(monkeypatch: MonkeyPatch):
-    """Test explicit api_key overrides the environment variable."""
+    """Test explicit api_key overrides the environment variable.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setenv("DEEPSEEK_API_KEY", "env")
 
     monkeypatch.setattr(openai_provider_base, "OpenAI", DummyOpenAI)

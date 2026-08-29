@@ -30,13 +30,23 @@ def use_local_tokenizer(
     Arguments:
         tokenizer: auxiliary tokenizer specification
         tokenizer_dir_path: pinned local tokenizer directory
+    Yields:
+        control while local tokenizer resolution is installed
     """
     # Keep MLX-Audio from resolving the manifest's mutable tokenizer remotely
     mimo_asr = import_mlx_audio_mimo_asr()
     get_model_path = cast(Callable[..., Path], mimo_asr.get_model_path)
 
     def get_local_model_path(path_or_hf_repo: str, *args: Any, **kwargs: Any) -> Path:
-        """Resolve the configured tokenizer locally and delegate other models."""
+        """Resolve the configured tokenizer locally and delegate other models.
+
+        Arguments:
+            path_or_hf_repo: local path or Hugging Face repository identifier
+            *args: additional positional arguments for MLX-Audio
+            **kwargs: additional keyword arguments for MLX-Audio
+        Returns:
+            resolved local model path
+        """
         if path_or_hf_repo == tokenizer.name:
             return tokenizer_dir_path
         return get_model_path(path_or_hf_repo, *args, **kwargs)

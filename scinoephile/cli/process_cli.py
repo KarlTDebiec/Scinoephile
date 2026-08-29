@@ -181,7 +181,20 @@ class ProcessCli(ScinoephileCliBase):
         offset: int,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Process a subtitle series and write the result.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_path: subtitle input file or `-` for stdin
+            outfile_path: optional output subtitle file
+            language: optional subtitle language
+            clean: whether to clean subtitle text
+            flatten: whether to flatten subtitle formatting
+            convert: optional Chinese script conversion configuration
+            romanize: whether to romanize subtitle text
+            offset: timing offset in milliseconds
+            overwrite: whether to overwrite the output file
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if not (clean or flatten or convert or romanize or offset):

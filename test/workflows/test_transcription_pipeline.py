@@ -380,7 +380,11 @@ def test_process_uses_source_wide_audio_analysis_for_partial_ranges():
 
 
 def test_factory_omits_disabled_audio_analysis(monkeypatch: MonkeyPatch):
-    """Factory should omit optional analyzers and preserve source pairing."""
+    """Factory should omit optional analyzers and preserve source pairing.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     source_transcribers = {"one": Mock(), "two": Mock()}
     alignment_sources = (
         AlignmentSource(name="one", backend="test", model="one"),

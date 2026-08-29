@@ -49,7 +49,11 @@ def test_extract_subtitle_stream_copies_cached_stream(tmp_path: Path, caplog):
 
 
 def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
-    """Test subtitle extraction builds a missing cached subtitle stream."""
+    """Test subtitle extraction builds a missing cached subtitle stream.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     outfile_path = tmp_path / "subtitles" / "eng-2.srt"
@@ -60,7 +64,15 @@ def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
     def cache_streams(
         infile_path: Path, streams: list[SubtitleStream], *, render_images: bool = True
     ) -> list[Path]:
-        """Create and return a cached subtitle stream."""
+        """Create and return a cached subtitle stream.
+
+        Arguments:
+            infile_path: infile path
+            streams: streams value
+            render_images: render images value
+        Returns:
+            and return a cached subtitle stream
+        """
         _ = infile_path, streams, render_images
         stream_path.parent.mkdir(parents=True)
         stream_path.write_text("new subtitles", encoding="utf-8")
@@ -82,7 +94,11 @@ def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
 
 
 def test_extract_subtitle_stream_rejects_unknown_codec(tmp_path: Path):
-    """Test single-stream extraction rejects unknown subtitle codecs."""
+    """Test single-stream extraction rejects unknown subtitle codecs.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     outfile_path = tmp_path / "subtitles" / "eng-2.srt"

@@ -16,7 +16,11 @@ from test.helpers.files import set_mtime
 
 
 def test_ocr_cache_uses_backend_directory_and_configuration(tmp_path: Path):
-    """Test OCR cache paths use backend directories and configuration identities."""
+    """Test OCR cache paths use backend directories and configuration identities.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = TesseractCache(tmp_path)
     image = Image.new("RGB", (2, 2), "white")
 
@@ -29,7 +33,11 @@ def test_ocr_cache_uses_backend_directory_and_configuration(tmp_path: Path):
 
 
 def test_ocr_cache_identity_cannot_override_image_properties(tmp_path: Path):
-    """Test supplied identity fields cannot replace actual image properties."""
+    """Test supplied identity fields cannot replace actual image properties.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = TesseractCache(tmp_path)
     image = Image.new("RGB", (2, 2), "white")
 
@@ -42,7 +50,11 @@ def test_ocr_cache_identity_cannot_override_image_properties(tmp_path: Path):
 
 
 def test_ocr_cache_loads_results_and_updates_modification_time(tmp_path: Path):
-    """Test OCR cache loads results and refreshes file modification times."""
+    """Test OCR cache loads results and refreshes file modification times.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = TesseractCache(tmp_path)
     image = Image.new("RGB", (2, 2), "white")
     cache_identity: CacheIdentity = {"language": "eng"}
@@ -61,7 +73,11 @@ def test_ocr_cache_loads_results_and_updates_modification_time(tmp_path: Path):
 
 
 def test_ocr_cache_discards_mismatched_version(tmp_path: Path):
-    """Test an OCR cache version mismatch is discarded as a cache miss."""
+    """Test an OCR cache version mismatch is discarded as a cache miss.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = TesseractCache(tmp_path)
     image = Image.new("RGB", (2, 2), "white")
     cache_identity: CacheIdentity = {"language": "eng"}
@@ -75,7 +91,11 @@ def test_ocr_cache_discards_mismatched_version(tmp_path: Path):
 
 
 def test_ocr_cache_overwrite_removes_matching_result(tmp_path: Path):
-    """Test OCR cache overwrite converts a matching result into a cache miss."""
+    """Test OCR cache overwrite converts a matching result into a cache miss.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     image = Image.new("RGB", (2, 2), "white")
     cache_identity: CacheIdentity = {"language": "eng"}
     cache_path = TesseractCache(tmp_path).save(image, cache_identity, "stale text")
@@ -87,7 +107,11 @@ def test_ocr_cache_overwrite_removes_matching_result(tmp_path: Path):
 
 
 def test_ocr_cache_overwrites_matching_result_once(tmp_path: Path):
-    """Test overwrite refreshes a matching OCR result once per instance."""
+    """Test overwrite refreshes a matching OCR result once per instance.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     image = Image.new("RGB", (2, 2), "white")
     cache_identity: CacheIdentity = {"language": "eng"}
     TesseractCache(tmp_path).save(image, cache_identity, "stale text")

@@ -219,7 +219,6 @@ def test_whisper_module_requires_transcription_extra(monkeypatch: MonkeyPatch):
             level: relative import level
         Returns:
             imported module or object
-
         Raises:
             ImportError: if Whisper Timestamped is requested
         """

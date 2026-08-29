@@ -52,7 +52,11 @@ class VoiceActivityTrace:
         """Duration of the source audio in milliseconds."""
 
     def __len__(self) -> int:
-        """Get the number of scores in the trace."""
+        """Get the number of scores in the trace.
+
+        Returns:
+            number of scores
+        """
         return len(self.scores)
 
     def get_coverage(

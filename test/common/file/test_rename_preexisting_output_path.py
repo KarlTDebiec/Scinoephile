@@ -10,7 +10,11 @@ from scinoephile.common.file import rename_preexisting_output_path
 
 
 def test_rename_preexisting_output_path_no_existing_file(tmp_path: Path):
-    """Test rename when no existing file is present."""
+    """Test rename when no existing file is present.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "output.txt"
 
     # Should not raise any errors
@@ -21,7 +25,11 @@ def test_rename_preexisting_output_path_no_existing_file(tmp_path: Path):
 
 
 def test_rename_preexisting_output_path_single_existing_file(tmp_path: Path):
-    """Test rename when a single existing file is present."""
+    """Test rename when a single existing file is present.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "output.txt"
     output_path.write_text("original content")
 
@@ -37,7 +45,11 @@ def test_rename_preexisting_output_path_single_existing_file(tmp_path: Path):
 
 
 def test_rename_preexisting_output_path_multiple_backups(tmp_path: Path):
-    """Test rename when multiple backup files already exist."""
+    """Test rename when multiple backup files already exist.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "output.txt"
 
     # Create existing file and backups
@@ -59,7 +71,11 @@ def test_rename_preexisting_output_path_multiple_backups(tmp_path: Path):
 
 
 def test_rename_preexisting_output_path_preserves_extension(tmp_path: Path):
-    """Test that file extension is preserved during rename."""
+    """Test that file extension is preserved during rename.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "output.json"
     output_path.write_text('{"test": "data"}')
 
@@ -71,7 +87,11 @@ def test_rename_preexisting_output_path_preserves_extension(tmp_path: Path):
 
 
 def test_rename_preexisting_output_path_resolves_path(tmp_path: Path):
-    """Test that relative paths are resolved."""
+    """Test that relative paths are resolved.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "subdir/../output.txt"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text("content")

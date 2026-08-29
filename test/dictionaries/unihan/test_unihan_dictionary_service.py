@@ -187,7 +187,11 @@ def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
 
         @staticmethod
         def read() -> bytes:
-            """Return deterministic source content."""
+            """Return deterministic source content.
+
+            Returns:
+                deterministic source content
+            """
             return b"U+4E00\tkDefinition\tone\n"
 
     class _Archive:
@@ -227,6 +231,8 @@ def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
                 mode: zipfile open mode
             Returns:
                 source reader
+            Raises:
+                KeyError: if a required key is missing
             """
             if filename == "Unihan_Readings.txt":
                 raise KeyError(filename)

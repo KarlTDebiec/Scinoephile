@@ -69,7 +69,12 @@ def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
 def test_get_cached_subtitle_stream_path_resolves_infile(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test relative and absolute input paths share one cache identity."""
+    """Test relative and absolute input paths share one cache identity.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
@@ -85,7 +90,12 @@ def test_get_cached_subtitle_stream_path_resolves_infile(
 def test_get_cached_subtitle_stream_path_includes_cache_version(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test subtitle stream cache paths differ between cache versions."""
+    """Test subtitle stream cache paths differ between cache versions.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
@@ -116,7 +126,11 @@ def test_cache_subtitle_streams_uses_existing_stream(tmp_path: Path):
 
 
 def test_cache_subtitle_streams_marks_existing_stream_used(tmp_path: Path):
-    """Test a subtitle stream cache hit refreshes its pruning timestamp."""
+    """Test a subtitle stream cache hit refreshes its pruning timestamp.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
@@ -135,7 +149,11 @@ def test_cache_subtitle_streams_marks_existing_stream_used(tmp_path: Path):
 
 
 def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
-    """Test cache overwrite re-extracts and replaces a matching subtitle stream."""
+    """Test cache overwrite re-extracts and replaces a matching subtitle stream.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
@@ -146,7 +164,13 @@ def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
     merged_streams: list[_RecordingMergedFfmpegStream] = []
 
     def merge_outputs(*outputs: Path) -> _RecordingMergedFfmpegStream:
-        """Create a recording merged ffmpeg stream for staged outputs."""
+        """Create a recording merged ffmpeg stream for staged outputs.
+
+        Arguments:
+            *outputs: additional positional arguments
+        Returns:
+            a recording merged ffmpeg stream for staged outputs
+        """
         merged_stream = _RecordingMergedFfmpegStream(list(outputs))
         merged_streams.append(merged_stream)
         return merged_stream
@@ -170,7 +194,11 @@ def test_cache_subtitle_streams_overwrites_existing_stream(tmp_path: Path):
 
 
 def test_cache_subtitle_streams_replaces_malformed_stream_artifact(tmp_path: Path):
-    """Test a non-file stream artifact is discarded and re-extracted."""
+    """Test a non-file stream artifact is discarded and re-extracted.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
@@ -208,7 +236,14 @@ def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
     input_stream = Mock()
 
     def write_partial_output(outfile_path: str, **_: Any) -> Mock:
-        """Write a partial ffmpeg output before extraction fails."""
+        """Write a partial ffmpeg output before extraction fails.
+
+        Arguments:
+            outfile_path: outfile path
+            **_: additional keyword arguments
+        Returns:
+            simulated ffmpeg output
+        """
         Path(outfile_path).write_bytes(b"partial")
         return Mock()
 
@@ -266,7 +301,11 @@ def test_cache_subtitles_builds_image_cache_for_sup_stream(tmp_path: Path):
 
 
 def test_cache_subtitles_marks_existing_image_series_used(tmp_path: Path):
-    """Test an image-series cache hit refreshes its pruning timestamp."""
+    """Test an image-series cache hit refreshes its pruning timestamp.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
@@ -289,7 +328,11 @@ def test_cache_subtitles_marks_existing_image_series_used(tmp_path: Path):
 
 
 def test_cache_subtitles_rejects_symlinked_image_index(tmp_path: Path):
-    """Test a symlinked image-series index is discarded without following it."""
+    """Test a symlinked image-series index is discarded without following it.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
@@ -306,7 +349,11 @@ def test_cache_subtitles_rejects_symlinked_image_index(tmp_path: Path):
 
 
 def test_cache_subtitles_replaces_malformed_image_index(tmp_path: Path):
-    """Test a non-file image index is discarded and rendered again."""
+    """Test a non-file image index is discarded and rendered again.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
@@ -372,7 +419,13 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
     merged_streams: list[_RecordingMergedFfmpegStream] = []
 
     def merge_outputs(*outputs: Path) -> _RecordingMergedFfmpegStream:
-        """Record merged ffmpeg outputs."""
+        """Record merged ffmpeg outputs.
+
+        Arguments:
+            *outputs: additional positional arguments
+        Returns:
+            recording merged ffmpeg stream
+        """
         merged_stream = _RecordingMergedFfmpegStream(list(outputs))
         merged_streams.append(merged_stream)
         return merged_stream
@@ -420,8 +473,8 @@ class _RecordingFfmpegInput:
         """Record an ffmpeg output stream.
 
         Arguments:
-            outfile_path: output file path
-            kwargs: ffmpeg output keyword arguments
+            outfile_path: outfile path
+            **kwargs: additional keyword arguments
         Returns:
             fake output stream
         """
@@ -445,7 +498,7 @@ class _RecordingMergedFfmpegStream:
         """Record ffmpeg execution.
 
         Arguments:
-            kwargs: ffmpeg run keyword arguments
+            **kwargs: additional keyword arguments
         """
         _ = kwargs
         self.run_count += 1

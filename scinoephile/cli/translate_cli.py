@@ -209,7 +209,23 @@ class TranslateCli(ScinoephileCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Translate subtitle blocks with an LLM and write the result.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_path: source subtitle file or `-` for stdin
+            gapped_infile_path: optional gapped subtitle file or `-` for stdin
+            guide_infile_path: optional guide subtitle file or `-` for stdin
+            source_language: optional source language
+            target_language: optional target language
+            first_block: optional first block index
+            last_block: optional last block index
+            llm_args: LLM configuration
+            cache_args: cache configuration
+            json_path: optional test-case JSON path
+            outfile_path: optional output subtitle file
+            overwrite: whether to overwrite existing outputs
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:

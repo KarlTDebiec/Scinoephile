@@ -16,7 +16,11 @@ from test.helpers.openai import DummyOpenAI
 def test_openai_constructs_client_with_explicit_api_key_and_base_url(
     monkeypatch: MonkeyPatch,
 ):
-    """Test OpenAIProvider forwards explicit client overrides to OpenAI."""
+    """Test OpenAIProvider forwards explicit client overrides to OpenAI.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setattr(openai_provider_base, "OpenAI", DummyOpenAI)
 
     provider = OpenAIProvider(api_key="explicit", base_url="https://example.invalid/v1")
@@ -28,7 +32,11 @@ def test_openai_constructs_client_with_explicit_api_key_and_base_url(
 
 
 def test_openai_constructs_client_without_overrides(monkeypatch: MonkeyPatch):
-    """Test OpenAIProvider uses SDK defaults when no overrides are supplied."""
+    """Test OpenAIProvider uses SDK defaults when no overrides are supplied.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.setattr(openai_provider_base, "OpenAI", DummyOpenAI)
 

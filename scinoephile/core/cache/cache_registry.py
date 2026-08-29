@@ -45,7 +45,11 @@ class CacheRegistry:
         object.__setattr__(self, "namespaces", namespace_tuple)
 
     def __iter__(self) -> Iterator[CacheNamespace]:
-        """Iterate over registered cache namespace declarations."""
+        """Iterate over registered cache namespace declarations.
+
+        Returns:
+            iterator over namespace declarations
+        """
         return iter(self.namespaces)
 
     def discover_names(self, cache_root_path: Path) -> list[str]:
@@ -55,6 +59,8 @@ class CacheRegistry:
             cache_root_path: cache root directory path
         Returns:
             sorted portable namespace names
+        Raises:
+            NotADirectoryError: if a required path is not a directory
         """
         if not cache_root_path.exists():
             return []

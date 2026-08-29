@@ -207,7 +207,22 @@ class OcrProcessCli(ScinoephileCliBase):
         output_dir_path: Path,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Run the configured OCR processing workflow.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_path: video or SUP input file
+            stream_index: optional subtitle stream index
+            language: subtitle language
+            clean: whether to clean recognized subtitle text
+            interactive: whether to launch interactive validation
+            web_args: web server configuration
+            dev: whether to enable development mode
+            llm_args: LLM configuration
+            cache_args: cache configuration
+            output_dir_path: output directory
+            overwrite: whether to overwrite existing outputs
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         additional_context = read_llm_additional_context(

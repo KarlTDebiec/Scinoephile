@@ -28,7 +28,11 @@ _LOCALIZED_PROMPT = PunctuationPrompt(
 
 
 def _get_alignment() -> TranscriptionAlignment:
-    """Get a one-group alignment that requires punctuation."""
+    """Get a one-group alignment that requires punctuation.
+
+    Returns:
+        a one-group alignment that requires punctuation
+    """
     reference = Series(events=[Subtitle(start=0, end=1000, text="你好！")])
     transcription = AudioSeries(
         audio=AudioSegment.silent(duration=1000),
@@ -42,7 +46,14 @@ def _get_alignment() -> TranscriptionAlignment:
 def _get_merged_subtitle(
     subtitles: list[AudioSubtitle], *, text: str | None = None
 ) -> AudioSubtitle:
-    """Get a merged subtitle without requiring transcription segment fixtures."""
+    """Get a merged subtitle without requiring transcription segment fixtures.
+
+    Arguments:
+        subtitles: subtitles
+        text: text
+    Returns:
+        a merged subtitle without requiring transcription segment fixtures
+    """
     if text is None:
         text = "".join(subtitle.text for subtitle in subtitles)
     return AudioSubtitle(start=subtitles[0].start, end=subtitles[-1].end, text=text)
@@ -65,7 +76,11 @@ def test_alignment_constructs_semantic_fields_with_configured_prompt():
 
 
 def test_aligner_uses_queryer_prompt_and_semantic_output(monkeypatch: MonkeyPatch):
-    """Aligner should propagate its prompt and consume semantic answer output."""
+    """Aligner should propagate its prompt and consume semantic answer output.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     alignment = _get_alignment()
     punctuation_queryer = Mock()
     punctuation_queryer.prompt = _LOCALIZED_PROMPT
@@ -73,7 +88,13 @@ def test_aligner_uses_queryer_prompt_and_semantic_output(monkeypatch: MonkeyPatc
     punctuation_processor.queryer = punctuation_queryer
 
     def add_answer(test_case: PunctuationTestCase) -> PunctuationTestCase:
-        """Add a valid punctuation answer to a test case."""
+        """Add a valid punctuation answer to a test case.
+
+        Arguments:
+            test_case: test case value
+        Returns:
+            test case with a valid punctuation answer
+        """
         result = type(test_case).model_validate(
             {**test_case.model_dump(), "answer": {"output": "你好！"}}
         )
@@ -96,7 +117,11 @@ def test_aligner_uses_queryer_prompt_and_semantic_output(monkeypatch: MonkeyPatc
 def test_aligner_falls_back_to_concatenation_after_invalid_answer(
     monkeypatch: MonkeyPatch,
 ):
-    """A rejected answer should retain the existing concatenation fallback."""
+    """A rejected answer should retain the existing concatenation fallback.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     alignment = _get_alignment()
     punctuation_queryer = Mock()
     punctuation_queryer.prompt = _LOCALIZED_PROMPT
@@ -104,7 +129,13 @@ def test_aligner_falls_back_to_concatenation_after_invalid_answer(
     punctuation_processor.queryer = punctuation_queryer
 
     def reject_answer(test_case: PunctuationTestCase) -> PunctuationTestCase:
-        """Attempt to add an answer that changes subtitle characters."""
+        """Attempt to add an answer that changes subtitle characters.
+
+        Arguments:
+            test_case: test case value
+        Returns:
+            test case with an invalid punctuation answer
+        """
         result = type(test_case).model_validate(
             {**test_case.model_dump(), "answer": {"output": "你壞"}}
         )

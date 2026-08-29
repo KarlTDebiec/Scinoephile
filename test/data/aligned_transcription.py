@@ -91,6 +91,8 @@ def process_transcription(
         overwrite: whether to regenerate existing transcription outputs
     Returns:
         merged transcription series
+    Raises:
+        ValueError: if a value is invalid
     """
     if stop_at_idx is None and target_reference_count <= 0:
         raise ValueError("target_reference_count must be positive.")
@@ -277,6 +279,8 @@ def _transcribe_requested_blocks(
         existing_manifest: provenance for the candidate prefix
     Returns:
         merged subtitles and complete alignment artifact
+    Raises:
+        RuntimeError: if the operation cannot be completed
     """
     start_at_idx = 0
     if (

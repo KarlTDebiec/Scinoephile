@@ -63,7 +63,11 @@ class CountingPaddleRecognizer(PaddleRecognizer):
 
 
 def test_paddle_recognizer_caches_results_by_image(tmp_path: Path):
-    """Test PaddleOCR recognizer caches OCR results by image content."""
+    """Test PaddleOCR recognizer caches OCR results by image content.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     recognizer = CountingPaddleRecognizer(cache_root_path=tmp_path)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
@@ -75,7 +79,11 @@ def test_paddle_recognizer_caches_results_by_image(tmp_path: Path):
 
 
 def test_paddle_recognizer_regenerates_invalid_cache(tmp_path: Path):
-    """Test invalid PaddleOCR cache data is treated as a miss."""
+    """Test invalid PaddleOCR cache data is treated as a miss.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     recognizer = CountingPaddleRecognizer(cache_root_path=tmp_path)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
     assert recognizer.recognize_image(image) == "cached text"
@@ -88,7 +96,11 @@ def test_paddle_recognizer_regenerates_invalid_cache(tmp_path: Path):
 
 
 def test_paddle_recognizer_overwrites_matching_cache(tmp_path: Path):
-    """Test PaddleOCR cache overwrite recognizes matching images again."""
+    """Test PaddleOCR cache overwrite recognizes matching images again.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
     cached = CountingPaddleRecognizer(cache_root_path=tmp_path)
     fresh = CountingPaddleRecognizer(cache_root_path=tmp_path, overwrite_cache=True)
@@ -221,7 +233,11 @@ def test_paddle_recognizer_imports_paddleocr_only_when_needed():
 
 
 def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: MonkeyPatch):
-    """Test PaddleOCR import errors mention the OCR extra."""
+    """Test PaddleOCR import errors mention the OCR extra.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     real_import = __import__
 
     def fake_import(

@@ -97,6 +97,8 @@ def build_transcription_alignment_block(
         voice_activity_trace: optional complete-source VAD score trace
     Returns:
         validated portable alignment block
+    Raises:
+        ValueError: if a value is invalid
     """
     if not merged_segments:
         raise ValueError("Alignment blocks require merged subtitle segments.")
@@ -428,6 +430,8 @@ def _get_speaker_symbols(
         diarization: optional complete-source speaker diarization
     Returns:
         diarization labels mapped to display characters
+    Raises:
+        ValueError: if a value is invalid
     """
     if diarization is None:
         return {}
@@ -457,6 +461,8 @@ def _get_transcription_subtitle(
         speaker_symbols: diarization labels mapped to artifact speaker symbols
     Returns:
         portable subtitle retaining separate speech and display intervals
+    Raises:
+        ValueError: if a value is invalid
     """
     if not isfinite(segment.start) or not isfinite(segment.end):
         raise ValueError("Merged subtitle display timing must be finite.")

@@ -39,7 +39,11 @@ class MlxAudioModelSpec(ModelSpec):
     """Maximum safe audio duration per inference, or None when unrestricted."""
 
     def __post_init__(self):
-        """Validate the model definition."""
+        """Validate the model definition.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if self.max_tokens is not None:
             if self.max_tokens <= 0:
                 raise ValueError("MLX-Audio max tokens must be positive.")

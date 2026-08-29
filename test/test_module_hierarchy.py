@@ -13,7 +13,11 @@ _HIERARCHY_HEADER = "Package hierarchy (modules may import from any above):"
 
 
 def test_declared_module_hierarchy_may_be_stricter_than_import_graph(tmp_path: Path):
-    """Test declared hierarchy need not be compacted to current imports."""
+    """Test declared hierarchy need not be compacted to current imports.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     package_dir_path = tmp_path / "example"
     package_dir_path.mkdir()
     init_path = package_dir_path / "__init__.py"
@@ -39,7 +43,11 @@ def test_declared_module_hierarchy_may_be_stricter_than_import_graph(tmp_path: P
 
 
 def test_hierarchy_declarations_require_standard_heading(tmp_path: Path):
-    """Test incidental hierarchy prose is not parsed as a declaration."""
+    """Test incidental hierarchy prose is not parsed as a declaration.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     package_dir_path = tmp_path / "example"
     package_dir_path.mkdir()
     init_path = package_dir_path / "__init__.py"
@@ -65,7 +73,11 @@ def test_module_hierarchy_docs_are_authoritative():
 
 
 def test_module_import_style_rules(tmp_path: Path):
-    """Test import style distinguishes modules, packages, and facades."""
+    """Test import style distinguishes modules, packages, and facades.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     package_dir_path = tmp_path / "example"
     fixture_sources = {
         "__init__.py": "",
@@ -222,7 +234,11 @@ def test_resolve_import_from_modules_includes_relative_package_aliases():
 
 
 def test_single_child_package_requires_hierarchy(tmp_path: Path):
-    """Test packages with one child still require a hierarchy declaration."""
+    """Test packages with one child still require a hierarchy declaration.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     package_dir_path = tmp_path / "example"
     package_dir_path.mkdir()
     init_path = package_dir_path / "__init__.py"

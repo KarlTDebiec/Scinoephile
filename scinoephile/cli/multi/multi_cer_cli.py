@@ -109,7 +109,13 @@ class MultiCerCli(ScinoephileCliBase):
         reference_infile_path: Path | str,
         candidate_infile_path: Path | str,
     ):
-        """Execute with provided keyword arguments."""
+        """Calculate and print the character error rate between two series.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            reference_infile_path: reference subtitle file or `-` for stdin
+            candidate_infile_path: candidate subtitle file or `-` for stdin
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if reference_infile_path == "-" and candidate_infile_path == "-":

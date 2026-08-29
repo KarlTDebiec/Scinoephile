@@ -20,7 +20,11 @@ class FakeFfmpegInput:
     """Fake ffmpeg input chain that records output arguments."""
 
     def __init__(self, run_exception: Exception | None = None):
-        """Initialize."""
+        """Initialize.
+
+        Arguments:
+            run_exception: run exception value
+        """
         self.output_args: tuple[object, ...] | None = None
         self.output_kwargs: dict[str, object] | None = None
         self.run_kwargs: dict[str, object] | None = None
@@ -45,6 +49,8 @@ class FakeFfmpegInput:
 
         Arguments:
             **kwargs: ffmpeg run keyword arguments
+        Raises:
+            Exception: if the configured run exception is raised
         """
         self.run_kwargs = kwargs
         if self.run_exception is not None:

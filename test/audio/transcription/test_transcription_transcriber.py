@@ -33,7 +33,13 @@ _DEMUCS_CACHE_IDENTITY = {
 
 
 def _get_segment(text: str) -> TranscribedSegment:
-    """Get a minimal transcribed segment."""
+    """Get a minimal transcribed segment.
+
+    Arguments:
+        text: text
+    Returns:
+        a minimal transcribed segment
+    """
     return TranscribedSegment(id=0, seek=0, start=0.0, end=1.0, text=text)
 
 
@@ -51,7 +57,14 @@ class _TestTranscriber(Transcriber):
         vad_mode: VadMode,
         overwrite_cache: bool = False,
     ):
-        """Initialize."""
+        """Initialize.
+
+        Arguments:
+            cache_root_path: cache root path
+            demucs_mode: demucs mode value
+            vad_mode: vad mode value
+            overwrite_cache: overwrite cache
+        """
         self.outcomes: dict[
             TranscriptionPreprocessingSettings,
             list[TranscribedSegment] | TranscriptionError,
@@ -60,13 +73,28 @@ class _TestTranscriber(Transcriber):
         super().__init__(cache_root_path, demucs_mode, vad_mode, overwrite_cache)
 
     def _get_transcriber_cache_identity(self, audio: AudioSegment) -> CacheIdentity:
-        """Get the test transcriber cache identity."""
+        """Get the test transcriber cache identity.
+
+        Arguments:
+            audio: audio
+        Returns:
+            the test transcriber cache identity
+        """
         return {}
 
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
-        """Return or raise the configured outcome for preprocessing settings."""
+        """Return or raise the configured outcome for preprocessing settings.
+
+        Arguments:
+            audio: audio
+            settings: settings
+        Returns:
+            or raise the configured outcome for preprocessing settings
+        Raises:
+            Exception: if the operation fails
+        """
         self.calls.append((audio, settings))
         outcome = self.outcomes[settings]
         if isinstance(outcome, TranscriptionError):
@@ -78,7 +106,13 @@ class _PerAudioCacheTranscriber(_TestTranscriber):
     """Test transcriber whose cache identity depends on audio duration."""
 
     def _get_transcriber_cache_identity(self, audio: AudioSegment) -> CacheIdentity:
-        """Add the audio duration to the transcriber cache identity."""
+        """Add the audio duration to the transcriber cache identity.
+
+        Arguments:
+            audio: audio
+        Returns:
+            transcriber cache identity
+        """
         cache_identity = dict(super()._get_transcriber_cache_identity(audio))
         cache_identity["audio_duration_ms"] = len(audio)
         return cache_identity
@@ -87,7 +121,11 @@ class _PerAudioCacheTranscriber(_TestTranscriber):
 def test_get_preprocessing_settings_orders_preferred_configurations_first(
     tmp_path: Path,
 ):
-    """Test automatic modes try Demucs and VAD before their fallbacks."""
+    """Test automatic modes try Demucs and VAD before their fallbacks.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VadMode.AUTO)
 
     assert transcriber._cache.cache_dir_path == tmp_path / "audio/transcription/whisper"
@@ -104,7 +142,11 @@ def test_get_preprocessing_settings_orders_preferred_configurations_first(
 
 
 def test_get_preprocessing_settings_honors_forced_modes(tmp_path: Path):
-    """Test forced modes produce only their requested configuration."""
+    """Test forced modes produce only their requested configuration.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     transcriber = _TestTranscriber(tmp_path, DemucsMode.OFF, VadMode.ON)
 
     assert transcriber._get_preprocessing_settings() == (
@@ -113,7 +155,11 @@ def test_get_preprocessing_settings_honors_forced_modes(tmp_path: Path):
 
 
 def test_per_audio_cache_identity_is_used_for_cache_lifecycle(tmp_path: Path):
-    """Test per-audio identity controls cache saves, loads, and removals."""
+    """Test per-audio identity controls cache saves, loads, and removals.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     settings = TranscriptionPreprocessingSettings(False, False)
     segments = [_get_segment("cached")]
@@ -140,7 +186,11 @@ def test_per_audio_cache_identity_is_used_for_cache_lifecycle(tmp_path: Path):
 
 
 def test_demucs_runtime_separates_transcription_cache_paths(tmp_path: Path):
-    """Test Demucs runtime upgrades invalidate dependent transcription output."""
+    """Test Demucs runtime upgrades invalidate dependent transcription output.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     settings = TranscriptionPreprocessingSettings(True, False)
     transcriber = _TestTranscriber(tmp_path, DemucsMode.ON, VadMode.OFF)
@@ -166,7 +216,11 @@ def test_demucs_runtime_separates_transcription_cache_paths(tmp_path: Path):
 
 
 def test_fallback_cache_is_checked_before_demucs(tmp_path: Path):
-    """Test a usable fallback cache avoids expensive Demucs preprocessing."""
+    """Test a usable fallback cache avoids expensive Demucs preprocessing.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     segments = [_get_segment("cached")]
     transcriber = _TestTranscriber(tmp_path, DemucsMode.AUTO, VadMode.OFF)
@@ -187,7 +241,11 @@ def test_fallback_cache_is_checked_before_demucs(tmp_path: Path):
 
 
 def test_overwrite_removes_all_configuration_caches_before_transcribing(tmp_path: Path):
-    """Test cache overwrite clears every fallback variant before inference."""
+    """Test cache overwrite clears every fallback variant before inference.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     transcriber = _TestTranscriber(
         tmp_path, DemucsMode.AUTO, VadMode.AUTO, overwrite_cache=True
@@ -220,7 +278,11 @@ def test_overwrite_removes_all_configuration_caches_before_transcribing(tmp_path
 
 
 def test_auto_demucs_failure_uses_original_audio(tmp_path: Path):
-    """Test automatic Demucs failure falls back to the original audio."""
+    """Test automatic Demucs failure falls back to the original audio.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     settings = TranscriptionPreprocessingSettings(False, False)
     segments = [_get_segment("fallback")]
@@ -237,7 +299,11 @@ def test_auto_demucs_failure_uses_original_audio(tmp_path: Path):
 
 
 def test_forced_demucs_failure_propagates(tmp_path: Path):
-    """Test forced Demucs failure does not silently use original audio."""
+    """Test forced Demucs failure does not silently use original audio.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     transcriber = _TestTranscriber(tmp_path, DemucsMode.ON, VadMode.OFF)
     transcriber.demucs_separator = Mock(
@@ -251,7 +317,11 @@ def test_forced_demucs_failure_propagates(tmp_path: Path):
 
 
 def test_unusable_vad_result_retries_without_vad(tmp_path: Path):
-    """Test rejected VAD output triggers the non-VAD configuration."""
+    """Test rejected VAD output triggers the non-VAD configuration.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
@@ -269,7 +339,11 @@ def test_unusable_vad_result_retries_without_vad(tmp_path: Path):
 
 
 def test_rejected_cached_configuration_is_not_repeated(tmp_path: Path):
-    """Test rejected cached output advances to the next configuration."""
+    """Test rejected cached output advances to the next configuration.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
@@ -362,7 +436,11 @@ def test_cached_empty_attempt_does_not_shadow_cached_fallback(tmp_path: Path):
 def test_rejected_cached_configuration_takes_precedence_over_other_error(
     tmp_path: Path,
 ):
-    """Test a rejected cache prevents an unrelated retry error from escaping."""
+    """Test a rejected cache prevents an unrelated retry error from escaping.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
@@ -381,7 +459,11 @@ def test_rejected_cached_configuration_takes_precedence_over_other_error(
 def test_unusable_success_takes_precedence_over_other_configuration_error(
     tmp_path: Path,
 ):
-    """Test one rejected result prevents an unrelated retry error from escaping."""
+    """Test one rejected result prevents an unrelated retry error from escaping.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
@@ -394,7 +476,11 @@ def test_unusable_success_takes_precedence_over_other_configuration_error(
 
 
 def test_last_error_propagates_when_every_configuration_fails(tmp_path: Path):
-    """Test the last backend error propagates when no configuration succeeds."""
+    """Test the last backend error propagates when no configuration succeeds.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     vad_settings = TranscriptionPreprocessingSettings(False, True)
     no_vad_settings = TranscriptionPreprocessingSettings(False, False)
@@ -413,7 +499,11 @@ def test_last_error_propagates_when_every_configuration_fails(tmp_path: Path):
 
 
 def test_voice_activity_trace_save_reuses_lookup_identity(tmp_path: Path):
-    """Save a newly inferred trace under the identity used for its lookup."""
+    """Save a newly inferred trace under the identity used for its lookup.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     trace = Mock()
     detector = Mock()
@@ -431,7 +521,11 @@ def test_voice_activity_trace_save_reuses_lookup_identity(tmp_path: Path):
 
 
 def test_voice_activity_error_is_translated_at_transcription_boundary(tmp_path: Path):
-    """Translate reusable VAD failures into transcription-domain failures."""
+    """Translate reusable VAD failures into transcription-domain failures.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
     voice_activity_error = VoiceActivityError("VAD failed")
     detector = Mock()

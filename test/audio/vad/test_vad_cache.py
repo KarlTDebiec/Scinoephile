@@ -17,7 +17,11 @@ from scinoephile.core.cache.identity import CacheIdentity
 
 
 def test_vad_cache_round_trip(tmp_path: Path):
-    """Persist score values and original-timeline geometry without loss."""
+    """Persist score values and original-timeline geometry without loss.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = VoiceActivityCache(tmp_path)
     audio = AudioSegment.silent(duration=300, frame_rate=16000)
     cache_identity: CacheIdentity = {"implementation": "test", "model": "one"}
@@ -42,7 +46,11 @@ def test_vad_cache_round_trip(tmp_path: Path):
 
 
 def test_vad_cache_separates_audio_and_model_identity(tmp_path: Path):
-    """Use both source audio and inference identity in cache keys."""
+    """Use both source audio and inference identity in cache keys.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = VoiceActivityCache(tmp_path)
     first_audio = AudioSegment.silent(duration=100, frame_rate=16000)
     second_audio = AudioSegment.silent(duration=200, frame_rate=16000)
@@ -56,7 +64,11 @@ def test_vad_cache_separates_audio_and_model_identity(tmp_path: Path):
 
 
 def test_vad_cache_discards_invalid_payload(tmp_path: Path):
-    """Remove a malformed trace cache and allow regeneration."""
+    """Remove a malformed trace cache and allow regeneration.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = VoiceActivityCache(tmp_path)
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
     cache_identity: CacheIdentity = {"model": "one"}
@@ -68,7 +80,11 @@ def test_vad_cache_discards_invalid_payload(tmp_path: Path):
 
 
 def test_vad_cache_discards_malformed_zip_archive(tmp_path: Path):
-    """Remove a malformed ZIP cache and allow regeneration."""
+    """Remove a malformed ZIP cache and allow regeneration.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = VoiceActivityCache(tmp_path)
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
     cache_identity: CacheIdentity = {"model": "one"}
@@ -80,7 +96,11 @@ def test_vad_cache_discards_malformed_zip_archive(tmp_path: Path):
 
 
 def test_vad_cache_rejects_trace_for_different_audio_duration(tmp_path: Path):
-    """Reject a trace whose timeline does not match its source audio."""
+    """Reject a trace whose timeline does not match its source audio.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = VoiceActivityCache(tmp_path)
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
     trace = VoiceActivityTrace(
@@ -92,7 +112,11 @@ def test_vad_cache_rejects_trace_for_different_audio_duration(tmp_path: Path):
 
 
 def test_vad_cache_overwrites_each_entry_once(tmp_path: Path):
-    """Refresh a requested entry once, then reuse the replacement."""
+    """Refresh a requested entry once, then reuse the replacement.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
     cache_identity: CacheIdentity = {"model": "one"}
     first_trace = VoiceActivityTrace(
@@ -115,7 +139,12 @@ def test_vad_cache_overwrites_each_entry_once(tmp_path: Path):
 def test_vad_cache_atomic_write_failure_preserves_existing_entry(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
-    """Leave a valid cache entry intact when staging serialization fails."""
+    """Leave a valid cache entry intact when staging serialization fails.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     cache = VoiceActivityCache(tmp_path)
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
     cache_identity: CacheIdentity = {"model": "one"}

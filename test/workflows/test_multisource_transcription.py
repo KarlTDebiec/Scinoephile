@@ -399,7 +399,14 @@ def test_transcribe_block_excludes_pathological_source():
         *,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
     ) -> list[TranscribedSegment]:
-        """Simulate a transcriber exhausting attempts after quality rejection."""
+        """Simulate a transcriber exhausting attempts after quality rejection.
+
+        Arguments:
+            _audio: audio
+            is_usable: whether usable
+        Returns:
+            empty segment list after rejection
+        """
         assert is_usable is not None
         assert not is_usable(pathological_segments)
         return []

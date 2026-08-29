@@ -46,7 +46,11 @@ class TranscriptionSourceSpec:
     """Speech-to-text model specification."""
 
     def __post_init__(self):
-        """Normalize and validate the source name."""
+        """Normalize and validate the source name.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         name = self.name.strip()
         if not name:
             raise ValueError("Transcription source name must be nonblank.")
