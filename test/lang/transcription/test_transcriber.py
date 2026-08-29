@@ -64,17 +64,17 @@ def _get_transcriber(
     aligner.punctuation_processor = Mock()
     aligner.punctuation_processor.prune_test_cases = False
     mlx_audio_transcriber = None
-    audio_model = WhisperModelSpec(
+    spec = WhisperModelSpec(
         name="test/model", revision="test-revision", languages={Language.eng: "en"}
     )
     if model is not TranscriptionModel.WHISPER:
         mlx_audio_transcriber = Mock(spec=MlxAudioTranscriber)
-        audio_model = MIMO_MODEL
+        spec = MIMO_MODEL
     return (
         GuidedTranscriber(
             language=Language.eng,
             guide_language=Language.zho_hans,
-            audio_model=audio_model,
+            spec=spec,
             aligner=aligner,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,

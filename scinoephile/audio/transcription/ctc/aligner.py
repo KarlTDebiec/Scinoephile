@@ -161,14 +161,9 @@ class CtcAligner:
                 f"Unable to run CTC transcription alignment: {exc}"
             ) from exc
 
-    def _get_cache_identity(self, text: str) -> CacheIdentity:
-        """Get the configuration identifying reusable forced alignment.
-
-        Arguments:
-            text: transcription text aligned to the audio
-        Returns:
-            complete CTC alignment identity
-        """
+    @property
+    def cache_configuration(self) -> CacheIdentity:
+        """Get the configuration identifying this CTC aligner."""
         script_conversion = None
         runtime = {
             "torch": get_distribution_identity("torch"),
@@ -185,5 +180,16 @@ class CtcAligner:
             "model_revision": self.model.spec.revision,
             "runtime": runtime,
             "script_conversion": script_conversion,
-            "text": text,
         }
+
+    def _get_cache_identity(self, text: str) -> CacheIdentity:
+        """Get the configuration identifying reusable forced alignment.
+
+        Arguments:
+            text: transcription text aligned to the audio
+        Returns:
+            complete CTC alignment identity
+        """
+        cache_identity = dict(self.cache_configuration)
+        cache_identity["text"] = text
+        return cache_identity

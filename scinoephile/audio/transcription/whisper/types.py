@@ -8,18 +8,7 @@ from dataclasses import dataclass
 
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 
-__all__ = ["WhisperNativeResult", "WhisperResult"]
-
-
-@dataclass(frozen=True, slots=True)
-class WhisperResult:
-    """Result of timestamped Whisper recognition."""
-
-    segments: list[TranscribedSegment]
-    """Timestamped transcription segments."""
-
-    exhausted_window_count: int
-    """Number of decode windows that exhausted their token budget."""
+__all__ = ["WhisperNativeResult"]
 
 
 @dataclass(frozen=True, slots=True)

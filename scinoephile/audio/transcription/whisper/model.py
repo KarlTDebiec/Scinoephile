@@ -24,7 +24,7 @@ from scinoephile.core.language import Language
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path, get_torch_device
 
 from .model_spec import WhisperModelSpec
-from .types import WhisperNativeResult, WhisperResult
+from .types import WhisperNativeResult
 
 __all__ = ["WhisperModel"]
 
@@ -41,9 +41,7 @@ _MIN_SAMPLE_LEN = 32
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
-    from torch import Tensor
     from whisper import Whisper
-    from whisper.decoding import DecodingOptions, DecodingResult
 
 
 class WhisperModel:
@@ -84,7 +82,7 @@ class WhisperModel:
         temperature: float | Sequence[float],
         condition_on_previous_text: bool,
         sample_len: int,
-    ) -> WhisperResult:
+    ) -> list[TranscribedSegment]:
         """Recognize speech with Whisper Timestamped.
 
         Arguments:
@@ -95,50 +93,22 @@ class WhisperModel:
                 the preceding window
             sample_len: maximum number of tokens decoded per window
         Returns:
-            timestamped recognition result
+            timestamped transcription segments
         Raises:
             AssertionError: if Whisper Timestamped alignment fails
             DependencyError: if Whisper dependencies are unavailable
             ValueError: if Whisper returns malformed output
         """
         whisper_timestamped = import_whisper_timestamped()
-        model = self.model
-        decode_is_instance_attribute = "decode" in vars(model)
-        decode = model.decode
-        exhausted_windows: list[Tensor] = []
-
-        def decode_with_limit_tracking(
-            mel: Tensor, options: DecodingOptions, **kwargs: object
-        ) -> DecodingResult | list[DecodingResult]:
-            """Decode a window and record whether it exhausts its budget."""
-            decode_result = decode(mel, options, **kwargs)
-            decode_results = (
-                cast("list[DecodingResult]", decode_result)
-                if isinstance(decode_result, list)
-                else [cast("DecodingResult", decode_result)]
-            )
-            if any(
-                len(result.tokens) >= sample_len for result in decode_results
-            ) and all(mel is not window for window in exhausted_windows):
-                exhausted_windows.append(mel)
-            return decode_result
-
-        setattr(model, "decode", decode_with_limit_tracking)
-        try:
-            result = whisper_timestamped.transcribe(
-                model,
-                str(audio_path),
-                language=self.language_code,
-                vad=vad,
-                temperature=temperature,
-                condition_on_previous_text=condition_on_previous_text,
-                sample_len=sample_len,
-            )
-        finally:
-            if decode_is_instance_attribute:
-                setattr(model, "decode", decode)
-            else:
-                delattr(model, "decode")
+        result = whisper_timestamped.transcribe(
+            self.model,
+            str(audio_path),
+            language=self.language_code,
+            vad=vad,
+            temperature=temperature,
+            condition_on_previous_text=condition_on_previous_text,
+            sample_len=sample_len,
+        )
 
         if not isinstance(result, Mapping):
             raise ValueError("Whisper Timestamped returned malformed output.")
@@ -155,9 +125,7 @@ class WhisperModel:
             raise ValueError(
                 "Whisper Timestamped output contains malformed segments."
             ) from exc
-        return WhisperResult(
-            segments=segments, exhausted_window_count=len(exhausted_windows)
-        )
+        return segments
 
     @cached_property
     def device(self) -> str:
