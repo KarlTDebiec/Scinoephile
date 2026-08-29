@@ -46,6 +46,7 @@ def get_ctc_fallback_segments(
     Returns:
         CTC-aligned native Whisper transcript
     Raises:
+        TranscriptionAlignmentError: if CTC alignment fails
         TranscriptionEmptyError: if native Whisper returns empty text
         TranscriptionRecognitionError: if native Whisper fails or returns malformed
             output

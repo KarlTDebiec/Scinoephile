@@ -143,11 +143,6 @@ class WhisperTranscriber(Transcriber):
                 vad_detector=self.vad_detector,
             )
 
-    @property
-    def model_name(self) -> str:
-        """Get the Whisper model name."""
-        return self.model.spec.name
-
     def remove_cached_transcriptions(self, audio: AudioSegment):
         """Remove standard and recovery transcriptions for the audio.
 
@@ -188,16 +183,13 @@ class WhisperTranscriber(Transcriber):
         self.last_cache_key_sha256 = self.recovery_transcriber.last_cache_key_sha256
         return segments
 
-    def _get_backend_cache_identity(
-        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> CacheIdentity:
+    def _get_transcriber_cache_identity(self, audio: AudioSegment) -> CacheIdentity:
         """Get the cache identity for configured Whisper output.
 
         Arguments:
-            audio: audio whose properties may affect backend behavior
-            settings: preprocessing settings
+            audio: audio whose properties may affect transcriber behavior
         Returns:
-            backend configuration identifying the output
+            transcriber configuration identifying the output
         """
         temperature: int | float | list[float]
         if isinstance(self.temperature, int | float):
@@ -208,25 +200,18 @@ class WhisperTranscriber(Transcriber):
             "condition_on_previous_text": self.condition_on_previous_text,
             "device": self.model.device,
             "language": self.model.language_code,
-            "model_name": self.model_name,
+            "model_name": self.model.spec.name,
             "model_revision": self.model.spec.revision,
             "runtime": {
                 "openai_whisper": get_distribution_identity("openai-whisper"),
+                "torch": get_distribution_identity("torch"),
                 "whisper_timestamped": get_distribution_identity("whisper-timestamped"),
             },
             "temperature": temperature,
         }
         if self.ctc_aligner is not None:
-            cache_identity.update(
-                {
-                    "timestamp_fallback": "ctc",
-                    "timestamp_fallback_device": self.ctc_aligner.model.device,
-                    "timestamp_fallback_language": self.ctc_aligner.language.code,
-                    "timestamp_fallback_model_name": self.ctc_aligner.model.spec.name,
-                    "timestamp_fallback_model_revision": (
-                        self.ctc_aligner.model.spec.revision
-                    ),
-                }
+            cache_identity["timestamp_fallback"] = (
+                self.ctc_aligner.cache_config_identity
             )
         return cache_identity
 
@@ -277,7 +262,7 @@ class WhisperTranscriber(Transcriber):
         """
         return normalize_segments(
             segments,
-            model_name=self.model_name,
+            model_name=self.model.spec.name,
             source="cache",
             cache_path=cache_path,
             use_vad=settings.use_vad,
@@ -296,6 +281,8 @@ class WhisperTranscriber(Transcriber):
             normalized transcription segments
         Raises:
             DependencyError: if Whisper dependencies are unavailable
+            TranscriptionAlignmentError: if CTC fallback alignment fails
+            TranscriptionEmptyError: if VAD or native fallback finds no speech
             TranscriptionRecognitionError: if Whisper inference fails
         """
         whisper_vad, voice_activity_trace = self._get_whisper_vad(audio, settings)
@@ -308,7 +295,7 @@ class WhisperTranscriber(Transcriber):
                     f"for {len(audio) / 1000:.2f}s of audio"
                 )
                 try:
-                    result = self.model(
+                    segments = self.model(
                         temp_audio_path,
                         vad=whisper_vad,
                         temperature=self.temperature,
@@ -319,7 +306,7 @@ class WhisperTranscriber(Transcriber):
                     if self.ctc_aligner is not None and str(exc).startswith(
                         "Inconsistent number of segments:"
                     ):
-                        fallback_segments = get_ctc_fallback_segments(
+                        segments = get_ctc_fallback_segments(
                             self.model,
                             self.ctc_aligner,
                             audio,
@@ -331,22 +318,10 @@ class WhisperTranscriber(Transcriber):
                                 self.condition_on_previous_text
                             ),
                         )
-                        normalized_segments = normalize_segments(
-                            fallback_segments,
-                            model_name=self.model_name,
-                            source="whisper",
-                            cache_path=None,
-                            use_vad=settings.use_vad,
-                            audio_duration_seconds=len(audio) / 1000,
-                        )
-                        if voice_activity_trace is not None:
-                            return self._add_voice_activity_scores(
-                                normalized_segments, voice_activity_trace
-                            )
-                        return normalized_segments
-                    raise TranscriptionRecognitionError(
-                        f"Whisper inference failed with an assertion: {exc}"
-                    ) from exc
+                    else:
+                        raise TranscriptionRecognitionError(
+                            f"Whisper inference failed with an assertion: {exc}"
+                        ) from exc
             except TranscriptionRecognitionError:
                 raise
             except (ImportError, OSError, RuntimeError, TypeError, ValueError) as exc:
@@ -354,14 +329,9 @@ class WhisperTranscriber(Transcriber):
                     f"Unable to run Whisper inference: {exc}"
                 ) from exc
 
-        if result.exhausted_window_count:
-            logger.info(
-                f"Whisper reached its {sample_len}-token decoding limit "
-                f"(affected windows: {result.exhausted_window_count})"
-            )
         normalized_segments = normalize_segments(
-            result.segments,
-            model_name=self.model_name,
+            segments,
+            model_name=self.model.spec.name,
             source="whisper",
             cache_path=None,
             use_vad=settings.use_vad,

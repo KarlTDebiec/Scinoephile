@@ -290,26 +290,23 @@ class Transcriber(ABC):
         )
 
     @abstractmethod
-    def _get_backend_cache_identity(
-        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> CacheIdentity:
-        """Get the backend-specific identity for one cache configuration.
+    def _get_transcriber_cache_identity(self, audio: AudioSegment) -> CacheIdentity:
+        """Get the concrete transcriber's portion of a cache identity.
 
         Arguments:
-            audio: audio whose properties may affect backend behavior
-            settings: preprocessing settings
+            audio: audio whose properties may affect transcriber behavior
         Returns:
-            backend configuration identifying the output
+            transcriber configuration identifying the output
         """
         raise NotImplementedError()
 
     def _get_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> CacheIdentity:
-        """Get the complete backend and preprocessing cache identity.
+        """Get the complete transcriber and preprocessing cache identity.
 
         Arguments:
-            audio: audio whose properties may affect backend behavior
+            audio: audio whose properties may affect transcriber behavior
             settings: preprocessing settings
         Returns:
             configuration identifying the output
@@ -319,7 +316,7 @@ class Transcriber(ABC):
             assert self.demucs_separator is not None
             demucs_identity = self.demucs_separator.cache_identity
         return {
-            **self._get_backend_cache_identity(audio, settings),
+            **self._get_transcriber_cache_identity(audio),
             "demucs": demucs_identity,
             "use_demucs": settings.use_demucs,
             "use_vad": settings.use_vad,

@@ -85,7 +85,7 @@ def test_default_cantonese_sources_use_configured_models_without_internal_vad():
 def test_source_spec_normalizes_name():
     """Test source specifications normalize surrounding name whitespace."""
     source = TranscriptionSourceSpec(
-        name=" whisper ", model=WHISPER_LARGE_V3_CANTONESE_MODEL
+        name=" whisper ", spec=WHISPER_LARGE_V3_CANTONESE_MODEL
     )
 
     assert source.name == "whisper"
@@ -94,7 +94,7 @@ def test_source_spec_normalizes_name():
 def test_source_validation_rejects_invalid_registries():
     """Test source construction rejects unsupported and ambiguous registries."""
     source = TranscriptionSourceSpec(
-        name="whisper", model=WHISPER_LARGE_V3_CANTONESE_MODEL
+        name="whisper", spec=WHISPER_LARGE_V3_CANTONESE_MODEL
     )
     with raises(ScinoephileError, match="does not support eng"):
         get_transcription_sources(Language.eng)
@@ -104,7 +104,7 @@ def test_source_validation_rejects_invalid_registries():
             source_specs=[
                 source,
                 TranscriptionSourceSpec(
-                    name="whisper-2", model=WHISPER_LARGE_V3_CANTONESE_MODEL
+                    name="whisper-2", spec=WHISPER_LARGE_V3_CANTONESE_MODEL
                 ),
             ],
         )

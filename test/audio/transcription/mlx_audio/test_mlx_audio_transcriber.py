@@ -5,11 +5,9 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Mapping
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
-from typing import cast
 from unittest.mock import Mock
 
 import numpy as np
@@ -52,6 +50,17 @@ from scinoephile.core.ml import ModelSpec
 _CTC_MODEL = ModelSpec(name="ctc/test-model", revision="ctc-revision")
 """CTC model specification used by transcriber tests."""
 
+_CTC_CACHE_CONFIG_IDENTITY = {
+    "alignment_version": 1,
+    "device": "cpu",
+    "language": Language.yue_hant.code,
+    "model_name": _CTC_MODEL.name,
+    "model_revision": _CTC_MODEL.revision,
+    "runtime": {},
+    "script_conversion": None,
+}
+"""Serializable CTC cache configuration used by aligner mocks."""
+
 
 def _get_cache_path(
     transcriber: MlxAudioTranscriber,
@@ -59,7 +68,16 @@ def _get_cache_path(
     use_demucs: bool = False,
     use_vad: bool = False,
 ) -> Path:
-    """Get the cache path for one preprocessing configuration."""
+    """Get the cache path for one preprocessing configuration.
+
+    Arguments:
+        transcriber: MLX-Audio transcriber
+        audio: audio whose cache path is requested
+        use_demucs: whether Demucs preprocessing is enabled
+        use_vad: whether VAD preprocessing is enabled
+    Returns:
+        cache path for the configuration
+    """
     settings = TranscriptionPreprocessingSettings(use_demucs, use_vad)
     cache_path = transcriber._cache.get_path(
         audio, transcriber._get_cache_identity(audio, settings)
@@ -91,6 +109,15 @@ def test_init_rejects_ctc_aligner_language_mismatch():
     ctc_aligner = CtcAligner(Language.zho_hant)
 
     with pytest.raises(ValueError, match="languages must match"):
+        MlxAudioTranscriber(model, ctc_aligner, Language.yue_hant)
+
+
+def test_init_rejects_model_language_mismatch():
+    """Test the executable model and transcriber languages must match."""
+    model = MlxAudioModel(MIMO_MODEL, Language.eng)
+    ctc_aligner = CtcAligner(Language.yue_hant, _CTC_MODEL)
+
+    with pytest.raises(ValueError, match="model and transcriber languages must match"):
         MlxAudioTranscriber(model, ctc_aligner, Language.yue_hant)
 
 
@@ -127,16 +154,21 @@ def test_get_cache_path_separates_ctc_model_configuration():
     first_transcriber = _get_mlx_audio_transcriber(model_spec=MIMO_MODEL)
     second_transcriber = _get_mlx_audio_transcriber(model_spec=MIMO_MODEL)
     first_transcriber.ctc_aligner = CtcAligner(
-        Language.yue_hant, ModelSpec(name="ctc/one", revision="revision-one")
+        Language.yue_hant, ModelSpec(name="ctc/one", revision="revision-one"), "cpu"
     )
     second_transcriber.ctc_aligner = CtcAligner(
-        Language.yue_hant, ModelSpec(name="ctc/two", revision="revision-two")
+        Language.yue_hant, ModelSpec(name="ctc/two", revision="revision-two"), "cpu"
     )
 
     first_cache_path = _get_cache_path(first_transcriber, audio)
     second_cache_path = _get_cache_path(second_transcriber, audio)
 
     assert first_cache_path != second_cache_path
+    settings = TranscriptionPreprocessingSettings(False, False)
+    first_identity = first_transcriber._get_cache_identity(audio, settings)
+    assert (
+        first_identity["aligner"] == first_transcriber.ctc_aligner.cache_config_identity
+    )
 
 
 def test_get_cache_path_separates_model_revisions():
@@ -154,19 +186,46 @@ def test_get_cache_path_separates_model_revisions():
     )
 
 
-def test_get_cache_path_uses_mlx_runtime_on_apple_silicon():
-    """Test the cache identity includes MLX-Audio runtime provenance."""
+def test_get_cache_path_separates_model_languages():
+    """Test model-specific language values contribute to cache identity."""
+    audio = _get_cache_audio()
+    first_languages = {**MIMO_MODEL.languages, Language.yue_hant: "zh"}
+    second_languages = {**MIMO_MODEL.languages, Language.yue_hant: "yue"}
+    first_transcriber = _get_mlx_audio_transcriber(
+        model_spec=replace(MIMO_MODEL, languages=first_languages)
+    )
+    second_transcriber = _get_mlx_audio_transcriber(
+        model_spec=replace(MIMO_MODEL, languages=second_languages)
+    )
+
+    assert _get_cache_path(first_transcriber, audio) != _get_cache_path(
+        second_transcriber, audio
+    )
+
+
+def test_get_cache_path_uses_installed_mlx_runtime(monkeypatch: pytest.MonkeyPatch):
+    """Test the cache identity includes installed MLX-Audio provenance.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    runtime_identity = {
+        "distribution": "mlx-audio",
+        "version": "test-version",
+        "source_revision": "test-revision",
+    }
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.mlx_audio.transcriber."
+        "get_distribution_identity",
+        lambda _distribution_name: runtime_identity,
+    )
     transcriber = _get_mlx_audio_transcriber(model_spec=MIMO_MODEL)
 
     cache_identity = transcriber._get_cache_identity(
         _get_cache_audio(), TranscriptionPreprocessingSettings(False, False)
     )
 
-    runtime_identity = cast(Mapping[str, object], cache_identity["runtime"])
-    assert runtime_identity["distribution"] == "mlx-audio"
-    assert runtime_identity["source_revision"] == (
-        "ff0197c0ae9f9fd02072904c696f2533e329c06e"
-    )
+    assert cache_identity["runtime"] == runtime_identity
 
 
 def test_get_cache_path_separates_generation_options():
@@ -194,7 +253,11 @@ def test_get_cache_path_separates_generation_options():
 
 
 def test_safe_audio_duration_changes_long_audio_cache_identity(tmp_path: Path):
-    """Include automatic model-safe chunking only for overlong audio."""
+    """Include automatic model-safe chunking only for overlong audio.
+
+    Arguments:
+        tmp_path: temporary cache directory path
+    """
     short_audio = AudioSegment.silent(duration=55_000, frame_rate=1_000)
     long_audio = AudioSegment.silent(duration=55_001, frame_rate=1_000)
     transcriber = _get_mlx_audio_transcriber(
@@ -219,16 +282,19 @@ def test_safe_audio_duration_changes_long_audio_cache_identity(tmp_path: Path):
 def test_model_without_safe_duration_uses_one_audio_window(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Leave unrestricted model cache identity and inference unchunked."""
+    """Leave unrestricted model cache identity and inference unchunked.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     audio = AudioSegment.silent(duration=120_000, frame_rate=1_000)
     transcriber = _get_mlx_audio_transcriber(
         model_spec=QWEN3_ASR_MODEL, cache_root_path=tmp_path
     )
     expected_segments = [_get_timed_segment("qwen")]
     patched_transcribe = Mock(return_value=expected_segments)
-    monkeypatch.setattr(
-        transcriber, "_transcribe_audio_window_with_retry", patched_transcribe
-    )
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
 
     cache_identity = transcriber._get_cache_identity(
         audio, TranscriptionPreprocessingSettings(False, False)
@@ -288,7 +354,11 @@ def test_init_rejects_chunk_duration_that_rounds_to_zero():
 
 
 def test_get_cached_transcription_reads_mlx_audio_payload(tmp_path: Path):
-    """Test MLX-Audio cache reads segment payloads from cache_identity-bearing files."""
+    """Test MLX-Audio cache reads segment payloads from identity-bearing files.
+
+    Arguments:
+        tmp_path: temporary cache directory path
+    """
     transcriber = _get_mlx_audio_transcriber(
         model_spec=MIMO_MODEL, cache_root_path=tmp_path
     )
@@ -310,7 +380,12 @@ def test_get_cached_transcription_reads_mlx_audio_payload(tmp_path: Path):
 def test_transcribe_recovers_from_malformed_cache(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Test malformed cached output is replaced by a fresh transcription."""
+    """Test malformed cached output is replaced by a fresh transcription.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     audio = _get_cache_audio()
     expected_segments = [_get_timed_segment("你好")]
     transcriber = _get_mlx_audio_transcriber(
@@ -363,17 +438,30 @@ def test_malformed_cache_does_not_override_fresh_rejection(
 
 
 def test_transcribe_uses_direct_mlx_audio_inference(monkeypatch: pytest.MonkeyPatch):
-    """Test MLX-Audio transcription uses direct typed inference."""
+    """Test MLX-Audio transcription uses direct typed inference.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     captured: dict[str, object] = {}
     audio = AudioSegment.silent(duration=1000)
     expected_segments = [_get_timed_segment("你好")]
     transcriber = _get_mlx_audio_transcriber()
     transcriber.ctc_aligner = Mock(
-        model=SimpleNamespace(spec=_CTC_MODEL), return_value=expected_segments
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
+        model=SimpleNamespace(spec=_CTC_MODEL),
+        return_value=expected_segments,
     )
 
     def fake_model_call(_model: MlxAudioModel, audio_path: Path) -> MlxAudioResult:
-        """Capture direct MLX-Audio arguments and return transcript text."""
+        """Capture direct MLX-Audio arguments and return transcript text.
+
+        Arguments:
+            _model: ignored MLX-Audio model
+            audio_path: audio file path passed to the model
+        Returns:
+            mocked MLX-Audio result
+        """
         captured["audio_path"] = audio_path
         return SimpleNamespace(text="你好", generation_tokens=0)
 
@@ -381,14 +469,17 @@ def test_transcribe_uses_direct_mlx_audio_inference(monkeypatch: pytest.MonkeyPa
     segments = transcriber.transcribe(audio)
 
     assert segments == expected_segments
-    assert transcriber.model_name == MIMO_MODEL.name
     assert isinstance(captured["audio_path"], Path)
 
 
 def test_transcribe_chunks_audio_assigns_and_clips_words(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Assign overlap words by midpoint and clip retained timings to chunk cores."""
+    """Assign overlap words by midpoint and clip timings to chunk cores.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=4500)
     transcriber = _get_mlx_audio_transcriber(
         chunk_duration_seconds=2.0, chunk_overlap_seconds=0.5
@@ -401,6 +492,7 @@ def test_transcribe_chunks_audio_assigns_and_clips_words(
         ]
     )
     transcriber.ctc_aligner = Mock(
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
         model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             [_get_timed_segment("one", start=0.1, end=0.9)],
@@ -437,7 +529,11 @@ def test_transcribe_chunks_audio_assigns_and_clips_words(
 
 
 def test_long_mimo_audio_is_automatically_chunked(monkeypatch: pytest.MonkeyPatch):
-    """Keep complete overlapping MiMo inference windows within its safe limit."""
+    """Keep complete overlapping MiMo inference windows within its safe limit.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=108_000, frame_rate=1_000)
     transcriber = _get_mlx_audio_transcriber()
     model_call = Mock(
@@ -448,6 +544,7 @@ def test_long_mimo_audio_is_automatically_chunked(monkeypatch: pytest.MonkeyPatc
         ]
     )
     transcriber.ctc_aligner = Mock(
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
         model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             [_get_timed_segment("one", start=0.1, end=52.9)],
@@ -473,7 +570,12 @@ def test_long_mimo_audio_is_automatically_chunked(monkeypatch: pytest.MonkeyPatc
 def test_safe_duration_honors_shorter_explicit_chunks(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Keep explicitly configured chunks shorter than the MiMo safe window."""
+    """Keep explicitly configured chunks shorter than the MiMo safe window.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     audio = AudioSegment.silent(duration=61_000, frame_rate=1_000)
     transcriber = _get_mlx_audio_transcriber(
         cache_root_path=tmp_path, chunk_duration_seconds=20.0, chunk_overlap_seconds=0.0
@@ -486,9 +588,7 @@ def test_safe_duration_honors_shorter_explicit_chunks(
             [_get_timed_segment("four", end=1.0)],
         ]
     )
-    monkeypatch.setattr(
-        transcriber, "_transcribe_audio_window_with_retry", patched_transcribe
-    )
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
 
     segments = transcriber.transcribe(audio)
 
@@ -504,7 +604,11 @@ def test_safe_duration_honors_shorter_explicit_chunks(
 def test_transcribe_splits_audio_after_generation_token_exhaustion(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test truncated MLX-Audio output is retried over smaller windows."""
+    """Test truncated MLX-Audio output is retried over smaller windows.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=4000)
     transcriber = _get_mlx_audio_transcriber(chunk_overlap_seconds=0.0)
     model_call = Mock(
@@ -515,6 +619,7 @@ def test_transcribe_splits_audio_after_generation_token_exhaustion(
         ]
     )
     transcriber.ctc_aligner = Mock(
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
         model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             [_get_timed_segment("one", end=2.0)],
@@ -532,19 +637,24 @@ def test_transcribe_splits_audio_after_generation_token_exhaustion(
 
 
 def test_audio_near_generation_limit_is_not_split(monkeypatch: pytest.MonkeyPatch):
-    """Accept complete output that remains below the model token limit."""
+    """Accept complete output that remains below the model token limit.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=4000)
     transcriber = _get_mlx_audio_transcriber(chunk_overlap_seconds=0.0)
     model_call = Mock(
         return_value=SimpleNamespace(text="compressed", generation_tokens=244)
     )
     transcriber.ctc_aligner = Mock(
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
         model=SimpleNamespace(spec=_CTC_MODEL),
         return_value=[_get_timed_segment("compressed", end=4.0)],
     )
     monkeypatch.setattr(MlxAudioModel, "__call__", model_call)
 
-    segments = transcriber._transcribe_audio_window_with_retry(audio)
+    segments = transcriber.transcribe(audio)
 
     model_call.assert_called_once()
     transcriber.ctc_aligner.assert_called_once()
@@ -554,7 +664,11 @@ def test_audio_near_generation_limit_is_not_split(monkeypatch: pytest.MonkeyPatc
 def test_transcribe_splits_audio_after_incomplete_ctc_alignment(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test incomplete CTC paths are retried over smaller audio windows."""
+    """Test incomplete CTC paths are retried over smaller audio windows.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=4000)
     transcriber = _get_mlx_audio_transcriber(chunk_overlap_seconds=0.0)
     model_call = Mock(
@@ -565,6 +679,7 @@ def test_transcribe_splits_audio_after_incomplete_ctc_alignment(
         ]
     )
     transcriber.ctc_aligner = Mock(
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
         model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=[
             TranscriptionAlignmentIncompleteError(
@@ -588,11 +703,16 @@ def test_transcribe_splits_audio_after_incomplete_ctc_alignment(
 def test_transcribe_does_not_split_audio_after_other_ctc_errors(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test non-length CTC failures propagate without recursive retries."""
+    """Test non-length CTC failures propagate without recursive retries.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=4000)
     transcriber = _get_mlx_audio_transcriber()
     model_call = Mock(return_value=SimpleNamespace(text="whole", generation_tokens=0))
     transcriber.ctc_aligner = Mock(
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
         model=SimpleNamespace(spec=_CTC_MODEL),
         side_effect=TranscriptionAlignmentError("CTC backend unavailable."),
     )
@@ -606,7 +726,11 @@ def test_transcribe_does_not_split_audio_after_other_ctc_errors(
 
 
 def test_transcribe_chunks_audio_skips_empty_windows(monkeypatch: pytest.MonkeyPatch):
-    """Test an empty chunk does not discard speech from other chunks."""
+    """Test an empty chunk does not discard speech from other chunks.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=4500)
     transcriber = _get_mlx_audio_transcriber(
         chunk_duration_seconds=2.0, chunk_overlap_seconds=0.5
@@ -618,7 +742,7 @@ def test_transcribe_chunks_audio_skips_empty_windows(monkeypatch: pytest.MonkeyP
             [_get_timed_segment("three", start=0.6, end=1.0)],
         ]
     )
-    monkeypatch.setattr(transcriber, "_transcribe_audio_window", patched_transcribe)
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
 
     segments = transcriber.transcribe(audio)
 
@@ -631,12 +755,16 @@ def test_transcribe_chunks_audio_skips_empty_windows(monkeypatch: pytest.MonkeyP
 def test_transcribe_chunks_audio_rejects_all_empty_windows(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test chunked transcription remains empty when every chunk is empty."""
+    """Test chunked transcription remains empty when every chunk is empty.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=4500)
     transcriber = _get_mlx_audio_transcriber(chunk_duration_seconds=2.0)
     monkeypatch.setattr(
         transcriber,
-        "_transcribe_audio_window",
+        "_transcribe_window",
         Mock(
             side_effect=TranscriptionEmptyError("MLX-Audio returned empty transcript.")
         ),
@@ -649,7 +777,12 @@ def test_transcribe_chunks_audio_rejects_all_empty_windows(
 def test_transcribe_vad_uses_shared_detector_and_restores_original_timestamps(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Use shared VAD intervals, restore timings, and attach score summaries."""
+    """Use shared VAD intervals, restore timings, and attach score summaries.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     audio = AudioSegment.silent(duration=6000)
     trace = VoiceActivityTrace(
         np.full(60, 0.8, dtype=np.float32), start_ms=50, step_ms=100, duration_ms=6000
@@ -671,7 +804,7 @@ def test_transcribe_vad_uses_shared_detector_and_restores_original_timestamps(
             _get_timed_segment("two", start=1.2, end=2.2),
         ]
     )
-    monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
 
     segments = transcriber.transcribe(audio)
 
@@ -694,7 +827,12 @@ def test_transcribe_vad_uses_shared_detector_and_restores_original_timestamps(
 def test_transcribe_vad_rejects_audio_without_detected_speech(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Test VAD does not invoke MLX-Audio when no speech is detected."""
+    """Test VAD does not invoke MLX-Audio when no speech is detected.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     trace = Mock()
     vad_detector = Mock(
         cache_identity={"implementation": "ten"},
@@ -709,7 +847,7 @@ def test_transcribe_vad_rejects_audio_without_detected_speech(
         transcriber, "_get_voice_activity_trace", Mock(return_value=trace)
     )
     patched_transcribe = Mock()
-    monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
 
     with pytest.raises(TranscriptionEmptyError, match="VAD found no speech"):
         transcriber.transcribe(AudioSegment.silent(duration=1000))
@@ -718,7 +856,11 @@ def test_transcribe_vad_rejects_audio_without_detected_speech(
 
 
 def test_transcribe_vad_auto_retries_unfiltered_audio(monkeypatch: pytest.MonkeyPatch):
-    """Test automatic VAD retries unfiltered audio after VAD failure."""
+    """Test automatic VAD retries unfiltered audio after VAD failure.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     expected_segments = [_get_timed_segment("retry")]
     trace = Mock()
     vad_detector = Mock(
@@ -734,7 +876,7 @@ def test_transcribe_vad_auto_retries_unfiltered_audio(monkeypatch: pytest.Monkey
         transcriber, "_get_voice_activity_trace", Mock(return_value=trace)
     )
     patched_transcribe = Mock(return_value=expected_segments)
-    monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
     audio = AudioSegment.silent(duration=1000)
 
     segments = transcriber.transcribe(audio)
@@ -754,7 +896,12 @@ def test_init_accepts_shared_vad_detector():
 def test_transcribe_aligns_text_and_writes_cache(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Test transcription text is aligned, returned, and cached."""
+    """Test transcription text is aligned, returned, and cached.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     audio = AudioSegment.silent(duration=1000)
     expected_segments = [_get_timed_segment("你好")]
     transcriber = _get_mlx_audio_transcriber(
@@ -766,7 +913,9 @@ def test_transcribe_aligns_text_and_writes_cache(
         lambda _model, _audio_path: SimpleNamespace(text="你好", generation_tokens=0),
     )
     transcriber.ctc_aligner = Mock(
-        model=SimpleNamespace(spec=_CTC_MODEL), return_value=expected_segments
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
+        model=SimpleNamespace(spec=_CTC_MODEL),
+        return_value=expected_segments,
     )
 
     segments = transcriber.transcribe(audio)
@@ -796,7 +945,10 @@ def test_transcribe_rejects_low_information_vocalizations(
         "__call__",
         Mock(return_value=SimpleNamespace(text="啊！啊！", generation_tokens=0)),
     )
-    transcriber.ctc_aligner = Mock(model=SimpleNamespace(spec=_CTC_MODEL))
+    transcriber.ctc_aligner = Mock(
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
+        model=SimpleNamespace(spec=_CTC_MODEL),
+    )
 
     with pytest.raises(TranscriptionEmptyError, match="low-information"):
         transcriber.transcribe(AudioSegment.silent(duration=1000))
@@ -805,7 +957,11 @@ def test_transcribe_rejects_low_information_vocalizations(
 
 
 def test_transcribe_wraps_mlx_audio_inference_errors(monkeypatch: pytest.MonkeyPatch):
-    """Test MLX-Audio import/runtime errors are exposed as inference errors."""
+    """Test MLX-Audio import/runtime errors are exposed as inference errors.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=1000)
     transcriber = _get_mlx_audio_transcriber()
     monkeypatch.setattr(

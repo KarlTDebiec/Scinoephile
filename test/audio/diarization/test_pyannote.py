@@ -20,6 +20,24 @@ from scinoephile.audio.diarization import (
 )
 from scinoephile.core import DependencyError
 
+_RUNTIME_IDENTITIES = {
+    "pyannote.audio": {"distribution": "pyannote.audio", "version": "4.0.7"},
+    "torch": {"distribution": "torch", "version": "2.10.0"},
+}
+"""Installed runtime identities used by diarization tests."""
+
+
+def _patch_runtime_identities(monkeypatch: MonkeyPatch):
+    """Patch installed runtime identity lookup for diarization tests.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_distribution_identity",
+        lambda distribution_name: _RUNTIME_IDENTITIES[distribution_name],
+    )
+
 
 @dataclass(frozen=True)
 class _FakeSegment:
@@ -142,9 +160,7 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_torch", lambda: _FakeTorch
     )
-    monkeypatch.setattr(
-        "scinoephile.audio.diarization.pyannote.version", lambda name: "4.0.7"
-    )
+    _patch_runtime_identities(monkeypatch)
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.get_huggingface_snapshot_dir_path",
@@ -177,6 +193,10 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     assert diarizer.cache_identity["model_revision"] == (
         "3533c8cf8e369892e6b79ff1bf80f7b0286a54ee"
     )
+    assert diarizer.cache_identity["runtime"] == {
+        "pyannote_audio": _RUNTIME_IDENTITIES["pyannote.audio"],
+        "torch": _RUNTIME_IDENTITIES["torch"],
+    }
     assert caplog.messages.count("Running pyannote speaker diarization on cpu.") == 1
 
 
@@ -189,9 +209,7 @@ def test_cache_identity_separates_exact_model_revisions(
         tmp_path: temporary cache root path
         monkeypatch: pytest monkeypatch fixture
     """
-    monkeypatch.setattr(
-        "scinoephile.audio.diarization.pyannote.version", lambda name: "4.0.7"
-    )
+    _patch_runtime_identities(monkeypatch)
     audio = AudioSegment.silent(duration=1000)
     first = PyannoteDiarizer(tmp_path, device="cpu", model_revision="revision-a")
     second = PyannoteDiarizer(tmp_path, device="cpu", model_revision="revision-b")
@@ -291,9 +309,7 @@ def test_diarizer_reports_gated_model_authorization(
         "scinoephile.audio.diarization.pyannote.import_pyannote_audio",
         lambda: SimpleNamespace(Pipeline=pipeline_cls),
     )
-    monkeypatch.setattr(
-        "scinoephile.audio.diarization.pyannote.version", lambda name: "4.0.7"
-    )
+    _patch_runtime_identities(monkeypatch)
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.get_huggingface_snapshot_dir_path",
         Mock(return_value=Path("/cached/model")),

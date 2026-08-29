@@ -227,6 +227,43 @@ def test_lens_recognizer_regenerates_invalid_cache(
     assert recognizer.predict_count == 2
 
 
+def test_lens_recognizer_separates_runtime_versions(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Test Google Lens cache paths include the installed client runtime.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary path fixture
+    """
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.lens_recognizer.get_distribution_identity",
+        lambda _distribution_name: {
+            "distribution": "chrome-lens-py",
+            "version": "first",
+        },
+    )
+    first = CountingLensRecognizer(cache_root_path=tmp_path)
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.lens_recognizer.get_distribution_identity",
+        lambda _distribution_name: {
+            "distribution": "chrome-lens-py",
+            "version": "second",
+        },
+    )
+    second = CountingLensRecognizer(cache_root_path=tmp_path)
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+
+    patch_chrome_lens_py(monkeypatch, first)
+    assert first.recognize_image(image) == "cached\ntext"
+    patch_chrome_lens_py(monkeypatch, second)
+    assert second.recognize_image(image) == "cached\ntext"
+
+    assert first.predict_count == 1
+    assert second.predict_count == 1
+    assert len(list((tmp_path / "image/ocr/lens").glob("*.json"))) == 2
+
+
 def test_lens_recognizer_overwrites_matching_cache(
     monkeypatch: MonkeyPatch, tmp_path: Path
 ):
