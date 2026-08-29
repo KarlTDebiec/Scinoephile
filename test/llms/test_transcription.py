@@ -37,7 +37,13 @@ _LOCALIZED_PROMPT = TranscriptionPrompt(
 
 
 def _get_sources(*texts: str) -> list[TranscriptionSource]:
-    """Get named equal-width ASR source rows."""
+    """Get named equal-width ASR source rows.
+
+    Arguments:
+        *texts: additional positional arguments
+    Returns:
+        named equal-width ASR source rows
+    """
     return [
         TranscriptionSource(name=f"source_{index}", text=text)
         for index, text in enumerate(texts, start=1)
@@ -45,7 +51,13 @@ def _get_sources(*texts: str) -> list[TranscriptionSource]:
 
 
 def _get_answer(*texts: str) -> TranscriptionAnswer:
-    """Get one consensus answer from subtitle text."""
+    """Get one consensus answer from subtitle text.
+
+    Arguments:
+        *texts: additional positional arguments
+    Returns:
+        one consensus answer from subtitle text
+    """
     return TranscriptionAnswer(text="".join(text + "｜" for text in texts))
 
 
@@ -382,7 +394,13 @@ def test_processor_exposes_request_alignment_spans():
 def test_processor_does_not_split_when_an_optional_row_breaks_a_pause(
     language: str | None, singing: str | None, music: str | None
 ):
-    """A pause is shared only when every present analysis row marks it."""
+    """A pause is shared only when every present analysis row marks it.
+
+    Arguments:
+        language: language
+        singing: singing value
+        music: music value
+    """
     provider = Mock(
         spec=LLMProvider,
         cache_identity={"implementation": "test"},

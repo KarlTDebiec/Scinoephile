@@ -36,7 +36,12 @@ from scinoephile.workflows.transcription_pipeline import TranscriptionPipeline
 def test_evaluation_writes_standardized_metrics_and_audit(
     tmp_path: Path, caplog: LogCaptureFixture
 ):
-    """Evaluation should report every source, merged CER, and display timing."""
+    """Evaluation should report every source, merged CER, and display timing.
+
+    Arguments:
+        tmp_path: temporary directory path
+        caplog: pytest log-capture fixture
+    """
     artifact = _get_artifact()
     reference = Series(events=[Subtitle(start=900, end=2_100, text="係呀")])
     caplog.set_level("INFO", logger="test.data.aligned_transcription")
@@ -70,7 +75,11 @@ def test_evaluation_writes_standardized_metrics_and_audit(
 
 
 def test_evaluation_reuses_unchanged_metrics_and_audit(tmp_path: Path):
-    """Unchanged evaluation inputs should not realign or rewrite saved output."""
+    """Unchanged evaluation inputs should not realign or rewrite saved output.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     artifact = _get_artifact()
     reference = Series(events=[Subtitle(start=900, end=2_100, text="係呀")])
     transcription_data._save_evaluation(  # noqa: SLF001
@@ -98,7 +107,11 @@ def test_evaluation_reuses_unchanged_metrics_and_audit(tmp_path: Path):
 def test_matching_explicit_alignment_recreates_srt_without_transcription(
     tmp_path: Path,
 ):
-    """A matching portable prefix should be sufficient to reuse test output."""
+    """A matching portable prefix should be sufficient to reuse test output.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     title_root_path = tmp_path / "title"
     output_dir_path = title_root_path / "output/yue-Hant_transcribe"
     artifact_path = output_dir_path / "json/alignment.json"
@@ -130,7 +143,11 @@ def test_matching_explicit_alignment_recreates_srt_without_transcription(
 
 
 def test_existing_alignment_is_regenerated_for_different_block_count(tmp_path: Path):
-    """An explicit block count should invalidate a different existing prefix."""
+    """An explicit block count should invalidate a different existing prefix.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     title_root_path = tmp_path / "title"
     output_dir_path = title_root_path / "output/yue-Hant_transcribe"
     artifact_path = output_dir_path / "json/alignment.json"
@@ -196,7 +213,11 @@ def test_invalid_existing_alignment_is_ignored(
 
 
 def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
-    """A fresh run should route provenance and write harness outputs."""
+    """A fresh run should route provenance and write harness outputs.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     title_root_path = tmp_path / "title"
     output_dir_path = title_root_path / "output/yue-Hant_transcribe"
     reference_path = tmp_path / "reference.srt"
@@ -285,7 +306,11 @@ def test_fresh_run_routes_and_writes_outputs(tmp_path: Path):
 
 
 def test_media_audio_trim_is_applied_before_staging(tmp_path: Path):
-    """Media extraction should apply title-specific leading trim before staging."""
+    """Media extraction should apply title-specific leading trim before staging.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     extracted = AudioSeries(
         audio=AudioSegment.silent(duration=5_000, frame_rate=16_000), events=[]
     )
@@ -514,7 +539,11 @@ def _get_artifact() -> AlignmentArtifact:
 
 
 def _get_processor_identity() -> ProcessorIdentity:
-    """Get a compact test processor identity."""
+    """Get a compact test processor identity.
+
+    Returns:
+        a compact test processor identity
+    """
     return ProcessorIdentity(
         operation="transcription",
         prompt_name="test",

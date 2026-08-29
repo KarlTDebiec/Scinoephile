@@ -488,7 +488,11 @@ def mlamd_zho_hans_fuse_clean_validate_review_flatten() -> Series:
 def mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539(
     mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
 ) -> Series:
-    """MLAMD zho-Hans flattened subtitles with subtitle 539 merged."""
+    """MLAMD zho-Hans flattened subtitles with subtitle 539 merged.
+
+    Arguments:
+        mlamd_zho_hans_fuse_clean_validate_review_flatten: mlamd zho hans fuse clean validate review flatten value
+    """
     return get_series_with_subs_merged(
         mlamd_zho_hans_fuse_clean_validate_review_flatten, 539
     )

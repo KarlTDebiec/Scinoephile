@@ -8,6 +8,8 @@ from abc import ABC, abstractmethod
 from enum import StrEnum
 from typing import TYPE_CHECKING
 
+from scinoephile.core.cache.identity import CacheIdentity
+
 from .intervals import get_threshold_speech_intervals
 from .trace import VoiceActivityTrace
 
@@ -39,7 +41,7 @@ class VadProvider(ABC):
 
     @property
     @abstractmethod
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the model, runtime, and inference configuration identity."""
         raise NotImplementedError()
 

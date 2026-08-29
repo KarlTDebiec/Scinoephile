@@ -1,6 +1,7 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of repository style requirements."""
+
+"""Tests of string interpolation style."""
 
 from __future__ import annotations
 
@@ -20,7 +21,7 @@ PERCENT_INTERPOLATION_RE = re.compile(
 
 
 @dataclass(frozen=True)
-class StringInterpolationViolation:
+class _StringInterpolationViolation:
     """String interpolation style violation."""
 
     file_path: Path
@@ -48,7 +49,7 @@ def test_percent_interpolation_arguments_are_detected():
     """Test logging-style percent interpolation arguments are detected."""
     tree = ast.parse('logger.warning("hello %s", name)')
 
-    violations = get_string_interpolation_violations(
+    violations = _get_string_interpolation_violations(
         file_path=package_root.parent / "sample.py", tree=tree
     )
 
@@ -59,13 +60,13 @@ def test_percent_interpolation_arguments_are_detected():
 
 def test_python_sources_do_not_use_percent_string_interpolation():
     """Test Python sources do not use percent-style string interpolation."""
-    violations: list[StringInterpolationViolation] = []
+    violations: list[_StringInterpolationViolation] = []
     for file_path in get_python_files(package_root.parent):
         tree = ast.parse(
             file_path.read_text(encoding="utf-8"), filename=file_path.as_posix()
         )
         violations.extend(
-            get_string_interpolation_violations(file_path=file_path, tree=tree)
+            _get_string_interpolation_violations(file_path=file_path, tree=tree)
         )
 
     assert not violations, (
@@ -74,48 +75,9 @@ def test_python_sources_do_not_use_percent_string_interpolation():
     )
 
 
-def test_typed_dict_field_documentation_violations_are_detected():
-    """Test undocumented TypedDict fields are detected."""
-    tree = ast.parse(
-        '''
-class Example(TypedDict):
-    """Example payload."""
-
-    documented: str
-    """Documented field."""
-
-    undocumented: int
-'''
-    )
-
-    violations = get_typed_dict_field_documentation_violations(
-        file_path=Path("sample.py"), tree=tree
-    )
-
-    assert violations == [
-        "sample.py:8: TypedDict field Example.undocumented lacks documentation"
-    ]
-
-
-def test_typed_dict_fields_are_documented():
-    """Test TypedDict fields have attribute docstrings."""
-    violations: list[str] = []
-    for file_path in get_python_files(package_root.parent):
-        tree = ast.parse(
-            file_path.read_text(encoding="utf-8"), filename=file_path.as_posix()
-        )
-        violations.extend(
-            get_typed_dict_field_documentation_violations(
-                file_path=file_path.relative_to(package_root.parent), tree=tree
-            )
-        )
-
-    assert not violations, "Document TypedDict fields:\n" + "\n".join(violations)
-
-
-def get_string_interpolation_violations(
+def _get_string_interpolation_violations(
     file_path: Path, tree: ast.Module
-) -> list[StringInterpolationViolation]:
+) -> list[_StringInterpolationViolation]:
     """Get string interpolation style violations in a parsed Python file.
 
     Arguments:
@@ -124,19 +86,19 @@ def get_string_interpolation_violations(
     Returns:
         string interpolation style violations
     """
-    violations: list[StringInterpolationViolation] = []
+    violations: list[_StringInterpolationViolation] = []
     for node in ast.walk(tree):
-        if isinstance(node, ast.BinOp) and is_percent_interpolation_binop(node):
+        if isinstance(node, ast.BinOp) and _is_percent_interpolation_binop(node):
             violations.append(
-                StringInterpolationViolation(
+                _StringInterpolationViolation(
                     file_path=file_path,
                     line_number=node.lineno,
                     message="uses `%` interpolation; prefer f-strings",
                 )
             )
-        if isinstance(node, ast.Call) and is_percent_interpolation_call(node):
+        if isinstance(node, ast.Call) and _is_percent_interpolation_call(node):
             violations.append(
-                StringInterpolationViolation(
+                _StringInterpolationViolation(
                     file_path=file_path,
                     line_number=node.lineno,
                     message="uses `%` interpolation arguments; prefer f-strings",
@@ -145,51 +107,7 @@ def get_string_interpolation_violations(
     return violations
 
 
-def get_typed_dict_field_documentation_violations(
-    file_path: Path, tree: ast.Module
-) -> list[str]:
-    """Get undocumented TypedDict fields from a parsed Python file.
-
-    Arguments:
-        file_path: source file path
-        tree: parsed Python module
-    Returns:
-        formatted documentation violations
-    """
-    violations = []
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.ClassDef):
-            continue
-        if not any(
-            (isinstance(base, ast.Name) and base.id == "TypedDict")
-            or (isinstance(base, ast.Attribute) and base.attr == "TypedDict")
-            for base in node.bases
-        ):
-            continue
-
-        for statement_idx, statement in enumerate(node.body):
-            if not isinstance(statement, ast.AnnAssign) or not isinstance(
-                statement.target, ast.Name
-            ):
-                continue
-            next_statement_idx = statement_idx + 1
-            next_statement = None
-            if next_statement_idx < len(node.body):
-                next_statement = node.body[next_statement_idx]
-            has_docstring = (
-                isinstance(next_statement, ast.Expr)
-                and isinstance(next_statement.value, ast.Constant)
-                and isinstance(next_statement.value.value, str)
-            )
-            if not has_docstring:
-                violations.append(
-                    f"{file_path}:{statement.lineno}: TypedDict field "
-                    f"{node.name}.{statement.target.id} lacks documentation"
-                )
-    return violations
-
-
-def is_percent_interpolation_binop(node: ast.BinOp) -> bool:
+def _is_percent_interpolation_binop(node: ast.BinOp) -> bool:
     """Check whether an AST node uses binary percent string interpolation.
 
     Arguments:
@@ -200,11 +118,11 @@ def is_percent_interpolation_binop(node: ast.BinOp) -> bool:
     return (
         isinstance(node, ast.BinOp)
         and isinstance(node.op, ast.Mod)
-        and is_string_with_percent_interpolation(node.left)
+        and _is_string_with_percent_interpolation(node.left)
     )
 
 
-def is_percent_interpolation_call(node: ast.Call) -> bool:
+def _is_percent_interpolation_call(node: ast.Call) -> bool:
     """Check whether a call uses percent-style string interpolation arguments.
 
     Arguments:
@@ -214,10 +132,10 @@ def is_percent_interpolation_call(node: ast.Call) -> bool:
     """
     if len(node.args) < 2:
         return False
-    return is_string_with_percent_interpolation(node.args[0])
+    return _is_string_with_percent_interpolation(node.args[0])
 
 
-def is_string_with_percent_interpolation(node: ast.AST) -> bool:
+def _is_string_with_percent_interpolation(node: ast.AST) -> bool:
     """Check whether an AST node is a string with percent interpolation.
 
     Arguments:

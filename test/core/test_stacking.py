@@ -67,7 +67,12 @@ def test_get_stacked_series_does_not_overlap_union_timing():
 def test_get_stacked_series_uses_requested_timing_mode(
     timing_mode: StackTimingMode, expected_times: list[tuple[int, int]]
 ):
-    """Test stack uses the requested timing mode for paired subtitles."""
+    """Test stack uses the requested timing mode for paired subtitles.
+
+    Arguments:
+        timing_mode: timing mode value
+        expected_times: expected times
+    """
     one = Series(
         events=[
             Subtitle(start=1000, end=2000, text="A"),
@@ -115,7 +120,12 @@ def test_get_stacked_series_timing_mode_uses_available_timing_for_unpaired_subti
 def test_get_stacked_series_splits_selected_timing_for_one_to_many_groups(
     timing_mode: StackTimingMode, expected_times: list[tuple[int, int]]
 ):
-    """Test one-to-many stack splits the selected timing interval."""
+    """Test one-to-many stack splits the selected timing interval.
+
+    Arguments:
+        timing_mode: timing mode value
+        expected_times: expected times
+    """
     one = Series(events=[Subtitle(start=1000, end=2000, text="A")])
     two = Series(
         events=[

@@ -9,10 +9,9 @@ from logging import getLogger
 
 from pydub import AudioSegment
 
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
+from scinoephile.analysis.alignment.timed_msa import MsaAlignment
 from scinoephile.analysis.transcription.artifact import TimingSource
 from scinoephile.audio.transcription import (
-    CtcAligner,
     TranscribedSegment,
     TranscriptionAlignmentError,
     TranscriptionEmptyError,
@@ -20,6 +19,7 @@ from scinoephile.audio.transcription import (
     get_segment_split_at_idx,
     get_segment_with_offset,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.llms.transcription import (
     TranscriptionAnswer,
     TranscriptionRequestResult,
@@ -34,7 +34,7 @@ _REQUEST_FALLBACK_PADDING_SECONDS = 0.25
 
 
 def get_request_interval(
-    alignment: Alignment, span: tuple[int, int], duration_seconds: float
+    alignment: MsaAlignment, span: tuple[int, int], duration_seconds: float
 ) -> tuple[float, float] | None:
     """Get the audio interval bounded by adjacent long shared pauses.
 
@@ -83,7 +83,7 @@ def get_request_interval(
 
 def get_timed_request_segments(  # noqa: PLR0912, PLR0915
     audio: AudioSegment,
-    alignment: Alignment,
+    alignment: MsaAlignment,
     request_results: Sequence[TranscriptionRequestResult],
     ctc_aligner: CtcAligner,
 ) -> tuple[list[TranscribedSegment], dict[int, TimingSource]]:

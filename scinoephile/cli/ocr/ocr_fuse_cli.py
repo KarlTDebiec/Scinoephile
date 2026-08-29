@@ -34,12 +34,12 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.zho.script.conversion import (
+from scinoephile.core.script import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
     OpenCCConfig,
-    get_zho_converted,
 )
+from scinoephile.lang.zho.script.conversion import get_zho_converted
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.clean import clean_series
 from scinoephile.workflows.ocr_fusion import fuse_ocr_series
@@ -201,7 +201,22 @@ class OcrFuseCli(ScinoephileCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Fuse OCR series and write the resulting subtitles.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            language: subtitle language
+            lens_infile_path: Google Lens OCR subtitle file or `-` for stdin
+            tesseract_infile_path: optional Tesseract OCR subtitle file
+            paddle_infile_path: optional PaddleOCR subtitle file
+            clean: whether to clean fused subtitle text
+            convert: optional Chinese script conversion configuration
+            llm_args: LLM configuration
+            cache_args: cache configuration
+            json_path: optional test-case JSON path
+            outfile_path: optional output subtitle file
+            overwrite: whether to overwrite existing outputs
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:

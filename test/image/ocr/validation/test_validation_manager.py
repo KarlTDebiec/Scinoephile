@@ -18,7 +18,13 @@ from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 def test_validate_confident_space_gap_updates_text(
     tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
-    """Test confident space gap mismatches are corrected without warning."""
+    """Test confident space gap mismatches are corrected without warning.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+        caplog: pytest log-capture fixture
+    """
     monkeypatch.setattr(
         "scinoephile.image.ocr.validation.validation_manager.get_bboxes",
         lambda img: [Bbox(0, 10, 0, 20), Bbox(18, 28, 0, 20)],
@@ -36,7 +42,13 @@ def test_validate_confident_space_gap_updates_text(
 def test_validate_confident_adjacent_gap_updates_text(
     tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
-    """Test confident adjacent gap mismatches are corrected without warning."""
+    """Test confident adjacent gap mismatches are corrected without warning.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+        caplog: pytest log-capture fixture
+    """
     monkeypatch.setattr(
         "scinoephile.image.ocr.validation.validation_manager.get_bboxes",
         lambda img: [Bbox(0, 10, 0, 20), Bbox(11, 21, 0, 20)],
@@ -54,7 +66,13 @@ def test_validate_confident_adjacent_gap_updates_text(
 def test_validate_confident_tab_gap_updates_newline_to_tab(
     tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
-    """Test confident tab gap replaces an OCR newline without warning."""
+    """Test confident tab gap replaces an OCR newline without warning.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+        caplog: pytest log-capture fixture
+    """
     monkeypatch.setattr(
         "scinoephile.image.ocr.validation.validation_manager.get_bboxes",
         lambda img: [Bbox(0, 10, 0, 20), Bbox(32, 42, 0, 20)],
@@ -72,7 +90,13 @@ def test_validate_confident_tab_gap_updates_newline_to_tab(
 def test_validate_ambiguous_gap_warns_without_updating_text(
     tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
-    """Test ambiguous gaps warn and leave the subtitle text unchanged."""
+    """Test ambiguous gaps warn and leave the subtitle text unchanged.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+        caplog: pytest log-capture fixture
+    """
     monkeypatch.setattr(
         "scinoephile.image.ocr.validation.validation_manager.get_bboxes",
         lambda img: [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],

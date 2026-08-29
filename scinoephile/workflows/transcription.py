@@ -85,6 +85,8 @@ def transcribe_series(
         stop_at_idx: exclusive zero-based block index at which to stop
     Returns:
         merged and timed audio subtitle series
+    Raises:
+        RuntimeError: if the operation cannot be completed
     """
     if pipeline is None:
         pipeline = get_transcription_pipeline(
@@ -137,7 +139,6 @@ def transcribe_series_guided(
     overwrite_cache: bool = False,
     strip_generated_punctuation: bool = False,
     mlx_audio_timing_mode: MlxAudioTimingMode = MlxAudioTimingMode.CTC_UNIT,
-    mlx_audio_token_limit_guard: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     no_op: bool = False,
@@ -167,7 +168,6 @@ def transcribe_series_guided(
         strip_generated_punctuation: whether to remove generated sentence
             punctuation after timing and before guided alignment
         mlx_audio_timing_mode: granularity of MLX-Audio CTC timing units
-        mlx_audio_token_limit_guard: whether to guard constrained MLX-Audio models
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
         no_op: use neutral answers instead of querying an LLM
@@ -199,7 +199,6 @@ def transcribe_series_guided(
             overwrite_cache=overwrite_cache,
             strip_generated_punctuation=strip_generated_punctuation,
             mlx_audio_timing_mode=mlx_audio_timing_mode,
-            mlx_audio_token_limit_guard=mlx_audio_token_limit_guard,
             provider=provider,
             additional_context=additional_context,
             no_op=no_op,

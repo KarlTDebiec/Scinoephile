@@ -401,6 +401,8 @@ class DictionarySqliteStore:
 
         Arguments:
             connection: SQLAlchemy connection
+        Raises:
+            OperationalError: if the operation fails
         """
         self._metadata.create_all(connection)
         try:
@@ -491,6 +493,8 @@ class DictionarySqliteStore:
 
         Arguments:
             connection: SQLAlchemy connection
+        Raises:
+            OperationalError: if the operation fails
         """
         try:
             connection.execute(
@@ -542,6 +546,8 @@ class DictionarySqliteStore:
             source_id: related source identifier
         Returns:
             definition identifier
+        Raises:
+            RuntimeError: if the operation cannot be completed
         """
         result = connection.execute(
             sqlite_insert(DictionarySqliteStore._definitions)
@@ -580,6 +586,8 @@ class DictionarySqliteStore:
             entry: dictionary entry
         Returns:
             entry identifier
+        Raises:
+            RuntimeError: if the operation cannot be completed
         """
         result = connection.execute(
             sqlite_insert(DictionarySqliteStore._entries)
@@ -619,6 +627,8 @@ class DictionarySqliteStore:
             source: source metadata
         Returns:
             source identifier
+        Raises:
+            RuntimeError: if the operation cannot be completed
         """
         result = connection.execute(
             DictionarySqliteStore._sources.insert().values(

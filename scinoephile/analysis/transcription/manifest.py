@@ -118,7 +118,11 @@ class RunManifest(BaseModel):
 
     @model_validator(mode="after")
     def _validate_document(self) -> RunManifest:
-        """Validate selected block order and bounds."""
+        """Validate selected block order and bounds.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if self.excluded_blocks != tuple(sorted(set(self.excluded_blocks))):
             raise ValueError(
                 "Excluded transcription block numbers must be unique and ordered."

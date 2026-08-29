@@ -177,7 +177,15 @@ class _DummyClient:
             def raw_parse(
                 *, messages: list[dict[str, object]], model: str, **kwargs: Any
             ) -> SimpleNamespace:
-                """Return a raw response carrying retry metadata."""
+                """Return a raw response carrying retry metadata.
+
+                Arguments:
+                    messages: messages value
+                    model: model
+                    **kwargs: additional keyword arguments
+                Returns:
+                    a raw response carrying retry metadata
+                """
                 self.parse_calls += 1
                 completion = create(messages=messages, model=model, **kwargs)
                 return SimpleNamespace(parse=lambda: completion, retries_taken=2)
@@ -187,7 +195,13 @@ class _DummyClient:
 
 
 def _get_tool_box(handler: Callable[[dict[str, object]], object]) -> ToolBox:
-    """Build a tool box for the shared dummy tool."""
+    """Build a tool box for the shared dummy tool.
+
+    Arguments:
+        handler: handler value
+    Returns:
+        a tool box for the shared dummy tool
+    """
     return ToolBox(
         [
             Tool(
@@ -406,7 +420,11 @@ def test_custom_timeout_is_stored():
 
 @mark.parametrize("timeout_seconds", [0.0, -1.0])
 def test_timeout_must_be_positive(timeout_seconds: float):
-    """Test provider request timeouts must be positive."""
+    """Test provider request timeouts must be positive.
+
+    Arguments:
+        timeout_seconds: timeout seconds value
+    """
     with raises(ValueError, match="timeout_seconds must be positive"):
         _DummyProvider(timeout_seconds=timeout_seconds)
 
@@ -445,7 +463,11 @@ def test_cache_identity_contains_nonsecret_effective_configuration():
 
 
 def test_cache_identity_uses_effective_sdk_base_url(monkeypatch):
-    """Test cache identity honors the SDK's base URL environment override."""
+    """Test cache identity honors the SDK's base URL environment override.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setenv("OPENAI_BASE_URL", "https://environment.invalid/v1/")
     provider = _DummyProvider(api_key="super-secret")
 

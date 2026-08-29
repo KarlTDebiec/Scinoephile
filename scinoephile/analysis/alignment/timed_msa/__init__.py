@@ -10,8 +10,15 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .aligner import Aligner, Settings
-from .alignment import Alignment
-from .models import AlignmentSequence, Column, Token
+from .aligner import MsaAligner, MsaSettings
+from .alignment import MsaAlignment
+from .models import MsaColumn, MsaSequence, MsaToken
 
-__all__ = ["Aligner", "Alignment", "AlignmentSequence", "Column", "Settings", "Token"]
+__all__ = [
+    "MsaAligner",
+    "MsaAlignment",
+    "MsaColumn",
+    "MsaSequence",
+    "MsaSettings",
+    "MsaToken",
+]

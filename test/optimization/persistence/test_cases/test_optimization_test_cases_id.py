@@ -12,12 +12,24 @@ from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 
 def _get_translation_answer(text: str) -> dict[str, JsonValue]:
-    """Get a canonical translation answer payload."""
+    """Get a canonical translation answer payload.
+
+    Arguments:
+        text: text
+    Returns:
+        a canonical translation answer payload
+    """
     return {"outputs": [{"index": 1, "text": text}]}
 
 
 def _get_translation_query(text: str) -> dict[str, JsonValue]:
-    """Get a canonical translation query payload."""
+    """Get a canonical translation query payload.
+
+    Arguments:
+        text: text
+    Returns:
+        a canonical translation query payload
+    """
     return {"subtitles": [{"index": 1, "text": text}]}
 
 

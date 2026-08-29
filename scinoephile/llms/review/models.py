@@ -34,7 +34,11 @@ class ReviewQuery(Query):
 
     @model_validator(mode="after")
     def validate_subtitle_indices(self) -> Self:
-        """Ensure subtitle indexes are consecutive, ordered, and begin at 1."""
+        """Ensure subtitle indexes are consecutive, ordered, and begin at 1.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         indexes = [subtitle.index for subtitle in self.subtitles]
         if indexes != list(range(1, len(indexes) + 1)):
             raise ValueError(self.prompt.subtitle_indices_err)
@@ -51,7 +55,11 @@ class ReviewAnswer(Answer):
 
     @model_validator(mode="after")
     def validate_revision_indices(self) -> Self:
-        """Ensure revision indexes are unique and in ascending order."""
+        """Ensure revision indexes are unique and in ascending order.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         indexes = [revision.index for revision in self.revisions]
         if indexes != sorted(set(indexes)):
             raise ValueError(self.prompt.revision_indices_err)
@@ -97,6 +105,8 @@ class ReviewTestCase(TestCase):
 
         Returns:
             validated test case
+        Raises:
+            ValueError: if a value is invalid
         """
         if self.answer is None:
             return self

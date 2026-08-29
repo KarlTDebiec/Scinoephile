@@ -27,8 +27,8 @@ logger = getLogger(__name__)
 def get_temp_directory_path() -> Generator[Path]:
     """Provide path to a temporary directory and remove it once no longer needed.
 
-    Returns:
-        Path to temporary directory
+    Yields:
+        path to temporary directory
     """
     temp_directory_path = None
     try:
@@ -44,9 +44,9 @@ def get_temp_file_path(suffix: str | None = None) -> Generator[Path]:
     """Provide path to a temporary file and remove it once no longer needed.
 
     Arguments:
-        suffix: Suffix of named temporary file
-    Returns:
-        Path to temporary file
+        suffix: suffix of named temporary file
+    Yields:
+        path to temporary file
     """
     temp_file_path = None
     try:
@@ -79,8 +79,10 @@ def open_atomic_text_file(
     Arguments:
         output_path: path to replace after writing succeeds
         encoding: text encoding
-    Returns:
+    Yields:
         writable temporary text file
+    Raises:
+        BaseException: if the operation fails
     """
     temp_file = NamedTemporaryFile(
         "w",

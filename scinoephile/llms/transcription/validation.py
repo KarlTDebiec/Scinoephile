@@ -171,7 +171,17 @@ class TranscriptionAlignmentScorer:
         answer_characters: Sequence[str],
         source_count: int,
     ) -> tuple[int | None, ...]:
-        """Project answer characters onto fixed profile columns."""
+        """Project answer characters onto fixed profile columns.
+
+        Arguments:
+            profile_columns: indexed source-character profile columns
+            answer_characters: answer characters to project
+            source_count: total number of transcription sources
+        Returns:
+            profile column index for each answer character, when mapped
+        Raises:
+            RuntimeError: if the operation cannot be completed
+        """
         profile_length = len(profile_columns)
         answer_length = len(answer_characters)
         scores = [
@@ -236,7 +246,14 @@ class TranscriptionAlignmentScorer:
     def _has_strict_majority(
         self, source_characters: Sequence[str], source_count: int
     ) -> bool:
-        """Whether any character has strict strong-equivalent source support."""
+        """Check whether any character has strict strong-equivalent source support.
+
+        Arguments:
+            source_characters: source characters in one profile column
+            source_count: total number of transcription sources
+        Returns:
+            whether one character has strict majority support
+        """
         for candidate in source_characters:
             count = sum(
                 self.get_character_relationship(candidate, character)
@@ -251,7 +268,13 @@ class TranscriptionAlignmentScorer:
     def _get_relationship_score(
         relationship: TranscriptionCharacterRelationship,
     ) -> float:
-        """Get the profile-alignment substitution score for a relationship."""
+        """Get the profile-alignment substitution score for a relationship.
+
+        Arguments:
+            relationship: relationship between answer and source characters
+        Returns:
+            substitution score
+        """
         if relationship is TranscriptionCharacterRelationship.exact:
             return 6.0
         if relationship is TranscriptionCharacterRelationship.equivalent:
@@ -262,7 +285,13 @@ class TranscriptionAlignmentScorer:
 
 
 def _validate_rows(source_texts: Sequence[str]):
-    """Validate aligned source row widths."""
+    """Validate aligned source row widths.
+
+    Arguments:
+        source_texts: aligned source rows
+    Raises:
+        ValueError: if a value is invalid
+    """
     if not source_texts:
         raise ValueError("Transcription validation requires at least one source.")
     row_lengths = {len(source_text) for source_text in source_texts}

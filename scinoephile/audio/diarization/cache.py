@@ -15,6 +15,7 @@ from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.cache.artifact import remove_cache_artifact
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .models import SpeakerDiarizationResult
@@ -53,9 +54,7 @@ class SpeakerDiarizationCache:
         self._refreshed_paths: set[Path] = set()
         """Cache paths refreshed by this cache instance."""
 
-    def get_path(
-        self, audio: AudioSegment, cache_identity: Mapping[str, object]
-    ) -> Path:
+    def get_path(self, audio: AudioSegment, cache_identity: CacheIdentity) -> Path:
         """Get the cache path for audio and pipeline configuration.
 
         Arguments:
@@ -76,7 +75,7 @@ class SpeakerDiarizationCache:
         return self.cache_dir_path / f"{cache_hash.hexdigest()}.json"
 
     def load(
-        self, audio: AudioSegment, cache_identity: Mapping[str, object]
+        self, audio: AudioSegment, cache_identity: CacheIdentity
     ) -> SpeakerDiarizationResult | None:
         """Load a cached source-wide speaker diarization result.
 
@@ -85,6 +84,8 @@ class SpeakerDiarizationCache:
             cache_identity: pipeline configuration identifying the output
         Returns:
             validated diarization result, if present
+        Raises:
+            ValueError: if a value is invalid
         """
         cache_path = self.get_path(audio, cache_identity)
         if self.overwrite and cache_path not in self._refreshed_paths:
@@ -123,7 +124,7 @@ class SpeakerDiarizationCache:
     def save(
         self,
         audio: AudioSegment,
-        cache_identity: Mapping[str, object],
+        cache_identity: CacheIdentity,
         result: SpeakerDiarizationResult,
     ) -> Path:
         """Save a source-wide speaker diarization result.
@@ -149,8 +150,8 @@ class SpeakerDiarizationCache:
 
     @staticmethod
     def _get_cache_identity(
-        audio: AudioSegment, cache_identity: Mapping[str, object]
-    ) -> dict[str, object]:
+        audio: AudioSegment, cache_identity: CacheIdentity
+    ) -> CacheIdentity:
         """Get the complete cache identity.
 
         Arguments:

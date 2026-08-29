@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Iterator
-from importlib.metadata import PackageNotFoundError, version
+from functools import cached_property
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
@@ -13,16 +13,18 @@ from typing import TYPE_CHECKING, cast
 import numpy as np
 
 from scinoephile.audio.waveform import to_mono_int16
+from scinoephile.core.cache.identity import CacheIdentity
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import (
     import_pyannote_audio,
     import_torch,
 )
-from scinoephile.core.ml import get_huggingface_snapshot_dir_path
+from scinoephile.core.exceptions import DependencyError
+from scinoephile.core.ml import get_huggingface_snapshot_dir_path, get_torch_device
 
 from .cache import SpeakerDiarizationCache
 from .exceptions import (
     SpeakerDiarizationAuthorizationError,
-    SpeakerDiarizationDependencyError,
     SpeakerDiarizationInferenceError,
 )
 from .models import SpeakerDiarizationResult, SpeakerTurn
@@ -71,7 +73,7 @@ class PyannoteDiarizer:
             model_id: Hugging Face pipeline identifier
             model_revision: exact Hugging Face model revision; None selects the
                 pinned Community-1 revision or a custom repository's default
-            device: Torch device, or None to use CPU
+            device: Torch device, or None to select the available accelerator
             num_speakers: exact source-wide speaker count, when known
             min_speakers: minimum source-wide speaker count, when known
             max_speakers: maximum source-wide speaker count, when known
@@ -104,8 +106,8 @@ class PyannoteDiarizer:
             model_revision = _DEFAULT_MODEL_REVISION
         self.model_revision = model_revision
         """Exact Hugging Face pipeline and model-asset revision, or None."""
-        self.device = device or "cpu"
-        """Torch device used for local inference."""
+        self._device = device
+        """Explicit Torch device, or None to select one lazily."""
         self.num_speakers = num_speakers
         """Exact source-wide speaker count, when known."""
         self.min_speakers = min_speakers
@@ -117,6 +119,19 @@ class PyannoteDiarizer:
         self._pipeline: object | None = None
         """Lazily loaded pyannote pipeline."""
 
+    @cached_property
+    def device(self) -> str:
+        """Get the Torch device used for local inference.
+
+        Returns:
+            configured or automatically selected Torch device
+        Raises:
+            DependencyError: if Torch is unavailable
+        """
+        if self._device is None:
+            self._device = get_torch_device()
+        return self._device
+
     def __call__(self, audio: AudioSegment) -> SpeakerDiarizationResult:
         """Diarize complete source audio.
 
@@ -126,7 +141,7 @@ class PyannoteDiarizer:
             regular and exclusive source-timeline speaker turns
         Raises:
             SpeakerDiarizationAuthorizationError: if model access is not authorized
-            SpeakerDiarizationDependencyError: if optional dependencies are missing
+            DependencyError: if optional dependencies are missing
             SpeakerDiarizationInferenceError: if loading or inference fails
         """
         cache_identity = self.cache_identity
@@ -134,9 +149,10 @@ class PyannoteDiarizer:
         if cached_result is not None:
             return cached_result
 
+        logger.info(f"Running pyannote speaker diarization on {self.device}.")
         pipeline = self._get_pipeline()
+        torch = import_torch()
         try:
-            torch = import_torch()
             samples = to_mono_int16(audio, _WAVEFORM_FRAME_RATE)
             waveform = samples.reshape(1, -1).astype(np.float32)
             waveform /= float(1 << (8 * _WAVEFORM_SAMPLE_WIDTH - 1))
@@ -174,21 +190,20 @@ class PyannoteDiarizer:
         return result
 
     @property
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the pipeline, runtime, and inference configuration identity.
 
         Returns:
             configuration identifying reusable diarization output
         Raises:
-            SpeakerDiarizationDependencyError: if pyannote.audio is unavailable
+            DependencyError: if pyannote.audio or Torch is unavailable
         """
-        try:
-            pyannote_audio_version = version("pyannote.audio")
-        except PackageNotFoundError as exc:
-            raise SpeakerDiarizationDependencyError(
+        pyannote_audio_identity = get_distribution_identity("pyannote.audio")
+        if pyannote_audio_identity["version"] == "unavailable":
+            raise DependencyError(
                 "Speaker diarization requires pyannote.audio. Install Scinoephile "
                 "with the 'transcription' extra."
-            ) from exc
+            )
         return {
             "device": self.device,
             "max_speakers": self.max_speakers,
@@ -197,8 +212,8 @@ class PyannoteDiarizer:
             "model_revision": self.model_revision,
             "num_speakers": self.num_speakers,
             "runtime": {
-                "distribution": "pyannote.audio",
-                "version": pyannote_audio_version,
+                "pyannote_audio": pyannote_audio_identity,
+                "torch": get_distribution_identity("torch"),
             },
             "waveform_channels": _WAVEFORM_CHANNELS,
             "waveform_frame_rate": _WAVEFORM_FRAME_RATE,
@@ -212,7 +227,7 @@ class PyannoteDiarizer:
             configured pyannote pipeline
         Raises:
             SpeakerDiarizationAuthorizationError: if model access is not authorized
-            SpeakerDiarizationDependencyError: if optional dependencies are missing
+            DependencyError: if optional dependencies are missing
             SpeakerDiarizationInferenceError: if pipeline loading fails
         """
         if self._pipeline is not None:
@@ -232,12 +247,7 @@ class PyannoteDiarizer:
                 )
             torch = import_torch()
             pipeline.to(torch.device(self.device))
-        except ImportError as exc:
-            raise SpeakerDiarizationDependencyError(
-                "Speaker diarization requires pyannote.audio. Install Scinoephile "
-                "with the 'transcription' extra."
-            ) from exc
-        except SpeakerDiarizationAuthorizationError:
+        except (DependencyError, SpeakerDiarizationAuthorizationError):
             raise
         except Exception as exc:
             exception_name = type(exc).__name__

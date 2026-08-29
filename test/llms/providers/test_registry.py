@@ -32,7 +32,11 @@ from scinoephile.llms.providers.registry import (
 
 @fixture(autouse=True)
 def restore_provider_registry():
-    """Restore registered LLM providers after each test."""
+    """Restore registered LLM providers after each test.
+
+    Yields:
+        control before restoring the provider registry
+    """
     provider_factories = provider_registry._PROVIDER_FACTORIES.copy()
     yield
     provider_registry._PROVIDER_FACTORIES.clear()
@@ -165,7 +169,16 @@ class _DummyProvider(LLMProvider):
         tool_box: ToolBox | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
-        """Return a fixed completion value."""
+        """Return a fixed completion value.
+
+        Arguments:
+            messages: messages value
+            response_format: response format value
+            tool_box: tool box value
+            **kwargs: additional keyword arguments
+        Returns:
+            a fixed completion value
+        """
         _ = (messages, response_format, tool_box, kwargs)
         return "{}"
 

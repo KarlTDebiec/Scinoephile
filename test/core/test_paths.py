@@ -15,7 +15,11 @@ from scinoephile.core.paths import (
 
 
 def test_get_runtime_cache_root_path_uses_configured_path(tmp_path: Path):
-    """Test configured cache path is used as the exact cache root."""
+    """Test configured cache path is used as the exact cache root.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     with patch.dict(environ, {"SCINOEPHILE_CACHE_DIR": str(tmp_path)}):
         cache_root_path = get_runtime_cache_root_path(create=False)
 
@@ -32,7 +36,11 @@ def test_get_runtime_cache_root_path_handles_windows_missing_home_environment():
 
 
 def test_get_runtime_data_root_path_uses_configured_path(tmp_path: Path):
-    """Test configured data path is used as the exact data root."""
+    """Test configured data path is used as the exact data root.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     with patch.dict(environ, {"SCINOEPHILE_DATA_DIR": str(tmp_path)}):
         data_root_path = get_runtime_data_root_path(create=False)
 

@@ -9,11 +9,16 @@ from collections.abc import Mapping, Sequence
 
 from pytest import MonkeyPatch, raises
 
+from scinoephile.core import DependencyError
 from scinoephile.core.dependencies.transcription import import_demucs_infer_pretrained
 
 
 def test_demucs_model_loader_requires_transcription_extra(monkeypatch: MonkeyPatch):
-    """Test Demucs import errors mention the transcription extra."""
+    """Test Demucs import errors mention the transcription extra.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     original_import = builtins.__import__
 
     def import_without_demucs(
@@ -23,11 +28,24 @@ def test_demucs_model_loader_requires_transcription_extra(monkeypatch: MonkeyPat
         fromlist: Sequence[str] | None = (),
         level: int = 0,
     ) -> object:
+        """Import modules while blocking the Demucs dependency.
+
+        Arguments:
+            name: module name
+            globals: importing module globals
+            locals: importing module locals
+            fromlist: names requested from the module
+            level: relative import level
+        Returns:
+            imported module
+        Raises:
+            ImportError: if a Demucs module is requested
+        """
         if name.split(".", 1)[0] == "demucs_infer":
             raise ImportError("blocked optional dependency")
         return original_import(name, globals, locals, fromlist, level)
 
     monkeypatch.setattr(builtins, "__import__", import_without_demucs)
 
-    with raises(ImportError, match="'transcription' extra"):
+    with raises(DependencyError, match="'transcription' extra"):
         import_demucs_infer_pretrained()

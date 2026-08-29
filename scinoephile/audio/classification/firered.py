@@ -12,18 +12,17 @@ from typing import TYPE_CHECKING, cast
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.waveform import to_mono_int16
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.transcription import (
     import_firered_aed,
     import_firered_lid,
 )
+from scinoephile.core.exceptions import DependencyError
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
 from .cache import AudioClassificationCache
-from .exceptions import (
-    AudioClassificationDependencyError,
-    AudioClassificationInferenceError,
-)
+from .exceptions import AudioClassificationInferenceError
 from .models import (
     AudioEvent,
     AudioEventDetectionResult,
@@ -39,8 +38,6 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
-_FIRERED_RUNTIME_REVISION = "4e7d9aaf4482a47cec1724807026b9b151926eb5"
-"""Pinned FireRedASR2S runtime revision."""
 _LANGUAGE_MODEL_ID = "FireRedTeam/FireRedLID"
 """Official FireRed spoken-language identification model."""
 _LANGUAGE_MODEL_REVISION = "1bb4d285c8456429385d9c0810300df4297bc11b"
@@ -129,7 +126,7 @@ class FireRedLanguageIdentifier:
         Returns:
             source-timeline language identification spans
         Raises:
-            AudioClassificationDependencyError: if optional dependencies are missing
+            DependencyError: if optional dependencies are missing
             AudioClassificationInferenceError: if model loading or inference fails
             ValueError: if the offset or source intervals are invalid
         """
@@ -208,7 +205,7 @@ class FireRedLanguageIdentifier:
 
     def _get_cache_identity(
         self, windows: Sequence[tuple[float, float]], offset_seconds: float
-    ) -> dict[str, object]:
+    ) -> CacheIdentity:
         """Get exact model identity and result-affecting settings.
 
         Arguments:
@@ -221,10 +218,7 @@ class FireRedLanguageIdentifier:
             "model_id": _LANGUAGE_MODEL_ID,
             "model_revision": _LANGUAGE_MODEL_REVISION,
             "offset_seconds": offset_seconds,
-            "runtime": {
-                **get_distribution_identity("fireredasr2s"),
-                "source_revision": _FIRERED_RUNTIME_REVISION,
-            },
+            "runtime": get_distribution_identity("fireredasr2s"),
             "analysis_windows": [[start, end] for start, end in windows],
             "use_gpu": self.use_gpu,
             "use_half": self.use_half,
@@ -239,7 +233,7 @@ class FireRedLanguageIdentifier:
         Returns:
             loaded FireRedLID model
         Raises:
-            AudioClassificationDependencyError: if optional dependencies are missing
+            DependencyError: if optional dependencies are missing
             AudioClassificationInferenceError: if the model cannot be loaded
         """
         if self._model is not None:
@@ -258,8 +252,8 @@ class FireRedLanguageIdentifier:
             )
             config = config_factory(use_gpu=self.use_gpu, use_half=self.use_half)
             self._model = model_factory(model_dir_path, config)
-        except ImportError as exc:
-            raise AudioClassificationDependencyError(str(exc)) from exc
+        except DependencyError:
+            raise
         except Exception as exc:
             raise AudioClassificationInferenceError(
                 f"Unable to load FireRedLID: {exc}"
@@ -360,7 +354,7 @@ class FireRedAudioEventDetector:
         Returns:
             source-timeline audio event spans
         Raises:
-            AudioClassificationDependencyError: if optional dependencies are missing
+            DependencyError: if optional dependencies are missing
             AudioClassificationInferenceError: if model loading or inference fails
             ValueError: if the offset is negative
         """
@@ -407,7 +401,7 @@ class FireRedAudioEventDetector:
         self._cache.save(audio, cache_identity, output)
         return output
 
-    def _get_cache_identity(self, offset_seconds: float) -> dict[str, object]:
+    def _get_cache_identity(self, offset_seconds: float) -> CacheIdentity:
         """Get exact model identity and result-affecting settings.
 
         Arguments:
@@ -419,10 +413,7 @@ class FireRedAudioEventDetector:
             "model_id": _EVENT_MODEL_ID,
             "model_revision": _EVENT_MODEL_REVISION,
             "offset_seconds": offset_seconds,
-            "runtime": {
-                **get_distribution_identity("fireredasr2s"),
-                "source_revision": _FIRERED_RUNTIME_REVISION,
-            },
+            "runtime": get_distribution_identity("fireredasr2s"),
             "thresholds": {
                 event.value: threshold for event, threshold in self.thresholds.items()
             },
@@ -438,7 +429,7 @@ class FireRedAudioEventDetector:
         Returns:
             loaded FireRed multi-label VAD model
         Raises:
-            AudioClassificationDependencyError: if optional dependencies are missing
+            DependencyError: if optional dependencies are missing
             AudioClassificationInferenceError: if the model cannot be loaded
         """
         if self._model is not None:
@@ -462,8 +453,8 @@ class FireRedAudioEventDetector:
                 music_threshold=self.thresholds[AudioEvent.MUSIC],
             )
             self._model = model_factory(model_root / "AED", config)
-        except ImportError as exc:
-            raise AudioClassificationDependencyError(str(exc)) from exc
+        except DependencyError:
+            raise
         except Exception as exc:
             raise AudioClassificationInferenceError(
                 f"Unable to load FireRed multi-label VAD: {exc}"

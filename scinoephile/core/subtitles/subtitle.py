@@ -104,7 +104,11 @@ class Subtitle(SSAEvent):
 
     @override
     def __repr__(self) -> str:
-        """String representation."""
+        """Get a concise representation of this subtitle.
+
+        Returns:
+            subtitle summary
+        """
         return (
             f"<{self.__class__.__name__} "
             f"start={ms_to_str(self.start, True)} "

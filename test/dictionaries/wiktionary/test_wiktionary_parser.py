@@ -16,7 +16,11 @@ from scinoephile.dictionaries.wiktionary.parser import WiktionaryDictionaryParse
 
 @fixture
 def source_jsonl_path() -> Generator[Path]:
-    """Provide a temporary Kaikki JSONL source path."""
+    """Provide a temporary Kaikki JSONL source path.
+
+    Yields:
+        temporary Kaikki JSONL path
+    """
     with get_temp_file_path(".jsonl") as temp_path:
         yield temp_path
 

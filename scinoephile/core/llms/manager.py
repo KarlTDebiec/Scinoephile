@@ -9,7 +9,7 @@ from collections.abc import Mapping
 from copy import copy
 from dataclasses import dataclass
 from functools import cache
-from typing import Any, ClassVar, cast
+from typing import Any, ClassVar, Generic, TypeVar, cast
 
 from pydantic import create_model
 
@@ -20,6 +20,8 @@ from .query import Query
 from .test_case import TestCase
 
 __all__ = ["Manager", "PromptModelField"]
+
+TTestCase_co = TypeVar("TTestCase_co", bound=TestCase, covariant=True)
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -34,7 +36,7 @@ class PromptModelField:
     """JSON schema description, or None to retain the semantic description."""
 
 
-class Manager[TTestCase: TestCase](ABC):
+class Manager(Generic[TTestCase_co], ABC):  # noqa: UP046
     """ABC for LLM managers."""
 
     operation: ClassVar[str]
@@ -102,6 +104,8 @@ class Manager[TTestCase: TestCase](ABC):
             prompt: text for LLM correspondence
         Returns:
             answer model class
+        Raises:
+            NotImplementedError: if the operation is not implemented
         """
         raise NotImplementedError
 
@@ -113,12 +117,14 @@ class Manager[TTestCase: TestCase](ABC):
             prompt: text for LLM correspondence
         Returns:
             query model class
+        Raises:
+            NotImplementedError: if the operation is not implemented
         """
         raise NotImplementedError
 
     @classmethod
     @cache
-    def get_test_case_cls(cls, prompt: Prompt) -> type[TTestCase]:
+    def get_test_case_cls(cls, prompt: Prompt) -> type[TTestCase_co]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
@@ -147,4 +153,4 @@ class Manager[TTestCase: TestCase](ABC):
         model.query_cls = query_cls
         model.answer_cls = answer_cls
         model.operation = cls.operation
-        return cast("type[TTestCase]", model)
+        return cast("type[TTestCase_co]", model)

@@ -122,7 +122,11 @@ def test_query_and_answer_require_nonempty_consecutive_indexes():
 def test_answer_indexes_must_correspond_to_query_indexes(
     test_case_cls: type[TranslationTestCase],
 ):
-    """Every query subtitle should have exactly one corresponding output."""
+    """Every query subtitle should have exactly one corresponding output.
+
+    Arguments:
+        test_case_cls: test case cls value
+    """
     with raises(ValidationError, match="correspond exactly"):
         test_case_cls.model_validate(
             {
@@ -151,7 +155,11 @@ def test_translation_preserves_text_length_bounds():
 
 
 def test_json_uses_base_prompt_fields(tmp_path: Path):
-    """JSON should persist base fields and load them into a concrete prompt."""
+    """JSON should persist base fields and load them into a concrete prompt.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = TranslationManager.get_test_case_cls(_LOCALIZED_PROMPT)
     test_case = test_case_cls.model_validate(
         {

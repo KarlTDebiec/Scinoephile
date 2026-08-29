@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.alignment.timed_msa.models import Token
+from scinoephile.analysis.alignment.timed_msa import MsaToken
 from scinoephile.analysis.audit.transcription.report import (
     audit_transcription_alignment,
     render_transcription_alignment_terminal,
@@ -30,7 +30,7 @@ def test_audit_accepts_custom_token_similarity():
     reference = Series(events=[Subtitle(start=800, end=2_300, text="是嗎")])
     compared_characters = []
 
-    def similarity(one: Token, two: Token) -> float:
+    def similarity(one: MsaToken, two: MsaToken) -> float:
         """Record compared characters and prefer identical text.
 
         Arguments:
@@ -458,7 +458,7 @@ def test_audit_uses_token_similarity_for_merge_support():
     """The support row should count language-aware character matches."""
     artifact = _get_artifact()
 
-    def similarity(one: Token, two: Token) -> float:
+    def similarity(one: MsaToken, two: MsaToken) -> float:
         """Treat common copula forms as equivalent.
 
         Arguments:

@@ -17,7 +17,11 @@ from test.helpers.files import set_mtime
 
 
 def test_response_cache_overwrites_matching_entry_once(tmp_path: Path):
-    """Test overwrite refreshes a matching CUHK response once per instance."""
+    """Test overwrite refreshes a matching CUHK response once per instance.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = CuhkResponseCache(tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY)
     cache.save("terms", "stale")
     overwrite_cache = CuhkResponseCache(
@@ -31,7 +35,11 @@ def test_response_cache_overwrites_matching_entry_once(tmp_path: Path):
 
 
 def test_response_cache_marks_matching_entry_used(tmp_path: Path):
-    """Test a CUHK response cache hit refreshes its pruning timestamp."""
+    """Test a CUHK response cache hit refreshes its pruning timestamp.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = CuhkResponseCache(tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY)
     cache_path = cache.save("terms", "cached")
     old_timestamp = time() - 60 * 60 * 24 * 40
@@ -44,7 +52,11 @@ def test_response_cache_marks_matching_entry_used(tmp_path: Path):
 
 
 def test_response_cache_discards_invalid_entry(tmp_path: Path):
-    """Test an unreadable CUHK response cache is treated as a miss."""
+    """Test an unreadable CUHK response cache is treated as a miss.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = CuhkResponseCache(tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY)
     cache_path = cache.get_path("terms")
     cache_path.parent.mkdir()
@@ -55,7 +67,11 @@ def test_response_cache_discards_invalid_entry(tmp_path: Path):
 
 
 def test_response_cache_namespaces_mirror_package_layout(tmp_path: Path):
-    """Test CUHK discovery and word pages mirror their package layout."""
+    """Test CUHK discovery and word pages mirror their package layout.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     scraper = CuhkDictionaryScraper(cache_root_path=tmp_path)
 
     assert scraper.discovery_cache.cache_dir_path == (
@@ -67,7 +83,12 @@ def test_response_cache_namespaces_mirror_package_layout(tmp_path: Path):
 
 
 def test_response_cache_paths_include_version(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test CUHK response cache paths differ between cache versions."""
+    """Test CUHK response cache paths differ between cache versions.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     cache = CuhkResponseCache(tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY)
     first_cache_path = cache.get_path("terms")
 
@@ -77,7 +98,11 @@ def test_response_cache_paths_include_version(tmp_path: Path, monkeypatch: Monke
 
 
 def test_response_cache_rejects_unsafe_stem(tmp_path: Path):
-    """Test CUHK response stems may not escape the cache directory."""
+    """Test CUHK response stems may not escape the cache directory.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = CuhkResponseCache(tmp_path, DictionariesCacheNamespace.CUHK_DISCOVERY)
 
     with raises(ValueError, match="single contained filename"):
@@ -87,7 +112,12 @@ def test_response_cache_rejects_unsafe_stem(tmp_path: Path):
 def test_parse_scraped_pages_loads_through_cache(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test cached CUHK pages are validated and marked used before parsing."""
+    """Test cached CUHK pages are validated and marked used before parsing.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     scraper = CuhkDictionaryScraper(cache_root_path=tmp_path)
     valid_path = scraper.scraped_cache.save("valid", "valid")
     invalid_path = scraper.scraped_cache.get_path("invalid")

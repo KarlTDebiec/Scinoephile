@@ -408,7 +408,6 @@ class SeriesDiff:
         Arguments:
             one: first subtitle series
             two: second subtitle series
-
         Returns:
             list of difference messages
         """

@@ -16,7 +16,7 @@ from PIL import Image
 from pytest import MonkeyPatch, raises
 
 from scinoephile.common.subprocess import run_command
-from scinoephile.core import Language
+from scinoephile.core import DependencyError, Language
 from scinoephile.core.dependencies.ocr import import_paddleocr
 from scinoephile.image.ocr.paddle import PaddleCache, PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
@@ -63,7 +63,11 @@ class CountingPaddleRecognizer(PaddleRecognizer):
 
 
 def test_paddle_recognizer_caches_results_by_image(tmp_path: Path):
-    """Test PaddleOCR recognizer caches OCR results by image content."""
+    """Test PaddleOCR recognizer caches OCR results by image content.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     recognizer = CountingPaddleRecognizer(cache_root_path=tmp_path)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
@@ -75,7 +79,11 @@ def test_paddle_recognizer_caches_results_by_image(tmp_path: Path):
 
 
 def test_paddle_recognizer_regenerates_invalid_cache(tmp_path: Path):
-    """Test invalid PaddleOCR cache data is treated as a miss."""
+    """Test invalid PaddleOCR cache data is treated as a miss.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     recognizer = CountingPaddleRecognizer(cache_root_path=tmp_path)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
     assert recognizer.recognize_image(image) == "cached text"
@@ -88,7 +96,11 @@ def test_paddle_recognizer_regenerates_invalid_cache(tmp_path: Path):
 
 
 def test_paddle_recognizer_overwrites_matching_cache(tmp_path: Path):
-    """Test PaddleOCR cache overwrite recognizes matching images again."""
+    """Test PaddleOCR cache overwrite recognizes matching images again.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
     cached = CountingPaddleRecognizer(cache_root_path=tmp_path)
     fresh = CountingPaddleRecognizer(cache_root_path=tmp_path, overwrite_cache=True)
@@ -175,7 +187,7 @@ def test_paddle_recognizer_preserves_root_logger_level(monkeypatch: MonkeyPatch)
     class FakePaddleOCR:
         """Fake PaddleOCR implementation that mutates root logging."""
 
-        def __init__(self, **kwargs: object):
+        def __init__(self, **kwargs: Any):
             """Initialize.
 
             Arguments:
@@ -221,7 +233,11 @@ def test_paddle_recognizer_imports_paddleocr_only_when_needed():
 
 
 def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: MonkeyPatch):
-    """Test PaddleOCR import errors mention the OCR extra."""
+    """Test PaddleOCR import errors mention the OCR extra.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     real_import = __import__
 
     def fake_import(
@@ -250,7 +266,7 @@ def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: MonkeyPatch):
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with raises(ImportError, match="'ocr' extra"):
+    with raises(DependencyError, match="'ocr' extra"):
         import_paddleocr()
 
 

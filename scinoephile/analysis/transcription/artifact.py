@@ -76,7 +76,11 @@ class AlignmentColumn(BaseModel):
 
     @model_validator(mode="after")
     def _validate_timing(self) -> AlignmentColumn:
-        """Validate the overall-time interval."""
+        """Validate the overall-time interval.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if self.end_ms < self.start_ms:
             raise ValueError("Alignment column end must not precede its start.")
         if self.kind == "pause" and self.end_ms == self.start_ms:
@@ -119,7 +123,11 @@ class AlignmentSubtitle(BaseModel):
 
     @model_validator(mode="after")
     def _validate_timing(self) -> AlignmentSubtitle:
-        """Validate speech and display intervals."""
+        """Validate speech and display intervals.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if self.speech_end_ms <= self.speech_start_ms:
             raise ValueError("Subtitle speech duration must be positive.")
         if self.end_ms <= self.start_ms:
@@ -164,7 +172,11 @@ class AlignmentBlock(BaseModel):
     """Source failures that were tolerated while processing the block."""
 
     def _validate_annotation_characters(self) -> None:
-        """Validate speaker, language, singing, and music row characters."""
+        """Validate speaker, language, singing, and music row characters.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if any(
             character not in {"　", "・", "＊"} and not "Ａ" <= character <= "Ｚ"
             for character in self.speaker
@@ -194,7 +206,11 @@ class AlignmentBlock(BaseModel):
                 raise ValueError(f"Alignment {name} row contains an invalid character.")
 
     def _validate_annotations(self) -> None:
-        """Validate production-only annotations and shared pause columns."""
+        """Validate production-only annotations and shared pause columns.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         self._validate_annotation_characters()
         if "｜" in self.merged or any("｜" in row.text for row in self.rows):
             raise ValueError(
@@ -203,7 +219,11 @@ class AlignmentBlock(BaseModel):
         self._validate_pause_columns()
 
     def _validate_pause_columns(self) -> None:
-        """Validate that timed pauses are shared by every present row."""
+        """Validate that timed pauses are shared by every present row.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         for column_idx, column in enumerate(self.columns):
             characters = [
                 self.speaker[column_idx],
@@ -227,7 +247,11 @@ class AlignmentBlock(BaseModel):
                 raise ValueError("Alignment pause markers require a pause column.")
 
     def _validate_ranges(self) -> None:
-        """Validate block and column ranges."""
+        """Validate block and column ranges.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if self.end_ms <= self.start_ms:
             raise ValueError("Alignment block duration must be positive.")
         if not self.columns:
@@ -243,7 +267,11 @@ class AlignmentBlock(BaseModel):
             raise ValueError("Alignment columns must lie within the block.")
 
     def _validate_rows(self) -> None:
-        """Validate aligned row widths, names, and source errors."""
+        """Validate aligned row widths, names, and source errors.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         row_width = len(self.columns)
         if any(len(row.text) != row_width for row in self.rows):
             raise ValueError("Alignment source rows must match the column count.")
@@ -367,6 +395,8 @@ class AlignmentArtifact(BaseModel):
             source_names: expected source names in stable order
             previous_block_index: preceding processed block index
             previous_block_end_ms: preceding processed block end
+        Raises:
+            ValueError: if a value is invalid
         """
         if block.end_ms > self.audio_duration_ms:
             raise ValueError("Alignment block exceeds the source audio duration.")
@@ -390,7 +420,13 @@ class AlignmentArtifact(BaseModel):
             )
 
     def _validate_sources(self) -> tuple[str, ...]:
-        """Validate and return the stable source-name order."""
+        """Validate and return the stable source-name order.
+
+        Returns:
+            stable source names in row order
+        Raises:
+            ValueError: if a value is invalid
+        """
         if len(self.sources) < 2:
             raise ValueError("Transcription alignments require at least two sources.")
         source_names = tuple(source.name for source in self.sources)
@@ -414,6 +450,8 @@ class AlignmentArtifact(BaseModel):
             previous_display_end_ms: preceding SRT display end
         Returns:
             updated subtitle index, speech end, and display end
+        Raises:
+            ValueError: if a value is invalid
         """
         for subtitle in block.subtitles:
             if subtitle.index != previous_subtitle_index + 1:

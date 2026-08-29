@@ -45,7 +45,11 @@ def test_alignment_sha256_is_stable():
 
 @pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf")])
 def test_processor_identity_rejects_nonfinite_provider_values(value: float):
-    """Processor identities should reject values that JSON cannot preserve."""
+    """Processor identities should reject values that JSON cannot preserve.
+
+    Arguments:
+        value: nonfinite provider value
+    """
     digest = "a" * 64
 
     with pytest.raises(ValidationError):
@@ -64,7 +68,12 @@ def test_processor_identity_rejects_nonfinite_provider_values(value: float):
 def test_run_manifest_rejects_invalid_block_indexes(
     indexes: tuple[int, ...], planned_block_count: int
 ):
-    """Run manifests should reject duplicate, unordered, or out-of-plan blocks."""
+    """Run manifests should reject duplicate, unordered, or out-of-plan blocks.
+
+    Arguments:
+        indexes: invalid block indexes
+        planned_block_count: number of planned blocks
+    """
     digest = "a" * 64
 
     with pytest.raises(ValidationError):
@@ -93,7 +102,11 @@ def test_run_manifest_rejects_invalid_block_indexes(
 
 @pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf")])
 def test_run_manifest_rejects_nonfinite_vad_values(value: float):
-    """Run manifests should reject VAD identities that JSON cannot preserve."""
+    """Run manifests should reject VAD identities that JSON cannot preserve.
+
+    Arguments:
+        value: nonfinite VAD value
+    """
     digest = "a" * 64
 
     with pytest.raises(ValidationError):
@@ -119,7 +132,11 @@ def test_run_manifest_rejects_nonfinite_vad_values(value: float):
 
 
 def test_run_manifest_round_trip(tmp_path: Path):
-    """A compact manifest should retain run provenance."""
+    """A compact manifest should retain run provenance.
+
+    Arguments:
+        tmp_path: temporary directory
+    """
     digest = "a" * 64
     manifest = RunManifest(
         language=Language.yue_hant,

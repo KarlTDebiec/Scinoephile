@@ -20,7 +20,13 @@ def test_add_cache_root_arg_resolves_runtime_cache_root():
     create_values: list[bool] = []
 
     def get_runtime_cache_root_path(*, create: bool) -> Path:
-        """Record runtime cache default arguments."""
+        """Record runtime cache default arguments.
+
+        Arguments:
+            create: create value
+        Returns:
+            runtime cache root path
+        """
         create_values.append(create)
         return Path("/cache")
 

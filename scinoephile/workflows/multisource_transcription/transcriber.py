@@ -9,9 +9,7 @@ from logging import getLogger
 
 from pydub import AudioSegment
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column
+from scinoephile.analysis.alignment.timed_msa import MsaAligner, MsaAlignment, MsaColumn
 from scinoephile.analysis.transcription.artifact import TimingSource
 from scinoephile.audio.classification import (
     AudioEventDetectionResult,
@@ -19,7 +17,6 @@ from scinoephile.audio.classification import (
 )
 from scinoephile.audio.diarization.models import SpeakerDiarizationResult
 from scinoephile.audio.transcription import (
-    CtcAligner,
     TranscribedSegment,
     Transcriber,
     TranscriptionEmptyError,
@@ -28,6 +25,7 @@ from scinoephile.audio.transcription import (
 from scinoephile.audio.transcription.alignment_sequence import (
     get_transcription_sequence,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.quality import (
     get_transcription_quality_issue,
     is_low_information_text,
@@ -51,7 +49,7 @@ class MultiSourceTranscriber:
         *,
         language: Language,
         transcribers: Mapping[str, Transcriber],
-        aligner: Aligner,
+        aligner: MsaAligner,
         processor: TranscriptionProcessor,
         ctc_aligner: CtcAligner | None = None,
     ):
@@ -84,9 +82,9 @@ class MultiSourceTranscriber:
             ctc_aligner = CtcAligner(language)
         self.ctc_aligner = ctc_aligner
         """Aligner used to recover final consensus timings."""
-        self.last_alignment: Alignment | None = None
+        self.last_alignment: MsaAlignment | None = None
         """Latest aligned ASR evidence with timed pauses."""
-        self.last_lexical_alignment: Alignment | None = None
+        self.last_lexical_alignment: MsaAlignment | None = None
         """Latest multi-ASR alignment before timed pauses are inserted."""
         self.last_sources: dict[str, list[TranscribedSegment]] = {}
         """Latest successful raw ASR source outputs."""
@@ -292,9 +290,9 @@ class MultiSourceTranscriber:
                     "low-information vocalizations."
                 )
             sequence = get_transcription_sequence(source_name, segments)
-            self.last_lexical_alignment = Alignment(
+            self.last_lexical_alignment = MsaAlignment(
                 source_names=(source_name,),
-                columns=tuple(Column((token,)) for token in sequence.tokens),
+                columns=tuple(MsaColumn((token,)) for token in sequence.tokens),
             )
             self.last_alignment = self.last_lexical_alignment
             logger.warning(

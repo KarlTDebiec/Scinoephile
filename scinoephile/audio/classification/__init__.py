@@ -11,11 +11,7 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .cache import AudioClassificationCache
-from .exceptions import (
-    AudioClassificationDependencyError,
-    AudioClassificationError,
-    AudioClassificationInferenceError,
-)
+from .exceptions import AudioClassificationError, AudioClassificationInferenceError
 from .firered import FireRedAudioEventDetector, FireRedLanguageIdentifier
 from .models import (
     AudioEvent,
@@ -27,7 +23,6 @@ from .models import (
 
 __all__ = [
     "AudioClassificationCache",
-    "AudioClassificationDependencyError",
     "AudioClassificationError",
     "AudioClassificationInferenceError",
     "AudioEvent",

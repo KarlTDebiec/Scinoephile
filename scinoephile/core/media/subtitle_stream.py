@@ -47,7 +47,11 @@ class SubtitleStream(Stream):
 
     @property
     def extension(self) -> str:
-        """File extension to use for extracted subtitles."""
+        """File extension to use for extracted subtitles.
+
+        Raises:
+            ScinoephileError: if the operation fails
+        """
         if self.codec_name not in SUBTITLE_CODEC_OUTPUTS:
             raise ScinoephileError(f"Unsupported subtitle codec {self.codec_name}")
         return SUBTITLE_CODEC_OUTPUTS[self.codec_name][0]
@@ -67,7 +71,11 @@ class SubtitleStream(Stream):
 
     @property
     def output_codec(self) -> str:
-        """Ffmpeg subtitle codec to use for extracted subtitles."""
+        """Ffmpeg subtitle codec to use for extracted subtitles.
+
+        Raises:
+            ScinoephileError: if the operation fails
+        """
         if self.codec_name not in SUBTITLE_CODEC_OUTPUTS:
             raise ScinoephileError(f"Unsupported subtitle codec {self.codec_name}")
         return SUBTITLE_CODEC_OUTPUTS[self.codec_name][1]

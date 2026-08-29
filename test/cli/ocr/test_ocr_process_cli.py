@@ -39,13 +39,24 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         """Recording OCR processing workflow."""
 
         def __call__(self) -> OcrProcessingResult:
-            """Record workflow execution."""
+            """Record workflow execution.
+
+            Returns:
+                recorded workflow result
+            """
             nonlocal workflow_calls
             workflow_calls += 1
             return result
 
     def get_provider(provider_name: str, *, model: str | None) -> object:
-        """Validate provider options."""
+        """Validate provider options.
+
+        Arguments:
+            provider_name: provider name
+            model: model
+        Returns:
+            provider
+        """
         assert provider_name == "openai"
         assert model is None
         return expected_provider
@@ -68,7 +79,27 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         additional_context: str | None,
         fuser_kw: dict[str, Any],
     ) -> _Workflow:
-        """Validate workflow arguments."""
+        """Validate workflow arguments.
+
+        Arguments:
+            workflow_infile_path: workflow infile path
+            workflow_output_dir_path: workflow output dir path
+            language: language
+            stream_index: stream index
+            cache_root_path: cache root path
+            clean: clean value
+            interactive: interactive value
+            host: host value
+            port: port value
+            dev: dev value
+            overwrite: overwrite value
+            overwrite_cache: overwrite cache
+            provider: provider
+            additional_context: additional context value
+            fuser_kw: fuser kw value
+        Returns:
+            workflow
+        """
         assert workflow_infile_path == infile_path.resolve()
         assert workflow_output_dir_path == output_dir_path.resolve()
         assert language is Language.eng

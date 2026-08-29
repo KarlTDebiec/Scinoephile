@@ -9,8 +9,9 @@ from functools import cache
 
 import pycantonese
 
+from scinoephile.core.script import OpenCCConfig
 from scinoephile.core.text import normalize_nfkc
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.lang.zho.script.conversion import get_zho_text_converted
 
 __all__ = ["CharacterFeatures"]
 

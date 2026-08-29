@@ -17,7 +17,11 @@ from test.helpers.ocr_validation import make_ocr_html_dir
 
 
 def test_load_html_entries_reads_existing_export(tmp_path: Path):
-    """Test loading subtitle entries from existing image subtitle HTML."""
+    """Test loading subtitle entries from existing image subtitle HTML.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="old<br />text")
 
     entries = load_html_entries(html_dir_path)
@@ -31,7 +35,11 @@ def test_load_html_entries_reads_existing_export(tmp_path: Path):
 
 
 def test_update_html_entry_text_rewrites_index_compatibly(tmp_path: Path):
-    """Test updating one subtitle text in an OCR image HTML index."""
+    """Test updating one subtitle text in an OCR image HTML index.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="old")
 
     update_html_entry_text(html_dir_path, 0, "new\\Nline")
@@ -46,7 +54,11 @@ def test_update_html_entry_text_rewrites_index_compatibly(tmp_path: Path):
 
 
 def test_update_html_entry_text_does_not_touch_png(tmp_path: Path):
-    """Test updating OCR text does not rewrite subtitle image files."""
+    """Test updating OCR text does not rewrite subtitle image files.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="old")
     image_path = html_dir_path / "0001.png"
     original_image_bytes = image_path.read_bytes()
@@ -57,7 +69,11 @@ def test_update_html_entry_text_does_not_touch_png(tmp_path: Path):
 
 
 def test_update_html_entry_text_rejects_negative_index(tmp_path: Path):
-    """Test updating OCR text rejects negative subtitle indexes."""
+    """Test updating OCR text rejects negative subtitle indexes.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="old")
 
     with raises(IndexError, match="Subtitle index out of range: -1"):
@@ -65,7 +81,11 @@ def test_update_html_entry_text_rejects_negative_index(tmp_path: Path):
 
 
 def test_update_html_entry_text_rejects_out_of_range_index(tmp_path: Path):
-    """Test updating OCR text rejects out-of-range subtitle indexes."""
+    """Test updating OCR text rejects out-of-range subtitle indexes.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="old")
 
     with raises(IndexError, match="Subtitle index out of range: 1"):

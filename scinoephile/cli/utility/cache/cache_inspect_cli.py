@@ -126,7 +126,16 @@ class CacheInspectCli(ScinoephileCliBase):
         entries: bool,
         output_format: Literal["text", "json"],
     ):
-        """Execute with provided keyword arguments."""
+        """Inspect selected cache entries and print a report.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            cache_root_path: cache root directory
+            namespace: optional cache namespace
+            older_than: optional minimum entry age
+            entries: whether to include individual cache entries
+            output_format: report output format
+        """
         parser = _parser or cls.argparser()
 
         try:
