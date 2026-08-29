@@ -225,20 +225,83 @@ class MlxAudioTranscriber(Transcriber):
             audio = speech_audio
 
         chunk_duration_ms, chunk_overlap_ms = self._get_effective_chunking(audio)
-        if chunk_duration_ms is None or len(audio) <= chunk_duration_ms:
-            segments = self._transcribe_audio_window_with_retry(audio)
-        else:
-            segments = self._transcribe_chunked_audio(
-                audio, chunk_duration_ms, chunk_overlap_ms
-            )
+        segments = self._transcribe_audio(audio, chunk_duration_ms, chunk_overlap_ms)
 
         if trace is None or speech_intervals is None:
             return segments
         restored_segments = restore_vad_timestamps(segments, speech_intervals)
         return self._add_voice_activity_scores(restored_segments, trace)
 
-    def _transcribe_audio_window(self, audio: AudioSegment) -> list[TranscribedSegment]:
-        """Run MLX-Audio transcription and timestamp alignment for one audio window.
+    def _transcribe_audio(
+        self, audio: AudioSegment, chunk_duration_ms: int | None, chunk_overlap_ms: int
+    ) -> list[TranscribedSegment]:
+        """Transcribe audio, recursively splitting recoverable failures.
+
+        Arguments:
+            audio: audio to transcribe
+            chunk_duration_ms: core chunk duration in milliseconds, if chunking
+            chunk_overlap_ms: context overlap in milliseconds
+        Returns:
+            timestamped transcription segments
+        Raises:
+            TranscriptionEmptyError: if the audio contains no usable transcript
+            TranscriptionError: if recognition or alignment fails
+        """
+        configured_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
+        if chunk_duration_ms is None or len(audio) <= chunk_duration_ms:
+            try:
+                return self._transcribe_window(audio)
+            except MlxAudioTokenLimitError:
+                if len(audio) <= 1:
+                    raise
+                retry_reason = "generation token exhaustion"
+            except TranscriptionAlignmentIncompleteError:
+                if len(audio) <= 1:
+                    raise
+                retry_reason = "incomplete CTC alignment"
+
+            chunk_duration_ms = max(1, len(audio) // 2)
+            maximum_overlap_ms = max(0, (chunk_duration_ms - 1) // 2)
+            chunk_overlap_ms = min(configured_overlap_ms, maximum_overlap_ms)
+            logger.info(
+                f"Retrying MLX-Audio after {retry_reason} with "
+                f"{chunk_duration_ms / 1000:.3f}s chunks"
+            )
+
+        segments: list[TranscribedSegment] = []
+        for core_start_ms in range(0, len(audio), chunk_duration_ms):
+            core_end_ms = min(len(audio), core_start_ms + chunk_duration_ms)
+            window_start_ms = max(0, core_start_ms - chunk_overlap_ms)
+            window_end_ms = min(len(audio), core_end_ms + chunk_overlap_ms)
+            window_audio = audio[window_start_ms:window_end_ms]
+            try:
+                window_segments = self._transcribe_audio(
+                    window_audio, None, configured_overlap_ms
+                )
+            except TranscriptionEmptyError:
+                logger.info(
+                    f"Skipping empty MLX-Audio audio window "
+                    f"{window_start_ms / 1000:.2f}s-"
+                    f"{window_end_ms / 1000:.2f}s"
+                )
+            else:
+                segments.extend(
+                    offset_core_segments(
+                        window_segments,
+                        window_start_ms / 1000,
+                        core_start_ms / 1000,
+                        core_end_ms / 1000,
+                        len(segments),
+                    )
+                )
+        if not segments:
+            raise TranscriptionEmptyError(
+                "MLX-Audio returned no transcript across audio chunks."
+            )
+        return segments
+
+    def _transcribe_window(self, audio: AudioSegment) -> list[TranscribedSegment]:
+        """Run MLX-Audio inference and timestamp alignment for one audio window.
 
         Arguments:
             audio: audio to transcribe
@@ -272,81 +335,3 @@ class MlxAudioTranscriber(Transcriber):
                     f"MLX-Audio returned only low-information vocalizations: {text!r}"
                 )
             return self.ctc_aligner(audio, text)
-
-    def _transcribe_audio_window_with_retry(
-        self, audio: AudioSegment
-    ) -> list[TranscribedSegment]:
-        """Transcribe a window, splitting it after recoverable length failures.
-
-        Arguments:
-            audio: audio window to transcribe
-        Returns:
-            timestamped transcription segments
-        Raises:
-            TranscriptionError: if a one-millisecond window still fails
-        """
-        try:
-            return self._transcribe_audio_window(audio)
-        except MlxAudioTokenLimitError:
-            if len(audio) <= 1:
-                raise
-            retry_reason = "generation token exhaustion"
-        except TranscriptionAlignmentIncompleteError:
-            if len(audio) <= 1:
-                raise
-            retry_reason = "incomplete CTC alignment"
-
-        chunk_duration_ms = max(1, len(audio) // 2)
-        maximum_overlap_ms = max(0, (chunk_duration_ms - 1) // 2)
-        configured_overlap_ms = int(round(self.chunk_overlap_seconds * 1000))
-        chunk_overlap_ms = min(configured_overlap_ms, maximum_overlap_ms)
-        logger.info(
-            f"Retrying MLX-Audio after {retry_reason} with "
-            f"{chunk_duration_ms / 1000:.3f}s chunks"
-        )
-        return self._transcribe_chunked_audio(
-            audio, chunk_duration_ms, chunk_overlap_ms
-        )
-
-    def _transcribe_chunked_audio(
-        self, audio: AudioSegment, chunk_duration_ms: int, chunk_overlap_ms: int
-    ) -> list[TranscribedSegment]:
-        """Run MLX-Audio transcription over shorter overlapping chunks.
-
-        Arguments:
-            audio: audio to transcribe
-            chunk_duration_ms: core chunk duration in milliseconds
-            chunk_overlap_ms: context overlap in milliseconds
-        Returns:
-            timestamped transcription segments
-        """
-        segments: list[TranscribedSegment] = []
-
-        for core_start_ms in range(0, len(audio), chunk_duration_ms):
-            core_end_ms = min(len(audio), core_start_ms + chunk_duration_ms)
-            window_start_ms = max(0, core_start_ms - chunk_overlap_ms)
-            window_end_ms = min(len(audio), core_end_ms + chunk_overlap_ms)
-            window_audio = audio[window_start_ms:window_end_ms]
-            try:
-                window_segments = self._transcribe_audio_window_with_retry(window_audio)
-            except TranscriptionEmptyError:
-                logger.info(
-                    f"Skipping empty MLX-Audio audio window "
-                    f"{window_start_ms / 1000:.2f}s-"
-                    f"{window_end_ms / 1000:.2f}s"
-                )
-            else:
-                segments.extend(
-                    offset_core_segments(
-                        window_segments,
-                        window_start_ms / 1000,
-                        core_start_ms / 1000,
-                        core_end_ms / 1000,
-                        len(segments),
-                    )
-                )
-        if not segments:
-            raise TranscriptionEmptyError(
-                "MLX-Audio returned no transcript across audio chunks."
-            )
-        return segments

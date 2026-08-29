@@ -260,9 +260,7 @@ def test_model_without_safe_duration_uses_one_audio_window(
     )
     expected_segments = [_get_timed_segment("qwen")]
     patched_transcribe = Mock(return_value=expected_segments)
-    monkeypatch.setattr(
-        transcriber, "_transcribe_audio_window_with_retry", patched_transcribe
-    )
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
 
     cache_identity = transcriber._get_cache_identity(
         audio, TranscriptionPreprocessingSettings(False, False)
@@ -519,9 +517,7 @@ def test_safe_duration_honors_shorter_explicit_chunks(
             [_get_timed_segment("four", end=1.0)],
         ]
     )
-    monkeypatch.setattr(
-        transcriber, "_transcribe_audio_window_with_retry", patched_transcribe
-    )
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
 
     segments = transcriber.transcribe(audio)
 
@@ -577,7 +573,7 @@ def test_audio_near_generation_limit_is_not_split(monkeypatch: pytest.MonkeyPatc
     )
     monkeypatch.setattr(MlxAudioModel, "__call__", model_call)
 
-    segments = transcriber._transcribe_audio_window_with_retry(audio)
+    segments = transcriber.transcribe(audio)
 
     model_call.assert_called_once()
     transcriber.ctc_aligner.assert_called_once()
@@ -651,7 +647,7 @@ def test_transcribe_chunks_audio_skips_empty_windows(monkeypatch: pytest.MonkeyP
             [_get_timed_segment("three", start=0.6, end=1.0)],
         ]
     )
-    monkeypatch.setattr(transcriber, "_transcribe_audio_window", patched_transcribe)
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
 
     segments = transcriber.transcribe(audio)
 
@@ -669,7 +665,7 @@ def test_transcribe_chunks_audio_rejects_all_empty_windows(
     transcriber = _get_mlx_audio_transcriber(chunk_duration_seconds=2.0)
     monkeypatch.setattr(
         transcriber,
-        "_transcribe_audio_window",
+        "_transcribe_window",
         Mock(
             side_effect=TranscriptionEmptyError("MLX-Audio returned empty transcript.")
         ),
@@ -704,9 +700,7 @@ def test_transcribe_vad_uses_shared_detector_and_restores_original_timestamps(
             _get_timed_segment("two", start=1.2, end=2.2),
         ]
     )
-    monkeypatch.setattr(
-        transcriber, "_transcribe_audio_window_with_retry", patched_transcribe
-    )
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
 
     segments = transcriber.transcribe(audio)
 
@@ -744,9 +738,7 @@ def test_transcribe_vad_rejects_audio_without_detected_speech(
         transcriber, "_get_voice_activity_trace", Mock(return_value=trace)
     )
     patched_transcribe = Mock()
-    monkeypatch.setattr(
-        transcriber, "_transcribe_audio_window_with_retry", patched_transcribe
-    )
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
 
     with pytest.raises(TranscriptionEmptyError, match="VAD found no speech"):
         transcriber.transcribe(AudioSegment.silent(duration=1000))
@@ -771,9 +763,7 @@ def test_transcribe_vad_auto_retries_unfiltered_audio(monkeypatch: pytest.Monkey
         transcriber, "_get_voice_activity_trace", Mock(return_value=trace)
     )
     patched_transcribe = Mock(return_value=expected_segments)
-    monkeypatch.setattr(
-        transcriber, "_transcribe_audio_window_with_retry", patched_transcribe
-    )
+    monkeypatch.setattr(transcriber, "_transcribe_window", patched_transcribe)
     audio = AudioSegment.silent(duration=1000)
 
     segments = transcriber.transcribe(audio)
