@@ -15,12 +15,12 @@ from pytest import LogCaptureFixture, approx, raises
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle, get_sub_split_at_idx
 from scinoephile.audio.transcription import (
     DemucsMode,
-    MlxAudioTranscriber,
     TranscribedSegment,
     TranscribedWord,
     TranscriptionError,
     VadMode,
 )
+from scinoephile.audio.transcription.mlx_audio import MlxAudioTranscriber
 from scinoephile.audio.transcription.mlx_audio.model_spec import MIMO_MODEL
 from scinoephile.audio.transcription.whisper.model_spec import WhisperModelSpec
 from scinoephile.core import Language, ScinoephileError

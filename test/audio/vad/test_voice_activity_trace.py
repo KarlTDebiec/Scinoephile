@@ -10,10 +10,9 @@ import pytest
 from scinoephile.audio.transcription import (
     TranscribedSegment,
     TranscribedWord,
-    WhisperModel,
-    WhisperTranscriber,
     get_segment_split_at_idx,
 )
+from scinoephile.audio.transcription.whisper import WhisperModel, WhisperTranscriber
 from scinoephile.audio.transcription.whisper.model_spec import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
 )

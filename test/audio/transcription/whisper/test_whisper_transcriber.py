@@ -539,9 +539,11 @@ def test_transcription_imports_without_optional_runtime_dependencies():
         from scinoephile.audio.separation import DemucsSeparator
         from scinoephile.audio.transcription import (
             TranscribedSegment,
+            get_segment_split_at_idx,
+        )
+        from scinoephile.audio.transcription.whisper import (
             WhisperModel,
             WhisperTranscriber,
-            get_segment_split_at_idx,
         )
         from scinoephile.audio.transcription.whisper.model_spec import (
             WHISPER_LARGE_V3_CANTONESE_MODEL,
