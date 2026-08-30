@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.separation import DemucsSeparator
+from scinoephile.audio.transcription.chunking import get_offset_core_segments
 from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.exceptions import (
     TranscriptionAlignmentIncompleteError,
@@ -32,7 +33,7 @@ from scinoephile.core.text import is_low_information_text
 
 from .exceptions import MlxAudioTokenLimitError
 from .model import MlxAudioModel
-from .timing import offset_core_segments, restore_vad_timestamps
+from .timing import restore_vad_timestamps
 
 __all__ = ["MlxAudioTranscriber"]
 
@@ -282,7 +283,7 @@ class MlxAudioTranscriber(Transcriber):
                 )
             else:
                 segments.extend(
-                    offset_core_segments(
+                    get_offset_core_segments(
                         window_segments,
                         window_start_ms / 1000,
                         core_start_ms / 1000,
