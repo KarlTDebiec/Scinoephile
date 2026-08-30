@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import unicodedata
-from collections import Counter
 from typing import ClassVar, Self
 
 from pydantic import Field, field_validator, model_validator
@@ -32,11 +31,6 @@ _SPEAKER_CHARACTERS = frozenset(
     {"　", "・", "＊"} | {chr(ord("Ａ") + index) for index in range(26)}
 )
 """Characters permitted in the speaker annotation row."""
-_LANGUAGE_CHARACTERS = frozenset(
-    {"　", "・", "粵", "普", "英", "日", "韓", "外"}
-    | {chr(ord("Ａ") + index) for index in range(26)}
-)
-"""Characters permitted in the spoken-language annotation row."""
 
 
 class TranscriptionSource(LLMModel):
@@ -70,13 +64,7 @@ class TranscriptionQuery(Query):
     sources: list[TranscriptionSource] = Field(min_length=1)
     """One or more named equal-status ASR source rows."""
     speaker: str = Field(min_length=1, max_length=10_000)
-    """Column-aligned speaker and voice-activity annotations."""
-    language: str | None = Field(default=None, min_length=1, max_length=10_000)
-    """Column-aligned spoken-language annotations, when available."""
-    singing: str | None = Field(default=None, min_length=1, max_length=10_000)
-    """Column-aligned singing annotations, when available."""
-    music: str | None = Field(default=None, min_length=1, max_length=10_000)
-    """Column-aligned music annotations, when available."""
+    """Column-aligned speaker annotations."""
 
     @model_validator(mode="after")
     def validate_rows(self) -> Self:
@@ -93,15 +81,7 @@ class TranscriptionQuery(Query):
             raise ValueError(self.prompt.reference_source_err)
 
         # Every row shares one alignment-column grid without subtitle boundaries
-        rows = (
-            self.speaker,
-            *(source.text for source in self.sources),
-            *(
-                annotation
-                for annotation in (self.language, self.singing, self.music)
-                if annotation is not None
-            ),
-        )
+        rows = (self.speaker, *(source.text for source in self.sources))
         if len({len(row) for row in rows}) != 1:
             raise ValueError(self.prompt.row_length_err)
         if any("｜" in row for row in rows):
@@ -110,15 +90,6 @@ class TranscriptionQuery(Query):
         # Validate the compact alphabets used by annotation rows
         if any(character not in _SPEAKER_CHARACTERS for character in self.speaker):
             raise ValueError(self.prompt.speaker_character_err)
-        if self.language is not None and any(
-            character not in _LANGUAGE_CHARACTERS for character in self.language
-        ):
-            raise ValueError(self.prompt.language_character_err)
-        for annotation, marker in ((self.singing, "唱"), (self.music, "樂")):
-            if annotation is not None and any(
-                character not in {"　", "・", marker} for character in annotation
-            ):
-                raise ValueError(self.prompt.audio_event_character_err)
 
         # At least one ASR source must contain text beyond gaps and pauses
         if not any(
@@ -213,8 +184,10 @@ class TranscriptionTestCase(TestCase):
         TranscriptionAlignmentScorer()
     )
     """Scorer used to compare answers with ASR evidence."""
-    minimum_consensus_coverage: ClassVar[float] = 0.9
-    """Minimum sequence-aligned preservation of strict-majority ASR evidence."""
+    maximum_unpreserved_consensus_columns: ClassVar[int] = 2
+    """Maximum consecutive strong-consensus columns an answer may not preserve."""
+    maximum_unsupported_answer_characters: ClassVar[int] = 4
+    """Maximum consecutive answer characters lacking two-source corroboration."""
     query_cls: ClassVar[type[TranscriptionQuery]] = TranscriptionQuery
     """Query model class."""
     answer_cls: ClassVar[type[TranscriptionAnswer]] = TranscriptionAnswer
@@ -229,17 +202,22 @@ class TranscriptionTestCase(TestCase):
     def get_no_op_answer(self) -> TranscriptionAnswer:
         """Get a deterministic column-wise consensus answer.
 
-        The most common character in each aligned column is selected. Stable source
-        order breaks ties, while gaps, pauses, and nonlexical characters are omitted
-        from the output.
+        The strongest character supported by at least two sources in each aligned
+        column is selected. Gaps, pauses, nonlexical characters, and isolated
+        single-source content are omitted.
 
         Returns:
             plurality consensus split into valid subtitle-length chunks
         """
         consensus_characters = []
         for column in zip(*(source.text for source in self.query.sources), strict=True):
-            character = Counter(column).most_common(1)[0][0]
-            if is_lexical_character(character):
+            source_characters = tuple(
+                character for character in column if is_lexical_character(character)
+            )
+            character = self.alignment_scorer.get_consensus_character(
+                source_characters, min(2, len(self.query.sources))
+            )
+            if character is not None:
                 consensus_characters.append(character)
         consensus = "".join(consensus_characters)
         subtitles = (
@@ -253,7 +231,7 @@ class TranscriptionTestCase(TestCase):
         )
 
     @model_validator(mode="after")
-    def validate_consensus_coverage(self) -> Self:
+    def validate_consensus_preservation(self) -> Self:
         """Ensure the answer preserves sufficient consensus from the ASR sources.
 
         Returns:
@@ -267,10 +245,28 @@ class TranscriptionTestCase(TestCase):
         validation = self.alignment_scorer.score(
             tuple(source.text for source in self.query.sources), self.answer.transcript
         )
-        if not validation.preserves_required_majority(self.minimum_consensus_coverage):
+        if not validation.has_supported_answer(
+            self.maximum_unsupported_answer_characters
+        ):
             raise ValueError(
-                self.prompt.consensus_coverage_err(
-                    validation.majority_coverage, self.minimum_consensus_coverage
+                self.prompt.unsupported_answer_err(
+                    validation.longest_unsupported_answer_text,
+                    self.maximum_unsupported_answer_characters,
+                )
+            )
+        if validation.fragile_boundary_answer_text:
+            raise ValueError(
+                self.prompt.unsupported_answer_err(
+                    validation.fragile_boundary_answer_text, 1
+                )
+            )
+        if not validation.preserves_consensus(
+            self.maximum_unpreserved_consensus_columns
+        ):
+            raise ValueError(
+                self.prompt.consensus_omission_err(
+                    validation.longest_unpreserved_consensus_text,
+                    self.maximum_unpreserved_consensus_columns,
                 )
             )
         return self

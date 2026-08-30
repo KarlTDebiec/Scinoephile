@@ -11,6 +11,7 @@ from scinoephile.core.text import (
     RE_LATIN_WORD,
     get_char_type,
     is_lexical_character,
+    is_low_information_text,
     join_text_lines,
     normalize_nfkc,
     normalize_text,
@@ -100,6 +101,28 @@ def test_is_lexical_character(character: str, expected: bool) -> None:
         expected: expected value
     """
     assert is_lexical_character(character) is expected
+
+
+@parametrize(
+    ("text", "expected"),
+    [
+        ("哎　哎哎啊啊啊嗯", True),
+        ("ＡＡＡＨ！", True),
+        ("哈哈嗯", True),
+        ("", False),
+        ("・・　", False),
+        ("哎呀次子", False),
+        ("Hi", False),
+    ],
+)
+def test_is_low_information_text(text: str, expected: bool) -> None:
+    """Low-information text includes common Chinese and Latin vocalizations.
+
+    Arguments:
+        text: text to classify
+        expected: expected classification
+    """
+    assert is_low_information_text(text) is expected
 
 
 @parametrize(("text", "expected"), [("Ａ①", "A1"), ("㍿", "株式会社")])

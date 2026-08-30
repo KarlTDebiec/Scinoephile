@@ -35,7 +35,7 @@ _DEFAULT_MODEL_SPECS = {
 }
 """Default CTC model specifications keyed by transcription language."""
 
-_ALIGNMENT_VERSION = 1
+_ALIGNMENT_VERSION = 2
 """Version of the CTC forced-alignment algorithm and output shaping."""
 
 

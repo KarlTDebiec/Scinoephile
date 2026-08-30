@@ -298,8 +298,6 @@ class TranscriptionPipeline:
             try:
                 block_segments = self.transcriber.transcribe_block(
                     block_audio,
-                    audio_events=audio_events,
-                    language_identification=language_identification,
                     source_offset_seconds=block.start_ms / 1000,
                     diarization=diarization,
                 )

@@ -12,17 +12,16 @@ from typing import cast
 from pydantic import ValidationError
 
 from scinoephile.core.llms import Processor
+from scinoephile.core.text import is_low_information_text
 
 from .manager import TranscriptionManager
-from .models import TranscriptionAnswer, TranscriptionQuery, TranscriptionSource
+from .models import TranscriptionAnswer, TranscriptionSource, TranscriptionTestCase
 from .prompt import TranscriptionPrompt
+from .request_partitioning import partition_transcription_query
 
 __all__ = ["TranscriptionProcessor", "TranscriptionRequestResult"]
 
 logger = getLogger(__name__)
-
-_REQUEST_PAUSE_CHARACTERS = 4
-"""Shared pause columns required to start a separate LLM request."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -37,6 +36,17 @@ class TranscriptionRequestResult:
     """Consensus subtitles returned for the request."""
     query_key_sha256: str
     """Digest of the request's semantic query key."""
+    answer_character_evidence_column_indexes: tuple[int | None, ...] = ()
+    """Corroborating complete-alignment column for each lexical answer character."""
+
+    @property
+    def answer_evidence_column_indexes(self) -> tuple[int, ...]:
+        """Get complete-alignment columns corroborating lexical answer characters."""
+        return tuple(
+            column_idx
+            for column_idx in self.answer_character_evidence_column_indexes
+            if column_idx is not None
+        )
 
 
 class TranscriptionProcessor(Processor):
@@ -48,28 +58,17 @@ class TranscriptionProcessor(Processor):
     """Manager used to construct prompt-specific models."""
 
     def process(
-        self,
-        sources: Sequence[TranscriptionSource],
-        speaker: str,
-        *,
-        language: str | None = None,
-        music: str | None = None,
-        singing: str | None = None,
+        self, sources: Sequence[TranscriptionSource], speaker: str
     ) -> TranscriptionAnswer:
         """Transcribe one complete aligned ASR block.
 
         Arguments:
             sources: named equal-status aligned ASR rows
-            speaker: aligned speaker and voice-activity row
-            language: optional aligned spoken-language row
-            music: optional aligned music row
-            singing: optional aligned singing row
+            speaker: aligned speaker row
         Returns:
             consensus transcript divided into subtitles
         """
-        request_results = self.process_requests(
-            sources, speaker, language=language, music=music, singing=singing
-        )
+        request_results = self.process_requests(sources, speaker)
         return TranscriptionAnswer(
             text="".join(result.answer.text for result in request_results)
         )
@@ -79,139 +78,111 @@ class TranscriptionProcessor(Processor):
         sources: Sequence[TranscriptionSource],
         speaker: str,
         *,
-        language: str | None = None,
-        music: str | None = None,
-        singing: str | None = None,
+        pause_intervals_seconds: Sequence[tuple[float, float] | None] | None = None,
     ) -> tuple[TranscriptionRequestResult, ...]:
         """Transcribe aligned ASR evidence as separately timed requests.
 
         Arguments:
             sources: named equal-status aligned ASR rows
-            speaker: aligned speaker and voice-activity row
-            language: optional aligned spoken-language row
-            music: optional aligned music row
-            singing: optional aligned singing row
+            speaker: aligned speaker row
+            pause_intervals_seconds: optional interval for each alignment column
         Returns:
             request answers with their complete-alignment column spans
         """
-        query_cls = self.test_case_cls.query_cls
-        validated_query = cast(
-            TranscriptionQuery,
-            query_cls.model_validate(
-                {
-                    "sources": [source.model_dump(mode="json") for source in sources],
-                    "speaker": speaker,
-                    "language": language,
-                    "singing": singing,
-                    "music": music,
-                }
-            ),
+        test_case_cls = cast(type[TranscriptionTestCase], self.test_case_cls)
+        query_cls = test_case_cls.query_cls
+        validated_query = query_cls.model_validate(
+            {
+                "sources": [source.model_dump(mode="json") for source in sources],
+                "speaker": speaker,
+            }
         )
         request_results = []
-        for query, (start_column, end_column) in _get_request_queries(validated_query):
-            test_case = self.test_case_cls(query=query)
+        for query, (start_column, end_column) in partition_transcription_query(
+            validated_query, pause_intervals_seconds
+        ):
+            omission_reason = None
+            usable_texts = [
+                source.text
+                for source in query.sources
+                if any(
+                    character != "・" and not character.isspace()
+                    for character in source.text
+                )
+            ]
+            if len(usable_texts) < 2:
+                omission_reason = "fewer than two sources contain usable text"
+            elif all(is_low_information_text(text) for text in usable_texts):
+                omission_reason = "sources contain only low-information vocalizations"
+            if omission_reason is not None:
+                request_results.append(
+                    TranscriptionRequestResult(
+                        start_column,
+                        end_column,
+                        TranscriptionAnswer(text=""),
+                        query.key_sha256,
+                    )
+                )
+                logger.info(
+                    "Omitted transcription request at alignment columns "
+                    f"{start_column}-{end_column}: {omission_reason}."
+                )
+                continue
+            test_case = test_case_cls(query=query)
             try:
                 test_case = self.queryer(test_case)
             except ValidationError:
                 answer = test_case.get_no_op_answer()
-                test_case = self.test_case_cls.model_validate(
-                    {
-                        **test_case.model_dump(mode="json"),
-                        "answer": answer.model_dump(mode="json"),
-                        "few_shot": False,
-                        "verified": False,
-                    }
-                )
-                test_case = self.queryer.store_answered_test_case(test_case)
+                try:
+                    test_case = test_case_cls.model_validate(
+                        {
+                            **test_case.model_dump(mode="json"),
+                            "answer": answer.model_dump(mode="json"),
+                            "few_shot": False,
+                            "verified": False,
+                        }
+                    )
+                except ValidationError:
+                    logger.warning(
+                        "Deterministic column consensus could not satisfy strict "
+                        "transcription validation; returning its conservative "
+                        "cross-source consensus without storing it as a test case."
+                    )
+                else:
+                    test_case = self.queryer.store_answered_test_case(test_case)
                 logger.warning(
                     "LLM exhausted valid transcription answers; used deterministic "
-                    f"column consensus: {query.key_str}"
+                    f"column consensus: {answer.text!r}"
                 )
-            answer = cast(TranscriptionAnswer, test_case.answer)
+            else:
+                answer = cast(TranscriptionAnswer, test_case.answer)
+            if is_low_information_text(answer.transcript):
+                logger.info(
+                    "Omitted transcription request at alignment columns "
+                    f"{start_column}-{end_column}: consensus contains only "
+                    "low-information vocalizations."
+                )
+                answer = TranscriptionAnswer(text="")
+            validation = test_case_cls.alignment_scorer.score(
+                tuple(source.text for source in query.sources), answer.transcript
+            )
+            answer_character_evidence_column_indexes: list[int | None] = []
+            for column_idx in validation.answer_character_evidence_column_indexes:
+                if column_idx is None:
+                    answer_character_evidence_column_indexes.append(None)
+                else:
+                    answer_character_evidence_column_indexes.append(
+                        start_column + column_idx
+                    )
             request_results.append(
                 TranscriptionRequestResult(
-                    start_column, end_column, answer, query.key_sha256
+                    start_column,
+                    end_column,
+                    answer,
+                    query.key_sha256,
+                    tuple(answer_character_evidence_column_indexes),
                 )
             )
 
         self.save_encountered_test_cases()
         return tuple(request_results)
-
-
-def _get_query_slice(
-    query: TranscriptionQuery, start: int, end: int
-) -> TranscriptionQuery:
-    """Get one alignment-column slice of a validated query.
-
-    Arguments:
-        query: validated complete-block alignment query
-        start: inclusive alignment column index
-        end: exclusive alignment column index
-    Returns:
-        sliced request query
-    """
-    update: dict[str, object] = {
-        "sources": [
-            source.model_copy(update={"text": source.text[start:end]})
-            for source in query.sources
-        ],
-        "speaker": query.speaker[start:end],
-    }
-    if query.language is not None:
-        update["language"] = query.language[start:end]
-    if query.music is not None:
-        update["music"] = query.music[start:end]
-    if query.singing is not None:
-        update["singing"] = query.singing[start:end]
-    return query.model_copy(update=update)
-
-
-def _get_request_queries(
-    query: TranscriptionQuery,
-) -> tuple[tuple[TranscriptionQuery, tuple[int, int]], ...]:
-    """Split a validated alignment query at long shared pause runs.
-
-    Arguments:
-        query: validated alignment query
-    Returns:
-        request queries paired with their source-column spans
-    """
-    requests = []
-    content_spans = []
-    content_start = 0
-    pause_start: int | None = None
-    rows = (
-        query.speaker,
-        *(source.text for source in query.sources),
-        *(
-            annotation
-            for annotation in (query.language, query.singing, query.music)
-            if annotation is not None
-        ),
-    )
-    for column_idx in range(len(query.speaker) + 1):
-        is_shared_pause = column_idx < len(query.speaker) and all(
-            row[column_idx] == "・" for row in rows
-        )
-        if is_shared_pause:
-            if pause_start is None:
-                pause_start = column_idx
-            continue
-        if pause_start is not None:
-            if column_idx - pause_start >= _REQUEST_PAUSE_CHARACTERS:
-                if content_start < pause_start:
-                    content_spans.append((content_start, pause_start))
-                content_start = column_idx
-            pause_start = None
-    if content_start < len(query.speaker):
-        content_spans.append((content_start, len(query.speaker)))
-
-    for content_start, content_end in content_spans:
-        request = _get_query_slice(query, content_start, content_end)
-        if any(
-            character != "・" and not character.isspace()
-            for source in request.sources
-            for character in source.text
-        ):
-            requests.append((request, (content_start, content_end)))
-    return tuple(requests)

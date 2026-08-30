@@ -20,11 +20,11 @@ def test_yue_alignment_scorer_adds_yue_equivalence():
 
     assert (
         generic_scorer.get_character_relationship("不", "唔")
-        is TranscriptionCharacterRelationship.none
+        is TranscriptionCharacterRelationship.NONE
     )
     assert (
         yue_scorer.get_character_relationship("不", "唔")
-        is TranscriptionCharacterRelationship.equivalent
+        is TranscriptionCharacterRelationship.EQUIVALENT
     )
 
 
@@ -34,5 +34,23 @@ def test_yue_alignment_scorer_uses_jyutping():
 
     assert (
         scorer.get_character_relationship("道", "盜")
-        is TranscriptionCharacterRelationship.pronunciation
+        is TranscriptionCharacterRelationship.PRONUNCIATION
     )
+
+
+def test_yue_alignment_scorer_preserves_pronunciation_matches():
+    """Pronunciation-equivalent orthography should preserve majority evidence."""
+    validation = YueTranscriptionAlignmentScorer().score(("啊", "啊", "啊"), "呀")
+
+    assert validation.majority_coverage == 1.0
+    assert validation.preserves_consensus(2)
+
+
+def test_yue_alignment_scorer_accepts_common_asr_spellings():
+    """Preferred Yue spellings should preserve common phonetic ASR forms."""
+    validation = YueTranscriptionAlignmentScorer().score(
+        tuple("睇下係咪噶啦" for _ in range(3)), "睇吓係咪㗎啦"
+    )
+
+    assert validation.majority_coverage == 1.0
+    assert validation.longest_unpreserved_consensus_run == 0

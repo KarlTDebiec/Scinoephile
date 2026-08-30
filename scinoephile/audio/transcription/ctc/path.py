@@ -77,19 +77,16 @@ def get_best_path(
             + log_probs[trellis_frame_idx - 1, token_id]
         )
         if change_score > stay_score:
-            score_token_id = token_id
-        else:
-            score_token_id = blank_token_id
-        path.append(
-            CtcPathStep(
-                token_idx=path_token_indices[alignment_token_idx - 1],
-                frame_idx=trellis_frame_idx - 1,
-                probability=float(
-                    np.exp(log_probs[trellis_frame_idx - 1, score_token_id])
-                ),
-            )
-        )
-        if change_score > stay_score:
+            if token_id != blank_token_id:
+                path.append(
+                    CtcPathStep(
+                        token_idx=path_token_indices[alignment_token_idx - 1],
+                        frame_idx=trellis_frame_idx - 1,
+                        probability=float(
+                            np.exp(log_probs[trellis_frame_idx - 1, token_id])
+                        ),
+                    )
+                )
             alignment_token_idx -= 1
             if alignment_token_idx == 0:
                 break
@@ -123,28 +120,16 @@ def get_character_timings(
     frame_duration = duration_seconds / frame_count
 
     timed_chars: dict[int, CtcCharacterTiming] = {}
-    path_idx = 0
-    while path_idx < len(path):
-        segment_end_idx = path_idx
-        while (
-            segment_end_idx < len(path)
-            and path[path_idx].token_idx == path[segment_end_idx].token_idx
-        ):
-            segment_end_idx += 1
-
-        token_idx = path[path_idx].token_idx
+    for step in path:
+        token_idx = step.token_idx
         if token_idx < 0 or token_idx >= len(char_indices):
             raise TranscriptionAlignmentError("CTC path token index is out of range.")
         char_idx = char_indices[token_idx]
-        start = path[path_idx].frame_idx * frame_duration
-        end = (path[segment_end_idx - 1].frame_idx + 1) * frame_duration
-        confidence = sum(
-            step.probability for step in path[path_idx:segment_end_idx]
-        ) / (segment_end_idx - path_idx)
         timed_chars[char_idx] = CtcCharacterTiming(
-            start=round(start, 3), end=round(end, 3), confidence=round(confidence, 3)
+            start=round(step.frame_idx * frame_duration, 3),
+            end=round((step.frame_idx + 1) * frame_duration, 3),
+            confidence=round(step.probability, 3),
         )
-        path_idx = segment_end_idx
     return timed_chars
 
 

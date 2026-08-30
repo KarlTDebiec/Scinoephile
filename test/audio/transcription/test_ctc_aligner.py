@@ -133,8 +133,10 @@ def test_ctc_aligner_groups_english_character_timings_into_words():
     assert [word.confidence for word in words] == pytest.approx([0.8, 0.8])
 
 
-def test_ctc_aligner_expands_token_spans(monkeypatch: pytest.MonkeyPatch):
-    """Test CTC alignment expands token spans.
+def test_ctc_aligner_excludes_blank_frames_from_token_spans(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test CTC blank frames do not inflate neighboring token spans.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -167,7 +169,7 @@ def test_ctc_aligner_expands_token_spans(monkeypatch: pytest.MonkeyPatch):
     assert segments[0].words is not None
     assert [word.text for word in segments[0].words] == ["你", "好"]
     assert segments[0].words[0].start == pytest.approx(0.25)
-    assert segments[0].words[0].end == pytest.approx(0.75)
+    assert segments[0].words[0].end == pytest.approx(0.5)
     assert segments[0].words[1].start == pytest.approx(0.75)
     assert segments[0].words[1].end == pytest.approx(1.0)
     assert 0.0 < segments[0].words[0].confidence <= 1.0
@@ -470,11 +472,7 @@ def test_ctc_best_path_accepts_blank_between_repeated_labels():
 
     path = get_best_path(log_probs, [1, 1], 0)
 
-    assert [(step.token_idx, step.frame_idx) for step in path] == [
-        (0, 0),
-        (0, 1),
-        (1, 2),
-    ]
+    assert [(step.token_idx, step.frame_idx) for step in path] == [(0, 0), (1, 2)]
 
 
 def test_ctc_token_ids_include_word_delimiter():
@@ -655,18 +653,18 @@ def test_ctc_aligner_preserves_all_unknown_characters(monkeypatch: pytest.Monkey
 @pytest.mark.parametrize(
     ("text", "char_indices", "expected_words"),
     [
-        ("你，好", [0, 2], ["你，", "好"]),
-        ("你嘅好", [0, 2], ["你嘅", "好"]),
-        ("你， 好", [0, 3], ["你，", " 好"]),
+        ("你，好", [0, 2], ["你", "，", "好"]),
+        ("你嘅好", [0, 2], ["你", "嘅", "好"]),
+        ("你， 好", [0, 3], ["你", "，", " ", "好"]),
     ],
 )
-def test_ctc_aligner_attaches_internal_unaligned_characters(
+def test_ctc_aligner_interpolates_internal_unaligned_characters(
     monkeypatch: pytest.MonkeyPatch,
     text: str,
     char_indices: list[int],
     expected_words: list[str],
 ):
-    """Test unsupported internal characters inherit an adjacent word timing.
+    """Test unsupported internal characters use intervening blank time.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -890,8 +888,8 @@ def test_ctc_aligner_rounds_timings(monkeypatch: pytest.MonkeyPatch):
 
     assert segments[0].words is not None
     assert segments[0].words[0].start == round(1.234 / 4, 3)
-    assert segments[0].words[0].end == round(3 * 1.234 / 4, 3)
-    assert segments[0].words[0].confidence == round((0.9 + 0.85) / 2, 3)
+    assert segments[0].words[0].end == round(2 * 1.234 / 4, 3)
+    assert segments[0].words[0].confidence == 0.9
 
 
 def test_ctc_aligner_rejects_empty_text():

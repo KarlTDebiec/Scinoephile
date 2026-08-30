@@ -21,7 +21,6 @@ from scinoephile.audio.transcription.preprocessing_settings import (
     TranscriptionPreprocessingSettings,
     VadMode,
 )
-from scinoephile.audio.transcription.quality import is_low_information_text
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.audio.vad import VoiceActivityDetector
@@ -29,6 +28,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.cache.runtime import get_distribution_identity
+from scinoephile.core.text import is_low_information_text
 
 from .exceptions import MlxAudioTokenLimitError
 from .model import MlxAudioModel
