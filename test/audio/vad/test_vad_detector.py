@@ -341,11 +341,9 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         Mock(
             side_effect=lambda distribution_name: {
                 "distribution": distribution_name,
-                "version": {
-                    "onnxruntime": "1.28.0",
-                    "silero-vad": "6.2.1",
-                    "torch": "2.10.0",
-                }[distribution_name],
+                "version": {"onnxruntime": "1.28.0", "silero-vad": "6.2.1"}[
+                    distribution_name
+                ],
             }
         ),
     )
@@ -381,11 +379,11 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "min_silence_duration_seconds": 1.0,
         "min_speech_duration_seconds": 0.1,
         "padding_seconds": 0.5,
-        "postprocessing_version": "2",
+        "postprocessing_version": 2,
         "runtime": {"distribution": "ten-vad", "version": "1.0.6.8"},
         "sample_rate": 16000,
         "threshold": 0.6,
-        "trace_identity_version": "2",
+        "trace_identity_version": 2,
     }
     assert silero_cache_identity["vad"] == {
         "implementation": "silero",
@@ -395,15 +393,14 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "min_silence_duration_seconds": 1.0,
         "min_speech_duration_seconds": 0.1,
         "padding_seconds": 0.5,
-        "postprocessing_version": "2",
+        "postprocessing_version": 2,
         "runtime": {
             "onnxruntime": {"distribution": "onnxruntime", "version": "1.28.0"},
             "silero_vad": {"distribution": "silero-vad", "version": "6.2.1"},
-            "torch": {"distribution": "torch", "version": "2.10.0"},
         },
         "sample_rate": 16000,
         "threshold": 0.5,
-        "trace_identity_version": "2",
+        "trace_identity_version": 2,
     }
     assert silero._cache.get_path(audio, silero_cache_identity) != ten._cache.get_path(
         audio, ten_cache_identity
@@ -455,14 +452,7 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
     """
     monkeypatch.setattr(
         "scinoephile.audio.vad.pyannote.get_distribution_identity",
-        Mock(
-            side_effect=lambda distribution_name: {
-                "distribution": distribution_name,
-                "version": {"pyannote.audio": "4.0.7", "torch": "2.10.0"}[
-                    distribution_name
-                ],
-            }
-        ),
+        Mock(return_value={"distribution": "pyannote.audio", "version": "4.0.7"}),
     )
     detector = VoiceActivityDetector(
         VadImplementation.PYANNOTE,
@@ -478,14 +468,13 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
         "model": "pyannote/segmentation-3.0",
         "model_revision": "e66f3d3b9eb0873085418a7b813d3b369bf160bb",
         "padding_seconds": 0.1,
-        "postprocessing_version": "2",
+        "postprocessing_version": 2,
         "runtime": {
-            "pyannote_audio": {"distribution": "pyannote.audio", "version": "4.0.7"},
-            "torch": {"distribution": "torch", "version": "2.10.0"},
+            "pyannote_audio": {"distribution": "pyannote.audio", "version": "4.0.7"}
         },
         "sample_rate": 16000,
         "threshold": 0.5,
-        "trace_identity_version": "2",
+        "trace_identity_version": 2,
     }
 
 

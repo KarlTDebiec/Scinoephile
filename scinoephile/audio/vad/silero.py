@@ -62,7 +62,6 @@ class SileroVadProvider(VadProvider):
             "runtime": {
                 "onnxruntime": get_distribution_identity("onnxruntime"),
                 "silero_vad": get_distribution_identity("silero-vad"),
-                "torch": get_distribution_identity("torch"),
             },
         }
 

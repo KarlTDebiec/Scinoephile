@@ -211,10 +211,7 @@ class PyannoteDiarizer:
             "model": self.model_id,
             "model_revision": self.model_revision,
             "num_speakers": self.num_speakers,
-            "runtime": {
-                "pyannote_audio": pyannote_audio_identity,
-                "torch": get_distribution_identity("torch"),
-            },
+            "runtime": {"pyannote_audio": pyannote_audio_identity},
             "waveform_channels": _WAVEFORM_CHANNELS,
             "waveform_frame_rate": _WAVEFORM_FRAME_RATE,
             "waveform_sample_width": _WAVEFORM_SAMPLE_WIDTH,

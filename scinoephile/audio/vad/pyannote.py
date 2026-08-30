@@ -61,10 +61,7 @@ class PyannoteVadProvider(VadProvider):
         return {
             "model": _MODEL_ID,
             "model_revision": _MODEL_REVISION,
-            "runtime": {
-                "pyannote_audio": get_distribution_identity("pyannote.audio"),
-                "torch": get_distribution_identity("torch"),
-            },
+            "runtime": {"pyannote_audio": get_distribution_identity("pyannote.audio")},
         }
 
     def get_trace(self, audio: AudioSegment) -> VoiceActivityTrace:

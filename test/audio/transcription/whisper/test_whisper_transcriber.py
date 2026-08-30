@@ -151,11 +151,10 @@ def _get_ctc_aligner(text: str = "你好", spec: ModelSpec = _CTC_MODEL_SPEC) ->
             "model_name": spec.name,
             "model_revision": spec.revision,
             "runtime": {
-                "torch": {"distribution": "torch", "version": "test-version"},
                 "transformers": {
                     "distribution": "transformers",
                     "version": "test-version",
-                },
+                }
             },
             "script_conversion": None,
         },
@@ -376,8 +375,8 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
     assert fallback_identity["model_name"] == "ctc/test-model"
     assert fallback_identity["model_revision"] == "ctc-revision"
     runtime_identity = cast(Mapping[str, Mapping[str, str]], cache_identity["runtime"])
+    assert set(runtime_identity) == {"openai_whisper", "whisper_timestamped"}
     assert runtime_identity["openai_whisper"]["distribution"] == ("openai-whisper")
-    assert runtime_identity["torch"]["distribution"] == "torch"
     assert runtime_identity["whisper_timestamped"]["distribution"] == (
         "whisper-timestamped"
     )

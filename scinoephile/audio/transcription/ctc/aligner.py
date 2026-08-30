@@ -165,10 +165,7 @@ class CtcAligner:
     def cache_config_identity(self) -> CacheIdentity:
         """Get the cache identity of this CTC aligner's configuration."""
         script_conversion = None
-        runtime = {
-            "torch": get_distribution_identity("torch"),
-            "transformers": get_distribution_identity("transformers"),
-        }
+        runtime = {"transformers": get_distribution_identity("transformers")}
         if self._script_conversion_config is not None:
             script_conversion = self._script_conversion_config.code
             runtime["opencc"] = get_distribution_identity("opencc")

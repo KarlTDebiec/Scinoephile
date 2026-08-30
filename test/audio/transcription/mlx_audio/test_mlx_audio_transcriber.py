@@ -266,12 +266,12 @@ def test_safe_audio_duration_changes_long_audio_cache_identity(tmp_path: Path):
     short_identity = transcriber._get_cache_identity(short_audio, settings)
     long_identity = transcriber._get_cache_identity(long_audio, settings)
 
-    assert short_identity["chunk_duration_seconds"] is None
-    assert short_identity["chunk_overlap_seconds"] is None
-    assert short_identity["chunk_postprocessing_version"] is None
-    assert long_identity["chunk_duration_seconds"] == 53.0
-    assert long_identity["chunk_overlap_seconds"] == 1.0
-    assert long_identity["chunk_postprocessing_version"] == "2"
+    assert short_identity["chunking"] is None
+    assert long_identity["chunking"] == {
+        "duration_ms": 53_000,
+        "overlap_ms": 1_000,
+        "stitching_version": 2,
+    }
     assert _get_cache_path(transcriber, short_audio) != _get_cache_path(
         transcriber, long_audio
     )
@@ -297,9 +297,7 @@ def test_model_without_safe_duration_uses_one_audio_window(
     cache_identity = transcriber._get_cache_identity(
         audio, TranscriptionPreprocessingSettings(False, False)
     )
-    assert cache_identity["chunk_duration_seconds"] is None
-    assert cache_identity["chunk_overlap_seconds"] is None
-    assert cache_identity["chunk_postprocessing_version"] is None
+    assert cache_identity["chunking"] is None
     assert transcriber.transcribe(audio) == expected_segments
     patched_transcribe.assert_called_once_with(audio)
 

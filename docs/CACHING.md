@@ -97,16 +97,26 @@ content or file metadata, model and backend identifiers, language, preprocessing
 settings, or prompt content. Exclude credentials, transient client objects, and
 unstable representations.
 
-Local inference identities include the runtime distribution name and version,
-plus model identifiers and revisions when available. Source dependencies pinned
-to a commit include that revision. Remote services may instead rely on a local
-cache version for client-side behavior changes when the service itself cannot be
-identified reproducibly.
+Local inference identities include the task-defining distribution name and
+version, plus model identifiers and revisions when available. Source
+dependencies pinned to a commit include that revision. Exclude general
+execution substrates such as PyTorch when their upgrades may introduce only
+acceptable numerical drift; retain dependencies that define model loading,
+preprocessing, inference semantics, or postprocessing. Remote services may
+instead rely on a local cache version for client-side behavior changes when the
+service itself cannot be identified reproducibly.
 
 Persistent cache implementations should define a private `_CACHE_VERSION`
-constant and include it in the serialized payload, identity hash, or path.
-Increment it whenever older entries are no longer safe to reuse. A version is
-local to the cache format; there is no global cache schema version.
+integer and include it in the serialized payload, identity hash, or path.
+Increment it whenever the storage format changes and older entries are no
+longer safe to reuse. A version is local to the cache format; there is no global
+cache schema version.
+
+Scinoephile-owned computation can use a separate, narrowly named integer in the
+operation identity when code changes can alter a reusable result without
+changing its storage format. Scope that counter to the affected behavior, such
+as a chunking `stitching_version`, and include it only when that behavior runs.
+Do not bump a broad cache-format version for a change isolated to one producer.
 
 ## Lifecycle behavior
 

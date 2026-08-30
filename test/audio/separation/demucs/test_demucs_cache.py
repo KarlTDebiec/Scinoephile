@@ -52,11 +52,7 @@ def test_get_path_separates_runtime_versions(tmp_path: Path, monkeypatch: Monkey
         monkeypatch: pytest monkeypatch fixture
     """
     audio = AudioSegment.silent(duration=100)
-    first_versions = {
-        "demucs-infer": "4.2.2",
-        "torch": "stable",
-        "torchaudio": "stable",
-    }
+    first_versions = {"demucs-infer": "4.2.2", "torchaudio": "stable"}
     monkeypatch.setattr(
         "scinoephile.audio.separation.demucs.cache.get_distribution_identity",
         Mock(
@@ -66,7 +62,9 @@ def test_get_path_separates_runtime_versions(tmp_path: Path, monkeypatch: Monkey
             }
         ),
     )
-    first_cache_path = DemucsCache(tmp_path, "model").get_path(audio)
+    first_cache = DemucsCache(tmp_path, "model")
+    first_cache_path = first_cache.get_path(audio)
+    assert set(first_cache.runtime_identity) == {"demucs_infer", "torchaudio"}
     second_versions = {**first_versions, "demucs-infer": "4.3.0"}
     monkeypatch.setattr(
         "scinoephile.audio.separation.demucs.cache.get_distribution_identity",

@@ -206,7 +206,6 @@ class WhisperTranscriber(Transcriber):
             "model_revision": self.model.spec.revision,
             "runtime": {
                 "openai_whisper": get_distribution_identity("openai-whisper"),
-                "torch": get_distribution_identity("torch"),
                 "whisper_timestamped": get_distribution_identity("whisper-timestamped"),
             },
             "temperature": temperature,

@@ -19,10 +19,10 @@ __all__ = ["VoiceActivityDetector"]
 if TYPE_CHECKING:
     from pydub import AudioSegment
 
-_POSTPROCESSING_VERSION = "2"
+_POSTPROCESSING_VERSION = 2
 """Version of Scinoephile's probability-to-interval postprocessing."""
 
-_TRACE_IDENTITY_VERSION = "2"
+_TRACE_IDENTITY_VERSION = 2
 """Version of Scinoephile's frame-level score trace identity."""
 
 

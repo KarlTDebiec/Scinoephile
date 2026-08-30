@@ -56,10 +56,9 @@ class DemucsCache:
 
         self.runtime_identity = {
             "demucs_infer": get_distribution_identity("demucs-infer"),
-            "torch": get_distribution_identity("torch"),
             "torchaudio": get_distribution_identity("torchaudio"),
         }
-        """Installed Demucs inference runtime identities."""
+        """Installed task-defining Demucs dependency identities."""
 
         self.overwrite = overwrite
         """Whether matching cache files should be replaced."""
