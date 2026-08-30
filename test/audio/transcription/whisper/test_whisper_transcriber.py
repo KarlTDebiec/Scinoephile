@@ -145,17 +145,16 @@ def _get_ctc_aligner(text: str = "你好", spec: ModelSpec = _CTC_MODEL_SPEC) ->
     ]
     return Mock(
         cache_config_identity={
-            "alignment_version": 1,
+            "cache_version": 1,
             "device": "cpu",
             "language": Language.yue_hant.code,
             "model_name": spec.name,
             "model_revision": spec.revision,
             "runtime": {
-                "torch": {"distribution": "torch", "version": "test-version"},
                 "transformers": {
                     "distribution": "transformers",
                     "version": "test-version",
-                },
+                }
             },
             "script_conversion": None,
         },
@@ -370,14 +369,14 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
     fallback_identity = cast(Mapping[str, object], cache_identity["timestamp_fallback"])
     assert first_fallback.ctc_aligner is not None
     assert fallback_identity == first_fallback.ctc_aligner.cache_config_identity
-    assert fallback_identity["alignment_version"] == 1
+    assert fallback_identity["cache_version"] == 1
     assert fallback_identity["device"] == "cpu"
     assert fallback_identity["language"] == "yue-Hant"
     assert fallback_identity["model_name"] == "ctc/test-model"
     assert fallback_identity["model_revision"] == "ctc-revision"
     runtime_identity = cast(Mapping[str, Mapping[str, str]], cache_identity["runtime"])
+    assert set(runtime_identity) == {"openai_whisper", "whisper_timestamped"}
     assert runtime_identity["openai_whisper"]["distribution"] == ("openai-whisper")
-    assert runtime_identity["torch"]["distribution"] == "torch"
     assert runtime_identity["whisper_timestamped"]["distribution"] == (
         "whisper-timestamped"
     )

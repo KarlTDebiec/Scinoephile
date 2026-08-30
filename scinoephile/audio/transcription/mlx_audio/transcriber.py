@@ -41,8 +41,8 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
-_CHUNK_POSTPROCESSING_VERSION = "2"
-"""Version of overlapping chunk ownership and timestamp clipping."""
+_CACHE_VERSION = 2
+"""Current MLX-Audio transcription cache version."""
 
 
 class MlxAudioTranscriber(Transcriber):
@@ -172,23 +172,21 @@ class MlxAudioTranscriber(Transcriber):
             cache identity
         """
         chunk_duration_ms, chunk_overlap_ms = self._get_effective_chunking(audio)
-        chunk_duration_seconds = None
-        chunk_overlap_seconds = None
-        chunk_postprocessing_version = None
+        chunking = None
         if chunk_duration_ms is not None:
-            chunk_duration_seconds = chunk_duration_ms / 1000
-            chunk_overlap_seconds = chunk_overlap_ms / 1000
-            chunk_postprocessing_version = _CHUNK_POSTPROCESSING_VERSION
+            chunking = {
+                "duration_ms": chunk_duration_ms,
+                "overlap_ms": chunk_overlap_ms,
+            }
         return {
+            "cache_version": _CACHE_VERSION,
             "model_type": self.model.spec.model_type,
             "model_name": self.model.spec.name,
             "model_revision": self.model.spec.revision,
             "runtime": get_distribution_identity("mlx-audio"),
             "language": self.language.code,
             "generate_kw": dict(self.model.generate_kw),
-            "chunk_duration_seconds": chunk_duration_seconds,
-            "chunk_overlap_seconds": chunk_overlap_seconds,
-            "chunk_postprocessing_version": chunk_postprocessing_version,
+            "chunking": chunking,
             "aligner": self.ctc_aligner.cache_config_identity,
         }
 

@@ -198,9 +198,9 @@ class VoiceActivityCache:
             complete cache identity
         """
         return {
-            **cache_identity,
             "audio_channels": audio.channels,
             "audio_frame_rate": audio.frame_rate,
             "audio_sample_width": audio.sample_width,
+            "cache_identity": cache_identity,
             "cache_version": _CACHE_VERSION,
         }

@@ -63,6 +63,25 @@ def test_vad_cache_separates_audio_and_model_identity(tmp_path: Path):
     assert first_path != other_model_path
 
 
+def test_vad_cache_path_includes_cache_version(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    """Separate voice activity trace paths by storage format version.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
+    cache = VoiceActivityCache(tmp_path)
+    audio = AudioSegment.silent(duration=100, frame_rate=16000)
+    cache_identity: CacheIdentity = {"model": "one"}
+    first_path = cache.get_path(audio, cache_identity)
+
+    monkeypatch.setattr("scinoephile.audio.vad.cache._CACHE_VERSION", 3)
+
+    assert cache.get_path(audio, cache_identity) != first_path
+
+
 def test_vad_cache_discards_invalid_payload(tmp_path: Path):
     """Remove a malformed trace cache and allow regeneration.
 
