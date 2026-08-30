@@ -338,14 +338,7 @@ def test_vad_cache_identity_separates_implementation_and_settings(
     """
     monkeypatch.setattr(
         "scinoephile.audio.vad.silero.get_distribution_identity",
-        Mock(
-            side_effect=lambda distribution_name: {
-                "distribution": distribution_name,
-                "version": {"onnxruntime": "1.28.0", "silero-vad": "6.2.1"}[
-                    distribution_name
-                ],
-            }
-        ),
+        Mock(return_value={"distribution": "silero-vad", "version": "6.2.1"}),
     )
     monkeypatch.setattr(
         "scinoephile.audio.vad.ten.get_distribution_identity",
@@ -394,10 +387,7 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "min_speech_duration_seconds": 0.1,
         "padding_seconds": 0.5,
         "postprocessing_version": 2,
-        "runtime": {
-            "onnxruntime": {"distribution": "onnxruntime", "version": "1.28.0"},
-            "silero_vad": {"distribution": "silero-vad", "version": "6.2.1"},
-        },
+        "runtime": {"silero_vad": {"distribution": "silero-vad", "version": "6.2.1"}},
         "sample_rate": 16000,
         "threshold": 0.5,
         "trace_identity_version": 2,

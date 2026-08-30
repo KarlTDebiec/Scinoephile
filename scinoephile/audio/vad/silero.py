@@ -59,10 +59,7 @@ class SileroVadProvider(VadProvider):
             "model": "silero-vad",
             "model_format": "onnx",
             "model_opset": 16,
-            "runtime": {
-                "onnxruntime": get_distribution_identity("onnxruntime"),
-                "silero_vad": get_distribution_identity("silero-vad"),
-            },
+            "runtime": {"silero_vad": get_distribution_identity("silero-vad")},
         }
 
     def get_speech_intervals(
