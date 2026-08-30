@@ -35,6 +35,7 @@ def normalize_segments(
     cache_path: Path | None,
     use_vad: bool,
     audio_duration_seconds: float | None = None,
+    discard_repetitive_windows: bool = True,
 ) -> list[TranscribedSegment]:
     """Normalize malformed transcription segments from Whisper output.
 
@@ -45,6 +46,8 @@ def normalize_segments(
         cache_path: cache path associated with the segments, if any
         use_vad: whether Whisper VAD produced the segments
         audio_duration_seconds: complete source-audio duration, if known
+        discard_repetitive_windows: whether to discard windows whose retained text is
+            pathologically repetitive
     Returns:
         normalized transcription segments
     """
@@ -153,6 +156,7 @@ def normalize_segments(
         source=source,
         cache_path=cache_path,
         use_vad=use_vad,
+        discard_repetitive_windows=discard_repetitive_windows,
     )
 
 
@@ -265,6 +269,7 @@ def _normalize_decode_window_compression(
     source: str,
     cache_path: Path | None,
     use_vad: bool,
+    discard_repetitive_windows: bool,
 ) -> list[TranscribedSegment]:
     """Normalize Whisper compression scores against retained window text.
 
@@ -278,6 +283,8 @@ def _normalize_decode_window_compression(
         source: source of the segments, for logging
         cache_path: cache path associated with the segments, if any
         use_vad: whether Whisper VAD produced the segments
+        discard_repetitive_windows: whether to discard windows whose retained text is
+            pathologically repetitive
     Returns:
         segments with stale scores corrected and repetitive windows discarded
     """
@@ -299,6 +306,9 @@ def _normalize_decode_window_compression(
         )
         segment_ids = tuple(segment.id for segment in window)
         if retained_ratio > MAX_COMPRESSION_RATIO:
+            if not discard_repetitive_windows:
+                normalized_segments.extend(window)
+                continue
             logger.warning(
                 f"Discarding repetitive Whisper decode window for "
                 f"model={model_name} vad={use_vad} source={source} "
