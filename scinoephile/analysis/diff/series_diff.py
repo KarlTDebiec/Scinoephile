@@ -146,6 +146,42 @@ class SeriesDiff:
         )
         return f"[\n{formatted_messages}\n]"
 
+    def get_event_index_groups(
+        self,
+    ) -> tuple[tuple[tuple[int, ...], tuple[int, ...]], ...]:
+        """Get connected subtitle event-index groups from the line alignment.
+
+        Returns:
+            connected first- and second-side zero-based event-index groups
+        """
+        groups: list[tuple[set[int], set[int]]] = []
+        for message in self.get_messages(include_equal=True):
+            one_indexes, two_indexes = self.get_event_indices(message)
+            overlapping_group_indexes = [
+                group_index
+                for group_index, (group_one, group_two) in enumerate(groups)
+                if not group_one.isdisjoint(one_indexes)
+                or not group_two.isdisjoint(two_indexes)
+            ]
+            if not overlapping_group_indexes:
+                groups.append((set(one_indexes), set(two_indexes)))
+                continue
+
+            group_index = overlapping_group_indexes[0]
+            groups[group_index][0].update(one_indexes)
+            groups[group_index][1].update(two_indexes)
+            for overlapping_group_index in reversed(overlapping_group_indexes[1:]):
+                other_one_indexes, other_two_indexes = groups.pop(
+                    overlapping_group_index
+                )
+                groups[group_index][0].update(other_one_indexes)
+                groups[group_index][1].update(other_two_indexes)
+
+        return tuple(
+            (tuple(sorted(one_indexes)), tuple(sorted(two_indexes)))
+            for one_indexes, two_indexes in groups
+        )
+
     def get_event_indices(
         self, message: LineDiff
     ) -> tuple[tuple[int, ...], tuple[int, ...]]:
