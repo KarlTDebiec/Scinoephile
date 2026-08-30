@@ -51,7 +51,7 @@ def load_test_cases_from_json[TTestCase: TestCase](
             by_name=False,
             strict=True,
             extra="forbid",
-            context={"alias_only": True},
+            context={"alias_only": True, "skip_output_quality_validation": True},
         )
         for raw_test_case in raw_test_case_items
     ]
@@ -61,7 +61,10 @@ def load_test_cases_from_json[TTestCase: TestCase](
     test_case_cls = manager_cls.get_test_case_cls(prompt=prompt)
     test_cases: list[TTestCase] = []
     for base_test_case in base_test_cases:
-        test_case = test_case_cls.model_validate(base_test_case.model_dump(mode="json"))
+        test_case = test_case_cls.model_validate(
+            base_test_case.model_dump(mode="json"),
+            context={"skip_output_quality_validation": True},
+        )
         test_cases.append(test_case)
 
     return test_cases
@@ -84,7 +87,9 @@ def save_test_cases_to_json[TTestCase: TestCase](
     test_case_jsons = []
     for test_case in test_cases:
         base_test_case = base_test_case_cls.model_validate(
-            test_case.model_dump(mode="json"), strict=True
+            test_case.model_dump(mode="json"),
+            strict=True,
+            context={"skip_output_quality_validation": True},
         )
         test_case_jsons.append(
             base_test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)

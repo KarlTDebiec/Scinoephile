@@ -7,7 +7,7 @@ from __future__ import annotations
 import unicodedata
 from typing import ClassVar, Self
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, ValidationInfo, field_validator, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase
 from scinoephile.core.llms.models import LLMModel
@@ -231,15 +231,20 @@ class TranscriptionTestCase(TestCase):
         )
 
     @model_validator(mode="after")
-    def validate_consensus_preservation(self) -> Self:
+    def validate_consensus_preservation(self, info: ValidationInfo) -> Self:
         """Ensure the answer preserves sufficient consensus from the ASR sources.
 
+        Arguments:
+            info: Pydantic validation context
         Returns:
             validated test case
         Raises:
             ValueError: if a value is invalid
         """
-        if self.answer is None:
+        if self.answer is None or (
+            isinstance(info.context, dict)
+            and info.context.get("skip_output_quality_validation") is True
+        ):
             return self
 
         validation = self.alignment_scorer.score(

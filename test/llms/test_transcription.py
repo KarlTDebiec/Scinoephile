@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import cast
 from unittest.mock import Mock
 
@@ -13,6 +14,10 @@ from pytest import LogCaptureFixture, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
+from scinoephile.core.llms.utils import (
+    load_test_cases_from_json,
+    save_test_cases_to_json,
+)
 from scinoephile.llms.transcription import (
     TranscriptionAlignmentScorer,
     TranscriptionAnswer,
@@ -611,6 +616,37 @@ def test_answer_consensus_rejects_equal_length_majority_replacement():
 
     with raises(ValidationError, match="10 consecutive"):
         TranscriptionTestCase(query=query, answer=answer)
+
+
+def test_persistence_skips_transcription_output_quality_revalidation(tmp_path: Path):
+    """Persistence should retain structurally valid cases without rescoring output.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    test_case_cls = TranscriptionManager.get_test_case_cls(_LOCALIZED_PROMPT)
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "sources": [
+                    {"name": "one", "text": "甲乙丙丁戊"},
+                    {"name": "two", "text": "甲乙丙丁戊"},
+                    {"name": "three", "text": "甲乙丙丁戊"},
+                ],
+                "speaker": "ＡＡＡＡＡ",
+            },
+            "answer": {"text": "己庚辛壬癸｜"},
+        },
+        context={"skip_output_quality_validation": True},
+    )
+    output_path = tmp_path / "transcription.json"
+
+    save_test_cases_to_json(output_path, [test_case], TranscriptionManager)
+    [loaded] = load_test_cases_from_json(
+        output_path, TranscriptionManager, _LOCALIZED_PROMPT
+    )
+
+    assert loaded.model_dump(mode="json") == test_case.model_dump(mode="json")
 
 
 def test_answer_consensus_rejects_consecutive_mapped_replacements():
