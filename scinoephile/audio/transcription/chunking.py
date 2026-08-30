@@ -30,11 +30,13 @@ def get_offset_core_segments(
     Returns:
         offset segments containing only words assigned to the core window
     Raises:
-        TranscriptionAlignmentError: if a segment lacks word timings
+        TranscriptionAlignmentError: if a nonblank segment lacks word timings
     """
     offset_segments = []
     for segment in segments:
         if not segment.words:
+            if not segment.text.strip():
+                continue
             raise TranscriptionAlignmentError(
                 "Transcription chunk cannot be trimmed without word timings."
             )

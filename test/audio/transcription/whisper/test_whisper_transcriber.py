@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import gc
 import json
 import os
 import sys
@@ -14,6 +15,7 @@ from textwrap import dedent
 from types import SimpleNamespace
 from typing import Any, cast
 from unittest.mock import Mock
+from weakref import ref
 
 from pydub import AudioSegment
 from pytest import LogCaptureFixture, MonkeyPatch, approx, raises
@@ -368,11 +370,7 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
     cache_identity = first_fallback._get_cache_identity(audio, settings)
     fallback_identity = cast(Mapping[str, object], cache_identity["timestamp_fallback"])
     assert first_fallback.ctc_aligner is not None
-    assert cache_identity["chunk_postprocessing_version"] == 1
-    assert cache_identity["fallback_max_window_duration_seconds"] == 30.0
-    assert cache_identity["fallback_minimum_window_duration_seconds"] == 1.0
-    assert cache_identity["fallback_overlap_seconds"] == 1.0
-    assert cache_identity["token_limit_guard_fraction"] == 0.95
+    assert cache_identity["cache_version"] == 1
     assert fallback_identity == first_fallback.ctc_aligner.cache_config_identity
     assert fallback_identity["cache_version"] == 1
     assert fallback_identity["device"] == "cpu"
@@ -697,13 +695,25 @@ def test_transcribe_retries_when_decoding_window_nears_token_limit(
     caplog.set_level(
         "INFO", logger="scinoephile.audio.transcription.whisper.transcriber"
     )
-    decode = Mock(
-        side_effect=[
+    decode_results = iter(
+        [
             SimpleNamespace(tokens=list(range(32))),
             SimpleNamespace(tokens=list(range(32))),
             SimpleNamespace(tokens=list(range(31))),
         ]
     )
+
+    def decode(_mel: object, _options: object) -> object:
+        """Return the next mocked native Whisper decode result.
+
+        Arguments:
+            _mel: ignored mocked log-Mel spectrogram
+            _options: ignored mocked decoding options
+        Returns:
+            next mocked decoding result
+        """
+        return next(decode_results)
+
     call_count = 0
 
     def transcribe(model: Mock, *_args: Any, **_kwargs: Any) -> object:
@@ -719,10 +729,17 @@ def test_transcribe_retries_when_decoding_window_nears_token_limit(
         nonlocal call_count
         call_count += 1
         if call_count == 1:
-            first_window = object()
+            first_window = Mock()
+            second_window = Mock()
+            first_window_ref = ref(first_window)
+            second_window_ref = ref(second_window)
             model.decode(first_window, object())
             model.decode(first_window, object())
-            model.decode(object(), object())
+            model.decode(second_window, object())
+            del first_window, second_window
+            gc.collect()
+            assert first_window_ref() is None
+            assert second_window_ref() is None
             return {"segments": []}
         text = "甲"
         start = 0.1

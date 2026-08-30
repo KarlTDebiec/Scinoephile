@@ -39,11 +39,8 @@ from .normalization import normalize_segments
 
 __all__ = ["WhisperTranscriber"]
 
-_RECOVERY_TEMPERATURES = (0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
-"""Whisper temperature schedule used after standard decoding fails."""
-
-_CHUNK_POSTPROCESSING_VERSION = 1
-"""Version of overlapping Whisper fallback chunk recombination."""
+_CACHE_VERSION = 1
+"""Version of Whisper transcription behavior affecting cached output."""
 
 _FALLBACK_MAX_WINDOW_DURATION_SECONDS = 30.0
 """Maximum Whisper inference-window duration during hallucination recovery."""
@@ -53,6 +50,9 @@ _FALLBACK_MINIMUM_WINDOW_DURATION_SECONDS = 1.0
 
 _FALLBACK_OVERLAP_SECONDS = 1.0
 """Context overlap around each Whisper fallback core chunk."""
+
+_RECOVERY_TEMPERATURES = (0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
+"""Whisper temperature schedule used after standard decoding fails."""
 
 _TOKEN_LIMIT_GUARD_FRACTION = 0.95
 """Decode-budget fraction that triggers smaller-window recovery."""
@@ -269,16 +269,9 @@ class WhisperTranscriber(Transcriber):
         else:
             temperature = list(self.temperature)
         cache_identity = {
-            "chunk_postprocessing_version": _CHUNK_POSTPROCESSING_VERSION,
+            "cache_version": _CACHE_VERSION,
             "condition_on_previous_text": self.condition_on_previous_text,
             "device": self.model.device,
-            "fallback_max_window_duration_seconds": (
-                _FALLBACK_MAX_WINDOW_DURATION_SECONDS
-            ),
-            "fallback_minimum_window_duration_seconds": (
-                _FALLBACK_MINIMUM_WINDOW_DURATION_SECONDS
-            ),
-            "fallback_overlap_seconds": _FALLBACK_OVERLAP_SECONDS,
             "language": self.model.language_code,
             "model_name": self.model.spec.name,
             "model_revision": self.model.spec.revision,
@@ -287,7 +280,6 @@ class WhisperTranscriber(Transcriber):
                 "whisper_timestamped": get_distribution_identity("whisper-timestamped"),
             },
             "temperature": temperature,
-            "token_limit_guard_fraction": _TOKEN_LIMIT_GUARD_FRACTION,
         }
         if self.ctc_aligner is not None:
             cache_identity["timestamp_fallback"] = (
@@ -409,7 +401,7 @@ class WhisperTranscriber(Transcriber):
                 native_model = self.model.model
                 decode_is_instance_attribute = "decode" in vars(native_model)
                 decode = native_model.decode
-                exhausted_windows: list[Tensor] = []
+                guarded_window_ids: set[int] = set()
 
                 def decode_with_limit_tracking(
                     mel: Tensor, options: DecodingOptions, **kwargs: Any
@@ -424,15 +416,14 @@ class WhisperTranscriber(Transcriber):
                         native Whisper decoding result or results
                     """
                     decode_result = decode(mel, options, **kwargs)
-                    decode_results = (
-                        cast("list[DecodingResult]", decode_result)
-                        if isinstance(decode_result, list)
-                        else [cast("DecodingResult", decode_result)]
-                    )
+                    if isinstance(decode_result, list):
+                        decode_results = cast("list[DecodingResult]", decode_result)
+                    else:
+                        decode_results = [cast("DecodingResult", decode_result)]
                     if any(
                         len(result.tokens) >= guarded_limit for result in decode_results
-                    ) and all(mel is not window for window in exhausted_windows):
-                        exhausted_windows.append(mel)
+                    ):
+                        guarded_window_ids.add(id(mel))
                     return decode_result
 
                 setattr(native_model, "decode", decode_with_limit_tracking)
@@ -477,11 +468,11 @@ class WhisperTranscriber(Transcriber):
                     f"Unable to run Whisper inference: {exc}"
                 ) from exc
 
-        limit_hit_count = len(exhausted_windows)
-        if limit_hit_count:
+        guarded_window_count = len(guarded_window_ids)
+        if guarded_window_count:
             logger.info(
                 f"Whisper used at least {guarded_limit} of its {sample_len}-token "
-                f"decoding budget (affected windows: {limit_hit_count})"
+                f"decoding budget (affected windows: {guarded_window_count})"
             )
         normalized_segments = normalize_segments(
             segments,
@@ -496,7 +487,7 @@ class WhisperTranscriber(Transcriber):
             normalized_segments = self._add_voice_activity_scores(
                 normalized_segments, voice_activity_trace
             )
-        return normalized_segments, limit_hit_count
+        return normalized_segments, guarded_window_count
 
     def _transcribe_audio_window_with_retry(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
