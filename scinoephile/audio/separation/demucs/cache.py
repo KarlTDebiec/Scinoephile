@@ -55,10 +55,9 @@ class DemucsCache:
         """Demucs model name identifying cached vocals."""
 
         self.runtime_identity = {
-            "demucs_infer": get_distribution_identity("demucs-infer"),
-            "torchaudio": get_distribution_identity("torchaudio"),
+            "demucs_infer": get_distribution_identity("demucs-infer")
         }
-        """Installed task-defining Demucs dependency identities."""
+        """Installed Demucs inference dependency identity."""
 
         self.overwrite = overwrite
         """Whether matching cache files should be replaced."""
