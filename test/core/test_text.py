@@ -11,6 +11,7 @@ from scinoephile.core.text import (
     RE_LATIN_WORD,
     get_char_type,
     is_lexical_character,
+    is_low_information_text,
     join_text_lines,
     normalize_nfkc,
     normalize_text,
@@ -33,19 +34,31 @@ def test_get_char_type_rejects_combining_character() -> None:
 
 @parametrize("char", ["Ｋ", "Ａ", "１", "ｋ"])
 def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
-    """Fullwidth Latin forms are classified as full-width characters."""
+    """Fullwidth Latin forms are classified as full-width characters.
+
+    Arguments:
+        char: char value
+    """
     assert get_char_type(char) == "full"
 
 
 @parametrize("char", ["で", "ア"])
 def test_get_char_type_handles_japanese_wide_characters(char: str) -> None:
-    """Japanese wide characters are classified as full-width characters."""
+    """Japanese wide characters are classified as full-width characters.
+
+    Arguments:
+        char: char value
+    """
     assert get_char_type(char) == "full"
 
 
 @parametrize("char", ["A", "é", "Ω", "Ж", "ع", "ｱ"])
 def test_get_char_type_handles_half_width_characters(char: str) -> None:
-    """Printable non-wide characters are classified as half-width characters."""
+    """Printable non-wide characters are classified as half-width characters.
+
+    Arguments:
+        char: char value
+    """
     assert get_char_type(char) == "half"
 
 
@@ -60,7 +73,12 @@ def test_get_char_type_handles_half_width_characters(char: str) -> None:
     ],
 )
 def test_join_text_lines(texts: tuple[str, ...], expected: str) -> None:
-    """Text lines are joined according to adjacent characters' display width."""
+    """Text lines are joined according to adjacent characters' display width.
+
+    Arguments:
+        texts: texts
+        expected: expected value
+    """
     assert join_text_lines(texts) == expected
 
 
@@ -76,13 +94,45 @@ def test_join_text_lines(texts: tuple[str, ...], expected: str) -> None:
     ],
 )
 def test_is_lexical_character(character: str, expected: bool) -> None:
-    """Lexical characters exclude punctuation, symbols, and separators."""
+    """Lexical characters exclude punctuation, symbols, and separators.
+
+    Arguments:
+        character: character value
+        expected: expected value
+    """
     assert is_lexical_character(character) is expected
+
+
+@parametrize(
+    ("text", "expected"),
+    [
+        ("哎　哎哎啊啊啊嗯", True),
+        ("ＡＡＡＨ！", True),
+        ("哈哈嗯", True),
+        ("", False),
+        ("・・　", False),
+        ("哎呀次子", False),
+        ("Hi", False),
+    ],
+)
+def test_is_low_information_text(text: str, expected: bool) -> None:
+    """Low-information text includes common Chinese and Latin vocalizations.
+
+    Arguments:
+        text: text to classify
+        expected: expected classification
+    """
+    assert is_low_information_text(text) is expected
 
 
 @parametrize(("text", "expected"), [("Ａ①", "A1"), ("㍿", "株式会社")])
 def test_normalize_nfkc(text: str, expected: str) -> None:
-    """NFKC normalization applies Unicode compatibility composition."""
+    """NFKC normalization applies Unicode compatibility composition.
+
+    Arguments:
+        text: text
+        expected: expected value
+    """
     assert normalize_nfkc(text) == expected
 
 
@@ -96,13 +146,23 @@ def test_normalize_nfkc(text: str, expected: str) -> None:
     ],
 )
 def test_normalize_text(text: str, expected: str) -> None:
-    """Text normalization applies shared mechanical cleanup."""
+    """Text normalization applies shared mechanical cleanup.
+
+    Arguments:
+        text: text
+        expected: expected value
+    """
     assert normalize_text(text) == expected
 
 
 @parametrize(("text", "expected"), [("Don't stop 佢", ["Don't", "stop"])])
 def test_re_latin_word(text: str, expected: list[str]) -> None:
-    """Latin word regex matches word-like tokens."""
+    """Latin word regex matches word-like tokens.
+
+    Arguments:
+        text: text
+        expected: expected value
+    """
     assert RE_LATIN_WORD.findall(text) == expected
 
 
@@ -110,5 +170,10 @@ def test_re_latin_word(text: str, expected: list[str]) -> None:
 def test_replace_control_characters_preserves_text_whitespace(
     text: str, expected: str
 ) -> None:
-    """Line and tab whitespace are preserved."""
+    """Line and tab whitespace are preserved.
+
+    Arguments:
+        text: text
+        expected: expected value
+    """
     assert replace_control_characters(text) == expected

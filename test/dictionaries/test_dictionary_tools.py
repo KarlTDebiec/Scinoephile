@@ -51,7 +51,11 @@ _STUB_DICTIONARY_TOOL_PROMPT: DictionaryToolPrompt = _StubDictionaryToolPrompt()
 
 @fixture
 def dictionary_data_dir_path() -> Generator[Path]:
-    """Provide deterministic CUHK and GZZJ runtime databases."""
+    """Provide deterministic CUHK and GZZJ runtime databases.
+
+    Yields:
+        directory containing temporary dictionary databases
+    """
     with get_temp_directory_path() as temp_dir_path:
         data_dir_path = temp_dir_path / "dictionaries"
         cuhk_database_path = data_dir_path / "cuhk/cuhk.db"
@@ -181,7 +185,11 @@ def test_get_dictionary_tools_uses_prompt_text():
 
 
 def test_lookup_dictionary_defaults_to_all_dictionaries(dictionary_data_dir_path: Path):
-    """Search all available local dictionaries by default."""
+    """Search all available local dictionaries by default.
+
+    Arguments:
+        dictionary_data_dir_path: dictionary data dir path
+    """
     with patch.dict(environ, {"SCINOEPHILE_DATA_DIR": str(dictionary_data_dir_path)}):
         response = lookup_dictionary(query="共享")
 
@@ -198,7 +206,11 @@ def test_lookup_dictionary_defaults_to_all_dictionaries(dictionary_data_dir_path
 def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
     dictionary_data_dir_path: Path,
 ):
-    """Return an error when no local dictionaries are available."""
+    """Return an error when no local dictionaries are available.
+
+    Arguments:
+        dictionary_data_dir_path: dictionary data dir path
+    """
     for database_path in (
         dictionary_data_dir_path / "dictionaries/cuhk/cuhk.db",
         dictionary_data_dir_path / "dictionaries/gzzj/gzzj.db",

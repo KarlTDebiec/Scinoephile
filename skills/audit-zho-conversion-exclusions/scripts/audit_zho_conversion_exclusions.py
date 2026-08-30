@@ -10,7 +10,8 @@ from dataclasses import dataclass
 from difflib import SequenceMatcher
 from pathlib import Path
 
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.core.script import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import get_zho_text_converted
 
 type _KnownExceptionKey = tuple[str, str, str]
 
@@ -81,7 +82,11 @@ class _AuditResult:
 
 
 def main(argv: Sequence[str] | None = None):
-    """Run the conversion exclusion audit."""
+    """Run the conversion exclusion audit.
+
+    Arguments:
+        argv: optional command-line arguments
+    """
     args = _parse_args(argv)
     root_path = args.root.resolve()
     result = _audit(root_path)

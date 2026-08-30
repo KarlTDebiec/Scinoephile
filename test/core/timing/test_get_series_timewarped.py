@@ -126,7 +126,11 @@ def test_get_series_timewarped_rejects_reversed_ranges(
 
 
 def _get_series() -> Series:
-    """Get a small series for timewarp validation tests."""
+    """Get a small series for timewarp validation tests.
+
+    Returns:
+        a small series for timewarp validation tests
+    """
     return Series(
         events=[
             Subtitle(start=0, end=1000, text="First"),

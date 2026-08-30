@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import asdict
 from hashlib import sha256
 from logging import getLogger
@@ -21,6 +21,7 @@ from scinoephile.analysis.transcription.evaluation import (
     TranscriptionEvaluation,
     evaluate_transcription,
 )
+from scinoephile.analysis.transcription.manifest import normalize_excluded_blocks
 from scinoephile.analysis.transcription.timing import retime_alignment
 from scinoephile.audio.segment import load_audio_segment
 from scinoephile.audio.subtitles import AudioSeries
@@ -37,6 +38,9 @@ from scinoephile.workflows.transcription import transcribe_series
 from scinoephile.workflows.transcription_pipeline import TranscriptionPipeline
 from scinoephile.workflows.transcription_pipeline.factory import (
     get_transcription_pipeline,
+)
+from scinoephile.workflows.transcription_pipeline.pipeline import (
+    log_transcription_blocks,
 )
 
 from .helpers import (
@@ -62,7 +66,7 @@ def process_transcription(
     audio_extraction_mode: AudioExtractionMode = AudioExtractionMode.ORIGINAL,
     media_start_seconds: float = 0.0,
     stop_at_idx: int | None = None,
-    target_reference_count: int = 100,
+    exclude_blocks: Sequence[int] = (),
     additional_context: str | None = None,
     additional_audit_references: Mapping[str, Series] | None = None,
     reference_name: str = "reference",
@@ -71,9 +75,8 @@ def process_transcription(
 ) -> Series:
     """Run, postprocess, and evaluate one reference-free transcription experiment.
 
-    The Cantonese reference determines only how many leading blocks are run
-    and how the finished output is scored. It is never passed to ASR, alignment,
-    CTC timing, diarization, or the consensus LLM.
+    The Cantonese reference is used only to score the finished output. It is never
+    passed to ASR, alignment, CTC timing, diarization, or the consensus LLM.
 
     Arguments:
         title_root_path: test title root directory
@@ -82,8 +85,8 @@ def process_transcription(
         stream_index: optional media audio-stream index
         audio_extraction_mode: channel preparation used during media audio extraction
         media_start_seconds: seconds trimmed from extracted media audio
-        stop_at_idx: explicit exclusive block index, overriding target count
-        target_reference_count: minimum reference subtitles covered by blocks
+        stop_at_idx: exclusive block index, or None to process every planned block
+        exclude_blocks: one-based block numbers to skip
         additional_context: production consensus prompt context
         additional_audit_references: additional named references used only in audits
         reference_name: audit row name for the primary scoring reference
@@ -91,9 +94,9 @@ def process_transcription(
         overwrite: whether to regenerate existing transcription outputs
     Returns:
         merged transcription series
+    Raises:
+        ValueError: if a value is invalid
     """
-    if stop_at_idx is None and target_reference_count <= 0:
-        raise ValueError("target_reference_count must be positive.")
     output_dir_path = title_root_path / "output" / "yue-Hant_transcribe"
     audio_path = title_root_path / "input" / "yue.wav"
     output_dir_path.mkdir(parents=True, exist_ok=True)
@@ -102,6 +105,7 @@ def process_transcription(
     artifact_path = json_dir_path / "alignment.json"
     run_manifest_path = json_dir_path / "run.json"
     transcription_path = output_dir_path / "transcribe.srt"
+    excluded_blocks = normalize_excluded_blocks(exclude_blocks)
     reference = Series.load(reference_path)
     audit_references = {reference_name: reference}
     for name, audit_reference in (additional_audit_references or {}).items():
@@ -114,7 +118,7 @@ def process_transcription(
     )
     if existing_artifact is not None:
         existing_output = _get_matching_existing_output(
-            existing_artifact, existing_manifest, stop_at_idx
+            existing_artifact, existing_manifest, stop_at_idx, excluded_blocks
         )
         if existing_output is not None:
             if not transcription_path.exists():
@@ -130,9 +134,12 @@ def process_transcription(
                 existing_output, output_dir_path, overwrite=False
             )
             return existing_output
+        requested_run = "complete run"
+        if stop_at_idx is not None:
+            requested_run = f"{stop_at_idx}-block prefix"
         logger.info(
-            f"Existing alignment does not match the requested {stop_at_idx}-block "
-            "prefix; checking whether it can be extended."
+            f"Existing alignment does not match the requested {requested_run}; "
+            "checking whether it can be extended."
         )
 
     audio = _load_audio_series(
@@ -150,14 +157,11 @@ def process_transcription(
         additional_context=additional_context,
         current_test_cases_path=json_dir_path / "transcription.json",
     )
-    if stop_at_idx is None:
-        stop_at_idx = _get_stop_at_idx_for_reference_count(
-            pipeline, audio, reference, target_reference_count
-        )
     output, artifact = _transcribe_requested_blocks(
         audio,
         pipeline,
         stop_at_idx,
+        excluded_blocks,
         artifact_path,
         run_manifest_path,
         existing_artifact,
@@ -207,22 +211,33 @@ def _generate_transcription_derivatives(
 
 
 def _get_matching_existing_output(
-    artifact: AlignmentArtifact, manifest: RunManifest | None, stop_at_idx: int | None
+    artifact: AlignmentArtifact,
+    manifest: RunManifest | None,
+    stop_at_idx: int | None,
+    excluded_blocks: tuple[int, ...] = (),
 ) -> Series | None:
     """Get output when an existing artifact covers the requested prefix exactly.
 
     Arguments:
         artifact: existing portable alignment artifact
         manifest: corresponding validated run manifest, if available
-        stop_at_idx: requested exclusive block index, or None for existing output
+        stop_at_idx: requested exclusive block index, or None for a complete run
+        excluded_blocks: one-based block numbers to skip
     Returns:
         existing merged subtitles when the request matches, otherwise None
     """
-    if stop_at_idx is None:
-        return artifact.get_series()
-    processed_block_indexes = tuple(block.index for block in artifact.blocks)
     if manifest is not None and manifest.alignment_sha256 == artifact.sha256:
+        if manifest.excluded_blocks != excluded_blocks:
+            return None
         processed_block_indexes = tuple(block.index for block in manifest.blocks)
+    else:
+        if excluded_blocks:
+            return None
+        processed_block_indexes = tuple(block.index for block in artifact.blocks)
+    if stop_at_idx is None:
+        if manifest is None or manifest.alignment_sha256 != artifact.sha256:
+            return None
+        stop_at_idx = manifest.planned_block_count
     requested_block_indexes = tuple(range(1, stop_at_idx + 1))
     if processed_block_indexes != requested_block_indexes:
         return None
@@ -267,7 +282,8 @@ def _load_existing_run(
 def _transcribe_requested_blocks(
     audio: AudioSeries,
     pipeline: TranscriptionPipeline,
-    stop_at_idx: int,
+    stop_at_idx: int | None,
+    excluded_blocks: tuple[int, ...],
     artifact_path: Path,
     run_manifest_path: Path,
     existing_artifact: AlignmentArtifact | None,
@@ -278,27 +294,42 @@ def _transcribe_requested_blocks(
     Arguments:
         audio: complete source audio
         pipeline: configured transcription pipeline
-        stop_at_idx: requested exclusive block index
+        stop_at_idx: requested exclusive block index, or None for the complete plan
+        excluded_blocks: one-based block numbers to skip
         artifact_path: portable alignment artifact output path
         run_manifest_path: compact run manifest output path
         existing_artifact: candidate reusable alignment prefix
         existing_manifest: provenance for the candidate prefix
     Returns:
         merged subtitles and complete alignment artifact
+    Raises:
+        RuntimeError: if the operation cannot be completed
     """
     start_at_idx = 0
     if (
         existing_artifact is not None
         and existing_manifest is not None
         and _is_reusable_prefix(
-            pipeline, audio, existing_artifact, existing_manifest, stop_at_idx
+            pipeline,
+            audio,
+            existing_artifact,
+            existing_manifest,
+            stop_at_idx,
+            excluded_blocks,
         )
     ):
         start_at_idx = len(existing_manifest.blocks)
-        logger.info(
-            f"Reusing {start_at_idx} completed transcription blocks and processing "
-            f"blocks {start_at_idx + 1}-{stop_at_idx}."
-        )
+        if stop_at_idx is None:
+            logger.info(
+                f"Reusing {start_at_idx} completed transcription blocks and processing "
+                "the remaining blocks."
+            )
+        else:
+            logger.info(
+                f"Reusing {start_at_idx} completed transcription blocks and processing "
+                f"blocks {start_at_idx + 1}-{stop_at_idx}."
+            )
+        log_transcription_blocks(existing_artifact, existing_manifest)
     elif existing_artifact is not None:
         logger.info("Existing alignment is not a compatible prefix; regenerating.")
 
@@ -309,6 +340,7 @@ def _transcribe_requested_blocks(
             pipeline=pipeline,
             alignment_outfile_path=artifact_path,
             run_manifest_outfile_path=run_manifest_path,
+            exclude_blocks=excluded_blocks,
             stop_at_idx=stop_at_idx,
         )
         artifact = pipeline.last_alignment_artifact
@@ -322,6 +354,7 @@ def _transcribe_requested_blocks(
         pipeline=pipeline,
         alignment_outfile_path=artifact_path,
         run_manifest_outfile_path=run_manifest_path,
+        exclude_blocks=excluded_blocks,
         start_at_idx=start_at_idx,
         stop_at_idx=stop_at_idx,
     )
@@ -366,6 +399,8 @@ def _combine_run_prefix(
     )
     if suffix_indexes != expected_suffix_indexes:
         raise RuntimeError("Transcription suffix does not immediately follow prefix.")
+    if prefix_manifest.excluded_blocks != suffix_manifest.excluded_blocks:
+        raise RuntimeError("Transcription prefix and suffix exclusions do not match.")
 
     subtitle_index = 1
     blocks = []
@@ -396,7 +431,8 @@ def _is_reusable_prefix(
     audio: AudioSeries,
     artifact: AlignmentArtifact,
     manifest: RunManifest,
-    stop_at_idx: int,
+    stop_at_idx: int | None,
+    excluded_blocks: tuple[int, ...] = (),
 ) -> bool:
     """Check whether a completed run is a compatible proper prefix.
 
@@ -405,17 +441,18 @@ def _is_reusable_prefix(
         audio: complete decoded source audio
         artifact: candidate reusable alignment artifact
         manifest: provenance corresponding to the candidate artifact
-        stop_at_idx: requested exclusive block index
+        stop_at_idx: requested exclusive block index, or None for the complete plan
+        excluded_blocks: one-based block numbers to skip
     Returns:
         whether only the requested suffix needs processing
     """
     prefix_count = len(manifest.blocks)
     if (
         prefix_count == 0
-        or prefix_count >= stop_at_idx
         or tuple(block.index for block in manifest.blocks)
         != tuple(range(1, prefix_count + 1))
         or manifest.alignment_sha256 != artifact.sha256
+        or manifest.excluded_blocks != excluded_blocks
     ):
         return False
     transcribed_indexes = tuple(
@@ -425,8 +462,11 @@ def _is_reusable_prefix(
         return False
 
     blocks = pipeline.plan_blocks(audio)
+    if stop_at_idx is None:
+        stop_at_idx = len(blocks)
     if (
-        stop_at_idx > len(blocks)
+        prefix_count >= stop_at_idx
+        or stop_at_idx > len(blocks)
         or manifest.language is not pipeline.language
         or artifact.language is not pipeline.language
         or artifact.audio_duration_ms != len(audio.audio)
@@ -444,55 +484,12 @@ def _is_reusable_prefix(
         return False
     for alignment_block in artifact.blocks:
         planned_block = blocks[alignment_block.index - 1]
-        if (
-            alignment_block.core_start_ms,
-            alignment_block.core_end_ms,
-            alignment_block.buffered_start_ms,
-            alignment_block.buffered_end_ms,
-        ) != (
+        if (alignment_block.start_ms, alignment_block.end_ms) != (
             planned_block.start_ms,
             planned_block.end_ms,
-            planned_block.buffered_start_ms,
-            planned_block.buffered_end_ms,
         ):
             return False
     return True
-
-
-def _get_stop_at_idx_for_reference_count(
-    pipeline: TranscriptionPipeline,
-    audio: AudioSeries,
-    reference: Series,
-    target_count: int,
-) -> int:
-    """Get the smallest block prefix covering the target reference count.
-
-    Arguments:
-        pipeline: transcription pipeline used to plan blocks
-        audio: complete audio used for block planning
-        reference: independent reference whose subtitles are counted
-        target_count: minimum reference subtitle count to cover
-    Returns:
-        exclusive block index covering the requested number of subtitles
-    Raises:
-        ScinoephileError: if the complete block plan does not cover the target
-    """
-    blocks = pipeline.plan_blocks(audio)
-    covered = 0
-    for stop_at_idx, block in enumerate(blocks, start=1):
-        covered += sum(
-            block.start_ms <= (subtitle.start + subtitle.end) / 2 < block.end_ms
-            for subtitle in reference
-        )
-        if covered >= target_count:
-            logger.info(
-                f"Selected {stop_at_idx} blocks covering {covered} reference subtitles."
-            )
-            return stop_at_idx
-    raise ScinoephileError(
-        f"The complete block plan covers only {covered} reference subtitles; "
-        f"cannot reach target {target_count}."
-    )
 
 
 def _load_audio_series(

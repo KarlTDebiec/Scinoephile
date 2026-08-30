@@ -53,7 +53,12 @@ def test_tesseract_legacy_data_cache_round_trip(tmp_path: Path):
 def test_tesseract_legacy_data_cache_path_includes_version(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test legacy data from another cache version is not reused."""
+    """Test legacy data from another cache version is not reused.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     cache = TesseractLegacyDataCache(tmp_path)
     traineddata_path = cache.save("eng", b"traineddata")
 
@@ -66,7 +71,11 @@ def test_tesseract_legacy_data_cache_path_includes_version(
 
 
 def test_tesseract_legacy_data_cache_path_includes_source_revision(tmp_path: Path):
-    """Test traineddata paths differ between pinned source revisions."""
+    """Test traineddata paths differ between pinned source revisions.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     first_cache = TesseractLegacyDataCache(tmp_path, source_revision="revision-one")
     second_cache = TesseractLegacyDataCache(tmp_path, source_revision="revision-two")
 
@@ -74,7 +83,11 @@ def test_tesseract_legacy_data_cache_path_includes_source_revision(tmp_path: Pat
 
 
 def test_tesseract_legacy_data_cache_overwrites_matching_entry_once(tmp_path: Path):
-    """Test overwrite refreshes matching traineddata once per instance."""
+    """Test overwrite refreshes matching traineddata once per instance.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     TesseractLegacyDataCache(tmp_path).save("eng", b"stale")
     overwrite_cache = TesseractLegacyDataCache(tmp_path, overwrite=True)
 
@@ -98,7 +111,11 @@ def test_tesseract_legacy_data_cache_rejects_unsafe_language(tmp_path: Path):
 
 
 def test_tesseract_legacy_data_cache_discards_empty_entry(tmp_path: Path):
-    """Test an empty traineddata artifact is discarded as a cache miss."""
+    """Test an empty traineddata artifact is discarded as a cache miss.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = TesseractLegacyDataCache(tmp_path)
     traineddata_path = cache.get_path("eng")
     traineddata_path.parent.mkdir(parents=True)
@@ -109,7 +126,11 @@ def test_tesseract_legacy_data_cache_discards_empty_entry(tmp_path: Path):
 
 
 def test_tesseract_legacy_data_cache_rejects_empty_save(tmp_path: Path):
-    """Test empty traineddata cannot be saved as a valid cache entry."""
+    """Test empty traineddata cannot be saved as a valid cache entry.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = TesseractLegacyDataCache(tmp_path)
 
     with raises(ValueError, match="cannot be empty"):

@@ -11,7 +11,7 @@ __all__ = [
     "TranscriptionAlignmentIncompleteError",
     "TranscriptionEmptyError",
     "TranscriptionError",
-    "TranscriptionInferenceError",
+    "TranscriptionRecognitionError",
 ]
 
 
@@ -31,5 +31,5 @@ class TranscriptionEmptyError(TranscriptionError):
     """Raised when a transcription backend returns no transcript text."""
 
 
-class TranscriptionInferenceError(TranscriptionError):
-    """Raised when transcription inference fails or returns malformed output."""
+class TranscriptionRecognitionError(TranscriptionError):
+    """Raised when transcription recognition fails or returns malformed output."""

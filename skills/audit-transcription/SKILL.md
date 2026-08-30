@@ -6,9 +6,9 @@ description: Audit Scinoephile multi-source transcription alignment artifacts, i
 # Audit Transcription
 
 Run commands from the repository root. Treat the alignment artifact as the
-complete record of production evidence: source/model metadata, VAD block ranges,
-aligned ASR rows, speaker annotations, merged text, CTC speech timing, final
-display timing, and tolerated source failures.
+complete record of production evidence: source/model metadata, processing block
+ranges, aligned ASR rows, speaker annotations, merged text, CTC speech timing,
+final display timing, and tolerated source failures.
 
 ## Protect evaluation integrity
 
@@ -34,7 +34,7 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit transcription \
 
 Omit `--reference` when reviewing production evidence without scoring it. Use
 multiple `--reference NAME=PATH` arguments to compare named references. Use
-`--first-block` and `--last-block` for an inclusive range of original VAD block
+`--first-block` and `--last-block` for an inclusive range of original block
 numbers, or `--first-index` and `--last-index` for merged subtitle numbers. The
 two range types are mutually exclusive. Request optional evidence rows with
 `--include-merge-support`, `--include-speaker`, `--include-language`, or
@@ -44,9 +44,9 @@ The default row order is all available ASR sources, a separator, `merged`, and
 then each named reference. The optional speaker row follows `merged`; support,
 language, music, and singing rows follow the references. `　` is an ordinary
 alignment gap, `・` is a shared timed pause unit whose duration is reported in
-the summary, `Ａ`/`Ｂ`/… are diarized speakers, and `＊` is speech without a
-speaker label. `｜` appears only in a row whose subtitle ends at that alignment
-position. All times are overall source times.
+the summary, and `Ａ`/`Ｂ`/… are diarized speakers. `｜` appears only in a row
+whose subtitle ends at that alignment position. All times are overall source
+times.
 
 ## Interpret the report
 

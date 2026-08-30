@@ -84,7 +84,12 @@ class MediaCli(ScinoephileCliBase):
 
     @classmethod
     def _main(cls, *, media_subcommand_name: str, **kwargs: Any):
-        """Execute with provided keyword arguments."""
+        """Dispatch to a media subcommand.
+
+        Arguments:
+            media_subcommand_name: selected media subcommand
+            **kwargs: arguments forwarded to the selected subcommand
+        """
         cls.subcommands()[media_subcommand_name]._main(**kwargs)
 
 

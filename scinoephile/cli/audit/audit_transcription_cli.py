@@ -166,8 +166,8 @@ class AuditTranscriptionCli(AuditCliBase):
             reference_specs: optional named independent reference SRT paths
             first_index: first merged subtitle number to include
             last_index: last merged subtitle number to include
-            first_block: first VAD block number to include
-            last_block: last VAD block number to include
+            first_block: first block number to include
+            last_block: last block number to include
             include_audio_events: whether to render singing and music rows
             include_language: whether to render the spoken-language annotation row
             include_merge_support: whether to render merged-character source support

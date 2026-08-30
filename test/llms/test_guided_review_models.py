@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import cast
 from unittest.mock import Mock
 
 from pydantic import ValidationError
@@ -102,7 +101,11 @@ def test_queryer_corresponds_using_prompt_aliases():
 
 
 def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
-    """A run should preserve unencountered reusable cases by default."""
+    """A run should preserve unencountered reusable cases by default.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = GuidedReviewManager.get_test_case_cls(_LOCALIZED_PROMPT)
     old_test_case = test_case_cls.model_validate(
         {
@@ -139,11 +142,7 @@ def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
         current_test_cases_path, GuidedReviewManager, _LOCALIZED_PROMPT
     )
     assert len(persisted) == 2
-    persisted_cases = cast("list[GuidedReviewTestCase]", persisted)
-    assert [item.query.targets[0].text for item in persisted_cases] == [
-        "舊原文",
-        "新原文",
-    ]
+    assert [item.query.targets[0].text for item in persisted] == ["舊原文", "新原文"]
 
 
 def test_processor_honors_start_index():
@@ -283,7 +282,11 @@ def test_answer_requires_sparse_ordered_annotated_revisions():
 def test_test_case_rejects_missing_and_unmodified_revision_indexes(
     test_case_cls: type[GuidedReviewTestCase],
 ):
-    """Revisions should target and modify query target subtitles."""
+    """Revisions should target and modify query target subtitles.
+
+    Arguments:
+        test_case_cls: test case cls value
+    """
     query = {
         "targets": [{"index": 1, "text": "original"}],
         "guides": [{"index": 1, "text": "guide"}],
@@ -318,7 +321,11 @@ def test_test_case_rejects_missing_and_unmodified_revision_indexes(
     ids=["static", "generated"],
 )
 def test_revisions_raise_minimum_difficulty(test_case_cls: type[GuidedReviewTestCase]):
-    """A nonempty revisions list should require difficulty one."""
+    """A nonempty revisions list should require difficulty one.
+
+    Arguments:
+        test_case_cls: test case cls value
+    """
     test_case = test_case_cls.model_validate(
         {
             "query": {"targets": [{"index": 1, "text": "original"}], "guides": []},
@@ -368,7 +375,11 @@ def test_list_cardinality_does_not_change_model_class():
 
 
 def test_json_uses_base_prompt_fields_and_loads_localized_aliases(tmp_path: Path):
-    """JSON should persist base fields and load them into a localized prompt."""
+    """JSON should persist base fields and load them into a localized prompt.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = GuidedReviewManager.get_test_case_cls(_LOCALIZED_PROMPT)
     test_case = test_case_cls.model_validate(
         {

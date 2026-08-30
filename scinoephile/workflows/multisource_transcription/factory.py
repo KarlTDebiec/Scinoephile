@@ -7,8 +7,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from pathlib import Path
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.audio.transcription.ctc_aligner import CtcAligner
+from scinoephile.analysis.alignment.timed_msa import MsaAligner
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.transcriber import Transcriber
 from scinoephile.core.language import Language
 from scinoephile.core.llms import LLMProvider, TestCase
@@ -63,7 +63,7 @@ def get_multi_source_transcriber(
     return MultiSourceTranscriber(
         language=language,
         transcribers=transcribers,
-        aligner=Aligner(YueTokenSimilarity()),
+        aligner=MsaAligner(YueTokenSimilarity()),
         processor=processor,
         ctc_aligner=CtcAligner(
             language, cache_root_path=cache_root_path, overwrite_cache=overwrite_cache

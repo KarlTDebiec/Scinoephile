@@ -13,13 +13,10 @@ __all__ = [
     "MAX_COMPRESSION_RATIO",
     "get_text_compression_ratio",
     "get_transcription_quality_issue",
-    "is_low_information_text",
 ]
 
 _AUDIO_END_TOLERANCE_SECONDS = 1.0
 """Maximum accepted timestamp extension beyond the source audio."""
-_LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢嗯嘶")
-"""Standalone vocalizations that do not provide lexical evidence."""
 MAX_COMPRESSION_RATIO = 2.4
 """Maximum backend-reported compression ratio accepted for alignment."""
 
@@ -87,17 +84,3 @@ def get_transcription_quality_issue(  # noqa: PLR0911
     if not any(segment.text.strip() for segment in segments):
         return "Transcription contains no nonblank text."
     return None
-
-
-def is_low_information_text(text: str) -> bool:
-    """Check whether text contains only standalone vocalizations.
-
-    Arguments:
-        text: transcription text to inspect
-    Returns:
-        whether every alphanumeric character is a low-information vocalization
-    """
-    content_characters = {character for character in text if character.isalnum()}
-    return (
-        bool(content_characters) and content_characters <= _LOW_INFORMATION_CHARACTERS
-    )

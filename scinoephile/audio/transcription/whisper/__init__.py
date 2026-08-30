@@ -3,13 +3,21 @@
 """Whisper transcription.
 
 Package hierarchy (modules may import from any above):
+* model_spec / normalization / types
 * model
+* ctc_fallback
 * transcriber
 """
 
 from __future__ import annotations
 
 from .model import WhisperModel
+from .model_spec import WHISPER_LARGE_V3_CANTONESE_MODEL, WhisperModelSpec
 from .transcriber import WhisperTranscriber
 
-__all__ = ["WhisperModel", "WhisperTranscriber"]
+__all__ = [
+    "WHISPER_LARGE_V3_CANTONESE_MODEL",
+    "WhisperModel",
+    "WhisperModelSpec",
+    "WhisperTranscriber",
+]

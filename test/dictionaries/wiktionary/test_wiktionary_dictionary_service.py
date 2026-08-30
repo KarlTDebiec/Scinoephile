@@ -248,8 +248,8 @@ def test_build_raises_on_download_error(
     def _download_to_runtime_jsonl() -> Path:
         """Mock download failure.
 
-        Returns:
-            never returns
+        Raises:
+            requests.RequestException: if the operation fails
         """
         raise requests.RequestException("network down")
 

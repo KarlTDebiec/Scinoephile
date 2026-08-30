@@ -19,26 +19,32 @@ from scinoephile.audio.transcription import DemucsMode, TranscriptionEmptyError,
 from scinoephile.audio.transcription.preprocessing_settings import (
     TranscriptionPreprocessingSettings,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
+    WhisperModel,
+    WhisperTranscriber,
 )
-from scinoephile.audio.transcription.whisper.transcriber import WhisperTranscriber
 from scinoephile.audio.vad import (
     VadImplementation,
     VoiceActivityDetector,
     VoiceActivityError,
     VoiceActivityTrace,
 )
+from scinoephile.core import DependencyError, Language
 
 _CUSTOM_MODEL = replace(
-    WHISPER_LARGE_V3_CANTONESE_MODEL, model_name="custom/model", model_revision=None
+    WHISPER_LARGE_V3_CANTONESE_MODEL, name="custom/model", revision="custom-revision"
 )
 
 
 def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Run mocked pyannote VAD with pinned assets and shared interval settings."""
+    """Run mocked pyannote VAD with pinned assets and shared interval settings.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     segmentation = SimpleNamespace(
         data=np.asarray(
             [
@@ -67,16 +73,15 @@ def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(
     from_numpy = Mock(return_value="waveform")
     device = Mock(return_value="cpu")
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_pyannote_audio",
+        "scinoephile.audio.vad.pyannote.import_pyannote_audio",
         Mock(return_value=SimpleNamespace(Model=model_class)),
     )
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription."
-        "import_pyannote_audio_voice_activity_detection",
+        "scinoephile.audio.vad.pyannote.import_pyannote_audio_voice_activity_detection",
         Mock(return_value=pipeline_class),
     )
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_torch",
+        "scinoephile.audio.vad.pyannote.import_torch",
         Mock(return_value=SimpleNamespace(device=device, from_numpy=from_numpy)),
     )
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
@@ -110,14 +115,18 @@ def test_pyannote_inference_uses_pinned_model_and_shared_interval_settings(
 def test_pyannote_missing_authorization_is_a_domain_error(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Explain the gated model conditions when pyannote cannot load VAD assets."""
+    """Explain the gated model conditions when pyannote cannot load VAD assets.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     model_class = SimpleNamespace(from_pretrained=Mock(return_value=None))
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_pyannote_audio",
+        "scinoephile.audio.vad.pyannote.import_pyannote_audio",
         Mock(return_value=SimpleNamespace(Model=model_class)),
     )
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_torch",
+        "scinoephile.audio.vad.pyannote.import_torch",
         Mock(return_value=SimpleNamespace()),
     )
     monkeypatch.setattr(
@@ -200,12 +209,16 @@ def test_ten_probabilities_are_converted_to_padded_intervals():
 def test_ten_inference_pads_final_frame_and_returns_original_timeline(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Run mocked TEN inference without downloading models or native artifacts."""
+    """Run mocked TEN inference without downloading models or native artifacts.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     runtime_detector = Mock()
     runtime_detector.process.side_effect = [(0.8, 1), (0.9, 1), (0.0, 0), (0.0, 0)]
     ten_vad_class = Mock(return_value=runtime_detector)
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_ten_vad",
+        "scinoephile.audio.vad.ten.import_ten_vad",
         Mock(return_value=SimpleNamespace(TenVad=ten_vad_class)),
     )
     detector = VoiceActivityDetector(
@@ -249,7 +262,11 @@ def test_ten_configuration_rejects_unsupported_audio_geometry(
 def test_silero_inference_uses_shared_interval_settings(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Derive Silero intervals from its reusable frame-level score trace."""
+    """Derive Silero intervals from its reusable frame-level score trace.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     probabilities = [0.0] * 7 + [0.8] * 15 + [0.0] * 10
     model = Mock()
     model.side_effect = [
@@ -258,7 +275,7 @@ def test_silero_inference_uses_shared_interval_settings(
     ]
     load_silero_vad = Mock(return_value=model)
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_torch",
+        "scinoephile.audio.vad.silero.import_torch",
         Mock(
             return_value=SimpleNamespace(
                 from_numpy=Mock(side_effect=lambda x: x), no_grad=nullcontext
@@ -266,7 +283,7 @@ def test_silero_inference_uses_shared_interval_settings(
         ),
     )
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_silero_vad_load_silero_vad",
+        "scinoephile.audio.vad.silero.import_silero_vad_load_silero_vad",
         Mock(return_value=load_silero_vad),
     )
     detector = VoiceActivityDetector(
@@ -294,27 +311,43 @@ def test_silero_rejects_unsupported_sample_rate():
         VoiceActivityDetector(VadImplementation.SILERO, sample_rate=8000)
 
 
-def test_ten_missing_runtime_is_a_domain_error(monkeypatch: pytest.MonkeyPatch):
-    """Wrap a missing TEN runtime in a domain error."""
+def test_ten_missing_runtime_is_a_dependency_error(monkeypatch: pytest.MonkeyPatch):
+    """Propagate the shared dependency error for a missing TEN runtime.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_ten_vad",
-        Mock(side_effect=ImportError("missing")),
+        "scinoephile.audio.vad.ten.import_ten_vad",
+        Mock(side_effect=DependencyError("missing TEN VAD dependency")),
     )
     detector = VoiceActivityDetector(VadImplementation.TEN)
 
-    with pytest.raises(
-        VoiceActivityError, match="Unable to initialize TEN VAD: missing"
-    ):
+    with pytest.raises(DependencyError, match="missing TEN VAD dependency"):
         detector(AudioSegment.silent(duration=100))
 
 
 def test_vad_cache_identity_separates_implementation_and_settings(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Separate transcription caches by VAD model, runtime, and postprocessing."""
+    """Separate transcription caches by VAD model, runtime, and postprocessing.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     monkeypatch.setattr(
         "scinoephile.audio.vad.silero.get_distribution_identity",
-        Mock(return_value={"distribution": "silero-vad", "version": "6.2.1"}),
+        Mock(
+            side_effect=lambda distribution_name: {
+                "distribution": distribution_name,
+                "version": {
+                    "onnxruntime": "1.28.0",
+                    "silero-vad": "6.2.1",
+                    "torch": "2.10.0",
+                }[distribution_name],
+            }
+        ),
     )
     monkeypatch.setattr(
         "scinoephile.audio.vad.ten.get_distribution_identity",
@@ -322,13 +355,15 @@ def test_vad_cache_identity_separates_implementation_and_settings(
     )
     audio = AudioSegment.silent(duration=100)
     silero = WhisperTranscriber(
-        model=_CUSTOM_MODEL,
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
+        Language.yue_hant,
         cache_root_path=tmp_path,
         vad_mode=VadMode.ON,
         vad_detector=VoiceActivityDetector(VadImplementation.SILERO),
     )
     ten = WhisperTranscriber(
-        model=_CUSTOM_MODEL,
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
+        Language.yue_hant,
         cache_root_path=tmp_path,
         vad_mode=VadMode.ON,
         vad_detector=VoiceActivityDetector(VadImplementation.TEN, threshold=0.6),
@@ -361,7 +396,11 @@ def test_vad_cache_identity_separates_implementation_and_settings(
         "min_speech_duration_seconds": 0.1,
         "padding_seconds": 0.5,
         "postprocessing_version": "2",
-        "runtime": {"distribution": "silero-vad", "version": "6.2.1"},
+        "runtime": {
+            "onnxruntime": {"distribution": "onnxruntime", "version": "1.28.0"},
+            "silero_vad": {"distribution": "silero-vad", "version": "6.2.1"},
+            "torch": {"distribution": "torch", "version": "2.10.0"},
+        },
         "sample_rate": 16000,
         "threshold": 0.5,
         "trace_identity_version": "2",
@@ -374,7 +413,11 @@ def test_vad_cache_identity_separates_implementation_and_settings(
 def test_vad_trace_cache_identity_excludes_interval_postprocessing(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Reuse one TEN score trace across threshold and interval parameter sweeps."""
+    """Reuse one TEN score trace across threshold and interval parameter sweeps.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setattr(
         "scinoephile.audio.vad.ten.get_distribution_identity",
         Mock(return_value={"distribution": "ten-vad", "version": "1.0.6.8"}),
@@ -405,10 +448,21 @@ def test_vad_trace_cache_identity_excludes_interval_postprocessing(
 def test_vad_cache_identity_pins_pyannote_model_and_runtime(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Identify pyannote VAD by its pinned model and installed runtime version."""
+    """Identify pyannote VAD by its pinned model and installed runtime version.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setattr(
         "scinoephile.audio.vad.pyannote.get_distribution_identity",
-        Mock(return_value={"distribution": "pyannote.audio", "version": "4.0.7"}),
+        Mock(
+            side_effect=lambda distribution_name: {
+                "distribution": distribution_name,
+                "version": {"pyannote.audio": "4.0.7", "torch": "2.10.0"}[
+                    distribution_name
+                ],
+            }
+        ),
     )
     detector = VoiceActivityDetector(
         VadImplementation.PYANNOTE,
@@ -425,7 +479,10 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
         "model_revision": "e66f3d3b9eb0873085418a7b813d3b369bf160bb",
         "padding_seconds": 0.1,
         "postprocessing_version": "2",
-        "runtime": {"distribution": "pyannote.audio", "version": "4.0.7"},
+        "runtime": {
+            "pyannote_audio": {"distribution": "pyannote.audio", "version": "4.0.7"},
+            "torch": {"distribution": "torch", "version": "2.10.0"},
+        },
         "sample_rate": 16000,
         "threshold": 0.5,
         "trace_identity_version": "2",
@@ -435,7 +492,12 @@ def test_vad_cache_identity_pins_pyannote_model_and_runtime(
 def test_whisper_receives_explicit_ten_intervals(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Supply TEN intervals to Whisper Timestamped on the original timeline."""
+    """Supply TEN intervals to Whisper Timestamped on the original timeline.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     trace = VoiceActivityTrace(
         np.ones(47, dtype=np.float32), start_ms=8, step_ms=16, duration_ms=1500
     )
@@ -449,18 +511,18 @@ def test_whisper_receives_explicit_ten_intervals(
     vad_detector.get_speech_intervals.return_value = [(100, 400), (900, 1200)]
     transcribe = Mock(return_value={"segments": []})
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper.transcriber."
-        "import_whisper_timestamped",
+        "scinoephile.audio.transcription.whisper.model.import_whisper_timestamped",
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        model=_CUSTOM_MODEL,
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
+        Language.yue_hant,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VadMode.ON,
         vad_detector=vad_detector,
     )
-    transcriber._loaded_model_instance = Mock()
+    transcriber.model.model = Mock()
     audio = AudioSegment.silent(duration=1500)
 
     assert transcriber(audio) == []
@@ -472,29 +534,34 @@ def test_whisper_receives_explicit_ten_intervals(
 def test_whisper_auto_retries_after_ten_unsupported_platform(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Retry without VAD when official TEN rejects the current platform."""
+    """Retry without VAD when official TEN rejects the current platform.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     ten_vad_class = Mock(
         side_effect=NotImplementedError("Unsupported platform: Test unknown")
     )
     monkeypatch.setattr(
-        "scinoephile.core.dependencies.transcription.import_ten_vad",
+        "scinoephile.audio.vad.ten.import_ten_vad",
         Mock(return_value=SimpleNamespace(TenVad=ten_vad_class)),
     )
     vad_detector = VoiceActivityDetector(VadImplementation.TEN)
     transcribe = Mock(return_value={"segments": []})
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper.transcriber."
-        "import_whisper_timestamped",
+        "scinoephile.audio.transcription.whisper.model.import_whisper_timestamped",
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        model=_CUSTOM_MODEL,
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
+        Language.yue_hant,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VadMode.AUTO,
         vad_detector=vad_detector,
     )
-    transcriber._loaded_model_instance = Mock()
+    transcriber.model.model = Mock()
 
     assert transcriber(AudioSegment.silent(duration=100)) == []
     ten_vad_class.assert_called_once_with(hop_size=256, threshold=0.5)
@@ -504,7 +571,12 @@ def test_whisper_auto_retries_after_ten_unsupported_platform(
 def test_whisper_ten_empty_output_skips_inference(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    """Treat TEN audio without detected speech as an empty VAD attempt."""
+    """Treat TEN audio without detected speech as an empty VAD attempt.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
     trace = VoiceActivityTrace(
         np.zeros(7, dtype=np.float32), start_ms=8, step_ms=16, duration_ms=100
     )
@@ -518,12 +590,12 @@ def test_whisper_ten_empty_output_skips_inference(
     vad_detector.get_speech_intervals.return_value = []
     transcribe = Mock()
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.whisper.transcriber."
-        "import_whisper_timestamped",
+        "scinoephile.audio.transcription.whisper.model.import_whisper_timestamped",
         Mock(return_value=SimpleNamespace(transcribe=transcribe)),
     )
     transcriber = WhisperTranscriber(
-        model=_CUSTOM_MODEL,
+        WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cpu"),
+        Language.yue_hant,
         cache_root_path=tmp_path,
         demucs_mode=DemucsMode.OFF,
         vad_mode=VadMode.ON,

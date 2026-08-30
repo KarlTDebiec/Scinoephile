@@ -130,7 +130,15 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         dry_run: bool,
         outfile_path: Path,
     ):
-        """Execute with provided keyword arguments."""
+        """Synchronize test cases to a canonical collection.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_paths: input test-case collection paths
+            manager_cls: manager defining the test-case model
+            dry_run: whether to report changes without writing
+            outfile_path: output test-case collection path
+        """
         parser = _parser or cls.argparser()
 
         # Perform operations

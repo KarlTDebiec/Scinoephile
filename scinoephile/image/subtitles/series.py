@@ -86,7 +86,11 @@ class ImageSeries(Series):
 
     @property
     def fill_color(self) -> int:
-        """Fill color of text images."""
+        """Fill color of text images.
+
+        Raises:
+            ScinoephileError: if the operation fails
+        """
         if self._fill_color is None:
             self._init_fill_and_outline_colors()
         if self._fill_color is None:
@@ -95,7 +99,11 @@ class ImageSeries(Series):
 
     @property
     def outline_color(self) -> int:
-        """Outline color of text images."""
+        """Outline color of text images.
+
+        Raises:
+            ScinoephileError: if the operation fails
+        """
         if self._outline_color is None:
             self._init_fill_and_outline_colors()
         if self._outline_color is None:
@@ -104,7 +112,11 @@ class ImageSeries(Series):
 
     @property
     def text_font_size(self) -> int:
-        """Detected font size of subtitle text images."""
+        """Detected font size of subtitle text images.
+
+        Raises:
+            ScinoephileError: if the operation fails
+        """
         if self._text_font_size is None:
             self._init_text_font_size()
         if self._text_font_size is None:
@@ -158,6 +170,8 @@ class ImageSeries(Series):
             dir_path: path to existing image subtitle directory
             encoding: output file encoding
             errors: encoding error handling
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             validated_dir_path = val_input_dir_path(dir_path)
@@ -190,7 +204,6 @@ class ImageSeries(Series):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
     ):
@@ -200,9 +213,10 @@ class ImageSeries(Series):
             path: output file path
             encoding: output file encoding
             format_: output file format
-            fps: frames per second
             errors: encoding error handling
             **kwargs: additional keyword arguments
+        Raises:
+            ScinoephileError: if the operation fails
         """
         path = Path(path)
 
@@ -223,7 +237,6 @@ class ImageSeries(Series):
                 validated_output_path,
                 encoding=encoding,
                 format_=format_,
-                fps=fps,
                 errors=errors,
                 **kwargs,
             )
@@ -240,7 +253,6 @@ class ImageSeries(Series):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
     ) -> Self:
@@ -250,11 +262,12 @@ class ImageSeries(Series):
             path: input file path
             encoding: input file encoding
             format_: input file format
-            fps: frames per second
             errors: encoding error handling
             **kwargs: additional keyword arguments
         Returns:
             loaded series
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             validated_path = val_input_file_or_dir_path(path)
@@ -279,6 +292,8 @@ class ImageSeries(Series):
             events: events to include in the copied series
         Returns:
             copied image series
+        Raises:
+            TypeError: if a value has an invalid type
         """
         image_events: list[ImageSubtitle] = []
         for event in events:
@@ -348,6 +363,8 @@ class ImageSeries(Series):
             dir_path: Path to output directory
             encoding: output file encoding
             errors: encoding error handling
+        Raises:
+            IsADirectoryError: if the operation fails
         """
         # Stage the complete managed output before changing the destination
         with TemporaryDirectory(
@@ -386,6 +403,8 @@ class ImageSeries(Series):
             errors: encoding error handling
         Returns:
             loaded series
+        Raises:
+            ScinoephileError: if the operation fails
         """
         html_path = dir_path / "index.html"
         if not html_path.exists():
@@ -419,6 +438,8 @@ class ImageSeries(Series):
             file_path: path to sup file
         Returns:
             loaded series
+        Raises:
+            ScinoephileError: if the operation fails
         """
         data = np.frombuffer(file_path.read_bytes(), dtype=np.uint8)
         starts, ends, images = read_sup_series(data)
@@ -450,6 +471,9 @@ class ImageSeries(Series):
             dir_path: directory containing images
         Returns:
             list of parsed event data
+        Raises:
+            ValueError: if a value is invalid
+            ScinoephileError: if the operation fails
         """
         image_div_attributes = (
             r"(?: (?:style=['\"]text-align:center['\"]|"
@@ -554,6 +578,8 @@ class ImageSeries(Series):
             time_str: time string
         Returns:
             time in milliseconds
+        Raises:
+            ValueError: if a value is invalid
         """
         time_str = time_str.strip()
         if "," in time_str:

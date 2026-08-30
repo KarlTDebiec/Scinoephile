@@ -8,9 +8,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from math import isfinite
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column
+from scinoephile.analysis.alignment.timed_msa import MsaAligner, MsaAlignment, MsaColumn
 from scinoephile.analysis.transcription.artifact import (
     AlignmentBlock,
     AlignmentColumn,
@@ -29,17 +27,14 @@ from scinoephile.audio.transcription.alignment_sequence import (
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.vad.speech_block import SpeechBlock
-from scinoephile.audio.vad.trace import VoiceActivityTrace
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.core.script import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import get_zho_text_converted
 
 __all__ = [
     "RenderedTranscriptionAlignment",
     "build_transcription_alignment_block",
     "render_transcription_alignment",
 ]
-
-_VAD_SPEECH_THRESHOLD = 0.9
-"""Minimum VAD score rendered as unattributed speech."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -49,7 +44,7 @@ class RenderedTranscriptionAlignment:
     rows: tuple[AlignmentRow, ...]
     """Named ASR rows in alignment source order."""
     speaker: str
-    """Speaker and unattributed-speech annotation row."""
+    """Speaker annotation row."""
     language: str | None
     """Spoken-language annotation row, when available."""
     language_legend: Mapping[str, str]
@@ -61,20 +56,19 @@ class RenderedTranscriptionAlignment:
 
 
 def build_transcription_alignment_block(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     merged_segments: Sequence[TranscribedSegment],
-    aligner: Aligner,
+    aligner: MsaAligner,
     *,
     speech_block: SpeechBlock,
     audio_events: AudioEventDetectionResult | None = None,
     diarization: SpeakerDiarizationResult | None = None,
     first_subtitle_index: int = 1,
     language_identification: LanguageIdentificationResult | None = None,
-    pause_intervals_seconds: Sequence[tuple[float, float]] = (),
+    pause_intervals_seconds: Sequence[tuple[float, float]] | None = None,
     source_errors: Mapping[str, str] | None = None,
     timing_sources: Mapping[int, TimingSource] | None = None,
     traditionalize: bool = False,
-    voice_activity_trace: VoiceActivityTrace | None = None,
 ) -> AlignmentBlock:
     """Build one portable production alignment block.
 
@@ -84,20 +78,21 @@ def build_transcription_alignment_block(
 
     Arguments:
         alignment: lexical multi-ASR alignment using block-local times
-        merged_segments: core-owned merged segments using complete-source times
+        merged_segments: merged segments using complete-source times
         aligner: aligner used to project the merged row onto the ASR profile
-        speech_block: VAD-derived core and buffered source intervals
+        speech_block: complete-source audio interval
         audio_events: optional complete-source FireRed audio-event timeline
         diarization: optional complete-source speaker diarization
         first_subtitle_index: one-based global index for the first merged subtitle
         language_identification: optional complete-source FireRed language timeline
-        pause_intervals_seconds: block-local VAD silence intervals
+        pause_intervals_seconds: optional explicit block-local pause intervals
         source_errors: failed source names and messages
         timing_sources: final segment IDs mapped to their speech-timing origins
         traditionalize: whether to render lexical rows in Hong Kong Traditional
-        voice_activity_trace: optional complete-source VAD score trace
     Returns:
         validated portable alignment block
+    Raises:
+        ValueError: if a value is invalid
     """
     if not merged_segments:
         raise ValueError("Alignment blocks require merged subtitle segments.")
@@ -106,7 +101,7 @@ def build_transcription_alignment_block(
     if any(column.is_pause or column.is_marker for column in alignment.columns):
         raise ValueError("Portable block construction requires lexical alignment.")
 
-    offset_seconds = speech_block.buffered_start_ms / 1000
+    offset_seconds = speech_block.start_ms / 1000
     merged_name = "merged"
     while merged_name in alignment.source_names:
         merged_name = f"_{merged_name}"
@@ -125,7 +120,6 @@ def build_transcription_alignment_block(
         language_identification=language_identification,
         source_offset_seconds=offset_seconds,
         traditionalize=traditionalize,
-        voice_activity_trace=voice_activity_trace,
     )
     speaker_symbols = _get_speaker_symbols(diarization)
 
@@ -154,10 +148,8 @@ def build_transcription_alignment_block(
     )
     return AlignmentBlock(
         index=speech_block.index + 1,
-        core_start_ms=speech_block.start_ms,
-        core_end_ms=speech_block.end_ms,
-        buffered_start_ms=speech_block.buffered_start_ms,
-        buffered_end_ms=speech_block.buffered_end_ms,
+        start_ms=speech_block.start_ms,
+        end_ms=speech_block.end_ms,
         columns=tuple(columns),
         rows=rendered.rows[:-1],
         speaker=rendered.speaker,
@@ -172,14 +164,13 @@ def build_transcription_alignment_block(
 
 
 def render_transcription_alignment(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     *,
     audio_events: AudioEventDetectionResult | None = None,
     diarization: SpeakerDiarizationResult | None = None,
     language_identification: LanguageIdentificationResult | None = None,
     source_offset_seconds: float = 0.0,
     traditionalize: bool = False,
-    voice_activity_trace: VoiceActivityTrace | None = None,
 ) -> RenderedTranscriptionAlignment:
     """Render aligned ASR and audio-analysis rows.
 
@@ -190,7 +181,6 @@ def render_transcription_alignment(
         language_identification: optional complete-source FireRed language timeline
         source_offset_seconds: source time corresponding to alignment-local zero
         traditionalize: whether to render lexical rows in Hong Kong Traditional
-        voice_activity_trace: optional complete-source VAD score trace
     Returns:
         equal-width ASR and annotation rows
     """
@@ -203,13 +193,7 @@ def render_transcription_alignment(
     )
     speaker_symbols = _get_speaker_symbols(diarization)
     speaker = "".join(
-        _get_annotation_cell(
-            column,
-            diarization,
-            speaker_symbols,
-            source_offset_seconds,
-            voice_activity_trace,
-        )
+        _get_speaker_cell(column, diarization, speaker_symbols, source_offset_seconds)
         for column in alignment.columns
     )
     language_symbols = _get_language_symbols(language_identification)
@@ -245,23 +229,21 @@ def render_transcription_alignment(
     )
 
 
-def _get_annotation_cell(
-    column: Column,
+def _get_speaker_cell(
+    column: MsaColumn,
     diarization: SpeakerDiarizationResult | None,
     speaker_symbols: dict[str, str],
     source_offset_seconds: float,
-    voice_activity_trace: VoiceActivityTrace | None,
 ) -> str:
-    """Get one speaker/VAD display character for an alignment column.
+    """Get one speaker display character for an alignment column.
 
     Arguments:
         column: alignment column to annotate
         diarization: optional complete-source speaker diarization
         speaker_symbols: diarization labels mapped to display characters
         source_offset_seconds: source time corresponding to alignment-local zero
-        voice_activity_trace: optional complete-source VAD score trace
     Returns:
-        speaker, speech, pause, or gap display character
+        speaker, pause, or gap display character
     """
     if column.is_pause:
         return "・"
@@ -273,17 +255,11 @@ def _get_annotation_cell(
         )
         if speaker is not None:
             return speaker_symbols[speaker]
-    if voice_activity_trace is not None:
-        score = voice_activity_trace.get_mean_score(
-            start_seconds + source_offset_seconds, end_seconds + source_offset_seconds
-        )
-        if score is not None and score >= _VAD_SPEECH_THRESHOLD:
-            return "＊"
     return "　"
 
 
 def _get_event_row(
-    columns: Sequence[Column],
+    columns: Sequence[MsaColumn],
     audio_events: AudioEventDetectionResult | None,
     event: AudioEvent,
     marker: str,
@@ -318,7 +294,7 @@ def _get_event_row(
 
 
 def _get_language_cell(
-    column: Column,
+    column: MsaColumn,
     language_identification: LanguageIdentificationResult,
     offset_seconds: float,
     language_symbols: Mapping[str, str],
@@ -382,7 +358,7 @@ def _get_language_symbols(
 
 
 def _get_row_text(
-    columns: Sequence[Column], source_idx: int, traditionalize: bool
+    columns: Sequence[MsaColumn], source_idx: int, traditionalize: bool
 ) -> str:
     """Get one source's display text while preserving its alignment gaps.
 
@@ -429,6 +405,8 @@ def _get_speaker_symbols(
         diarization: optional complete-source speaker diarization
     Returns:
         diarization labels mapped to display characters
+    Raises:
+        ValueError: if a value is invalid
     """
     if diarization is None:
         return {}
@@ -458,6 +436,8 @@ def _get_transcription_subtitle(
         speaker_symbols: diarization labels mapped to artifact speaker symbols
     Returns:
         portable subtitle retaining separate speech and display intervals
+    Raises:
+        ValueError: if a value is invalid
     """
     if not isfinite(segment.start) or not isfinite(segment.end):
         raise ValueError("Merged subtitle display timing must be finite.")

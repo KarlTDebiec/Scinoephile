@@ -18,7 +18,12 @@ from test.helpers import parametrize
     ("value", "expected"), [(3.14, 3.14), (5, 5.0), ("3.14", 3.14), (-1.5, -1.5)]
 )
 def test_val_float_accepts_scalar_values(value: float | int | str, expected: float):
-    """Test float validation accepts scalar values."""
+    """Test float validation accepts scalar values.
+
+    Arguments:
+        value: value
+        expected: expected value
+    """
     assert val_float(value) == expected
 
 
@@ -29,7 +34,13 @@ def test_val_float_accepts_scalar_values(value: float | int | str, expected: flo
 def test_val_float_rejects_scalar_constraint_violations(
     constraint: str, value: float, expected_error: str
 ):
-    """Test float validation rejects scalar constraint violations."""
+    """Test float validation rejects scalar constraint violations.
+
+    Arguments:
+        constraint: constraint value
+        value: value
+        expected_error: expected error
+    """
     with raises(ValueError, match=expected_error):
         if constraint == "min":
             val_float(value, min_value=0.0)
@@ -56,7 +67,12 @@ def test_val_float_rejects_invalid_values_and_conflicting_constraints():
     ],
 )
 def test_val_float_accepts_iterables(value: Iterable[Any], expected: list[float]):
-    """Test float validation accepts iterable values."""
+    """Test float validation accepts iterable values.
+
+    Arguments:
+        value: value
+        expected: expected value
+    """
     assert val_float(value) == expected
 
 

@@ -490,33 +490,33 @@ class _FakeFfmpegInput:
         """
         self.output_bytes = output
 
-    def filter(self, *args: object, **kwargs: object) -> _FakeFfmpegInput:
+    def filter(self, *args: Any, **kwargs: Any) -> _FakeFfmpegInput:
         """Return self for chained ffmpeg filters.
 
         Arguments:
-            args: positional filter arguments
-            kwargs: keyword filter arguments
+            *args: additional positional arguments
+            **kwargs: additional keyword arguments
         Returns:
             self
         """
         return self
 
-    def output(self, *args: object, **kwargs: object) -> _FakeFfmpegInput:
+    def output(self, *args: Any, **kwargs: Any) -> _FakeFfmpegInput:
         """Return self for chained ffmpeg output configuration.
 
         Arguments:
-            args: positional output arguments
-            kwargs: keyword output arguments
+            *args: additional positional arguments
+            **kwargs: additional keyword arguments
         Returns:
             self
         """
         return self
 
-    def run(self, **kwargs: object) -> tuple[bytes, bytes]:
+    def run(self, **kwargs: Any) -> tuple[bytes, bytes]:
         """Return fixed raw video bytes.
 
         Arguments:
-            kwargs: ffmpeg run options
+            **kwargs: additional keyword arguments
         Returns:
             raw stdout and empty stderr
         """

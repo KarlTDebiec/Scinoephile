@@ -34,7 +34,11 @@ def test_get_temp_file_path_with_suffix():
 
 
 def test_get_temp_file_path_cleanup_on_exception():
-    """Test temporary file cleanup even when exception occurs."""
+    """Test temporary file cleanup even when exception occurs.
+
+    Raises:
+        ValueError: if a value is invalid
+    """
     temp_file = None
     try:
         with get_temp_file_path() as temp_file_path:

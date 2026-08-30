@@ -23,7 +23,11 @@ from test.helpers.ocr_validation import (
 
 
 def test_index_renders_subtitle_list(tmp_path: Path):
-    """Test the index route renders the subtitle list UI."""
+    """Test the index route renders the subtitle list UI.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     app = create_app(_session(tmp_path, text="recognized", include_done_subtitles=True))
 
     response = app.test_client().get("/")
@@ -48,7 +52,11 @@ def test_index_renders_subtitle_list(tmp_path: Path):
 
 
 def test_static_htmx_asset_is_served(tmp_path: Path):
-    """Test the web UI serves its vendored HTMX asset locally."""
+    """Test the web UI serves its vendored HTMX asset locally.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     app = create_app(_session(tmp_path, text="recognized", include_done_subtitles=True))
 
     response = app.test_client().get("/static/htmx.min.js")
@@ -60,7 +68,12 @@ def test_static_htmx_asset_is_served(tmp_path: Path):
 def test_index_renders_single_char_concern_image(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test character concerns render one focused image and table."""
+    """Test character concerns render one focused image and table.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     app = _char_concern_app(tmp_path, monkeypatch)
 
     response = app.test_client().get("/")
@@ -79,7 +92,12 @@ def test_index_renders_single_char_concern_image(
 def test_index_renders_char_concern_romanizations(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test character concern tables render romanizations below Hanzi."""
+    """Test character concern tables render romanizations below Hanzi.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="霆")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
@@ -101,7 +119,12 @@ def test_index_renders_char_concern_romanizations(
 def test_index_omits_romanizations_for_unrecognized_symbol(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test character concern tables skip romanization for non-Hanzi symbols."""
+    """Test character concern tables skip romanization for non-Hanzi symbols.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="▼")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
@@ -121,7 +144,12 @@ def test_index_omits_romanizations_for_unrecognized_symbol(
 def test_index_reload_reassesses_cached_subtitles(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test index reloads rebuild cached validation states."""
+    """Test index reloads rebuild cached validation states.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
@@ -146,7 +174,12 @@ def test_index_reload_reassesses_cached_subtitles(
 def test_done_filter_route_toggles_ok_subtitles(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test the OK subtitle filter toggle updates the rendered list."""
+    """Test the OK subtitle filter toggle updates the rendered list.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     app = _done_app(tmp_path, monkeypatch)
     client = app.test_client()
 
@@ -185,7 +218,11 @@ def test_done_filter_route_toggles_ok_subtitles(
 
 
 def test_exit_route_saves_output_and_shuts_down_server(tmp_path: Path):
-    """Test exit route persists validation output and shuts down the server."""
+    """Test exit route persists validation output and shuts down the server.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
 
     class FakeServer:
         """Fake server registered on the Flask app."""
@@ -219,7 +256,12 @@ def test_exit_route_saves_output_and_shuts_down_server(tmp_path: Path):
 def test_char_concern_image_url_changes_after_accept(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test accepting one character returns a fresh next concern image URL."""
+    """Test accepting one character returns a fresh next concern image URL.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(20, 30, 0, 20)])
     session = OcrValidationSession.from_dir_path(
@@ -245,7 +287,12 @@ def test_char_concern_image_url_changes_after_accept(
 
 
 def test_index_renders_space_gap_choice_table(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test adjacent-or-space concerns render both choice actions."""
+    """Test adjacent-or-space concerns render both choice actions.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="霆所")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(50, 60, 0, 20)])
     session = prepared_gap_session(
@@ -272,7 +319,12 @@ def test_index_renders_space_gap_choice_table(tmp_path: Path, monkeypatch: Monke
 def test_validation_image_route_serves_bbox_png(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test validation row images are rendered with bbox overlays."""
+    """Test validation row images are rendered with bbox overlays.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     app = _done_app(tmp_path, monkeypatch)
 
     response = app.test_client().get("/subtitles/0/validation.png")
@@ -287,7 +339,12 @@ def test_validation_image_route_serves_bbox_png(
 def test_validation_image_route_rejects_missing_subtitle(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test validation image route rejects an out-of-range subtitle index."""
+    """Test validation image route rejects an out-of-range subtitle index.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     app = _done_app(tmp_path, monkeypatch)
 
     response = app.test_client().get("/subtitles/1/validation.png")
@@ -296,7 +353,11 @@ def test_validation_image_route_rejects_missing_subtitle(
 
 
 def test_text_update_route_rewrites_row(tmp_path: Path):
-    """Test text update route rewrites index.html and returns the row."""
+    """Test text update route rewrites index.html and returns the row.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="old")
     app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
 
@@ -310,7 +371,11 @@ def test_text_update_route_rewrites_row(tmp_path: Path):
 
 
 def test_text_update_route_rejects_missing_subtitle(tmp_path: Path):
-    """Test text update route rejects an out-of-range subtitle index."""
+    """Test text update route rejects an out-of-range subtitle index.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="old")
     app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
 
@@ -322,7 +387,12 @@ def test_text_update_route_rejects_missing_subtitle(tmp_path: Path):
 
 
 def test_concern_image_route_serves_png(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test current concern images are rendered as PNG responses."""
+    """Test current concern images are rendered as PNG responses.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     app = _char_concern_app(tmp_path, monkeypatch)
 
     response = app.test_client().get("/subtitles/0/concern.png")
@@ -334,7 +404,12 @@ def test_concern_image_route_serves_png(tmp_path: Path, monkeypatch: MonkeyPatch
 def test_concern_image_route_rejects_missing_subtitle(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test concern image route rejects an out-of-range subtitle index."""
+    """Test concern image route rejects an out-of-range subtitle index.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     app = _char_concern_app(tmp_path, monkeypatch)
 
     response = app.test_client().get("/subtitles/1/concern.png")
@@ -343,7 +418,12 @@ def test_concern_image_route_rejects_missing_subtitle(
 
 
 def test_char_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test resolving the final character concern omits the completed row."""
+    """Test resolving the final character concern omits the completed row.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     app = _char_concern_app(tmp_path, monkeypatch)
 
     response = app.test_client().post(
@@ -359,7 +439,12 @@ def test_char_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatc
 def test_char_concern_route_rejects_invalid_action(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test character concern route rejects invalid actions."""
+    """Test character concern route rejects invalid actions.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     app = _char_concern_app(tmp_path, monkeypatch)
 
     response = app.test_client().post(
@@ -374,7 +459,12 @@ def test_char_concern_route_rejects_invalid_action(
 def test_char_concern_route_rejects_missing_subtitle(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test character concern route rejects an out-of-range subtitle index."""
+    """Test character concern route rejects an out-of-range subtitle index.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     app = _char_concern_app(tmp_path, monkeypatch)
 
     response = app.test_client().post(
@@ -387,7 +477,12 @@ def test_char_concern_route_rejects_missing_subtitle(
 
 
 def test_gap_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test resolving the final gap concern persists text and omits the row."""
+    """Test resolving the final gap concern persists text and omits the row.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
@@ -407,7 +502,12 @@ def test_gap_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatch
 def test_gap_concern_route_rejects_invalid_action(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test gap concern route rejects invalid actions."""
+    """Test gap concern route rejects invalid actions.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
@@ -425,7 +525,12 @@ def test_gap_concern_route_rejects_invalid_action(
 def test_gap_concern_route_rejects_missing_subtitle(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test gap concern route rejects an out-of-range subtitle index."""
+    """Test gap concern route rejects an out-of-range subtitle index.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     app = _char_concern_app(tmp_path, monkeypatch)
 
     response = app.test_client().post(

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from scinoephile.common.described_enum import DescribedEnum
 
-from .text import ChineseScript
+from .script import ChineseScript
 
 __all__ = ["Language", "is_chinese_language_tag", "normalize_language_tag"]
 

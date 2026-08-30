@@ -197,7 +197,16 @@ def test_difficulty_and_auto_verification_matrix(
     expected_difficulty: int,
     auto_verified: bool,
 ):
-    """Difficulty and auto-verification should retain legacy behavior."""
+    """Difficulty and auto-verification should retain legacy behavior.
+
+    Arguments:
+        test_case_cls: test case cls value
+        source_one: source one value
+        source_two: source two value
+        output: output value
+        expected_difficulty: expected difficulty
+        auto_verified: auto verified value
+    """
     data: dict[str, object] = {
         "query": {"source_one": source_one, "source_two": source_two}
     }
@@ -290,7 +299,11 @@ def test_processor_rejects_negative_stop_index():
 
 
 def test_json_persistence_uses_base_prompt_aliases(tmp_path: Path):
-    """JSON should retain base one/two fields across localized round trips."""
+    """JSON should retain base one/two fields across localized round trips.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = OcrFusionManager.get_test_case_cls(_LOCALIZED_PROMPT)
     test_case = test_case_cls.model_validate(
         {
@@ -324,7 +337,11 @@ def test_json_persistence_uses_base_prompt_aliases(tmp_path: Path):
 
 
 def test_persisted_test_case_and_sqlite_use_base_prompt_aliases(tmp_path: Path):
-    """Normalized persistence should store base one/two query fields."""
+    """Normalized persistence should store base one/two query fields.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = OcrFusionManager.get_test_case_cls(_LOCALIZED_PROMPT)
     test_case = test_case_cls.model_validate(
         {

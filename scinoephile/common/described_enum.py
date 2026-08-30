@@ -21,6 +21,8 @@ class DescribedEnum(Enum):
         Arguments:
             code: enum code
             description: human-readable description
+        Returns:
+            enum member with attached description
         """
         member = object.__new__(cls)
         member._value_ = code
@@ -38,5 +40,9 @@ class DescribedEnum(Enum):
         return self._description
 
     def __str__(self) -> str:
-        """String representation used in CLI/help contexts."""
+        """Get the string representation used in CLI and help contexts.
+
+        Returns:
+            enum code
+        """
         return self.value

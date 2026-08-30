@@ -172,7 +172,22 @@ class ReviewCli(ScinoephileCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Review subtitle blocks with an LLM and write the result.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_path: subtitle input file or `-` for stdin
+            guide_infile_path: optional guide subtitle file
+            language: optional input subtitle language
+            guide_language: optional guide subtitle language
+            first_block: optional first block index
+            last_block: optional last block index
+            llm_args: LLM configuration
+            cache_args: cache configuration
+            json_path: optional test-case JSON path
+            outfile_path: optional output subtitle file
+            overwrite: whether to overwrite existing outputs
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:

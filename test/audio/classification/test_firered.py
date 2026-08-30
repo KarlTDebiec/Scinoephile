@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 
 import pytest
 from pydub import AudioSegment
@@ -17,6 +17,37 @@ from scinoephile.audio.classification import (
     FireRedAudioEventDetector,
     FireRedLanguageIdentifier,
 )
+
+
+def test_cache_identities_use_installed_runtime(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    """FireRed cache identities should use installed runtime metadata.
+
+    Arguments:
+        tmp_path: temporary cache root path
+        monkeypatch: pytest monkeypatch fixture
+    """
+    runtime_identity = {
+        "distribution": "fireredasr2s",
+        "version": "test-version",
+        "source_revision": "test-revision",
+    }
+    get_runtime_identity = Mock(return_value=runtime_identity)
+    monkeypatch.setattr(
+        "scinoephile.audio.classification.firered.get_distribution_identity",
+        get_runtime_identity,
+    )
+
+    identifier = FireRedLanguageIdentifier(tmp_path)
+    detector = FireRedAudioEventDetector(tmp_path)
+
+    assert identifier._get_cache_identity([], 0.0)["runtime"] == runtime_identity
+    assert detector._get_cache_identity(0.0)["runtime"] == runtime_identity
+    assert get_runtime_identity.call_args_list == [
+        call("fireredasr2s"),
+        call("fireredasr2s"),
+    ]
 
 
 def test_audio_event_detector_applies_source_offset(tmp_path: Path):
@@ -190,7 +221,9 @@ def test_language_identifier_reuses_cached_result(tmp_path: Path):
     second_identifier._model.process.assert_not_called()  # noqa: SLF001
 
 
-def test_language_identifier_windows_vad_and_applies_source_offset(tmp_path: Path):
+def test_language_identifier_windows_intervals_and_applies_source_offset(
+    tmp_path: Path,
+):
     """FireRedLID results should retain their selected source-timeline position.
 
     Arguments:

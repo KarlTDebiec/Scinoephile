@@ -43,6 +43,8 @@ def validate_ocr(
         port: OCR validation web UI port
     Returns:
         validated subtitle series
+    Raises:
+        ScinoephileError: if the operation fails
     """
     if outfile_path.exists() and not overwrite:
         logger.info(f"Validated OCR output exists: {outfile_path}")

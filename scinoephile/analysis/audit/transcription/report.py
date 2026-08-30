@@ -6,8 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.models import Token
+from scinoephile.analysis.alignment.timed_msa import MsaAligner, MsaToken
 from scinoephile.analysis.audit.utils import format_index_range, validate_audit_range
 from scinoephile.analysis.transcription.artifact import (
     AlignmentArtifact,
@@ -32,7 +31,7 @@ def audit_transcription_alignment(
     artifact: AlignmentArtifact,
     references: Mapping[str, Series] | None = None,
     *,
-    token_similarity: Callable[[Token, Token], float] | None = None,
+    token_similarity: Callable[[MsaToken, MsaToken], float] | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -154,7 +153,7 @@ def audit_transcription_alignment(
     lines.extend(("", "## Alignments", ""))
     if token_similarity is None:
         token_similarity = _get_token_similarity
-    aligner = Aligner(token_similarity)
+    aligner = MsaAligner(token_similarity)
     for block in blocks:
         lines.append(f"### Block {block.index}")
         if block.source_errors:
@@ -189,7 +188,7 @@ def render_transcription_alignment_terminal(
     references: Mapping[str, Series] | None = None,
     *,
     authoritative_row_name: str = "merged",
-    token_similarity: Callable[[Token, Token], float] | None = None,
+    token_similarity: Callable[[MsaToken, MsaToken], float] | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -246,7 +245,7 @@ def render_transcription_alignment_terminal(
     )
     if token_similarity is None:
         token_similarity = _get_token_similarity
-    aligner = Aligner(token_similarity)
+    aligner = MsaAligner(token_similarity)
     lines = [f"Authority: {authoritative_row_name}"]
     for block in blocks:
         lines.extend(("", f"Block {block.index}"))
@@ -549,7 +548,7 @@ def _get_timing_comparison_lines(
     return lines
 
 
-def _get_token_similarity(one: Token, two: Token) -> float:
+def _get_token_similarity(one: MsaToken, two: MsaToken) -> float:
     """Score audit-only reference alignment using text and overall timing.
 
     Arguments:

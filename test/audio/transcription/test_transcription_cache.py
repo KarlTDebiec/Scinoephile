@@ -11,6 +11,7 @@ from pydub import AudioSegment
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.transcription import TranscribedSegment, TranscriptionCache
+from scinoephile.core.cache.identity import CacheIdentity
 
 
 def test_transcription_cache_round_trip(tmp_path: Path):
@@ -23,7 +24,7 @@ def test_transcription_cache_round_trip(tmp_path: Path):
         tmp_path, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
     )
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model_name": "test/model"}
+    cache_identity: CacheIdentity = {"model_name": "test/model"}
     segments = [TranscribedSegment(id=0, seek=0, start=0.0, end=0.1, text="test")]
 
     cache_path = cache.save(audio, cache_identity, segments)
@@ -47,7 +48,7 @@ def test_transcription_cache_discards_mismatched_cache_identity(tmp_path: Path):
         tmp_path, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
     )
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model_name": "test/model"}
+    cache_identity: CacheIdentity = {"model_name": "test/model"}
     cache_path = cache.save(audio, cache_identity, [])
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
     payload["cache_identity"]["model_name"] = "other/model"
@@ -67,7 +68,7 @@ def test_transcription_cache_discards_mismatched_version(tmp_path: Path):
         tmp_path, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
     )
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model_name": "test/model"}
+    cache_identity: CacheIdentity = {"model_name": "test/model"}
     cache_path = cache.save(audio, cache_identity, [])
     payload = json.loads(cache_path.read_text(encoding="utf-8"))
     payload["cache_version"] = 0
@@ -78,9 +79,13 @@ def test_transcription_cache_discards_mismatched_version(tmp_path: Path):
 
 
 def test_transcription_cache_overwrites_matching_entry_once(tmp_path: Path):
-    """Test overwrite refreshes a matching transcription once per instance."""
+    """Test overwrite refreshes a matching transcription once per instance.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model_name": "test/model"}
+    cache_identity: CacheIdentity = {"model_name": "test/model"}
     cache = TranscriptionCache(
         tmp_path, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
     )
@@ -105,7 +110,7 @@ def test_transcription_cache_uses_runtime_default(runtime_cache_root_path: Path)
         None, AudioCacheNamespace.TRANSCRIPTION_WHISPER, "test", "Test"
     )
     audio = AudioSegment.silent(duration=100)
-    cache_identity = {"model_name": "test/model"}
+    cache_identity: CacheIdentity = {"model_name": "test/model"}
 
     cache_path = cache.save(audio, cache_identity, [])
 

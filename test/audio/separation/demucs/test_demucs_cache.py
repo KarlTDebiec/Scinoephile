@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 from unittest.mock import Mock
 
 from pydub import AudioSegment
@@ -28,7 +29,11 @@ def test_demucs_cache_uses_runtime_default(runtime_cache_root_path: Path):
 
 
 def test_get_path_separates_model_configuration(tmp_path: Path):
-    """Test Demucs cache paths differ by model configuration."""
+    """Test Demucs cache paths differ by model configuration.
+
+    Arguments:
+        tmp_path: temporary cache root
+    """
     audio = AudioSegment.silent(duration=100)
 
     first_cache_path = DemucsCache(tmp_path, "model-one").get_path(audio)
@@ -40,16 +45,37 @@ def test_get_path_separates_model_configuration(tmp_path: Path):
 
 
 def test_get_path_separates_runtime_versions(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test Demucs cache paths differ by installed runtime version."""
+    """Test Demucs cache paths differ by installed runtime version.
+
+    Arguments:
+        tmp_path: temporary cache root
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=100)
+    first_versions = {
+        "demucs-infer": "4.2.2",
+        "torch": "stable",
+        "torchaudio": "stable",
+    }
     monkeypatch.setattr(
         "scinoephile.audio.separation.demucs.cache.get_distribution_identity",
-        Mock(return_value={"distribution": "demucs-infer", "version": "4.2.2"}),
+        Mock(
+            side_effect=lambda distribution_name: {
+                "distribution": distribution_name,
+                "version": first_versions[distribution_name],
+            }
+        ),
     )
     first_cache_path = DemucsCache(tmp_path, "model").get_path(audio)
+    second_versions = {**first_versions, "demucs-infer": "4.3.0"}
     monkeypatch.setattr(
         "scinoephile.audio.separation.demucs.cache.get_distribution_identity",
-        Mock(return_value={"distribution": "demucs-infer", "version": "4.3.0"}),
+        Mock(
+            side_effect=lambda distribution_name: {
+                "distribution": distribution_name,
+                "version": second_versions[distribution_name],
+            }
+        ),
     )
     second_cache_path = DemucsCache(tmp_path, "model").get_path(audio)
 
@@ -57,7 +83,12 @@ def test_get_path_separates_runtime_versions(tmp_path: Path, monkeypatch: Monkey
 
 
 def test_get_path_includes_cache_version(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test Demucs identities and cache paths differ between cache versions."""
+    """Test Demucs identities and cache paths differ between cache versions.
+
+    Arguments:
+        tmp_path: temporary cache root
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=100)
     cache = DemucsCache(tmp_path, "model")
     first_identity = cache.cache_identity
@@ -70,7 +101,12 @@ def test_get_path_includes_cache_version(tmp_path: Path, monkeypatch: MonkeyPatc
 
 
 def test_load_discards_decode_failure(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test malformed cached vocals are discarded as a cache miss."""
+    """Test malformed cached vocals are discarded as a cache miss.
+
+    Arguments:
+        tmp_path: temporary cache root
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=100)
     cache = DemucsCache(tmp_path, "model")
     cache_path = cache.get_path(audio)
@@ -85,7 +121,11 @@ def test_load_discards_decode_failure(tmp_path: Path, monkeypatch: MonkeyPatch):
 
 
 def test_remove_deletes_matching_cached_vocals(tmp_path: Path):
-    """Test removal deletes matching cached vocals."""
+    """Test removal deletes matching cached vocals.
+
+    Arguments:
+        tmp_path: temporary cache root
+    """
     audio = AudioSegment.silent(duration=100)
     cache = DemucsCache(tmp_path, "model")
     cache_path = cache.save(audio, audio)
@@ -97,7 +137,11 @@ def test_remove_deletes_matching_cached_vocals(tmp_path: Path):
 
 
 def test_save_and_load_cached_vocals(tmp_path: Path):
-    """Test separated vocals can be saved and loaded."""
+    """Test separated vocals can be saved and loaded.
+
+    Arguments:
+        tmp_path: temporary cache root
+    """
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
     vocals = AudioSegment.silent(duration=80, frame_rate=8000)
     cache = DemucsCache(tmp_path, "model")
@@ -112,7 +156,11 @@ def test_save_and_load_cached_vocals(tmp_path: Path):
 
 
 def test_demucs_cache_overwrites_matching_entry_once(tmp_path: Path):
-    """Test overwrite refreshes matching separated vocals once per instance."""
+    """Test overwrite refreshes matching separated vocals once per instance.
+
+    Arguments:
+        tmp_path: temporary cache root
+    """
     audio = AudioSegment.silent(duration=100, frame_rate=16000)
     DemucsCache(tmp_path, "model").save(audio, audio)
     overwrite_cache = DemucsCache(tmp_path, "model", True)
@@ -126,14 +174,26 @@ def test_demucs_cache_overwrites_matching_entry_once(tmp_path: Path):
 def test_save_failure_preserves_existing_cached_vocals(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test failed replacement leaves an existing cache file intact."""
+    """Test failed replacement leaves an existing cache file intact.
+
+    Arguments:
+        tmp_path: temporary cache root
+        monkeypatch: pytest monkeypatch fixture
+    """
     audio = AudioSegment.silent(duration=100)
     cache = DemucsCache(tmp_path, "model")
     cache_path = cache.save(audio, audio)
     existing_payload = cache_path.read_bytes()
 
-    def fail_export(*_args: object, **_kwargs: object):
-        """Raise a simulated audio export failure."""
+    def fail_export(*_args: Any, **_kwargs: Any):
+        """Raise a simulated audio export failure.
+
+        Arguments:
+            *_args: ignored positional arguments
+            **_kwargs: ignored keyword arguments
+        Raises:
+            OSError: if a filesystem operation fails
+        """
         raise OSError("simulated failure")
 
     monkeypatch.setattr(AudioSegment, "export", fail_export)

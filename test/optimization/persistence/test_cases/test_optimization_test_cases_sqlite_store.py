@@ -32,7 +32,18 @@ def get_test_case(
     answer: dict[str, JsonValue] | None = None,
     manager_cls: type[Manager] = TranslationManager,
 ) -> PersistedTestCase:
-    """Get a persisted test case with provided values."""
+    """Get a persisted test case with provided values.
+
+    Arguments:
+        difficulty: difficulty value
+        few_shot: few shot value
+        verified: verified value
+        query: query
+        answer: answer value
+        manager_cls: manager cls value
+    Returns:
+        a persisted test case with provided values
+    """
     if query is None:
         query = {"input": "same"}
     if answer is None:
@@ -50,7 +61,11 @@ def get_test_case(
 
 
 def test_store_round_trips_normalized_json(tmp_path: Path):
-    """JSON payloads should round-trip without operation-specific columns."""
+    """JSON payloads should round-trip without operation-specific columns.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
     test_case = get_test_case(
@@ -96,7 +111,11 @@ def test_store_round_trips_normalized_json(tmp_path: Path):
 
 
 def test_store_defers_parent_dir_creation_until_schema_creation(tmp_path: Path):
-    """Initializing and reading should not create parent directories."""
+    """Initializing and reading should not create parent directories.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     database_path = tmp_path / "missing/test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
 
@@ -110,7 +129,11 @@ def test_store_defers_parent_dir_creation_until_schema_creation(tmp_path: Path):
 
 
 def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):
-    """Removing provenance should not change SQL-owned curation metadata."""
+    """Removing provenance should not change SQL-owned curation metadata.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
     low_metadata = get_test_case(difficulty=1)
@@ -141,7 +164,11 @@ def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):
 
 
 def test_store_filters_source_lookup_by_operation(tmp_path: Path):
-    """Source lookup should support catalog operation filters."""
+    """Source lookup should support catalog operation filters.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
     first = get_test_case(manager_cls=ReviewManager, query={"input": "first"})
@@ -170,7 +197,11 @@ def test_store_filters_source_lookup_by_operation(tmp_path: Path):
 
 
 def test_store_rejects_mismatched_content_addressed_id(tmp_path: Path):
-    """Writes should reject test cases whose ID does not match their content."""
+    """Writes should reject test cases whose ID does not match their content.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
     test_case = replace(get_test_case(), test_case_id="incorrect")
@@ -184,7 +215,11 @@ def test_store_rejects_mismatched_content_addressed_id(tmp_path: Path):
 
 
 def test_store_rejects_mismatched_manager(tmp_path: Path):
-    """Writes should reject test cases from another manager's operation."""
+    """Writes should reject test cases from another manager's operation.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
     test_case = get_test_case(manager_cls=TranslationManager)
@@ -198,7 +233,11 @@ def test_store_rejects_mismatched_manager(tmp_path: Path):
 
 
 def test_store_syncs_shared_source_path_within_operation(tmp_path: Path):
-    """Syncing one operation should preserve another operation's provenance."""
+    """Syncing one operation should preserve another operation's provenance.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
     review = get_test_case(manager_cls=ReviewManager)
@@ -223,7 +262,11 @@ def test_store_syncs_shared_source_path_within_operation(tmp_path: Path):
 
 
 def test_store_does_not_manage_a_global_schema_version(tmp_path: Path):
-    """Component table creation should leave SQLite user versions untouched."""
+    """Component table creation should leave SQLite user versions untouched.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     database_path = tmp_path / "test_cases.sqlite"
     with closing(sqlite3.connect(database_path)) as connection:
         connection.execute("PRAGMA user_version=3")

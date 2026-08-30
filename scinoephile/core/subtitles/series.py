@@ -95,7 +95,11 @@ class Series(SSAFile):
 
     @override
     def __repr__(self) -> str:
-        """Representation."""
+        """Get a concise representation of this series.
+
+        Returns:
+            series summary
+        """
         if self.events:
             max_time = max(ev.end for ev in self)
             return (
@@ -145,7 +149,6 @@ class Series(SSAFile):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
     ):
@@ -155,9 +158,10 @@ class Series(SSAFile):
             path: output file path
             encoding: output file encoding
             format_: output file format
-            fps: frames per second
             errors: encoding error handling
             **kwargs: additional keyword arguments
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             validated_path = val_output_path(path, exist_ok=True)
@@ -166,7 +170,6 @@ class Series(SSAFile):
                 str(validated_path),
                 encoding=encoding,
                 format_=format_,
-                fps=fps,
                 errors=errors,
                 **kwargs,
             )
@@ -218,18 +221,19 @@ class Series(SSAFile):
         return string.rstrip()
 
     @override
-    def to_string(self, format_: str, fps: float | None = None, **kwargs: Any) -> str:
+    def to_string(self, format_: str, **kwargs: Any) -> str:
         """Serialize series to a string.
 
         Arguments:
             format_: output string format
-            fps: frames per second
             **kwargs: additional keyword arguments
         Returns:
             serialized subtitle series
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
-            return super().to_string(format_, fps=fps, **kwargs)
+            return super().to_string(format_, **kwargs)
         except (Pysubs2Error, UnicodeError, ValueError) as exc:
             raise ScinoephileError(
                 f"Unable to serialize {type(self).__name__} to string: {exc}"
@@ -238,26 +242,21 @@ class Series(SSAFile):
     @classmethod
     @override
     def from_string(
-        cls,
-        string: str,
-        format_: str | None = None,
-        fps: float | None = None,
-        **kwargs: Any,
+        cls, string: str, format_: str | None = None, **kwargs: Any
     ) -> Self:
         """Parse series from string.
 
         Arguments:
             string: string to parse
             format_: input file format
-            fps: frames per second
             **kwargs: additional keyword arguments
         Returns:
             parsed series
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
-            series = cast(
-                Self, super().from_string(string, format_=format_, fps=fps, **kwargs)
-            )
+            series = cast(Self, super().from_string(string, format_=format_, **kwargs))
             series.events = [
                 cls.event_class(**ssaevent.as_dict()) for ssaevent in series
             ]
@@ -275,21 +274,21 @@ class Series(SSAFile):
         path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
-        fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
     ) -> Self:
         """Load series from an input file.
 
         Arguments:
-            path : input file path
+            path: input file path
             encoding: input file encoding
             format_: input file format
-            fps: frames per second
             errors: encoding error handling
             **kwargs: additional keyword arguments
         Returns:
             loaded series
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             validated_path = val_input_path(path)
@@ -298,7 +297,7 @@ class Series(SSAFile):
                 str(validated_path), encoding=encoding, errors=errors
             ) as input_file:
                 series = cast(
-                    Self, cls.from_file(input_file, format_=format_, fps=fps, **kwargs)
+                    Self, cls.from_file(input_file, format_=format_, **kwargs)
                 )
                 series.events = [
                     cls.event_class(**ssaevent.as_dict()) for ssaevent in series
@@ -359,6 +358,8 @@ class Series(SSAFile):
             events: events to include in the copied series
         Returns:
             copied series
+        Raises:
+            NotImplementedError: if the operation is not implemented
         """
         if type(self) is not Series:
             raise NotImplementedError(
@@ -369,7 +370,11 @@ class Series(SSAFile):
         return copied
 
     def _get_blocks_signature(self) -> tuple[tuple[int, str], ...]:
-        """Get event identity and SSA state used to detect block mutations."""
+        """Get event identity and SSA state used to detect block mutations.
+
+        Returns:
+            event identities and serialized states
+        """
         return tuple((id(event), repr(event.as_dict())) for event in self.events)
 
     def _init_blocks(self):

@@ -6,7 +6,12 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.alignment.timed_msa import Aligner, Alignment, Column, Token
+from scinoephile.analysis.alignment.timed_msa import (
+    MsaAligner,
+    MsaAlignment,
+    MsaColumn,
+    MsaToken,
+)
 from scinoephile.audio.classification import (
     AudioEvent,
     AudioEventDetectionResult,
@@ -25,11 +30,11 @@ from scinoephile.workflows.transcription_alignment import (
 
 def test_build_transcription_alignment_block_uses_current_artifact_models():
     """Test a lexical alignment becomes a validated portable artifact block."""
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("merged", "two"),
         columns=(
-            Column((Token("係", 0.1, 0.2), Token("是", 0.1, 0.2))),
-            Column((Token("好", 0.7, 0.8), Token("好", 0.7, 0.8))),
+            MsaColumn((MsaToken("係", 0.1, 0.2), MsaToken("是", 0.1, 0.2))),
+            MsaColumn((MsaToken("好", 0.7, 0.8), MsaToken("好", 0.7, 0.8))),
         ),
     )
     merged_segments = [
@@ -58,16 +63,9 @@ def test_build_transcription_alignment_block_uses_current_artifact_models():
     block = build_transcription_alignment_block(
         alignment,
         merged_segments,
-        Aligner(YueTokenSimilarity()),
-        speech_block=SpeechBlock(
-            index=0,
-            start_ms=10_000,
-            end_ms=12_000,
-            buffered_start_ms=10_000,
-            buffered_end_ms=12_000,
-        ),
+        MsaAligner(YueTokenSimilarity()),
+        speech_block=SpeechBlock(index=0, start_ms=10_000, end_ms=12_000),
         diarization=diarization,
-        pause_intervals_seconds=((0.2, 0.7),),
         timing_sources={7: "ctc-request"},
     )
 
@@ -84,11 +82,11 @@ def test_build_transcription_alignment_block_uses_current_artifact_models():
 
 def test_build_transcription_alignment_block_adds_classification_rows():
     """FireRed classifications should project onto every alignment column."""
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("one", "two"),
         columns=(
-            Column((Token("甲", 0.0, 0.2), Token("甲", 0.0, 0.2))),
-            Column((Token("乙", 0.5, 0.7), Token("乙", 0.5, 0.7))),
+            MsaColumn((MsaToken("甲", 0.0, 0.2), MsaToken("甲", 0.0, 0.2))),
+            MsaColumn((MsaToken("乙", 0.5, 0.7), MsaToken("乙", 0.5, 0.7))),
         ),
     )
     merged_segments = [
@@ -120,14 +118,8 @@ def test_build_transcription_alignment_block_adds_classification_rows():
     block = build_transcription_alignment_block(
         alignment,
         merged_segments,
-        Aligner(YueTokenSimilarity()),
-        speech_block=SpeechBlock(
-            index=0,
-            start_ms=10_000,
-            end_ms=12_000,
-            buffered_start_ms=10_000,
-            buffered_end_ms=12_000,
-        ),
+        MsaAligner(YueTokenSimilarity()),
+        speech_block=SpeechBlock(index=0, start_ms=10_000, end_ms=12_000),
         audio_events=events,
         language_identification=languages,
         pause_intervals_seconds=((0.2, 0.5),),
@@ -141,9 +133,9 @@ def test_build_transcription_alignment_block_adds_classification_rows():
 
 def test_build_transcription_alignment_block_rejects_invalid_segment_timing():
     """Malformed merged segment timing should not be repaired in the artifact."""
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("one", "two"),
-        columns=(Column((Token("甲", 0.0, 0.2), Token("甲", 0.0, 0.2))),),
+        columns=(MsaColumn((MsaToken("甲", 0.0, 0.2), MsaToken("甲", 0.0, 0.2))),),
     )
     merged_segments = [
         TranscribedSegment(id=9, seek=0, start=10.2, end=10.0, text="甲")
@@ -153,12 +145,6 @@ def test_build_transcription_alignment_block_rejects_invalid_segment_timing():
         build_transcription_alignment_block(
             alignment,
             merged_segments,
-            Aligner(YueTokenSimilarity()),
-            speech_block=SpeechBlock(
-                index=0,
-                start_ms=10_000,
-                end_ms=12_000,
-                buffered_start_ms=10_000,
-                buffered_end_ms=12_000,
-            ),
+            MsaAligner(YueTokenSimilarity()),
+            speech_block=SpeechBlock(index=0, start_ms=10_000, end_ms=12_000),
         )

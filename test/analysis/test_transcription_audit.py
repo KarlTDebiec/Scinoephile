@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.alignment.timed_msa.models import Token
+from scinoephile.analysis.alignment.timed_msa import MsaToken
 from scinoephile.analysis.audit.transcription.report import (
     audit_transcription_alignment,
     render_transcription_alignment_terminal,
@@ -30,7 +30,7 @@ def test_audit_accepts_custom_token_similarity():
     reference = Series(events=[Subtitle(start=800, end=2_300, text="是嗎")])
     compared_characters = []
 
-    def similarity(one: Token, two: Token) -> float:
+    def similarity(one: MsaToken, two: MsaToken) -> float:
         """Record compared characters and prefer identical text.
 
         Arguments:
@@ -56,8 +56,7 @@ def test_audit_reports_block_cer_sorted_by_merged_error():
     artifact = _get_artifact()
     first_block = artifact.blocks[0].model_copy(
         update={
-            "core_end_ms": 2_500,
-            "buffered_end_ms": 2_500,
+            "end_ms": 2_500,
             "merged": "是・嗎",
             "subtitles": (
                 artifact.blocks[0].subtitles[0].model_copy(update={"text": "是嗎"}),
@@ -66,10 +65,8 @@ def test_audit_reports_block_cer_sorted_by_merged_error():
     )
     second_block = AlignmentBlock(
         index=2,
-        core_start_ms=2_500,
-        core_end_ms=3_000,
-        buffered_start_ms=2_500,
-        buffered_end_ms=3_000,
+        start_ms=2_500,
+        end_ms=3_000,
         columns=(AlignmentColumn(index=1, start_ms=2_600, end_ms=2_800, kind="text"),),
         rows=(
             AlignmentRow(name="whisper", text="乙"),
@@ -189,10 +186,8 @@ def test_audit_preserves_artifact_pause_boundary_despite_column_timing():
     artifact = _get_artifact()
     block = AlignmentBlock(
         index=1,
-        core_start_ms=0,
-        core_end_ms=1_500,
-        buffered_start_ms=0,
-        buffered_end_ms=1_500,
+        start_ms=0,
+        end_ms=1_500,
         columns=(
             AlignmentColumn(index=1, start_ms=0, end_ms=1_000, kind="text"),
             AlignmentColumn(index=2, start_ms=1_000, end_ms=1_100, kind="text"),
@@ -499,7 +494,7 @@ def test_audit_uses_token_similarity_for_merge_support():
     """The support row should count language-aware character matches."""
     artifact = _get_artifact()
 
-    def similarity(one: Token, two: Token) -> float:
+    def similarity(one: MsaToken, two: MsaToken) -> float:
         """Treat common copula forms as equivalent.
 
         Arguments:
@@ -546,10 +541,8 @@ def test_audit_timing_tables_preserve_complete_artifact_indexes():
     second_block = first_block.model_copy(
         update={
             "index": 2,
-            "core_start_ms": first_block.core_start_ms + offset_ms,
-            "core_end_ms": first_block.core_end_ms + offset_ms,
-            "buffered_start_ms": first_block.buffered_start_ms + offset_ms,
-            "buffered_end_ms": first_block.buffered_end_ms + offset_ms,
+            "start_ms": first_block.start_ms + offset_ms,
+            "end_ms": first_block.end_ms + offset_ms,
             "columns": tuple(
                 column.model_copy(
                     update={
@@ -651,16 +644,14 @@ def test_audit_retains_merged_text_without_source_support():
     artifact = _get_artifact()
     block = AlignmentBlock(
         index=1,
-        core_start_ms=0,
-        core_end_ms=1_000,
-        buffered_start_ms=0,
-        buffered_end_ms=1_000,
+        start_ms=0,
+        end_ms=1_000,
         columns=(AlignmentColumn(index=1, start_ms=100, end_ms=200, kind="text"),),
         rows=(
             AlignmentRow(name="whisper", text="　"),
             AlignmentRow(name="mimo", text="　"),
         ),
-        speaker="＊",
+        speaker="　",
         merged="甲",
         subtitles=(
             AlignmentSubtitle(
@@ -700,10 +691,8 @@ def test_audit_splits_rows_at_merge_request_boundaries():
     artifact = _get_artifact()
     block = AlignmentBlock(
         index=1,
-        core_start_ms=0,
-        core_end_ms=3000,
-        buffered_start_ms=0,
-        buffered_end_ms=3000,
+        start_ms=0,
+        end_ms=3000,
         columns=(
             AlignmentColumn(index=1, start_ms=1000, end_ms=1200, kind="text"),
             *(
@@ -931,10 +920,8 @@ def _get_artifact() -> AlignmentArtifact:
         blocks=(
             AlignmentBlock(
                 index=1,
-                core_start_ms=0,
-                core_end_ms=3000,
-                buffered_start_ms=0,
-                buffered_end_ms=3000,
+                start_ms=0,
+                end_ms=3000,
                 columns=(
                     AlignmentColumn(index=1, start_ms=1000, end_ms=1500, kind="text"),
                     AlignmentColumn(index=2, start_ms=1500, end_ms=1750, kind="pause"),
@@ -964,7 +951,11 @@ def _get_artifact() -> AlignmentArtifact:
 
 
 def _get_boundary_artifact() -> AlignmentArtifact:
-    """Get two blocks whose reference timing and text imply different owners."""
+    """Get two blocks whose reference timing and text imply different owners.
+
+    Returns:
+        artifact containing two single-character blocks
+    """
     sources = (
         AlignmentSource(name="whisper", backend="whisper", model="whisper"),
         AlignmentSource(name="mimo", backend="mlx", model="mimo"),
@@ -983,15 +974,22 @@ def _get_boundary_artifact() -> AlignmentArtifact:
 def _get_character_block(
     index: int, start_ms: int, text: str, sources: tuple[AlignmentSource, ...]
 ) -> AlignmentBlock:
-    """Get one single-character artifact block for audit tests."""
+    """Get one single-character artifact block for audit tests.
+
+    Arguments:
+        index: one-based block and subtitle index
+        start_ms: block start time in milliseconds
+        text: single-character transcription text
+        sources: alignment sources represented in the block
+    Returns:
+        single-character alignment block
+    """
     speech_start_ms = start_ms + 100
     speech_end_ms = start_ms + 300
     return AlignmentBlock(
         index=index,
-        core_start_ms=start_ms,
-        core_end_ms=start_ms + 1_000,
-        buffered_start_ms=start_ms,
-        buffered_end_ms=start_ms + 1_000,
+        start_ms=start_ms,
+        end_ms=start_ms + 1_000,
         columns=(
             AlignmentColumn(
                 index=1, start_ms=speech_start_ms, end_ms=speech_end_ms, kind="text"

@@ -57,17 +57,33 @@ class _AliasedBaseReviewManager(ReviewManager):
 
 
 def _get_translation_answer(text: str) -> dict[str, JsonValue]:
-    """Get a canonical translation answer payload."""
+    """Get a canonical translation answer payload.
+
+    Arguments:
+        text: text
+    Returns:
+        a canonical translation answer payload
+    """
     return {"outputs": [{"index": 1, "text": text}]}
 
 
 def _get_translation_query(text: str) -> dict[str, JsonValue]:
-    """Get a canonical translation query payload."""
+    """Get a canonical translation query payload.
+
+    Arguments:
+        text: text
+    Returns:
+        a canonical translation query payload
+    """
     return {"subtitles": [{"index": 1, "text": text}]}
 
 
 def test_normalization_makes_prompt_field_aliases_share_identity(tmp_path: Path):
-    """Equivalent aliases should normalize to one base-aliased SQL identity."""
+    """Equivalent aliases should normalize to one base-aliased SQL identity.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     localized_cls = _AliasedBaseReviewManager.get_test_case_cls(
         _LOCALIZED_REVIEW_PROMPT
     )
@@ -122,7 +138,11 @@ def test_normalization_makes_prompt_field_aliases_share_identity(tmp_path: Path)
 
 
 def test_sync_rejects_fields_outside_test_case_schema(tmp_path: Path):
-    """Unexpected test-case and payload fields should be rejected."""
+    """Unexpected test-case and payload fields should be rejected.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     source_path = tmp_path / "source.json"
     invalid_test_cases = [
         {
@@ -147,7 +167,11 @@ def test_sync_rejects_fields_outside_test_case_schema(tmp_path: Path):
 
 
 def test_sync_requires_base_prompt_aliases(tmp_path: Path):
-    """Optimization sync should use the shared base-alias-only JSON boundary."""
+    """Optimization sync should use the shared base-alias-only JSON boundary.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     source_path = tmp_path / "source.json"
     source_path.write_text(
         json.dumps(
@@ -175,7 +199,12 @@ def test_sync_requires_base_prompt_aliases(tmp_path: Path):
 def test_sync_inserts_and_removes_provenance_by_source_path(
     tmp_path: Path, monkeypatch
 ):
-    """Sync should insert and remove provenance links per source JSON."""
+    """Sync should insert and remove provenance links per source JSON.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.chdir(tmp_path)
     database_path = Path("test_cases.sqlite")
     source_path = Path("source.json")
@@ -209,7 +238,12 @@ def test_sync_inserts_and_removes_provenance_by_source_path(
 
 
 def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
-    """Sync should treat relative and absolute paths as the same source."""
+    """Sync should treat relative and absolute paths as the same source.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.chdir(tmp_path)
     database_path = Path("test_cases.sqlite")
     source_path = Path("source.json")
@@ -237,7 +271,11 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
 
 
 def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
-    """JSON synchronization should not overwrite SQL-owned metadata."""
+    """JSON synchronization should not overwrite SQL-owned metadata.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     database_path = tmp_path / "test_cases.sqlite"
     source_path = tmp_path / "source.json"
     data = [
@@ -279,7 +317,11 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
 
 
 def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
-    """An invalid later source should prevent all database writes."""
+    """An invalid later source should prevent all database writes.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     database_path = tmp_path / "test_cases.sqlite"
     valid_path = tmp_path / "valid.json"
     invalid_path = tmp_path / "invalid.json"
@@ -316,7 +358,11 @@ def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
 
 
 def test_sync_loads_canonical_repository_data(tmp_path: Path):
-    """Canonical repository fields should be stored unchanged."""
+    """Canonical repository fields should be stored unchanged.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     source_path = (
         common.package_root.parent
         / "test/data/kob/output/zho-Hant_ocr/lang/zho/review.json"
@@ -346,7 +392,11 @@ def test_sync_loads_canonical_repository_data(tmp_path: Path):
 
 
 def test_sync_round_trips_unbounded_lists(tmp_path: Path):
-    """JSON list payloads should not have a persistence width limit."""
+    """JSON list payloads should not have a persistence width limit.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     lines = [f"line {idx}" for idx in range(36)]
     source_path = tmp_path / "source.json"
     source_path.write_text(

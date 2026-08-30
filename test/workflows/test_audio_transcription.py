@@ -63,6 +63,7 @@ def test_transcribe_series_constructs_aligned_pipeline(tmp_path: Path):
             prune_test_cases=True,
             shared_test_cases=[],
             timing_settings=timing,
+            exclude_blocks=[2],
             start_at_idx=1,
             stop_at_idx=3,
         )
@@ -87,7 +88,7 @@ def test_transcribe_series_constructs_aligned_pipeline(tmp_path: Path):
         timing_settings=timing,
     )
     pipeline.process.assert_called_once_with(
-        audio_series, start_at_idx=1, stop_at_idx=3
+        audio_series, exclude_blocks=[2], start_at_idx=1, stop_at_idx=3
     )
 
 
@@ -118,7 +119,7 @@ def test_transcribe_series_saves_pipeline_outputs(tmp_path: Path):
 
     assert output is expected
     pipeline.process.assert_called_once_with(
-        audio_series, start_at_idx=0, stop_at_idx=None
+        audio_series, exclude_blocks=(), start_at_idx=0, stop_at_idx=None
     )
     artifact.save.assert_called_once_with(artifact_path)
     manifest.save.assert_called_once_with(manifest_path)
@@ -154,7 +155,6 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
             overwrite_cache=True,
             strip_generated_punctuation=True,
             mlx_audio_timing_mode=MlxAudioTimingMode.PHRASE,
-            mlx_audio_token_limit_guard=True,
             no_op=True,
             prune_test_cases=True,
             delineation_json_path=delineation_json_path,
@@ -175,7 +175,6 @@ def test_transcribe_series_guided_constructs_transcriber_for_language_pair(
         get_transcriber.call_args.kwargs["mlx_audio_timing_mode"]
         is MlxAudioTimingMode.PHRASE
     )
-    assert get_transcriber.call_args.kwargs["mlx_audio_token_limit_guard"] is True
     assert get_transcriber.call_args.kwargs["no_op"] is True
     assert get_transcriber.call_args.kwargs["prune_test_cases"] is True
     assert (

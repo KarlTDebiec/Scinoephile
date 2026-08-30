@@ -9,11 +9,17 @@ from time import time
 
 from pytest import MonkeyPatch, raises
 
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms.cache import LlmCache
 from test.helpers import parametrize
 from test.helpers.files import set_mtime
 
-_CACHE_INPUTS = ("provider", "system", "[]", '{"query":"value"}')
+_CACHE_INPUTS: tuple[CacheIdentity, str, str, str] = (
+    {"provider": "provider"},
+    "system",
+    "[]",
+    '{"query":"value"}',
+)
 """Valid serialized inputs shared by LLM cache tests."""
 
 
@@ -37,7 +43,12 @@ def test_llm_cache_uses_runtime_default(runtime_cache_root_path: Path):
 def test_llm_cache_path_includes_cache_version(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test LLM cache paths differ between cache versions."""
+    """Test LLM cache paths differ between cache versions.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
     cache = LlmCache(tmp_path, "translation")
     first_cache_path = cache.get_path(*_CACHE_INPUTS)
 
@@ -47,7 +58,11 @@ def test_llm_cache_path_includes_cache_version(
 
 
 def test_llm_cache_uses_operation_subdirectories(tmp_path: Path):
-    """Test LLM operations use independent cache subdirectories."""
+    """Test LLM operations use independent cache subdirectories.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     translation_cache = LlmCache(tmp_path, "translation")
     review_cache = LlmCache(tmp_path, "review")
 
@@ -60,13 +75,21 @@ def test_llm_cache_uses_operation_subdirectories(tmp_path: Path):
 
 
 def test_llm_cache_rejects_unsafe_operation(tmp_path: Path):
-    """Test LLM cache operations may not escape the LLM cache directory."""
+    """Test LLM cache operations may not escape the LLM cache directory.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     with raises(ValueError, match="single contained filename"):
         LlmCache(tmp_path, "../translation")
 
 
 def test_llm_cache_overwrites_matching_entry_once(tmp_path: Path):
-    """Test overwrite refreshes a matching LLM response once per instance."""
+    """Test overwrite refreshes a matching LLM response once per instance.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = LlmCache(tmp_path, "translation")
     cache.save(*_CACHE_INPUTS, "stale")
     overwrite_cache = LlmCache(tmp_path, "translation", True)
@@ -78,7 +101,11 @@ def test_llm_cache_overwrites_matching_entry_once(tmp_path: Path):
 
 
 def test_llm_cache_load_marks_entry_used(tmp_path: Path):
-    """Test loading a cached response refreshes its pruning timestamp."""
+    """Test loading a cached response refreshes its pruning timestamp.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = LlmCache(tmp_path, "translation")
     cache_path = cache.get_path(*_CACHE_INPUTS)
     cache.save(*_CACHE_INPUTS, "response")
@@ -90,7 +117,11 @@ def test_llm_cache_load_marks_entry_used(tmp_path: Path):
 
 
 def test_llm_cache_removes_matching_entry(tmp_path: Path):
-    """Test removing a cached response returns its path when present."""
+    """Test removing a cached response returns its path when present.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = LlmCache(tmp_path, "translation")
     cache_path = cache.get_path(*_CACHE_INPUTS)
     cache.save(*_CACHE_INPUTS, "response")
@@ -101,11 +132,19 @@ def test_llm_cache_removes_matching_entry(tmp_path: Path):
 
 
 def test_llm_cache_path_encodes_component_boundaries(tmp_path: Path):
-    """Test text moved across identity fields cannot produce the same key."""
+    """Test text moved across identity fields cannot produce the same key.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache = LlmCache(tmp_path, "translation")
 
-    first_path = cache.get_path("provider", "system[]", "", '{"query":"value"}')
-    second_path = cache.get_path("provider", "system", "[]", '{"query":"value"}')
+    first_path = cache.get_path(
+        {"provider": "provider"}, "system[]", "", '{"query":"value"}'
+    )
+    second_path = cache.get_path(
+        {"provider": "provider"}, "system", "[]", '{"query":"value"}'
+    )
 
     assert first_path != second_path
 

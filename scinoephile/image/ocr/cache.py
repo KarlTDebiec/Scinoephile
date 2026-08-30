@@ -16,6 +16,7 @@ from PIL import Image
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.cache.artifact import remove_cache_artifact
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.paths import get_runtime_cache_root_path
 from scinoephile.image.cache_namespace import ImageCacheNamespace
 
@@ -62,9 +63,7 @@ class OcrCacheBase[TResult](ABC):
         self._refreshed_paths: set[Path] = set()
         """Cache paths refreshed by this cache instance."""
 
-    def get_path(
-        self, image: Image.Image, cache_identity: Mapping[str, object]
-    ) -> Path:
+    def get_path(self, image: Image.Image, cache_identity: CacheIdentity) -> Path:
         """Get the cache path for an image and recognizer configuration.
 
         Arguments:
@@ -84,9 +83,7 @@ class OcrCacheBase[TResult](ABC):
         )
         return self.cache_dir_path / f"{cache_hash.hexdigest()}.json"
 
-    def load(
-        self, image: Image.Image, cache_identity: Mapping[str, object]
-    ) -> TResult | None:
+    def load(self, image: Image.Image, cache_identity: CacheIdentity) -> TResult | None:
         """Load a cached OCR result.
 
         Invalid cache files are discarded and treated as cache misses.
@@ -96,6 +93,8 @@ class OcrCacheBase[TResult](ABC):
             cache_identity: backend configuration identifying the result
         Returns:
             cached result, if present and valid
+        Raises:
+            ValueError: if a value is invalid
         """
         cache_path = self.get_path(image, cache_identity)
         # An overwrite request converts a matching entry into a cache miss
@@ -137,9 +136,7 @@ class OcrCacheBase[TResult](ABC):
         logger.info(f"Loaded {self.backend_label} result from cache: {cache_path}")
         return result
 
-    def remove(
-        self, image: Image.Image, cache_identity: Mapping[str, object]
-    ) -> Path | None:
+    def remove(self, image: Image.Image, cache_identity: CacheIdentity) -> Path | None:
         """Remove a cached OCR result.
 
         Arguments:
@@ -155,7 +152,7 @@ class OcrCacheBase[TResult](ABC):
         return cache_path
 
     def save(
-        self, image: Image.Image, cache_identity: Mapping[str, object], result: TResult
+        self, image: Image.Image, cache_identity: CacheIdentity, result: TResult
     ) -> Path:
         """Save an OCR result to the cache.
 

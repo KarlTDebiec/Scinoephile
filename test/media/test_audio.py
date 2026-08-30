@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 from unittest.mock import patch
 
 import ffmpeg
@@ -19,14 +20,18 @@ class FakeFfmpegInput:
     """Fake ffmpeg input chain that records output arguments."""
 
     def __init__(self, run_exception: Exception | None = None):
-        """Initialize."""
+        """Initialize.
+
+        Arguments:
+            run_exception: run exception value
+        """
         self.output_args: tuple[object, ...] | None = None
         self.output_kwargs: dict[str, object] | None = None
         self.run_kwargs: dict[str, object] | None = None
         self.run_exception = run_exception
         """Exception to raise when run."""
 
-    def output(self, *args: object, **kwargs: object) -> FakeFfmpegInput:
+    def output(self, *args: Any, **kwargs: Any) -> FakeFfmpegInput:
         """Record ffmpeg output arguments.
 
         Arguments:
@@ -39,11 +44,13 @@ class FakeFfmpegInput:
         self.output_kwargs = kwargs
         return self
 
-    def run(self, **kwargs: object):
+    def run(self, **kwargs: Any):
         """Record ffmpeg run arguments.
 
         Arguments:
             **kwargs: ffmpeg run keyword arguments
+        Raises:
+            Exception: if the configured run exception is raised
         """
         self.run_kwargs = kwargs
         if self.run_exception is not None:

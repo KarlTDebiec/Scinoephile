@@ -30,7 +30,11 @@ _LEGACY_TEST_CASE_PROMPT_FIELDS: Final = {
 
 
 def test_registered_prompt_model_and_cache_identities_change_once(tmp_path: Path):
-    """Removing metadata should change prompt, model, and cache identities."""
+    """Removing metadata should change prompt, model, and cache identities.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     provider = Mock(spec=LLMProvider)
     provider.cache_identity = {"implementation": "test.provider"}
 

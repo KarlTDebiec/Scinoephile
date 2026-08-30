@@ -175,7 +175,18 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         overwrite: bool,
         output_dir_path: Path,
     ):
-        """Execute with provided keyword arguments."""
+        """Extract matching subtitle streams and print the results.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_path: video file containing subtitle streams
+            languages: language tags to extract
+            details: whether to include additional stream details
+            cache_args: cache configuration
+            export_images: whether to export SUP streams as image directories
+            overwrite: whether to overwrite existing subtitle files
+            output_dir_path: directory for extracted outputs
+        """
         parser = _parser or cls.argparser()
         try:
             result = extract_subtitles(

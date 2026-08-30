@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 from unittest.mock import Mock, patch
 
 import numpy as np
@@ -26,7 +27,11 @@ class _NumpyBackedTensor:
         self._array = array
 
     def numpy(self) -> np.ndarray:
-        """Return the wrapped numpy array."""
+        """Return the wrapped numpy array.
+
+        Returns:
+            wrapped array
+        """
         return self._array
 
 
@@ -42,19 +47,51 @@ def test_get_audio_segment_restores_mono_output():
     assert audio.channels == 1
 
 
+def test_model_is_loaded_once(monkeypatch: MonkeyPatch):
+    """Test the Demucs model is loaded and configured only once.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    model = Mock()
+    model.to.return_value = model
+    model.eval.return_value = model
+    get_model = Mock(return_value=model)
+    monkeypatch.setattr(
+        "scinoephile.audio.separation.demucs.separator.import_demucs_infer_pretrained",
+        Mock(return_value=Mock(get_model=get_model)),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.separation.demucs.separator.get_torch_device",
+        Mock(return_value="cpu"),
+    )
+    separator = DemucsSeparator()
+
+    assert separator.model is model
+    assert separator.model is model
+    get_model.assert_called_once_with("htdemucs_ft")
+    model.to.assert_called_once_with("cpu")
+    model.eval.assert_called_once_with()
+
+
 def test_separate_vocals_uses_default_demucs_shifts():
     """Test Demucs separation relies on library-default shift behavior."""
     torch = importorskip("torch")
     separator = DemucsSeparator()
-    separator._model = Mock(samplerate=16000, sources=["vocals"])
-    separator._model.to.return_value = separator._model
-    separator._model.eval.return_value = separator._model
+    separator.__dict__["model"] = Mock(samplerate=16000, sources=["vocals"])
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000).set_channels(1)
     separated_sources = torch.zeros((1, 1, 2, 16000), dtype=torch.float32)
     apply_model_kwargs: list[dict[str, object]] = []
 
-    def apply_model(*args: object, **kwargs: object) -> object:
-        """Record Demucs apply_model keyword arguments."""
+    def apply_model(*args: Any, **kwargs: Any) -> object:
+        """Record Demucs apply-model arguments and return separated sources.
+
+        Arguments:
+            *args: positional model arguments
+            **kwargs: keyword model arguments
+        Returns:
+            separated source tensor
+        """
         assert args
         apply_model_kwargs.append(kwargs)
         return separated_sources
@@ -74,7 +111,12 @@ def test_separate_vocals_uses_default_demucs_shifts():
 def test_separate_vocals_overwrites_matching_cache(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test cache overwrite regenerates a matching Demucs separation."""
+    """Test cache overwrite regenerates a matching Demucs separation.
+
+    Arguments:
+        tmp_path: temporary cache root
+        monkeypatch: pytest monkeypatch fixture
+    """
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000)
     cached_audio = AudioSegment.silent(duration=900, frame_rate=16000)
     fresh_audio = AudioSegment.silent(duration=800, frame_rate=16000)
@@ -97,7 +139,12 @@ def test_separate_vocals_overwrites_matching_cache(
 def test_separate_vocals_recovers_from_corrupt_cache(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test malformed cached vocals are replaced by fresh separation output."""
+    """Test malformed cached vocals are replaced by fresh separation output.
+
+    Arguments:
+        tmp_path: temporary cache root
+        monkeypatch: pytest monkeypatch fixture
+    """
     separator = DemucsSeparator(cache_root_path=tmp_path)
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000)
     fresh_audio = AudioSegment.silent(duration=800, frame_rate=16000)

@@ -12,6 +12,7 @@ from pathlib import Path
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.cache.artifact import remove_cache_artifact
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .cache_namespace import LlmCacheNamespace
@@ -56,7 +57,7 @@ class LlmCache:
 
     def get_path(
         self,
-        cache_identity: object,
+        cache_identity: CacheIdentity,
         system_prompt: str,
         tools_json: str,
         query_json: str,
@@ -90,7 +91,7 @@ class LlmCache:
 
     def load(
         self,
-        cache_identity: object,
+        cache_identity: CacheIdentity,
         system_prompt: str,
         tools_json: str,
         query_json: str,
@@ -132,7 +133,7 @@ class LlmCache:
 
     def remove(
         self,
-        cache_identity: object,
+        cache_identity: CacheIdentity,
         system_prompt: str,
         tools_json: str,
         query_json: str,
@@ -159,7 +160,7 @@ class LlmCache:
 
     def save(
         self,
-        cache_identity: object,
+        cache_identity: CacheIdentity,
         system_prompt: str,
         tools_json: str,
         query_json: str,

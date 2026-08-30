@@ -9,17 +9,10 @@ from logging import getLogger
 
 from pydub import AudioSegment
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column
+from scinoephile.analysis.alignment.timed_msa import MsaAligner, MsaAlignment, MsaColumn
 from scinoephile.analysis.transcription.artifact import TimingSource
-from scinoephile.audio.classification import (
-    AudioEventDetectionResult,
-    LanguageIdentificationResult,
-)
 from scinoephile.audio.diarization.models import SpeakerDiarizationResult
 from scinoephile.audio.transcription import (
-    CtcAligner,
     TranscribedSegment,
     Transcriber,
     TranscriptionEmptyError,
@@ -28,12 +21,10 @@ from scinoephile.audio.transcription import (
 from scinoephile.audio.transcription.alignment_sequence import (
     get_transcription_sequence,
 )
-from scinoephile.audio.transcription.quality import (
-    get_transcription_quality_issue,
-    is_low_information_text,
-)
-from scinoephile.audio.vad.trace import VoiceActivityTrace
+from scinoephile.audio.transcription.ctc import CtcAligner
+from scinoephile.audio.transcription.quality import get_transcription_quality_issue
 from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.text import is_low_information_text
 from scinoephile.llms.transcription import TranscriptionProcessor, TranscriptionSource
 from scinoephile.workflows.transcription_alignment import render_transcription_alignment
 
@@ -52,7 +43,7 @@ class MultiSourceTranscriber:
         *,
         language: Language,
         transcribers: Mapping[str, Transcriber],
-        aligner: Aligner,
+        aligner: MsaAligner,
         processor: TranscriptionProcessor,
         ctc_aligner: CtcAligner | None = None,
     ):
@@ -85,9 +76,9 @@ class MultiSourceTranscriber:
             ctc_aligner = CtcAligner(language)
         self.ctc_aligner = ctc_aligner
         """Aligner used to recover final consensus timings."""
-        self.last_alignment: Alignment | None = None
+        self.last_alignment: MsaAlignment | None = None
         """Latest aligned ASR evidence with timed pauses."""
-        self.last_lexical_alignment: Alignment | None = None
+        self.last_lexical_alignment: MsaAlignment | None = None
         """Latest multi-ASR alignment before timed pauses are inserted."""
         self.last_sources: dict[str, list[TranscribedSegment]] = {}
         """Latest successful raw ASR source outputs."""
@@ -104,7 +95,7 @@ class MultiSourceTranscriber:
         """Transcribe audio without optional analysis evidence.
 
         Arguments:
-            audio: complete padded block audio
+            audio: complete processing-block audio
         Returns:
             final consensus subtitles with block-local timings
         """
@@ -115,24 +106,18 @@ class MultiSourceTranscriber:
         sources: Mapping[str, Sequence[TranscribedSegment]],
         audio: AudioSegment,
         *,
-        audio_events: AudioEventDetectionResult | None = None,
         diarization: SpeakerDiarizationResult | None = None,
-        language_identification: LanguageIdentificationResult | None = None,
         pause_intervals_seconds: Sequence[tuple[float, float]] | None = None,
         source_offset_seconds: float = 0.0,
-        voice_activity_trace: VoiceActivityTrace | None = None,
     ) -> list[TranscribedSegment]:
         """Merge timestamped sources and recover consensus subtitle timings.
 
         Arguments:
             sources: named equal-status timestamped transcription sources
             audio: original block audio corresponding to local source timings
-            audio_events: optional source-wide FireRed audio-event timeline
             diarization: optional source-wide exclusive speaker timeline
-            language_identification: optional source-wide FireRed language timeline
-            pause_intervals_seconds: block-local VAD silence intervals
+            pause_intervals_seconds: optional explicit block-local pause intervals
             source_offset_seconds: source time corresponding to block-local zero
-            voice_activity_trace: optional source-wide VAD score trace
         Returns:
             final consensus subtitles with block-local CTC timings
         Raises:
@@ -167,12 +152,9 @@ class MultiSourceTranscriber:
         self.last_alignment = alignment
         rendered = render_transcription_alignment(
             alignment,
-            audio_events=audio_events,
             diarization=diarization,
-            language_identification=language_identification,
             source_offset_seconds=source_offset_seconds,
             traditionalize=self.language is Language.yue_hant,
-            voice_activity_trace=voice_activity_trace,
         )
         request_results = self.processor.process_requests(
             [
@@ -180,9 +162,9 @@ class MultiSourceTranscriber:
                 for row in rendered.rows
             ],
             rendered.speaker,
-            language=rendered.language,
-            music=rendered.music,
-            singing=rendered.singing,
+            pause_intervals_seconds=tuple(
+                column.pause_interval_seconds for column in alignment.columns
+            ),
         )
         self.last_query_key_sha256s = tuple(
             result.query_key_sha256 for result in request_results
@@ -200,23 +182,17 @@ class MultiSourceTranscriber:
         self,
         audio: AudioSegment,
         *,
-        audio_events: AudioEventDetectionResult | None = None,
         diarization: SpeakerDiarizationResult | None = None,
-        language_identification: LanguageIdentificationResult | None = None,
         pause_intervals_seconds: Sequence[tuple[float, float]] | None = None,
         source_offset_seconds: float = 0.0,
-        voice_activity_trace: VoiceActivityTrace | None = None,
     ) -> list[TranscribedSegment]:
-        """Transcribe one padded block using optional audio-analysis evidence.
+        """Transcribe one processing block using optional audio-analysis evidence.
 
         Arguments:
-            audio: complete padded block audio
-            audio_events: optional source-wide FireRed audio-event timeline
+            audio: complete processing-block audio
             diarization: optional source-wide exclusive speaker timeline
-            language_identification: optional source-wide FireRed language timeline
-            pause_intervals_seconds: block-local VAD silence intervals
+            pause_intervals_seconds: optional explicit block-local pause intervals
             source_offset_seconds: source time corresponding to block-local zero
-            voice_activity_trace: optional source-wide VAD score trace
         Returns:
             final consensus subtitles with block-local CTC timings
         Raises:
@@ -298,9 +274,9 @@ class MultiSourceTranscriber:
                     "low-information vocalizations."
                 )
             sequence = get_transcription_sequence(source_name, segments)
-            self.last_lexical_alignment = Alignment(
+            self.last_lexical_alignment = MsaAlignment(
                 source_names=(source_name,),
-                columns=tuple(Column((token,)) for token in sequence.tokens),
+                columns=tuple(MsaColumn((token,)) for token in sequence.tokens),
             )
             self.last_alignment = self.last_lexical_alignment
             logger.warning(
@@ -311,12 +287,9 @@ class MultiSourceTranscriber:
         return self.merge(
             successful_sources,
             audio,
-            audio_events=audio_events,
             diarization=diarization,
-            language_identification=language_identification,
             pause_intervals_seconds=pause_intervals_seconds,
             source_offset_seconds=source_offset_seconds,
-            voice_activity_trace=voice_activity_trace,
         )
 
     @staticmethod
