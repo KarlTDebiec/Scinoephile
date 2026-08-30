@@ -21,6 +21,7 @@ from scinoephile.analysis.transcription.evaluation import (
     TranscriptionEvaluation,
     evaluate_transcription,
 )
+from scinoephile.analysis.transcription.manifest import normalize_excluded_blocks
 from scinoephile.analysis.transcription.timing import retime_alignment
 from scinoephile.audio.segment import load_audio_segment
 from scinoephile.audio.subtitles import AudioSeries
@@ -29,7 +30,7 @@ from scinoephile.core.llms.metrics import (
     format_chat_completion_metrics_report,
     save_chat_completion_metrics_to_json,
 )
-from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.yue.transcription import YueTokenSimilarity
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.media.audio import AudioExtractionMode
@@ -37,6 +38,9 @@ from scinoephile.workflows.transcription import transcribe_series
 from scinoephile.workflows.transcription_pipeline import TranscriptionPipeline
 from scinoephile.workflows.transcription_pipeline.factory import (
     get_transcription_pipeline,
+)
+from scinoephile.workflows.transcription_pipeline.pipeline import (
+    log_transcription_blocks,
 )
 
 from .helpers import (
@@ -90,6 +94,8 @@ def process_transcription(
         overwrite: whether to regenerate existing transcription outputs
     Returns:
         merged transcription series
+    Raises:
+        ValueError: if a value is invalid
     """
     output_dir_path = title_root_path / "output" / "yue-Hant_transcribe"
     audio_path = title_root_path / "input" / "yue.wav"
@@ -99,14 +105,7 @@ def process_transcription(
     artifact_path = json_dir_path / "alignment.json"
     run_manifest_path = json_dir_path / "run.json"
     transcription_path = output_dir_path / "transcribe.srt"
-    if any(
-        isinstance(block_number, bool) or not isinstance(block_number, int)
-        for block_number in exclude_blocks
-    ):
-        raise ValueError("Excluded transcription blocks must be integers.")
-    excluded_blocks = tuple(sorted(set(exclude_blocks)))
-    if excluded_blocks and excluded_blocks[0] < 1:
-        raise ValueError("Excluded transcription block numbers must be positive.")
+    excluded_blocks = normalize_excluded_blocks(exclude_blocks)
     reference = Series.load(reference_path)
     audit_references = {reference_name: reference}
     for name, audit_reference in (additional_audit_references or {}).items():
@@ -158,8 +157,6 @@ def process_transcription(
         additional_context=additional_context,
         current_test_cases_path=json_dir_path / "transcription.json",
     )
-    if stop_at_idx is None:
-        stop_at_idx = len(pipeline.plan_blocks(audio))
     output, artifact = _transcribe_requested_blocks(
         audio,
         pipeline,
@@ -285,7 +282,7 @@ def _load_existing_run(
 def _transcribe_requested_blocks(
     audio: AudioSeries,
     pipeline: TranscriptionPipeline,
-    stop_at_idx: int,
+    stop_at_idx: int | None,
     excluded_blocks: tuple[int, ...],
     artifact_path: Path,
     run_manifest_path: Path,
@@ -297,7 +294,7 @@ def _transcribe_requested_blocks(
     Arguments:
         audio: complete source audio
         pipeline: configured transcription pipeline
-        stop_at_idx: requested exclusive block index
+        stop_at_idx: requested exclusive block index, or None for the complete plan
         excluded_blocks: one-based block numbers to skip
         artifact_path: portable alignment artifact output path
         run_manifest_path: compact run manifest output path
@@ -305,6 +302,8 @@ def _transcribe_requested_blocks(
         existing_manifest: provenance for the candidate prefix
     Returns:
         merged subtitles and complete alignment artifact
+    Raises:
+        RuntimeError: if the operation cannot be completed
     """
     start_at_idx = 0
     if (
@@ -320,11 +319,17 @@ def _transcribe_requested_blocks(
         )
     ):
         start_at_idx = len(existing_manifest.blocks)
-        logger.info(
-            f"Reusing {start_at_idx} completed transcription blocks and processing "
-            f"blocks {start_at_idx + 1}-{stop_at_idx}."
-        )
-        _log_reused_blocks(existing_artifact, existing_manifest)
+        if stop_at_idx is None:
+            logger.info(
+                f"Reusing {start_at_idx} completed transcription blocks and processing "
+                "the remaining blocks."
+            )
+        else:
+            logger.info(
+                f"Reusing {start_at_idx} completed transcription blocks and processing "
+                f"blocks {start_at_idx + 1}-{stop_at_idx}."
+            )
+        log_transcription_blocks(existing_artifact, existing_manifest)
     elif existing_artifact is not None:
         logger.info("Existing alignment is not a compatible prefix; regenerating.")
 
@@ -367,45 +372,6 @@ def _transcribe_requested_blocks(
     artifact.save(artifact_path)
     manifest.save(run_manifest_path)
     return artifact.get_series(), artifact
-
-
-def _log_reused_blocks(artifact: AlignmentArtifact, manifest: RunManifest):
-    """Log each completed block in a reusable transcription prefix.
-
-    Arguments:
-        artifact: reusable aligned transcription prefix
-        manifest: outcomes for every attempted prefix block
-    """
-    alignment_blocks = {block.index: block for block in artifact.blocks}
-    for run_block in manifest.blocks:
-        if run_block.status == "empty":
-            reason = run_block.reason or "TranscriptionEmptyError"
-            logger.info(
-                f"Transcription block {run_block.index} contains no transcribed "
-                f"speech: {reason}"
-            )
-            continue
-        if run_block.status == "excluded":
-            logger.info(f"Transcription block {run_block.index} is excluded.")
-            continue
-
-        alignment_block = alignment_blocks[run_block.index]
-        block_output = Series(
-            events=[
-                Subtitle(
-                    start=subtitle.start_ms,
-                    end=subtitle.end_ms,
-                    text=subtitle.text,
-                    name=subtitle.speaker or "",
-                )
-                for subtitle in alignment_block.subtitles
-            ]
-        )
-        logger.info(
-            f"BLOCK {run_block.index}:\n"
-            f"TRANSCRIPTION ({artifact.language.code}):\n"
-            f"{block_output.to_simple_string()}"
-        )
 
 
 def _combine_run_prefix(
@@ -465,7 +431,7 @@ def _is_reusable_prefix(
     audio: AudioSeries,
     artifact: AlignmentArtifact,
     manifest: RunManifest,
-    stop_at_idx: int,
+    stop_at_idx: int | None,
     excluded_blocks: tuple[int, ...] = (),
 ) -> bool:
     """Check whether a completed run is a compatible proper prefix.
@@ -475,7 +441,7 @@ def _is_reusable_prefix(
         audio: complete decoded source audio
         artifact: candidate reusable alignment artifact
         manifest: provenance corresponding to the candidate artifact
-        stop_at_idx: requested exclusive block index
+        stop_at_idx: requested exclusive block index, or None for the complete plan
         excluded_blocks: one-based block numbers to skip
     Returns:
         whether only the requested suffix needs processing
@@ -483,7 +449,6 @@ def _is_reusable_prefix(
     prefix_count = len(manifest.blocks)
     if (
         prefix_count == 0
-        or prefix_count >= stop_at_idx
         or tuple(block.index for block in manifest.blocks)
         != tuple(range(1, prefix_count + 1))
         or manifest.alignment_sha256 != artifact.sha256
@@ -497,8 +462,11 @@ def _is_reusable_prefix(
         return False
 
     blocks = pipeline.plan_blocks(audio)
+    if stop_at_idx is None:
+        stop_at_idx = len(blocks)
     if (
-        stop_at_idx > len(blocks)
+        prefix_count >= stop_at_idx
+        or stop_at_idx > len(blocks)
         or manifest.language is not pipeline.language
         or artifact.language is not pipeline.language
         or artifact.audio_duration_ms != len(audio.audio)

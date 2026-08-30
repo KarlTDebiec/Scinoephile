@@ -5,7 +5,7 @@
 Package hierarchy (modules may import from any above):
 * prompt / validation
 * models
-* manager
+* manager / request_partitioning
 * processor
 """
 

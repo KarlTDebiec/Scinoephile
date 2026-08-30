@@ -172,7 +172,17 @@ class DictionarySearchCli(ScinoephileCliBase):
         query: str,
         limit: int,
     ):
-        """Execute with provided keyword arguments."""
+        """Search configured dictionaries and print matching entries.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            database_path: optional explicit dictionary database path
+            dictionary_name: dictionary to search, or all dictionaries
+            query: lookup query
+            limit: maximum results per dictionary
+        Raises:
+            SystemExit: if command execution cannot continue
+        """
         parser = _parser or cls.argparser()
         if dictionary_name == "all" and database_path is not None:
             parser.error(

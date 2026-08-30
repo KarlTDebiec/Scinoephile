@@ -99,6 +99,8 @@ class CuhkDictionaryScraper:
             max_retries: max attempts for failed requests
             overwrite_cache: whether to replace matching cached HTTP responses
             session: requests session for dependency injection
+        Raises:
+            ValueError: if a value is invalid
         """
         self.discovery_cache = CuhkResponseCache(
             cache_root_path, DictionariesCacheNamespace.CUHK_DISCOVERY, overwrite_cache
@@ -129,6 +131,8 @@ class CuhkDictionaryScraper:
             max_words: optional max number of words to discover
         Returns:
             list of (word, url)
+        Raises:
+            RuntimeError: if the operation cannot be completed
         """
         if max_words is not None and max_words <= 0:
             return []

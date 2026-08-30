@@ -14,6 +14,8 @@ from PIL import Image
 
 from scinoephile.common.validation import val_int
 from scinoephile.core import Language
+from scinoephile.core.cache.identity import CacheIdentity
+from scinoephile.core.cache.runtime import get_distribution_identity
 from scinoephile.core.dependencies.ocr import import_chrome_lens_py
 
 from .cache import LensCache
@@ -70,6 +72,8 @@ class LensRecognizer:
             language: Scinoephile language
             overwrite_cache: whether to replace matching OCR cache files
             retries: Google Lens OCR request attempts per uncached image
+        Raises:
+            ValueError: if a value is invalid
         """
         self._cache = LensCache(cache_root_path, overwrite_cache)
         try:
@@ -78,10 +82,16 @@ class LensRecognizer:
         except (KeyError, ValueError) as exc:
             raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
         self.retries = val_int(retries, min_value=1)
+        self.runtime_identity = get_distribution_identity("chrome-lens-py")
+        """Installed chrome-lens-py runtime identity."""
 
     @override
     def __repr__(self) -> str:
-        """String representation."""
+        """Get a reconstructable representation of this recognizer.
+
+        Returns:
+            constructor-like representation
+        """
         return (
             f"{self.__class__.__name__}("
             f"cache_root_path={self._cache.cache_root_path!r}, "
@@ -98,7 +108,10 @@ class LensRecognizer:
         Returns:
             recognized text
         """
-        cache_identity = {"language": self.lens_language_code}
+        cache_identity: CacheIdentity = {
+            "language": self.lens_language_code,
+            "runtime": self.runtime_identity,
+        }
         if (lines := self._cache.load(image, cache_identity)) is not None:
             return self._format_lens_lines(lines)
 
@@ -235,7 +248,15 @@ class LensRecognizer:
         api = chrome_lens_py.LensAPI()
 
         async def recognize() -> list[str]:
-            """Run Google Lens OCR retries in one event loop."""
+            """Run Google Lens OCR retries in one event loop.
+
+            Returns:
+                normalized OCR lines
+            Raises:
+                chrome_lens_py.LensAPIError: if the operation fails
+                _GoogleLensRequestError: if the operation fails
+                RuntimeError: if the operation cannot be completed
+            """
             for attempt in range(1, self.retries + 1):
                 try:
                     result = await api.process_image(

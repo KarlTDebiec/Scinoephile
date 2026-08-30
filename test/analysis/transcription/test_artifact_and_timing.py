@@ -121,6 +121,8 @@ def test_block_rejects_invalid_speaker_and_inconsistent_pause_rows():
     block_data = _get_artifact().blocks[0].model_dump()
     with raises(ValueError, match="invalid character"):
         AlignmentBlock.model_validate({**block_data, "speaker": "Ａ-Ａ"})
+    with raises(ValueError, match="invalid character"):
+        AlignmentBlock.model_validate({**block_data, "speaker": "Ａ＊Ａ"})
 
     rows = block_data["rows"]
     rows[0]["text"] = "係　呀"
@@ -207,7 +209,11 @@ def test_timing_evaluation_preserves_original_reference_indexes():
 
 
 def _get_artifact() -> AlignmentArtifact:
-    """Get a compact valid artifact with one pause-bearing block."""
+    """Get a compact valid artifact with one pause-bearing block.
+
+    Returns:
+        compact alignment artifact
+    """
     return AlignmentArtifact(
         language=Language.yue_hant,
         audio_duration_ms=3000,

@@ -17,6 +17,7 @@ from .artifact import AlignmentArtifact, AlignmentBlock, TimingSettings
 __all__ = [
     "TimingMetrics",
     "TimingPair",
+    "evaluate_selected_timing",
     "evaluate_timing",
     "get_block_references",
     "get_display_intervals",
@@ -165,34 +166,37 @@ class TimingMetrics:
         )
 
 
-def evaluate_timing(
+def evaluate_selected_timing(
     artifact: AlignmentArtifact,
-    reference: Series,
+    selected_reference: Series,
     settings: TimingSettings | None = None,
+    *,
+    original_reference_indexes: Sequence[int] | None = None,
 ) -> TimingMetrics:
-    """Evaluate an artifact's speech timing under display-timing settings.
-
-    Text alignment pairs the independently generated candidate and reference.
-    Reference timings affect metrics only; they never alter ASR, merging, CTC
-    alignment, or subtitle boundaries.
+    """Evaluate timing against an already selected reference collection.
 
     Arguments:
         artifact: aligned multi-source transcription artifact
-        reference: independent Cantonese reference subtitles
+        selected_reference: reference subtitles owned by the artifact's blocks
         settings: display timing to evaluate, or artifact timing when omitted
+        original_reference_indexes: optional zero-based indexes in the complete
+            reference collection
     Returns:
         aggregate and per-pair temporal overlap metrics
+    Raises:
+        ValueError: if original reference indexes do not match the selection
     """
+    if original_reference_indexes is None:
+        original_reference_indexes = tuple(range(len(selected_reference)))
+    elif len(original_reference_indexes) != len(selected_reference):
+        raise ValueError(
+            "Original reference indexes must match the selected reference."
+        )
+    original_reference_indexes = tuple(original_reference_indexes)
     candidate = _get_candidate_series(artifact, settings)
-    reference_selection = _get_reference_selection(artifact, reference)
-    selected_reference = Series(
-        events=[subtitle for _, subtitle in reference_selection]
-    )
-    original_reference_indexes = tuple(index for index, _ in reference_selection)
     if settings is None:
         settings = artifact.timing
-    # Establish the text correspondence from immutable CTC speech bounds so the
-    # display-padding policy under test cannot change which subtitles are scored.
+    # Keep the display-padding policy from changing text correspondence
     diff = SeriesDiff(_get_speech_series(artifact), selected_reference)
     pairs = []
     unmatched_candidate_indexes = set()
@@ -221,6 +225,37 @@ def evaluate_timing(
     )
 
 
+def evaluate_timing(
+    artifact: AlignmentArtifact,
+    reference: Series,
+    settings: TimingSettings | None = None,
+) -> TimingMetrics:
+    """Evaluate an artifact's speech timing under display-timing settings.
+
+    Text alignment pairs the independently generated candidate and reference.
+    Reference timings affect metrics only; they never alter ASR, merging, CTC
+    alignment, or subtitle boundaries.
+
+    Arguments:
+        artifact: aligned multi-source transcription artifact
+        reference: independent Cantonese reference subtitles
+        settings: display timing to evaluate, or artifact timing when omitted
+    Returns:
+        aggregate and per-pair temporal overlap metrics
+    """
+    reference_selection = _get_reference_selection(artifact, reference)
+    selected_reference = Series(
+        events=[subtitle for _, subtitle in reference_selection]
+    )
+    original_reference_indexes = tuple(index for index, _ in reference_selection)
+    return evaluate_selected_timing(
+        artifact,
+        selected_reference,
+        settings,
+        original_reference_indexes=original_reference_indexes,
+    )
+
+
 def get_block_references(
     artifact: AlignmentArtifact, reference: Series
 ) -> dict[int, Series]:
@@ -236,13 +271,9 @@ def get_block_references(
         selected reference subtitles keyed by artifact block index
     """
     selected_reference = get_reference_for_alignment(artifact, reference)
-    events_by_block = {block.index: [] for block in artifact.blocks}
-    if not selected_reference:
-        return {
-            block_index: Series(events=events)
-            for block_index, events in events_by_block.items()
-        }
-
+    events_by_block: dict[int, list[Subtitle]] = {
+        block.index: [] for block in artifact.blocks
+    }
     reference_block_indexes = _get_reference_block_indexes(artifact, selected_reference)
 
     for reference_index, subtitle in enumerate(selected_reference):
@@ -417,7 +448,14 @@ def _get_blocks_with_display_timing(
 def _get_candidate_series(
     artifact: AlignmentArtifact, settings: TimingSettings | None
 ) -> Series:
-    """Get candidate subtitles using stored or recalculated display timing."""
+    """Get candidate subtitles using stored or recalculated display timing.
+
+    Arguments:
+        artifact: alignment artifact containing candidate subtitles
+        settings: display-timing settings, or None to use stored timing
+    Returns:
+        candidate subtitle series
+    """
     if settings is None:
         return artifact.get_series()
     return retime_alignment(artifact, settings).get_series()
@@ -504,7 +542,13 @@ def _get_reference_selection(
 
 
 def _get_speech_series(artifact: AlignmentArtifact) -> Series:
-    """Get merged text at immutable CTC speech bounds for evaluation pairing."""
+    """Get merged text at immutable CTC speech bounds for evaluation pairing.
+
+    Arguments:
+        artifact: alignment artifact containing merged subtitles
+    Returns:
+        merged subtitle series using immutable speech bounds
+    """
     return Series(
         events=[
             Subtitle(

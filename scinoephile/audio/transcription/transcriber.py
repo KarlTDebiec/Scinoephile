@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Sequence
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
@@ -18,13 +18,14 @@ from scinoephile.audio.vad import (
     VoiceActivityError,
     VoiceActivityTrace,
 )
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import TranscriptionCache
 from .exceptions import (
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
+    TranscriptionRecognitionError,
 )
 from .preprocessing_settings import (
     DemucsMode,
@@ -289,26 +290,23 @@ class Transcriber(ABC):
         )
 
     @abstractmethod
-    def _get_backend_cache_identity(
-        self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> Mapping[str, object]:
-        """Get the backend-specific identity for one cache configuration.
+    def _get_transcriber_cache_identity(self, audio: AudioSegment) -> CacheIdentity:
+        """Get the concrete transcriber's portion of a cache identity.
 
         Arguments:
-            audio: audio whose properties may affect backend behavior
-            settings: preprocessing settings
+            audio: audio whose properties may affect transcriber behavior
         Returns:
-            backend configuration identifying the output
+            transcriber configuration identifying the output
         """
         raise NotImplementedError()
 
     def _get_cache_identity(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
-    ) -> dict[str, object]:
-        """Get the complete backend and preprocessing cache identity.
+    ) -> CacheIdentity:
+        """Get the complete transcriber and preprocessing cache identity.
 
         Arguments:
-            audio: audio whose properties may affect backend behavior
+            audio: audio whose properties may affect transcriber behavior
             settings: preprocessing settings
         Returns:
             configuration identifying the output
@@ -318,7 +316,7 @@ class Transcriber(ABC):
             assert self.demucs_separator is not None
             demucs_identity = self.demucs_separator.cache_identity
         return {
-            **self._get_backend_cache_identity(audio, settings),
+            **self._get_transcriber_cache_identity(audio),
             "demucs": demucs_identity,
             "use_demucs": settings.use_demucs,
             "use_vad": settings.use_vad,
@@ -332,6 +330,8 @@ class Transcriber(ABC):
             audio: original audio to separate
         Returns:
             separated audio, or None after an automatic-mode failure
+        Raises:
+            ScinoephileError: if the operation fails
         """
         assert self.demucs_separator is not None
         logger.info(f"Applying Demucs vocal separation before {self.backend_label}")
@@ -353,6 +353,9 @@ class Transcriber(ABC):
             audio: original or Demucs-separated audio
         Returns:
             frame-level voice activity model scores
+        Raises:
+            RuntimeError: if the operation cannot be completed
+            TranscriptionRecognitionError: if transcription fails
         """
         if self._voice_activity_cache is None:
             raise RuntimeError("Voice activity trace requested while VAD is disabled.")
@@ -363,7 +366,7 @@ class Transcriber(ABC):
         try:
             trace = self.vad_detector.get_trace(audio)
         except VoiceActivityError as exc:
-            raise TranscriptionInferenceError(str(exc)) from exc
+            raise TranscriptionRecognitionError(str(exc)) from exc
         self._voice_activity_cache.save(audio, cache_identity, trace)
         return trace
 
@@ -404,6 +407,8 @@ class Transcriber(ABC):
             is_usable: optional callback used to reject output and trigger retries
         Returns:
             first usable transcription, or an empty list when output was rejected
+        Raises:
+            Exception: if the operation fails
         """
         successful_result = bool(rejected_settings)
         last_error: TranscriptionError | None = None
@@ -444,7 +449,7 @@ class Transcriber(ABC):
     def _transcribe_attempt(
         self, audio: AudioSegment, settings: TranscriptionPreprocessingSettings
     ) -> list[TranscribedSegment]:
-        """Run one uncached transcription attempt.
+        """Run one uncached transcription attempt and return timestamped segments.
 
         Arguments:
             audio: original or Demucs-separated audio to transcribe

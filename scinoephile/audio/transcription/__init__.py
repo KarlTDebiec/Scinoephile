@@ -6,7 +6,7 @@ Package hierarchy (modules may import from any above):
 * exceptions / preprocessing_settings / transcribed_word
 * transcribed_segment
 * alignment_sequence / cache / quality
-* ctc_aligner
+* ctc
 * transcriber
 * mlx_audio / whisper
 """
@@ -16,15 +16,13 @@ from __future__ import annotations
 from logging import getLogger
 
 from .cache import TranscriptionCache
-from .ctc_aligner import CtcAligner
 from .exceptions import (
     TranscriptionAlignmentError,
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
     TranscriptionError,
-    TranscriptionInferenceError,
+    TranscriptionRecognitionError,
 )
-from .mlx_audio import MlxAudioModel, MlxAudioTranscriber
 from .preprocessing_settings import (
     DemucsMode,
     TranscriptionPreprocessingSettings,
@@ -33,13 +31,9 @@ from .preprocessing_settings import (
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .transcriber import Transcriber
-from .whisper import WhisperModel, WhisperTranscriber
 
 __all__ = [
-    "CtcAligner",
     "DemucsMode",
-    "MlxAudioModel",
-    "MlxAudioTranscriber",
     "TranscribedSegment",
     "TranscribedWord",
     "Transcriber",
@@ -48,11 +42,9 @@ __all__ = [
     "TranscriptionCache",
     "TranscriptionEmptyError",
     "TranscriptionError",
-    "TranscriptionInferenceError",
+    "TranscriptionRecognitionError",
     "TranscriptionPreprocessingSettings",
     "VadMode",
-    "WhisperModel",
-    "WhisperTranscriber",
     "get_segment_merged",
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",
@@ -93,6 +85,8 @@ def get_segment_split_at_idx(
         idx: index at which to split the segment
     Returns:
         tuple of two new segments created by splitting the original segment
+    Raises:
+        ValueError: if a value is invalid
     """
     if segment.words is None or len(segment.words) == 0:
         message = (

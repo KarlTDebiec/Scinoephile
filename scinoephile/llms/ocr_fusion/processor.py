@@ -39,6 +39,9 @@ class OcrFusionProcessor(Processor):
             stop_at_idx: stop processing at this index
         Returns:
             processed subtitles
+        Raises:
+            ScinoephileError: if the operation fails
+            ValueError: if a value is invalid
         """
         # Validate series
         if not are_series_one_to_one(source_one, source_two):

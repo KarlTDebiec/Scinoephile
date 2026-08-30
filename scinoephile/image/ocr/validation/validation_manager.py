@@ -72,6 +72,8 @@ class ValidationManager:
         Arguments:
             validation_data_dir_path: local OCR validation data directory
             dev: whether validation data updates should write to repo data
+        Raises:
+            ScinoephileError: if the operation fails
         """
         try:
             self._init_data(validation_data_dir_path, dev)
@@ -561,15 +563,29 @@ class ValidationManager:
         save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
 
     def _char_dims_path(self, n: int) -> Path:
-        """Path to character dimensions csv file."""
+        """Get a character-dimensions CSV path.
+
+        Arguments:
+            n: character count represented by the dimensions
+        Returns:
+            character-dimensions CSV path
+        """
         return self._data_output_dir_path() / f"char_dims_{n}.csv"
 
     def _char_grp_dims_path(self) -> Path:
-        """Path to character group dimensions csv file."""
+        """Get the character-group-dimensions CSV path.
+
+        Returns:
+            character-group-dimensions CSV path
+        """
         return self._data_output_dir_path() / "char_grp_dims.csv"
 
     def _char_pair_gaps_path(self) -> Path:
-        """Path to character pair gap csv file."""
+        """Get the character-pair-gaps CSV path.
+
+        Returns:
+            character-pair-gaps CSV path
+        """
         return self._data_output_dir_path() / "char_pair_gaps.csv"
 
     def _data_output_dir_path(self) -> Path:

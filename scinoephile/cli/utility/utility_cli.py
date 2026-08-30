@@ -61,7 +61,12 @@ class UtilityCli(ScinoephileCliBase):
 
     @classmethod
     def _main(cls, *, utility_subcommand_name: str, **kwargs: Any):
-        """Execute with provided keyword arguments."""
+        """Dispatch to a utility subcommand.
+
+        Arguments:
+            utility_subcommand_name: selected utility subcommand
+            **kwargs: arguments forwarded to the selected subcommand
+        """
         cls.subcommands()[utility_subcommand_name]._main(**kwargs)
 
 

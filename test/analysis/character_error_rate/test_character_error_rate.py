@@ -181,7 +181,12 @@ def test_line_cer_string_uses_na_for_empty_reference():
 def test_series_cer_ignores_separator_only_line_wrapping(
     reference: Series, candidate: Series
 ):
-    """Test separator-only line wrapping does not affect series CER."""
+    """Test separator-only line wrapping does not affect series CER.
+
+    Arguments:
+        reference: reference subtitle series
+        candidate: candidate subtitle series
+    """
     result = SeriesCER(reference, candidate)
 
     assert result.cer == 0.0

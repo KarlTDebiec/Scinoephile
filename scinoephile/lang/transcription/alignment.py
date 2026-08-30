@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from pprint import pformat
-from typing import cast
 
 import numpy as np
 
@@ -158,6 +157,8 @@ class TranscriptionAlignment:
             prompt: text and field aliases for LLM correspondence
         Returns:
             test case, or None if there are no transcribed subtitles to shift
+        Raises:
+            ScinoephileError: if the operation fails
         """
         if sync_group_one_idx < 0 or sync_group_one_idx >= len(self.sync_groups):
             raise ScinoephileError(
@@ -215,7 +216,7 @@ class TranscriptionAlignment:
                 "target_two": transcription_two,
             }
         )
-        return cast(DelineationTestCase, test_case_cls(query=query))
+        return test_case_cls(query=query)
 
     def get_punctuation_test_case(
         self, sync_group_idx: int, prompt: PunctuationPrompt
@@ -227,6 +228,8 @@ class TranscriptionAlignment:
             prompt: text and field aliases for LLM correspondence
         Returns:
             test case, or None if there are no transcribed subtitles to punctuate
+        Raises:
+            ScinoephileError: if the operation fails
         """
         if sync_group_idx < 0 or sync_group_idx >= len(self.sync_groups):
             raise ScinoephileError(
@@ -252,4 +255,4 @@ class TranscriptionAlignment:
         query = test_case_cls.query_cls.model_validate(
             {"subtitles": transcriptions, "guide": reference}
         )
-        return cast(PunctuationTestCase, test_case_cls(query=query))
+        return test_case_cls(query=query)

@@ -7,9 +7,10 @@ from __future__ import annotations
 from functools import partial
 
 from scinoephile.core import Language
+from scinoephile.core.script import OpenCCConfig
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.lang.zho.script.conversion import get_zho_text_converted
 from scinoephile.llms.transcription import TranscriptionPrompt
 
 __all__ = ["YueTranscriptionPromptYueHans", "YueTranscriptionPromptYueHant"]
@@ -31,8 +32,7 @@ YueTranscriptionPromptYueHant = TranscriptionPrompt(
         連續一個全共享「・」表示 0.25 至不足 0.5 秒，兩個表示 0.5 至不足 0.75 秒，
         三個表示 0.75 至不足 1.0 秒，如此類推。每次查詢已經喺至少 1.0 秒嘅停頓
         （四個或以上連續「・」）分開。講者列嘅「Ａ」、「Ｂ」等表示唔同講者。
-        呢啲符號只係分段證據，
-        唔可以出現喺答案。
+        呢啲符號只係分段證據，唔可以出現喺答案。
 
         如果查詢只有一個來源，請將佢當作唯一嘅詞彙證據，忠實保留可辨識文字；唔好因為
         缺少第二個來源而刪走內容，亦唔可以單靠講者列添加來源冇提供嘅具體詞句。
@@ -41,9 +41,9 @@ YueTranscriptionPromptYueHant = TranscriptionPrompt(
         片段只出現喺單一來源，而其他來源喺同一時間位置都係空格，原則上要當作單一模型
         插入或者幻覺而刪除，尤其係突然轉語言嘅英文等孤立片段。
         講者列唔係獨立嘅詞彙證據，唔可以替單一來源嘅具體文字背書。
-        只有其他來源喺相鄰或者重疊欄提供
-        同一發音或同一語句嘅另一寫法，清楚顯示問題係對齊偏移而唔係孤立插入，先可以保留
-        單一列顯示嘅形式。唔好因為孤立文字語法通順或者符合語境就收錄。
+        只有其他來源喺相鄰或者重疊欄提供同一發音或同一語句嘅另一寫法，清楚顯示問題係
+        對齊偏移而唔係孤立插入，先可以保留單一列顯示嘅形式。唔好因為孤立文字語法通順
+        或者符合語境就收錄。
 
         如果成個查詢都冇任何可辨識詞句（多來源查詢包括冇任何詞句得到足夠跨來源支持），
         `wenben` 必須回答空字串 `""`，即係完全略過呢段。空字串係唯一唔需要「｜」結尾

@@ -6,17 +6,35 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from dataclasses import dataclass
+from logging import INFO
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any
 from unittest.mock import Mock
 
 from pydub import AudioSegment
-from pytest import MonkeyPatch, raises
+from pytest import LogCaptureFixture, MonkeyPatch, raises
 
 from scinoephile.audio.diarization import (
     PyannoteDiarizer,
     SpeakerDiarizationAuthorizationError,
 )
+from scinoephile.core import DependencyError
+
+_PYANNOTE_AUDIO_IDENTITY = {"distribution": "pyannote.audio", "version": "4.0.7"}
+"""Installed pyannote.audio identity used by diarization tests."""
+
+
+def _patch_runtime_identity(monkeypatch: MonkeyPatch):
+    """Patch installed runtime identity lookup for diarization tests.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_distribution_identity",
+        Mock(return_value=_PYANNOTE_AUDIO_IDENTITY),
+    )
 
 
 @dataclass(frozen=True)
@@ -64,7 +82,7 @@ class _FakePipeline:
         self.device = None
         self.kwargs: dict[str, object] = {}
 
-    def __call__(self, audio: object, **kwargs: object) -> object:
+    def __call__(self, audio: object, **kwargs: Any) -> object:
         """Return regular and exclusive mocked annotations.
 
         Arguments:
@@ -121,13 +139,14 @@ class _FakeTorch:
 
 
 def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
-    tmp_path: Path, monkeypatch: MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):
     """A mocked whole-source pipeline should run once across repeat calls.
 
     Arguments:
         tmp_path: temporary cache root path
         monkeypatch: pytest monkeypatch fixture
+        caplog: captured log records
     """
     pipeline = _FakePipeline()
     from_pretrained = Mock(return_value=pipeline)
@@ -139,9 +158,7 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.import_torch", lambda: _FakeTorch
     )
-    monkeypatch.setattr(
-        "scinoephile.audio.diarization.pyannote.version", lambda name: "4.0.7"
-    )
+    _patch_runtime_identity(monkeypatch)
     get_snapshot_dir_path = Mock(return_value=Path("/cached/model"))
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.get_huggingface_snapshot_dir_path",
@@ -151,6 +168,7 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     diarizer = PyannoteDiarizer(
         tmp_path, device="cpu", num_speakers=2, overwrite_cache=False
     )
+    caplog.set_level(INFO, logger="scinoephile.audio.diarization.pyannote")
 
     first = diarizer(audio)
     second = diarizer(audio)
@@ -173,6 +191,10 @@ def test_diarizer_converts_turns_and_reuses_whole_audio_cache(
     assert diarizer.cache_identity["model_revision"] == (
         "3533c8cf8e369892e6b79ff1bf80f7b0286a54ee"
     )
+    assert diarizer.cache_identity["runtime"] == {
+        "pyannote_audio": _PYANNOTE_AUDIO_IDENTITY
+    }
+    assert caplog.messages.count("Running pyannote speaker diarization on cpu.") == 1
 
 
 def test_cache_identity_separates_exact_model_revisions(
@@ -184,9 +206,7 @@ def test_cache_identity_separates_exact_model_revisions(
         tmp_path: temporary cache root path
         monkeypatch: pytest monkeypatch fixture
     """
-    monkeypatch.setattr(
-        "scinoephile.audio.diarization.pyannote.version", lambda name: "4.0.7"
-    )
+    _patch_runtime_identity(monkeypatch)
     audio = AudioSegment.silent(duration=1000)
     first = PyannoteDiarizer(tmp_path, device="cpu", model_revision="revision-a")
     second = PyannoteDiarizer(tmp_path, device="cpu", model_revision="revision-b")
@@ -201,10 +221,10 @@ def test_cache_identity_separates_exact_model_revisions(
     assert first_path != second_path
 
 
-def test_custom_model_uses_repository_default_revision(
+def test_custom_model_uses_repository_and_device_defaults(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """A custom model without a revision should use its repository default.
+    """A custom model should use repository and detected device defaults.
 
     Arguments:
         tmp_path: temporary cache root path
@@ -230,6 +250,7 @@ def test_custom_model_uses_repository_default_revision(
         Mock(return_value=Path("/cached/custom-model")),
     )
     diarizer = PyannoteDiarizer(tmp_path, model_id="custom/model")
+    get_torch_device.assert_not_called()
 
     diarizer._get_pipeline()  # noqa: SLF001
 
@@ -238,6 +259,27 @@ def test_custom_model_uses_repository_default_revision(
     assert diarizer.device == "mps"
     assert pipeline.device == "mps"
     assert diarizer.model_revision is None
+
+
+def test_default_device_dependency_failure_is_lazy(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """A missing Torch dependency should fail only when the device is needed.
+
+    Arguments:
+        tmp_path: temporary cache root path
+        monkeypatch: pytest monkeypatch fixture
+    """
+    get_torch_device = Mock(side_effect=DependencyError("Torch unavailable"))
+    monkeypatch.setattr(
+        "scinoephile.audio.diarization.pyannote.get_torch_device", get_torch_device
+    )
+
+    diarizer = PyannoteDiarizer(tmp_path)
+    get_torch_device.assert_not_called()
+
+    with raises(DependencyError, match="Torch unavailable"):
+        _ = diarizer.device
 
 
 def test_diarizer_rejects_exact_and_bounded_speaker_counts(tmp_path: Path):
@@ -264,9 +306,7 @@ def test_diarizer_reports_gated_model_authorization(
         "scinoephile.audio.diarization.pyannote.import_pyannote_audio",
         lambda: SimpleNamespace(Pipeline=pipeline_cls),
     )
-    monkeypatch.setattr(
-        "scinoephile.audio.diarization.pyannote.version", lambda name: "4.0.7"
-    )
+    _patch_runtime_identity(monkeypatch)
     monkeypatch.setattr(
         "scinoephile.audio.diarization.pyannote.get_huggingface_snapshot_dir_path",
         Mock(return_value=Path("/cached/model")),

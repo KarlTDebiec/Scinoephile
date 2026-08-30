@@ -68,7 +68,11 @@ class TranscriptionQuery(Query):
 
     @model_validator(mode="after")
     def validate_rows(self) -> Self:
-        """Ensure the request contains a valid equal-width ASR alignment."""
+        """Ensure the request contains a valid equal-width ASR alignment.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         # Source names identify independent ASR inputs, not reference guides
         names = [source.name for source in self.sources]
         if len(set(names)) != len(names):
@@ -133,7 +137,11 @@ class TranscriptionAnswer(Answer):
 
     @model_validator(mode="after")
     def validate_text(self) -> Self:
-        """Ensure boundary markers form nonblank, annotation-free subtitles."""
+        """Ensure boundary markers form nonblank, annotation-free subtitles.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         if not self.text:
             return self
 
@@ -228,6 +236,8 @@ class TranscriptionTestCase(TestCase):
 
         Returns:
             validated test case
+        Raises:
+            ValueError: if a value is invalid
         """
         if self.answer is None:
             return self
@@ -244,7 +254,7 @@ class TranscriptionTestCase(TestCase):
                     self.maximum_unsupported_answer_characters,
                 )
             )
-        if not validation.has_supported_boundary():
+        if validation.fragile_boundary_answer_text:
             raise ValueError(
                 self.prompt.unsupported_answer_err(
                     validation.fragile_boundary_answer_text, 1

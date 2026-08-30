@@ -13,9 +13,12 @@ from pydantic import ValidationError
 from pydub import AudioSegment
 from pytest import LogCaptureFixture, MonkeyPatch, mark, raises
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column, Token
+from scinoephile.analysis.alignment.timed_msa import (
+    MsaAligner,
+    MsaAlignment,
+    MsaColumn,
+    MsaToken,
+)
 from scinoephile.analysis.transcription.artifact import AlignmentSource
 from scinoephile.audio.classification import (
     AudioEvent,
@@ -111,7 +114,6 @@ def _get_pipeline(
     block_vad_detector = Mock()
     block_vad_detector.cache_identity = {"implementation": "test"}
     block_vad_detector.trace_cache_identity = {"implementation": "test"}
-    block_vad_detector.get_speech_intervals.return_value = [(100, 900)]
     block_vad_cache = Mock()
     block_vad_cache.load.return_value = trace
 
@@ -126,14 +128,14 @@ def _get_pipeline(
         transcriber.transcribe_block.return_value = [segment]
     else:
         transcriber.transcribe_block.side_effect = transcription_error
-    transcriber.aligner = Aligner(YueTokenSimilarity())
-    transcriber.last_lexical_alignment = Alignment(
+    transcriber.aligner = MsaAligner(YueTokenSimilarity())
+    transcriber.last_lexical_alignment = MsaAlignment(
         source_names=("one", "two"),
         columns=(
-            Column(
+            MsaColumn(
                 (
-                    Token("甲", segment.start, segment.end),
-                    Token("甲", segment.start, segment.end),
+                    MsaToken("甲", segment.start, segment.end),
+                    MsaToken("甲", segment.start, segment.end),
                 )
             ),
         ),
@@ -451,7 +453,11 @@ def test_process_uses_selected_blocks_for_language_analysis():
 
 
 def test_factory_omits_disabled_audio_analysis(monkeypatch: MonkeyPatch):
-    """Factory should omit optional analyzers and preserve source pairing."""
+    """Factory should omit optional analyzers and preserve source pairing.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     source_transcribers = {"one": Mock(), "two": Mock()}
     alignment_sources = (
         AlignmentSource(name="one", backend="test", model="one"),

@@ -57,7 +57,11 @@ _MANAGER_CLASSES: list[type[Manager]] = [
 
 @mark.parametrize("manager_cls", _MANAGER_CLASSES)
 def test_manager_reuses_static_test_case_prompt(manager_cls: type[Manager]):
-    """Each manager should reuse its semantic test-case model's prompt."""
+    """Each manager should reuse its semantic test-case model's prompt.
+
+    Arguments:
+        manager_cls: manager cls value
+    """
     assert manager_cls.base_prompt is manager_cls.test_case_base_cls.prompt
 
 

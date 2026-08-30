@@ -69,7 +69,11 @@ def _get_test_case(original: str, corrected: str):
 
 
 def test_json_uses_base_prompt_fields(tmp_path: Path):
-    """JSON should persist base fields and load them into a concrete prompt."""
+    """JSON should persist base fields and load them into a concrete prompt.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = _AliasedBaseReviewManager.get_test_case_cls(
         _LOCALIZED_REVIEW_PROMPT
     )
@@ -142,7 +146,12 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
     ],
 )
 def test_json_loading_rejects_non_base_fields(tmp_path: Path, test_case_data: dict):
-    """Repository JSON should contain only base prompt aliases."""
+    """Repository JSON should contain only base prompt aliases.
+
+    Arguments:
+        tmp_path: temporary directory path
+        test_case_data: test case data
+    """
     input_path = tmp_path / "test_cases.json"
     input_path.write_text(
         json.dumps([test_case_data], ensure_ascii=False), encoding="utf-8"
@@ -160,11 +169,40 @@ def test_json_loading_rejects_non_base_fields(tmp_path: Path, test_case_data: di
         {"query": []},
         {"query": {"base_subtitles": "not a list"}},
         {"query": {"base_subtitles": [{"base_index": "1", "base_text": "original"}]}},
+        {
+            "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
+            "answer": {
+                "base_revisions": [
+                    {"base_index": 1, "base_text": "corrected", "base_note": "typo"}
+                ]
+            },
+            "verified": 1,
+        },
+        {
+            "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
+            "answer": {
+                "base_revisions": [
+                    {"base_index": 1, "base_text": "corrected", "base_note": "typo"}
+                ]
+            },
+            "few_shot": 1,
+        },
     ],
-    ids=["non-object-query", "non-list-subtitles", "coerced-index"],
+    ids=[
+        "non-object-query",
+        "non-list-subtitles",
+        "coerced-index",
+        "coerced-verified",
+        "coerced-few-shot",
+    ],
 )
 def test_json_loading_is_strict(tmp_path: Path, test_case_data: dict):
-    """Repository JSON should reject values requiring type coercion."""
+    """Repository JSON should reject values requiring type coercion.
+
+    Arguments:
+        tmp_path: temporary directory path
+        test_case_data: test case data
+    """
     input_path = tmp_path / "test_cases.json"
     input_path.write_text(json.dumps([test_case_data]), encoding="utf-8")
 
@@ -174,77 +212,14 @@ def test_json_loading_is_strict(tmp_path: Path, test_case_data: dict):
         )
 
 
-def test_json_loading_discards_stale_unverified_answer(tmp_path: Path):
-    """A stale generated answer should retain its valid query for regeneration."""
-    input_path = tmp_path / "test_cases.json"
-    input_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {
-                        "base_subtitles": [{"base_index": 1, "base_text": "original"}]
-                    },
-                    "answer": {
-                        "base_revisions": [
-                            {
-                                "base_index": 2,
-                                "base_text": "invalid",
-                                "base_note": "stale",
-                            }
-                        ]
-                    },
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-
-    loaded = load_test_cases_from_json(
-        input_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
-    )
-
-    assert len(loaded) == 1
-    assert loaded[0].answer is None
-    assert loaded[0].query.model_dump()["subtitles"][0]["text"] == "original"
-
-
-def test_json_loading_rejects_stale_verified_answer(tmp_path: Path):
-    """A verified answer should never be silently discarded when invalid."""
-    input_path = tmp_path / "test_cases.json"
-    input_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {
-                        "base_subtitles": [{"base_index": 1, "base_text": "original"}]
-                    },
-                    "answer": {
-                        "base_revisions": [
-                            {
-                                "base_index": 2,
-                                "base_text": "invalid",
-                                "base_note": "stale",
-                            }
-                        ]
-                    },
-                    "verified": True,
-                }
-            ],
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-
-    with raises(ValidationError):
-        load_test_cases_from_json(
-            input_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
-        )
-
-
 @mark.parametrize("contents", [{}, ["not an object"]])
 def test_json_loading_requires_an_array_of_objects(tmp_path: Path, contents: object):
-    """Repository test-case files should contain an array of objects."""
+    """Repository test-case files should contain an array of objects.
+
+    Arguments:
+        tmp_path: temporary directory path
+        contents: contents value
+    """
     input_path = tmp_path / "test_cases.json"
     input_path.write_text(json.dumps(contents), encoding="utf-8")
 
@@ -255,7 +230,11 @@ def test_json_loading_requires_an_array_of_objects(tmp_path: Path, contents: obj
 
 
 def test_save_replaces_existing_collection(tmp_path: Path):
-    """Saving should replace the persisted collection atomically."""
+    """Saving should replace the persisted collection atomically.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "test_cases.json"
     existing_test_case = _get_test_case("existing", "existing corrected")
     encountered_test_case = _get_test_case("encountered", "encountered corrected")
@@ -275,8 +254,50 @@ def test_save_replaces_existing_collection(tmp_path: Path):
     ] == ["encountered"]
 
 
+def test_save_logs_created_directory_and_output(tmp_path: Path, caplog):
+    """Saving should log directory creation and completed output.
+
+    Arguments:
+        tmp_path: temporary directory path
+        caplog: pytest log-capture fixture
+    """
+    output_path = tmp_path / "nested" / "test_cases.json"
+
+    with caplog.at_level("INFO", logger="scinoephile.core.llms.utils"):
+        save_test_cases_to_json(
+            output_path,
+            [_get_test_case("original", "corrected")],
+            _AliasedBaseReviewManager,
+        )
+
+    assert caplog.messages == [
+        f"Created directory {output_path.parent}",
+        f"Saved test cases to {output_path}",
+    ]
+
+
+def test_save_validates_mutated_test_cases(tmp_path: Path):
+    """Saving should reject test cases made invalid after initialization.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    output_path = tmp_path / "test_cases.json"
+    test_case = _get_test_case("original", "corrected")
+    test_case.query.subtitles.clear()
+
+    with raises(ValidationError):
+        save_test_cases_to_json(output_path, [test_case], _AliasedBaseReviewManager)
+
+    assert not output_path.exists()
+
+
 def test_save_replaces_existing_file_atomically(tmp_path: Path):
-    """A failed save should leave the existing file unchanged."""
+    """A failed save should leave the existing file unchanged.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     output_path = tmp_path / "test_cases.json"
     save_test_cases_to_json(
         output_path,

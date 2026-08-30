@@ -7,15 +7,12 @@ from __future__ import annotations
 from collections.abc import Sequence
 from zlib import compress
 
-from scinoephile.core.text import is_low_information_text
-
 from .transcribed_segment import TranscribedSegment
 
 __all__ = [
     "MAX_COMPRESSION_RATIO",
     "get_text_compression_ratio",
     "get_transcription_quality_issue",
-    "is_low_information_text",
 ]
 
 _AUDIO_END_TOLERANCE_SECONDS = 1.0

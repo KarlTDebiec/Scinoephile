@@ -89,6 +89,8 @@ class Processor(ABC):
             overwrite_cache: whether to replace matching LLM response cache files
             prune_test_cases: remove persisted cases not encountered in this run
             tool_box: available tools and handlers
+        Raises:
+            ValueError: if a value is invalid
         """
         self.prompt = prompt
         if self.manager_cls is None:
@@ -104,10 +106,6 @@ class Processor(ABC):
             current_test_cases = load_test_cases_from_json(
                 current_test_cases_path, self.manager_cls, self.prompt
             )
-        self._persisted_test_cases = {
-            test_case.query.key: test_case for test_case in current_test_cases
-        }
-        """Persisted test cases keyed by semantic query identity."""
         verified_test_cases = [
             test_case
             for test_case in [*(shared_test_cases or []), *current_test_cases]
@@ -136,13 +134,20 @@ class Processor(ABC):
         if self.current_test_cases_path is None or self.manager_cls is None:
             return
 
-        encountered_test_cases = self.queryer.encountered_test_cases
-        if self.prune_test_cases:
-            self._persisted_test_cases = dict(encountered_test_cases)
-        else:
-            self._persisted_test_cases.update(encountered_test_cases)
+        test_cases_by_key = {}
+
+        # If there are already test cases, and we are not pruning them, load them first
+        if self.current_test_cases_path.exists() and not self.prune_test_cases:
+            persisted_test_cases = load_test_cases_from_json(
+                self.current_test_cases_path, self.manager_cls, self.prompt
+            )
+            test_cases_by_key = {
+                test_case.query.key: test_case for test_case in persisted_test_cases
+            }
+
+        # Update with encountered test cases, overwriting existing ones with same key
+        test_cases_by_key.update(self.queryer.encountered_test_cases)
+
         save_test_cases_to_json(
-            self.current_test_cases_path,
-            self._persisted_test_cases.values(),
-            self.manager_cls,
+            self.current_test_cases_path, test_cases_by_key.values(), self.manager_cls
         )

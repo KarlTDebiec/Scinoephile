@@ -6,8 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.models import Token
+from scinoephile.analysis.alignment.timed_msa import MsaAligner, MsaToken
 from scinoephile.analysis.audit.utils import format_index_range, validate_audit_range
 from scinoephile.analysis.transcription.artifact import (
     AlignmentArtifact,
@@ -15,10 +14,9 @@ from scinoephile.analysis.transcription.artifact import (
 )
 from scinoephile.analysis.transcription.evaluation import (
     evaluate_selected_character_errors,
-    evaluate_transcription,
 )
 from scinoephile.analysis.transcription.timing import (
-    evaluate_timing,
+    evaluate_selected_timing,
     get_block_references,
 )
 from scinoephile.core.subtitles import Series
@@ -33,7 +31,7 @@ def audit_transcription_alignment(
     artifact: AlignmentArtifact,
     references: Mapping[str, Series] | None = None,
     *,
-    token_similarity: Callable[[Token, Token], float] | None = None,
+    token_similarity: Callable[[MsaToken, MsaToken], float] | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -103,9 +101,26 @@ def audit_transcription_alignment(
     if index_range is not None:
         lines.append(f"- requested {index_range}; complete containing blocks shown")
     selected_artifact = artifact.model_copy(update={"blocks": tuple(blocks)})
+    reference_selections: dict[str, tuple[Series, tuple[int, ...]]] = {}
     for reference_name, reference in named_references.items():
+        selected_events = [
+            subtitle
+            for block in blocks
+            for subtitle in block_references[reference_name][block.index]
+        ]
+        indexes_by_identity: dict[int, list[int]] = {}
+        for reference_index, subtitle in enumerate(reference):
+            indexes_by_identity.setdefault(id(subtitle), []).append(reference_index)
+        reference_selections[reference_name] = (
+            Series(events=selected_events),
+            tuple(
+                indexes_by_identity[id(subtitle)].pop(0) for subtitle in selected_events
+            ),
+        )
+
+    for reference_name, (selected_reference, _) in reference_selections.items():
         lines.extend(("", f"### Reference {reference_name}", ""))
-        lines.extend(_get_metric_summary(selected_artifact, reference))
+        lines.extend(_get_metric_summary(selected_artifact, selected_reference))
         lines.extend(
             (
                 "",
@@ -123,15 +138,22 @@ def audit_transcription_alignment(
         )
     if named_references and include_timing_tables:
         lines.extend(("", "## Timing Comparisons", ""))
-        for reference_name, reference in named_references.items():
+        for reference_name, (
+            selected_reference,
+            original_reference_indexes,
+        ) in reference_selections.items():
             lines.extend((f"### {reference_name}", ""))
-            lines.extend(_get_timing_comparison_lines(selected_artifact, reference))
+            lines.extend(
+                _get_timing_comparison_lines(
+                    selected_artifact, selected_reference, original_reference_indexes
+                )
+            )
             lines.append("")
 
     lines.extend(("", "## Alignments", ""))
     if token_similarity is None:
         token_similarity = _get_token_similarity
-    aligner = Aligner(token_similarity)
+    aligner = MsaAligner(token_similarity)
     for block in blocks:
         lines.append(f"### Block {block.index}")
         if block.source_errors:
@@ -166,7 +188,7 @@ def render_transcription_alignment_terminal(
     references: Mapping[str, Series] | None = None,
     *,
     authoritative_row_name: str = "merged",
-    token_similarity: Callable[[Token, Token], float] | None = None,
+    token_similarity: Callable[[MsaToken, MsaToken], float] | None = None,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -223,7 +245,7 @@ def render_transcription_alignment_terminal(
     )
     if token_similarity is None:
         token_similarity = _get_token_similarity
-    aligner = Aligner(token_similarity)
+    aligner = MsaAligner(token_similarity)
     lines = [f"Authority: {authoritative_row_name}"]
     for block in blocks:
         lines.extend(("", f"Block {block.index}"))
@@ -361,20 +383,22 @@ def _get_merged_subtitle_lines(block: AlignmentBlock) -> list[str]:
     return lines
 
 
-def _get_metric_summary(artifact: AlignmentArtifact, reference: Series) -> list[str]:
+def _get_metric_summary(
+    artifact: AlignmentArtifact, selected_reference: Series
+) -> list[str]:
     """Get CER and timing summary lines for selected blocks.
 
     Arguments:
         artifact: selected alignment artifact
-        reference: independent reference subtitles
+        selected_reference: reference subtitles assigned to the selected blocks
     Returns:
         Markdown summary list items
     """
-    evaluation = evaluate_transcription(artifact, reference)
-    lines = [f"- reference subtitles: {evaluation.reference_subtitles}"]
-    for name, result in evaluation.character_errors.items():
+    character_errors = evaluate_selected_character_errors(artifact, selected_reference)
+    lines = [f"- reference subtitles: {len(selected_reference)}"]
+    for name, result in character_errors.items():
         lines.append(f"- {name} CER: {result.cer:.3%}")
-    timing = evaluation.timing
+    timing = evaluate_selected_timing(artifact, selected_reference)
     group_counts = timing.candidate_to_reference_group_counts
     lines.extend(
         (
@@ -481,17 +505,24 @@ def _get_selected_blocks(
 
 
 def _get_timing_comparison_lines(
-    artifact: AlignmentArtifact, reference: Series
+    artifact: AlignmentArtifact,
+    selected_reference: Series,
+    original_reference_indexes: Sequence[int],
 ) -> list[str]:
     """Get text-aligned candidate/reference timing comparisons.
 
     Arguments:
         artifact: selected alignment artifact
-        reference: independent reference subtitles
+        selected_reference: reference subtitles assigned to the selected blocks
+        original_reference_indexes: zero-based indexes in the complete reference
     Returns:
         Markdown timing-comparison table lines
     """
-    timing = evaluate_timing(artifact, reference)
+    timing = evaluate_selected_timing(
+        artifact,
+        selected_reference,
+        original_reference_indexes=original_reference_indexes,
+    )
     candidate_indexes = tuple(
         subtitle.index for block in artifact.blocks for subtitle in block.subtitles
     )
@@ -517,7 +548,7 @@ def _get_timing_comparison_lines(
     return lines
 
 
-def _get_token_similarity(one: Token, two: Token) -> float:
+def _get_token_similarity(one: MsaToken, two: MsaToken) -> float:
     """Score audit-only reference alignment using text and overall timing.
 
     Arguments:

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.alignment.timed_msa.models import Token
+from scinoephile.analysis.alignment.timed_msa import MsaToken
 from scinoephile.analysis.audit.transcription.report import (
     audit_transcription_alignment,
     render_transcription_alignment_terminal,
@@ -30,7 +30,7 @@ def test_audit_accepts_custom_token_similarity():
     reference = Series(events=[Subtitle(start=800, end=2_300, text="是嗎")])
     compared_characters = []
 
-    def similarity(one: Token, two: Token) -> float:
+    def similarity(one: MsaToken, two: MsaToken) -> float:
         """Record compared characters and prefer identical text.
 
         Arguments:
@@ -134,6 +134,25 @@ def test_audit_assigns_boundary_reference_by_global_text_alignment():
     assert "乙" in reference_lines[1]
     assert "|     1 |                    0 |      — |" in report
     assert "|     2 |                    1 |     0% |" in report
+
+
+def test_audit_filtered_summary_uses_globally_assigned_reference():
+    """Filtered summaries should score the same globally assigned references."""
+    artifact = _get_boundary_artifact()
+    reference = Series(events=[Subtitle(start=800, end=1_000, text="乙")])
+
+    report = audit_transcription_alignment(
+        artifact,
+        {"reference": reference},
+        first_block=2,
+        last_block=2,
+        include_timing_tables=True,
+    )
+
+    assert "- reference subtitles: 1" in report
+    assert "- text-aligned timing groups: 1" in report
+    assert "|     2 |                    1 |     0% |" in report
+    assert "| 2 | 1 |" in report
 
 
 def test_audit_distinguishes_unaligned_merged_and_reference_boundaries():
@@ -475,7 +494,7 @@ def test_audit_uses_token_similarity_for_merge_support():
     """The support row should count language-aware character matches."""
     artifact = _get_artifact()
 
-    def similarity(one: Token, two: Token) -> float:
+    def similarity(one: MsaToken, two: MsaToken) -> float:
         """Treat common copula forms as equivalent.
 
         Arguments:
@@ -632,7 +651,7 @@ def test_audit_retains_merged_text_without_source_support():
             AlignmentRow(name="whisper", text="　"),
             AlignmentRow(name="mimo", text="　"),
         ),
-        speaker="＊",
+        speaker="　",
         merged="甲",
         subtitles=(
             AlignmentSubtitle(
@@ -932,7 +951,11 @@ def _get_artifact() -> AlignmentArtifact:
 
 
 def _get_boundary_artifact() -> AlignmentArtifact:
-    """Get two blocks whose reference timing and text imply different owners."""
+    """Get two blocks whose reference timing and text imply different owners.
+
+    Returns:
+        artifact containing two single-character blocks
+    """
     sources = (
         AlignmentSource(name="whisper", backend="whisper", model="whisper"),
         AlignmentSource(name="mimo", backend="mlx", model="mimo"),
@@ -951,7 +974,16 @@ def _get_boundary_artifact() -> AlignmentArtifact:
 def _get_character_block(
     index: int, start_ms: int, text: str, sources: tuple[AlignmentSource, ...]
 ) -> AlignmentBlock:
-    """Get one single-character artifact block for audit tests."""
+    """Get one single-character artifact block for audit tests.
+
+    Arguments:
+        index: one-based block and subtitle index
+        start_ms: block start time in milliseconds
+        text: single-character transcription text
+        sources: alignment sources represented in the block
+    Returns:
+        single-character alignment block
+    """
     speech_start_ms = start_ms + 100
     speech_end_ms = start_ms + 300
     return AlignmentBlock(

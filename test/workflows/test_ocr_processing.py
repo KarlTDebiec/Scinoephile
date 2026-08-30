@@ -11,7 +11,11 @@ from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
 
 
 def test_ocr_processing_workflow_keeps_cache_policy_on_cache(tmp_path: Path):
-    """Test resolved cache configuration remains owned by the subtitle cache."""
+    """Test resolved cache configuration remains owned by the subtitle cache.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     cache_root_path = tmp_path / "cache"
     workflow = OcrProcessingWorkflow(
         tmp_path / "source.sup",

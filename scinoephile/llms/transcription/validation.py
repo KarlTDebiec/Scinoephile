@@ -25,10 +25,14 @@ __all__ = [
 class TranscriptionCharacterRelationship(IntEnum):
     """Strength of source support for one answer character."""
 
-    none = 0
-    pronunciation = 1
-    equivalent = 2
-    exact = 3
+    NONE = 0
+    """No relationship between source and answer characters."""
+    PRONUNCIATION = 1
+    """Characters have a language-specific pronunciation relationship."""
+    EQUIVALENT = 2
+    """Characters are language-specific lexical equivalents."""
+    EXACT = 3
+    """Characters match after compatibility normalization."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -47,8 +51,6 @@ class TranscriptionValidation:
     """Longest answer run lacking corroboration from two ASR sources."""
     fragile_boundary_answer_text: str
     """Short boundary phrase mixing invented and single-source characters."""
-    answer_evidence_column_indexes: tuple[int, ...]
-    """Profile columns corroborating answer characters in sequence."""
     answer_character_evidence_column_indexes: tuple[int | None, ...]
     """Corroborating profile column for each lexical answer character."""
 
@@ -76,20 +78,6 @@ class TranscriptionValidation:
             return 1.0
         return self.mapped_majority_column_count / self.majority_column_count
 
-    def preserves_consensus(self, maximum_unpreserved_columns: int) -> bool:
-        """Whether the answer avoids a long omission of strong consensus evidence.
-
-        Arguments:
-            maximum_unpreserved_columns: maximum permitted consecutive omissions
-        Returns:
-            whether the answer passes deterministic consensus preservation
-        Raises:
-            ValueError: if the maximum is negative
-        """
-        if maximum_unpreserved_columns < 0:
-            raise ValueError("Maximum unpreserved column count must be non-negative.")
-        return self.longest_unpreserved_consensus_run <= maximum_unpreserved_columns
-
     def has_supported_answer(self, maximum_unsupported_characters: int) -> bool:
         """Whether the answer avoids long unsupported additions.
 
@@ -106,9 +94,19 @@ class TranscriptionValidation:
             )
         return self.longest_unsupported_answer_run <= maximum_unsupported_characters
 
-    def has_supported_boundary(self) -> bool:
-        """Whether a short answer avoids a fragile source-unsupported boundary."""
-        return not self.fragile_boundary_answer_text
+    def preserves_consensus(self, maximum_unpreserved_columns: int) -> bool:
+        """Whether the answer avoids a long omission of strong consensus evidence.
+
+        Arguments:
+            maximum_unpreserved_columns: maximum permitted consecutive omissions
+        Returns:
+            whether the answer passes deterministic consensus preservation
+        Raises:
+            ValueError: if the maximum is negative
+        """
+        if maximum_unpreserved_columns < 0:
+            raise ValueError("Maximum unpreserved column count must be non-negative.")
+        return self.longest_unpreserved_consensus_run <= maximum_unpreserved_columns
 
 
 class TranscriptionAlignmentScorer:
@@ -129,8 +127,32 @@ class TranscriptionAlignmentScorer:
             relationship between the characters
         """
         if normalize_nfkc(one) == normalize_nfkc(two):
-            return TranscriptionCharacterRelationship.exact
-        return TranscriptionCharacterRelationship.none
+            return TranscriptionCharacterRelationship.EXACT
+        return TranscriptionCharacterRelationship.NONE
+
+    def get_consensus_character(
+        self, source_characters: Sequence[str], required_source_count: int
+    ) -> str | None:
+        """Get a representative of the strongest sufficiently supported group.
+
+        Arguments:
+            source_characters: lexical characters from one aligned column
+            required_source_count: minimum equivalent source character count
+        Returns:
+            strongest supported representative, or None
+        """
+        consensus_character = None
+        consensus_count = required_source_count - 1
+        for candidate in dict.fromkeys(source_characters):
+            count = sum(
+                self.get_character_relationship(candidate, character)
+                >= TranscriptionCharacterRelationship.EQUIVALENT
+                for character in source_characters
+            )
+            if count > consensus_count:
+                consensus_character = candidate
+                consensus_count = count
+        return consensus_character
 
     def score(
         self, source_texts: Sequence[str], answer_text: str
@@ -178,7 +200,6 @@ class TranscriptionAlignmentScorer:
         majority_column_count = 0
         mapped_majority_column_count = 0
         preserved_majority_column_count = 0
-        missing_consensus_characters: list[str | None] = []
         unpreserved_consensus_characters: list[str | None] = []
         majority_source_count = source_count // 2 + 1
         strong_consensus_source_count = max(majority_source_count, source_count - 1)
@@ -187,7 +208,6 @@ class TranscriptionAlignmentScorer:
                 source_characters, majority_source_count
             )
             if majority_character is None:
-                missing_consensus_characters.append(None)
                 unpreserved_consensus_characters.append(None)
                 continue
             majority_column_count += 1
@@ -200,7 +220,7 @@ class TranscriptionAlignmentScorer:
                     self.get_character_relationship(
                         answer_character, majority_character
                     )
-                    >= TranscriptionCharacterRelationship.pronunciation
+                    >= TranscriptionCharacterRelationship.PRONUNCIATION
                 )
             if is_preserved:
                 preserved_majority_column_count += 1
@@ -208,26 +228,18 @@ class TranscriptionAlignmentScorer:
             consensus_character = self.get_consensus_character(
                 source_characters, strong_consensus_source_count
             )
-            missing_consensus_characters.append(
-                consensus_character if answer_idx is None else None
-            )
             unpreserved_consensus_characters.append(
                 consensus_character
                 if consensus_character and not is_preserved
                 else None
             )
 
-        longest_unpreserved_consensus_text = _get_longest_informative_run_text(
-            missing_consensus_characters
+        longest_unpreserved_consensus_text = _get_longest_run_text(
+            unpreserved_consensus_characters, require_information=True
         )
-        if not preserved_majority_column_count:
-            longest_unpreserved_consensus_text = _get_longest_informative_run_text(
-                unpreserved_consensus_characters
-            )
 
         corroborating_source_count = min(2, source_count)
         unsupported_answer_characters: list[str | None] = []
-        answer_evidence_column_indexes = []
         answer_character_evidence_column_indexes = []
         answer_support_counts = []
         source_characters_by_column = dict(profile_columns)
@@ -238,7 +250,7 @@ class TranscriptionAlignmentScorer:
             if profile_column_idx is not None:
                 support_count = sum(
                     self.get_character_relationship(answer_character, source_character)
-                    >= TranscriptionCharacterRelationship.pronunciation
+                    >= TranscriptionCharacterRelationship.PRONUNCIATION
                     for source_character in source_characters_by_column[
                         profile_column_idx
                     ]
@@ -253,7 +265,6 @@ class TranscriptionAlignmentScorer:
                 support_count >= corroborating_source_count
                 and profile_column_idx is not None
             ):
-                answer_evidence_column_indexes.append(profile_column_idx)
                 answer_character_evidence_column_indexes.append(profile_column_idx)
             else:
                 answer_character_evidence_column_indexes.append(None)
@@ -269,7 +280,6 @@ class TranscriptionAlignmentScorer:
             fragile_boundary_answer_text=_get_fragile_boundary_text(
                 answer_characters, answer_support_counts, corroborating_source_count
             ),
-            answer_evidence_column_indexes=tuple(answer_evidence_column_indexes),
             answer_character_evidence_column_indexes=tuple(
                 answer_character_evidence_column_indexes
             ),
@@ -281,7 +291,17 @@ class TranscriptionAlignmentScorer:
         answer_characters: Sequence[str],
         source_count: int,
     ) -> tuple[int | None, ...]:
-        """Project answer characters onto fixed profile columns."""
+        """Project answer characters onto fixed profile columns.
+
+        Arguments:
+            profile_columns: indexed source-character profile columns
+            answer_characters: answer characters to project
+            source_count: total number of transcription sources
+        Returns:
+            profile column index for each answer character, when mapped
+        Raises:
+            RuntimeError: if the operation cannot be completed
+        """
         profile_length = len(profile_columns)
         answer_length = len(answer_characters)
         scores = [
@@ -311,7 +331,7 @@ class TranscriptionAlignmentScorer:
                     sum(relationship_scores)
                     + missing_source_count
                     * self._get_relationship_score(
-                        TranscriptionCharacterRelationship.none
+                        TranscriptionCharacterRelationship.NONE
                     )
                 ) / source_count
                 best_score = scores[profile_idx - 1][answer_idx - 1] + profile_score
@@ -349,79 +369,24 @@ class TranscriptionAlignmentScorer:
                 raise RuntimeError("Unable to backtrack transcription validation.")
         return tuple(answer_profile_indexes)
 
-    def get_consensus_character(
-        self, source_characters: Sequence[str], required_source_count: int
-    ) -> str | None:
-        """Get a representative of the strongest sufficiently supported group.
-
-        Arguments:
-            source_characters: lexical characters from one aligned column
-            required_source_count: minimum equivalent source character count
-        Returns:
-            strongest supported representative, or None
-        """
-        consensus_character = None
-        consensus_count = required_source_count - 1
-        for candidate in source_characters:
-            count = sum(
-                self.get_character_relationship(candidate, character)
-                >= TranscriptionCharacterRelationship.equivalent
-                for character in source_characters
-            )
-            if count > consensus_count:
-                consensus_character = candidate
-                consensus_count = count
-        return consensus_character
-
     @staticmethod
     def _get_relationship_score(
         relationship: TranscriptionCharacterRelationship,
     ) -> float:
-        """Get the profile-alignment substitution score for a relationship."""
-        if relationship is TranscriptionCharacterRelationship.exact:
+        """Get the profile-alignment substitution score for a relationship.
+
+        Arguments:
+            relationship: relationship between answer and source characters
+        Returns:
+            substitution score
+        """
+        if relationship is TranscriptionCharacterRelationship.EXACT:
             return 6.0
-        if relationship is TranscriptionCharacterRelationship.equivalent:
+        if relationship is TranscriptionCharacterRelationship.EQUIVALENT:
             return 5.0
-        if relationship is TranscriptionCharacterRelationship.pronunciation:
+        if relationship is TranscriptionCharacterRelationship.PRONUNCIATION:
             return 3.0
         return -2.0
-
-
-def _get_longest_run_text(characters: Sequence[str | None]) -> str:
-    """Get the text of the longest run not interrupted by a missing character."""
-    longest_text = ""
-    current_characters = []
-    for character in characters:
-        if character is not None:
-            current_characters.append(character)
-            continue
-        if len(current_characters) > len(longest_text):
-            longest_text = "".join(current_characters)
-        current_characters = []
-    if len(current_characters) > len(longest_text):
-        longest_text = "".join(current_characters)
-    return longest_text
-
-
-def _get_longest_informative_run_text(characters: Sequence[str | None]) -> str:
-    """Get the longest run that is not solely a vocalization.
-
-    Arguments:
-        characters: characters whose None values divide candidate runs
-    Returns:
-        longest lexical-information-bearing run
-    """
-    longest_text = ""
-    current_characters = []
-    for character in (*characters, None):
-        if character is not None:
-            current_characters.append(character)
-            continue
-        text = "".join(current_characters)
-        if not is_low_information_text(text) and len(text) > len(longest_text):
-            longest_text = text
-        current_characters = []
-    return longest_text
 
 
 def _get_fragile_boundary_text(
@@ -429,7 +394,15 @@ def _get_fragile_boundary_text(
     answer_support_counts: Sequence[int],
     corroborating_source_count: int,
 ) -> str:
-    """Get a short boundary phrase mixing invented and single-source text."""
+    """Get a short boundary phrase mixing invented and single-source text.
+
+    Arguments:
+        answer_characters: lexical answer characters
+        answer_support_counts: supporting source count for each answer character
+        corroborating_source_count: support count required for corroboration
+    Returns:
+        longest fragile boundary phrase, or an empty string
+    """
     if len(answer_characters) > 4:
         return ""
 
@@ -458,8 +431,41 @@ def _get_fragile_boundary_text(
     return max(fragile_texts, key=len, default="")
 
 
+def _get_longest_run_text(
+    characters: Sequence[str | None], *, require_information: bool = False
+) -> str:
+    """Get the longest run not interrupted by a missing character.
+
+    Arguments:
+        characters: characters whose None values divide candidate runs
+        require_information: whether to exclude vocalization-only runs
+    Returns:
+        longest qualifying run
+    """
+    longest_text = ""
+    current_characters = []
+    for character in (*characters, None):
+        if character is not None:
+            current_characters.append(character)
+            continue
+        text = "".join(current_characters)
+        if require_information and is_low_information_text(text):
+            current_characters = []
+            continue
+        if len(text) > len(longest_text):
+            longest_text = text
+        current_characters = []
+    return longest_text
+
+
 def _validate_rows(source_texts: Sequence[str]):
-    """Validate aligned source row widths."""
+    """Validate aligned source row widths.
+
+    Arguments:
+        source_texts: aligned source rows
+    Raises:
+        ValueError: if a value is invalid
+    """
     if not source_texts:
         raise ValueError("Transcription validation requires at least one source.")
     row_lengths = {len(source_text) for source_text in source_texts}

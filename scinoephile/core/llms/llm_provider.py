@@ -7,7 +7,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any, TypedDict, Unpack
 
-from pydantic import JsonValue
+from scinoephile.core.cache.identity import CacheIdentity
 
 from .answer import Answer
 from .metrics import ChatCompletionMetrics
@@ -51,7 +51,7 @@ class LLMProvider(ABC):
     """Completion metrics recorded by this provider."""
 
     @property
-    def cache_identity(self) -> dict[str, JsonValue]:
+    def cache_identity(self) -> CacheIdentity:
         """Stable, non-secret configuration affecting completion behavior.
 
         Configurable provider implementations must extend this identity with all

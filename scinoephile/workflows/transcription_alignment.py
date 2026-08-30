@@ -8,9 +8,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from math import isfinite
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column
+from scinoephile.analysis.alignment.timed_msa import MsaAligner, MsaAlignment, MsaColumn
 from scinoephile.analysis.transcription.artifact import (
     AlignmentBlock,
     AlignmentColumn,
@@ -29,7 +27,8 @@ from scinoephile.audio.transcription.alignment_sequence import (
 )
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.vad.speech_block import SpeechBlock
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.core.script import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import get_zho_text_converted
 
 __all__ = [
     "RenderedTranscriptionAlignment",
@@ -45,7 +44,7 @@ class RenderedTranscriptionAlignment:
     rows: tuple[AlignmentRow, ...]
     """Named ASR rows in alignment source order."""
     speaker: str
-    """Speaker and unattributed-speech annotation row."""
+    """Speaker annotation row."""
     language: str | None
     """Spoken-language annotation row, when available."""
     language_legend: Mapping[str, str]
@@ -57,9 +56,9 @@ class RenderedTranscriptionAlignment:
 
 
 def build_transcription_alignment_block(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     merged_segments: Sequence[TranscribedSegment],
-    aligner: Aligner,
+    aligner: MsaAligner,
     *,
     speech_block: SpeechBlock,
     audio_events: AudioEventDetectionResult | None = None,
@@ -92,6 +91,8 @@ def build_transcription_alignment_block(
         traditionalize: whether to render lexical rows in Hong Kong Traditional
     Returns:
         validated portable alignment block
+    Raises:
+        ValueError: if a value is invalid
     """
     if not merged_segments:
         raise ValueError("Alignment blocks require merged subtitle segments.")
@@ -163,7 +164,7 @@ def build_transcription_alignment_block(
 
 
 def render_transcription_alignment(
-    alignment: Alignment,
+    alignment: MsaAlignment,
     *,
     audio_events: AudioEventDetectionResult | None = None,
     diarization: SpeakerDiarizationResult | None = None,
@@ -229,7 +230,7 @@ def render_transcription_alignment(
 
 
 def _get_speaker_cell(
-    column: Column,
+    column: MsaColumn,
     diarization: SpeakerDiarizationResult | None,
     speaker_symbols: dict[str, str],
     source_offset_seconds: float,
@@ -258,7 +259,7 @@ def _get_speaker_cell(
 
 
 def _get_event_row(
-    columns: Sequence[Column],
+    columns: Sequence[MsaColumn],
     audio_events: AudioEventDetectionResult | None,
     event: AudioEvent,
     marker: str,
@@ -293,7 +294,7 @@ def _get_event_row(
 
 
 def _get_language_cell(
-    column: Column,
+    column: MsaColumn,
     language_identification: LanguageIdentificationResult,
     offset_seconds: float,
     language_symbols: Mapping[str, str],
@@ -357,7 +358,7 @@ def _get_language_symbols(
 
 
 def _get_row_text(
-    columns: Sequence[Column], source_idx: int, traditionalize: bool
+    columns: Sequence[MsaColumn], source_idx: int, traditionalize: bool
 ) -> str:
     """Get one source's display text while preserving its alignment gaps.
 
@@ -404,6 +405,8 @@ def _get_speaker_symbols(
         diarization: optional complete-source speaker diarization
     Returns:
         diarization labels mapped to display characters
+    Raises:
+        ValueError: if a value is invalid
     """
     if diarization is None:
         return {}
@@ -433,6 +436,8 @@ def _get_transcription_subtitle(
         speaker_symbols: diarization labels mapped to artifact speaker symbols
     Returns:
         portable subtitle retaining separate speech and display intervals
+    Raises:
+        ValueError: if a value is invalid
     """
     if not isfinite(segment.start) or not isfinite(segment.end):
         raise ValueError("Merged subtitle display timing must be finite.")

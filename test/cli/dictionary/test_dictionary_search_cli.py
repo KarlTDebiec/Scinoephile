@@ -29,7 +29,11 @@ from test.helpers import parametrize
 
 @fixture(scope="module")
 def dictionary_database_dir_path() -> Generator[Path]:
-    """Build temporary databases for end-to-end search tests."""
+    """Build temporary databases for end-to-end search tests.
+
+    Yields:
+        directory containing temporary dictionary databases
+    """
     with get_temp_directory_path() as dir_path:
         data_dir_path = dir_path / "dictionaries"
         cuhk_database_path = data_dir_path / "cuhk/cuhk.db"

@@ -8,10 +8,11 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
+from scinoephile.core.script import OpenCCConfig
 from scinoephile.core.stacking import get_stacked_series
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.translation.guided import get_guided_translator
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.lang.zho.script.conversion import get_zho_converted
 from scinoephile.workflows.clean import clean_series
 from scinoephile.workflows.flatten import flatten_series
 from scinoephile.workflows.translation import translate_series_guided

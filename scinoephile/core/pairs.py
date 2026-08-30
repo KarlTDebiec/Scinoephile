@@ -38,7 +38,11 @@ def get_block_pair_indexes_by_pause(
         two_start_idx = two_idx
 
         def get_cutoff() -> int:
-            """Get the latest event end plus the selected pause length."""
+            """Get the latest event end plus the selected pause length.
+
+            Returns:
+                cutoff timestamp in milliseconds
+            """
             cutoff = 0
             if one_idx > one_start_idx:
                 cutoff = max(cutoff, one[one_idx - 1].end)
@@ -110,6 +114,8 @@ def get_pair_with_zero_start(one: Series, two: Series) -> tuple[Series, Series]:
         two: second series
     Returns:
         pair with their start times shifted to zero
+    Raises:
+        ScinoephileError: if the operation fails
     """
     if one.events and two.events:
         start_time = min(one.events[0].start, two.events[0].start)
@@ -136,6 +142,8 @@ def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
         two: second series
     Returns:
         strings of each series
+    Raises:
+        ScinoephileError: if the operation fails
     """
     one, two = get_pair_with_zero_start(one, two)
     if one.events and two.events:

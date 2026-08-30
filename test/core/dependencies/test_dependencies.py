@@ -52,7 +52,17 @@ def test_pyannote_import_ignores_irrelevant_torchcodec_warning(
         fromlist: tuple[str, ...] = (),
         level: int = 0,
     ) -> object:
-        """Return mocked pyannote after emitting its decoder warning."""
+        """Return mocked pyannote after emitting its decoder warning.
+
+        Arguments:
+            name: name
+            globals_: globals value
+            locals_: locals value
+            fromlist: fromlist value
+            level: level value
+        Returns:
+            mocked pyannote after emitting its decoder warning
+        """
         if name != "pyannote.audio":
             return builtin_import(name, globals_, locals_, fromlist, level)
         warn(

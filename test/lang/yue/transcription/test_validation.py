@@ -20,11 +20,11 @@ def test_yue_alignment_scorer_adds_yue_equivalence():
 
     assert (
         generic_scorer.get_character_relationship("不", "唔")
-        is TranscriptionCharacterRelationship.none
+        is TranscriptionCharacterRelationship.NONE
     )
     assert (
         yue_scorer.get_character_relationship("不", "唔")
-        is TranscriptionCharacterRelationship.equivalent
+        is TranscriptionCharacterRelationship.EQUIVALENT
     )
 
 
@@ -34,7 +34,7 @@ def test_yue_alignment_scorer_uses_jyutping():
 
     assert (
         scorer.get_character_relationship("道", "盜")
-        is TranscriptionCharacterRelationship.pronunciation
+        is TranscriptionCharacterRelationship.PRONUNCIATION
     )
 
 

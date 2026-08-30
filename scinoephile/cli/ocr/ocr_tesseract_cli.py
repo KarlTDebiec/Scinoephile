@@ -161,7 +161,17 @@ class OcrTesseractCli(ScinoephileCliBase):
         overwrite: bool,
         cache_args: CacheArguments,
     ):
-        """Execute with provided keyword arguments."""
+        """Recognize subtitle images with Tesseract and write the series.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            infile_path: subtitle image directory
+            outfile_path: output subtitle file
+            detect_italics: whether to detect italic text
+            language: subtitle language
+            overwrite: whether to overwrite the output file
+            cache_args: cache configuration
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:

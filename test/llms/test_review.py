@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import cast
 from unittest.mock import Mock
 
 from pydantic import ValidationError
@@ -18,7 +17,6 @@ from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.zho.review import ReviewPromptZhoHant
 from scinoephile.llms.review import (
-    ReviewAnswer,
     ReviewManager,
     ReviewProcessor,
     ReviewPrompt,
@@ -109,8 +107,7 @@ def test_queryer_rejects_type_coercion_at_llm_boundary():
     result = queryer(test_case)
 
     assert result.answer is not None
-    answer = cast(ReviewAnswer, result.answer)
-    assert answer.revisions[0].index == 1
+    assert result.answer.revisions[0].index == 1
     assert provider.chat_completion.call_count == 2
 
 
@@ -211,7 +208,11 @@ def test_queryer_localizes_test_case_validation_retry():
 
 
 def test_partial_processing_preserves_unencountered_test_cases(tmp_path: Path):
-    """Stopping before processing should not erase persisted test cases."""
+    """Stopping before processing should not erase persisted test cases.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = ReviewManager.get_test_case_cls(ReviewManager.base_prompt)
     existing_test_case = test_case_cls.model_validate(
         {
@@ -242,7 +243,11 @@ def test_partial_processing_preserves_unencountered_test_cases(tmp_path: Path):
 
 
 def test_partial_processing_prunes_only_when_requested(tmp_path: Path):
-    """Explicit pruning should remove cases not encountered in the current run."""
+    """Explicit pruning should remove cases not encountered in the current run.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     test_case_cls = ReviewManager.get_test_case_cls(ReviewManager.base_prompt)
     existing_test_case = test_case_cls.model_validate(
         {
@@ -327,7 +332,11 @@ def test_answer_requires_unique_ordered_revision_indexes():
 def test_test_case_rejects_missing_and_unmodified_revision_indexes(
     test_case_cls: type[ReviewTestCase],
 ):
-    """Revisions should target and modify query subtitles."""
+    """Revisions should target and modify query subtitles.
+
+    Arguments:
+        test_case_cls: test case cls value
+    """
     query = {"subtitles": [{"index": 1, "text": "original"}]}
 
     with raises(ValidationError, match="does not correspond to a query subtitle"):
@@ -356,7 +365,11 @@ def test_test_case_rejects_missing_and_unmodified_revision_indexes(
     ids=["static", "generated"],
 )
 def test_revisions_raise_minimum_difficulty(test_case_cls: type[ReviewTestCase]):
-    """A nonempty revisions list should require difficulty one."""
+    """A nonempty revisions list should require difficulty one.
+
+    Arguments:
+        test_case_cls: test case cls value
+    """
     unchanged = test_case_cls.model_validate(
         {
             "query": {"subtitles": [{"index": 1, "text": "original"}]},

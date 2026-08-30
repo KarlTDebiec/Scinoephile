@@ -114,6 +114,8 @@ class UnihanDictionaryService:
             limit: max results to return
         Returns:
             dictionary entries
+        Raises:
+            ValueError: if a value is invalid
         """
         query = query.strip()
         if not query:
@@ -157,7 +159,11 @@ class UnihanDictionaryService:
         )
 
     def _ensure_database(self):
-        """Ensure the SQLite database exists, building it if configured."""
+        """Ensure the SQLite database exists, building it if configured.
+
+        Raises:
+            FileNotFoundError: if a required file is missing
+        """
         if self.database_path.exists():
             return
         if not self.auto_build_missing:
@@ -187,6 +193,8 @@ class UnihanDictionaryService:
 
         Returns:
             validated extracted file paths keyed by filename
+        Raises:
+            FileNotFoundError: if a required file is missing
         """
         self.runtime_data_dir_path.mkdir(parents=True, exist_ok=True)
         zip_path = self.runtime_data_dir_path / "Unihan.zip"

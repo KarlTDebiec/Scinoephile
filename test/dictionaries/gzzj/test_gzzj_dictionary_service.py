@@ -17,7 +17,11 @@ from test.helpers import parametrize
 
 @fixture
 def source_json_path() -> Generator[Path]:
-    """Provide a minimal temporary GZZJ source JSON file."""
+    """Provide a minimal temporary GZZJ source JSON file.
+
+    Yields:
+        temporary GZZJ source JSON path
+    """
     with get_temp_file_path(".json") as temp_path:
         temp_path.write_text(
             (
@@ -37,7 +41,12 @@ def source_json_path() -> Generator[Path]:
 
 @fixture
 def service(database_path: Path, source_json_path: Path) -> GzzjDictionaryService:
-    """Provide a GZZJ service backed by deterministic JSON fixture data."""
+    """Provide a GZZJ service backed by deterministic JSON fixture data.
+
+    Arguments:
+        database_path: database path
+        source_json_path: source json path
+    """
     service = GzzjDictionaryService(
         database_path=database_path, source_json_path=source_json_path
     )
@@ -65,14 +74,25 @@ def test_lookup(
     expected: list[str] | None,
     expectation: AbstractContextManager[object],
 ):
-    """Infer searchable query formats or reject unsupported queries."""
+    """Infer searchable query formats or reject unsupported queries.
+
+    Arguments:
+        service: service value
+        query: query
+        expected: expected value
+        expectation: expectation value
+    """
     with expectation:
         entries = service.lookup(query, limit=10)
         assert [entry.traditional for entry in entries] == expected
 
 
 def test_build_normalizes_list_valued_headwords(service: GzzjDictionaryService):
-    """Persist normalized scalar text when source headwords are list-valued."""
+    """Persist normalized scalar text when source headwords are list-valued.
+
+    Arguments:
+        service: service value
+    """
     entries = service.lookup("仇", limit=10)
 
     assert [entry.traditional for entry in entries] == ["仇", "仇"]

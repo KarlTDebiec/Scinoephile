@@ -10,18 +10,21 @@ from unittest.mock import Mock, patch
 from pydub import AudioSegment
 from pytest import approx, raises
 
-from scinoephile.analysis.alignment.timed_msa.aligner import Aligner
-from scinoephile.analysis.alignment.timed_msa.alignment import Alignment
-from scinoephile.analysis.alignment.timed_msa.models import Column, Token
+from scinoephile.analysis.alignment.timed_msa import (
+    MsaAligner,
+    MsaAlignment,
+    MsaColumn,
+    MsaToken,
+)
 from scinoephile.audio.transcription import (
-    CtcAligner,
     TranscribedSegment,
     TranscribedWord,
     Transcriber,
     TranscriptionAlignmentIncompleteError,
     TranscriptionEmptyError,
-    TranscriptionInferenceError,
+    TranscriptionRecognitionError,
 )
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.lang.yue.transcription.token_similarity import YueTokenSimilarity
 from scinoephile.llms.transcription import (
@@ -109,7 +112,7 @@ def _get_transcriber(
     return MultiSourceTranscriber(
         language=Language.yue_hant,
         transcribers=sources,
-        aligner=Aligner(YueTokenSimilarity()),
+        aligner=MsaAligner(YueTokenSimilarity()),
         processor=processor,
         ctc_aligner=ctc_aligner,
     )
@@ -182,7 +185,7 @@ def test_merge_uses_long_pause_boundaries_as_separate_ctc_windows():
 
 
 def test_merge_infers_pauses_when_explicit_evidence_is_unavailable():
-    """Test absent explicit pause evidence falls back to source-timing gaps."""
+    """Test absent explicit evidence falls back to shared source-timing gaps."""
     audio = AudioSegment.silent(duration=3_000)
     processor = Mock(spec=TranscriptionProcessor)
     processor.process_requests.return_value = (
@@ -212,15 +215,15 @@ def test_timing_omits_empty_request_and_retains_later_consensus():
     """Test CTC timing skips empty request answers without losing later output."""
     audio = AudioSegment.silent(duration=3_000)
     ctc_aligner = Mock(spec=CtcAligner, return_value=[_get_segment("乙", 0.2, 0.7)])
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("丙", 0.1, 0.4))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("丙", 0.1, 0.4))),
             *(
-                Column((None, None), pause_interval_seconds=(0.5, 1.5))
+                MsaColumn((None, None), pause_interval_seconds=(0.5, 1.5))
                 for _ in range(4)
             ),
-            Column((Token("乙", 1.8, 2.4), Token("乙", 1.8, 2.4))),
+            MsaColumn((MsaToken("乙", 1.8, 2.4), MsaToken("乙", 1.8, 2.4))),
         ),
     )
 
@@ -243,12 +246,12 @@ def test_timing_omits_empty_request_and_retains_later_consensus():
 
 def test_request_interval_falls_back_to_in_audio_lexical_timing():
     """Test invalid pause bounds fall back to usable lexical evidence."""
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
-            Column((None, None), pause_interval_seconds=(1.2, 1.5)),
-            Column((Token("乙", 0.6, 0.8), Token("乙", 0.6, 0.8))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("甲", 0.1, 0.4))),
+            MsaColumn((None, None), pause_interval_seconds=(1.2, 1.5)),
+            MsaColumn((MsaToken("乙", 0.6, 0.8), MsaToken("乙", 0.6, 0.8))),
         ),
     )
 
@@ -259,12 +262,12 @@ def test_request_interval_falls_back_to_in_audio_lexical_timing():
 
 def test_request_interval_is_constrained_to_answer_evidence():
     """Corroborating answer columns should narrow a broad request interval."""
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
-            Column((Token("乙", 1.0, 1.5), Token("乙", 1.0, 1.5))),
-            Column((Token("丙", 2.2, 2.5), Token("丙", 2.2, 2.5))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("甲", 0.1, 0.4))),
+            MsaColumn((MsaToken("乙", 1.0, 1.5), MsaToken("乙", 1.0, 1.5))),
+            MsaColumn((MsaToken("丙", 2.2, 2.5), MsaToken("丙", 2.2, 2.5))),
         ),
     )
 
@@ -273,6 +276,32 @@ def test_request_interval_is_constrained_to_answer_evidence():
     )
 
     assert interval == (0.75, 1.75)
+
+
+def test_timing_retains_request_audio_for_unsupported_edge_correction():
+    """An unsupported answer edge should prevent evidence-only audio cropping."""
+    audio = AudioSegment.silent(duration=3_000)
+    alignment = MsaAlignment(
+        source_names=("whisper", "mimo"),
+        columns=(
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("甲", 0.1, 0.4))),
+            MsaColumn((MsaToken("乙", 1.0, 1.5), MsaToken("乙", 1.0, 1.5))),
+            MsaColumn((MsaToken("丙", 2.2, 2.5), MsaToken("丙", 2.2, 2.5))),
+        ),
+    )
+    request_result = TranscriptionRequestResult(
+        0, 3, _get_answer("天乙"), "0" * 64, (None, 1)
+    )
+    ctc_aligner = Mock(spec=CtcAligner, return_value=[_get_segment("天乙", 0.1, 0.5)])
+
+    output, _ = get_timed_request_segments(
+        audio, alignment, (request_result,), ctc_aligner
+    )
+
+    assert [(segment.text, segment.start, segment.end) for segment in output] == [
+        ("天乙", 0.1, 0.5)
+    ]
+    assert len(ctc_aligner.call_args.args[0]) == 3_000
 
 
 def test_timing_realigns_subtitle_stretched_across_omitted_evidence():
@@ -298,15 +327,15 @@ def test_timing_realigns_subtitle_stretched_across_omitted_evidence():
             [_get_segment("甲", 0.1, 0.3)],
         ],
     )
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
-            Column((Token("丙", 4.0, 4.2), Token("丁", 4.0, 4.2))),
-            Column((Token("乙", 8.0, 8.2), Token("乙", 8.0, 8.2))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("甲", 0.1, 0.4))),
+            MsaColumn((MsaToken("丙", 4.0, 4.2), MsaToken("丁", 4.0, 4.2))),
+            MsaColumn((MsaToken("乙", 8.0, 8.2), MsaToken("乙", 8.0, 8.2))),
         ),
     )
-    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2), (0, 2))
+    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2))
 
     output, timing_sources = get_timed_request_segments(
         audio, alignment, (request_result,), ctc_aligner
@@ -340,15 +369,15 @@ def test_timing_retains_long_subtitle_supported_across_its_interval():
             )
         ],
     )
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
-            Column((Token("丙", 4.0, 4.2), Token("丁", 4.0, 4.2))),
-            Column((Token("乙", 8.0, 8.2), Token("乙", 8.0, 8.2))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("甲", 0.1, 0.4))),
+            MsaColumn((MsaToken("丙", 4.0, 4.2), MsaToken("丁", 4.0, 4.2))),
+            MsaColumn((MsaToken("乙", 8.0, 8.2), MsaToken("乙", 8.0, 8.2))),
         ),
     )
-    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2), (0, 2))
+    request_result = TranscriptionRequestResult(0, 3, answer, "0" * 64, (0, 2))
 
     output, timing_sources = get_timed_request_segments(
         audio, alignment, (request_result,), ctc_aligner
@@ -373,14 +402,14 @@ def test_timing_retries_incomplete_request_against_unconsumed_block():
             [_get_segment("丙", 0.1, 0.3)],
         ],
     )
-    alignment = Alignment(
+    alignment = MsaAlignment(
         source_names=("whisper", "mimo"),
         columns=(
-            Column((Token("甲", 0.1, 0.4), Token("甲", 0.1, 0.4))),
-            Column((None, None), pause_interval_seconds=(0.5, 1.5)),
-            Column((Token("乙", 1.8, 2.4), Token("乙", 1.8, 2.4))),
-            Column((None, None), pause_interval_seconds=(2.0, 2.1)),
-            Column((Token("丙", 2.5, 2.8), Token("丙", 2.5, 2.8))),
+            MsaColumn((MsaToken("甲", 0.1, 0.4), MsaToken("甲", 0.1, 0.4))),
+            MsaColumn((None, None), pause_interval_seconds=(0.5, 1.5)),
+            MsaColumn((MsaToken("乙", 1.8, 2.4), MsaToken("乙", 1.8, 2.4))),
+            MsaColumn((None, None), pause_interval_seconds=(2.0, 2.1)),
+            MsaColumn((MsaToken("丙", 2.5, 2.8), MsaToken("丙", 2.5, 2.8))),
         ),
     )
 
@@ -441,8 +470,8 @@ def test_transcribe_block_runs_sources_and_merges_successful_outputs():
     )
 
 
-def test_transcribe_block_rejects_only_successful_source():
-    """Test uncorroborated source output does not become a subtitle."""
+def test_transcribe_block_falls_back_to_only_successful_source():
+    """Test one successful source remains usable without a consensus query."""
     audio = AudioSegment.silent(duration=1_000)
     segments = [_get_segment("甲", 0.1, 0.4)]
     whisper = Mock(spec=Transcriber, return_value=segments)
@@ -455,14 +484,30 @@ def test_transcribe_block_rejects_only_successful_source():
         sources={"whisper": whisper, "mimo": mimo},
     )
 
-    with raises(
-        TranscriptionEmptyError,
-        match="Only transcription source 'whisper' produced usable output",
-    ):
+    output = transcriber(audio)
+
+    assert output is segments
+    processor.process_requests.assert_not_called()
+    ctc_aligner.assert_not_called()
+    assert transcriber.last_lexical_alignment is not None
+
+
+def test_transcribe_block_rejects_lone_low_information_source():
+    """Test uncorroborated vocalizations do not become merged subtitles."""
+    audio = AudioSegment.silent(duration=1_000)
+    vocalization = Mock(
+        spec=Transcriber, return_value=[_get_segment("嗯嗯嗯嗯", 0.1, 0.4)]
+    )
+    empty = Mock(spec=Transcriber, side_effect=TranscriptionEmptyError("empty"))
+    processor = Mock(spec=TranscriptionProcessor)
+    transcriber = _get_transcriber(
+        processor=processor, sources={"whisper": vocalization, "mimo": empty}
+    )
+
+    with raises(TranscriptionEmptyError, match="low-information vocalizations"):
         transcriber(audio)
 
     processor.process_requests.assert_not_called()
-    ctc_aligner.assert_not_called()
     assert transcriber.last_lexical_alignment is None
 
 
@@ -476,7 +521,14 @@ def test_transcribe_block_excludes_pathological_source():
         *,
         is_usable: Callable[[list[TranscribedSegment]], bool] | None = None,
     ) -> list[TranscribedSegment]:
-        """Simulate a transcriber exhausting attempts after quality rejection."""
+        """Simulate a transcriber exhausting attempts after quality rejection.
+
+        Arguments:
+            _audio: audio
+            is_usable: whether usable
+        Returns:
+            empty segment list after rejection
+        """
         assert is_usable is not None
         assert not is_usable(pathological_segments)
         return []
@@ -546,7 +598,7 @@ def test_transcribe_block_tolerates_source_inference_failure():
         sources={
             "whisper": Mock(spec=Transcriber, return_value=whisper_segments),
             "mimo": Mock(
-                spec=Transcriber, side_effect=TranscriptionInferenceError("failed")
+                spec=Transcriber, side_effect=TranscriptionRecognitionError("failed")
             ),
             "qwen": Mock(spec=Transcriber, return_value=qwen_segments),
         }

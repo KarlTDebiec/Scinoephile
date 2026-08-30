@@ -14,7 +14,7 @@ from pytest import LogCaptureFixture, MonkeyPatch, raises
 
 from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
-from scinoephile.core import ScinoephileError
+from scinoephile.core import DependencyError, ScinoephileError
 from scinoephile.web.ocr_validation.app import create_app, run_app
 from scinoephile.web.ocr_validation.session import OcrValidationSession
 
@@ -28,7 +28,11 @@ def test_create_app_uses_shared_web_static_dir():
 
 
 def test_create_app_import_error_is_actionable(monkeypatch: MonkeyPatch):
-    """Test missing Flask dependency produces an actionable error."""
+    """Test missing Flask dependency produces an actionable error.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     real_import = __import__
 
     def fake_import(
@@ -57,14 +61,18 @@ def test_create_app_import_error_is_actionable(monkeypatch: MonkeyPatch):
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with raises(ScinoephileError, match="'web' extra") as excinfo:
+    with raises(DependencyError, match="'web' extra") as excinfo:
         create_app(cast(OcrValidationSession, object()))
 
     assert isinstance(excinfo.value.__cause__, ImportError)
 
 
 def test_run_app_wraps_server_errors(monkeypatch: MonkeyPatch):
-    """Test web app server errors are user-facing."""
+    """Test web app server errors are user-facing.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     monkeypatch.setattr(
         "scinoephile.web.ocr_validation.app._port_is_in_use", lambda host, port: False
     )
@@ -91,7 +99,11 @@ def test_run_app_wraps_server_errors(monkeypatch: MonkeyPatch):
 
 
 def test_run_app_import_error_is_actionable(monkeypatch: MonkeyPatch):
-    """Test missing Werkzeug dependency produces an actionable error."""
+    """Test missing Werkzeug dependency produces an actionable error.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     real_import = __import__
 
     def fake_import(
@@ -120,7 +132,7 @@ def test_run_app_import_error_is_actionable(monkeypatch: MonkeyPatch):
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with raises(ScinoephileError, match="'web' extra") as excinfo:
+    with raises(DependencyError, match="'web' extra") as excinfo:
         run_app(cast(OcrValidationSession, object()), "127.0.0.1", 5000)
 
     assert isinstance(excinfo.value.__cause__, ImportError)
@@ -129,7 +141,12 @@ def test_run_app_import_error_is_actionable(monkeypatch: MonkeyPatch):
 def test_run_app_uses_available_port_when_requested_port_is_in_use(
     caplog: LogCaptureFixture, monkeypatch: MonkeyPatch
 ):
-    """Test web app falls back when the requested port is already occupied."""
+    """Test web app falls back when the requested port is already occupied.
+
+    Arguments:
+        caplog: pytest log-capture fixture
+        monkeypatch: pytest monkeypatch fixture
+    """
 
     class FakeServer:
         """Fake Werkzeug server."""

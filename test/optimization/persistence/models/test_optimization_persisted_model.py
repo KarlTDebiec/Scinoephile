@@ -49,7 +49,11 @@ def test_creation_rejects_credentials_in_base_url():
     ["api_key", "Authorization", "apiKey", "clientSecret", "accessToken"],
 )
 def test_creation_rejects_credentials_in_nested_settings(credential_name: str):
-    """Settings should not persist credential-bearing fields."""
+    """Settings should not persist credential-bearing fields.
+
+    Arguments:
+        credential_name: credential name
+    """
     with raises(ScinoephileError, match=rf"settings.headers.{credential_name}"):
         PersistedModel.from_config(
             "openai-compatible",

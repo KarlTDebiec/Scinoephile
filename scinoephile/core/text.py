@@ -10,12 +10,10 @@ from collections.abc import Sequence
 from enum import Enum
 from functools import cache
 from textwrap import dedent
-from typing import Literal
 
 from .exceptions import ScinoephileError
 
 __all__ = [
-    "ChineseScript",
     "HALF_PUNC",
     "FULL_PUNC",
     "WHITESPACE",
@@ -46,11 +44,6 @@ __all__ = [
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
 ]
-
-
-type ChineseScript = Literal["Hans", "Hant"]
-"""Chinese script supported by text processing helpers."""
-
 
 _LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢喔嗯嘶哎誒唉嘿呵哈嘩哇啦哼咦")
 """Standalone vocalizations that do not provide lexical evidence."""

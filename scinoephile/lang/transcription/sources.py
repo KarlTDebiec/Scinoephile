@@ -10,24 +10,23 @@ from pathlib import Path
 from types import MappingProxyType
 
 from scinoephile.analysis.transcription.artifact import AlignmentSource
-from scinoephile.audio.transcription import (
-    DemucsMode,
-    MlxAudioTranscriber,
-    Transcriber,
-    VadMode,
-    WhisperTranscriber,
-)
-from scinoephile.audio.transcription.mlx_audio.model import (
+from scinoephile.audio.transcription import DemucsMode, Transcriber, VadMode
+from scinoephile.audio.transcription.ctc import CtcAligner
+from scinoephile.audio.transcription.mlx_audio import (
     FIRERED_ASR2_MODEL,
     GLM_ASR_MODEL,
     MIMO_MODEL,
     QWEN3_ASR_MODEL,
     SENSEVOICE_MODEL,
     MlxAudioModel,
+    MlxAudioModelSpec,
+    MlxAudioTranscriber,
 )
-from scinoephile.audio.transcription.whisper.model import (
+from scinoephile.audio.transcription.whisper import (
     WHISPER_LARGE_V3_CANTONESE_MODEL,
     WhisperModel,
+    WhisperModelSpec,
+    WhisperTranscriber,
 )
 from scinoephile.core import Language, ScinoephileError
 
@@ -43,11 +42,15 @@ class TranscriptionSourceSpec:
 
     name: str
     """Stable source name used in alignment rows and artifacts."""
-    model: WhisperModel | MlxAudioModel
-    """Configured speech-to-text model."""
+    spec: WhisperModelSpec | MlxAudioModelSpec
+    """Speech-to-text model specification."""
 
     def __post_init__(self):
-        """Normalize and validate the source name."""
+        """Normalize and validate the source name.
+
+        Raises:
+            ValueError: if a value is invalid
+        """
         name = self.name.strip()
         if not name:
             raise ValueError("Transcription source name must be nonblank.")
@@ -55,12 +58,12 @@ class TranscriptionSourceSpec:
 
 
 _YUE_SOURCE_SPECS = (
-    TranscriptionSourceSpec(name="whisper", model=WHISPER_LARGE_V3_CANTONESE_MODEL),
-    TranscriptionSourceSpec(name="mimo", model=MIMO_MODEL),
-    TranscriptionSourceSpec(name="qwen", model=QWEN3_ASR_MODEL),
-    TranscriptionSourceSpec(name="sensevoice", model=SENSEVOICE_MODEL),
-    TranscriptionSourceSpec(name="firered", model=FIRERED_ASR2_MODEL),
-    TranscriptionSourceSpec(name="glm", model=GLM_ASR_MODEL),
+    TranscriptionSourceSpec(name="whisper", spec=WHISPER_LARGE_V3_CANTONESE_MODEL),
+    TranscriptionSourceSpec(name="mimo", spec=MIMO_MODEL),
+    TranscriptionSourceSpec(name="qwen", spec=QWEN3_ASR_MODEL),
+    TranscriptionSourceSpec(name="sensevoice", spec=SENSEVOICE_MODEL),
+    TranscriptionSourceSpec(name="firered", spec=FIRERED_ASR2_MODEL),
+    TranscriptionSourceSpec(name="glm", spec=GLM_ASR_MODEL),
 )
 """Default equal-status Cantonese ASR sources."""
 
@@ -112,14 +115,15 @@ def get_transcription_sources(
     transcribers: dict[str, Transcriber] = {}
     descriptors = []
     for source in source_specs:
-        if language not in source.model.languages:
+        model_name = source.spec.name
+        if language not in source.spec.languages:
             raise ScinoephileError(
                 f"Transcription source {source.name!r} model "
-                f"{source.model.model_name!r} does not support {language.code}."
+                f"{model_name!r} does not support {language.code}."
             )
-        if isinstance(source.model, WhisperModel):
+        if isinstance(source.spec, WhisperModelSpec):
             transcriber = WhisperTranscriber(
-                model=source.model,
+                model=WhisperModel(source.spec, language),
                 language=language,
                 demucs_mode=demucs_mode,
                 vad_mode=VadMode.OFF,
@@ -128,14 +132,16 @@ def get_transcription_sources(
                 recover_decoding=True,
             )
             backend_name = WhisperTranscriber.backend_name
-        elif isinstance(source.model, MlxAudioModel):
+        elif isinstance(source.spec, MlxAudioModelSpec):
             transcriber = MlxAudioTranscriber(
-                model=source.model,
+                model=MlxAudioModel(source.spec, language),
+                ctc_aligner=CtcAligner(
+                    language,
+                    cache_root_path=cache_root_path,
+                    overwrite_cache=overwrite_cache,
+                ),
                 language=language,
                 chunk_duration_seconds=_MLX_AUDIO_CHUNK_DURATION_SECONDS,
-                token_limit_guard=(
-                    source.model.max_safe_audio_duration_seconds is not None
-                ),
                 demucs_mode=demucs_mode,
                 vad_mode=VadMode.OFF,
                 cache_root_path=cache_root_path,
@@ -144,12 +150,10 @@ def get_transcription_sources(
             backend_name = MlxAudioTranscriber.backend_name
         else:
             raise ScinoephileError(
-                f"Unsupported transcription source model {type(source.model).__name__}."
+                f"Unsupported transcription source model {type(source.spec).__name__}."
             )
         transcribers[source.name] = transcriber
         descriptors.append(
-            AlignmentSource(
-                name=source.name, backend=backend_name, model=source.model.model_name
-            )
+            AlignmentSource(name=source.name, backend=backend_name, model=model_name)
         )
     return transcribers, tuple(descriptors)

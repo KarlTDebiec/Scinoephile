@@ -173,7 +173,17 @@ class MultiSyncCli(ScinoephileCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Synchronize a mobile subtitle series to an anchor series.
+
+        Arguments:
+            _parser: optional preconfigured argument parser
+            anchor_infile_path: anchor subtitle file or `-` for stdin
+            mobile_infile_path: mobile subtitle file or `-` for stdin
+            sync_cutoff: minimum similarity used for synchronization
+            pause_length: pause length used to split synchronization blocks
+            outfile_path: optional output subtitle file
+            overwrite: whether to overwrite an existing output file
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if anchor_infile_path == "-" and mobile_infile_path == "-":

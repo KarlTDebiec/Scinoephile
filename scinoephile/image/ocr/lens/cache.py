@@ -41,6 +41,8 @@ class LensCache(OcrCacheBase[list[str]]):
             payload: decoded JSON payload
         Returns:
             normalized OCR lines
+        Raises:
+            ValueError: if a value is invalid
         """
         if not isinstance(payload, dict):
             raise ValueError("Google Lens OCR cache must contain an object")

@@ -396,7 +396,7 @@ def _relog_cantonese_transcription_mismatch(language: Language) -> Iterator[None
 
     Arguments:
         language: expected transcription language
-    Returns:
+    Yields:
         context in which the expected mismatch is intercepted
     """
     detected_language = None

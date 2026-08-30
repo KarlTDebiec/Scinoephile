@@ -96,6 +96,8 @@ def assert_expected_warnings(warnings: list[str], expected: list[str], label: st
         warnings: warning messages captured during validation
         expected: expected warning messages
         label: label for error messages
+    Raises:
+        AssertionError: if an internal invariant is violated
     """
     if warnings != expected:
         formatted_actual = "\n".join(warnings)
@@ -127,6 +129,8 @@ def create_symlink_or_skip(
         symlink_path: path at which to create the symlink
         target_path: symlink target path
         target_is_directory: whether the target is a directory
+    Raises:
+        OSError: if a filesystem operation fails
     """
     try:
         symlink_path.symlink_to(target_path, target_is_directory=target_is_directory)
@@ -166,8 +170,8 @@ def parametrized_fixture(cls: type, params: list[dict[str, Any]]) -> Any:
     """Decorator for parametrized test fixtures which provides clearer test output.
 
     Arguments:
-        cls: stage fixture class
-        params: fixture parameters
+        cls: fixture class
+        params: fixture parameter dictionaries
     Returns:
         fixture with provided params and clear ids
     """

@@ -21,5 +21,9 @@ class Answer(LLMModel, ABC):
     """Text for LLM correspondence."""
 
     def __str__(self) -> str:
-        """String representation."""
+        """Get the JSON string representation.
+
+        Returns:
+            formatted JSON
+        """
         return json.dumps(self.model_dump(by_alias=True), indent=2, ensure_ascii=False)

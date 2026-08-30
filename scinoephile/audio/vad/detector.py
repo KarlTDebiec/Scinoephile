@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from scinoephile.core.cache.identity import CacheIdentity
+
 from .provider import VadImplementation, VadProvider
 from .pyannote import PyannoteVadProvider
 from .silero import SileroVadProvider
@@ -17,11 +19,8 @@ __all__ = ["VoiceActivityDetector"]
 if TYPE_CHECKING:
     from pydub import AudioSegment
 
-_POSTPROCESSING_VERSION = "2"
-"""Version of Scinoephile's probability-to-interval postprocessing."""
-
-_TRACE_IDENTITY_VERSION = "2"
-"""Version of Scinoephile's frame-level score trace identity."""
+_CACHE_VERSION = 2
+"""Current voice activity detector cache version."""
 
 
 class VoiceActivityDetector:
@@ -96,7 +95,7 @@ class VoiceActivityDetector:
         return self.get_speech_intervals(self.get_trace(audio))
 
     @property
-    def cache_identity(self) -> dict[str, object]:
+    def cache_identity(self) -> CacheIdentity:
         """Get the configuration identifying reusable VAD output.
 
         Returns:
@@ -107,7 +106,6 @@ class VoiceActivityDetector:
             "min_silence_duration_seconds": self.min_silence_duration_seconds,
             "min_speech_duration_seconds": self.min_speech_duration_seconds,
             "padding_seconds": self.padding_seconds,
-            "postprocessing_version": _POSTPROCESSING_VERSION,
             "threshold": self.threshold,
         }
 
@@ -117,7 +115,7 @@ class VoiceActivityDetector:
         return self._provider.implementation
 
     @property
-    def trace_cache_identity(self) -> dict[str, object]:
+    def trace_cache_identity(self) -> CacheIdentity:
         """Get the configuration identifying reusable frame-level model scores.
 
         Returns:
@@ -125,9 +123,9 @@ class VoiceActivityDetector:
         """
         return {
             **self._provider.cache_identity,
+            "cache_version": _CACHE_VERSION,
             "implementation": self.implementation.value,
             "sample_rate": self._provider.sample_rate,
-            "trace_identity_version": _TRACE_IDENTITY_VERSION,
         }
 
     def get_speech_intervals(self, trace: VoiceActivityTrace) -> list[tuple[int, int]]:

@@ -9,6 +9,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.exceptions import ScinoephileError
 
 from .cache import LlmCache
@@ -108,6 +109,9 @@ class Queryer[TTestCase: TestCase]:
             test_case: test case containing query for LLM
         Returns:
             test case including LLM's answer
+        Raises:
+            ScinoephileError: if the operation fails
+            ValidationError: if the operation fails
         """
         test_case = self.test_case_cls.model_validate(test_case.model_dump(mode="json"))
 
@@ -236,7 +240,11 @@ class Queryer[TTestCase: TestCase]:
         return self.store_answered_test_case(test_case)
 
     def get_few_shot_test_cases_str(self) -> str:
-        """String representation of all test cases in the log."""
+        """Get the string representation of all few-shot test cases.
+
+        Returns:
+            formatted few-shot examples, or an empty string when none are configured
+        """
         if not self.few_shot_test_cases:
             return ""
         few_shot = f"\n\n{self.prompt.few_shot_intro}"
@@ -317,8 +325,12 @@ class Queryer[TTestCase: TestCase]:
         )
         return normalized
 
-    def _get_cache_identity(self) -> dict[str, object]:
-        """Get the provider and test-case cache identity."""
+    def _get_cache_identity(self) -> CacheIdentity:
+        """Get the provider and test-case cache identity.
+
+        Returns:
+            semantic cache identity
+        """
         return {
             "provider": self.provider.cache_identity,
             "test_case": {
@@ -395,6 +407,8 @@ class Queryer[TTestCase: TestCase]:
             verified_test_cases: verified test cases to prepare
         Returns:
             verified test cases keyed by query
+        Raises:
+            ValueError: if a value is invalid
         """
         verified_test_cases_by_query: dict[tuple, TTestCase] = {}
         for test_case in verified_test_cases:

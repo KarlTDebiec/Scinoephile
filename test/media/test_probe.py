@@ -12,7 +12,11 @@ from scinoephile.media.probe import get_streams, get_subtitle_streams
 
 
 def test_get_subtitle_streams(tmp_path: Path):
-    """Test subtitle stream metadata parsing."""
+    """Test subtitle stream metadata parsing.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
@@ -73,7 +77,11 @@ def test_get_subtitle_streams_accepts_unknown_packet_count(tmp_path: Path):
 
 
 def test_get_streams_returns_all_typed_streams(tmp_path: Path):
-    """Test media stream probing returns all typed stream models."""
+    """Test media stream probing returns all typed stream models.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
@@ -122,7 +130,11 @@ def test_get_streams_returns_all_typed_streams(tmp_path: Path):
 
 
 def test_get_streams_skips_streams_without_nonnegative_index(tmp_path: Path):
-    """Test media stream probing skips streams without usable indexes."""
+    """Test media stream probing skips streams without usable indexes.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
@@ -145,7 +157,11 @@ def test_get_streams_skips_streams_without_nonnegative_index(tmp_path: Path):
 
 
 def test_get_streams_normalizes_missing_codecs(tmp_path: Path):
-    """Test media stream probing normalizes missing codec fields."""
+    """Test media stream probing normalizes missing codec fields.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 

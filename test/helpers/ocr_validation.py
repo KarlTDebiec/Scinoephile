@@ -97,7 +97,13 @@ def patch_ocr_validation_bboxes(
     """
 
     def get_bboxes(image: Image.Image) -> list[Bbox]:
-        """Return configured bboxes."""
+        """Return configured bboxes.
+
+        Arguments:
+            image: image
+        Returns:
+            configured bboxes
+        """
         _ = image
         return list(bboxes)
 
