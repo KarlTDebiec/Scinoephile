@@ -41,8 +41,8 @@ if TYPE_CHECKING:
 
 logger = getLogger(__name__)
 
-_CHUNK_STITCHING_VERSION = 2
-"""Version of overlapping chunk ownership and timestamp clipping."""
+_CACHE_VERSION = 2
+"""Current MLX-Audio transcription cache version."""
 
 
 class MlxAudioTranscriber(Transcriber):
@@ -177,9 +177,9 @@ class MlxAudioTranscriber(Transcriber):
             chunking = {
                 "duration_ms": chunk_duration_ms,
                 "overlap_ms": chunk_overlap_ms,
-                "stitching_version": _CHUNK_STITCHING_VERSION,
             }
         return {
+            "cache_version": _CACHE_VERSION,
             "model_type": self.model.spec.model_type,
             "model_name": self.model.spec.name,
             "model_revision": self.model.spec.revision,

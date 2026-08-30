@@ -66,15 +66,13 @@ model loading, preprocessing, inference semantics, or postprocessing. Remote
 services may use a local version for client-side behavior that cannot otherwise
 be identified reproducibly.
 
-Persistent caches define a private integer `_CACHE_VERSION` and include it in
-the serialized payload, identity hash, or path. Increment it when the storage
-format changes and older entries are unsafe to reuse. Versions are local to
-their cache formats; there is no global cache schema version.
-
-Scinoephile-owned computation may use a separate, narrowly named integer in the
-operation identity when its behavior can change without a storage-format
-change. Scope the counter to that behavior, such as a chunking
-`stitching_version`, and include it only when the behavior runs.
+Each cache implementation or cache-producing module that needs local
+invalidation defines at most one private integer `_CACHE_VERSION` and includes
+it in the serialized payload, identity hash, or operation identity. Increment
+it whenever a storage or result-affecting implementation change makes older
+entries unsafe to reuse. Prefer broad invalidation to separate versions for
+individual processing stages. Versions remain local; there is no global cache
+schema version.
 
 ## Lifecycle and safety
 

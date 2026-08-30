@@ -49,7 +49,7 @@ _CTC_MODEL = ModelSpec(name="ctc/test-model", revision="ctc-revision")
 """CTC model specification used by transcriber tests."""
 
 _CTC_CACHE_CONFIG_IDENTITY = {
-    "alignment_version": 1,
+    "cache_version": 1,
     "device": "cpu",
     "language": Language.yue_hant.code,
     "model_name": _CTC_MODEL.name,
@@ -267,11 +267,8 @@ def test_safe_audio_duration_changes_long_audio_cache_identity(tmp_path: Path):
     long_identity = transcriber._get_cache_identity(long_audio, settings)
 
     assert short_identity["chunking"] is None
-    assert long_identity["chunking"] == {
-        "duration_ms": 53_000,
-        "overlap_ms": 1_000,
-        "stitching_version": 2,
-    }
+    assert short_identity["cache_version"] == 2
+    assert long_identity["chunking"] == {"duration_ms": 53_000, "overlap_ms": 1_000}
     assert _get_cache_path(transcriber, short_audio) != _get_cache_path(
         transcriber, long_audio
     )
@@ -922,6 +919,7 @@ def test_transcribe_aligns_text_and_writes_cache(
     cache_payload = json.loads(cache_path.read_text(encoding="utf-8"))
     assert cache_payload["cache_version"] == 2
     assert cache_payload["cache_identity"]["backend"] == "mlx-audio"
+    assert cache_payload["cache_identity"]["cache_version"] == 2
     assert cache_payload["cache_identity"]["model_type"] == "mimo"
     assert cache_payload["cache_identity"]["model_name"] == MIMO_MODEL.name
     assert cache_payload["segments"][0]["text"] == "你好"

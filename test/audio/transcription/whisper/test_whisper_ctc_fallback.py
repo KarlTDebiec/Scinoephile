@@ -80,7 +80,7 @@ def _get_ctc_aligner(text: str = "你好", spec: ModelSpec = _CTC_MODEL_SPEC) ->
     ]
     return Mock(
         cache_config_identity={
-            "alignment_version": 1,
+            "cache_version": 1,
             "device": "cpu",
             "language": Language.yue_hant.code,
             "model_name": spec.name,

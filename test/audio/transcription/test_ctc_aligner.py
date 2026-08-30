@@ -103,7 +103,7 @@ def test_ctc_aligner_cache_identity_includes_active_runtime_dependencies(
         **unconverted_aligner.cache_config_identity,
         "text": "說",
     }
-    assert converted_identity["alignment_version"] == 2
+    assert converted_identity["cache_version"] == 2
     assert converted_identity["runtime"] == {
         "opencc": {"distribution": "opencc", "version": "test-version"},
         "transformers": {"distribution": "transformers", "version": "test-version"},
