@@ -395,12 +395,19 @@ class TranscribeCli(ScinoephileCliBase):
             run_manifest_outfile_path = outfile_path.with_suffix(".run.json")
         elif alignment_outfile_path is not None:
             run_manifest_outfile_path = alignment_outfile_path.with_suffix(".run.json")
-        for output_path in (
-            outfile_path,
-            alignment_outfile_path,
-            run_manifest_outfile_path,
-        ):
-            if output_path is not None and output_path.exists() and not overwrite:
+        output_paths = [
+            output_path
+            for output_path in (
+                outfile_path,
+                alignment_outfile_path,
+                run_manifest_outfile_path,
+            )
+            if output_path is not None
+        ]
+        if len(output_paths) != len(set(output_paths)):
+            parser.error("Output file paths must be distinct")
+        for output_path in output_paths:
+            if output_path.exists() and not overwrite:
                 parser.error(f"{output_path} already exists")
 
         start_at_idx, stop_at_idx = get_block_range_indexes(

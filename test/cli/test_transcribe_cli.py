@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import ANY, Mock, patch
 
 from pydub import AudioSegment
-from pytest import CaptureFixture, raises
+from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.transcription import TimingSettings
 from scinoephile.audio.subtitles import AudioSeries
@@ -157,7 +157,7 @@ def test_transcribe_cli_writes_explicit_alignment_while_subtitles_use_stdout(
     """
     media_path = tmp_path / "audio.wav"
     media_path.touch()
-    alignment_path = tmp_path / "custom-alignment.json"
+    alignment_path = tmp_path / "custom-alignment"
     audio = AudioSeries(audio=AudioSegment.silent(duration=1000), events=[])
     output = Series(events=[])
     with (
@@ -186,6 +186,48 @@ def test_transcribe_cli_writes_explicit_alignment_while_subtitles_use_stdout(
         tmp_path / "custom-alignment.run.json"
     )
     write_series.assert_called_once_with(ANY, output, "-", True)
+
+
+@mark.parametrize(
+    ("outfile_name", "alignment_outfile_name"),
+    (("transcribe.srt", "transcribe.srt"), ("transcribe.srt", "transcribe.run.json")),
+)
+def test_transcribe_cli_rejects_colliding_output_paths(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+    outfile_name: str,
+    alignment_outfile_name: str,
+):
+    """Test subtitle, alignment, and run-manifest paths must be distinct.
+
+    Arguments:
+        tmp_path: temporary directory path
+        capsys: pytest stdout/stderr capture fixture
+        outfile_name: subtitle output filename
+        alignment_outfile_name: alignment output filename
+    """
+    media_path = tmp_path / "audio.wav"
+    media_path.touch()
+    outfile_path = tmp_path / outfile_name
+    alignment_outfile_path = tmp_path / alignment_outfile_name
+
+    with (
+        patch(
+            "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media"
+        ) as load_audio,
+        raises(SystemExit),
+    ):
+        run_cli_with_args(
+            TranscribeCli,
+            (
+                f"--media-infile {media_path} --language yue-Hant "
+                f"--outfile {outfile_path} "
+                f"--alignment-outfile {alignment_outfile_path} --overwrite"
+            ),
+        )
+
+    assert "Output file paths must be distinct" in capsys.readouterr().err
+    load_audio.assert_not_called()
 
 
 def test_transcribe_cli_rejects_reversed_block_range(
