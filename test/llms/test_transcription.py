@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import cast
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from pydantic import ValidationError
 from pytest import LogCaptureFixture, raises
@@ -635,16 +635,18 @@ def test_persistence_skips_transcription_output_quality_revalidation(tmp_path: P
                 ],
                 "speaker": "ＡＡＡＡＡ",
             },
-            "answer": {"text": "己庚辛壬癸｜"},
-        },
-        context={"skip_output_quality_validation": True},
+            "answer": {"text": "甲乙丙丁戊｜"},
+        }
     )
     output_path = tmp_path / "transcription.json"
 
-    save_test_cases_to_json(output_path, [test_case], TranscriptionManager)
-    [loaded] = load_test_cases_from_json(
-        output_path, TranscriptionManager, _LOCALIZED_PROMPT
-    )
+    with patch.object(TranscriptionAlignmentScorer, "score") as score:
+        save_test_cases_to_json(output_path, [test_case], TranscriptionManager)
+        [loaded] = load_test_cases_from_json(
+            output_path, TranscriptionManager, _LOCALIZED_PROMPT
+        )
+
+    score.assert_not_called()
 
     assert loaded.model_dump(mode="json") == test_case.model_dump(mode="json")
 

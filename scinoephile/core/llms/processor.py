@@ -140,9 +140,8 @@ class Processor(ABC):
 
         # Update the in-memory collection, optionally pruning unencountered cases
         if self.prune_test_cases:
-            self._current_test_cases_by_key = dict(self.queryer.encountered_test_cases)
-        else:
-            self._current_test_cases_by_key.update(self.queryer.encountered_test_cases)
+            self._current_test_cases_by_key.clear()
+        self._current_test_cases_by_key.update(self.queryer.encountered_test_cases)
 
         save_test_cases_to_json(
             self.current_test_cases_path,

@@ -242,8 +242,7 @@ class TranscriptionTestCase(TestCase):
             ValueError: if a value is invalid
         """
         if self.answer is None or (
-            isinstance(info.context, dict)
-            and info.context.get("skip_output_quality_validation") is True
+            info.context and info.context.get("skip_output_quality_validation")
         ):
             return self
 
