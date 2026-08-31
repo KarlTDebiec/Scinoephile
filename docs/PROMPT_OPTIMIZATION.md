@@ -49,3 +49,11 @@ Model persistence uses immutable, content-addressed rows containing the provider
 resolved model name, effective base URL, and non-secret inference settings.
 Credentials and provider client state are excluded. All table groups may coexist
 in one SQLite file without a global schema version or migration contract.
+
+LLM processors load and validate their current test-case JSON once at startup and
+retain the collection in memory. Saving merges encountered cases into that
+collection, or prunes it to encountered cases when requested, then atomically
+serializes it using the base prompt's field aliases. Saving does not reread the
+file, reconstruct models, or rerun validation. Callers must validate any model
+changes before saving; normal loading and LLM response validation remain intact.
+External file edits made after processor construction are not merged during saves.

@@ -69,6 +69,21 @@ if "yue-Hans_ocr" in actions:
     process_ocr(title_root, Language.yue_hans, overwrite=False, interactive=True)
 if "yue-Hant_ocr" in actions:
     process_ocr(title_root, Language.yue_hant, overwrite=False, interactive=True)
+if "yue-Hant_transcribe" in actions:
+    process_transcription(
+        title_root,
+        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        # stop_at_idx=219,
+        additional_context=transcription_additional_context,
+        additional_audit_references={
+            "zho-Hant": Series.load(
+                zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
+            )
+        },
+        reference_name="yue-Hant",
+        terminal_authority="yue-Hant",
+        overwrite=True,
+    )
 if "zho-Hans_ocr" in actions:
     process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
 if "zho-Hant_ocr" in actions:
@@ -81,17 +96,3 @@ if "zho-Hans_eng" in actions:
     zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
     process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
-if "yue-Hant_transcribe" in actions:
-    process_transcription(
-        title_root,
-        reference_path=yue_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        stop_at_idx=219,
-        additional_context=transcription_additional_context,
-        additional_audit_references={
-            "zho-Hant": Series.load(
-                zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
-            )
-        },
-        reference_name="yue-Hant",
-        terminal_authority="yue-Hant",
-    )
