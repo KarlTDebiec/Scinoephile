@@ -5,14 +5,19 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import cast
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from pydantic import ValidationError
 from pytest import LogCaptureFixture, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
+from scinoephile.core.llms.utils import (
+    load_test_cases_from_json,
+    save_test_cases_to_json,
+)
 from scinoephile.llms.transcription import (
     TranscriptionAlignmentScorer,
     TranscriptionAnswer,
@@ -611,6 +616,77 @@ def test_answer_consensus_rejects_equal_length_majority_replacement():
 
     with raises(ValidationError, match="10 consecutive"):
         TranscriptionTestCase(query=query, answer=answer)
+
+
+def test_saving_does_not_rescore_transcription_output(tmp_path: Path):
+    """Saving should not rescore output; loading should perform normal validation.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    test_case_cls = TranscriptionManager.get_test_case_cls(_LOCALIZED_PROMPT)
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "sources": [
+                    {"name": "one", "text": "甲乙丙丁戊"},
+                    {"name": "two", "text": "甲乙丙丁戊"},
+                    {"name": "three", "text": "甲乙丙丁戊"},
+                ],
+                "speaker": "ＡＡＡＡＡ",
+            },
+            "answer": {"text": "甲乙丙丁戊｜"},
+        }
+    )
+    output_path = tmp_path / "transcription.json"
+
+    with patch.object(
+        TranscriptionAlignmentScorer, "score", side_effect=AssertionError("rescored")
+    ) as score:
+        save_test_cases_to_json(output_path, [test_case], TranscriptionManager)
+    score.assert_not_called()
+
+    with patch.object(
+        test_case_cls.alignment_scorer,
+        "score",
+        wraps=test_case_cls.alignment_scorer.score,
+    ) as score:
+        [loaded] = load_test_cases_from_json(
+            output_path, TranscriptionManager, _LOCALIZED_PROMPT
+        )
+    score.assert_called()
+    assert loaded.model_dump(mode="json") == test_case.model_dump(mode="json")
+
+
+def test_loading_rejects_unsupported_transcription_output(tmp_path: Path):
+    """Loading persisted answers should enforce the normal ASR evidence checks.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    input_path = tmp_path / "transcription.json"
+    input_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "sources": [
+                            {"name": "one", "text": "甲乙丙丁戊"},
+                            {"name": "two", "text": "甲乙丙丁戊"},
+                            {"name": "three", "text": "甲乙丙丁戊"},
+                        ],
+                        "speaker": "ＡＡＡＡＡ",
+                    },
+                    "answer": {"text": "己庚辛壬癸｜"},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    with raises(ValidationError, match="5 consecutive"):
+        load_test_cases_from_json(input_path, TranscriptionManager, _LOCALIZED_PROMPT)
 
 
 def test_answer_consensus_rejects_consecutive_mapped_replacements():
