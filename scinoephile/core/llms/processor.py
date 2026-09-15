@@ -111,6 +111,10 @@ class Processor(ABC):
             for test_case in [*(shared_test_cases or []), *current_test_cases]
             if test_case.verified
         ]
+        self._current_test_cases_by_key = {
+            test_case.query.key: test_case for test_case in current_test_cases
+        }
+        """Current configuration's in-memory test cases keyed by query."""
         self.current_test_cases_path = current_test_cases_path
         """Current configuration's test-case JSON path."""
         self.prune_test_cases = prune_test_cases
@@ -134,20 +138,13 @@ class Processor(ABC):
         if self.current_test_cases_path is None or self.manager_cls is None:
             return
 
-        test_cases_by_key = {}
-
-        # If there are already test cases, and we are not pruning them, load them first
-        if self.current_test_cases_path.exists() and not self.prune_test_cases:
-            persisted_test_cases = load_test_cases_from_json(
-                self.current_test_cases_path, self.manager_cls, self.prompt
-            )
-            test_cases_by_key = {
-                test_case.query.key: test_case for test_case in persisted_test_cases
-            }
-
-        # Update with encountered test cases, overwriting existing ones with same key
-        test_cases_by_key.update(self.queryer.encountered_test_cases)
+        # Update the in-memory collection, optionally pruning unencountered cases
+        if self.prune_test_cases:
+            self._current_test_cases_by_key.clear()
+        self._current_test_cases_by_key.update(self.queryer.encountered_test_cases)
 
         save_test_cases_to_json(
-            self.current_test_cases_path, test_cases_by_key.values(), self.manager_cls
+            self.current_test_cases_path,
+            self._current_test_cases_by_key.values(),
+            self.manager_cls,
         )
