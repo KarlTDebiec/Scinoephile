@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import ANY, Mock, patch
 
 from pydub import AudioSegment
-from pytest import CaptureFixture, raises
+from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.transcription import TimingSettings
 from scinoephile.audio.subtitles import AudioSeries
@@ -37,7 +37,7 @@ def test_transcribe_help_exposes_only_aligned_pipeline_options():
     assert "media_infile_path" in actions
     assert "language" in actions
     assert "json_path" in actions
-    assert "alignment_outfile_path" not in actions
+    assert "alignment_outfile_path" in actions
     assert "guide_infile_path" not in actions
     assert "model" not in actions
     assert "delineation_json_path" not in actions
@@ -145,6 +145,89 @@ def test_transcribe_cli_writes_stdout_without_companion_outputs(tmp_path: Path):
     assert transcribe.call_args.kwargs["alignment_outfile_path"] is None
     assert transcribe.call_args.kwargs["run_manifest_outfile_path"] is None
     write_series.assert_called_once_with(ANY, output, "-", False)
+
+
+def test_transcribe_cli_writes_explicit_alignment_while_subtitles_use_stdout(
+    tmp_path: Path,
+):
+    """Test an explicit alignment output also derives a run-manifest path.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    media_path = tmp_path / "audio.wav"
+    media_path.touch()
+    alignment_path = tmp_path / "custom-alignment"
+    audio = AudioSeries(audio=AudioSegment.silent(duration=1000), events=[])
+    output = Series(events=[])
+    with (
+        patch(
+            "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media",
+            return_value=audio,
+        ),
+        patch("scinoephile.cli.transcribe_cli.get_provider"),
+        patch(
+            "scinoephile.cli.transcribe_cli.transcribe_series", return_value=output
+        ) as transcribe,
+        patch("scinoephile.cli.transcribe_cli.write_series") as write_series,
+    ):
+        run_cli_with_args(
+            TranscribeCli,
+            (
+                f"--media-infile {media_path} --language yue-Hant "
+                f"--alignment-outfile {alignment_path} --overwrite"
+            ),
+        )
+
+    assert transcribe.call_args.kwargs["alignment_outfile_path"] == (
+        alignment_path.resolve()
+    )
+    assert transcribe.call_args.kwargs["run_manifest_outfile_path"] == (
+        tmp_path / "custom-alignment.run.json"
+    )
+    write_series.assert_called_once_with(ANY, output, "-", True)
+
+
+@mark.parametrize(
+    ("outfile_name", "alignment_outfile_name"),
+    (("transcribe.srt", "transcribe.srt"), ("transcribe.srt", "transcribe.run.json")),
+)
+def test_transcribe_cli_rejects_colliding_output_paths(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+    outfile_name: str,
+    alignment_outfile_name: str,
+):
+    """Test subtitle, alignment, and run-manifest paths must be distinct.
+
+    Arguments:
+        tmp_path: temporary directory path
+        capsys: pytest stdout/stderr capture fixture
+        outfile_name: subtitle output filename
+        alignment_outfile_name: alignment output filename
+    """
+    media_path = tmp_path / "audio.wav"
+    media_path.touch()
+    outfile_path = tmp_path / outfile_name
+    alignment_outfile_path = tmp_path / alignment_outfile_name
+
+    with (
+        patch(
+            "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media"
+        ) as load_audio,
+        raises(SystemExit),
+    ):
+        run_cli_with_args(
+            TranscribeCli,
+            (
+                f"--media-infile {media_path} --language yue-Hant "
+                f"--outfile {outfile_path} "
+                f"--alignment-outfile {alignment_outfile_path} --overwrite"
+            ),
+        )
+
+    assert "Output file paths must be distinct" in capsys.readouterr().err
+    load_audio.assert_not_called()
 
 
 def test_transcribe_cli_rejects_reversed_block_range(
