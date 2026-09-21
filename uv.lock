@@ -1544,13 +1544,13 @@ wheels = [
 
 [[package]]
 name = "nvidia-cudnn-cu12"
-version = "9.25.1.1"
+version = "9.26.0.51"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "nvidia-cublas-cu12" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0b/ee/b5699f1960e358ec995bb72f71c2ec06c550fd0c8280525796d6646c0299/nvidia_cudnn_cu12-9.25.1.1-py3-none-win_amd64.whl", hash = "sha256:debb5f5901ae6071f34d0a2b256acecc33dc3277f1fd5a11f8249f921db8a40d", size = 732338891, upload-time = "2026-08-28T23:47:19.662Z" },
+    { url = "https://files.pythonhosted.org/packages/c5/ee/baebebf270df5a57830e40879b4016de47ca43961095cf18b7749452150f/nvidia_cudnn_cu12-9.26.0.51-py3-none-win_amd64.whl", hash = "sha256:010abb90f513fc6e2b6e9278d56f594b87922fff80737434ab415da609db8311", size = 746465599, upload-time = "2026-09-10T16:50:17.867Z" },
 ]
 
 [[package]]
