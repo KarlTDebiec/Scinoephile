@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from logging import INFO
-from typing import Literal, cast
+from typing import Any, Literal, cast
 from unittest.mock import Mock
 
 import numpy as np
@@ -277,6 +277,50 @@ def test_process_builds_subtitles_alignment_and_run_manifest(caplog: LogCaptureF
     assert "BLOCK 1:" in caplog.text
     assert "TRANSCRIPTION (yue-Hant):" in caplog.text
     assert "甲" in caplog.text
+
+
+def test_process_logs_each_transcribed_block_before_starting_the_next(
+    caplog: LogCaptureFixture,
+):
+    """Each completed subtitle block should be logged during the run.
+
+    Arguments:
+        caplog: captured log records
+    """
+    pipeline, audio_series = _get_pipeline()
+    cast(Mock, pipeline.block_splitter).return_value = [
+        SpeechBlock(index=0, start_ms=0, end_ms=500),
+        SpeechBlock(index=1, start_ms=500, end_ms=1_000),
+    ]
+    transcriber = cast(Mock, pipeline.transcriber)
+    segment = transcriber.transcribe_block.return_value[0]
+    call_count = 0
+
+    def transcribe_block(*_args: Any, **_kwargs: Any) -> list[TranscribedSegment]:
+        """Return a block while asserting the prior block was already logged.
+
+        Arguments:
+            *_args: ignored transcription positional arguments
+            **_kwargs: ignored transcription keyword arguments
+        Returns:
+            copied transcription segment for the current block
+        """
+        nonlocal call_count
+        if call_count == 1:
+            assert "BLOCK 1:" in caplog.text
+            assert "BLOCK 2:" not in caplog.text
+        call_count += 1
+        return [segment.model_copy(deep=True)]
+
+    transcriber.transcribe_block.side_effect = transcribe_block
+    caplog.set_level(
+        INFO, logger="scinoephile.workflows.transcription_pipeline.pipeline"
+    )
+
+    pipeline.process(audio_series)
+
+    assert call_count == 2
+    assert "BLOCK 2:" in caplog.text
 
 
 def test_process_retains_audit_only_classifications_outside_transcriber_request():
