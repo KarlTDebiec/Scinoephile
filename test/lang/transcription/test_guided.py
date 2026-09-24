@@ -318,28 +318,6 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: 
     Arguments:
         tmp_path: temporary directory path
     """
-    with (
-        patch(
-            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
-            return_value=tmp_path / "data",
-        ),
-        patch(
-            "scinoephile.lang.transcription.guided.get_torch_device",
-            return_value="test",
-        ),
-    ):
-        transcriber = get_guided_transcriber(
-            Language.yue_hant,
-            Language.zho_hans,
-            provider=Mock(
-                spec=LLMProvider,
-                cache_identity={"implementation": "test"},
-                completion_metrics=[],
-            ),
-            delineation_test_cases=[],
-            punctuation_test_cases=[],
-            cache_root_path=tmp_path,
-        )
     test_case_dir_path = tmp_path / "data/test_cases/lang/yue_zho/transcription"
     delineation_json_path = test_case_dir_path / "delineation" / "test.json"
     punctuation_json_path = test_case_dir_path / "punctuation" / "test.json"
@@ -369,6 +347,29 @@ def test_get_guided_transcriber_preserves_cases_in_default_json_paths(tmp_path: 
     punctuation_json_path.write_text(
         json.dumps(punctuation_test_case_data), encoding="utf-8"
     )
+
+    with (
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_data_root_path",
+            return_value=tmp_path / "data",
+        ),
+        patch(
+            "scinoephile.lang.transcription.guided.get_torch_device",
+            return_value="test",
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hans,
+            provider=Mock(
+                spec=LLMProvider,
+                cache_identity={"implementation": "test"},
+                completion_metrics=[],
+            ),
+            delineation_test_cases=[],
+            punctuation_test_cases=[],
+            cache_root_path=tmp_path,
+        )
 
     transcriber.aligner.update_all_test_cases()
 
