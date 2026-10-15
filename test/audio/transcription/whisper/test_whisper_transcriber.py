@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import gc
 import json
 import os
 import sys
@@ -14,9 +15,10 @@ from textwrap import dedent
 from types import SimpleNamespace
 from typing import Any, cast
 from unittest.mock import Mock
+from weakref import ref
 
 from pydub import AudioSegment
-from pytest import LogCaptureFixture, MonkeyPatch, raises
+from pytest import LogCaptureFixture, MonkeyPatch, approx, raises
 
 from scinoephile.audio.transcription import (
     DemucsMode,
@@ -368,6 +370,7 @@ def test_get_cache_path_includes_ctc_fallback_configuration(tmp_path: Path):
     cache_identity = first_fallback._get_cache_identity(audio, settings)
     fallback_identity = cast(Mapping[str, object], cache_identity["timestamp_fallback"])
     assert first_fallback.ctc_aligner is not None
+    assert cache_identity["cache_version"] == 1
     assert fallback_identity == first_fallback.ctc_aligner.cache_config_identity
     assert fallback_identity["cache_version"] == 1
     assert fallback_identity["device"] == "cpu"
@@ -403,7 +406,9 @@ def test_transcribe_forwards_recovery_decoding_options(
         temperature=temperatures,
         condition_on_previous_text=False,
     )
-    transcriber.model.model = Mock()
+    model = Mock()
+    model.decode = Mock()
+    transcriber.model.model = model
     _patch_whisper_timestamped(monkeypatch, transcribe)
     audio = AudioSegment.silent(duration=1000)
 
@@ -620,6 +625,240 @@ def test_transcribe_recovers_after_repetitive_cached_output(tmp_path: Path):
 
     assert segments == [recovered_segment]
     assert transcriber.last_cache_key_sha256 == recovery_path.stem
+
+
+def test_transcribe_does_not_retry_below_token_limit_guard(
+    monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
+):
+    """Keep a usable decode below 95% of its token budget.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        caplog: pytest log-capture fixture
+    """
+    caplog.set_level(
+        "INFO", logger="scinoephile.audio.transcription.whisper.transcriber"
+    )
+    model = Mock()
+    model.decode.return_value = SimpleNamespace(tokens=list(range(30)))
+
+    def transcribe(model: Mock, *_args: Any, **_kwargs: Any) -> object:
+        """Decode one near-limit window and return usable text.
+
+        Arguments:
+            model: mocked native Whisper model
+            *_args: ignored positional arguments
+            **_kwargs: ignored keyword arguments
+        Returns:
+            timestamped Whisper output
+        """
+        model.decode(object(), object())
+        return {
+            "segments": [
+                {
+                    "id": 0,
+                    "seek": 0,
+                    "start": 0.1,
+                    "end": 0.2,
+                    "text": "甲",
+                    "compression_ratio": 1.0,
+                    "words": [
+                        {"text": "甲", "start": 0.1, "end": 0.2, "confidence": 1.0}
+                    ],
+                }
+            ]
+        }
+
+    transcriber = _get_whisper_transcriber(
+        spec=_CUSTOM_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.OFF
+    )
+    transcriber.model.model = model
+    timestamped_transcribe = Mock(side_effect=transcribe)
+    _patch_whisper_timestamped(monkeypatch, timestamped_transcribe)
+
+    segments = transcriber(AudioSegment.silent(duration=1000))
+
+    assert [segment.text for segment in segments] == ["甲"]
+    timestamped_transcribe.assert_called_once()
+    assert "Retrying suspicious Whisper output" not in caplog.text
+
+
+def test_transcribe_retries_when_decoding_window_nears_token_limit(
+    monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
+):
+    """Retry smaller windows when a decoder uses 95% of its token budget.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        caplog: pytest log-capture fixture
+    """
+    caplog.set_level(
+        "INFO", logger="scinoephile.audio.transcription.whisper.transcriber"
+    )
+    decode_results = iter(
+        [
+            SimpleNamespace(tokens=list(range(32))),
+            SimpleNamespace(tokens=list(range(32))),
+            SimpleNamespace(tokens=list(range(31))),
+        ]
+    )
+
+    def decode(_mel: object, _options: object) -> object:
+        """Return the next mocked native Whisper decode result.
+
+        Arguments:
+            _mel: ignored mocked log-Mel spectrogram
+            _options: ignored mocked decoding options
+        Returns:
+            next mocked decoding result
+        """
+        return next(decode_results)
+
+    call_count = 0
+
+    def transcribe(model: Mock, *_args: Any, **_kwargs: Any) -> object:
+        """Return clean text from the two smaller fallback windows.
+
+        Arguments:
+            model: mocked native Whisper model
+            *_args: ignored positional arguments
+            **_kwargs: ignored keyword arguments
+        Returns:
+            timestamped Whisper output
+        """
+        nonlocal call_count
+        call_count += 1
+        if call_count == 1:
+            first_window = Mock()
+            second_window = Mock()
+            first_window_ref = ref(first_window)
+            second_window_ref = ref(second_window)
+            model.decode(first_window, object())
+            model.decode(first_window, object())
+            model.decode(second_window, object())
+            del first_window, second_window
+            gc.collect()
+            assert first_window_ref() is None
+            assert second_window_ref() is None
+            return {"segments": []}
+        text = "甲"
+        start = 0.1
+        end = 0.2
+        if call_count == 3:
+            text = "乙"
+            start = 0.35
+            end = 0.45
+        return {
+            "segments": [
+                {
+                    "id": 0,
+                    "seek": 0,
+                    "start": start,
+                    "end": end,
+                    "text": text,
+                    "compression_ratio": 1.0,
+                    "words": [
+                        {"text": text, "start": start, "end": end, "confidence": 1.0}
+                    ],
+                }
+            ]
+        }
+
+    model = Mock()
+    model.decode = decode
+    transcriber = _get_whisper_transcriber(
+        spec=_CUSTOM_MODEL, demucs_mode=DemucsMode.OFF, vad_mode=VadMode.OFF
+    )
+    transcriber.model.model = model
+    timestamped_transcribe = Mock(side_effect=transcribe)
+    _patch_whisper_timestamped(monkeypatch, timestamped_transcribe)
+    audio = AudioSegment.silent(duration=1000)
+
+    segments = transcriber(audio)
+
+    assert [segment.text for segment in segments] == ["甲", "乙"]
+    assert timestamped_transcribe.call_count == 3
+    assert model.decode is decode
+    limit_record = next(
+        record
+        for record in caplog.records
+        if "Whisper used at least 31 of its 32-token decoding budget" in record.message
+    )
+    assert limit_record.levelname == "INFO"
+    assert "affected windows: 2" in limit_record.message
+    assert "used at least 95%" in caplog.text
+
+
+def test_transcribe_retries_pathological_compression_in_smaller_windows(
+    monkeypatch: MonkeyPatch, tmp_path: Path
+):
+    """Replace a pathological full-block decode with clean overlapping chunks.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache directory path
+    """
+    audio = AudioSegment.silent(duration=4000)
+    pathological = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.1,
+        end=0.4,
+        text="呀" * 100,
+        compression_ratio=37.0,
+        words=[TranscribedWord(text="呀" * 100, start=0.1, end=0.4, confidence=1.0)],
+    )
+    first = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=0.1,
+        end=0.2,
+        text="甲",
+        compression_ratio=1.0,
+        words=[TranscribedWord(text="甲", start=0.1, end=0.2, confidence=1.0)],
+    )
+    second = TranscribedSegment(
+        id=0,
+        seek=0,
+        start=1.1,
+        end=1.2,
+        text="乙",
+        compression_ratio=1.0,
+        words=[TranscribedWord(text="乙", start=1.1, end=1.2, confidence=1.0)],
+    )
+    transcriber = _get_whisper_transcriber(
+        cache_root_path=tmp_path,
+        spec=_CUSTOM_MODEL,
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VadMode.OFF,
+    )
+    model = Mock()
+    model.decode = Mock()
+    transcriber.model.model = model
+    outputs = iter(([pathological], [first], [second]))
+    window_durations = []
+
+    def transcribe(_model: Mock, audio_path: str, **_kwargs: Any) -> object:
+        """Return the next output while recording input-window duration.
+
+        Arguments:
+            _model: ignored mocked native Whisper model
+            audio_path: temporary audio window path
+            **_kwargs: ignored keyword arguments
+        Returns:
+            timestamped Whisper output
+        """
+        window_durations.append(len(AudioSegment.from_file(audio_path)))
+        return {"segments": [segment.model_dump() for segment in next(outputs)]}
+
+    timestamped_transcribe = Mock(side_effect=transcribe)
+    _patch_whisper_timestamped(monkeypatch, timestamped_transcribe)
+
+    segments = transcriber(audio)
+
+    assert [segment.text for segment in segments] == ["甲", "乙"]
+    assert [segment.start for segment in segments] == approx([0.1, 2.101])
+    assert window_durations == [4000, 2999, 2999]
 
 
 def test_get_segment_split_at_idx_includes_segment_details_in_error():
