@@ -88,7 +88,26 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
     )
     output_path = tmp_path / "test_cases.json"
 
-    save_test_cases_to_json(output_path, [test_case], _AliasedBaseReviewManager)
+    # Build the target schema before guarding against model reconstruction
+    base_test_case_cls = _AliasedBaseReviewManager.get_test_case_cls(
+        _BASE_REVIEW_PROMPT
+    )
+    with (
+        patch.object(
+            base_test_case_cls, "__init__", side_effect=AssertionError("constructed")
+        ),
+        patch.object(
+            base_test_case_cls,
+            "model_construct",
+            side_effect=AssertionError("constructed"),
+        ),
+        patch.object(
+            base_test_case_cls,
+            "model_validate",
+            side_effect=AssertionError("revalidated"),
+        ),
+    ):
+        save_test_cases_to_json(output_path, [test_case], _AliasedBaseReviewManager)
 
     assert json.loads(output_path.read_text(encoding="utf-8")) == [
         {
@@ -276,8 +295,8 @@ def test_save_logs_created_directory_and_output(tmp_path: Path, caplog):
     ]
 
 
-def test_save_validates_mutated_test_cases(tmp_path: Path):
-    """Saving should reject test cases made invalid after initialization.
+def test_save_serializes_in_memory_state_without_revalidation(tmp_path: Path):
+    """Saving should serialize current state; loading should validate it.
 
     Arguments:
         tmp_path: temporary directory path
@@ -286,10 +305,15 @@ def test_save_validates_mutated_test_cases(tmp_path: Path):
     test_case = _get_test_case("original", "corrected")
     test_case.query.subtitles.clear()
 
-    with raises(ValidationError):
-        save_test_cases_to_json(output_path, [test_case], _AliasedBaseReviewManager)
+    save_test_cases_to_json(output_path, [test_case], _AliasedBaseReviewManager)
 
-    assert not output_path.exists()
+    assert json.loads(output_path.read_text(encoding="utf-8"))[0]["query"] == {
+        "base_subtitles": []
+    }
+    with raises(ValidationError):
+        load_test_cases_from_json(
+            output_path, _AliasedBaseReviewManager, _LOCALIZED_REVIEW_PROMPT
+        )
 
 
 def test_save_replaces_existing_file_atomically(tmp_path: Path):

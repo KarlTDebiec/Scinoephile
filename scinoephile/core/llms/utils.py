@@ -72,23 +72,29 @@ def save_test_cases_to_json[TTestCase: TestCase](
     test_cases: Iterable[TTestCase],
     manager_cls: type[Manager[TTestCase]],
 ):
-    """Save test cases to JSON file.
+    """Serialize in-memory test cases to JSON without revalidating them.
+
+    Use the base prompt's field aliases without constructing new model instances.
+    Callers are responsible for validating test cases before saving them.
 
     Arguments:
         output_path: path to JSON file to which to save
         test_cases: test cases to save
-        manager_cls: manager class used to construct test case models
+        manager_cls: manager class defining persisted test-case field names
     """
-    # Collect JSON for each test case, using the field names in the base prompt.
+    # Serialize existing models using the base prompt's schema and field aliases
     base_test_case_cls = manager_cls.get_test_case_cls(prompt=manager_cls.base_prompt)
-    test_case_jsons = []
-    for test_case in test_cases:
-        base_test_case = base_test_case_cls.model_validate(
-            test_case.model_dump(mode="json"), strict=True
+    serializer = TypeAdapter(base_test_case_cls)
+    test_case_jsons = [
+        serializer.dump_python(
+            test_case,
+            mode="json",
+            by_alias=True,
+            exclude_defaults=True,
+            warnings="error",
         )
-        test_case_jsons.append(
-            base_test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)
-        )
+        for test_case in test_cases
+    ]
 
     # Write output file
     if not output_path.parent.exists():

@@ -276,7 +276,7 @@ def get_block_references(
     }
     reference_block_indexes = _get_reference_block_indexes(artifact, selected_reference)
 
-    for reference_index, subtitle in enumerate(selected_reference):
+    for reference_index, subtitle in enumerate(selected_reference.events):
         block_index = reference_block_indexes[reference_index]
         if block_index is None:
             midpoint_ms = (subtitle.start + subtitle.end) / 2
@@ -533,7 +533,7 @@ def _get_reference_selection(
     block_ranges = tuple((block.start_ms, block.end_ms) for block in artifact.blocks)
     return tuple(
         (index, subtitle)
-        for index, subtitle in enumerate(reference)
+        for index, subtitle in enumerate(reference.events)
         if any(
             start_ms <= (subtitle.start + subtitle.end) / 2 < end_ms
             for start_ms, end_ms in block_ranges

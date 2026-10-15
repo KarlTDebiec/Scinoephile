@@ -68,11 +68,11 @@ class GuidedReviewProcessor(Processor):
                 {
                     "targets": [
                         {"index": idx, "text": subtitle.text_with_newline.strip()}
-                        for idx, subtitle in enumerate(target_block, 1)
+                        for idx, subtitle in enumerate(target_block.events, 1)
                     ],
                     "guides": [
                         {"index": idx, "text": subtitle.text_with_newline.strip()}
-                        for idx, subtitle in enumerate(guide_block, 1)
+                        for idx, subtitle in enumerate(guide_block.events, 1)
                     ],
                 }
             )
@@ -84,7 +84,7 @@ class GuidedReviewProcessor(Processor):
                 revision.index: revision.text for revision in answer.revisions
             }
             output_block = Series()
-            for idx, subtitle in enumerate(target_block, 1):
+            for idx, subtitle in enumerate(target_block.events, 1):
                 output_text = revision_text_by_index.get(idx)
                 if output_text == _DELETION_MARKER:
                     continue
