@@ -43,6 +43,7 @@ from scinoephile.audio.vad import (
     VoiceActivityTrace,
 )
 from scinoephile.core import Language
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.ml import ModelSpec
 
 _CTC_MODEL = ModelSpec(name="ctc/test-model", revision="ctc-revision")
@@ -213,8 +214,7 @@ def test_get_cache_path_uses_installed_mlx_runtime(monkeypatch: pytest.MonkeyPat
         "source_revision": "test-revision",
     }
     monkeypatch.setattr(
-        "scinoephile.audio.transcription.mlx_audio.transcriber."
-        "get_distribution_identity",
+        "scinoephile.audio.transcription.mlx_audio.model.get_distribution_identity",
         lambda _distribution_name: runtime_identity,
     )
     transcriber = _get_mlx_audio_transcriber(model_spec=MIMO_MODEL)
@@ -223,7 +223,25 @@ def test_get_cache_path_uses_installed_mlx_runtime(monkeypatch: pytest.MonkeyPat
         _get_cache_audio(), TranscriptionPreprocessingSettings(False, False)
     )
 
-    assert cache_identity["runtime"] == runtime_identity
+    runtime = cache_identity["runtime"]
+    assert isinstance(runtime, dict)
+    assert runtime["mlx-audio"] == runtime_identity
+
+
+def test_get_cache_path_inherits_auxiliary_tokenizer_identity():
+    """Final output must miss when recognition's auxiliary tokenizer changes."""
+    audio = _get_cache_audio()
+    tokenizer = MIMO_MODEL.tokenizer
+    assert tokenizer is not None
+    first = _get_mlx_audio_transcriber()
+    second = _get_mlx_audio_transcriber(
+        model_spec=replace(MIMO_MODEL, tokenizer=replace(tokenizer, revision="new"))
+    )
+
+    assert _get_cache_path(first, audio) != _get_cache_path(second, audio)
+    assert first.recognition_cache.get_path(
+        audio, first.model.cache_config_identity
+    ) != second.recognition_cache.get_path(audio, second.model.cache_config_identity)
 
 
 def test_get_cache_path_separates_generation_options():
@@ -267,7 +285,7 @@ def test_safe_audio_duration_changes_long_audio_cache_identity(tmp_path: Path):
     long_identity = transcriber._get_cache_identity(long_audio, settings)
 
     assert short_identity["chunking"] is None
-    assert short_identity["cache_version"] == 2
+    assert short_identity["cache_version"] == 3
     assert long_identity["chunking"] == {"duration_ms": 53_000, "overlap_ms": 1_000}
     assert _get_cache_path(transcriber, short_audio) != _get_cache_path(
         transcriber, long_audio
@@ -521,6 +539,32 @@ def test_transcribe_chunks_audio_assigns_and_clips_words(
     assert segments[1].words[0].end == pytest.approx(4.0)
 
 
+def test_identical_inference_windows_reuse_recognition_at_different_offsets(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Cache by actual window content while independently restoring source offsets.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    audio = AudioSegment.silent(duration=2000)
+    transcriber = _get_mlx_audio_transcriber(
+        chunk_duration_seconds=1, chunk_overlap_seconds=0
+    )
+    transcriber.ctc_aligner = Mock(
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
+        return_value=[_get_timed_segment("你好")],
+    )
+    model_call = Mock(return_value=SimpleNamespace(text="你好", generation_tokens=2))
+    monkeypatch.setattr(MlxAudioModel, "__call__", model_call)
+
+    segments = transcriber.transcribe(audio)
+
+    model_call.assert_called_once()
+    assert [segment.start for segment in segments] == [0, 1]
+    assert [segment.end for segment in segments] == [1, 2]
+
+
 def test_long_mimo_audio_is_automatically_chunked(monkeypatch: pytest.MonkeyPatch):
     """Keep complete overlapping MiMo inference windows within its safe limit.
 
@@ -602,7 +646,12 @@ def test_transcribe_splits_audio_after_generation_token_exhaustion(
     Arguments:
         monkeypatch: pytest monkeypatch fixture
     """
-    audio = AudioSegment.silent(duration=4000)
+    audio = AudioSegment(
+        np.arange(44_100, dtype=np.int16).tobytes(),
+        sample_width=2,
+        frame_rate=11_025,
+        channels=1,
+    )
     transcriber = _get_mlx_audio_transcriber(chunk_overlap_seconds=0.0)
     model_call = Mock(
         side_effect=[
@@ -627,6 +676,17 @@ def test_transcribe_splits_audio_after_generation_token_exhaustion(
     assert [segment.text for segment in segments] == ["one", "two"]
     assert [segment.start for segment in segments] == pytest.approx([0.0, 2.0])
     assert [segment.end for segment in segments] == pytest.approx([2.0, 4.0])
+
+    transcriber.ctc_aligner.cache_config_identity = {
+        **_CTC_CACHE_CONFIG_IDENTITY,
+        "cache_version": 2,
+    }
+    transcriber.ctc_aligner.side_effect = [
+        [_get_timed_segment("one", end=2.0)],
+        [_get_timed_segment("two", end=2.0)],
+    ]
+    assert transcriber.transcribe(audio) == segments
+    assert model_call.call_count == 3
 
 
 def test_audio_near_generation_limit_is_not_split(monkeypatch: pytest.MonkeyPatch):
@@ -662,7 +722,12 @@ def test_transcribe_splits_audio_after_incomplete_ctc_alignment(
     Arguments:
         monkeypatch: pytest monkeypatch fixture
     """
-    audio = AudioSegment.silent(duration=4000)
+    audio = AudioSegment(
+        np.arange(44_100, dtype=np.int16).tobytes(),
+        sample_width=2,
+        frame_rate=11_025,
+        channels=1,
+    )
     transcriber = _get_mlx_audio_transcriber(chunk_overlap_seconds=0.0)
     model_call = Mock(
         side_effect=[
@@ -692,6 +757,20 @@ def test_transcribe_splits_audio_after_incomplete_ctc_alignment(
     assert [segment.start for segment in segments] == pytest.approx([0.0, 2.0])
     assert [segment.end for segment in segments] == pytest.approx([2.0, 4.0])
 
+    transcriber.ctc_aligner.cache_config_identity = {
+        **_CTC_CACHE_CONFIG_IDENTITY,
+        "cache_version": 2,
+    }
+    transcriber.ctc_aligner.side_effect = [
+        TranscriptionAlignmentIncompleteError(
+            "CTC alignment did not reach all tokens."
+        ),
+        [_get_timed_segment("one", end=2.0)],
+        [_get_timed_segment("two", end=2.0)],
+    ]
+    assert transcriber.transcribe(audio) == segments
+    assert model_call.call_count == 3
+
 
 def test_transcribe_does_not_split_audio_after_other_ctc_errors(
     monkeypatch: pytest.MonkeyPatch,
@@ -716,6 +795,11 @@ def test_transcribe_does_not_split_audio_after_other_ctc_errors(
 
     model_call.assert_called_once()
     transcriber.ctc_aligner.assert_called_once()
+
+    transcriber.ctc_aligner.side_effect = None
+    transcriber.ctc_aligner.return_value = [_get_timed_segment("whole", end=4.0)]
+    assert transcriber.transcribe(audio)[0].text == "whole"
+    model_call.assert_called_once()
 
 
 def test_transcribe_chunks_audio_skips_empty_windows(monkeypatch: pytest.MonkeyPatch):
@@ -919,7 +1003,7 @@ def test_transcribe_aligns_text_and_writes_cache(
     cache_payload = json.loads(cache_path.read_text(encoding="utf-8"))
     assert cache_payload["cache_version"] == 2
     assert cache_payload["cache_identity"]["backend"] == "mlx-audio"
-    assert cache_payload["cache_identity"]["cache_version"] == 2
+    assert cache_payload["cache_identity"]["cache_version"] == 3
     assert cache_payload["cache_identity"]["model_type"] == "mimo"
     assert cache_payload["cache_identity"]["model_name"] == MIMO_MODEL.name
     assert cache_payload["segments"][0]["text"] == "你好"
@@ -967,6 +1051,191 @@ def test_transcribe_wraps_mlx_audio_inference_errors(monkeypatch: pytest.MonkeyP
     ):
         transcriber.transcribe(audio)
 
+    assert list(transcriber.recognition_cache.cache_dir_path.iterdir()) == []
+
+
+@pytest.mark.parametrize(
+    "model_spec",
+    [MIMO_MODEL, QWEN3_ASR_MODEL, SENSEVOICE_MODEL, FIRERED_ASR2_MODEL, GLM_ASR_MODEL],
+)
+@pytest.mark.parametrize(
+    "ctc_change", [{"model_revision": "new"}, {"device": "other"}, {"cache_version": 2}]
+)
+def test_transcribe_reuses_recognition_after_ctc_change(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    model_spec: MlxAudioModelSpec,
+    ctc_change: CacheIdentity,
+):
+    """Reuse raw text across aligner changes and final output across identical runs.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache root path
+        model_spec: recognition model specification
+        ctc_change: changed downstream alignment configuration
+    """
+    audio = _get_cache_audio()
+    first = _get_mlx_audio_transcriber(model_spec=model_spec, cache_root_path=tmp_path)
+    first.ctc_aligner = Mock(
+        cache_config_identity=_CTC_CACHE_CONFIG_IDENTITY,
+        return_value=[_get_timed_segment("你好")],
+    )
+    model_call = Mock(return_value=SimpleNamespace(text="你好！", generation_tokens=3))
+    monkeypatch.setattr(MlxAudioModel, "__call__", model_call)
+    first.transcribe(audio)
+    second = _get_mlx_audio_transcriber(model_spec=model_spec, cache_root_path=tmp_path)
+    second.ctc_aligner = Mock(
+        cache_config_identity={**_CTC_CACHE_CONFIG_IDENTITY, **ctc_change},
+        return_value=[_get_timed_segment("你好", end=0.8)],
+    )
+    export = Mock(
+        side_effect=AssertionError("Cached recognition must not export audio")
+    )
+    monkeypatch.setattr(AudioSegment, "export", export)
+
+    result = second.transcribe(audio)
+
+    model_call.assert_called_once()
+    second.ctc_aligner.assert_called_once_with(audio, "你好！")
+    assert result[0].end == 0.8
+    assert second.transcribe(audio) == result
+    second.ctc_aligner.assert_called_once()
+    export.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    ("model_spec", "expected_calls"),
+    [
+        (MIMO_MODEL, 2),
+        (QWEN3_ASR_MODEL, 2),
+        (GLM_ASR_MODEL, 2),
+        (SENSEVOICE_MODEL, 1),
+        (FIRERED_ASR2_MODEL, 1),
+    ],
+)
+def test_transformers_upgrade_only_reruns_dependent_recognition(
+    monkeypatch: pytest.MonkeyPatch, model_spec: MlxAudioModelSpec, expected_calls: int
+):
+    """Keep SenseVoice and FireRed recognition when Transformers forces realignment.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        model_spec: recognition model specification
+        expected_calls: recognition calls across the simulated upgrade
+    """
+    versions = {"transformers": "old"}
+
+    def get_identity(name: str) -> dict[str, str]:
+        """Get synthetic dependency identity for a simulated upgrade.
+
+        Arguments:
+            name: distribution name
+        Returns:
+            distribution name and simulated version
+        """
+        return {"distribution": name, "version": versions.get(name, "unchanged")}
+
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.mlx_audio.model.get_distribution_identity",
+        get_identity,
+    )
+    transcriber = _get_mlx_audio_transcriber(model_spec=model_spec)
+    transcriber.ctc_aligner = Mock(
+        cache_config_identity={
+            **_CTC_CACHE_CONFIG_IDENTITY,
+            "runtime": {"transformers": get_identity("transformers")},
+        },
+        return_value=[_get_timed_segment("你好")],
+    )
+    model_call = Mock(return_value=SimpleNamespace(text="你好", generation_tokens=2))
+    monkeypatch.setattr(MlxAudioModel, "__call__", model_call)
+    audio = _get_cache_audio()
+    transcriber.transcribe(audio)
+    versions["transformers"] = "new"
+    transcriber.ctc_aligner.cache_config_identity = {
+        **_CTC_CACHE_CONFIG_IDENTITY,
+        "runtime": {"transformers": get_identity("transformers")},
+    }
+
+    transcriber.transcribe(audio)
+
+    assert model_call.call_count == expected_calls
+    assert transcriber.ctc_aligner.call_count == 2
+
+
+def test_recognition_cache_overwrite_is_forwarded_and_refreshes_once(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
+    """Forward cache overwrite while allowing refreshed recognition to be reused.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary cache root path
+    """
+    audio = _get_cache_audio()
+    model_call = Mock(return_value=SimpleNamespace(text="你好", generation_tokens=2))
+    monkeypatch.setattr(MlxAudioModel, "__call__", model_call)
+    for overwrite_cache in (False, True):
+        transcriber = _get_mlx_audio_transcriber(
+            cache_root_path=tmp_path, overwrite_cache=overwrite_cache
+        )
+        transcriber.ctc_aligner = Mock(return_value=[_get_timed_segment("你好")])
+        assert transcriber.recognition_cache.overwrite is overwrite_cache
+        transcriber._transcribe_window(audio)
+        transcriber._transcribe_window(audio)
+
+    assert model_call.call_count == 2
+
+
+@pytest.mark.parametrize("text", ["", "啊！啊！"])
+def test_cached_recognition_still_undergoes_quality_checks(
+    monkeypatch: pytest.MonkeyPatch, text: str
+):
+    """Reusing raw recognition must not bypass empty or low-information rejection.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        text: rejected recognition text
+    """
+    transcriber = _get_mlx_audio_transcriber()
+    transcriber.ctc_aligner = Mock()
+    model_call = Mock(return_value=SimpleNamespace(text=text, generation_tokens=0))
+    monkeypatch.setattr(MlxAudioModel, "__call__", model_call)
+
+    for _ in range(2):
+        with pytest.raises(TranscriptionEmptyError):
+            transcriber._transcribe_window(_get_cache_audio())
+
+    model_call.assert_called_once()
+    transcriber.ctc_aligner.assert_not_called()
+
+
+def test_transcribe_recovers_from_malformed_recognition_cache(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """A malformed raw entry is replaced by fresh recognition before alignment.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    transcriber = _get_mlx_audio_transcriber()
+    audio = _get_cache_audio()
+    raw_path = transcriber.recognition_cache.get_path(
+        audio, transcriber.model.cache_config_identity
+    )
+    raw_path.write_text("{", encoding="utf-8")
+    transcriber.ctc_aligner = Mock(return_value=[_get_timed_segment("你好")])
+    model_call = Mock(return_value=SimpleNamespace(text="你好", generation_tokens=2))
+    monkeypatch.setattr(MlxAudioModel, "__call__", model_call)
+
+    assert transcriber._transcribe_window(audio)[0].text == "你好"
+    model_call.assert_called_once()
+    assert json.loads(raw_path.read_text(encoding="utf-8"))["result"] == {
+        "text": "你好",
+        "generation_tokens": 2,
+    }
+
 
 def _get_mlx_audio_transcriber(
     *,
@@ -977,6 +1246,7 @@ def _get_mlx_audio_transcriber(
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VadMode = VadMode.OFF,
     vad_detector: VoiceActivityDetector | None = None,
+    overwrite_cache: bool = False,
 ) -> MlxAudioTranscriber:
     """Get an MLX-Audio transcriber with preprocessing disabled.
 
@@ -988,6 +1258,7 @@ def _get_mlx_audio_transcriber(
         demucs_mode: Demucs preprocessing mode
         vad_mode: voice activity detection mode
         vad_detector: optional shared voice activity detector
+        overwrite_cache: whether to refresh matching caches once
     Returns:
         initialized transcriber
     """
@@ -1003,6 +1274,7 @@ def _get_mlx_audio_transcriber(
         vad_mode=vad_mode,
         cache_root_path=cache_root_path,
         vad_detector=vad_detector,
+        overwrite_cache=overwrite_cache,
     )
 
 

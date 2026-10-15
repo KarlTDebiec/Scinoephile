@@ -56,6 +56,87 @@ def test_mimo_uses_pinned_audio_tokenizer():
     )
 
 
+@pytest.mark.parametrize(
+    ("spec", "expected_dependencies"),
+    [
+        (MIMO_MODEL, {"mlx-audio", "mlx-lm", "transformers", "tokenizers"}),
+        (QWEN3_ASR_MODEL, {"mlx-audio", "mlx-lm", "transformers", "tokenizers"}),
+        (GLM_ASR_MODEL, {"mlx-audio", "mlx-lm", "transformers", "tokenizers"}),
+        (SENSEVOICE_MODEL, {"mlx-audio", "sentencepiece"}),
+        (FIRERED_ASR2_MODEL, {"mlx-audio", "sentencepiece"}),
+    ],
+)
+def test_recognition_identity_tracks_model_specific_dependencies(
+    spec: MlxAudioModelSpec,
+    expected_dependencies: set[str],
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Track only dependencies defining each model's recognition behavior.
+
+    Arguments:
+        spec: recognition model specification
+        expected_dependencies: distributions defining this model's recognition
+        monkeypatch: pytest monkeypatch fixture
+    """
+    versions: dict[str, str] = {}
+
+    def get_identity(name: str) -> dict[str, str]:
+        """Return synthetic dependency provenance for identity tests.
+
+        Arguments:
+            name: distribution name
+        Returns:
+            synthetic version and source revision
+        """
+        return {
+            "distribution": name,
+            "version": versions.get(name, "old"),
+            "source_revision": "pinned",
+        }
+
+    monkeypatch.setattr(
+        mlx_audio_model_module, "get_distribution_identity", get_identity
+    )
+    model = MlxAudioModel(spec, Language.yue_hant)
+    identity = model.cache_config_identity
+
+    runtime = identity["runtime"]
+    assert isinstance(runtime, dict)
+    assert set(runtime) == expected_dependencies
+    assert runtime["mlx-audio"] == get_identity("mlx-audio")
+    assert "model" not in model.__dict__
+    assert "aligner" not in identity
+    for name in expected_dependencies:
+        versions[name] = "new"
+        assert model.cache_config_identity != identity
+        versions.clear()
+    versions["torch"] = "new"
+    assert model.cache_config_identity == identity
+
+
+def test_recognition_identity_tracks_model_tokenizer_and_generation():
+    """Separate changed model, tokenizer, language, and generation configuration."""
+    model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
+    original = model.cache_config_identity
+    variants = [
+        replace(MIMO_MODEL, name="other/model"),
+        replace(MIMO_MODEL, revision="other-revision"),
+        replace(MIMO_MODEL, model_type="other-type"),
+        replace(
+            MIMO_MODEL,
+            tokenizer=replace(MIMO_AUDIO_TOKENIZER, revision="other-tokenizer"),
+        ),
+        replace(MIMO_MODEL, tokenizer=None),
+        replace(MIMO_MODEL, max_tokens=512),
+        replace(MIMO_MODEL, languages={Language.yue_hant: "yue"}),
+    ]
+
+    for spec in variants:
+        assert MlxAudioModel(spec, Language.yue_hant).cache_config_identity != original
+    model.generate_kw["max_tokens"] = 1024
+    assert model.cache_config_identity != original
+
+
 def test_model_returns_result_directly(tmp_path: Path):
     """Test the MLX-Audio model result is returned directly.
 
