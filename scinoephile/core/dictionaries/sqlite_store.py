@@ -7,6 +7,7 @@ from __future__ import annotations
 from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import cast
 
 from sqlalchemy import (
     Boolean,
@@ -671,7 +672,7 @@ class DictionarySqliteStore:
         """
         with self.engine.connect() as connection:
             rows = connection.execute(statement).scalars().all()
-        return [int(row) for row in rows]
+        return [int(cast(int, row)) for row in rows]
 
     @classmethod
     def _validate_database(cls, engine: Engine):
