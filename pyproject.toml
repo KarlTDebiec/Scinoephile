@@ -43,7 +43,6 @@ ocr = [
 ]
 ocr-cuda = [
     "chrome-lens-py>=3.4.5",
-    "nvidia-cudnn-cu12>=9.0.0.312; platform_machine == 'AMD64' and sys_platform == 'win32'",
     "paddleocr>=3.1.0",
     "paddlepaddle-gpu==3.2.2; platform_machine == 'AMD64' and sys_platform == 'win32'",
 ]
@@ -72,7 +71,6 @@ scinoephile = "scinoephile.cli.scinoephile_cli:ScinoephileCli.main"
 [dependency-groups]
 ocr-cuda = [
     "chrome-lens-py>=3.4.5",
-    "nvidia-cudnn-cu12>=9.0.0.312; platform_machine == 'AMD64' and sys_platform == 'win32'",
     "paddleocr>=3.1.0",
     "paddlepaddle-gpu==3.2.2; platform_machine == 'AMD64' and sys_platform == 'win32'",
 ]
