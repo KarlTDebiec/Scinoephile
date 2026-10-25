@@ -59,6 +59,24 @@ def test_series_blocks_refresh_after_direct_event_mutation():
     assert [event.text for event in refreshed_blocks[0]] == ["First", "Changed"]
 
 
+def test_series_blocks_track_longest_overlapping_event():
+    """Keep nested cues together until every cue has ended before the pause."""
+    series = Series(
+        events=[
+            Subtitle(start=0, end=10000, text="Long"),
+            Subtitle(start=1000, end=2000, text="Short"),
+            Subtitle(start=6000, end=7000, text="Nested"),
+            Subtitle(start=14000, end=15000, text="After pause"),
+        ]
+    )
+
+    assert Series.get_block_indexes_by_pause(series) == [(0, 3), (3, 4)]
+    assert [[event.text for event in block] for block in series.blocks] == [
+        ["Long", "Short", "Nested"],
+        ["After pause"],
+    ]
+
+
 def test_series_load_wraps_input_path_errors(tmp_path: Path):
     """Test subtitle loading path errors are user-facing.
 

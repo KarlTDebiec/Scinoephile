@@ -326,13 +326,17 @@ class Series(SSAFile):
             return []
         block_indexes = []
         start = 0
-        prev_end = None
+        block_end = None
 
         for i, event in enumerate(series):
-            if prev_end is not None and event.start - prev_end >= pause_length:
+            if block_end is not None and event.start - block_end >= pause_length:
                 block_indexes.append((start, i))
                 start = i
-            prev_end = event.end
+                block_end = event.end
+            elif block_end is None:
+                block_end = event.end
+            else:
+                block_end = max(block_end, event.end)
         block_indexes.append((start, len(series)))
 
         return block_indexes

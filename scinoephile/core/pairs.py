@@ -37,38 +37,31 @@ def get_block_pair_indexes_by_pause(
         one_start_idx = one_idx
         two_start_idx = two_idx
 
-        def get_cutoff() -> int:
-            """Get the latest event end plus the selected pause length.
-
-            Returns:
-                cutoff timestamp in milliseconds
-            """
-            cutoff = 0
-            if one_idx > one_start_idx:
-                cutoff = max(cutoff, one[one_idx - 1].end)
-            if two_idx > two_start_idx:
-                cutoff = max(cutoff, two[two_idx - 1].end)
-            return cutoff + pause_length
-
         # Start a new block with the earlier event
         if one_idx < len(one) and two_idx < len(two):
             if one[one_idx].start <= two[two_idx].start:
+                block_end = one[one_idx].end
                 one_idx += 1
             else:
+                block_end = two[two_idx].end
                 two_idx += 1
         elif one_idx < len(one):
+            block_end = one[one_idx].end
             one_idx += 1
         else:
+            block_end = two[two_idx].end
             two_idx += 1
 
         # Extend the block until both series reach a long enough pause
         changed = True
         while changed:
             changed = False
-            while one_idx < len(one) and one[one_idx].start < get_cutoff():
+            while one_idx < len(one) and one[one_idx].start < block_end + pause_length:
+                block_end = max(block_end, one[one_idx].end)
                 one_idx += 1
                 changed = True
-            while two_idx < len(two) and two[two_idx].start < get_cutoff():
+            while two_idx < len(two) and two[two_idx].start < block_end + pause_length:
+                block_end = max(block_end, two[two_idx].end)
                 two_idx += 1
                 changed = True
 

@@ -347,13 +347,16 @@ class AudioSeries(Series):
         blocks: list[AudioSeries] = []
         for i, (start_idx, end_idx) in enumerate(block_indexes):
             block_start_time = self.events[start_idx].start
-            block_end_time = self.events[end_idx - 1].end
+            block_end_time = max(event.end for event in self.events[start_idx:end_idx])
 
             # Buffer start
             if i == 0:
                 buffered_start = max(0, block_start_time - 1000)
             else:
-                prev_end = self.events[block_indexes[i - 1][1] - 1].end
+                prev_start_idx, prev_end_idx = block_indexes[i - 1]
+                prev_end = max(
+                    event.end for event in self.events[prev_start_idx:prev_end_idx]
+                )
                 max_unbuffered_end = (prev_end + block_start_time) // 2
                 buffered_start = max(max_unbuffered_end, block_start_time - 1000)
 

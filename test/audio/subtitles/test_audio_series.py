@@ -73,6 +73,25 @@ def test_audio_series_load_wraps_decode_errors(tmp_path: Path):
     assert isinstance(excinfo.value.__cause__, CouldntDecodeError)
 
 
+def test_audio_series_blocks_cover_long_nested_subtitle():
+    """Include all of a long cue in its buffered audio block."""
+    series = AudioSeries(
+        audio=AudioSegment.silent(duration=16000),
+        events=[
+            AudioSubtitle(start=0, end=10000, text="Long"),
+            AudioSubtitle(start=1000, end=2000, text="Short"),
+            AudioSubtitle(start=14000, end=15000, text="After pause"),
+        ],
+    )
+
+    first, second = series.blocks
+    assert [event.text for event in first] == ["Long", "Short"]
+    assert first.buffered_start == 0
+    assert first.buffered_end == 11000
+    assert len(first.audio) == 11000
+    assert [event.text for event in second] == ["After pause"]
+
+
 def test_audio_series_save_wraps_output_path_errors(tmp_path: Path):
     """Test audio subtitle saving path errors are user-facing.
 
