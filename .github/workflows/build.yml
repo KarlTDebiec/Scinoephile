@@ -24,7 +24,7 @@ jobs:
         run: git fetch --depth=1 origin $DEFAULT_BRANCH
 
       - name: Define a cache dependency glob
-        uses: astral-sh/setup-uv@v10.3.1
+        uses: astral-sh/setup-uv@v10.3.2
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
