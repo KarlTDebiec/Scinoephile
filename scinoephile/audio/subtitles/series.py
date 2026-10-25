@@ -399,10 +399,12 @@ class AudioSeries(Series):
         ) as staging_dir_path:
             staged_paths = []
 
+            # Stage full audio
             audio_path = staging_dir_path / f"{output_dir_path.stem}.wav"
             self.audio.export(audio_path, format="wav")
             staged_paths.append(audio_path)
 
+            # Calculate block indices and stage block audio
             current_idx = 0
             for block in self.blocks:
                 start_idx = current_idx
@@ -415,6 +417,7 @@ class AudioSeries(Series):
                 block.audio.export(block_audio_path, format="wav")
                 staged_paths.append(block_audio_path)
 
+            # Stage subtitle text
             srt_path = staging_dir_path / f"{output_dir_path.stem}.srt"
             super().save(srt_path, format_="srt")
             staged_paths.append(srt_path)
@@ -425,6 +428,7 @@ class AudioSeries(Series):
                 if destination_path.is_dir():
                     raise IsADirectoryError(f"{destination_path} is a directory")
 
+            # Replace managed files after all exports and conflict checks succeed
             for staged_path in staged_paths:
                 destination_path = output_dir_path / staged_path.name
                 staged_path.replace(destination_path)
