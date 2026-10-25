@@ -2891,7 +2891,6 @@ ocr = [
 ]
 ocr-cuda = [
     { name = "chrome-lens-py" },
-    { name = "nvidia-cudnn-cu12", marker = "platform_machine == 'AMD64' and sys_platform == 'win32'" },
     { name = "paddleocr" },
     { name = "paddlepaddle-gpu", marker = "platform_machine == 'AMD64' and sys_platform == 'win32'" },
 ]
@@ -2926,7 +2925,6 @@ dev = [
 ]
 ocr-cuda = [
     { name = "chrome-lens-py" },
-    { name = "nvidia-cudnn-cu12", marker = "platform_machine == 'AMD64' and sys_platform == 'win32'" },
     { name = "paddleocr" },
     { name = "paddlepaddle-gpu", marker = "platform_machine == 'AMD64' and sys_platform == 'win32'" },
 ]
@@ -2949,7 +2947,6 @@ requires-dist = [
     { name = "mlx-audio", marker = "platform_machine == 'arm64' and sys_platform == 'darwin' and extra == 'transcription'", git = "https://github.com/ailuntx/mlx-audio?rev=ff0197c0ae9f9fd02072904c696f2533e329c06e" },
     { name = "numba", specifier = ">=0.67.0" },
     { name = "numpy", specifier = ">=2.5.2" },
-    { name = "nvidia-cudnn-cu12", marker = "platform_machine == 'AMD64' and sys_platform == 'win32' and extra == 'ocr-cuda'", specifier = ">=9.0.0.312" },
     { name = "onnxruntime", marker = "extra == 'transcription'", specifier = ">=1.28.0" },
     { name = "openai", specifier = ">=2.53.0" },
     { name = "opencc", specifier = ">=1.4.1" },
@@ -2989,7 +2986,6 @@ dev = [
 ]
 ocr-cuda = [
     { name = "chrome-lens-py", specifier = ">=3.4.5" },
-    { name = "nvidia-cudnn-cu12", marker = "platform_machine == 'AMD64' and sys_platform == 'win32'", specifier = ">=9.0.0.312" },
     { name = "paddleocr", specifier = ">=3.1.0" },
     { name = "paddlepaddle-gpu", marker = "platform_machine == 'AMD64' and sys_platform == 'win32'", url = "https://paddle-whl.cdn.bcebos.com/stable/cu126/paddlepaddle-gpu/paddlepaddle_gpu-3.2.2-cp313-cp313-win_amd64.whl" },
 ]
