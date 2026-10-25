@@ -3219,11 +3219,14 @@ wheels = [
 
 [[package]]
 name = "ten-vad"
-version = "1.0.6.8"
+version = "1.0.6.9"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d5/c6/00ad5a4fbba29e9ff1b15b77f99f133d06180ef40f8548c520450fe4fa0a/ten_vad-1.0.6.8.tar.gz", hash = "sha256:af1fb4fcb81b2028a20b8a4dbc5662d9f103d0d75e1d62f36f131f58f148e4d5", size = 2554475, upload-time = "2025-11-14T15:13:00.285Z" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e5/5b/18d47d6794a5d27e72b403ea1d40b315188cf9a97cf5be8abc53d709a745/ten_vad-1.0.6.9.tar.gz", hash = "sha256:0c80936314b75bbcc3c478ad45540fcd6a86b7de87147ff481faa1c9beee191e", size = 2557167, upload-time = "2026-10-09T08:56:55.105Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/01/31/2103a8c1de080b0b071ea1e7da73fbda1bccffa9e78642d1508a01864562/ten_vad-1.0.6.8-py3-none-any.whl", hash = "sha256:c881aecd774ee29f4fd4735c87265b888e5aed37f59bd3f87ea1fe26ab436eee", size = 1279204, upload-time = "2025-11-14T15:12:58.825Z" },
+    { url = "https://files.pythonhosted.org/packages/8d/6f/1329999e60ce548357ad844e52a648b5142c7e014bf754aefdc058055cfd/ten_vad-1.0.6.9-py3-none-any.whl", hash = "sha256:e581a6db0042000fb6a33e44d27aa0d16b488df0728614b03817060e772dc645", size = 1280556, upload-time = "2026-10-09T08:56:53.935Z" },
 ]
 
 [[package]]
