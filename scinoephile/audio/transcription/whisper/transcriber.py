@@ -7,7 +7,9 @@ from __future__ import annotations
 from collections.abc import Callable, Sequence
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
+
+from pydantic import JsonValue
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.separation import DemucsSeparator
@@ -198,17 +200,22 @@ class WhisperTranscriber(Transcriber):
             temperature = self.temperature
         else:
             temperature = list(self.temperature)
-        cache_identity = {
+        cache_identity: CacheIdentity = {
             "condition_on_previous_text": self.condition_on_previous_text,
             "device": self.model.device,
             "language": self.model.language_code,
             "model_name": self.model.spec.name,
             "model_revision": self.model.spec.revision,
-            "runtime": {
-                "openai_whisper": get_distribution_identity("openai-whisper"),
-                "whisper_timestamped": get_distribution_identity("whisper-timestamped"),
-            },
-            "temperature": temperature,
+            "runtime": cast(
+                "CacheIdentity",
+                {
+                    "openai_whisper": get_distribution_identity("openai-whisper"),
+                    "whisper_timestamped": get_distribution_identity(
+                        "whisper-timestamped"
+                    ),
+                },
+            ),
+            "temperature": cast("JsonValue", temperature),
         }
         if self.ctc_aligner is not None:
             cache_identity["timestamp_fallback"] = (

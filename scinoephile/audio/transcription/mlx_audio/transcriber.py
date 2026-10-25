@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.separation import DemucsSeparator
@@ -183,7 +183,7 @@ class MlxAudioTranscriber(Transcriber):
             "model_type": self.model.spec.model_type,
             "model_name": self.model.spec.name,
             "model_revision": self.model.spec.revision,
-            "runtime": get_distribution_identity("mlx-audio"),
+            "runtime": cast("CacheIdentity", get_distribution_identity("mlx-audio")),
             "language": self.language.code,
             "generate_kw": dict(self.model.generate_kw),
             "chunking": chunking,

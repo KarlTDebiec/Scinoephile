@@ -110,7 +110,7 @@ class LensRecognizer:
         """
         cache_identity: CacheIdentity = {
             "language": self.lens_language_code,
-            "runtime": self.runtime_identity,
+            "runtime": cast("CacheIdentity", self.runtime_identity),
         }
         if (lines := self._cache.load(image, cache_identity)) is not None:
             return self._format_lens_lines(lines)
