@@ -125,9 +125,7 @@ def _get_image_subtitle_sample_analysis(
     Returns:
         Chinese subtitle script analysis
     """
-    from scinoephile.image.ocr.paddle import (  # noqa: PLC0415
-        ocr_image_series_with_paddle,
-    )
+    from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle  # noqa: PLC0415
 
     sampled_series = ImageSeries(
         events=[series.events[index] for index in sample_indexes]

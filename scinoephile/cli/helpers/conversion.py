@@ -5,13 +5,7 @@
 from __future__ import annotations
 
 import sys
-from argparse import (  # noqa: PLC2701
-    SUPPRESS,
-    Action,
-    ArgumentParser,
-    Namespace,
-    _ArgumentGroup,
-)
+from argparse import SUPPRESS, Action, ArgumentParser, Namespace, _ArgumentGroup  # noqa: PLC2701
 from typing import Any
 
 from scinoephile.core.cli import ScinoephileCliBase
