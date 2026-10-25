@@ -91,6 +91,60 @@ def test_audio_series_save_wraps_output_path_errors(tmp_path: Path):
     assert isinstance(excinfo.value.__cause__, OSError)
 
 
+def test_audio_series_save_preserves_unrelated_files(tmp_path: Path):
+    """Replacing WAV output removes only stale files owned by the export.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    output_dir_path = tmp_path / "audio_output"
+    output_dir_path.mkdir()
+    unrelated_path = output_dir_path / "notes.txt"
+    unrelated_path.write_text("Keep this note", encoding="utf-8")
+    stale_block_path = output_dir_path / "0001-0002_00000000-00001000.wav"
+    stale_block_path.write_bytes(b"old block")
+    series = AudioSeries(
+        audio=AudioSegment.silent(duration=2000),
+        events=[AudioSubtitle(start=0, end=1000, text="Text")],
+    )
+
+    series.save(output_dir_path)
+
+    assert unrelated_path.read_text(encoding="utf-8") == "Keep this note"
+    assert not stale_block_path.exists()
+    assert (output_dir_path / "audio_output.wav").is_file()
+    assert (output_dir_path / "audio_output.srt").is_file()
+    assert len(list(output_dir_path.glob("0001-0001_*.wav"))) == 1
+
+
+def test_audio_series_save_failure_retains_existing_output(tmp_path: Path):
+    """A failed block export leaves prior files and unrelated data untouched.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    output_dir_path = tmp_path / "audio_output"
+    output_dir_path.mkdir()
+    prior_audio_path = output_dir_path / "audio_output.wav"
+    prior_audio_path.write_bytes(b"prior audio")
+    prior_srt_path = output_dir_path / "audio_output.srt"
+    prior_srt_path.write_text("prior subtitles", encoding="utf-8")
+    unrelated_path = output_dir_path / "notes.txt"
+    unrelated_path.write_text("Keep this note", encoding="utf-8")
+    series = AudioSeries(
+        audio=AudioSegment.silent(duration=2000),
+        events=[AudioSubtitle(start=0, end=1000, text="Text")],
+    )
+
+    with patch.object(series.blocks[0].audio, "export", side_effect=OSError("failed")):
+        with raises(ScinoephileError, match="failed"):
+            series.save(output_dir_path)
+
+    assert prior_audio_path.read_bytes() == b"prior audio"
+    assert prior_srt_path.read_text(encoding="utf-8") == "prior subtitles"
+    assert unrelated_path.read_text(encoding="utf-8") == "Keep this note"
+
+
 def test_audio_series_slice_preserves_audio_subtitle_payloads():
     """Test audio series slicing retains series and subtitle audio."""
     event_audio = AudioSegment.silent(duration=1000)
