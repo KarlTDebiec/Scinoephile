@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import cast
 
 from opencc import OpenCC
 from pydub import AudioSegment
@@ -175,7 +176,7 @@ class CtcAligner:
             "language": self.language.code,
             "model_name": self.model.spec.name,
             "model_revision": self.model.spec.revision,
-            "runtime": runtime,
+            "runtime": cast("CacheIdentity", runtime),
             "script_conversion": script_conversion,
         }
 

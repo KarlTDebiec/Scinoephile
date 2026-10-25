@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 import numpy as np
 
@@ -54,7 +54,7 @@ class TenVadProvider(VadProvider):
         return {
             "frame_size": self.frame_size,
             "model": "ten-vad-native",
-            "runtime": get_distribution_identity("ten-vad"),
+            "runtime": cast("CacheIdentity", get_distribution_identity("ten-vad")),
         }
 
     def get_trace(self, audio: AudioSegment) -> VoiceActivityTrace:

@@ -9,6 +9,7 @@ import json
 from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import cast
 
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError, CouldntEncodeError
@@ -71,7 +72,7 @@ class DemucsCache:
         return {
             "cache_version": _CACHE_VERSION,
             "model_name": self.model_name,
-            "runtime": self.runtime_identity,
+            "runtime": cast("CacheIdentity", self.runtime_identity),
         }
 
     def get_path(self, audio: AudioSegment) -> Path:

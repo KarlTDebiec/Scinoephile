@@ -10,6 +10,8 @@ from math import ceil, isfinite
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
+from pydantic import JsonValue
+
 from scinoephile.audio.cache_namespace import AudioCacheNamespace
 from scinoephile.audio.waveform import to_mono_int16
 from scinoephile.core.cache.identity import CacheIdentity
@@ -218,8 +220,10 @@ class FireRedLanguageIdentifier:
             "model_id": _LANGUAGE_MODEL_ID,
             "model_revision": _LANGUAGE_MODEL_REVISION,
             "offset_seconds": offset_seconds,
-            "runtime": get_distribution_identity("fireredasr2s"),
-            "analysis_windows": [[start, end] for start, end in windows],
+            "runtime": cast("CacheIdentity", get_distribution_identity("fireredasr2s")),
+            "analysis_windows": cast(
+                "JsonValue", [[start, end] for start, end in windows]
+            ),
             "use_gpu": self.use_gpu,
             "use_half": self.use_half,
             "waveform_channels": _WAVEFORM_CHANNELS,
@@ -413,7 +417,7 @@ class FireRedAudioEventDetector:
             "model_id": _EVENT_MODEL_ID,
             "model_revision": _EVENT_MODEL_REVISION,
             "offset_seconds": offset_seconds,
-            "runtime": get_distribution_identity("fireredasr2s"),
+            "runtime": cast("CacheIdentity", get_distribution_identity("fireredasr2s")),
             "thresholds": {
                 event.value: threshold for event, threshold in self.thresholds.items()
             },

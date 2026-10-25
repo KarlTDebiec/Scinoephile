@@ -8,7 +8,7 @@ import os
 from logging import getLogger
 from pathlib import Path
 from platform import system
-from typing import Any, TypedDict, override
+from typing import Any, TypedDict, cast, override
 
 import numpy as np
 from PIL import Image
@@ -128,7 +128,7 @@ class PaddleRecognizer:
         array = np.array(image.convert("RGB"))
         cache_identity: CacheIdentity = {
             "language": self.paddle_language_code,
-            "runtime": self.runtime_identity,
+            "runtime": cast("CacheIdentity", self.runtime_identity),
             "text_detection_model": _TEXT_DETECTION_MODEL_NAME,
             "text_recognition_model": _TEXT_RECOGNITION_MODEL_NAME,
             "textline_orientation_model": _TEXTLINE_ORIENTATION_MODEL_NAME,
