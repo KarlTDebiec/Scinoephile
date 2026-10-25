@@ -1,8 +1,15 @@
 version: 2
 
+registries:
+  paddle-cuda-wheels:
+    type: python-index
+    url: https://paddle-whl.cdn.bcebos.com
+
 updates:
   - package-ecosystem: uv
     directory: /
+    registries:
+      - paddle-cuda-wheels
     schedule:
       interval: weekly
     groups:
