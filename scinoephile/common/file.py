@@ -24,15 +24,22 @@ logger = getLogger(__name__)
 
 
 @contextmanager
-def get_temp_directory_path() -> Generator[Path]:
+def get_temp_directory_path(
+    *, parent_dir_path: Path | None = None, prefix: str | None = None
+) -> Generator[Path]:
     """Provide path to a temporary directory and remove it once no longer needed.
 
+    Arguments:
+        parent_dir_path: parent directory, defaulting to the system temporary directory
+        prefix: directory name prefix, defaulting to the system temporary prefix
     Yields:
         path to temporary directory
     """
     temp_directory_path = None
     try:
-        temp_directory_path = Path(mkdtemp()).resolve()
+        temp_directory_path = Path(
+            mkdtemp(dir=parent_dir_path, prefix=prefix)
+        ).resolve()
         yield temp_directory_path
     finally:
         if temp_directory_path:

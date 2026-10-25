@@ -16,6 +16,7 @@ from pydub import AudioSegment
 from pydub.exceptions import PydubException
 
 from scinoephile.audio.segment import load_audio_segment
+from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
     val_input_dir_path,
     val_input_path,
@@ -390,36 +391,57 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
 
         Arguments:
             output_dir_path: path to output directory
+        Raises:
+            IsADirectoryError: if a generated file conflicts with a directory
         """
-        # Prepare empty directory, deleting existing files if needed
-        if output_dir_path.exists() and output_dir_path.is_dir():
-            for file in output_dir_path.iterdir():
-                if file.is_file() or file.is_symlink():
-                    file.unlink()
-                    logger.info(f"Deleted {file}")
-        else:
-            output_dir_path.mkdir(parents=True)
-            logger.info(f"Created directory {output_dir_path}")
+        # Produce every managed file before changing existing output
+        with get_temp_directory_path(
+            parent_dir_path=output_dir_path.parent, prefix=f".{output_dir_path.name}."
+        ) as staging_dir_path:
+            staged_paths = []
 
-        # Save audio
-        outfile_path = output_dir_path / f"{output_dir_path.stem}.wav"
-        self.audio.export(outfile_path, format="wav")
-        logger.info(f"Saved full audio to {outfile_path}")
+            # Stage full audio
+            audio_path = staging_dir_path / f"{output_dir_path.stem}.wav"
+            self.audio.export(audio_path, format="wav")
+            staged_paths.append(audio_path)
 
-        # Calculate block indices and save block audio
-        current_idx = 0
-        for block in self.blocks:
-            start_idx = current_idx
-            end_idx = current_idx + len(block)
-            current_idx = end_idx
+            # Calculate block indices and stage block audio
+            current_idx = 0
+            for block in self.blocks:
+                start_idx = current_idx
+                end_idx = current_idx + len(block)
+                current_idx = end_idx
+                block_audio_path = (
+                    staging_dir_path / f"{start_idx + 1:04d}-{end_idx:04d}_"
+                    f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
+                )
+                block.audio.export(block_audio_path, format="wav")
+                staged_paths.append(block_audio_path)
 
-            outfile_path = (
-                output_dir_path / f"{start_idx + 1:04d}-{end_idx:04d}_"
-                f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
-            )
-            block.audio.export(outfile_path, format="wav")
-            logger.info(f"Saved block audio to {outfile_path}")
+            # Stage subtitle text
+            srt_path = staging_dir_path / f"{output_dir_path.stem}.srt"
+            super().save(srt_path, format_="srt")
+            staged_paths.append(srt_path)
 
-        # Save text
-        outfile_path = output_dir_path / f"{output_dir_path.stem}.srt"
-        super().save(outfile_path, format_="srt")
+            # Reject conflicts before replacing any existing managed files
+            for staged_path in staged_paths:
+                destination_path = output_dir_path / staged_path.name
+                if destination_path.is_dir():
+                    raise IsADirectoryError(f"{destination_path} is a directory")
+
+            # Replace managed files after all exports and conflict checks succeed
+            for staged_path in staged_paths:
+                destination_path = output_dir_path / staged_path.name
+                staged_path.replace(destination_path)
+                logger.info(f"Saved {destination_path}")
+
+            # Prune only stale block audio from a previous export
+            staged_names = {staged_path.name for staged_path in staged_paths}
+            for existing_path in output_dir_path.iterdir():
+                if (
+                    existing_path.name not in staged_names
+                    and self.block_audio_pattern.fullmatch(existing_path.name)
+                    and (existing_path.is_file() or existing_path.is_symlink())
+                ):
+                    existing_path.unlink()
+                    logger.info(f"Deleted stale block audio {existing_path}")
