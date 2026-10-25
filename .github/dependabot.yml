@@ -3,7 +3,7 @@ version: 2
 registries:
   paddle-cuda-wheels:
     type: python-index
-    url: https://paddle-whl.cdn.bcebos.com
+    url: https://paddle-whl.cdn.bcebos.com/stable/cu126/
 
 updates:
   - package-ecosystem: uv
