@@ -88,3 +88,12 @@ def test_get_sync_offset_stats_raises_when_no_paired_groups():
 
     with raises(ScinoephileError, match="No paired sync groups"):
         get_sync_offset_stats(anchor, mobile)
+
+
+def test_get_sync_offset_stats_rejects_weak_match_within_one_block():
+    """Do not estimate an offset from nearby cues with negligible overlap."""
+    anchor = Series(events=[Subtitle(start=0, end=1000, text="A")])
+    mobile = Series(events=[Subtitle(start=2000, end=3000, text="1")])
+
+    with raises(ScinoephileError, match="No paired sync groups"):
+        get_sync_offset_stats(anchor, mobile)

@@ -219,6 +219,9 @@ def _get_sync_groups(  # noqa: PLR0912, PLR0915
     """
     sync_groups = []
 
+    # Discard weak matches before normalizing each row and column
+    overlap[overlap < cutoff] = 0
+
     for i in range(len(one)):
         scale = np.max(overlap[i])
         if scale == 0:
