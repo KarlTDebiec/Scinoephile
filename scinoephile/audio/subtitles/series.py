@@ -10,13 +10,13 @@ from copy import deepcopy
 from logging import getLogger
 from os import PathLike
 from pathlib import Path
-from tempfile import TemporaryDirectory
 from typing import Any, Self, TypedDict, override
 
 from pydub import AudioSegment
 from pydub.exceptions import PydubException
 
 from scinoephile.audio.segment import load_audio_segment
+from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
     val_input_dir_path,
     val_input_path,
@@ -394,10 +394,9 @@ class AudioSeries(Series):
             IsADirectoryError: if a generated file conflicts with a directory
         """
         # Produce every managed file before changing existing output
-        with TemporaryDirectory(
-            dir=output_dir_path.parent, prefix=f".{output_dir_path.name}."
-        ) as staging_dir_name:
-            staging_dir_path = Path(staging_dir_name)
+        with get_temp_directory_path(
+            parent_dir_path=output_dir_path.parent, prefix=f".{output_dir_path.name}."
+        ) as staging_dir_path:
             staged_paths = []
 
             audio_path = staging_dir_path / f"{output_dir_path.stem}.wav"
