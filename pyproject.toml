@@ -179,10 +179,5 @@ override-dependencies = [
 ]
 package = true
 
-[[tool.uv.index]]
-name = "paddlepaddle-cu126"
-url = "https://www.paddlepaddle.org.cn/packages/stable/cu126/"
-explicit = true
-
 [tool.uv.sources]
-paddlepaddle-gpu = { index = "paddlepaddle-cu126" }
+paddlepaddle-gpu = { url = "https://paddle-whl.cdn.bcebos.com/stable/cu126/paddlepaddle-gpu/paddlepaddle_gpu-3.2.2-cp313-cp313-win_amd64.whl" }
