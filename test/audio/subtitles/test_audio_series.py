@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
+from pydub.generators import Sine
 from pytest import raises
 
 from scinoephile.audio.subtitles import (
@@ -119,3 +120,30 @@ def test_audio_series_slice_supports_empty_ranges():
     assert type(sliced) is AudioSeries
     assert len(sliced) == 0
     assert len(sliced.audio) == 0
+
+
+def test_audio_series_slice_keeps_audio_origin_for_further_slices_and_blocks():
+    """Cropped audio remains aligned with absolute subtitle times."""
+    audio = AudioSegment.silent(duration=15_000, frame_rate=44_100).overlay(
+        Sine(440).to_audio_segment(duration=2_000), position=10_000
+    )
+    series = AudioSeries(
+        audio=audio, events=[AudioSubtitle(start=10_000, end=12_000, text="Text")]
+    )
+    expected_audio = audio[10_000:12_000]
+
+    sliced = series.slice(0, 1)
+    repeated = sliced.slice(0, 1)
+    block = sliced.blocks[0]
+
+    assert (sliced.events[0].start, sliced.events[0].end) == (10_000, 12_000)
+    assert sliced.audio.raw_data == expected_audio.raw_data
+    assert repeated.audio.raw_data == expected_audio.raw_data
+    assert (block.buffered_start, block.buffered_end) == (10_000, 12_000)
+    assert block.audio.raw_data == expected_audio.raw_data
+    assert block.slice(0, 1).audio.raw_data == expected_audio.raw_data
+
+    full_block = series.blocks[0]
+    assert (full_block.buffered_start, full_block.buffered_end) == (9_000, 13_000)
+    assert full_block.audio.raw_data == audio[9_000:13_000].raw_data
+    assert full_block.slice(0, 1).audio.raw_data == expected_audio.raw_data

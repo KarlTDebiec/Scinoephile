@@ -70,6 +70,8 @@ class AudioSeries(Series):
             raise ValueError("AudioSeries requires audio")
         super().__init__()
         self._audio = audio
+        self._audio_start_ms = 0
+        """Source timestamp corresponding to the start of the audio."""
         if events is not None:
             self.events = events
         self._blocks: list[AudioSeries] | None = None
@@ -330,10 +332,15 @@ class AudioSeries(Series):
             audio_events.append(deepcopy(event))
 
         if events:
-            audio = self.audio[events[0].start : events[-1].end]
+            start = events[0].start
+            audio = self.audio[
+                start - self._audio_start_ms : events[-1].end - self._audio_start_ms
+            ]
         else:
+            start = self._audio_start_ms
             audio = self.audio[0:0]
         copied = type(self)(audio=audio, events=audio_events)
+        copied._audio_start_ms = start
         self._copy_metadata_to(copied)
         return copied
 
@@ -351,11 +358,13 @@ class AudioSeries(Series):
 
             # Buffer start
             if i == 0:
-                buffered_start = max(0, block_start_time - 1000)
+                buffered_start = max(self._audio_start_ms, block_start_time - 1000)
             else:
                 prev_end = self.events[block_indexes[i - 1][1] - 1].end
                 max_unbuffered_end = (prev_end + block_start_time) // 2
-                buffered_start = max(max_unbuffered_end, block_start_time - 1000)
+                buffered_start = max(
+                    self._audio_start_ms, max_unbuffered_end, block_start_time - 1000
+                )
 
             # Buffer end
             if i < len(block_indexes) - 1:
@@ -363,14 +372,19 @@ class AudioSeries(Series):
                 min_unbuffered_start = (block_end_time + next_start) // 2
                 buffered_end = min(block_end_time + 1000, min_unbuffered_start)
             else:
-                buffered_end = min(len(self.audio), block_end_time + 1000)
+                buffered_end = min(
+                    self._audio_start_ms + len(self.audio), block_end_time + 1000
+                )
 
             # Slice audio
             logger.debug(
                 f"Slicing audio for block {block_start_time}-{block_end_time} "
                 f"({buffered_start} - {buffered_end})"
             )
-            block_audio = self.audio[buffered_start:buffered_end]
+            block_audio = self.audio[
+                buffered_start - self._audio_start_ms : buffered_end
+                - self._audio_start_ms
+            ]
 
             # Create AudioSeries block
             block = self.slice(start_idx, end_idx)
@@ -379,6 +393,7 @@ class AudioSeries(Series):
             block.buffered_end = buffered_end
             # Override the audio with the buffered version
             block.audio = block_audio
+            block._audio_start_ms = buffered_start
 
             blocks.append(block)
 
