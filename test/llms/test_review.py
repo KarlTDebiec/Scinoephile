@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest.mock import Mock
 
 from pydantic import ValidationError
+from pysubs2 import SSAStyle
 from pytest import mark, raises
 
 from scinoephile.core import Language
@@ -240,6 +241,36 @@ def test_partial_processing_preserves_unencountered_test_cases(tmp_path: Path):
     processor.process(series, stop_at_idx=0)
 
     assert current_test_cases_path.read_bytes() == original_contents
+
+
+def test_no_op_review_preserves_ass_styles_across_blocks():
+    """Review retains custom styles and script settings when text is unchanged."""
+    series = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="First", style="Custom"),
+            Subtitle(start=5000, end=6000, text="Second", style="Custom"),
+        ]
+    )
+    series.styles["Custom"] = SSAStyle(fontsize=55)
+    series.info["PlayResX"] = "1920"
+    series.format = "ass"
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    processor = ReviewProcessor(
+        ReviewManager.base_prompt, provider=provider, no_op=True
+    )
+
+    output = processor.process(series)
+
+    assert [event.style for event in output] == ["Custom", "Custom"]
+    assert output.styles == series.styles
+    assert output.styles is not series.styles
+    assert output.info == series.info
+    assert output.format == "ass"
+    provider.chat_completion.assert_not_called()
 
 
 def test_partial_processing_prunes_only_when_requested(tmp_path: Path):

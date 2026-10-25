@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest.mock import Mock
 
 from pydantic import ValidationError
+from pysubs2 import SSAStyle
 from pytest import mark, raises
 
 from scinoephile.core import Language
@@ -255,12 +256,17 @@ def test_processor_uses_semantic_fields_at_runtime():
         '{"jieguo": "融合結果", "shuoming": "融合兩個來源"}'
     )
     processor = OcrFusionProcessor(_LOCALIZED_PROMPT, provider=provider)
-    source_one = Series([Subtitle(start=0, end=1000, text="來源一")])
+    source_one = Series([Subtitle(start=0, end=1000, text="來源一", style="Custom")])
+    source_one.styles["Custom"] = SSAStyle(fontsize=55)
+    source_one.info["PlayResX"] = "1920"
     source_two = Series([Subtitle(start=0, end=1000, text="來源二")])
 
     result = processor.process(source_one, source_two)
 
     assert [subtitle.text for subtitle in result] == ["融合結果"]
+    assert result.events[0].style == "Custom"
+    assert result.styles == source_one.styles
+    assert result.info == source_one.info
     messages = provider.chat_completion.call_args.args[0]
     assert json.loads(messages[1]["content"]) == {"yilai": "來源一", "erlai": "來源二"}
 

@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest.mock import Mock
 
 from pydantic import ValidationError
+from pysubs2 import SSAStyle
 from pytest import mark, raises
 
 from scinoephile.core import Language
@@ -175,6 +176,29 @@ def test_processor_maps_indexed_outputs_to_subtitle_timing():
         "zimu": [{"xuhao": 1, "wenben": "原文一"}, {"xuhao": 2, "wenben": "原文二"}],
         "cankao": [{"xuhao": 1, "wenben": "參考"}],
     }
+
+
+def test_guided_translation_preserves_source_style_and_metadata():
+    """Guided translation keeps the source cue styling and script settings."""
+    source = Series(events=[Subtitle(start=0, end=1000, text="Source", style="Custom")])
+    source.styles["Custom"] = SSAStyle(fontsize=55)
+    source.info["PlayResX"] = "1920"
+    guide = Series(events=[Subtitle(start=0, end=1000, text="Guide")])
+    provider = Mock(
+        spec=LLMProvider,
+        cache_identity={"implementation": "test"},
+        completion_metrics=[],
+    )
+    processor = GuidedTranslationProcessor(
+        GuidedTranslationManager.base_prompt, provider=provider, no_op=True
+    )
+
+    output = processor.process(source, guide)
+
+    assert output.events[0].style == "Custom"
+    assert output.styles == source.styles
+    assert output.info == source.info
+    provider.chat_completion.assert_not_called()
 
 
 def test_persistence_uses_base_prompt_field_names(tmp_path: Path):

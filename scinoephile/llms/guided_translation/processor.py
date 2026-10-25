@@ -10,7 +10,7 @@ from typing import cast
 from scinoephile.common.validation import val_index_range
 from scinoephile.core.llms import Processor
 from scinoephile.core.pairs import get_block_pairs_by_pause
-from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
+from scinoephile.core.subtitles import Series, get_concatenated_series
 
 from .manager import GuidedTranslationManager
 from .models import GuidedTranslationAnswer
@@ -82,9 +82,9 @@ class GuidedTranslationProcessor(Processor):
             output_series = Series()
             for sub_idx, sub in enumerate(one_blk.events, 1):
                 output = output_text_by_index[sub_idx]
-                output_series.append(
-                    Subtitle(start=sub.start, end=sub.end, text=output)
-                )
+                output_subtitle = type(sub)(**sub.as_dict())
+                output_subtitle.text = output
+                output_series.append(output_subtitle)
 
             logger.info(f"Block {blk_idx}:\n{output_series.to_simple_string()}")
             output_series_to_concatenate[blk_idx] = output_series
@@ -94,9 +94,8 @@ class GuidedTranslationProcessor(Processor):
         output_series_blocks = [
             series for series in output_series_to_concatenate if series is not None
         ]
-        if output_series_blocks:
-            output_series = get_concatenated_series(output_series_blocks)
-        else:
-            output_series = Series()
+        output_series = get_concatenated_series(
+            output_series_blocks, metadata_source=source_one
+        )
         logger.info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series

@@ -10,6 +10,7 @@ from typing import cast
 from unittest.mock import Mock
 
 from pydantic import ValidationError
+from pysubs2 import SSAStyle
 from pytest import mark, raises
 
 from scinoephile import common
@@ -367,10 +368,12 @@ def test_processor_maps_targets_and_outputs_by_index():
     )
     source_one = Series(
         events=[
-            Subtitle(start=0, end=100, text="existing one"),
+            Subtitle(start=0, end=100, text="existing one", style="Custom"),
             Subtitle(start=200, end=300, text="existing three"),
         ]
     )
+    source_one.styles["Custom"] = SSAStyle(fontsize=55)
+    source_one.info["PlayResX"] = "1920"
     source_two = Series(
         events=[
             Subtitle(start=0, end=100, text="guide one"),
@@ -380,7 +383,7 @@ def test_processor_maps_targets_and_outputs_by_index():
     )
     expected = Series(
         events=[
-            Subtitle(start=0, end=100, text="existing one"),
+            Subtitle(start=0, end=100, text="existing one", style="Custom"),
             Subtitle(start=100, end=200, text="translated two"),
             Subtitle(start=200, end=300, text="existing three"),
         ]
@@ -397,6 +400,9 @@ def test_processor_maps_targets_and_outputs_by_index():
     output = processor.process(source_one, source_two)
 
     assert_series_equal(output, expected)
+    assert output.events[0].style == "Custom"
+    assert output.styles == source_one.styles
+    assert output.info == source_one.info
     provider.chat_completion.assert_not_called()
 
 

@@ -9,7 +9,7 @@ from typing import cast
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Processor
-from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import are_series_one_to_one
 
 from .manager import OcrFusionManager
@@ -65,30 +65,30 @@ class OcrFusionProcessor(Processor):
                 break
             text_one = sub_one.text_with_newline
             text_two = sub_two.text_with_newline
+            output_subtitle = type(sub_one)(**sub_one.as_dict())
 
             # Handle missing data
             if not text_one and not text_two:
-                output_subtitles.append(
-                    Subtitle(start=sub_one.start, end=sub_one.end, text="")
-                )
+                output_subtitles.append(output_subtitle)
                 logger.info(f"Subtitle {sub_idx + 1} empty.")
                 continue
             if text_one == text_two:
-                output_subtitles.append(sub_one)
+                output_subtitles.append(output_subtitle)
                 logger.info(
                     f"Subtitle {sub_idx + 1} identical:     "
                     f"{sub_one.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
             if not text_two:
-                output_subtitles.append(sub_one)
+                output_subtitles.append(output_subtitle)
                 logger.info(
                     f"Subtitle {sub_idx + 1} from {prompt.src_1}: "
                     f"{sub_one.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
             if not text_one:
-                output_subtitles.append(sub_two)
+                output_subtitle.text = sub_two.text
+                output_subtitles.append(output_subtitle)
                 logger.info(
                     f"Subtitle {sub_idx + 1} from {prompt.src_2}: "
                     f"{sub_two.text_with_newline.replace('\n', ' ')}"
@@ -106,13 +106,16 @@ class OcrFusionProcessor(Processor):
 
             answer = cast(OcrFusionAnswer, test_case.answer)
             output_text = answer.output
-            sub = Subtitle(start=sub_one.start, end=sub_one.end, text=output_text)
+            output_subtitle.text = output_text
             logger.info(
-                f"Subtitle {sub_idx + 1} processed:     {sub.text.replace('\n', '\\n')}"
+                f"Subtitle {sub_idx + 1} processed:     "
+                f"{output_subtitle.text.replace('\n', '\\n')}"
             )
-            output_subtitles.append(sub)
+            output_subtitles.append(output_subtitle)
 
         self.save_encountered_test_cases()
 
         # Organize and return
-        return Series(events=output_subtitles)
+        output = source_one.slice(0, 0)
+        output.events = output_subtitles
+        return output
