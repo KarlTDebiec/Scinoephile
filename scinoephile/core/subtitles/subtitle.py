@@ -52,7 +52,8 @@ class Subtitle(SSAEvent):
     __hash__ = None
 
     @override
-    def __init__(self, **kwargs: Unpack[SubtitleKwargs]):
+    # Domain fields are keyword-only; pysubs2 also permits positionals
+    def __init__(self, **kwargs: Unpack[SubtitleKwargs]):  # ty: ignore[invalid-method-override]
         """Initialize.
 
         Arguments:

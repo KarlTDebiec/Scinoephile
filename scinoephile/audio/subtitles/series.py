@@ -40,13 +40,11 @@ class AudioSeriesLoadKwargs(TypedDict, total=False):
     """Additional buffer to include before and after each subtitle (ms)."""
 
 
-class AudioSeries(Series):
+class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
     """Series of subtitles with audio."""
 
     event_class = AudioSubtitle
     """Class of individual subtitle events."""
-    events: list[AudioSubtitle]
-    """Individual subtitle events."""
     block_audio_pattern = re.compile(
         r"^(?P<start_idx>\d{4})-(?P<end_idx>\d{4})_"
         r"(?P<buffered_start>\d{8})-(?P<buffered_end>\d{8})\.wav$"
@@ -57,7 +55,10 @@ class AudioSeries(Series):
     """Pattern for subtitle audio files."""
 
     @override
-    def __init__(self, audio: AudioSegment, events: list[AudioSubtitle] | None = None):
+    # Audio series require a sound source in addition to subtitle events
+    def __init__(  # ty: ignore[invalid-method-override]
+        self, audio: AudioSegment, events: list[AudioSubtitle] | None = None
+    ):
         """Initialize.
 
         Arguments:

@@ -8,14 +8,15 @@ import gc
 import json
 from functools import cache
 from pathlib import Path
-from typing import Any, Unpack
+from typing import Any, ClassVar, Unpack
 from unittest.mock import Mock, patch
 from weakref import ref
 
-from pydantic import JsonValue, ValidationError
+from pydantic import ValidationError
 from pytest import raises
 
 from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import (
     Answer,
     ChatCompletionMetrics,
@@ -51,6 +52,8 @@ _PROMPT = Prompt(
 class _Query(Query):
     """Query fixture for provider-injection tests."""
 
+    prompt: ClassVar[Prompt] = _PROMPT
+    """Prompt fixture."""
     text: str
     """Query text."""
 
@@ -58,13 +61,23 @@ class _Query(Query):
 class _Answer(Answer):
     """Answer fixture for provider-injection tests."""
 
+    prompt: ClassVar[Prompt] = _PROMPT
+    """Prompt fixture."""
     output: str
     """Answer output."""
 
 
-class _TestCase(TestCase):
+class _TestCase(TestCase[_Query, _Answer]):
     """Test-case fixture for provider-injection tests."""
 
+    query_cls: ClassVar[type[_Query]] = _Query
+    """Query model class."""
+    answer_cls: ClassVar[type[_Answer]] = _Answer
+    """Answer model class."""
+    operation: ClassVar[str] = "test"
+    """Stable operation identifier."""
+    prompt: ClassVar[Prompt] = _PROMPT
+    """Prompt fixture."""
     query: _Query
     """Query fixture."""
     answer: _Answer | None = None
@@ -82,43 +95,44 @@ class _TestCase(TestCase):
 class _IncompatibleAnswer(Answer):
     """Incompatible answer fixture for test-case class tests."""
 
+    prompt: ClassVar[Prompt] = _PROMPT
+    """Prompt fixture."""
     note: str
     """Answer note."""
 
 
-class _CompatibleTestCase(TestCase):
+class _CompatibleTestCase(TestCase[_Query, _Answer]):
     """Alternate compatible test-case fixture for class validation tests."""
 
+    query_cls: ClassVar[type[_Query]] = _Query
+    """Query model class."""
+    answer_cls: ClassVar[type[_Answer]] = _Answer
+    """Answer model class."""
+    operation: ClassVar[str] = "test"
+    """Stable operation identifier."""
+    prompt: ClassVar[Prompt] = _PROMPT
+    """Prompt fixture."""
     query: _Query
     """Query fixture."""
     answer: _Answer | None = None
     """Optional answer fixture."""
 
 
-class _IncompatibleTestCase(TestCase):
+class _IncompatibleTestCase(TestCase[_Query, _IncompatibleAnswer]):
     """Incompatible test-case fixture for class validation tests."""
 
+    query_cls: ClassVar[type[_Query]] = _Query
+    """Query model class."""
+    answer_cls: ClassVar[type[_IncompatibleAnswer]] = _IncompatibleAnswer
+    """Answer model class."""
+    operation: ClassVar[str] = "test"
+    """Stable operation identifier."""
+    prompt: ClassVar[Prompt] = _PROMPT
+    """Prompt fixture."""
     query: _Query
     """Query fixture."""
     answer: _IncompatibleAnswer | None = None
     """Optional incompatible answer fixture."""
-
-
-_Query.prompt = _PROMPT
-_Answer.prompt = _PROMPT
-_TestCase.query_cls = _Query
-_TestCase.answer_cls = _Answer
-_TestCase.operation = "test"
-_TestCase.prompt = _PROMPT
-_CompatibleTestCase.query_cls = _Query
-_CompatibleTestCase.answer_cls = _Answer
-_CompatibleTestCase.operation = "test"
-_CompatibleTestCase.prompt = _PROMPT
-_IncompatibleAnswer.prompt = _PROMPT
-_IncompatibleTestCase.query_cls = _Query
-_IncompatibleTestCase.answer_cls = _IncompatibleAnswer
-_IncompatibleTestCase.operation = "test"
-_IncompatibleTestCase.prompt = _PROMPT
 
 
 class _Manager(Manager):
@@ -188,7 +202,7 @@ class _RecordingProvider(LLMProvider):
         self.base_url = base_url
 
     @property
-    def cache_identity(self) -> dict[str, JsonValue]:
+    def cache_identity(self) -> CacheIdentity:
         """Stable provider configuration for cache namespacing."""
         return {
             **super().cache_identity,

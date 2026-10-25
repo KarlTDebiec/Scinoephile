@@ -20,7 +20,8 @@ class ImageSubtitle(Subtitle):
     """Individual subtitle with image."""
 
     @override
-    def __init__(
+    # Image subtitles require an image in addition to base subtitle fields
+    def __init__(  # ty: ignore[invalid-method-override]
         self,
         img: Image.Image,
         bboxes: list[Bbox] | None = None,

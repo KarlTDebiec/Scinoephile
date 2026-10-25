@@ -92,7 +92,7 @@ class GapTranslationAnswer(Answer):
         return self
 
 
-class GapTranslationTestCase(TestCase):
+class GapTranslationTestCase(TestCase[GapTranslationQuery, GapTranslationAnswer]):
     """Gap-translation query, optional answer, and optimization metadata."""
 
     query_cls: ClassVar[type[GapTranslationQuery]] = GapTranslationQuery

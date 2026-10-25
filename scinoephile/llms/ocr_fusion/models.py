@@ -133,7 +133,7 @@ class OcrFusionAnswer(Answer):
         return value
 
 
-class OcrFusionTestCase(TestCase):
+class OcrFusionTestCase(TestCase[OcrFusionQuery, OcrFusionAnswer]):
     """OCR-fusion query, optional answer, and optimization metadata."""
 
     query_cls: ClassVar[type[OcrFusionQuery]] = OcrFusionQuery

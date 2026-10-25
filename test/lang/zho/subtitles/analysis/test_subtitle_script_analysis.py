@@ -6,13 +6,12 @@ from __future__ import annotations
 
 from pathlib import Path
 from time import time
-from typing import cast
 from unittest.mock import patch
 
 from scinoephile.core import Language
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
+from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.subtitles.analysis.script import (
     analyze_zho_subtitle_stream_script,
 )
@@ -188,9 +187,7 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
         assert cache_root_path == tmp_path / "cache"
         assert language in (Language.zho_hans, Language.zho_hant)
         assert overwrite_cache is False
-        ocr_sizes.append(
-            [cast(ImageSubtitle, event).img.size for event in sampled_series]
-        )
+        ocr_sizes.append([event.img.size for event in sampled_series])
         return Series(
             events=[
                 Subtitle(start=event.start, end=event.end, text="繁體中文漢字")

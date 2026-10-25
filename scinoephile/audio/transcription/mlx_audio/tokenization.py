@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, cast
@@ -24,7 +24,7 @@ MIMO_AUDIO_TOKENIZER = ModelSpec(
 @contextmanager
 def use_local_tokenizer(
     tokenizer: ModelSpec, tokenizer_dir_path: Path
-) -> Iterator[None]:
+) -> Generator[None]:
     """Make MLX-Audio use a pre-resolved auxiliary tokenizer directory.
 
     Arguments:

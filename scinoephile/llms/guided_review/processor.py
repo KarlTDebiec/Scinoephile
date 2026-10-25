@@ -25,7 +25,7 @@ logger = getLogger(__name__)
 _DELETION_MARKER = "�"
 
 
-class GuidedReviewProcessor(Processor):
+class GuidedReviewProcessor(Processor[GuidedReviewPrompt]):
     """Processes guided review."""
 
     prompt: GuidedReviewPrompt

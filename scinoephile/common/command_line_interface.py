@@ -11,7 +11,6 @@ from argparse import (
     RawDescriptionHelpFormatter,
     _SubParsersAction,  # noqa pylint
 )
-from collections.abc import Callable
 from datetime import datetime
 from inspect import cleandoc
 from logging import FileHandler, Formatter, getLogger
@@ -165,7 +164,8 @@ class CommandLineInterface(ABC):
         logger.info(f"Run with command line: {command_line}")
 
     if TYPE_CHECKING:
-        _main: ClassVar[Callable[..., None]]
+        # Argparse validates each command's distinct keyword signature before dispatch
+        _main: ClassVar[Any]
         """Execute with provided keyword arguments."""
     else:
 

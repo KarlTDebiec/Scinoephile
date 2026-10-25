@@ -66,7 +66,7 @@ class ReviewAnswer(Answer):
         return self
 
 
-class ReviewTestCase(TestCase):
+class ReviewTestCase(TestCase[ReviewQuery, ReviewAnswer]):
     """Review query, optional answer, and optimization metadata."""
 
     query_cls: ClassVar[type[ReviewQuery]] = ReviewQuery

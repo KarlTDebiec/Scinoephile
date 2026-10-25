@@ -66,7 +66,7 @@ class PunctuationAnswer(Answer):
         return self
 
 
-class PunctuationTestCase(TestCase):
+class PunctuationTestCase(TestCase[PunctuationQuery, PunctuationAnswer]):
     """Punctuation query, optional answer, and optimization metadata."""
 
     query_cls: ClassVar[type[PunctuationQuery]] = PunctuationQuery

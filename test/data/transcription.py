@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import contextmanager
 from logging import WARNING, Filter, LogRecord, getLogger
 from pathlib import Path
@@ -391,7 +391,7 @@ def _load_or_translate_series_gaps(
 
 
 @contextmanager
-def _relog_cantonese_transcription_mismatch(language: Language) -> Iterator[None]:
+def _relog_cantonese_transcription_mismatch(language: Language) -> Generator[None]:
     """Relog expected same-script Cantonese-to-Mandarin detection at info.
 
     Arguments:

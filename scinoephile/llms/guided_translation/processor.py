@@ -22,7 +22,7 @@ __all__ = ["GuidedTranslationProcessor"]
 logger = getLogger(__name__)
 
 
-class GuidedTranslationProcessor(Processor):
+class GuidedTranslationProcessor(Processor[GuidedTranslationPrompt]):
     """Processes guided translation blocks."""
 
     prompt: GuidedTranslationPrompt

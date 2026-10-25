@@ -12,7 +12,7 @@ from .prompt import DelineationPrompt
 __all__ = ["DelineationProcessor"]
 
 
-class DelineationProcessor(Processor):
+class DelineationProcessor(Processor[DelineationPrompt]):
     """Processor for delineation LLM queries."""
 
     prompt: DelineationPrompt

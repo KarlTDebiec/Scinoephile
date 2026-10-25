@@ -177,7 +177,7 @@ class TranscriptionAnswer(Answer):
         return self
 
 
-class TranscriptionTestCase(TestCase):
+class TranscriptionTestCase(TestCase[TranscriptionQuery, TranscriptionAnswer]):
     """Transcription query and optional consensus answer."""
 
     alignment_scorer: ClassVar[TranscriptionAlignmentScorer] = (

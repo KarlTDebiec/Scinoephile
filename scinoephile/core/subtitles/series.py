@@ -24,16 +24,18 @@ __all__ = ["Series"]
 logger = getLogger(__name__)
 
 
-class Series(SSAFile):
+class Series[TEvent: Subtitle, TBlock: Series](SSAFile):
     """Series of subtitles."""
 
-    event_class = Subtitle
+    # Concrete series replace this with their matching event class
+    event_class = cast("type[TEvent]", Subtitle)
     """Class of individual subtitle events."""
-    events: list[Subtitle]
+    # pysubs2 exposes a mutable SSAEvent list; concrete series keep their event type
+    events: list[TEvent]  # ty: ignore[invalid-attribute-override]
     """Individual subtitle events."""
 
     @override
-    def __init__(self, events: list[Subtitle] | None = None):
+    def __init__(self, events: list[TEvent] | None = None):
         """Initialize.
 
         Arguments:
@@ -43,7 +45,7 @@ class Series(SSAFile):
 
         if events is not None:
             self.events = events
-        self._blocks: list[Series] | None = None
+        self._blocks: list[TBlock] | None = None
         self._blocks_signature: tuple[tuple[int, str], ...] | None = None
 
     def __eq__(self, other: object) -> bool:
@@ -75,7 +77,7 @@ class Series(SSAFile):
     __hash__ = None
 
     @override
-    def __iter__(self) -> Iterator[Subtitle]:
+    def __iter__(self) -> Iterator[TEvent]:
         """Iterate over subtitle events.
 
         Returns:
@@ -124,7 +126,7 @@ class Series(SSAFile):
             self._blocks_signature = None
 
     @property
-    def blocks(self) -> list[Series]:
+    def blocks(self) -> list[TBlock]:
         """List of blocks in the series."""
         signature = self._get_blocks_signature()
         if self._blocks is None or self._blocks_signature != signature:
@@ -134,7 +136,7 @@ class Series(SSAFile):
         return self._blocks
 
     @blocks.setter
-    def blocks(self, blocks: list[Series]):
+    def blocks(self, blocks: list[TBlock]):
         """Set blocks of the series.
 
         Arguments:
@@ -351,7 +353,7 @@ class Series(SSAFile):
         copied.fps = self.fps
         copied.format = self.format
 
-    def _copy_with_events(self, events: Sequence[Subtitle]) -> Self:
+    def _copy_with_events(self, events: Sequence[TEvent]) -> Self:
         """Copy this series with a selected collection of events.
 
         Arguments:
@@ -379,7 +381,11 @@ class Series(SSAFile):
 
     def _init_blocks(self):
         """Initialize blocks."""
-        self._blocks = [
-            self.slice(start_idx, end_idx)
-            for start_idx, end_idx in self.get_block_indexes_by_pause(self)
-        ]
+        # Each concrete series returns its own block type from slice
+        self._blocks = cast(
+            "list[TBlock]",
+            [
+                self.slice(start_idx, end_idx)
+                for start_idx, end_idx in self.get_block_indexes_by_pause(self)
+            ],
+        )

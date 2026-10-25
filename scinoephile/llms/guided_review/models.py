@@ -80,7 +80,7 @@ class GuidedReviewAnswer(Answer):
         return self
 
 
-class GuidedReviewTestCase(TestCase):
+class GuidedReviewTestCase(TestCase[GuidedReviewQuery, GuidedReviewAnswer]):
     """Guided-review query, optional answer, and optimization metadata."""
 
     query_cls: ClassVar[type[GuidedReviewQuery]] = GuidedReviewQuery
