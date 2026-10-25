@@ -14,7 +14,7 @@ from typing import Any, ClassVar, Generic, TypeVar, cast
 from pydantic import create_model
 
 from .answer import Answer
-from .models import LLMModel, get_model_name
+from .models import LLMModel, ReadOnlyClassValue, get_model_name
 from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
@@ -41,7 +41,7 @@ class Manager(Generic[TTestCase_co], ABC):  # noqa: UP046
 
     operation: ClassVar[str]
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[Prompt]
+    base_prompt = ReadOnlyClassValue[Prompt]()
     """Base prompt defining persisted test-case field names."""
     test_case_base_cls: ClassVar[type[TestCase]]
     """Static test-case model defining the operation's semantic shape."""
@@ -93,7 +93,7 @@ class Manager(Generic[TTestCase_co], ABC):  # noqa: UP046
             **fields,
         )
         if issubclass(model, (Answer, Query, TestCase)):
-            model.prompt = prompt
+            setattr(model, "prompt", prompt)
         return model
 
     @classmethod
@@ -150,7 +150,7 @@ class Manager(Generic[TTestCase_co], ABC):  # noqa: UP046
                 "answer": PromptModelField(annotation=answer_cls | None),
             },
         )
-        model.query_cls = query_cls
-        model.answer_cls = answer_cls
+        setattr(model, "query_cls", query_cls)
+        setattr(model, "answer_cls", answer_cls)
         model.operation = cls.operation
         return cast("type[TTestCase_co]", model)

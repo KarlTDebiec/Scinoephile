@@ -55,7 +55,7 @@ class DelineationAnswer(Answer):
     """Adjusted target text aligned with the second reference subtitle."""
 
 
-class DelineationTestCase(TestCase):
+class DelineationTestCase(TestCase[DelineationQuery, DelineationAnswer]):
     """Delineation query, optional answer, and optimization metadata."""
 
     query_cls: ClassVar[type[DelineationQuery]] = DelineationQuery

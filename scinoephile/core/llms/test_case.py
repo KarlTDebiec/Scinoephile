@@ -11,30 +11,30 @@ from typing import ClassVar, Self
 from pydantic import Field, model_validator
 
 from .answer import Answer
-from .models import LLMModel
+from .models import LLMModel, ReadOnlyClassValue
 from .prompt import Prompt
 from .query import Query
 
 __all__ = ["TestCase"]
 
 
-class TestCase(LLMModel, ABC):
+class TestCase[TQuery: Query, TAnswer: Answer](LLMModel, ABC):
     """ABC for LLM test cases."""
 
     __test__ = False
     """Inform pytest not to collect this class as a test case."""
 
-    query_cls: ClassVar[type[Query]]
-    """Query model class."""
-    answer_cls: ClassVar[type[Answer]]
-    """Answer model class."""
     operation: ClassVar[str]
     """Stable LLM operation identifier."""
-    prompt: ClassVar[Prompt]
+    query_cls = ReadOnlyClassValue[type[Query]]()
+    """Query model class."""
+    answer_cls = ReadOnlyClassValue[type[Answer]]()
+    """Answer model class."""
+    prompt = ReadOnlyClassValue[Prompt]()
     """Text for LLM correspondence."""
-    query: Query
+    query: TQuery
     """Query data for the test case."""
-    answer: Answer | None = None
+    answer: TAnswer | None = None
     """Answer data for the test case."""
     difficulty: int = Field(
         0, description="Difficulty level of the test case, used for filtering."

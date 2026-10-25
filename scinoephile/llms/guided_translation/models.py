@@ -86,7 +86,9 @@ class GuidedTranslationAnswer(Answer):
         return self
 
 
-class GuidedTranslationTestCase(TestCase):
+class GuidedTranslationTestCase(
+    TestCase[GuidedTranslationQuery, GuidedTranslationAnswer]
+):
     """Guided-translation query, optional answer, and optimization metadata."""
 
     query_cls: ClassVar[type[GuidedTranslationQuery]] = GuidedTranslationQuery

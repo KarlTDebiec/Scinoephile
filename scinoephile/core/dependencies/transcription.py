@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from types import ModuleType
 from typing import TYPE_CHECKING, Any
@@ -291,7 +291,7 @@ def import_whisper_timestamped() -> ModuleType:
 
 
 @contextmanager
-def _ignore_pyannote_torchcodec_warning() -> Iterator[None]:
+def _ignore_pyannote_torchcodec_warning() -> Generator[None]:
     """Ignore pyannote's irrelevant optional audio-decoder warning.
 
     Yields:

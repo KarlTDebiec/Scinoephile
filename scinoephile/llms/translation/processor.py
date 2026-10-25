@@ -22,7 +22,7 @@ __all__ = ["TranslationProcessor"]
 logger = getLogger(__name__)
 
 
-class TranslationProcessor(Processor):
+class TranslationProcessor(Processor[TranslationPrompt]):
     """Processes translation LLM queries."""
 
     prompt: TranslationPrompt

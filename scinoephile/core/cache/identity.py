@@ -4,9 +4,20 @@
 
 from __future__ import annotations
 
-from pydantic import JsonValue
+from collections.abc import Mapping, Sequence
 
-__all__ = ["CacheIdentity"]
+__all__ = ["CacheIdentity", "CacheIdentityValue"]
 
-type CacheIdentity = dict[str, JsonValue]
+type CacheIdentityValue = (
+    str
+    | int
+    | float
+    | bool
+    | None
+    | Mapping[str, CacheIdentityValue]
+    | Sequence[CacheIdentityValue]
+)
+"""JSON-compatible value in a cache identity."""
+
+type CacheIdentity = dict[str, CacheIdentityValue]
 """JSON-serializable configuration identifying a reusable cache result."""

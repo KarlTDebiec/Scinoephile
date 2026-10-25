@@ -72,7 +72,7 @@ class TranslationAnswer(Answer):
         return self
 
 
-class TranslationTestCase(TestCase):
+class TranslationTestCase(TestCase[TranslationQuery, TranslationAnswer]):
     """Translation query, optional answer, and optimization metadata."""
 
     query_cls: ClassVar[type[TranslationQuery]] = TranslationQuery

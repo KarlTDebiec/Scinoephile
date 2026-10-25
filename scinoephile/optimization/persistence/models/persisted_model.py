@@ -7,7 +7,6 @@ from __future__ import annotations
 import json
 from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import cast
 from urllib.parse import parse_qsl, urlsplit
 
 from pydantic import JsonValue
@@ -84,7 +83,7 @@ class PersistedModel:
             ) from exc
         if not isinstance(loaded_settings, dict):
             raise ScinoephileError("Persisted model settings must be a JSON object.")
-        normalized_settings = cast("dict[str, JsonValue]", loaded_settings)
+        normalized_settings = loaded_settings
         _validate_no_credentials(normalized_settings)
 
         return cls(

@@ -44,13 +44,11 @@ _DEFAULT_TEXT_FONT_SIZE = 50
 _TEXT_FONT_SIZE_PERCENTILE = 0.75
 
 
-class ImageSeries(Series):
+class ImageSeries(Series[ImageSubtitle, "ImageSeries"]):
     """Series of subtitles with images."""
 
     event_class = ImageSubtitle
     """Class of individual subtitle events."""
-    events: list[ImageSubtitle]
-    """Individual subtitle events."""
 
     @override
     def __init__(self, events: list[ImageSubtitle] | None = None):

@@ -12,7 +12,7 @@ from .prompt import PunctuationPrompt
 __all__ = ["PunctuationProcessor"]
 
 
-class PunctuationProcessor(Processor):
+class PunctuationProcessor(Processor[PunctuationPrompt]):
     """Processor for punctuation LLM queries."""
 
     prompt: PunctuationPrompt

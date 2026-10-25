@@ -49,7 +49,7 @@ class TranscriptionRequestResult:
         )
 
 
-class TranscriptionProcessor(Processor):
+class TranscriptionProcessor(Processor[TranscriptionPrompt]):
     """Transcribe from reference-free aligned ASR evidence."""
 
     prompt: TranscriptionPrompt

@@ -22,7 +22,7 @@ __all__ = ["OcrFusionProcessor"]
 logger = getLogger(__name__)
 
 
-class OcrFusionProcessor(Processor):
+class OcrFusionProcessor(Processor[OcrFusionPrompt]):
     """Processes OCR fusion."""
 
     manager_cls = OcrFusionManager

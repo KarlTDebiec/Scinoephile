@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import ClassVar
+
 from scinoephile.core.llms import Answer, Prompt, Query, TestCase
 
 _PROMPT = Prompt()
@@ -13,6 +15,8 @@ _PROMPT = Prompt()
 class _Query(Query):
     """Query fixture for core test-case models."""
 
+    prompt: ClassVar[Prompt] = _PROMPT
+    """Prompt fixture."""
     text: str
     """Query text."""
 
@@ -20,13 +24,21 @@ class _Query(Query):
 class _Answer(Answer):
     """Answer fixture for core test-case models."""
 
+    prompt: ClassVar[Prompt] = _PROMPT
+    """Prompt fixture."""
     text: str
     """Answer text."""
 
 
-class _TestCase(TestCase):
+class _TestCase(TestCase[_Query, _Answer]):
     """Test-case fixture with a nonzero minimum difficulty."""
 
+    query_cls: ClassVar[type[_Query]] = _Query
+    """Query model class."""
+    answer_cls: ClassVar[type[_Answer]] = _Answer
+    """Answer model class."""
+    prompt: ClassVar[Prompt] = _PROMPT
+    """Prompt fixture."""
     query: _Query
     """Query fixture."""
     answer: _Answer | None = None
@@ -41,11 +53,16 @@ class _TestCase(TestCase):
         return 2
 
 
-_Query.prompt = _PROMPT
-_Answer.prompt = _PROMPT
-_TestCase.query_cls = _Query
-_TestCase.answer_cls = _Answer
-_TestCase.prompt = _PROMPT
+def test_class_configuration_stays_out_of_pydantic_fields():
+    """Concrete class configuration should not become Pydantic model fields."""
+    assert _Query.prompt is _PROMPT
+    assert _Answer.prompt is _PROMPT
+    assert _TestCase.query_cls is _Query
+    assert _TestCase.answer_cls is _Answer
+    assert _TestCase.prompt is _PROMPT
+    assert "prompt" not in _Query.model_fields
+    assert "query_cls" not in _TestCase.model_fields
+    assert "answer_cls" not in _TestCase.model_fields
 
 
 def test_test_case_enforces_minimum_difficulty_without_lowering_higher_values():

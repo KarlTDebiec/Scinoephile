@@ -49,20 +49,20 @@ class ProcessorKwargs(TypedDict, total=False):
     """Available tools and handlers."""
 
 
-class Processor(ABC):
+class Processor[TPrompt: Prompt](ABC):
     """Base processor for LLM workflows."""
 
     manager_cls: type[Manager] | None = None
     """Manager class used to construct test case models."""
 
-    prompt: Prompt
+    prompt: TPrompt
     """Text for LLM correspondence."""
     test_case_cls: type[TestCase]
     """Test-case class for the configured prompt."""
 
     def __init__(
         self,
-        prompt: Prompt,
+        prompt: TPrompt,
         shared_test_cases: list[TestCase] | None = None,
         current_test_cases_path: Path | None = None,
         *,

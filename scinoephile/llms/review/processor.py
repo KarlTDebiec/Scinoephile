@@ -22,7 +22,7 @@ __all__ = ["ReviewProcessor"]
 logger = getLogger(__name__)
 
 
-class ReviewProcessor(Processor):
+class ReviewProcessor(Processor[ReviewPrompt]):
     """Processes review LLM queries."""
 
     prompt: ReviewPrompt

@@ -19,7 +19,8 @@ class AudioSubtitle(Subtitle):
     """Individual subtitle with audio."""
 
     @override
-    def __init__(
+    # Audio metadata extends the keyword-based subtitle constructor
+    def __init__(  # ty: ignore[invalid-method-override]
         self,
         audio: AudioSegment | None = None,
         segment: TranscribedSegment | None = None,

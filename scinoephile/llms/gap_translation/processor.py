@@ -26,7 +26,7 @@ __all__ = ["GapTranslationProcessor"]
 logger = getLogger(__name__)
 
 
-class GapTranslationProcessor(Processor):
+class GapTranslationProcessor(Processor[GapTranslationPrompt]):
     """Processes gap translation matters."""
 
     prompt: GapTranslationPrompt
