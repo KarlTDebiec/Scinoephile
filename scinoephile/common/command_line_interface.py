@@ -7,22 +7,46 @@ from __future__ import annotations
 import re
 from abc import ABC, abstractmethod
 from argparse import (
+    Action,
     ArgumentParser,
+    Namespace,
     RawDescriptionHelpFormatter,
     _SubParsersAction,  # noqa pylint
 )
+from collections.abc import Sequence
 from datetime import datetime
 from inspect import cleandoc
 from logging import FileHandler, Formatter, getLogger
 from pathlib import Path
 from sys import argv
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import Any
 
 from .logs import DEFAULT_LOG_FORMAT, configure_logging
 
 __all__ = ["CommandLineInterface"]
 
 logger = getLogger(__name__)
+
+
+class _VerbosityAction(Action):
+    """Count verbosity from warnings even when a child suppresses its default."""
+
+    def __call__(
+        self,
+        parser: ArgumentParser,
+        namespace: Namespace,
+        values: object,
+        option_string: str | None = None,
+    ):
+        """Increase verbosity for one occurrence of the option.
+
+        Arguments:
+            parser: active parser
+            namespace: parsed arguments
+            values: unused value for this zero-argument option
+            option_string: option used to invoke the action
+        """
+        setattr(namespace, self.dest, getattr(namespace, self.dest, 1) + 1)
 
 
 class CommandLineInterface(ABC):
@@ -39,7 +63,8 @@ class CommandLineInterface(ABC):
         verbosity.add_argument(
             "-v",
             "--verbose",
-            action="count",
+            action=_VerbosityAction,
+            nargs=0,
             default=1,
             dest="verbosity",
             help=(
@@ -122,10 +147,14 @@ class CommandLineInterface(ABC):
         return text[0].lower() + text[1:]
 
     @classmethod
-    def main(cls):
-        """Execute from command line."""
+    def main(cls, arguments: Sequence[str] | None = None):
+        """Execute from command line.
+
+        Arguments:
+            arguments: explicit tokens, or process arguments when omitted
+        """
         parser = cls.argparser()
-        kwargs = vars(parser.parse_args())
+        kwargs = vars(parser.parse_args(arguments))
 
         # Configure logging
         verbosity = kwargs.pop("verbosity", 1)
@@ -163,18 +192,13 @@ class CommandLineInterface(ABC):
         command_line = " ".join(args)
         logger.info(f"Run with command line: {command_line}")
 
-    if TYPE_CHECKING:
-        # Argparse validates each command's distinct keyword signature before dispatch
-        _main: ClassVar[Any]
-        """Execute with provided keyword arguments."""
-    else:
+    @classmethod
+    @abstractmethod
+    def _main(cls, *args: Any, **kwargs: Any):
+        """Execute with provided command-line arguments.
 
-        @classmethod
-        @abstractmethod
-        def _main(cls, **kwargs: Any):
-            """Execute with provided keyword arguments.
-
-            Arguments:
-                **kwargs: parsed command-line arguments
-            """
-            raise NotImplementedError()
+        Arguments:
+            *args: positional command-line arguments
+            **kwargs: parsed command-line arguments
+        """
+        raise NotImplementedError()
