@@ -13,7 +13,10 @@ from pydantic_core import PydanticCustomError
 
 from .required_class_value import RequiredClassValue
 
-__all__ = ["LLMModel", "get_model_name", "make_hashable"]
+__all__ = ["LLMModel", "ReadOnlyClassValue", "get_model_name", "make_hashable"]
+
+ReadOnlyClassValue = RequiredClassValue
+"""Compatibility alias for the former class value descriptor name."""
 
 
 class LLMModel(BaseModel):
