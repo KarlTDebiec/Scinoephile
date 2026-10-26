@@ -8,7 +8,7 @@ from scinoephile.core.pairs import (
     get_block_pair_indexes_by_pause,
     get_block_pairs_by_pause,
 )
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
 
 
 def test_get_block_pairs_by_pause_kob(kob_yue_hans: Series, kob_eng: Series):
@@ -38,3 +38,25 @@ def test_get_block_pairs_by_pause_kob(kob_yue_hans: Series, kob_eng: Series):
     assert len(last_two_block) == 2
     assert last_one_block[0].start == 5931306
     assert last_two_block[0].start == 5931348
+
+
+def test_get_block_pairs_by_pause_tracks_longest_overlapping_event():
+    """Keep guide cues with a long subtitle even after a nested cue ends."""
+    one = Series(
+        events=[
+            Subtitle(start=0, end=10000, text="Long"),
+            Subtitle(start=1000, end=2000, text="Short"),
+            Subtitle(start=14000, end=15000, text="Later"),
+        ]
+    )
+    two = Series(
+        events=[
+            Subtitle(start=6500, end=7500, text="Guide"),
+            Subtitle(start=14000, end=15000, text="Later guide"),
+        ]
+    )
+
+    assert get_block_pair_indexes_by_pause(one, two) == [
+        ((0, 2), (0, 1)),
+        ((2, 3), (1, 2)),
+    ]
