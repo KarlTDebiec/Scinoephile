@@ -3,7 +3,8 @@
 """Core code related to interactions with LLMs.
 
 Package hierarchy (modules may import from any above):
-* cache_namespace / metrics / models / prompt / tool
+* cache_namespace / metrics / prompt / required_class_value / tool
+* models
 * answer / query / test_case_subtitle / tool_box
 * llm_provider / test_case
 * manager / openai_provider_base / cache

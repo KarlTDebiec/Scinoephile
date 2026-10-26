@@ -11,9 +11,10 @@ from typing import ClassVar, Self
 from pydantic import Field, model_validator
 
 from .answer import Answer
-from .models import LLMModel, ReadOnlyClassValue
+from .models import LLMModel
 from .prompt import Prompt
 from .query import Query
+from .required_class_value import RequiredClassValue
 
 __all__ = ["TestCase"]
 
@@ -26,11 +27,11 @@ class TestCase[TQuery: Query, TAnswer: Answer](LLMModel, ABC):
 
     operation: ClassVar[str]
     """Stable LLM operation identifier."""
-    query_cls = ReadOnlyClassValue[type[Query]]()
+    query_cls = RequiredClassValue[type[Query]]()
     """Query model class."""
-    answer_cls = ReadOnlyClassValue[type[Answer]]()
+    answer_cls = RequiredClassValue[type[Answer]]()
     """Answer model class."""
-    prompt = ReadOnlyClassValue[Prompt]()
+    prompt = RequiredClassValue[Prompt]()
     """Text for LLM correspondence."""
     query: TQuery
     """Query data for the test case."""
