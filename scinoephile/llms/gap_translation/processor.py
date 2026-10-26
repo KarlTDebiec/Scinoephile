@@ -78,10 +78,12 @@ class GapTranslationProcessor(Processor[GapTranslationPrompt]):
             query_cls = test_case_cls.query_cls
             targets: list[dict[str, int | str]] = []
             guides: list[dict[str, int | str]] = []
+            source_subtitles_by_index: dict[int, Subtitle] = {}
             one_idx = 0
             for two_idx in range(size):
                 index = two_idx + 1
                 if two_idx not in gaps:
+                    source_subtitles_by_index[index] = one_blk.events[one_idx]
                     targets.append(
                         {
                             "index": index,
@@ -116,7 +118,15 @@ class GapTranslationProcessor(Processor[GapTranslationPrompt]):
                 output = target_text_by_index.get(index)
                 if output is None:
                     output = output_text_by_index[index]
-                output_series.append(Subtitle(start=start, end=end, text=output))
+                source_subtitle = source_subtitles_by_index.get(index)
+                if source_subtitle is None:
+                    output_subtitle = Subtitle(start=start, end=end, text=output)
+                else:
+                    output_subtitle = type(source_subtitle)(**source_subtitle.as_dict())
+                    output_subtitle.start = start
+                    output_subtitle.end = end
+                    output_subtitle.text = output
+                output_series.append(output_subtitle)
 
             logger.info(f"Block {blk_idx}:\n{one_blk.to_simple_string()}")
             output_series_to_concatenate[blk_idx] = output_series
@@ -126,9 +136,8 @@ class GapTranslationProcessor(Processor[GapTranslationPrompt]):
         output_series_blocks = [
             series for series in output_series_to_concatenate if series is not None
         ]
-        if output_series_blocks:
-            output_series = get_concatenated_series(output_series_blocks)
-        else:
-            output_series = Series()
+        output_series = get_concatenated_series(
+            output_series_blocks, metadata_source=source_one
+        )
         logger.info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series

@@ -64,20 +64,29 @@ def get_sub_merged(subs: list[Subtitle], *, text: str | None = None) -> Subtitle
     return subtitle_cls(start=subs[0].start, end=subs[-1].end, text=text)
 
 
-def get_concatenated_series(blocks: list[Series]) -> Series:
+def get_concatenated_series(
+    blocks: list[Series], *, metadata_source: Series | None = None
+) -> Series:
     """Concatenate a list of sequential series blocks into a single series.
 
     Arguments:
         blocks: Series to concatenate
+        metadata_source: series whose styles and metadata should be retained
     Returns:
         Concatenated series
     Raises:
-        ScinoephileError: if the operation fails
+        ScinoephileError: if no blocks or metadata source are available
     """
     if len(blocks) == 0:
-        raise ScinoephileError("No blocks to concatenate")
+        if metadata_source is None:
+            raise ScinoephileError("No blocks to concatenate")
+        return metadata_source.slice(0, 0)
     all_events = []
     for block in blocks:
         all_events.extend(block.events)
     all_events.sort(key=lambda x: x.start)
-    return type(blocks[0])(events=all_events)
+    output = type(blocks[0])(events=all_events)
+    if metadata_source is None:
+        metadata_source = blocks[0]
+    metadata_source._copy_metadata_to(output)
+    return output

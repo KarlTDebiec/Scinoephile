@@ -92,9 +92,8 @@ class ReviewProcessor(Processor[ReviewPrompt]):
         output_series_blocks = [
             series for series in output_series_to_concatenate if series is not None
         ]
-        if output_series_blocks:
-            output_series = get_concatenated_series(output_series_blocks)
-        else:
-            output_series = Series()
+        output_series = get_concatenated_series(
+            output_series_blocks, metadata_source=series
+        )
         logger.info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series

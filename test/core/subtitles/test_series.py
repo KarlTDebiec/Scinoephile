@@ -6,11 +6,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from pysubs2 import SSAStyle
 from pytest import raises
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from test.helpers import assert_series_equal, test_data_root
 
 
@@ -142,6 +143,27 @@ def test_series_slice_preserves_metadata_and_copies_events():
 
     sliced.events[0].text = "Changed"
     assert series.events[1].text == "Second"
+
+
+def test_concatenation_preserves_selected_series_metadata():
+    """Concatenated events retain the selected source's independent ASS metadata."""
+    source = Series(events=[Subtitle(start=0, end=1000, text="Source")])
+    source.styles["Custom"] = SSAStyle(fontsize=55)
+    source.info["PlayResX"] = "1920"
+    source.format = "ass"
+    blocks = [
+        Series(events=[Subtitle(start=0, end=1000, text="Output", style="Custom")])
+    ]
+
+    output = get_concatenated_series(blocks, metadata_source=source)
+
+    assert output.events == blocks[0].events
+    assert output.styles == source.styles
+    assert output.styles is not source.styles
+    assert output.info == source.info
+    assert output.info is not source.info
+    assert output.format == "ass"
+    assert get_concatenated_series([], metadata_source=source).styles == source.styles
 
 
 def test_series_to_string_wraps_serializer_errors():

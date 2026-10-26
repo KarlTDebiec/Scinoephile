@@ -98,9 +98,6 @@ class GuidedReviewProcessor(Processor[GuidedReviewPrompt]):
         self.save_encountered_test_cases()
 
         processed_blocks = [block for block in output_blocks if block is not None]
-        if processed_blocks:
-            output = get_concatenated_series(processed_blocks)
-        else:
-            output = Series()
+        output = get_concatenated_series(processed_blocks, metadata_source=target)
         logger.info(f"Concatenated Series:\n{output.to_simple_string()}")
         return output
