@@ -4,7 +4,8 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser
+from argparse import SUPPRESS, ArgumentParser
+from collections.abc import Sequence
 from pathlib import Path
 from typing import ClassVar
 from unittest.mock import patch
@@ -224,6 +225,34 @@ def test_main_basic():
             mock_main.assert_called_once()
 
 
+@parametrize("arguments", [[], (), ["-v"], ("-vv",)])
+def test_main_explicit_arguments(arguments: Sequence[str]):
+    """Execute explicit tokens without reading process arguments.
+
+    Arguments:
+        arguments: explicit command-line tokens
+    """
+    with patch("sys.argv", ["test_script.py", "--invalid-process-option"]):
+        with patch.object(TestCli, "_main") as mock_main:
+            with patch(
+                "scinoephile.common.command_line_interface.configure_logging"
+            ) as mock_logging:
+                TestCli.main(arguments)
+
+    mock_main.assert_called_once_with()
+    expected_verbosity = 1
+    if arguments:
+        expected_verbosity += arguments[0].count("v")
+    mock_logging.assert_called_once_with(expected_verbosity)
+
+
+def test_main_explicit_argument_values():
+    """Pass explicit argument values to the selected implementation unchanged."""
+    ArgsCaptureCli.captured.clear()
+    ArgsCaptureCli.main(["--name", "value with spaces"])
+    assert ArgsCaptureCli.captured == {"name": "value with spaces"}
+
+
 def test_main_with_verbosity():
     """Test main() method handles verbosity."""
     with patch.object(TestCli, "_main") as mock_main:
@@ -256,6 +285,30 @@ def test_run_cli_with_args_quoted_values():
     ArgsCaptureCli.captured.clear()
     run_cli_with_args(ArgsCaptureCli, '--name "value with spaces"')
     assert ArgsCaptureCli.captured.get("name") == "value with spaces"
+
+
+@parametrize(
+    ("arguments", "expected_verbosity"),
+    [([], 1), (["-v"], 2), (["--verbose"], 2), (["-vv"], 3), (["-q"], 0)],
+)
+def test_subparser_suppressed_verbosity_default(
+    arguments: list[str], expected_verbosity: int
+):
+    """Count child verbosity from warnings when its default is suppressed.
+
+    Arguments:
+        arguments: options passed to the child parser
+        expected_verbosity: selected verbosity level
+    """
+    parser = TestCli.argparser()
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    child = AnotherTestCli.argparser(subparsers=subparsers)
+    for action in child._actions:
+        if action.dest == "verbosity":
+            action.default = SUPPRESS
+
+    parsed = parser.parse_args([AnotherTestCli.name(), *arguments])
+    assert parsed.verbosity == expected_verbosity
 
 
 def test_assert_cli_usage_failure_reports_streams(monkeypatch: MonkeyPatch):

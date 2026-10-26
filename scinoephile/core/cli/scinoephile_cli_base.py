@@ -7,6 +7,7 @@ from __future__ import annotations
 import locale
 import re
 from argparse import ArgumentParser, _SubParsersAction  # noqa: PLC2701
+from collections.abc import Sequence
 from inspect import cleandoc
 from os import getenv
 from typing import ClassVar
@@ -167,7 +168,11 @@ class ScinoephileCliBase(CommandLineInterface):
         return parser
 
     @classmethod
-    def main(cls):
-        """Execute with locale detection."""
+    def main(cls, arguments: Sequence[str] | None = None):
+        """Execute with locale detection.
+
+        Arguments:
+            arguments: explicit tokens, or process arguments when omitted
+        """
         ScinoephileCliBase.locale_name = cls._resolve_locale()
-        super().main()
+        super().main(arguments)
