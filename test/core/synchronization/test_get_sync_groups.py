@@ -26,6 +26,23 @@ def test_get_sync_groups_preserves_subtitles_when_other_series_is_empty():
     assert get_sync_groups(empty, empty) == []
 
 
+def test_get_sync_groups_excludes_matches_below_absolute_cutoff():
+    """Leave nearby subtitles unpaired when their absolute overlap is weak."""
+    one = Series(events=[Subtitle(start=0, end=1000, text="A")])
+    two = Series(events=[Subtitle(start=2000, end=3000, text="1")])
+
+    assert get_sync_groups(one, two) == [([0], []), ([], [0])]
+
+
+def test_get_sync_groups_applies_configured_absolute_cutoff():
+    """Allow a moderate match only when its score meets the selected minimum."""
+    one = Series(events=[Subtitle(start=0, end=1000, text="A")])
+    two = Series(events=[Subtitle(start=500, end=1500, text="1")])
+
+    assert get_sync_groups(one, two, cutoff=0.3) == [([0], [0])]
+    assert get_sync_groups(one, two, cutoff=0.4) == [([0], []), ([], [0])]
+
+
 def test_get_sync_groups_exceeds_max_cutoff():
     """Test that get_sync_groups raises error when max_cutoff is exceeded.
 

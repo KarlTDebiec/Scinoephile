@@ -34,6 +34,19 @@ def test_get_stacked_series_preserves_nonempty_series_when_other_is_empty():
         ]
 
 
+def test_get_stacked_series_keeps_weakly_overlapping_subtitles_separate():
+    """Avoid combining subtitles whose overlap is below the minimum score."""
+    one = Series(events=[Subtitle(start=0, end=1000, text="A")])
+    two = Series(events=[Subtitle(start=2000, end=3000, text="1")])
+
+    output = get_stacked_series(one, two)
+
+    assert [(event.start, event.end, event.text) for event in output.events] == [
+        (0, 1000, "A"),
+        (2000, 3000, "1"),
+    ]
+
+
 def test_get_stacked_series_does_not_overlap_union_timing():
     """Test stack never emits overlapping subtitles when inputs do not overlap."""
     one = Series(
