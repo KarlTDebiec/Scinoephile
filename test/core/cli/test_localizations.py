@@ -4,8 +4,34 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+from unittest.mock import patch
+
+from pytest import MonkeyPatch
+
 from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS
+from scinoephile.common.command_line_interface import CommandLineInterface
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.core.cli.scinoephile_cli_base import ScinoephileCliBase
+from test.helpers import parametrize
+
+
+@parametrize("arguments", [None, [], (), ["--help"], ("--help",)])
+def test_main_forwards_arguments_after_locale_detection(
+    arguments: Sequence[str] | None, monkeypatch: MonkeyPatch
+):
+    """Forward argument sequences after resolving the active CLI locale.
+
+    Arguments:
+        arguments: explicit tokens or the process-argument default
+        monkeypatch: pytest fixture for isolating locale state
+    """
+    monkeypatch.setattr(ScinoephileCliBase, "locale_name", "en")
+    monkeypatch.setenv("LC_ALL", "zh_CN.UTF-8")
+    with patch.object(CommandLineInterface, "main") as mock_main:
+        ScinoephileCliBase.main(arguments)
+        assert ScinoephileCliBase.locale_name == "zh-hans"
+    mock_main.assert_called_once_with(arguments)
 
 
 def test_merge_localizations_merges_locale_text_in_order():
