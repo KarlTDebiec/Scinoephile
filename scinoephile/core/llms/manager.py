@@ -14,9 +14,10 @@ from typing import Any, ClassVar, Generic, TypeVar, cast
 from pydantic import create_model
 
 from .answer import Answer
-from .models import LLMModel, ReadOnlyClassValue, get_model_name
+from .models import LLMModel, get_model_name
 from .prompt import Prompt
 from .query import Query
+from .required_class_value import RequiredClassValue
 from .test_case import TestCase
 
 __all__ = ["Manager", "PromptModelField"]
@@ -41,7 +42,7 @@ class Manager(Generic[TTestCase_co], ABC):  # noqa: UP046
 
     operation: ClassVar[str]
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt = ReadOnlyClassValue[Prompt]()
+    base_prompt = RequiredClassValue[Prompt]()
     """Base prompt defining persisted test-case field names."""
     test_case_base_cls: ClassVar[type[TestCase]]
     """Static test-case model defining the operation's semantic shape."""

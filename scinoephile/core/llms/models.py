@@ -11,29 +11,16 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, ValidationInfo, model_validator
 from pydantic_core import PydanticCustomError
 
-__all__ = ["LLMModel", "ReadOnlyClassValue", "get_model_name", "make_hashable"]
+from .required_class_value import RequiredClassValue
 
-
-class ReadOnlyClassValue[T]:
-    """Type a class value supplied by concrete subclasses without mutable overrides."""
-
-    def __get__(self, instance: object | None, owner: type[object]) -> T:
-        """Require concrete subclasses to provide the class value.
-
-        Arguments:
-            instance: accessed instance, or None for class access
-            owner: class through which the value was accessed
-        Raises:
-            AttributeError: if the concrete subclass has not supplied a value
-        """
-        raise AttributeError("Concrete subclass must provide this class value")
+__all__ = ["LLMModel", "get_model_name", "make_hashable"]
 
 
 class LLMModel(BaseModel):
     """Base model for LLM queries, answers, and test cases."""
 
     model_config = ConfigDict(
-        extra="forbid", ignored_types=(ReadOnlyClassValue,), validate_by_name=True
+        extra="forbid", ignored_types=(RequiredClassValue,), validate_by_name=True
     )
 
     @classmethod

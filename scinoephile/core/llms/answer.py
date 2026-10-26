@@ -7,8 +7,9 @@ from __future__ import annotations
 import json
 from abc import ABC
 
-from .models import LLMModel, ReadOnlyClassValue
+from .models import LLMModel
 from .prompt import Prompt
+from .required_class_value import RequiredClassValue
 
 __all__ = ["Answer"]
 
@@ -16,7 +17,7 @@ __all__ = ["Answer"]
 class Answer(LLMModel, ABC):
     """ABC for LLM answers."""
 
-    prompt = ReadOnlyClassValue[Prompt]()
+    prompt = RequiredClassValue[Prompt]()
     """Text for LLM correspondence."""
 
     def __str__(self) -> str:

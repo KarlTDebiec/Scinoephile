@@ -8,8 +8,9 @@ import json
 from abc import ABC
 from hashlib import sha256
 
-from .models import LLMModel, ReadOnlyClassValue, make_hashable
+from .models import LLMModel, make_hashable
 from .prompt import Prompt
+from .required_class_value import RequiredClassValue
 
 __all__ = ["Query"]
 
@@ -17,7 +18,7 @@ __all__ = ["Query"]
 class Query(LLMModel, ABC):
     """ABC for LLM queries."""
 
-    prompt = ReadOnlyClassValue[Prompt]()
+    prompt = RequiredClassValue[Prompt]()
     """Text for LLM correspondence."""
 
     def __str__(self) -> str:
