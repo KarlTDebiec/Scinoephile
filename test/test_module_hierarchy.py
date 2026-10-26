@@ -369,19 +369,19 @@ def get_documented_level_violations(
     violations: list[str] = []
     if duplicate_names:
         violations.append(
-            f"{init_path.relative_to(package_root.parent)}: "
+            f"{init_path.relative_to(package_root.parent).as_posix()}: "
             "duplicated hierarchy entries: "
             f"{', '.join(duplicate_names)}"
         )
     if missing_names:
         violations.append(
-            f"{init_path.relative_to(package_root.parent)}: "
+            f"{init_path.relative_to(package_root.parent).as_posix()}: "
             "missing hierarchy entries: "
             f"{', '.join(missing_names)}"
         )
     if extra_names:
         violations.append(
-            f"{init_path.relative_to(package_root.parent)}: "
+            f"{init_path.relative_to(package_root.parent).as_posix()}: "
             "unknown hierarchy entries: "
             f"{', '.join(extra_names)}"
         )
@@ -472,8 +472,8 @@ def format_import_style_violation(
         formatted violation description
     """
     return (
-        f"{file_path.relative_to(package_parent_path)}:{node.lineno}: {reason}: "
-        f"{ast.unparse(node)}"
+        f"{file_path.relative_to(package_parent_path).as_posix()}:{node.lineno}: "
+        f"{reason}: {ast.unparse(node)}"
     )
 
 
@@ -810,7 +810,8 @@ def get_module_hierarchy_violations(
     documented_levels = get_documented_levels(init_path)
     if documented_levels is None:
         return [
-            f"{init_path.relative_to(package_parent_path)}: missing hierarchy block"
+            f"{init_path.relative_to(package_parent_path).as_posix()}: "
+            "missing hierarchy block"
         ]
 
     violations = get_documented_level_violations(
@@ -913,7 +914,7 @@ def get_import_order_violations(
             imported_level = documented_level_by_child[imported_name]
             if importer_level <= imported_level:
                 violations.append(
-                    f"{init_path.relative_to(package_root.parent)}: "
+                    f"{init_path.relative_to(package_root.parent).as_posix()}: "
                     f"{importer_name} imports {imported_name}, but "
                     f"{importer_name} is level {importer_level} and "
                     f"{imported_name} is level {imported_level}"
@@ -960,7 +961,7 @@ def get_cycle_violations(init_path: Path, edges: dict[str, set[str]]) -> list[st
             visit(child_name)
 
     return [
-        f"{init_path.relative_to(package_root.parent)}: "
+        f"{init_path.relative_to(package_root.parent).as_posix()}: "
         f"import cycle: {' -> '.join(cycle)}"
         for cycle in sorted(cycles)
     ]
