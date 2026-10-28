@@ -119,7 +119,11 @@ class AuditReviewServeCli(ScinoephileCliBase):
 
     @classmethod
     def name(cls) -> str:
-        """Return the audit subcommand name."""
+        """Return the audit subcommand name.
+
+        Returns:
+            audit subcommand name
+        """
         return "serve"
 
     @classmethod
@@ -140,11 +144,11 @@ class AuditReviewServeCli(ScinoephileCliBase):
         Arguments:
             infile_path: immutable source subtitles
             outfile_path: edited subtitle output
+            web_args: loopback server address and port
+            title: display title override
             json_path: optional read/write native proofreading decisions
             language: optional explicit subtitle language
             report_path: optional report used only to seed audit notes
-            web_args: loopback server address and port
-            title: display title override
             _parser: parser for user-facing error messages
         """
         parser = _parser or cls.argparser()

@@ -210,14 +210,16 @@ document.addEventListener("change", event => {
     if (form && event.target.matches("select, input[type=checkbox]")) requestReviewSave(form);
 });
 
+// Run before HTMX synchronization: a filter request must not abort an active save.
+document.addEventListener("htmx:confirm", event => {
+    if (event.detail.target?.id !== "workspace" || !hasReviewDrafts()) return;
+    event.preventDefault();
+    document.querySelector("#messages").textContent =
+        "Save subtitle drafts before changing filters or opening another block.";
+});
+
 document.addEventListener("htmx:beforeRequest", event => {
     const form = event.detail.elt;
-    if (form.matches(".audit-block summary > a") && hasReviewDrafts()) {
-        event.preventDefault();
-        document.querySelector("#messages").textContent =
-            "Save subtitle drafts before opening another block.";
-        return;
-    }
     if (!form.matches(".audit-row form")) return;
     const state = getSaveState(form);
     state.sent = reviewValues(form);
@@ -225,8 +227,15 @@ document.addEventListener("htmx:beforeRequest", event => {
     syncSaveStatus(form);
 });
 
-// A superseded preview must not overwrite either side of a newer draft's diff.
+// Navigation may finish after a user starts editing; retain that newer draft too.
 document.addEventListener("htmx:beforeSwap", event => {
+    if (event.detail.target?.id === "workspace" && hasReviewDrafts()) {
+        event.detail.shouldSwap = false;
+        document.querySelector("#messages").textContent =
+            "Save subtitle drafts before changing filters or opening another block.";
+        return;
+    }
+    // A superseded preview must not overwrite either side of a newer draft's diff.
     const input = event.detail.requestConfig.elt;
     if (!input.matches("textarea[data-original]")) return;
     if (input.value.replace(/\r\n?/g, "\n") !== event.detail.requestConfig.parameters.reviewed) {
