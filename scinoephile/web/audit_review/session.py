@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import sqlite3
 from contextlib import closing
@@ -305,9 +306,28 @@ class AuditSession:
         self._lock = RLock()
         self._auditing_running = False
         self._proofreading_running = False
+        self._proofreading_source: Series | None = None
+        self._proofreading_content: bytes | None = None
+        self._proofreading_fingerprints: tuple[bytes | None, ...] | None = None
         try:
             self._validate_paths(report_path)
-            self.original = Series.load(self.infile_path)
+            self._source_content = self.infile_path.read_bytes()
+            if self.state_path.exists() and self.outfile_path.exists():
+                with closing(sqlite3.connect(self.state_path)) as db:
+                    if db.execute(
+                        "SELECT 1 FROM sqlite_master WHERE name='review_metadata'"
+                    ).fetchone():
+                        stored = db.execute(
+                            "SELECT value FROM review_metadata WHERE name='source'"
+                        ).fetchone()
+                        if stored is not None:
+                            self._source_content = bytes(stored[0])
+            self.original = Series.from_string(
+                self._source_content.decode("utf-8-sig")
+                .replace("\r\n", "\n")
+                .replace("\r", "\n"),
+                format_="srt",
+            )
             detected = language or get_series_language(self.original)
             if detected is None or detected not in DEFAULT_PROMPTS:
                 raise ValueError("Specify a supported proofreading language")
@@ -337,6 +357,14 @@ class AuditSession:
                     "finding TEXT NOT NULL, verified INTEGER NOT NULL, "
                     "version INTEGER NOT NULL)"
                 )
+                db.execute(
+                    "CREATE TABLE IF NOT EXISTS review_metadata ("
+                    "name TEXT PRIMARY KEY, value BLOB NOT NULL)"
+                )
+                db.execute(
+                    "INSERT OR REPLACE INTO review_metadata VALUES ('source', ?)",
+                    (self._source_content,),
+                )
                 for previous, status in _LEGACY_STATUSES.items():
                     db.execute(
                         "UPDATE review_edits SET finding = ?, version = version + 1 "
@@ -354,10 +382,26 @@ class AuditSession:
             return self._auditing_running
 
     @property
+    def input_changed(self) -> bool:
+        """Whether the configured OCR file differs from the last published baseline."""
+        return self.infile_path.read_bytes() != self._source_content
+
+    @property
     def proofreading_running(self) -> bool:
         """Return whether an automated run currently owns output creation."""
         with self._lock:
             return self._proofreading_running
+
+    @property
+    def proofreading_settings(self) -> dict[str, str]:
+        """Last successful proofreading settings and authored-decision provenance."""
+        with self._lock, closing(sqlite3.connect(self.state_path)) as db:
+            stored = db.execute(
+                "SELECT value FROM review_metadata WHERE name='proofreading'"
+            ).fetchone()
+        if stored is None:
+            return {}
+        return json.loads(bytes(stored[0]).decode("utf-8"))
 
     def begin_auditing(
         self, *, rerun: bool = False
@@ -392,13 +436,15 @@ class AuditSession:
             self._auditing_running = True
             return blocks
 
-    def begin_proofreading(self, *, rerun: bool = False):
-        """Reserve proofreading without modifying existing subtitle files.
+    def begin_proofreading(self, *, rerun: bool = False) -> Series:
+        """Reload the configured OCR input and reserve an immutable run snapshot.
 
         Arguments:
-            rerun: allow replacing existing output from original OCR
+            rerun: allow replacing existing output from current OCR
+        Returns:
+            freshly loaded source for the reserved worker
         Raises:
-            ValueError: if another run, existing output, or external edit conflicts
+            ValueError: if another run, structural change, or external edit conflicts
         """
         with self._lock:
             if self._proofreading_running or self._auditing_running:
@@ -407,8 +453,25 @@ class AuditSession:
                 raise ValueError("The proofreading output already exists")
             if rerun and not self.outfile_path.exists():
                 raise ValueError("Run proofreading before re-proofreading")
-            self._check_file_fingerprints()
+            fingerprints = self._file_fingerprints()
+            if fingerprints[1:] != self._fingerprints[1:]:
+                raise ValueError("Output or JSON changed outside this session")
+            content = self.infile_path.read_bytes()
+            source = Series.from_string(
+                content.decode("utf-8-sig").replace("\r\n", "\n").replace("\r", "\n"),
+                format_="srt",
+            )
+            if [(s.start, s.end) for s in source] != [
+                (s.start, s.end) for s in self.original
+            ]:
+                raise ValueError("OCR reload must preserve subtitle counts and timings")
+            if sha256(content).digest() != fingerprints[0]:
+                raise ValueError("OCR input changed while it was being loaded")
+            self._proofreading_source = source
+            self._proofreading_content = content
+            self._proofreading_fingerprints = fingerprints
             self._proofreading_running = True
+            return source
 
     def end_auditing(self):
         """Release the audit reservation on completion or failure."""
@@ -419,6 +482,9 @@ class AuditSession:
         """Release the reservation after worker completion or failure."""
         with self._lock:
             self._proofreading_running = False
+            self._proofreading_source = None
+            self._proofreading_content = None
+            self._proofreading_fingerprints = None
 
     def page(
         self, filters: AuditFilters, *, after: int = 0, through: int | None = None
@@ -526,12 +592,19 @@ class AuditSession:
             except sqlite3.Error as exc:
                 raise ScinoephileError(f"Unable to save audit findings: {exc}") from exc
 
-    def publish_proofreading(self, decisions_path: Path, *, rerun: bool = False):
+    def publish_proofreading(
+        self,
+        decisions_path: Path,
+        *,
+        rerun: bool = False,
+        settings: dict[str, str] | None = None,
+    ):
         """Publish validated decisions and subtitles as one recoverable operation.
 
         Arguments:
             decisions_path: completed temporary native proofreading decisions
-            rerun: back up and replace existing proofreading from original OCR
+            rerun: back up and replace existing proofreading from current OCR
+            settings: effective run settings and decision-reuse provenance
         Raises:
             ValueError: if the run lost its reservation or project files changed
             ScinoephileError: if publishing files or progress fails
@@ -541,23 +614,32 @@ class AuditSession:
                 raise ValueError("No proofreading run is active")
             if (
                 self.outfile_path.exists() and not rerun
-            ) or self._file_fingerprints() != self._fingerprints:
+            ) or self._file_fingerprints() != self._proofreading_fingerprints:
                 raise ValueError(
                     "Project files changed during proofreading; restart the app. "
                     "Output was not replaced."
                 )
-            decisions = ReviewDecisions(self.original, self.language, decisions_path)
+            source = self._proofreading_source
+            content = self._proofreading_content
+            assert source is not None and content is not None
+            source_digest = sha256(content).hexdigest()
+            decisions = ReviewDecisions(source, self.language, decisions_path)
             texts, notes = decisions.render()
-            ranges = self._get_block_ranges(decisions)
+            ranges = self._get_block_ranges(decisions, source=source)
             blocks = {
                 index: number
                 for number, (first, last) in enumerate(ranges, 1)
                 for index in range(first, last)
             }
+            previous = self.rows()
             updated = []
-            for row in self.rows():
+            for row in previous:
                 current = replace(
                     row,
+                    key=sha256(
+                        f"{source_digest}:{self.language.code}:{row.index - 1}".encode()
+                    ).hexdigest(),
+                    original=source.events[row.index - 1].text_with_newline,
                     reviewed=texts[row.index - 1],
                     review_note=notes[row.index - 1],
                     block_number=blocks[row.index - 1],
@@ -565,7 +647,8 @@ class AuditSession:
                     version=row.version + 1,
                 )
                 if (
-                    current.reviewed != row.reviewed
+                    current.original != row.original
+                    or current.reviewed != row.reviewed
                     or current.review_note != row.review_note
                 ):
                     current = replace(
@@ -577,6 +660,10 @@ class AuditSession:
                 if rerun:
                     self._backup_proofreading(db)
                 db.execute("BEGIN IMMEDIATE")
+                db.executemany(
+                    "DELETE FROM review_edits WHERE key=?",
+                    [(row.key,) for row in previous],
+                )
                 db.executemany(
                     "INSERT OR REPLACE INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?)",
                     [
@@ -592,7 +679,17 @@ class AuditSession:
                         for row in updated
                     ],
                 )
-                originals = self._write_files(updated, decisions)
+                db.execute(
+                    "INSERT OR REPLACE INTO review_metadata VALUES ('source', ?)",
+                    (content,),
+                )
+                if settings is not None:
+                    db.execute(
+                        "INSERT OR REPLACE INTO review_metadata "
+                        "VALUES ('proofreading', ?)",
+                        (json.dumps(settings).encode("utf-8"),),
+                    )
+                originals = self._write_files(updated, decisions, source=source)
                 db.commit()
             except (OSError, sqlite3.Error) as exc:
                 db.rollback()
@@ -601,6 +698,8 @@ class AuditSession:
                 raise ScinoephileError(
                     f"Unable to publish proofreading: {exc}"
                 ) from exc
+            self.original = source
+            self._source_content = content
             self.decisions = decisions
             self._block_ranges = ranges
             self._rows = updated
@@ -827,6 +926,10 @@ class AuditSession:
         Raises:
             ValueError: if original, output, or native decisions changed externally
         """
+        if self.input_changed:
+            raise ValueError(
+                "OCR input changed. Re-proofread before editing or auditing."
+            )
         if self._file_fingerprints() != self._fingerprints:
             raise ValueError(
                 "A subtitle or JSON file changed outside this session. "
@@ -848,18 +951,21 @@ class AuditSession:
         return tuple(fingerprints)
 
     def _get_block_ranges(
-        self, decisions: ReviewDecisions | None = None
+        self, decisions: ReviewDecisions | None = None, *, source: Series | None = None
     ) -> list[tuple[int, int]]:
         """Resolve logged query boundaries, falling back to original pause blocks.
 
         Arguments:
             decisions: candidate decisions, or current session decisions
+            source: candidate input, or the published source baseline
         Returns:
             nonoverlapping zero-based inclusive/exclusive subtitle ranges
         """
         if decisions is None:
             decisions = self.decisions
-        count = len(self.original)
+        if source is None:
+            source = self.original
+        count = len(source)
         if not count:
             return []
         joined = [False] * (count - 1)
@@ -871,7 +977,7 @@ class AuditSession:
                     covered.update(range(first, first + size))
                     for index in range(first, first + size - 1):
                         joined[index] = True
-        for first, last in Series.get_block_indexes_by_pause(self.original):
+        for first, last in Series.get_block_indexes_by_pause(source):
             for index in range(first, last - 1):
                 if index not in covered and index + 1 not in covered:
                     joined[index] = True
@@ -923,7 +1029,7 @@ class AuditSession:
         label = self.language.code
         if self.language == Language.eng:
             label = "English"
-        source_digest = sha256(self.infile_path.read_bytes()).hexdigest()
+        source_digest = sha256(self._source_content).hexdigest()
         rows = []
         for index, source in enumerate(self.original.events):
             note = imported.get(index + 1, "")
@@ -1027,19 +1133,26 @@ class AuditSession:
             raise ValueError("The edited subtitle output must be an SRT file")
 
     def _write_files(
-        self, rows: list[AuditRow], decisions: ReviewDecisions | None
+        self,
+        rows: list[AuditRow],
+        decisions: ReviewDecisions | None,
+        *,
+        source: Series | None = None,
     ) -> dict[Path, bytes | None]:
         """Replace each output atomically and restore files on an I/O failure.
 
         Arguments:
             rows: validated final subtitle rows
             decisions: candidate native JSON decisions
+            source: candidate input, or the published source baseline
         Returns:
             original file contents for rollback if the database commit fails
         Raises:
             BaseException: if writing fails, after restoring replaced files
         """
-        output = deepcopy(self.original)
+        if source is None:
+            source = self.original
+        output = deepcopy(source)
         for subtitle, row in zip(output, rows, strict=True):
             subtitle.text = row.reviewed.replace("\n", "\\N")
         writes = {self.outfile_path: output.to_string("srt")}

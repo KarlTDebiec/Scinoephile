@@ -6,10 +6,10 @@
 <svg width="{{ size }}" height="{{ size }}" aria-hidden="true"><use href="{{ url_for('audit_review_assets.static', filename='icons/' ~ name ~ '.svg') }}#icon"/></svg>
 {%- endmacro %}
 
-{% macro status_select(name, label, choices, selected, include_all=false, exclude=none, all_label='All statuses', counts=none, oob=false) -%}
+{% macro status_select(name, label, choices, selected, include_all=false, all_label='All statuses', counts=none, oob=false) -%}
 <select{% if counts is not none %} id="filter-{{ name }}"{% if oob %} hx-swap-oob="outerHTML"{% endif %}{% endif %} name="{{ name }}" aria-label="{{ label }}" title="{{ label }}">
   <button type="button"><selectedcontent></selectedcontent></button>
   {% if include_all %}<option value="all"{% if selected == 'all' %} selected{% endif %}>{{ all_label }}{% if counts is not none %} ({{ '{:,}'.format(counts['all']) }}){% endif %}</option>{% endif %}
-  {% for value, text, symbol in choices %}{% if value != exclude or selected == value %}<option value="{{ value }}"{% if selected == value %} selected{% endif %}{% if value == exclude %} disabled hidden{% endif %}>{{ icon(symbol) }}{{ text }}{% if counts is not none %} ({{ '{:,}'.format(counts[value]) }}){% endif %}</option>{% endif %}{% endfor %}
+  {% for value, text, symbol in choices %}<option value="{{ value }}"{% if selected == value %} selected{% endif %}>{{ icon(symbol) }}{{ text }}{% if counts is not none %} ({{ '{:,}'.format(counts[value]) }}){% endif %}</option>{% endfor %}
 </select>
 {%- endmacro %}

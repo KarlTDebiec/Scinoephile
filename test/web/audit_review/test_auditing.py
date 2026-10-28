@@ -627,3 +627,61 @@ def test_operation_panels_toggle_independently(
         as_text=True
     )
     assert 'id="auditing"' not in audit_closed and 'id="proofreading"' in audit_closed
+
+
+@mark.parametrize("operation", ["proofreading", "auditing"])
+@mark.parametrize("audited", [False, True])
+@mark.parametrize("htmx", [False, True])
+def test_operation_settings_remain_accessible_during_other_job(
+    tmp_path: Path, monkeypatch: MonkeyPatch, operation: str, audited: bool, htmx: bool
+):
+    """Keep settings accessible while reserving execution for the active worker.
+
+    Arguments:
+        tmp_path: temporary subtitle project
+        monkeypatch: offline provider replacements
+        operation: settings panel to open while the other operation runs
+        audited: whether previous audit findings exist
+        htmx: whether navigation requests a workspace fragment
+    """
+    audit, _, _ = _setup(tmp_path, monkeypatch)
+    if audited:
+        row = audit.rows()[0]
+        audit.save(
+            row.key,
+            reviewed=row.reviewed,
+            review_note="",
+            finding="ok",
+            notes="",
+            verified=False,
+            version=row.version,
+        )
+    client = create_app(audit).test_client()
+    headers = {}
+    if htmx:
+        headers["HX-Request"] = "true"
+    toggle = "reaudit"
+    if operation == "proofreading":
+        toggle = "reproofread"
+        audit.begin_auditing(rerun=True)
+    else:
+        audit.begin_proofreading(rerun=True)
+    closed = client.get("/", headers=headers).get_data(as_text=True)
+    button = closed.split(f"data-{toggle}>")[1].split("<button")[1].split(">")[0]
+    assert 'aria-expanded="false"' in button and "disabled" not in button
+    opened = client.get(f"/?{toggle}=1", headers=headers).get_data(as_text=True)
+    panel = opened.split(f'<section id="{operation}"')[1].split("</section>")[0]
+    assert " hidden" not in panel.split(">")[0]
+    assert 'name="model"' in panel
+    assert "disabled" in panel.split("<button")[1].split(">")[0]
+    if operation == "proofreading":
+        with raises(ValueError, match="already running"):
+            audit.begin_proofreading(rerun=True)
+        audit.end_auditing()
+    else:
+        with raises(ValueError, match="current operation"):
+            audit.begin_auditing(rerun=True)
+        audit.end_proofreading()
+    ready = client.get(f"/?{toggle}=1", headers=headers).get_data(as_text=True)
+    panel = ready.split(f'<section id="{operation}"')[1].split("</section>")[0]
+    assert "disabled" not in panel.split("<button")[1].split(">")[0]

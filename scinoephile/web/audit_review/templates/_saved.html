@@ -17,6 +17,6 @@
 {% endfor %}
 <div id="messages" hx-swap-oob="innerHTML">{% if not autosave|default(false) %}Saved.{% endif %}</div>
 
-<input id="verification-selection" type="hidden" name="selection" value="{{ verification_token }}" hx-swap-oob="outerHTML">
+{% with oob=true %}{% include '_verification.html' %}{% endwith %}
 
 {% with oob=true %}{% include '_status_filters.html' %}{% endwith %}

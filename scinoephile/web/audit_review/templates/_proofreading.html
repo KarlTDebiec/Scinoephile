@@ -18,9 +18,9 @@
         <input aria-label="Model" title="Model" name="model" value="{{ proofreading.model }}" maxlength="200" placeholder="Provider default">
         <select name="effort" aria-label="Reasoning" title="Reasoning"><option value="">Provider default</option>{% for level in reasoning_levels %}<option value="{{ level.value }}"{% if level.value == proofreading.effort %} selected{% endif %}>{{ level.value }}</option>{% endfor %}</select>
         {% if reproofreading %}
-          {{ rerun_button('proofreading', proofreading, 'Run re-proofreading', 'text-box-play') }}
+          {{ rerun_button('proofreading', proofreading, 'Run re-proofreading', 'text-box-play', blocked=proofreading_blocked) }}
         {% else %}
-        <button type="submit" aria-label="{{ 'Run re-proofreading' if reproofreading else 'Run proofreading' }}" title="{{ 'Run re-proofreading' if reproofreading else 'Run proofreading' }}">{{ icon('text-box-play-outline', 24) }}</button>
+        <button type="submit"{% if proofreading_blocked %} disabled{% endif %} aria-label="{{ 'Run re-proofreading' if reproofreading else 'Run proofreading' }}" title="{{ 'Run re-proofreading' if reproofreading else 'Run proofreading' }}">{{ icon('text-box-play-outline', 24) }}</button>
         {% endif %}
       </form>
     {% else %}

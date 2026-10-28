@@ -13,7 +13,7 @@ function initRerunConfirmation() {
         const update = () => {
             if (!button.isConnected || !button.hasAttribute("data-rerun-ready-at")) return;
             const remaining = readyAt - Date.now();
-            button.disabled = remaining > 0;
+            button.disabled = button.hasAttribute("data-rerun-blocked") || remaining > 0;
             button.title = remaining > 0 ?
                 `Wait ${Math.ceil(remaining / 1000)} seconds before starting (3/3)` : title;
             if (remaining > 0) setTimeout(update, Math.min(250, remaining));
@@ -30,7 +30,7 @@ document.addEventListener("change", (event) => {
     const button = form.querySelector("button[data-rerun-icon]");
     if (!button) return;
     button.removeAttribute("data-rerun-ready-at");
-    button.disabled = false;
+    button.disabled = button.hasAttribute("data-rerun-blocked");
     button.classList.remove("is-confirming");
     button.querySelector("use").setAttribute("href", button.dataset.rerunIcon);
     button.setAttribute("aria-label", button.getAttribute("aria-label").replace(/\(\d\/3\)/, "(1/3)"));

@@ -17,6 +17,7 @@ function syncProofread(input) {
     const status = input.form.querySelector("[data-proofreading-status]");
     status.dataset.proofreadingStatus = "unchanged";
     if (changed) status.dataset.proofreadingStatus = "changed";
+    if (!changed) input.form.elements.namedItem("review_note").value = "";
     for (const field of input.form.querySelectorAll("[data-revision-note]")) {
         field.hidden = !changed;
     }
@@ -270,17 +271,18 @@ document.addEventListener("htmx:afterRequest", event => {
     if (retry && !state.error) requestReviewSave(form);
 });
 
-// Shared proofreading decisions can update related rows; retain their active drafts.
+// Row replacements and filtered block removals must retain newer subtitle drafts.
 document.addEventListener("htmx:oobBeforeSwap", event => {
-    const row = event.detail.target;
-    if (!row.matches(".audit-row")) return;
-    const form = row.querySelector("form");
-    const state = getSaveState(form);
-    const signature = JSON.stringify(reviewValues(form));
-    if (signature !== state.saved && signature !== JSON.stringify(state.sent)) {
-        event.detail.shouldSwap = false;
-        state.error = "A related subtitle changed — reload before saving this draft.";
-        syncSaveStatus(form);
+    const target = event.detail.target;
+    if (!target.matches(".audit-row, .audit-block")) return;
+    for (const form of target.querySelectorAll("form")) {
+        const state = getSaveState(form);
+        const signature = JSON.stringify(reviewValues(form));
+        if (signature !== state.saved && signature !== JSON.stringify(state.sent)) {
+            event.detail.shouldSwap = false;
+            state.error = "A related subtitle changed — reload before saving this draft.";
+            syncSaveStatus(form);
+        }
     }
 });
 

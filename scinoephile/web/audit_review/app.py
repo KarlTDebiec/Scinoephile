@@ -324,6 +324,7 @@ def _register_auditing_routes(app: FlaskApp, audit: AuditSession):
         visibility = flask.request.args.get("reaudit")
         return {
             "auditing": state,
+            "auditing_blocked": audit.proofreading_running,
             "reauditing": state.has_output,
             "show_auditing": visibility == "1"
             or (visibility is None and state.status in {"running", "error"}),
@@ -423,6 +424,7 @@ def _register_operation_routes(app: FlaskApp, audit: AuditSession):
         visibility = flask.request.args.get("reproofread")
         return {
             "proofreading": state,
+            "proofreading_blocked": audit.auditing_running,
             "reproofreading": not state.available,
             "show_proofreading": visibility == "1"
             or (visibility is None and state.status in {"running", "error"}),
@@ -548,14 +550,30 @@ def _register_verification_routes(app: FlaskApp, audit: AuditSession):
 
     @app.post("/verify-visible")
     def verify_visible():
-        """Verify the complete filtered selection and refresh the workspace.
+        """Prepare bulk verification, then apply it on the confirmation click.
 
         Returns:
-            updated workspace, ordinary redirect, or a non-destructive error
+            confirmation control, updated workspace, ordinary redirect, or error
+        Raises:
+            ValueError: if selection is stale; rendered as a conflict response
         """
         try:
             filters = _parse_filters(flask.request.args)
-            audit.verify_visible(filters, flask.request.form.get("selection", ""))
+            selection = flask.request.form.get("selection", "")
+            if selection != audit.verification_token(filters):
+                raise ValueError(
+                    "The matching subtitles changed. Reload before verifying."
+                )
+            if flask.request.form.get("confirm") != "on":
+                template = "index.html"
+                if flask.request.headers.get("HX-Request") == "true":
+                    template = "_verification.html"
+                return flask.render_template(
+                    template,
+                    **_get_view_context(audit, filters),
+                    verification_pending=True,
+                )
+            audit.verify_visible(filters, selection)
         except (ValueError, ScinoephileError) as exc:
             if flask.request.headers.get("HX-Request") == "true":
                 return (
@@ -565,7 +583,11 @@ def _register_verification_routes(app: FlaskApp, audit: AuditSession):
                 )
             return flask.render_template("error.html", message=str(exc)), 409
         if flask.request.headers.get("HX-Request") == "true":
-            return flask.render_template(
-                "_workspace.html", **_get_view_context(audit, filters)
+            return (
+                flask.render_template(
+                    "_workspace.html", **_get_view_context(audit, filters)
+                ),
+                200,
+                {"HX-Retarget": "#workspace", "HX-Reswap": "outerHTML"},
             )
         return flask.redirect(f"/?{urlencode(asdict(filters))}", code=303)

@@ -1,0 +1,12 @@
+{% from '_icons.html' import icon %}
+<form id="verify-visible" method="post" action="{{ url_for('verify_visible') }}?{{ query }}"
+      hx-post="{{ url_for('verify_visible') }}?{{ query }}" hx-target="this" hx-swap="outerHTML"
+      hx-sync="#workspace:queue all" data-verify-visible{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}>
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <input id="verification-selection" type="hidden" name="selection" value="{{ verification_token }}">
+  {% if verification_pending|default(false) %}<input type="hidden" name="confirm" value="on">{% endif %}
+  <button type="submit"{% if verification_pending|default(false) %} class="is-confirming"
+          aria-label="Confirm Verify All Visible" title="Click again to verify all {{ '{:,}'.format(page.matching) }} matching subtitles"
+          {% else %} title="Verify every subtitle matching the current filters, including unloaded blocks"{% endif %}
+          {% if not page.matching or not audit.outfile_path.exists() or audit.proofreading_running or audit.auditing_running %} disabled{% endif %}>{{ icon('checkbox-multiple-marked-outline') }}Verify All Visible</button>
+</form>

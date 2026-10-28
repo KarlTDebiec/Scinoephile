@@ -18,9 +18,9 @@
         <input aria-label="Audit model" title="Model" name="model" value="{{ auditing.model }}" maxlength="200" placeholder="Provider default">
         <select name="effort" aria-label="Audit reasoning" title="Reasoning"><option value="">Provider default</option>{% for level in reasoning_levels %}<option value="{{ level.value }}"{% if level.value == auditing.effort %} selected{% endif %}>{{ level.value }}</option>{% endfor %}</select>
         {% if reauditing %}
-          {{ rerun_button('auditing', auditing, 'Run re-audit', 'clipboard-text-play') }}
+          {{ rerun_button('auditing', auditing, 'Run re-audit', 'clipboard-text-play', blocked=auditing_blocked) }}
         {% else %}
-        <button type="submit" aria-label="{{ 'Run re-audit' if reauditing else 'Run audit' }}" title="{{ 'Run re-audit on every subtitle; text and verification marks are preserved' if reauditing else 'Run audit' }}">{{ icon('clipboard-text-play-outline', 24) }}</button>
+        <button type="submit"{% if auditing_blocked %} disabled{% endif %} aria-label="{{ 'Run re-audit' if reauditing else 'Run audit' }}" title="{{ 'Run re-audit on every subtitle; text and verification marks are preserved' if reauditing else 'Run audit' }}">{{ icon('clipboard-text-play-outline', 24) }}</button>
         {% endif %}
       </form>
       <p class="error" role="alert" data-auditing-message></p>

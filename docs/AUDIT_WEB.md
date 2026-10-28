@@ -35,6 +35,12 @@ selector. Cross-script and dual-review workflows are outside this first version.
 - `--audit-notes`: optional existing Markdown report whose Notes seed independent
   audit findings. This file remains read-only and is never required.
 
+The input path should point at the actual validated OCR output, not a separate
+manual snapshot. The editor retains its last published OCR baseline in the SQLite
+sidecar so restarting after an OCR correction preserves existing decisions and
+verification. A changed input is shown in the header; Re-proofread reloads its
+current contents. The app never modifies that source file.
+
 Input, output, JSON, progress and report paths must be distinct. Existing output
 and native JSON must agree. Merely opening the app does not write the output SRT
 or create/change the native decision JSON. Model calls start only when a user
@@ -85,7 +91,8 @@ boundaries determine groups; overlapping queries are kept together. Rows without
 logged queries use the original three-second pause boundaries. The first five matching blocks render initially, collapsed. Additional complete
 blocks append through an HTMX intersection marker as you scroll. Filtering retains original block numbers and
 visible/total counts. Row saves update only affected rows and block summaries,
-preserving other drafts and disclosure states. Stable source-block cursors keep later saves within the already-loaded prefix.
+preserving other drafts and disclosure states. Filtered block removals also preserve
+newer drafts within that block until they can be saved. Stable source-block cursors keep later saves within the already-loaded prefix.
 An icon-only Load more button and ordinary saves remain available without scripts.
 
 
@@ -100,8 +107,9 @@ Independent progress and edit versions live beside the output as
 verification. Source identities include the original file contents and subtitle
 position; external changes to saved text invalidate obsolete independent approvals.
 
-Stale form submissions are rejected. If the source, output, or JSON changes
-outside the session, restart before saving. File writes use atomic replacement;
+Stale form submissions are rejected. External output or JSON changes require a restart before saving. A changed OCR
+input instead requires Re-proofread; source edits during a run prevent publication.
+Reloaded input must retain subtitle counts and timings. File writes use atomic replacement;
 if a write fails, already replaced outputs are restored and progress is not
 committed. Ordinary I/O failures are reported in the page.
 
@@ -167,7 +175,8 @@ The operation buttons independently show or hide them, using ordinary GET forms
 with HTMX enhancement. Missing proofreading output produces a **Proofread** button;
 existing output produces **Re-proofread**. Missing audit findings similarly produce
 **Audit**; any persisted findings produce **Re-audit**. Auditing requires the
-proofread subtitle output to exist.
+proofread subtitle output to exist. Panels can still be opened and configured while
+the other operation runs; only their Run buttons are disabled until it finishes.
 
 Each panel offers a registered provider, a free-text model identifier, and shared
 reasoning-effort levels. Blank fields retain provider defaults; the app does not
@@ -185,11 +194,19 @@ Ordinary page reloads provide the same progress without JavaScript. Conflicting
 workers and subtitle edits are blocked while an operation runs. Unsaved subtitle
 drafts must be saved before starting an operation or replacing the workspace.
 
-Proofreading runs against the original OCR subtitles. Completed output is
-published atomically; failed runs retain the existing files. Re-proofreading uses
-fresh requests and backs up the previous SRT, native decision JSON, and SQLite
-state beside the output before replacing them. Rows whose wording or revision
-note changes become unaudited and unverified; unchanged rows retain their state.
+Proofreading reads the configured OCR file afresh when each run starts. Completed
+output and its source baseline are published atomically; failed runs retain the
+previous output and review progress. Matching provider, model, reasoning, prompt,
+examples, and schemas allow unchanged authored block decisions to be reused.
+Other blocks use the normal configuration-aware response cache; reruns do not
+force cache replacement. One changed subtitle generally needs only its context
+block, provided the rest of the request configuration still matches.
+
+Re-proofreading backs up the previous SRT, native decision JSON, and SQLite state
+before publication. Source-row identities migrate with the baseline so untouched
+rows retain findings and verification. Rows whose original text, proofread text,
+or revision note changes become unaudited and unverified. Successful run settings
+and project-specific proofreading context persist in the sidecar for the next run.
 
 Auditing compares original and current proofread text in full context blocks. It
 stores explicit Review/OK findings and notes independently of the proofreading
@@ -197,7 +214,10 @@ JSON. Completed blocks persist as they finish. Re-audit makes fresh requests for
 the whole saved file, preserving subtitle text, proofreading notes, and human
 verification. Failed blocks retain their previous findings.
 
-**Verify All Visible** verifies every row matching the current filters, including
-matching rows not yet loaded by infinite scrolling. A signed selection token and
+**Verify All Visible** uses two clicks: the first turns the button yellow without
+changing progress; the second verifies every row matching the current filters,
+including matching rows not yet loaded by infinite scrolling. There is no delay.
+Changing filters or saving a subtitle resets the confirmation. Both clicks work
+with HTMX or ordinary forms. A signed selection token and
 row versions reject stale bulk operations; invalid audit-note pairs cannot be
 silently marked verified.

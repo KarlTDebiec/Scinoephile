@@ -947,7 +947,8 @@ def test_autosave_acknowledges_without_replacing_editable_fields(tmp_path: Path)
     assert f'id="sync-{row.key}"' in text
     assert f'id="version-{row.key}"' in text and 'value="1"' in text
     assert f'id="proofread-diff-{row.key}"' in text
-    assert "<textarea" not in text and "<form" not in text
+    assert "<textarea" not in text
+    assert text.count("<form ") == 1 and '<form id="verify-visible"' in text
     assert 'id="filter-verification" hx-swap-oob="outerHTML"' in text
     assert "Verified (1)" in text and "Unverified (1)" in text
     assert audit.rows()[0].verified
@@ -1091,19 +1092,93 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
     )
     assert stale.status_code == 409
     assert not any(row.verified for row in audit.rows())
-    result = client.post(
+    prepared = client.post(
         url, data=dict(csrf=csrf, selection=token), headers={"HX-Request": "true"}
     )
+    assert prepared.status_code == 200
+    confirmation = prepared.get_data(as_text=True)
+    assert 'class="is-confirming"' in confirmation
+    assert 'name="confirm" value="on"' in confirmation
+    assert 'id="workspace"' not in confirmation
+    assert not any(row.verified for row in audit.rows())
+    result = client.post(
+        url,
+        data=dict(csrf=csrf, selection=token, confirm="on"),
+        headers={"HX-Request": "true"},
+    )
     assert result.status_code == 200
+    assert result.headers["HX-Retarget"] == "#workspace"
     assert "No rows match" in result.get_data(as_text=True)
     assert not audit.rows()[0].verified and audit.rows()[1].verified
     native = client.post(
         "/verify-visible",
         data=dict(csrf=csrf, selection=audit.verification_token(AuditFilters())),
     )
+    assert native.status_code == 200
+    assert "<!doctype html>" in native.get_data(as_text=True)
+    assert 'class="is-confirming"' in native.get_data(as_text=True)
+    assert not audit.rows()[0].verified
+    native = client.post(
+        "/verify-visible",
+        data=dict(
+            csrf=csrf, selection=audit.verification_token(AuditFilters()), confirm="on"
+        ),
+    )
     assert native.status_code == 303
     assert "changes=all" in native.location
     assert all(row.verified for row in audit.rows())
+
+
+def test_bulk_verification_confirmation_resets_and_rejects_stale_selection(
+    tmp_path: Path,
+):
+    """Keep preparation read-only and reset it when the selection or a row changes.
+
+    Arguments:
+        tmp_path: isolated project directory
+    """
+    audit = _materialize_output(_make_session(tmp_path))
+    client = create_app(audit).test_client()
+    client.get("/")
+    with client.session_transaction() as session:
+        csrf = session["csrf"]
+    before = audit.rows()
+    assert audit.json_path is not None
+    artifacts = {
+        path: path.read_bytes()
+        for path in (audit.infile_path, audit.outfile_path, audit.json_path)
+    }
+    token = audit.verification_token(AuditFilters())
+    prepared = client.post("/verify-visible", data=dict(csrf=csrf, selection=token))
+    assert 'name="confirm" value="on"' in prepared.get_data(as_text=True)
+    assert audit.rows() == before
+    assert all(path.read_bytes() == value for path, value in artifacts.items())
+    filtered = client.get("/?finding=ok").get_data(as_text=True)
+    assert 'name="confirm"' not in filtered
+    row = audit.rows()[1]
+    saved = client.post(
+        f"/rows/{row.key}",
+        data=dict(
+            csrf=csrf,
+            version=row.version,
+            reviewed=row.reviewed,
+            review_note=row.review_note,
+            notes="",
+            finding="ok",
+        ),
+        headers={"HX-Request": "true", "HX-Target": f"sync-{row.key}"},
+    )
+    assert saved.status_code == 200
+    saved_html = saved.get_data(as_text=True)
+    assert 'id="verify-visible"' in saved_html
+    assert 'name="confirm"' not in saved_html
+    stale = client.post(
+        "/verify-visible",
+        data=dict(csrf=csrf, selection=token, confirm="on"),
+        headers={"HX-Request": "true"},
+    )
+    assert stale.status_code == 409
+    assert not any(row.verified for row in audit.rows())
 
 
 def test_review_verdict_requires_audit_notes_before_writing(tmp_path: Path):

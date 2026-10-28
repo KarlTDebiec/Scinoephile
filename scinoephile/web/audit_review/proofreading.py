@@ -4,26 +4,52 @@
 
 from __future__ import annotations
 
-from copy import deepcopy
+import json
 from dataclasses import dataclass, replace
+from hashlib import sha256
 from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from threading import RLock, Thread
 
 from scinoephile.core.llms import LLMProvider, ReasoningEffort
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import get_reviewer
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
     get_provider,
     get_provider_names,
 )
+from scinoephile.llms.review import ReviewProcessor
 
+from .decisions import ReviewDecisions
 from .session import AuditSession
 
-__all__ = ["ProofreadingJob", "ProofreadingState"]
+__all__ = ["ProofreadingJob", "ProofreadingState", "get_proofreading_request_identity"]
 
 logger = getLogger(__name__)
+
+
+def get_proofreading_request_identity(
+    reviewer: ReviewProcessor, provider: LLMProvider, settings: dict[str, str]
+) -> str:
+    """Identify the request configuration associated with authored decisions.
+
+    Arguments:
+        reviewer: configured proofreading processor and shared examples
+        provider: effective non-secret provider configuration
+        settings: requested settings, excluding any previous request identity
+    Returns:
+        provenance digest; response-cache ownership remains with the query executor
+    """
+    provenance = {
+        **settings,
+        "provider_identity": provider.cache_identity,
+        "system_prompt": reviewer.queryer.system_prompt,
+        "query_schema": reviewer.test_case_cls.query_cls.model_json_schema(),
+        "answer_schema": reviewer.test_case_cls.answer_cls.model_json_schema(),
+    }
+    return sha256(json.dumps(provenance, sort_keys=True).encode()).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -62,7 +88,12 @@ class ProofreadingJob:
         self.audit = audit
         """Source-backed review session."""
         self._lock = RLock()
-        self._state = ProofreadingState()
+        saved = audit.proofreading_settings
+        self._state = ProofreadingState(
+            provider=saved.get("provider", DEFAULT_PROVIDER_NAME),
+            model=saved.get("model", ""),
+            effort=saved.get("effort", ""),
+        )
         self._thread: Thread | None = None
 
     def snapshot(self) -> ProofreadingState:
@@ -83,7 +114,7 @@ class ProofreadingJob:
             provider_name: registered LLM provider
             model_name: optional model identifier override
             effort: shared reasoning level or blank for the provider default
-            rerun: generate fresh decisions to replace existing proofreading
+            rerun: replace output using current OCR and matching reusable results
         Raises:
             ValueError: if configuration or session state prevents a run
         """
@@ -97,10 +128,10 @@ class ProofreadingJob:
             options["reasoning_effort"] = ReasoningEffort(effort)
         provider = get_provider(provider_name, **options)
         with self._lock:
-            self.audit.begin_proofreading(rerun=rerun)
+            source = self.audit.begin_proofreading(rerun=rerun)
             self._state = ProofreadingState(
                 status="running",
-                total=len(self.audit.original.blocks),
+                total=len(source.blocks),
                 provider=provider_name,
                 model=model_name,
                 effort=effort,
@@ -109,7 +140,7 @@ class ProofreadingJob:
             try:
                 self._thread = Thread(
                     target=self._run,
-                    args=(provider, rerun),
+                    args=(provider, rerun, source),
                     daemon=True,
                     name="subtitle-proofreading",
                 )
@@ -121,34 +152,105 @@ class ProofreadingJob:
                 )
                 raise
 
-    def _run(self, provider: LLMProvider, rerun: bool):
+    def _prepare_reviewer(
+        self, provider: LLMProvider, source: Series, decisions_path: Path, rerun: bool
+    ) -> tuple[ReviewProcessor, dict[str, str], set[tuple]]:
+        """Prepare native decisions and determine which answered queries remain valid.
+
+        Arguments:
+            provider: effective provider for this run
+            source: freshly loaded OCR snapshot
+            decisions_path: temporary native decision log
+            rerun: whether existing output is being replaced
+        Returns:
+            reviewer, run provenance, and reusable authored query keys
+        """
+        saved = self.audit.proofreading_settings
+        context = saved.get("context", "")
+        if self.audit.json_path is not None and self.audit.json_path.exists():
+            decisions_path.write_bytes(self.audit.json_path.read_bytes())
+        elif self.audit.decisions is not None:
+            decisions_path.write_text(
+                self.audit.decisions.serialize(), encoding="utf-8"
+            )
+        elif self.audit.outfile_path.exists():
+            existing = ReviewDecisions(
+                self.audit.original, self.audit.language, decisions_path
+            )
+            for row in self.audit.rows():
+                if row.changed:
+                    existing.edit(row.index - 1, row.reviewed, row.review_note)
+            decisions_path.write_text(existing.serialize(), encoding="utf-8")
+        reviewer = get_reviewer(
+            self.audit.language,
+            provider=provider,
+            current_test_cases_path=decisions_path,
+            additional_context=context or None,
+            overwrite_cache=False,
+        )
+        settings = {
+            "provider": self._state.provider,
+            "model": self._state.model,
+            "effort": self._state.effort,
+            "context": context,
+        }
+        identity = get_proofreading_request_identity(reviewer, provider, settings)
+        reuse = not rerun or saved.get("request_identity") == identity
+        if not reuse and decisions_path.exists():
+            decisions_path.unlink()
+            reviewer = get_reviewer(
+                self.audit.language,
+                provider=provider,
+                current_test_cases_path=decisions_path,
+                additional_context=context or None,
+                overwrite_cache=False,
+            )
+            identity = get_proofreading_request_identity(reviewer, provider, settings)
+        settings["request_identity"] = identity
+        known = {
+            case.query.key
+            for case in ReviewDecisions(
+                source, self.audit.language, decisions_path
+            ).cases
+            if case.answer is not None
+        }
+        return reviewer, settings, known
+
+    def _run(self, provider: LLMProvider, rerun: bool, source: Series):
         """Review blocks into temporary decisions, publishing only complete output.
 
         Arguments:
             provider: configured provider shared across source blocks
-            rerun: bypass old decisions and response caches
+            rerun: replace saved output while reusing compatible decisions and caches
+            source: current OCR snapshot reserved at the start of this run
         """
         try:
             with TemporaryDirectory(prefix="scinoephile-review-") as directory:
                 decisions_path = Path(directory) / "review.json"
-                if (
-                    not rerun
-                    and self.audit.json_path is not None
-                    and self.audit.json_path.exists()
-                ):
-                    decisions_path.write_bytes(self.audit.json_path.read_bytes())
-                reviewer = get_reviewer(
-                    self.audit.language,
-                    provider=provider,
-                    current_test_cases_path=decisions_path,
-                    overwrite_cache=rerun,
+                reviewer, settings, known = self._prepare_reviewer(
+                    provider, source, decisions_path, rerun
                 )
-                source = deepcopy(self.audit.original)
-                for index in range(len(source.blocks)):
-                    reviewer.process(source, start_at_idx=index, stop_at_idx=index + 1)
+                for index, block in enumerate(source.blocks):
+                    query = reviewer.test_case_cls.query_cls.model_validate(
+                        {
+                            "subtitles": [
+                                {
+                                    "index": number,
+                                    "text": subtitle.text_with_newline.strip(),
+                                }
+                                for number, subtitle in enumerate(block, 1)
+                            ]
+                        }
+                    )
+                    if query.key not in known:
+                        reviewer.process(
+                            source, start_at_idx=index, stop_at_idx=index + 1
+                        )
                     with self._lock:
                         self._state = replace(self._state, completed=index + 1)
-                self.audit.publish_proofreading(decisions_path, rerun=rerun)
+                self.audit.publish_proofreading(
+                    decisions_path, rerun=rerun, settings=settings
+                )
             with self._lock:
                 self._state = replace(self._state, status="complete")
         except Exception as exc:

@@ -6,6 +6,9 @@
   --border: #bbb;
   --link: #164bb8;
   --error: #a00;
+  --warning-background: #fff3cd;
+  --warning-text: #664d03;
+  --warning-border: #c99500;
   --substitute: #8a3198;
   --muted: color-mix(in srgb, var(--text) 60%, var(--background));
   background: var(--background);
@@ -19,6 +22,9 @@
     --border: #555;
     --link: #9ecbff;
     --error: #ff9b9b;
+    --warning-background: #4b3c0a;
+    --warning-text: #ffe08a;
+    --warning-border: #b58a16;
     --substitute: #d7a5ff;
   }
 }
@@ -178,6 +184,11 @@ nav[aria-label="Operations"] {
     gap: .5rem;
     min-height: 2.5rem;
     &[hidden] { display: none; }
+  }
+  & > form[data-verify-visible] button.is-confirming {
+    color: var(--warning-text);
+    background: var(--warning-background);
+    border-color: var(--warning-border);
   }
   & > button[data-toggle-blocks] {
     display: none;
@@ -344,6 +355,7 @@ nav[aria-label="Operations"] {
       font: .9rem/1.5 system-ui, sans-serif;
 
       &:hover, &:focus { background: var(--background); border-color: var(--border); }
+      &[aria-invalid="true"] { border-color: var(--error); background: color-mix(in srgb, var(--error) 6%, var(--background)); }
       &[name=reviewed] { font: 1rem/1.5 ui-monospace, monospace; overflow-wrap: anywhere; }
     }
     /* Without enhancement, revision notes remain available when editing text. */
@@ -453,7 +465,6 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 ui-monospac
   }
 }
 @keyframes saving-spin { to { transform: rotate(360deg); } }
-.audit-row dl textarea[aria-invalid="true"] { border-color: var(--error); background: color-mix(in srgb, var(--error) 6%, var(--background)); }
 
 #load-more {
   padding: .75rem 0;

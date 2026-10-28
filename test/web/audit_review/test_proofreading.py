@@ -13,6 +13,7 @@ from unittest.mock import Mock
 from pytest import MonkeyPatch, mark, raises
 
 from scinoephile.core import Language
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.core.subtitles import Series
@@ -34,6 +35,13 @@ class _Provider(LLMProvider):
         self.release = Event()
         self.release.set()
         self.fail = False
+        self.configuration = "default"
+        self.queries: list[str] = []
+
+    @property
+    def cache_identity(self) -> CacheIdentity:
+        """Effective offline request configuration used by the real response cache."""
+        return {**super().cache_identity, "configuration": self.configuration}
 
     def chat_completion(
         self,
@@ -60,6 +68,7 @@ class _Provider(LLMProvider):
         if self.fail:
             raise RuntimeError("Intentional provider failure")
         self.calls += 1
+        self.queries.append(messages[-1]["content"])
         revisions = []
         if self.calls == 1:
             revisions = [
@@ -311,10 +320,10 @@ def test_card_http_csrf_progress_completion_and_validation(
 
 
 @mark.parametrize("with_json", [False, True])
-def test_reproofread_replaces_only_after_success_and_backs_up(
+def test_reproofread_reloads_one_block_and_preserves_progress(
     tmp_path: Path, monkeypatch: MonkeyPatch, with_json: bool
 ):
-    """Rerun original OCR without old decisions; back up edits and reset stale audits.
+    """Reload OCR, reuse unchanged authored blocks, and migrate verified progress.
 
     Arguments:
         tmp_path: temporary project directory
@@ -325,12 +334,11 @@ def test_reproofread_replaces_only_after_success_and_backs_up(
     job = ProofreadingJob(audit)
     job.start("openai", "gpt-6-luna", "xhigh")
     _join(job)
+    assert provider.calls == 2
     for row in audit.rows():
-        text = row.reviewed
-        note = row.review_note
+        text, note = row.reviewed, row.review_note
         if row.index == 1:
-            text = "Human edited text."
-            note = "Human explanation."
+            text, note = "Human edited text.", "Human explanation."
         audit.save(
             row.key,
             reviewed=text,
@@ -340,36 +348,40 @@ def test_reproofread_replaces_only_after_success_and_backs_up(
             verified=True,
             version=row.version,
         )
-    previous = audit.rows()
-    paths = [audit.infile_path, audit.outfile_path, audit.json_path, audit.state_path]
-    before = [p.read_bytes() for p in paths if p is not None]
+    old_rows = audit.rows()
+    audit.infile_path.write_text(
+        audit.infile_path.read_text().replace("Same.", "Corrected OCR."),
+        encoding="utf-8",
+    )
+    assert audit.input_changed
+    before = {
+        p: p.read_bytes()
+        for p in [audit.outfile_path, audit.json_path]
+        if p is not None
+    }
     provider.fail = True
     job.start("openai", "gpt-6-luna", "xhigh", rerun=True)
     _join(job)
     assert job.snapshot().status == "error"
-    assert before == [p.read_bytes() for p in paths if p is not None]
-    assert audit.rows() == previous
+    assert audit.rows() == old_rows
+    assert all(p.read_bytes() == value for p, value in before.items())
     assert not list(tmp_path.glob("*.before-reproofread-*"))
     provider.fail = False
-    provider.calls = 0
     job.start("openai", "gpt-6-luna", "xhigh", rerun=True)
     _join(job)
     assert job.snapshot().status == "complete", job.snapshot().error
-    assert provider.calls == 2
-    assert job.snapshot().rerun
+    assert provider.calls == 3
+    assert "Corrected OCR." in provider.queries[-1]
     rows = audit.rows()
-    assert rows[0].reviewed == "Hello there."
-    assert rows[0].review_note == "Corrected wording."
-    assert rows[0].finding == "unaudited" and not rows[0].verified
-    assert rows[0].notes == ""
-    assert rows[1].reviewed == "Same." and rows[1].verified
-    assert rows[1].finding == "ok"
-    assert audit.infile_path.read_bytes() == before[0]
+    assert rows[0].reviewed == "Human edited text."
+    assert rows[0].review_note == "Human explanation."
+    assert rows[0].verified and rows[0].finding == "ok"
+    assert rows[1].original == rows[1].reviewed == "Corrected OCR."
+    assert rows[1].finding == "unaudited" and not rows[1].verified
+    assert not audit.input_changed
     backups = list(tmp_path.glob("*.before-reproofread-*"))
     assert len(backups) == 1
-    assert (backups[0] / "proofread.srt").read_bytes() == before[1]
-    if audit.json_path is not None:
-        assert (backups[0] / "review.json").read_bytes() == before[2]
+    assert (backups[0] / "proofread.srt").read_bytes() == before[audit.outfile_path]
     with sqlite3.connect(backups[0] / "review.sqlite3") as db:
         assert (
             db.execute("SELECT COUNT(*) FROM review_edits WHERE verified=1").fetchone()[
@@ -377,13 +389,102 @@ def test_reproofread_replaces_only_after_success_and_backs_up(
             ]
             == 2
         )
-    restored = AuditSession(
+    reopened = AuditSession(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
         language=Language.eng,
     )
-    assert restored.rows() == rows
+    assert reopened.rows() == rows
+    assert reopened.proofreading_settings["effort"] == "xhigh"
+    again = ProofreadingJob(reopened)
+    again.start("openai", "gpt-6-luna", "xhigh", rerun=True)
+    _join(again)
+    assert again.snapshot().status == "complete", again.snapshot().error
+    assert provider.calls == 3
+    assert reopened.rows()[0].reviewed == "Human edited text."
+
+
+def test_reproofread_restart_keeps_previous_baseline_until_publication(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Resume progress after OCR changes, then reject further edits during the run.
+
+    Arguments:
+        tmp_path: temporary project directory
+        monkeypatch: offline dependency patches
+    """
+    audit, provider, _ = _setup(tmp_path, monkeypatch)
+    job = ProofreadingJob(audit)
+    job.start("openai", "gpt-6-luna", "xhigh")
+    _join(job)
+    audit.infile_path.write_text(
+        audit.infile_path.read_text().replace("Same.", "New OCR.")
+    )
+    reopened = AuditSession(
+        audit.infile_path,
+        audit.outfile_path,
+        json_path=audit.json_path,
+        language=Language.eng,
+    )
+    assert reopened.input_changed
+    assert reopened.rows()[1].original == "Same."
+    old_output = reopened.outfile_path.read_bytes()
+    provider.release.clear()
+    provider.entered.clear()
+    job = ProofreadingJob(reopened)
+    job.start("openai", "gpt-6-luna", "xhigh", rerun=True)
+    assert provider.entered.wait(5)
+    reopened.infile_path.write_text(
+        reopened.infile_path.read_text().replace("New OCR.", "Newer OCR.")
+    )
+    provider.release.set()
+    _join(job)
+    assert job.snapshot().status == "error"
+    assert reopened.outfile_path.read_bytes() == old_output
+    assert reopened.rows()[1].original == "Same."
+
+
+def test_reproofread_changed_configuration_does_not_reuse_native_answers(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Changing model or reasoning invalidates unverified native decision reuse.
+
+    Arguments:
+        tmp_path: temporary project directory
+        monkeypatch: offline dependency patches
+    """
+    audit, provider, _ = _setup(tmp_path, monkeypatch)
+    job = ProofreadingJob(audit)
+    job.start("openai", "model-one", "low")
+    _join(job)
+    assert provider.calls == 2
+    provider.configuration = "different effective model and reasoning"
+    job.start("openai", "model-two", "xhigh", rerun=True)
+    _join(job)
+    assert job.snapshot().status == "complete", job.snapshot().error
+    assert provider.calls == 4
+
+
+def test_reproofread_rejects_structural_input_changes(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Avoid matching old review approvals to different timings or subtitle positions.
+
+    Arguments:
+        tmp_path: temporary project directory
+        monkeypatch: offline dependency patches
+    """
+    audit, provider, _ = _setup(tmp_path, monkeypatch)
+    job = ProofreadingJob(audit)
+    job.start("openai", "gpt-6-luna", "xhigh")
+    _join(job)
+    audit.infile_path.write_text(
+        audit.infile_path.read_text().replace("00:00:10,000", "00:00:09,000")
+    )
+    with raises(ValueError, match="counts and timings"):
+        job.start("openai", "gpt-6-luna", "xhigh", rerun=True)
+    assert provider.calls == 2 and not audit.proofreading_running
 
 
 def test_reproofread_http_setup_and_worker_lock(
@@ -433,6 +534,7 @@ def test_reproofread_http_setup_and_worker_lock(
     provider.release.clear()
     provider.calls = 0
     provider.entered.clear()
+    provider.configuration = "HTTP rerun effective configuration"
     response = client.post("/proofreading", data=data, headers={"HX-Request": "true"})
     assert response.headers["HX-Refresh"] == "true"
     assert provider.entered.wait(5)
