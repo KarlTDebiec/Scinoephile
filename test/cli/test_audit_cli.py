@@ -25,6 +25,8 @@ from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
 from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
+from scinoephile.cli.audit.audit_review_report_cli import AuditReviewReportCli
+from scinoephile.cli.audit.audit_review_serve_cli import AuditReviewServeCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
 from scinoephile.cli.audit.audit_transcription_cli import AuditTranscriptionCli
 from scinoephile.cli.audit.audit_translation_cli import AuditTranslationCli
@@ -38,7 +40,11 @@ def test_audit_cli_subcommands():
     assert issubclass(AuditAlignedDiffCli, AuditCliBase)
     assert issubclass(AuditDelineationCli, AuditCliBase)
     assert issubclass(AuditPunctuationCli, AuditCliBase)
-    assert issubclass(AuditReviewCli, AuditCliBase)
+    assert issubclass(AuditReviewReportCli, AuditCliBase)
+    assert AuditReviewCli.subcommands() == {
+        "report": AuditReviewReportCli,
+        "serve": AuditReviewServeCli,
+    }
     assert issubclass(AuditReviewDualCli, AuditCliBase)
     assert issubclass(AuditReviewTradCli, AuditCliBase)
     assert issubclass(AuditTranscriptionCli, AuditCliBase)
@@ -64,7 +70,7 @@ def test_audit_cli_filter_enums():
         AuditDelineationCli: DelineationAuditFilter,
         AuditOcrFusionCli: OcrFusionAuditFilter,
         AuditPunctuationCli: PunctuationAuditFilter,
-        AuditReviewCli: ReviewAuditFilter,
+        AuditReviewReportCli: ReviewAuditFilter,
         AuditReviewDualCli: DualReviewAuditFilter,
         AuditReviewTradCli: ReviewAuditFilter,
         AuditTranslationCli: TranslationAuditFilter,
@@ -84,7 +90,7 @@ def test_audit_cli_single_json_help_is_concise():
         AuditDelineationCli,
         AuditOcrFusionCli,
         AuditPunctuationCli,
-        AuditReviewCli,
+        AuditReviewReportCli,
         AuditTranslationCli,
     )
 
@@ -310,16 +316,16 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
 def test_audit_review_cli_help_is_consistent():
     """Test review audit help documents JSON inputs and option defaults."""
     filter_types = {
-        AuditReviewCli: ReviewAuditFilter,
+        AuditReviewReportCli: ReviewAuditFilter,
         AuditReviewDualCli: DualReviewAuditFilter,
         AuditReviewTradCli: ReviewAuditFilter,
     }
-    for cli_class in (AuditReviewCli, AuditReviewDualCli, AuditReviewTradCli):
+    for cli_class in (AuditReviewReportCli, AuditReviewDualCli, AuditReviewTradCli):
         actions = {
             action.dest: action
             for action in cli_class.argparser()._actions  # noqa: SLF001
         }
-        if cli_class is AuditReviewCli:
+        if cli_class is AuditReviewReportCli:
             assert "mode" not in actions
             assert actions["original_path"].option_strings == ["--original"]
         filter_type = filter_types[cli_class]
@@ -337,7 +343,7 @@ def test_audit_review_cli_help_is_consistent():
         for destination, action in actions.items():
             if destination.endswith("json_path"):
                 assert isinstance(action.help, str)
-                if cli_class is AuditReviewCli:
+                if cli_class is AuditReviewReportCli:
                     assert action.help == "JSON file containing test cases"
                 else:
                     assert "JSON file containing" in action.help
@@ -690,3 +696,28 @@ def _write_srt(file_path: Path, texts: tuple[str, ...]):
         for index, text in enumerate(texts, 1)
     ]
     file_path.write_text(f"{'\n\n'.join(blocks)}\n", encoding="utf-8")
+
+
+def test_review_report_explicit_and_legacy_dispatch(tmp_path: Path):
+    """Preserve legacy report options while exposing the explicit report command.
+
+    Arguments:
+        tmp_path: temporary directory for report inputs
+    """
+    original_path = tmp_path / "original.srt"
+    reviewed_path = tmp_path / "reviewed.srt"
+    original_path.write_text("1\n00:00:01,000 --> 00:00:02,000\nHello.\n")
+    reviewed_path.write_text(original_path.read_text())
+    arguments = f'--original "{original_path}" --reviewed "{reviewed_path}"'
+    with patch.object(AuditReviewReportCli, "_main") as report:
+        run_cli_with_args(ScinoephileCli, f"audit review report {arguments}")
+        explicit = dict(report.call_args.kwargs)
+        explicit.pop("_parser", None)
+        report.reset_mock()
+        run_cli_with_args(ScinoephileCli, f"audit review {arguments}")
+        legacy = dict(report.call_args.kwargs)
+        legacy.pop("_parser", None)
+        assert legacy == explicit
+    assert "serve" not in AuditCli.subcommands()
+    assert "report" in AuditReviewCli.argparser().format_help()
+    assert "serve" in AuditReviewCli.argparser().format_help()

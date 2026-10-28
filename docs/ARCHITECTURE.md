@@ -69,4 +69,6 @@ Subsystem-specific design belongs in focused documents so this overview remains
 stable:
 
 - [Caching](CACHING.md)
+- [LLM reasoning effort](LLM_REASONING.md)
 - [Prompt optimization and persistence](PROMPT_OPTIMIZATION.md)
+- [Web interfaces](WEB.md)

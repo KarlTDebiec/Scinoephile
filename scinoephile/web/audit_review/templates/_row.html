@@ -1,0 +1,48 @@
+{% from '_icons.html' import icon, status_select, audit_options %}
+<fieldset id="row-{{ row.key }}" class="audit-row"{% if not audit.outfile_path.exists() or audit.proofreading_running or audit.auditing_running %} disabled{% endif %} aria-label="Subtitle {{ row.index }}">
+  <legend><span>Subtitle {{ row.index }}</span><span class="block-time">{{ row.time_label }}</span></legend>
+  {% if audit.outfile_path.exists() %}
+  {% set differences = row.differences %}
+  <form id="form-{{ row.key }}" method="post" action="{{ url_for('save_row', key=row.key) }}?{{ query }}"
+        hx-post="{{ url_for('save_row', key=row.key) }}?{{ query }}"
+        hx-trigger="submit, review:save"
+        hx-target="#sync-{{ row.key }}" hx-swap="outerHTML"
+        hx-include="#loaded-through" hx-sync="#workspace:queue all">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <input id="version-{{ row.key }}" type="hidden" name="version" value="{{ row.version }}">
+    <dl lang="{{ row.language }}">
+      <dt>Original</dt><dd><pre id="original-diff-{{ row.key }}">{% for text, kind in differences[0] %}<span class="diff-{{ kind }}">{{ text }}</span>{% endfor %}</pre></dd>
+      <dt><label for="reviewed-{{ row.key }}">Proofread</label></dt>
+      <dd class="inline-proofread">
+        <pre id="proofread-diff-{{ row.key }}" aria-hidden="true">{% for text, kind in differences[1] %}<span class="diff-{{ kind }}">{{ text }}</span>{% endfor %}</pre>
+        <textarea id="reviewed-{{ row.key }}" name="reviewed" rows="1" maxlength="1000" required data-original="{{ row.original }}" title="Edit proofread subtitle"
+                  hx-post="{{ url_for('preview_row', key=row.key) }}" hx-trigger="change"
+                  hx-target="#proofread-diff-{{ row.key }}" hx-swap="outerHTML"
+                  hx-params="reviewed,csrf" hx-validate="false" hx-sync="this:replace">{{ row.reviewed }}</textarea>
+      </dd>
+      <dt data-revision-note{% if not row.changed %} hidden{% endif %}><label for="revision-note-{{ row.key }}">Note</label></dt>
+      <dd data-revision-note{% if not row.changed %} hidden{% endif %}><textarea id="revision-note-{{ row.key }}" name="review_note" rows="1" maxlength="1000"{% if row.changed %} required{% endif %}>{{ row.review_note }}</textarea></dd>
+      <dt class="audit-notes"><label for="notes-{{ row.key }}">Audit note</label></dt>
+      <dd class="audit-notes"><textarea id="notes-{{ row.key }}" name="notes" rows="1" placeholder=" ">{{ row.notes }}</textarea></dd>
+    </dl>
+    {% if row.shared_indexes|length > 1 %}<p class="shared">Shared JSON decision: saving text or a revision note updates subtitles {{ row.shared_indexes|join(', ') }}.</p>{% endif %}
+    <footer>
+      <span data-proofreading-status="{% if row.changed %}changed{% else %}unchanged{% endif %}">
+        <span>{{ icon('text-box-check-outline') }}Unchanged</span>
+        <span>{{ icon('text-box-edit-outline') }}Changed</span>
+      </span>
+      {{ status_select('finding', 'Audit status', audit_options, row.finding) }}
+      <label class="verification-toggle">
+        <input type="checkbox" name="verified"{% if row.verified %} checked{% endif %}>
+        <span>{{ icon('checkbox-blank-outline') }}Unverified</span>
+        <span>{{ icon('checkbox-marked') }}Verified</span>
+      </label>
+      {% include '_save_status.html' %}
+    </footer>
+  </form>
+  {% else %}
+  <dl lang="{{ row.language }}">
+    <dt>Original</dt><dd><pre>{{ row.original }}</pre></dd>
+  </dl>
+  {% endif %}
+</fieldset>

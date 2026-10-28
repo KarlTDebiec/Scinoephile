@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from enum import StrEnum
 from typing import Any, TypedDict, Unpack
 
 from scinoephile.core.cache.identity import CacheIdentity
@@ -13,7 +14,26 @@ from .answer import Answer
 from .metrics import ChatCompletionMetrics
 from .tool_box import ToolBox
 
-__all__ = ["ChatCompletionKwargs", "LLMProvider"]
+__all__ = ["ChatCompletionKwargs", "LLMProvider", "ReasoningEffort"]
+
+
+class ReasoningEffort(StrEnum):
+    """Requested reasoning level, translated by each concrete provider."""
+
+    none = "none"
+    """Disable reasoning where supported."""
+    minimal = "minimal"
+    """Request minimal reasoning."""
+    low = "low"
+    """Request low reasoning effort."""
+    medium = "medium"
+    """Request medium reasoning effort."""
+    high = "high"
+    """Request high reasoning effort."""
+    xhigh = "xhigh"
+    """Request extra-high reasoning effort."""
+    max = "max"
+    """Request maximum reasoning effort."""
 
 
 class ChatCompletionKwargs(TypedDict, total=False):

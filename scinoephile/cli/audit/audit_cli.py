@@ -19,6 +19,7 @@ from .audit_review_dual_cli import AuditReviewDualCli
 from .audit_review_trad_cli import AuditReviewTradCli
 from .audit_transcription_cli import AuditTranscriptionCli
 from .audit_translation_cli import AuditTranslationCli
+from .review_argument_parser import ReviewArgumentParser
 
 __all__ = ["AuditCli"]
 
@@ -44,7 +45,10 @@ class AuditCli(ScinoephileCliBase):
         """
         super().add_arguments_to_argparser(parser)
         subparsers = parser.add_subparsers(
-            dest="audit_subcommand_name", help="subcommand", required=True
+            dest="audit_subcommand_name",
+            help="subcommand",
+            required=True,
+            parser_class=ReviewArgumentParser,
         )
         subcommands = cls.subcommands()
         for name in sorted(subcommands):

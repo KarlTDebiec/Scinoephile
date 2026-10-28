@@ -1,0 +1,11 @@
+{% from '_icons.html' import icon %}
+<div id="load-more"{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}{% if page.has_more %} hx-get="{{ next_url }}" hx-trigger="intersect once" hx-target="this" hx-swap="outerHTML" hx-sync="#workspace:queue all"{% endif %}>
+  {% if page.has_more %}
+  <form method="get" action="{{ url_for('index') }}" hx-get="{{ next_url }}"
+        hx-target="#load-more" hx-swap="outerHTML" hx-sync="#workspace:queue all">
+    {% for name in ['changes', 'finding', 'verification', 'q'] %}<input type="hidden" name="{{ name }}" value="{{ filters|attr(name) }}">{% endfor %}
+    <input type="hidden" name="after" value="{{ page.last_block }}">
+    <button type="submit" aria-label="Load more blocks" title="Load more blocks">{{ icon('page-next-outline') }}</button>
+  </form>
+  {% endif %}
+</div>

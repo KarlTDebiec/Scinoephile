@@ -3,5 +3,5 @@
 """Web applications for Scinoephile.
 
 Package hierarchy (modules may import from any above):
-* ocr_validation
+* audit_review / ocr_validation
 """

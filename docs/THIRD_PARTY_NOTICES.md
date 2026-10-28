@@ -341,3 +341,39 @@ licensing:
 Scinoephile can build from local Kaikki JSONL snapshots under
 `scinoephile/data/dictionaries/wiktionary/`, or from an explicit
 `--source-jsonl-path` during `dictionary build wiktionary`.
+
+## Material Design Icons (audit review interface)
+
+The audit review interface bundles Pictogrammers Material Design Icons v7.4.47:
+checkbox-blank-outline, checkbox-marked, filter-outline,
+filter-remove-outline, and magnify.
+
+- Source: https://github.com/Templarian/MaterialDesign-SVG/tree/v7.4.47
+- License: Apache 2.0; upstream collection notice is included in
+  `scinoephile/web/audit_review/static/mdi.LICENSE`, with the complete Apache text
+  in `apache-2.0.LICENSE` beside it.
+- Adaptations: SVG root IDs normalized to `icon` and `fill="currentColor"` added
+  for local external-use references and theme inheritance. Path geometry retained.
+
+The audit bulk disclosure control also uses the pinned v7.4.47
+collapse-all-outline and expand-all-outline icons under the same license.
+
+Autosave additionally uses the pinned v7.4.47 sync, content-save-outline, and
+alert-circle-outline icons under the same license.
+
+Block disclosures also use the pinned v7.4.47 minus-box-outline and
+plus-box-outline icons under the same license.
+
+The filter-outline SVG also adopts aXYom32's translate(-2 0) adaptation,
+aligning its funnel with filter-remove-outline; upstream path geometry is unchanged.
+
+The `text-box-unchanged-outline.svg` adapts v7.4.47 text-box-outline
+and check. A uniform two-unit expansion around the check is subtracted from
+the original document outline, then the check is added. The result is saved as
+plain vector paths on the same 24-unit canvas with two-unit weight. The clearance
+matches text-box-edit-outline: two units at the pencil tip and approximately two
+units (2.0025) at the rounded eraser.
+
+Proofreading and audit status controls also use the pinned v7.4.47
+text-box-edit-outline, clipboard-text-outline, clipboard-alert-outline, and
+clipboard-check-outline icons under the same license.

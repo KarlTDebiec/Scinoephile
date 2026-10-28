@@ -277,7 +277,7 @@ class OcrFuseCli(ScinoephileCliBase):
                 secondary,
                 language=fusion_language,
                 provider=get_provider(
-                    llm_args.provider_name, model=llm_args.model_name
+                    llm_args.provider_name, **llm_args.provider_kwargs
                 ),
                 additional_context=read_llm_additional_context(
                     parser, llm_args.additional_context_file_path

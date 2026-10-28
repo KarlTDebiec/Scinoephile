@@ -1,0 +1,13 @@
+<details id="block-{{ block.number }}" class="audit-block">
+  <summary>
+    <a href="{{ url_for('index', q='block ' ~ block.number) }}"
+       hx-get="{{ url_for('index', q='block ' ~ block.number) }}" hx-target="#workspace"
+       hx-swap="outerHTML" hx-push-url="true" hx-sync="#workspace:queue all">Block {{ block.number }}</a>
+    <span>{% include '_block_summary.html' %}, <span class="block-time">{{ block.time_label }}</span></span>
+    <span class="block-disclosure" aria-hidden="true">
+      <svg width="24" height="24"><use href="{{ url_for('audit_review_assets.static', filename='icons/minus-box-outline.svg') }}#icon"/></svg>
+      <svg width="24" height="24"><use href="{{ url_for('audit_review_assets.static', filename='icons/plus-box-outline.svg') }}#icon"/></svg>
+    </span>
+  </summary>
+  <div id="block-rows-{{ block.number }}">{% for row in block.rows %}{% include '_row.html' %}{% endfor %}</div>
+</details>

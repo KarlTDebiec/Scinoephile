@@ -1,0 +1,64 @@
+{% from '_icons.html' import icon %}
+<main id="workspace" hx-history-elt>
+  <header>
+    <h1>{{ audit.title }}</h1>
+    <div id="messages" role="status" aria-live="polite"></div>
+    {% set active = filters.verification != 'all' or filters.changes != 'all' or filters.finding != 'all' or filters.q %}
+    <nav aria-label="Filters">
+      <form method="get" action="{{ url_for('index') }}"
+            hx-get="{{ url_for('index') }}" hx-target="#workspace" hx-swap="outerHTML" hx-push-url="true" hx-sync="#workspace:replace">
+        <button type="submit" aria-label="Clear filters" title="Clear filters"{% if not active %} disabled{% endif %}>
+          <svg width="28" height="28" aria-hidden="true"><use href="{{ url_for('audit_review_assets.static', filename='icons/filter-outline.svg') }}#icon"/></svg>
+          <svg width="28" height="28" aria-hidden="true"><use href="{{ url_for('audit_review_assets.static', filename='icons/filter-remove-outline.svg') }}#icon"/></svg>
+        </button>
+      </form>
+      <form id="filters" role="search" method="get" action="{{ url_for('index') }}"
+          hx-get="{{ url_for('index') }}" hx-trigger="submit, change target:select, input delay:300ms from:#audit-search"
+          hx-target="#workspace" hx-swap="outerHTML" hx-push-url="true"
+          hx-sync="#workspace:replace">
+
+          {% include '_status_filters.html' %}
+          <input id="audit-search" type="search" name="q" value="{{ filters.q }}" placeholder="Text, notes, subtitle number, or block number" aria-label="Search">
+          <button type="submit" aria-label="Search" title="Search"><svg width="28" height="28" aria-hidden="true"><use href="{{ url_for('audit_review_assets.static', filename='icons/magnify.svg') }}#icon"/></svg></button>
+      </form>
+      {% include '_summary.html' %}
+
+    </nav>
+    <nav aria-label="Operations">
+        <form method="get" action="{{ url_for('index') }}" hx-get="{{ url_for('index') }}"
+              hx-target="#workspace" hx-swap="outerHTML" hx-push-url="false" hx-sync="#workspace:queue all" data-reproofread>
+          {% for name in ['changes', 'finding', 'verification', 'q'] %}<input type="hidden" name="{{ name }}" value="{{ filters|attr(name) }}">{% endfor %}
+          <input type="hidden" name="reproofread" value="{{ 0 if show_proofreading else 1 }}">
+          <input type="hidden" name="reaudit" value="{{ 1 if show_auditing else 0 }}">
+          <button type="submit" title="Show or hide proofreading" aria-expanded="{{ 'true' if show_proofreading else 'false' }}"{% if audit.auditing_running %} disabled{% endif %}>{{ icon('text-box-clock-outline' if proofreading.status == 'running' else ('text-box-refresh-outline' if reproofreading else 'text-box-eye-outline')) }}{{ 'Re-proofread' if reproofreading else 'Proofread' }}</button>
+        </form>
+      <form method="get" action="{{ url_for('index') }}" hx-get="{{ url_for('index') }}"
+            hx-target="#workspace" hx-swap="outerHTML" hx-push-url="false" hx-sync="#workspace:queue all" data-reaudit>
+        {% for name in ['changes', 'finding', 'verification', 'q'] %}<input type="hidden" name="{{ name }}" value="{{ filters|attr(name) }}">{% endfor %}
+        <input type="hidden" name="reaudit" value="{{ 0 if show_auditing else 1 }}">
+        <input type="hidden" name="reproofread" value="{{ 1 if show_proofreading else 0 }}">
+        <button type="submit" title="Show or hide auditing" aria-expanded="{{ 'true' if show_auditing else 'false' }}"{% if not audit.outfile_path.exists() or audit.proofreading_running %} disabled{% endif %}>{{ icon('clipboard-text-clock-outline' if auditing.status == 'running' else ('clipboard-refresh-outline' if reauditing else 'clipboard-text-eye-outline')) }}{{ 'Re-audit' if reauditing else 'Audit' }}</button>
+      </form>
+      <form method="post" action="{{ url_for('verify_visible') }}?{{ query }}"
+            hx-post="{{ url_for('verify_visible') }}?{{ query }}" hx-target="#workspace" hx-swap="outerHTML"
+            hx-sync="#workspace:queue all" data-verify-visible>
+        <input type="hidden" name="csrf" value="{{ csrf }}">
+        <input id="verification-selection" type="hidden" name="selection" value="{{ verification_token }}">
+        <button type="submit" title="Verify every subtitle matching the current filters, including unloaded blocks"{% if not page.matching or not audit.outfile_path.exists() or audit.proofreading_running or audit.auditing_running %} disabled{% endif %}>{{ icon('checkbox-multiple-marked-outline') }}Verify All Visible</button>
+      </form>
+      <button id="toggle-blocks" type="button" data-toggle-blocks hx-preserve aria-label="Expand all blocks" title="Expand all blocks" aria-expanded="false">
+        <svg width="24" height="24" aria-hidden="true"><use href="{{ url_for('audit_review_assets.static', filename='icons/collapse-all-outline.svg') }}#icon"/></svg>
+        <svg width="24" height="24" aria-hidden="true"><use href="{{ url_for('audit_review_assets.static', filename='icons/expand-all-outline.svg') }}#icon"/></svg>
+      </button>
+      <p data-operations-message role="status" hidden></p>
+      {% if show_proofreading or proofreading.status == 'running' %}{% include '_proofreading.html' %}{% endif %}
+      {% if show_auditing or auditing.status == 'running' %}{% include '_auditing.html' %}{% endif %}
+    </nav>
+  </header>
+  <div id="audit-rows">
+    {% for block in page.blocks %}{% include '_block.html' %}{% endfor %}
+    {% include '_load_more.html' %}
+    {% if not page.rows %}<p class="empty">No rows match these filters.</p>{% endif %}
+  </div>
+  {% include '_stream_state.html' %}
+</main>
