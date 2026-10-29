@@ -1,0 +1,7 @@
+<!-- Adapted from Pictogrammers MDI text-box-outline and clipboard-text-play-outline.
+Apache-2.0; see ../mdi.LICENSE. Bottom-right play overlay uses the stock 24-unit
+geometry; confirmation variants replace the text with one or two alert marks,
+following aXYom32's deletion confirmation icons. -->
+<svg xmlns="http://www.w3.org/2000/svg" id="icon" viewBox="0 0 24 24" fill="currentColor">
+  <path d="M5 3C3.89 3 3 3.89 3 5V19C3 20.11 3.89 21 5 21H15V19H5V5H19V14H21V5C21 3.89 20.11 3 19 3H5ZM17 16V22L22 19ZM11 9H13V14H11ZM11 16H13V18H11Z"/>
+</svg>

@@ -165,6 +165,12 @@ scinoephile = [
     "data/dictionaries/unihan/*.txt",
     "data/ocr/*.csv",
     "web/static/*.js",
+    "web/static/*.css",
+    "web/audit_review/templates/*.html",
+    "web/audit_review/static/*.css",
+    "web/audit_review/static/*.js",
+    "web/audit_review/static/*.LICENSE",
+    "web/audit_review/static/icons/*.svg",
     "web/ocr_validation/templates/*.html",
 ]
 

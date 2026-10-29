@@ -1,0 +1,31 @@
+{% from '_rerun_confirmation.html' import rerun_button with context %}
+{% from '_icons.html' import icon %}
+<section id="proofreading" aria-label="Proofreading"{% if not show_proofreading %} hidden{% endif %}{% if proofreading.status == 'running' %}
+         hx-get="{{ url_for('proofreading_status', reproofread=1 if show_proofreading else 0) }}" hx-trigger="every 5s" hx-swap="outerHTML"{% endif %}>
+  {{ icon('text-box-clock-outline' if proofreading.status == 'running' else 'text-box-eye-outline', 24) }}
+  <div>
+    {% if proofreading_message %}<p class="error" role="alert">{{ proofreading_message }}</p>{% endif %}
+    {% if proofreading.status == 'running' %}
+      <p role="status">Proofreading {{ proofreading.completed }} of {{ proofreading.total }} blocks using {{ {'openai': 'OpenAI', 'deepseek': 'DeepSeek'}.get(proofreading.provider, proofreading.provider) }} {{ proofreading.model or 'provider default model' }} · {{ proofreading.effort or 'default reasoning' }}</p>
+      <progress value="{{ proofreading.completed }}" max="{{ proofreading.total }}" aria-label="Proofreading progress"></progress>
+    {% elif proofreading.available or reproofreading %}
+      {% if proofreading.error %}<p class="error" role="alert">{{ proofreading.error }}</p>{% endif %}
+      <form method="post" action="{{ url_for('start_proofreading') }}" hx-post="{{ url_for('start_proofreading') }}"
+            hx-target="#proofreading" hx-swap="outerHTML" hx-sync="this:drop">
+        {% if reproofreading %}<input type="hidden" name="rerun" value="on">{% endif %}
+        <input type="hidden" name="csrf" value="{{ csrf }}">
+        <select name="provider" aria-label="Provider" title="Provider">{% for name in provider_names %}<option value="{{ name }}"{% if name == proofreading.provider %} selected{% endif %}>{{ name }}</option>{% endfor %}</select>
+        <input aria-label="Model" title="Model" name="model" value="{{ proofreading.model }}" maxlength="200" placeholder="Provider default">
+        <select name="effort" aria-label="Reasoning" title="Reasoning"><option value="">Provider default</option>{% for level in reasoning_levels %}<option value="{{ level.value }}"{% if level.value == proofreading.effort %} selected{% endif %}>{{ level.value }}</option>{% endfor %}</select>
+        {% if reproofreading %}
+          {{ rerun_button('proofreading', proofreading, 'Run re-proofreading', 'text-box-play', blocked=proofreading_blocked) }}
+        {% else %}
+        <button type="submit"{% if proofreading_blocked %} disabled{% endif %} aria-label="{{ 'Run re-proofreading' if reproofreading else 'Run proofreading' }}" title="{{ 'Run re-proofreading' if reproofreading else 'Run proofreading' }}">{{ icon('text-box-play-outline', 24) }}</button>
+        {% endif %}
+      </form>
+    {% else %}
+      {% if proofreading.error %}<p class="error" role="alert">{{ proofreading.error }}</p>{% endif %}
+      <p>Restart the app to load the existing output.</p>
+    {% endif %}
+  </div>
+</section>

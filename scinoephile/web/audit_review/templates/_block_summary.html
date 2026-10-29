@@ -1,0 +1,1 @@
+<span id="block-summary-{{ block.number }}"{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}>{% if block.rows|length != block.count %}{{ block.rows|length }} of {% endif %}{{ block.count }} subtitle{% if block.count != 1 %}s{% endif %}</span>

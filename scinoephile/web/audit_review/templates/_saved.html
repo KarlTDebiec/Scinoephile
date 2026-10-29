@@ -1,0 +1,22 @@
+{% if autosave|default(false) %}
+  {% with row=current %}{% include '_synced.html' %}{% endwith %}
+  {% if not row %}<div id="row-{{ current.key }}" hx-swap-oob="delete"></div>{% endif %}
+{% elif row %}{% include '_row.html' %}{% endif %}
+{% for number in removed_blocks %}<div id="block-{{ number }}" hx-swap-oob="delete"></div>{% endfor %}
+{% for block in page.blocks %}
+  {% if block.number not in old_blocks %}<div hx-swap-oob="beforebegin:#load-more">{% with oob=false %}{% include '_block.html' %}{% endwith %}</div>
+  {% else %}
+    {% if additions[block.number] %}<div hx-swap-oob="beforeend:#block-rows-{{ block.number }}">{% for row in additions[block.number] %}{% include '_row.html' %}{% endfor %}</div>{% endif %}
+    {% set oob = true %}{% include '_block_summary.html' %}
+  {% endif %}
+{% endfor %}
+{% set oob = true %}{% include '_summary.html' %}{% include '_load_more.html' %}{% include '_stream_state.html' %}
+{% for changed_key, changed_row in others.items() %}
+{% if changed_row %}{% set row = changed_row %}<div hx-swap-oob="outerHTML:#row-{{ changed_key }}">{% include '_row.html' %}</div>
+{% else %}<div id="row-{{ changed_key }}" hx-swap-oob="delete"></div>{% endif %}
+{% endfor %}
+<div id="messages" hx-swap-oob="innerHTML">{% if not autosave|default(false) %}Saved.{% endif %}</div>
+
+{% with oob=true %}{% include '_verification.html' %}{% endwith %}
+
+{% with oob=true %}{% include '_status_filters.html' %}{% endwith %}

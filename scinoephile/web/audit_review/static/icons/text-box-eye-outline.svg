@@ -1,0 +1,8 @@
+<!-- Adapted from Pictogrammers MDI text-box-outline, clipboard-text-outline,
+and file-eye-outline. Apache-2.0; see ../mdi.LICENSE. The stock eye is retained
+at bottom right; document and text paths are cut two units around its lens.
+The clearance is transparent for both light and dark backgrounds. -->
+<svg xmlns="http://www.w3.org/2000/svg" id="icon" viewBox="0 0 24 24" fill="currentColor">
+  <path d="M5 3C3.89 3 3 3.89 3 5V19C3 20.11 3.89 21 5 21H9.788897A8.5 8.5 0 0 1 9.153846 19.769231A2 2 0 0 1 9 19H5V5H19V13.238644A8.5 8.5 0 0 1 21 14V5C21 3.89 20.11 3 19 3H5ZM7 7H17V9H7ZM7 11H17V13H7ZM7 15H11.522774A8.5 8.5 0 0 0 9.788897 17H7Z"/>
+  <path d="M17,18C17.56,18 18,18.44 18,19C18,19.56 17.56,20 17,20C16.44,20 16,19.56 16,19C16,18.44 16.44,18 17,18M17,15C14.27,15 11.94,16.66 11,19C11.94,21.34 14.27,23 17,23C19.73,23 22.06,21.34 23,19C22.06,16.66 19.73,15 17,15M17,21.5A2.5,2.5 0 0,1 14.5,19A2.5,2.5 0 0,1 17,16.5A2.5,2.5 0 0,1 19.5,19A2.5,2.5 0 0,1 17,21.5"/>
+</svg>

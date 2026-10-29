@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="htmx-config" content='{"allowEval":false,"includeIndicatorStyles":false,"responseHandling":[{"code":"204","swap":false},{"code":"[23]..","swap":true},{"code":"409","swap":true,"error":false},{"code":"[45]..","swap":false,"error":true}]}'>
+  <title>{{ audit.title }}</title>
+  <link rel="stylesheet" href="{{ url_for('audit_review_assets.static', filename='audit-review.css') }}">
+  <script defer src="{{ url_for('static', filename='htmx.min.js') }}"></script>
+  <script defer src="{{ url_for('audit_review_assets.static', filename='audit-review.js') }}"></script>
+  <script defer src="{{ url_for('audit_review_assets.static', filename='rerun-confirmation.js') }}"></script>
+</head>
+<body>
+  {% include '_workspace.html' %}
+</body>
+</html>

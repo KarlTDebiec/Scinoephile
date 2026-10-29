@@ -17,8 +17,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from scinoephile.common.argument_parsing import input_file_arg, output_file_arg
+from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
+    input_file_arg,
+    output_file_arg,
+)
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.llms import ReasoningEffort
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
     get_provider_api_key_env_var_name,
@@ -48,6 +54,10 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "llm arguments": "LLM 参数",
         "LLM model": "LLM 模型",
+        (
+            "LLM reasoning effort (default: provider default; "
+            "supported levels depend on model)"
+        ): ("LLM 推理强度（默认：提供商默认值；支持的级别取决于模型）"),
         "use neutral answers without calling an LLM or accessing its response cache": (
             "使用中性答案，不调用大语言模型或访问其响应缓存"
         ),
@@ -67,6 +77,10 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "llm arguments": "LLM 參數",
         "LLM model": "LLM 模型",
+        (
+            "LLM reasoning effort (default: provider default; "
+            "supported levels depend on model)"
+        ): ("LLM 推理強度（預設：提供商預設值；支援的等級取決於模型）"),
         "use neutral answers without calling an LLM or accessing its response cache": (
             "使用中性答案，不呼叫大型語言模型或存取其回應快取"
         ),
@@ -93,6 +107,20 @@ class LlmArguments:
     """Optional path to additional LLM prompt context."""
     no_op: bool = False
     """Whether to use neutral answers without calling an LLM."""
+    reasoning_effort: ReasoningEffort | None = None
+    """Optional requested reasoning effort, interpreted by the provider."""
+
+    @property
+    def provider_kwargs(self) -> dict[str, str | None]:
+        """Get provider constructor options.
+
+        Returns:
+            provider options, omitting unset reasoning controls
+        """
+        kwargs: dict[str, str | None] = {"model": self.model_name}
+        if self.reasoning_effort is not None:
+            kwargs["reasoning_effort"] = self.reasoning_effort
+        return kwargs
 
 
 def add_llm_provider_args(
@@ -123,6 +151,19 @@ def add_llm_provider_args(
         field_name="model_name",
         metavar="LLM_MODEL",
         help="LLM model",
+    )
+    llm_arg_group.add_argument(
+        "--llm-reasoning-effort",
+        action=ArgumentBundleFieldAction,
+        bundle_type=LlmArguments,
+        dest="llm_args",
+        field_name="reasoning_effort",
+        type=enum_arg(ReasoningEffort),
+        metavar=enum_metavar(ReasoningEffort),
+        help=(
+            "LLM reasoning effort (default: provider default; "
+            "supported levels depend on model)"
+        ),
     )
     llm_arg_group.add_argument(
         "--llm-additional-context-file",

@@ -1,0 +1,7 @@
+<output id="sync-{{ row.key }}" class="save-status" data-save-state="saved" title="Saved" aria-label="Saved" aria-live="polite">
+  <svg class="saved" width="20" height="20" aria-hidden="true"><use href="{{ url_for('audit_review_assets.static', filename='icons/checkbox-marked.svg') }}#icon"/></svg>
+  <svg class="saving" width="20" height="20" aria-hidden="true"><use href="{{ url_for('audit_review_assets.static', filename='icons/sync.svg') }}#icon"/></svg>
+  <svg class="unsaved" width="20" height="20" aria-hidden="true"><use href="{{ url_for('audit_review_assets.static', filename='icons/content-save-outline.svg') }}#icon"/></svg>
+  <svg class="error" width="20" height="20" aria-hidden="true"><use href="{{ url_for('audit_review_assets.static', filename='icons/alert-circle-outline.svg') }}#icon"/></svg>
+  <span>Saved</span>
+</output>

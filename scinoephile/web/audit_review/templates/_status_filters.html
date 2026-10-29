@@ -1,0 +1,4 @@
+{% from '_icons.html' import status_select, proofreading_options, audit_options, verification_options %}
+{{ status_select('changes', 'Proofreading status', proofreading_options, filters.changes, include_all=true, all_label='All proofreading statuses', counts=page.filter_counts['changes'], oob=oob|default(false)) }}
+{{ status_select('finding', 'Audit status', audit_options, filters.finding, include_all=true, all_label='All audit statuses', counts=page.filter_counts['finding'], oob=oob|default(false)) }}
+{{ status_select('verification', 'Verification status', verification_options, filters.verification, include_all=true, all_label='All verification statuses', counts=page.filter_counts['verification'], oob=oob|default(false)) }}

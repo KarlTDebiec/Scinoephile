@@ -8,10 +8,11 @@ import logging
 from pathlib import Path
 
 from PIL import Image
-from pytest import LogCaptureFixture, MonkeyPatch
+from pytest import LogCaptureFixture, MonkeyPatch, mark
 
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.ocr.validation import MAX_CHAR_DIM_BBOXES, ValidationManager
+from scinoephile.image.ocr.validation.char_cursor import CharCursor
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
@@ -112,6 +113,71 @@ def test_validate_ambiguous_gap_warns_without_updating_text(
         "Sub    1 | Char  1 | AB | 'A,B' -> 4 | "
         "question about adjacent or space gap, observed ''"
     ]
+
+
+@mark.parametrize(
+    ("char", "boxes", "expected"),
+    [
+        (
+            "怕",
+            [
+                Bbox(0, 6, 12, 29),
+                Bbox(11, 14, 0, 55),
+                Bbox(18, 23, 12, 23),
+                Bbox(28, 56, 0, 55),
+            ],
+            4,
+        ),
+        ("副", [Bbox(0, 34, 2, 54), Bbox(39, 54, 0, 54), Bbox(65, 122, 0, 55)], 2),
+        (
+            "利",
+            [
+                Bbox(0, 30, 0, 55),
+                Bbox(36, 39, 7, 40),
+                Bbox(41, 53, 0, 55),
+                Bbox(65, 121, 0, 55),
+            ],
+            3,
+        ),
+        ("怕", [Bbox(0, 6, 20, 70), Bbox(12, 100, 0, 100), Bbox(120, 220, 0, 100)], 2),
+        ("怕", [Bbox(0, 6, 0, 55), Bbox(30, 85, 0, 55)], 1),
+        ("怕", [Bbox(0, 6, 0, 55), Bbox(10, 60, 75, 130)], 1),
+        ("怕", [Bbox(0, 20, 0, 55), Bbox(25, 70, 0, 55)], 1),
+        ("怕", [Bbox(0, 55, 0, 55), Bbox(57, 63, 0, 55)], 1),
+        ("A", [Bbox(0, 6, 0, 55), Bbox(8, 55, 0, 55)], 1),
+    ],
+)
+def test_suggest_hanzi_components(
+    tmp_path: Path, char: str, boxes: list[Bbox], expected: int
+):
+    """Suggest components without crossing glyph or line boundaries.
+
+    Arguments:
+        tmp_path: temporary directory path
+        char: character being reviewed
+        boxes: detected component rectangles
+        expected: initial number of selected rectangles
+    """
+    manager = _prepared_manager(tmp_path)
+    sub = _series(char).events[0]
+    sub.bboxes = list(boxes)
+    cursor = CharCursor(sub=sub, sub_idx=0)
+
+    assert manager.suggest_char_n_bboxes(cursor) == expected
+
+
+def test_suggest_respects_known_narrow_hanzi(tmp_path: Path):
+    """Keep an intentionally narrow Hanzi from swallowing the next character.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    manager = _prepared_manager(tmp_path)
+    manager.char_dims_by_n[1]["丨"] = {(6, 55)}
+    sub = _series("丨怕").events[0]
+    sub.bboxes = [Bbox(0, 6, 0, 55), Bbox(8, 55, 0, 55)]
+
+    assert manager.suggest_char_n_bboxes(CharCursor(sub=sub, sub_idx=0)) == 1
 
 
 def _prepared_manager(tmp_path: Path) -> ValidationManager:
