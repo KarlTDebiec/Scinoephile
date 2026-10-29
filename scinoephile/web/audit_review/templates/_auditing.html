@@ -6,7 +6,7 @@
   <div>
     {% if auditing_message %}<p class="error" role="alert">{{ auditing_message }}</p>{% endif %}
     {% if auditing.status == 'running' %}
-      <p role="status">{{ 'Re-auditing' if auditing.rerun else 'Auditing' }} {{ auditing.completed }} of {{ auditing.total }} blocks using {{ {'openai': 'OpenAI', 'deepseek': 'DeepSeek'}.get(auditing.provider, auditing.provider) }} {{ auditing.model or 'provider default model' }} · {{ auditing.effort or 'default reasoning' }}</p>
+      <p role="status">Auditing {{ auditing.completed }} of {{ auditing.total }} blocks using {{ {'openai': 'OpenAI', 'deepseek': 'DeepSeek'}.get(auditing.provider, auditing.provider) }} {{ auditing.model or 'provider default model' }} · {{ auditing.effort or 'default reasoning' }}</p>
       <progress value="{{ auditing.completed }}" max="{{ auditing.total }}" aria-label="Auditing progress"></progress>
     {% elif auditing.available or reauditing %}
       {% if auditing.error %}<p class="error" role="alert">{{ auditing.error }}</p>{% endif %}

@@ -144,9 +144,7 @@ class AuditingJob:
             rerun: replace all findings, retaining verification marks
         """
         try:
-            queryer = Queryer(
-                ReviewAuditTestCase, provider=provider, overwrite_cache=rerun
-            )
+            queryer = Queryer(ReviewAuditTestCase, provider=provider)
             for block in blocks:
                 query = ReviewAuditQuery(
                     language=self.audit.language.code,

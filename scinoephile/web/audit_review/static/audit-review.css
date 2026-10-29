@@ -47,6 +47,14 @@ body {
   box-shadow: 0 -1rem var(--background);
 
   & > :last-child { margin-bottom: 0; }
+  & > .warning {
+    margin: 1rem 0 0;
+    padding: .5rem .75rem;
+    color: var(--warning-text);
+    background: var(--warning-background);
+    border: 1px solid var(--warning-border);
+    border-radius: .5rem;
+  }
 }
 h1 { margin: 0; }
 a { color: var(--link); }
@@ -248,7 +256,7 @@ nav[aria-label="Operations"] {
     margin-top: -.875rem;
     font-weight: 600;
     list-style: none;
-    pointer-events: none;
+    cursor: pointer;
 
     &::-webkit-details-marker { display: none; }
     &::marker { content: ""; }
@@ -256,7 +264,7 @@ nav[aria-label="Operations"] {
       padding: 0 .25rem;
       background: var(--background);
     }
-    & > a { justify-self: start; margin-left: -.25rem; white-space: nowrap; pointer-events: auto; }
+    & > a { justify-self: start; margin-left: -.25rem; white-space: nowrap; }
     & > span:nth-child(2) {
       justify-self: center;
       font-size: .85rem;
@@ -264,8 +272,6 @@ nav[aria-label="Operations"] {
       white-space: nowrap;
     }
     & > .block-disclosure {
-      pointer-events: auto;
-      cursor: pointer;
       justify-self: end;
       margin-right: -.25rem;
       display: grid;
@@ -282,7 +288,10 @@ nav[aria-label="Operations"] {
     & svg:last-child { visibility: hidden; }
   }
   &:not([open]) { padding-bottom: .5rem; }
-  & > div > .audit-row:first-child { margin-top: .25rem; }
+  & > div > .audit-row {
+    &:first-child { margin-top: .25rem; }
+    &:last-child { margin-bottom: 0; }
+  }
   @media (prefers-reduced-motion: no-preference) {
     @supports (interpolate-size: allow-keywords) and
               (transition-behavior: allow-discrete) and
@@ -292,7 +301,7 @@ nav[aria-label="Operations"] {
 
       &::details-content {
         height: 0;
-        overflow: clip;
+        overflow-y: clip;
         transition: height 120ms ease-out,
                     content-visibility 120ms allow-discrete;
       }
@@ -364,6 +373,7 @@ nav[aria-label="Operations"] {
   /* Keep existing notes visible, and retain an empty field until focus leaves. */
   & form:not(:has(select[name=finding] option[value=review]:checked, textarea[name=notes]:not(:placeholder-shown), textarea[name=notes]:focus)) .audit-notes { display: none; }
   & form.is-enhanced {
+    & > footer > button[type=submit] { display: none; }
     & [data-revision-note][hidden] { display: none; }
     & .inline-proofread:not(.is-dirty):not(:has(textarea:hover, textarea:focus)) {
       & > pre { visibility: visible; }
@@ -440,16 +450,16 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 ui-monospac
 
 
 .save-status {
+  display: none;
+  margin-left: auto;
   & svg { display: none; }
   .is-enhanced & {
     display: inline-grid;
     grid-template-columns: 20px minmax(0, 1fr);
     align-items: center;
     gap: .4rem;
-    width: calc(20px + 7ch + 1.4rem + 2px);
+    width: calc(20px + 7ch + .4rem);
     flex: none;
-    min-height: 2rem;
-    padding: .25rem .5rem;
     white-space: nowrap;
     text-align: left;
     &[data-save-state="saved"] { color: #18752a; & .saved { display: block; } }
@@ -494,7 +504,20 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 ui-monospac
   & form { display: flex; align-items: end; flex-wrap: wrap; gap: .75rem; }
   & form > :is(input:not([type=hidden]), select) { min-width: 8rem; flex: 1; height: 2.5rem; }
   & input { width: 100%; min-width: 0; }
-  & button { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; padding: 0; box-sizing: border-box; }
-  & button.is-confirming { color: var(--error); }
+  & button {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    box-sizing: border-box;
+
+    &:disabled {
+      color: var(--muted);
+      background: var(--surface);
+      cursor: wait;
+    }
+    &.is-confirming:not(:disabled) { color: var(--error); }
+  }
   & progress { display: block; width: 100%; margin: .25rem 0; }
 }

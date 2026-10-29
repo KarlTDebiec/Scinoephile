@@ -803,7 +803,9 @@ class AuditSession:
                 for row in updated:
                     if row.key not in affected:
                         continue
-                    saved = replace(row, verified=False)
+                    saved = replace(
+                        row, verified=False, finding=AuditStatus.unaudited, notes=""
+                    )
                     if row.key == key:
                         saved = replace(
                             saved, notes=notes, finding=finding, verified=verified

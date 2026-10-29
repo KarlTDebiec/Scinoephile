@@ -6,7 +6,7 @@
   <div>
     {% if proofreading_message %}<p class="error" role="alert">{{ proofreading_message }}</p>{% endif %}
     {% if proofreading.status == 'running' %}
-      <p role="status">{{ 'Re-proofreading' if proofreading.rerun else 'Proofreading' }} {{ proofreading.completed }} of {{ proofreading.total }} blocks using {{ {'openai': 'OpenAI', 'deepseek': 'DeepSeek'}.get(proofreading.provider, proofreading.provider) }} {{ proofreading.model or 'provider default model' }} · {{ proofreading.effort or 'default reasoning' }}</p>
+      <p role="status">Proofreading {{ proofreading.completed }} of {{ proofreading.total }} blocks using {{ {'openai': 'OpenAI', 'deepseek': 'DeepSeek'}.get(proofreading.provider, proofreading.provider) }} {{ proofreading.model or 'provider default model' }} · {{ proofreading.effort or 'default reasoning' }}</p>
       <progress value="{{ proofreading.completed }}" max="{{ proofreading.total }}" aria-label="Proofreading progress"></progress>
     {% elif proofreading.available or reproofreading %}
       {% if proofreading.error %}<p class="error" role="alert">{{ proofreading.error }}</p>{% endif %}

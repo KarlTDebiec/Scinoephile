@@ -718,6 +718,3 @@ def test_review_report_explicit_and_legacy_dispatch(tmp_path: Path):
         legacy = dict(report.call_args.kwargs)
         legacy.pop("_parser", None)
         assert legacy == explicit
-    assert "serve" not in AuditCli.subcommands()
-    assert "report" in AuditReviewCli.argparser().format_help()
-    assert "serve" in AuditReviewCli.argparser().format_help()

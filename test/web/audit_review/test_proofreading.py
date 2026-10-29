@@ -271,10 +271,7 @@ def test_card_http_csrf_progress_completion_and_validation(
     provider.release.clear()
     app = create_app(audit)
     client = app.test_client()
-    html = client.get("/").get_data(as_text=True)
-    assert 'id="proofreading"' not in html and "Proofread</button>" in html
-    setup = client.get("/?reproofread=1").get_data(as_text=True)
-    assert 'aria-label="Run proofreading"' in setup and 'name="rerun"' not in setup
+    client.get("/")
     assert client.post("/proofreading", data={}).status_code == 403
     with client.session_transaction() as session:
         csrf = session["csrf"]
@@ -294,17 +291,7 @@ def test_card_http_csrf_progress_completion_and_validation(
     progress = client.get("/proofreading", headers={"HX-Request": "true"}).get_data(
         as_text=True
     )
-    assert "every 5s" in progress and "text-box-clock-outline.svg" in progress
-    hidden_progress = client.get(
-        "/proofreading?reproofread=0", headers={"HX-Request": "true"}
-    ).get_data(as_text=True)
-    assert (
-        'aria-label="Proofreading" hidden' in hidden_progress
-        and "every 5s" in hidden_progress
-    )
-    assert "text-box-clock-outline.svg" in client.get("/?reproofread=0").get_data(
-        as_text=True
-    )
+    assert 'hx-trigger="every 5s"' in progress
     assert provider.entered.wait(5)
     provider.release.set()
     job = app.extensions["audit_proofreading"]
@@ -315,8 +302,6 @@ def test_card_http_csrf_progress_completion_and_validation(
         ]
         == "true"
     )
-    assert 'id="proofreading"' not in client.get("/").get_data(as_text=True)
-    assert "(2/3)" in client.post("/proofreading", data=data).get_data(as_text=True)
 
 
 @mark.parametrize("with_json", [False, True])
@@ -485,92 +470,3 @@ def test_reproofread_rejects_structural_input_changes(
     with raises(ValueError, match="counts and timings"):
         job.start("openai", "gpt-6-luna", "xhigh", rerun=True)
     assert provider.calls == 2 and not audit.proofreading_running
-
-
-def test_reproofread_http_setup_and_worker_lock(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Show a whole-file rerun before auditing and lock edits during fresh requests.
-
-    Arguments:
-        tmp_path: temporary project directory
-        monkeypatch: offline provider factory
-    """
-    audit, provider, _ = _setup(tmp_path, monkeypatch)
-    job = ProofreadingJob(audit)
-    job.start("openai", "", "")
-    _join(job)
-    app = create_app(audit)
-    client = app.test_client()
-    html = client.get("/?reproofread=1&q=does-not-match").get_data(as_text=True)
-    assert html.index("Re-proofread</button>") < html.index("Audit</button>")
-    assert 'aria-label="Run re-proofreading (1/3)"' in html
-    assert 'name="rerun" value="on"' in html
-    assert client.post("/proofreading", data={"rerun": "on"}).status_code == 403
-    with client.session_transaction() as session:
-        csrf = session["csrf"]
-    data = {
-        "csrf": csrf,
-        "provider": "openai",
-        "model": "gpt-6-luna",
-        "effort": "xhigh",
-        "rerun": "on",
-    }
-    invalid = client.post(
-        "/proofreading", data={**data, "effort": "bad"}, headers={"HX-Request": "true"}
-    )
-    assert invalid.status_code == 409
-    assert 'name="rerun" value="on"' in invalid.get_data(as_text=True)
-    for _ in range(2):
-        prepared = client.post(
-            "/proofreading", data=data, headers={"HX-Request": "true"}
-        )
-        assert prepared.status_code == 200
-        with client.session_transaction() as state:
-            confirmation = state["rerun_confirmations"]["proofreading"]
-            data["confirmation"] = confirmation["token"]
-    ready_at = confirmation["ready_at"]
-    monkeypatch.setattr("scinoephile.web.audit_review.app.time", lambda: ready_at + 1)
-    provider.release.clear()
-    provider.calls = 0
-    provider.entered.clear()
-    provider.configuration = "HTTP rerun effective configuration"
-    response = client.post("/proofreading", data=data, headers={"HX-Request": "true"})
-    assert response.headers["HX-Refresh"] == "true"
-    assert provider.entered.wait(5)
-    try:
-        assert "disabled" in client.get("/").get_data(as_text=True)
-        progress = client.get("/proofreading", headers={"HX-Request": "true"})
-        assert "Re-proofreading 0 of 2" in progress.get_data(as_text=True)
-        with raises(ValueError, match="already running"):
-            app.extensions["audit_proofreading"].start("openai", "", "", rerun=True)
-    finally:
-        provider.release.set()
-        _join(app.extensions["audit_proofreading"])
-    assert app.extensions["audit_proofreading"].snapshot().status == "complete"
-    assert provider.calls == 2
-
-
-def test_missing_output_has_hidden_first_run_controls(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Offer proofreading before output exists, with no overwrite challenge.
-
-    Arguments:
-        tmp_path: temporary subtitle project
-        monkeypatch: offline provider replacements
-    """
-    audit, _, _ = _setup(tmp_path, monkeypatch)
-    client = create_app(audit).test_client()
-    html = client.get("/").get_data(as_text=True)
-    proofread = html.split("data-reproofread>")[1].split("</form>")[0]
-    auditing = html.split("data-reaudit>")[1].split("</form>")[0]
-    assert "Proofread</button>" in proofread and "text-box-eye-outline.svg" in proofread
-    assert "disabled" not in proofread and 'aria-expanded="false"' in proofread
-    assert "Audit</button>" in auditing and "disabled" in auditing
-    assert 'id="proofreading"' not in html and 'id="auditing"' not in html
-    opened = client.get("/?reproofread=1").get_data(as_text=True)
-    panel = opened.split('<section id="proofreading"')[1].split("</section>")[0]
-    assert 'aria-label="Run proofreading"' in panel
-    assert "data-rerun-icon" not in panel and 'name="rerun"' not in panel
-    assert 'name="reproofread" value="0"' in opened

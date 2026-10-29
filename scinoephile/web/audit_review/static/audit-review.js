@@ -21,7 +21,7 @@ function syncProofread(input) {
     for (const field of input.form.querySelectorAll("[data-revision-note]")) {
         field.hidden = !changed;
     }
-    input.form.classList.add("is-enhanced");
+    if (window.htmx) input.form.classList.add("is-enhanced");
     syncSaveStatus(input.form);
 }
 
@@ -162,12 +162,12 @@ function validateReviewForm(form) {
 }
 
 /**
- * Reflect validation, request progress, or an unsaved draft in the status control.
+ * Reflect validation, request progress, or an unsaved draft in the status indicator.
  * @param {HTMLFormElement} form - Subtitle edit form, never replaced by autosave.
  */
 function syncSaveStatus(form) {
-    const button = form.querySelector(".save-status");
-    if (!button) return;
+    const indicator = form.querySelector(".save-status");
+    if (!indicator) return;
     const state = getSaveState(form);
     const invalid = validateReviewForm(form);
     let status = "saved";
@@ -176,17 +176,16 @@ function syncSaveStatus(form) {
     else if (invalid) { status = "invalid"; message = invalid; }
     else if (state.inFlight) { status = "saving"; message = "Saving…"; }
     else if (JSON.stringify(reviewValues(form)) !== state.saved) {
-        status = "unsaved"; message = "Unsaved changes — leave the field to save, or click to retry.";
+        status = "unsaved"; message = "Unsaved changes — leave the field to save.";
     }
-    button.type = "button";
-    button.dataset.saveState = status;
-    button.querySelector("span").textContent = {
+    indicator.dataset.saveState = status;
+    indicator.querySelector("span").textContent = {
         saved: "Saved", saving: "Saving…", unsaved: "Unsaved",
         invalid: "Invalid", error: "Error"
     }[status];
-    button.title = message;
-    button.setAttribute("aria-label", message);
-    button.setAttribute("aria-busy", String(state.inFlight));
+    indicator.title = message;
+    indicator.setAttribute("aria-label", message);
+    indicator.setAttribute("aria-busy", String(state.inFlight));
 }
 
 /**
@@ -263,7 +262,7 @@ document.addEventListener("htmx:afterRequest", event => {
         }
         state.error = "";
     } else {
-        state.error = "Not saved — click to retry. If this row changed elsewhere, reload first.";
+        state.error = "Not saved — focus and leave a text field to retry. If this row changed elsewhere, reload first.";
     }
     state.sent = null;
     if (!form.isConnected) return;
@@ -290,11 +289,6 @@ document.addEventListener("htmx:oobBeforeSwap", event => {
 document.addEventListener("focusout", event => {
     const form = event.target.closest(".audit-row form");
     if (form && event.target.matches("textarea")) requestReviewSave(form);
-});
-// The enhanced indicator retries drafts; clicking an already-saved check is a no-op.
-document.addEventListener("click", event => {
-    const button = event.target.closest(".save-status");
-    if (button) requestReviewSave(button.form);
 });
 // Operations replace the workspace; preserve incomplete subtitle drafts.
 document.addEventListener("submit", event => {

@@ -2,7 +2,7 @@
 <main id="workspace" hx-history-elt>
   <header>
     <h1>{{ audit.title }}</h1>
-    <div id="messages" role="status" aria-live="polite">{% if audit.input_changed %}OCR input changed. Re-proofread to load the current file.{% endif %}</div>
+    <div id="messages" role="status" aria-live="polite"></div>
     {% set active = filters.verification != 'all' or filters.changes != 'all' or filters.finding != 'all' or filters.q %}
     <nav aria-label="Filters">
       <form method="get" action="{{ url_for('index') }}"
@@ -13,7 +13,7 @@
         </button>
       </form>
       <form id="filters" role="search" method="get" action="{{ url_for('index') }}"
-          hx-get="{{ url_for('index') }}" hx-trigger="submit, change target:select, input delay:300ms from:#audit-search"
+          hx-get="{{ url_for('index') }}" hx-trigger="submit, change target:select, input changed delay:750ms from:#audit-search"
           hx-target="#workspace" hx-swap="outerHTML" hx-push-url="true"
           hx-sync="#workspace:replace">
 
@@ -48,6 +48,7 @@
       {% if show_proofreading or proofreading.status == 'running' %}{% include '_proofreading.html' %}{% endif %}
       {% if show_auditing or auditing.status == 'running' %}{% include '_auditing.html' %}{% endif %}
     </nav>
+    {% if audit.input_changed %}<p class="warning" role="status">OCR input changed. Re-proofread to load the current file.</p>{% endif %}
   </header>
   <div id="audit-rows">
     {% for block in page.blocks %}{% include '_block.html' %}{% endfor %}

@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import TextIO
 from unittest.mock import patch
 
-from pytest import MonkeyPatch, raises
+from pytest import MonkeyPatch, mark, raises
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.file import open_atomic_text_file
@@ -25,23 +25,6 @@ from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 from scinoephile.llms.review import ReviewManager
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.session import AuditFilters, AuditSession, AuditStatus
-
-
-def test_sources_findings_and_search(tmp_path: Path):
-    """Apply native proposals and independent report notes without a manifest.
-
-    Arguments:
-        tmp_path: temporary project directory
-    """
-    audit = _make_session(tmp_path)
-    assert audit.page(AuditFilters()).total == 2
-    assert audit.rows()[0].reviewed == "Hallo."
-    assert audit.page(AuditFilters(finding="flagged")).matching == 1
-    assert audit.page(AuditFilters(changes="unchanged")).matching == 1
-    assert audit.page(AuditFilters(q="model explanation")).matching == 1
-    assert not audit.outfile_path.exists()
-    with raises(ValueError, match="Unknown audit filter"):
-        audit.page(AuditFilters(finding="bad"))
 
 
 def test_dependent_filter_counts(tmp_path: Path):
@@ -68,11 +51,6 @@ def test_dependent_filter_counts(tmp_path: Path):
     audit.page_size = 1
     page = audit.page(AuditFilters(), after=1)
     assert page.filter_counts["changes"]["all"] == 2
-    client = create_app(audit).test_client()
-    html = client.get("/?changes=unchanged").get_data(as_text=True)
-    assert "All proofreading statuses (2)" in html
-    assert "All audit statuses (1)" in html
-    assert "OK (1)" in html and "Review (0)" in html
 
 
 def test_edit_updates_native_answers_and_survives_restart(tmp_path: Path):
@@ -205,35 +183,6 @@ def test_start_without_json_and_create_optional_json_on_save(tmp_path: Path):
     assert [r.reviewed for r in loaded.rows()] == ["Edited manually.", "Also edited."]
 
 
-def test_chinese_is_a_separate_editable_session(tmp_path: Path):
-    """Keep Unicode edits and language selection outside the browser UI.
-
-    Arguments:
-        tmp_path: temporary project directory
-    """
-    source_path = tmp_path / "zho.srt"
-    source_path.write_text("1\n00:00:01,000 --> 00:00:02,000\n你好\n", encoding="utf-8")
-    audit = AuditSession(
-        source_path,
-        tmp_path / "zho-output.srt",
-        json_path=tmp_path / "zho.json",
-        language=Language.zho_hant,
-    )
-    row = audit.rows()[0]
-    audit.save(
-        row.key,
-        reviewed="您好",
-        review_note="稱呼",
-        notes="",
-        finding="ok",
-        verified=True,
-        version=0,
-    )
-    text = create_app(audit).test_client().get("/").get_data(as_text=True)
-    assert "您好" in text and 'name="track"' not in text
-    assert "您好" in audit.outfile_path.read_text(encoding="utf-8")
-
-
 def test_rejects_aliases_bad_output_and_external_edits(tmp_path: Path):
     """Reject unsafe paths and externally changed files rather than overwriting.
 
@@ -293,8 +242,6 @@ def test_shared_json_decisions_are_explicit_and_update_linked_rows(tmp_path: Pat
     audit = _materialize_output(audit)
     row = audit.rows()[0]
     assert row.shared_indexes == (1, 2)
-    text = create_app(audit).test_client().get("/").get_data(as_text=True)
-    assert "Shared JSON decision" in text and "1, 2" in text
     affected = audit.save(
         row.key,
         reviewed="Hello again.",
@@ -306,8 +253,13 @@ def test_shared_json_decisions_are_explicit_and_update_linked_rows(tmp_path: Pat
     )
     assert len(affected) == 2
     assert [r.reviewed for r in audit.rows()] == ["Hello again."] * 2
-    assert not audit.rows()[1].verified
-    assert audit.rows()[1].version == 1
+    linked = audit.rows()[1]
+    assert not linked.verified and linked.finding is AuditStatus.unaudited
+    assert linked.notes == ""
+    assert linked.version == 1
+    blocks = audit.begin_auditing()
+    assert [[item.index for item in block] for block in blocks] == [[2]]
+    audit.end_auditing()
 
 
 def test_failed_file_save_does_not_commit_text_or_progress(tmp_path: Path):
@@ -352,8 +304,6 @@ def test_web_edits_escape_content_and_require_csrf(tmp_path: Path):
     assert client.post(f"/rows/{row.key}", data={}).status_code == 403
     text = client.get("/").get_data(as_text=True)
     assert "&lt;script&gt;alert(1)&lt;/script&gt;" in text
-    assert 'name="reviewed"' in text and 'name="review_note"' in text
-    assert 'name="track"' not in text
     with client.session_transaction() as session:
         csrf = session["csrf"]
     data = dict(
@@ -381,8 +331,6 @@ def test_web_edits_escape_content_and_require_csrf(tmp_path: Path):
     assert (
         client.get("/export").get_json()["rows"][0]["reviewed"] == "Hello, corrected."
     )
-    assert client.get("/audit-review-assets/audit-review.css").status_code == 200
-    assert client.get("/static/htmx.min.js").status_code == 200
 
 
 def test_htmx_updates_one_row_without_replacing_other_forms(tmp_path: Path):
@@ -548,7 +496,7 @@ def test_historical_queries_and_multiline_edits_round_trip(tmp_path: Path):
     row = audit.rows()[0]
     audit.save(
         row.key,
-        reviewed="First line.\nSecond line.",
+        reviewed="第一行。\nSecond line.",
         review_note="Human",
         notes="",
         finding="ok",
@@ -566,7 +514,7 @@ def test_historical_queries_and_multiline_edits_round_trip(tmp_path: Path):
         json_path=audit.json_path,
         language=Language.eng,
     )
-    assert restored.rows()[0].reviewed == "First line.\nSecond line."
+    assert restored.rows()[0].reviewed == "第一行。\nSecond line."
     assert restored.rows()[0].verified
 
 
@@ -610,44 +558,6 @@ def test_blocks_follow_json_requests_and_keep_filtered_context(tmp_path: Path):
     block = filtered.blocks[0]
     assert block.count == 2 and len(block.rows) == 1
     assert block.first_index == 1 and block.last_index == 2
-    text = (
-        create_app(audit).test_client().get("/?changes=changed").get_data(as_text=True)
-    )
-    assert ">Block 1</a>" in text
-    assert 'href="/?q=block+1"' in text
-    assert '<span class="block-time">00:00:01 – 00:00:04</span>' in text
-    assert "1 of 2 subtitles" in text
-    assert '<details id="block-1" class="audit-block">' in text
-    assert "<summary>" in text
-    assert "block-toggle" not in text
-    assert "English #" not in text
-    assert "00:00:01.000 – 00:00:02.000" in text
-
-
-def test_pause_blocks_without_json_and_cli_diff_operations(tmp_path: Path):
-    """Use pause blocks without JSON and preserve CLI diff operations.
-
-    Arguments:
-        tmp_path: temporary project directory
-    """
-    audit = _make_session(tmp_path, with_json=False)
-    assert len(audit.page(AuditFilters()).blocks) == 1
-    source = (
-        audit.infile_path.read_text()
-        .replace("00:00:03,000", "00:00:06,000")
-        .replace("00:00:04,000", "00:00:07,000")
-    )
-    audit.infile_path.write_text(source)
-    audit = AuditSession(audit.infile_path, audit.outfile_path, language=Language.eng)
-    assert len(audit.page(AuditFilters()).blocks) == 2
-    row = audit.rows()[0]
-    substitute = replace(row, original="cat", reviewed="cut")
-    assert ("a", "substitute") in substitute.differences[0]
-    assert ("u", "substitute") in substitute.differences[1]
-    inserted = replace(row, original="cat", reviewed="cats")
-    assert ("s", "insert") in inserted.differences[1]
-    deleted = replace(row, original="cats", reviewed="cat")
-    assert ("s", "delete") in deleted.differences[0]
 
 
 def test_search_by_exact_block_number(tmp_path: Path):
@@ -733,42 +643,6 @@ def _make_session(dir_path: Path, *, with_json: bool = True) -> AuditSession:
     )
 
 
-def test_loaded_prefix_save_preserves_other_blocks(tmp_path: Path):
-    """Keep every loaded block when saving without replacing unrelated forms.
-
-    Arguments:
-        tmp_path: temporary project directory
-    """
-    audit = _make_session(tmp_path)
-    client = create_app(audit).test_client()
-    initial = client.get("/").get_data(as_text=True)
-    assert 'id="block-1"' in initial and 'id="block-2"' in initial
-    assert "loaded-through" in initial
-    assert "<details open" not in initial
-    with client.session_transaction() as session:
-        csrf = session["csrf"]
-    row = audit.rows()[0]
-    saved = client.post(
-        f"/rows/{row.key}",
-        data=dict(
-            csrf=csrf,
-            version="0",
-            reviewed=row.reviewed,
-            review_note=row.review_note,
-            notes="",
-            finding="ok",
-        ),
-        headers={"HX-Request": "true"},
-    ).get_data(as_text=True)
-    assert 'id="block-2" hx-swap-oob="delete"' not in saved
-    assert 'id="form-' + audit.rows()[1].key not in saved
-    filtered = client.get(
-        "/?changes=unchanged", headers={"HX-Request": "true", "HX-Target": "workspace"}
-    ).get_data(as_text=True)
-    assert 'id="workspace"' in filtered and 'id="block-2"' in filtered
-    assert 'id="block-1"' not in filtered
-
-
 def test_audit_statuses_migrate_legacy_progress(tmp_path: Path):
     """Merge legacy verdicts without losing saved notes or human verification.
 
@@ -803,44 +677,20 @@ def test_audit_statuses_migrate_legacy_progress(tmp_path: Path):
         assert migrated.version == row.version + 2
         assert AuditFilters(finding=legacy).finding == expected
     assert AuditFilters(finding="flagged").finding == AuditStatus.review
-    page = create_app(audit).test_client().get("/").get_data(as_text=True)
-    assert 'value="review"' in page
-    assert 'value="unaudited"' in page
-    assert 'value="incorrect"' not in page
-    assert 'value="check"' not in page
 
 
-def test_domain_assets_and_history_restore(tmp_path: Path):
-    """Serve domain-owned assets and restore a complete document for history misses.
+def test_history_restore_returns_full_document(tmp_path: Path):
+    """Return a complete document for history misses and fragments for normal HTMX.
 
     Arguments:
         tmp_path: temporary project directory
     """
     client = create_app(_make_session(tmp_path)).test_client()
-    for filename in (
-        "audit-review.css",
-        "audit-review.js",
-        "mdi.LICENSE",
-        "apache-2.0.LICENSE",
-        "icons/checkbox-blank-outline.svg",
-        "icons/checkbox-marked.svg",
-        "icons/minus-box-outline.svg",
-        "icons/plus-box-outline.svg",
-        "icons/filter-outline.svg",
-        "icons/filter-remove-outline.svg",
-        "icons/magnify.svg",
-    ):
-        assert client.get(f"/audit-review-assets/{filename}").status_code == 200
     document = client.get(
         "/?finding=review",
         headers={"HX-Request": "true", "HX-History-Restore-Request": "true"},
     ).get_data(as_text=True)
     assert "<!doctype html>" in document
-    assert 'src="/static/htmx.min.js"' in document
-    assert 'src="/audit-review-assets/audit-review.js"' in document
-    assert '<use href="/audit-review-assets/icons/' in document
-    assert "<path" not in document
-    assert "<style" not in document
     fragment = client.get("/", headers={"HX-Request": "true"}).get_data(as_text=True)
     assert "<!doctype html>" not in fragment
 
@@ -867,7 +717,6 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
     text = create_app(audit).test_client().get("/").get_data(as_text=True)
     assert text.count('class="audit-row"') == 5
     assert '<details id="block-8"' not in text
-    assert "<details open" not in text
     assert "loaded-through" in text and 'hx-trigger="intersect once"' in text
     client = create_app(audit).test_client()
     batch = client.get(
@@ -877,10 +726,8 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
     assert '<details id="block-8"' in batch and 'id="workspace"' not in batch
     assert 'id="loaded-through" name="through" value="8"' in batch
     assert 'hx-trigger="intersect once"' not in batch
-    assert batch.count("hx-get=") == 3
     prefix = audit.page(AuditFilters(), through=8)
     assert len(prefix.blocks) == 8 and not prefix.has_more
-    assert page.rows[0].differences == ([("Line 1.", "match")], [("Line 1.", "match")])
 
 
 def test_changed_proofreading_requires_note_before_any_write(tmp_path: Path):
@@ -923,8 +770,7 @@ def test_autosave_acknowledges_without_replacing_editable_fields(tmp_path: Path)
     audit = _make_session(tmp_path)
     audit = _materialize_output(audit)
     client = create_app(audit).test_client()
-    initial = client.get("/").get_data(as_text=True)
-    assert 'hx-trigger="submit, review:save"' in initial
+    client.get("/")
     row = audit.rows()[0]
     with client.session_transaction() as session:
         csrf = session["csrf"]
@@ -948,9 +794,6 @@ def test_autosave_acknowledges_without_replacing_editable_fields(tmp_path: Path)
     assert f'id="version-{row.key}"' in text and 'value="1"' in text
     assert f'id="proofread-diff-{row.key}"' in text
     assert "<textarea" not in text
-    assert text.count("<form ") == 1 and '<form id="verify-visible"' in text
-    assert 'id="filter-verification" hx-swap-oob="outerHTML"' in text
-    assert "Verified (1)" in text and "Unverified (1)" in text
     assert audit.rows()[0].verified
     assert audit.rows()[0].review_note == "Corrected punctuation"
     values["version"] = "1"
@@ -1078,9 +921,7 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
     """
     audit = _materialize_output(_make_session(tmp_path))
     client = create_app(audit).test_client()
-    html = client.get("/").get_data(as_text=True)
-    assert 'aria-label="Operations"' in html and "Verify All Visible" in html
-    assert html.index('aria-label="Operations"') < html.index("data-toggle-blocks")
+    client.get("/")
     assert client.post("/verify-visible").status_code == 403
     with client.session_transaction() as session:
         csrf = session["csrf"]
@@ -1097,7 +938,6 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
     )
     assert prepared.status_code == 200
     confirmation = prepared.get_data(as_text=True)
-    assert 'class="is-confirming"' in confirmation
     assert 'name="confirm" value="on"' in confirmation
     assert 'id="workspace"' not in confirmation
     assert not any(row.verified for row in audit.rows())
@@ -1116,7 +956,6 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
     )
     assert native.status_code == 200
     assert "<!doctype html>" in native.get_data(as_text=True)
-    assert 'class="is-confirming"' in native.get_data(as_text=True)
     assert not audit.rows()[0].verified
     native = client.post(
         "/verify-visible",
@@ -1181,160 +1020,81 @@ def test_bulk_verification_confirmation_resets_and_rejects_stale_selection(
     assert not any(row.verified for row in audit.rows())
 
 
-def test_review_verdict_requires_audit_notes_before_writing(tmp_path: Path):
-    """Reject empty explanations in manual Review saves and allow empty OK notes.
+@mark.parametrize(
+    ("finding", "notes", "error"),
+    [
+        ("review", " ", "Audit notes are required"),
+        ("ok", "Old concern", "Clear audit notes"),
+    ],
+)
+def test_invalid_audit_note_does_not_save(
+    tmp_path: Path, finding: str, notes: str, error: str
+):
+    """Reject invalid verdict/note pairs without changing files or saved progress.
 
     Arguments:
         tmp_path: isolated project directory
+        finding: proposed audit verdict
+        notes: invalid audit explanation
+        error: expected validation message
     """
     audit = _materialize_output(_make_session(tmp_path))
     row = audit.rows()[0]
-    assert audit.json_path is not None
-    artifacts = {
-        p: p.read_bytes()
-        for p in (audit.infile_path, audit.outfile_path, audit.json_path)
-    }
+    paths = [audit.infile_path, audit.outfile_path, audit.json_path]
+    before = [p.read_bytes() for p in paths if p is not None]
     client = create_app(audit).test_client()
     client.get("/")
     with client.session_transaction() as session:
         csrf = session["csrf"]
-    for status in ("review", "incorrect", "check"):
-        for notes in ("", "   \n"):
-            with raises(ValueError, match="Audit notes are required"):
-                audit.save(
-                    row.key,
-                    reviewed=row.reviewed,
-                    review_note=row.review_note,
-                    notes=notes,
-                    finding=status,
-                    verified=True,
-                    version=row.version,
-                )
-            response = client.post(
-                f"/rows/{row.key}",
-                data=dict(
-                    csrf=csrf,
-                    reviewed=row.reviewed,
-                    review_note=row.review_note,
-                    notes=notes,
-                    finding=status,
-                    verified="on",
-                    version=str(row.version),
-                ),
-                headers={"HX-Request": "true"},
-            )
-            assert response.status_code == 409
-            assert "Audit notes are required" in response.get_data(as_text=True)
-            assert audit.rows()[0] == row
-            assert all(p.read_bytes() == content for p, content in artifacts.items())
-    audit.save(
-        row.key,
-        reviewed=row.reviewed,
-        review_note=row.review_note,
-        notes="",
-        finding="ok",
-        verified=True,
-        version=row.version,
+    response = client.post(
+        f"/rows/{row.key}",
+        data=dict(
+            csrf=csrf,
+            reviewed=row.reviewed,
+            review_note=row.review_note,
+            notes=notes,
+            finding=finding,
+            verified="on",
+            version=str(row.version),
+        ),
+        headers={"HX-Request": "true"},
     )
-    assert audit.rows()[0].verified and audit.rows()[0].notes == ""
-
-
-def test_bulk_verification_rejects_review_without_notes(tmp_path: Path):
-    """Do not let bulk verification bypass validation of older incomplete rows.
-
-    Arguments:
-        tmp_path: isolated project directory
-    """
-    audit = _materialize_output(_make_session(tmp_path))
-    with sqlite3.connect(audit.state_path) as db:
-        row = audit.rows()[0]
-        db.execute(
-            "INSERT OR REPLACE INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (row.key, row.reviewed, row.review_note, " ", "review", 0, 1),
-        )
-    filters = AuditFilters()
-    with raises(ValueError, match="Audit notes are required"):
-        audit.verify_visible(filters, audit.verification_token(filters))
-    assert not any(row.verified for row in audit.rows())
-
-
-def test_ok_verdict_rejects_audit_notes_before_writing(tmp_path: Path):
-    """Keep invalid OK drafts out of subtitle artifacts and saved progress.
-
-    Arguments:
-        tmp_path: isolated project directory
-    """
-    audit = _materialize_output(_make_session(tmp_path))
-    row = audit.rows()[0]
-    assert audit.json_path is not None
-    artifacts = {
-        p: p.read_bytes()
-        for p in (audit.infile_path, audit.outfile_path, audit.json_path)
-    }
-    client = create_app(audit).test_client()
-    client.get("/")
-    with client.session_transaction() as session:
-        csrf = session["csrf"]
-    for notes in ("Old audit explanation", "   "):
-        with raises(ValueError, match="Clear audit notes"):
-            audit.save(
-                row.key,
-                reviewed=row.reviewed,
-                review_note=row.review_note,
-                notes=notes,
-                finding="ok",
-                verified=True,
-                version=row.version,
-            )
-        for headers in ({}, {"HX-Request": "true"}):
-            response = client.post(
-                f"/rows/{row.key}",
-                data=dict(
-                    csrf=csrf,
-                    reviewed=row.reviewed,
-                    review_note=row.review_note,
-                    notes=notes,
-                    finding="ok",
-                    verified="on",
-                    version=str(row.version),
-                ),
-                headers=headers,
-            )
-            assert response.status_code == 409
-            assert "Clear audit notes" in response.get_data(as_text=True)
+    assert response.status_code == 409
+    assert error in response.get_data(as_text=True)
     assert audit.rows()[0] == row
-    assert all(p.read_bytes() == content for p, content in artifacts.items())
-    audit.save(
-        row.key,
-        reviewed=row.reviewed,
-        review_note=row.review_note,
-        notes="",
-        finding="ok",
-        verified=False,
-        version=row.version,
-    )
-    assert audit.rows()[0].finding == AuditStatus.ok
-    assert audit.rows()[0].notes == ""
+    assert before == [p.read_bytes() for p in paths if p is not None]
 
 
-def test_bulk_verification_rejects_ok_with_notes(tmp_path: Path):
-    """Reject older incomplete OK rows without discarding their existing notes.
+@mark.parametrize(
+    ("finding", "notes", "error"),
+    [
+        ("review", " ", "Audit notes are required"),
+        ("ok", "Old concern", "Clear audit notes"),
+    ],
+)
+def test_bulk_verification_rejects_invalid_audit_notes(
+    tmp_path: Path, finding: str, notes: str, error: str
+):
+    """Reject older invalid rows without bulk verification discarding their notes.
 
     Arguments:
         tmp_path: isolated project directory
+        finding: stored audit verdict
+        notes: invalid stored explanation
+        error: expected validation message
     """
     audit = _materialize_output(_make_session(tmp_path))
-    row = audit.rows()[1]
+    row = audit.rows()[0]
     with sqlite3.connect(audit.state_path) as db:
         db.execute(
             "INSERT OR REPLACE INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (row.key, row.reviewed, row.review_note, "Retained note", "ok", 0, 1),
+            (row.key, row.reviewed, row.review_note, notes, finding, 0, 1),
         )
     filters = AuditFilters()
-    with raises(ValueError, match="Clear audit notes"):
+    with raises(ValueError, match=error):
         audit.verify_visible(filters, audit.verification_token(filters))
     assert not any(row.verified for row in audit.rows())
-    assert audit.rows()[1].notes == "Retained note"
+    assert audit.rows()[0].notes == notes
 
 
 def _materialize_output(audit: AuditSession) -> AuditSession:

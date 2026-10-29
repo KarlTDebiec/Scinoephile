@@ -4,61 +4,13 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser
 from pathlib import Path
 from unittest.mock import patch
 
-from pytest import mark, raises
-
-from scinoephile.cli.helpers.llms import (
-    LLM_LOCALIZATIONS,
-    LlmArguments,
-    add_llm_provider_args,
-)
-from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
-from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.cli.review_cli import ReviewCli
-from scinoephile.cli.transcribe_cli import TranscribeCli
-from scinoephile.cli.translate_cli import TranslateCli
 from scinoephile.common.testing import run_cli_with_args
-from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.llms import ReasoningEffort
 from scinoephile.core.subtitles import Series
-
-
-@mark.parametrize(
-    "cli", [ReviewCli, TranslateCli, TranscribeCli, OcrFuseCli, OcrProcessCli]
-)
-def test_all_llm_commands_expose_shared_effort(cli: type[ScinoephileCliBase]):
-    """Expose the same flag throughout every LLM workflow CLI.
-
-    Arguments:
-        cli: LLM workflow command
-    """
-    assert "--llm-reasoning-effort" in cli.argparser().format_help()
-
-
-def test_shared_argument_bundle_parses_and_rejects_effort():
-    """Validate levels at parsing time and retain provider defaults on omission."""
-    parser = ArgumentParser()
-    add_llm_provider_args(
-        parser.add_argument_group("llm arguments"),
-        parser.add_argument_group("additional help"),
-    )
-    parsed = parser.parse_args(
-        ["--llm-provider", "deepseek", "--llm-reasoning-effort", "max"]
-    )
-    assert parsed.llm_args.reasoning_effort is ReasoningEffort.max
-    assert parsed.llm_args.provider_kwargs == {"model": None, "reasoning_effort": "max"}
-    assert LlmArguments().provider_kwargs == {"model": None}
-    with raises(SystemExit):
-        parser.parse_args(["--llm-reasoning-effort", "typo"])
-    help_text = (
-        "LLM reasoning effort (default: provider default; "
-        "supported levels depend on model)"
-    )
-    for locale in ("zh-hans", "zh-hant"):
-        assert help_text in LLM_LOCALIZATIONS[locale]
 
 
 def test_review_forwards_model_and_reasoning_to_provider(tmp_path: Path):

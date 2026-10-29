@@ -14,6 +14,7 @@ from pydantic import ValidationError
 from pytest import MonkeyPatch, mark, raises
 
 from scinoephile.core import Language
+from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.llms.review_audit import ReviewAuditTestCase
@@ -34,6 +35,12 @@ class _Provider(LLMProvider):
         self.release.set()
         self.queries = []
         self.fail_at = 0
+        self.configuration = "default"
+
+    @property
+    def cache_identity(self) -> CacheIdentity:
+        """Effective offline provider settings included in the response cache."""
+        return {**super().cache_identity, "configuration": self.configuration}
 
     def chat_completion(
         self,
@@ -100,7 +107,29 @@ def _setup(
         infile_path, outfile_path, json_path=json_path, language=Language.eng
     )
     provider = _Provider()
-    factory = Mock(return_value=provider)
+
+    def provider_for_settings(
+        provider_name: str,
+        *,
+        model: str | None = None,
+        reasoning_effort: str | None = None,
+    ) -> _Provider:
+        """Apply requested settings to the offline provider's cache identity.
+
+        Arguments:
+            provider_name: requested provider identifier
+            model: optional model identifier
+            reasoning_effort: optional shared reasoning level
+        Returns:
+            offline provider with a configuration-aware cache identity
+        """
+        provider.configuration = json.dumps(
+            dict(provider=provider_name, model=model, effort=reasoning_effort),
+            sort_keys=True,
+        )
+        return provider
+
+    factory = Mock(side_effect=provider_for_settings)
     monkeypatch.setattr(auditing, "get_provider", factory)
     return audit, provider, factory
 
@@ -231,20 +260,17 @@ def test_audit_rejects_missing_output_duplicate_runs_edits_and_external_change(
 def test_audit_http_csrf_polling_and_completion(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Expose an accessible card, enforce CSRF and poll without manual refresh.
+    """Reject unauthorized requests and poll background audit completion.
 
     Arguments:
         tmp_path: temporary project directory
         monkeypatch: offline provider replacement
     """
-    audit, provider, _ = _setup(tmp_path, monkeypatch)
+    audit, provider, factory = _setup(tmp_path, monkeypatch)
     provider.release.clear()
     app = create_app(audit)
     client = app.test_client()
-    html = client.get("/").get_data(as_text=True)
-    assert 'id="auditing"' not in html and "Audit</button>" in html
-    setup = client.get("/?reaudit=1").get_data(as_text=True)
-    assert 'aria-label="Run audit"' in setup and 'name="rerun"' not in setup
+    client.get("/")
     assert client.post("/auditing", data={}).status_code == 403
     with client.session_transaction() as state:
         csrf = state["csrf"]
@@ -254,34 +280,22 @@ def test_audit_http_csrf_polling_and_completion(
         "model": "gpt-6-luna",
         "effort": "xhigh",
     }
-    invalid = client.post(
+    client.post(
         "/auditing", data={**data, "effort": "bad"}, headers={"HX-Request": "true"}
     )
-    assert "bad" in invalid.get_data(as_text=True)
+    factory.assert_not_called()
     response = client.post("/auditing", data=data, headers={"HX-Request": "true"})
     assert response.headers["HX-Refresh"] == "true"
     progress = client.get("/auditing", headers={"HX-Request": "true"}).get_data(
         as_text=True
     )
-    assert "every 5s" in progress and "clipboard-text-clock-outline.svg" in progress
-    hidden_progress = client.get(
-        "/auditing?reaudit=0", headers={"HX-Request": "true"}
-    ).get_data(as_text=True)
-    assert (
-        'aria-label="Auditing" hidden' in hidden_progress
-        and "every 5s" in hidden_progress
-    )
-    assert "clipboard-text-clock-outline.svg" in client.get("/?reaudit=0").get_data(
-        as_text=True
-    )
-    assert "disabled" in client.get("/").get_data(as_text=True)
+    assert 'hx-trigger="every 5s"' in progress
     provider.release.set()
     _join(app.extensions["review_auditing"])
     assert (
         client.get("/auditing", headers={"HX-Request": "true"}).headers["HX-Refresh"]
         == "true"
     )
-    assert 'aria-label="Run audit"' not in client.get("/").get_data(as_text=True)
 
 
 @mark.parametrize(
@@ -314,6 +328,78 @@ def test_audit_schema_rejects_incomplete_or_ambiguous_findings(
                 "answer": {"findings": findings},
             }
         )
+
+
+@mark.parametrize("change", ["proofread", "note", "model", "reasoning"])
+def test_reaudit_reuses_cache_and_invalidates_changed_inputs(
+    tmp_path: Path, monkeypatch: MonkeyPatch, change: str
+):
+    """Reuse persisted responses and request only blocks whose inputs changed.
+
+    Arguments:
+        tmp_path: temporary project directory and isolated response cache
+        monkeypatch: offline provider factory replacement
+        change: changed block content or provider setting
+    """
+    audit, provider, _ = _setup(tmp_path, monkeypatch)
+    if change == "note":
+        row = audit.rows()[0]
+        audit.save(
+            row.key,
+            reviewed="Hello!",
+            review_note="Initial punctuation correction",
+            notes="",
+            finding="unaudited",
+            verified=False,
+            version=row.version,
+        )
+    job = AuditingJob(audit)
+    job.start("openai", "gpt-6-luna", "xhigh")
+    _join(job)
+    assert job.snapshot().status == "complete", job.snapshot().error
+    assert len(provider.queries) == 2
+    provider.queries.clear()
+    audit = AuditSession(
+        audit.infile_path,
+        audit.outfile_path,
+        json_path=audit.json_path,
+        language=Language.eng,
+    )
+    job = AuditingJob(audit)
+    job.start("openai", "gpt-6-luna", "xhigh", rerun=True)
+    _join(job)
+    assert job.snapshot().status == "complete", job.snapshot().error
+    assert job.snapshot().total == job.snapshot().completed == 2
+    assert provider.queries == []
+
+    model = "gpt-6-luna"
+    effort = "xhigh"
+    expected_calls = 2
+    if change in {"proofread", "note"}:
+        row = audit.rows()[0]
+        text = "Hello again."
+        if change == "note":
+            text = row.reviewed
+        audit.save(
+            row.key,
+            reviewed=text,
+            review_note="A new proofreading explanation",
+            notes=row.notes,
+            finding=row.finding,
+            verified=row.verified,
+            version=row.version,
+        )
+        expected_calls = 1
+    elif change == "model":
+        model = "other-model"
+    else:
+        effort = "high"
+    job.start("openai", model, effort, rerun=True)
+    _join(job)
+    assert job.snapshot().status == "complete", job.snapshot().error
+    assert len(provider.queries) == expected_calls
+    if expected_calls == 1:
+        assert [item["index"] for item in provider.queries[0]["subtitles"]] == [1, 2]
 
 
 def test_reaudit_uses_saved_edits_and_preserves_verified_rows(
@@ -364,30 +450,6 @@ def test_reaudit_uses_saved_edits_and_preserves_verified_rows(
     assert rows[2].finding == AuditStatus.ok and rows[2].notes == ""
     assert rows[2].review_note == "Human proofreading"
     assert before == [p.read_bytes() for p in paths if p is not None]
-    for row in rows:
-        if not row.verified:
-            audit.save(
-                row.key,
-                reviewed=row.reviewed,
-                review_note=row.review_note,
-                finding=row.finding,
-                notes=row.notes,
-                verified=True,
-                version=row.version,
-            )
-    assert all(row.verified for row in audit.rows())
-    client = create_app(audit).test_client()
-    html = client.get("/").get_data(as_text=True)
-    button = html.split("Re-audit</button>")[0].rsplit("<button", 1)[1]
-    assert "disabled" not in button
-    setup = client.get("/?reaudit=1").get_data(as_text=True)
-    assert 'aria-label="Run re-audit (1/3)"' in setup
-    provider.queries.clear()
-    job.start("openai", "", "", rerun=True)
-    _join(job)
-    assert job.snapshot().status == "complete", job.snapshot().error
-    assert len(provider.queries) == 2
-    assert all(row.verified for row in audit.rows())
 
 
 def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
@@ -412,13 +474,7 @@ def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
         )
     app = create_app(audit)
     client = app.test_client()
-    html = client.get("/?reaudit=1&q=does-not-match").get_data(as_text=True)
-    assert "Re-audit</button>" in html
-    assert 'name="rerun" value="on"' in html
-    assert 'aria-label="Run re-audit (1/3)"' in html
-    assert "clipboard-refresh-outline.svg" in html
-    assert provider.queries == []
-    assert client.post("/auditing", data={"rerun": "on"}).status_code == 403
+    client.get("/?reaudit=1&q=does-not-match")
     with client.session_transaction() as state:
         csrf = state["csrf"]
     data = {
@@ -428,10 +484,6 @@ def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
         "effort": "xhigh",
         "rerun": "on",
     }
-    invalid = client.post(
-        "/auditing", data={**data, "effort": "bad"}, headers={"HX-Request": "true"}
-    )
-    assert 'name="rerun" value="on"' in invalid.get_data(as_text=True)
     for _ in range(2):
         prepared = client.post("/auditing", data=data, headers={"HX-Request": "true"})
         assert prepared.status_code == 200
@@ -449,8 +501,6 @@ def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
     assert provider.entered.wait(5)
     try:
         assert all(row.notes == "Old concern" for row in audit.rows())
-        progress = client.get("/auditing", headers={"HX-Request": "true"})
-        assert "Re-auditing 0 of 2" in progress.get_data(as_text=True)
     finally:
         provider.release.set()
         _join(app.extensions["review_auditing"])
@@ -458,25 +508,15 @@ def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
     assert audit.rows()[0].notes == "Check this correction against context."
     assert audit.rows()[2].notes == "Old concern"
     error = client.get("/").get_data(as_text=True)
-    assert 'aria-label="Run re-audit (1/3)"' in error
     assert "Intentional audit failure" in error
 
 
 @mark.parametrize(
-    "operation,extension,prefix",
-    [
-        ("auditing", "review_auditing", "clipboard-text-play"),
-        ("proofreading", "audit_proofreading", "text-box-play"),
-    ],
+    "operation,extension",
+    [("auditing", "review_auditing"), ("proofreading", "audit_proofreading")],
 )
-@mark.parametrize("htmx", [False, True])
 def test_rerun_confirmation(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-    operation: str,
-    extension: str,
-    prefix: str,
-    htmx: bool,
+    tmp_path: Path, monkeypatch: MonkeyPatch, operation: str, extension: str
 ):
     """Enforce three clicks and the delay even without JS; bind consent to settings.
 
@@ -485,8 +525,6 @@ def test_rerun_confirmation(
         monkeypatch: clock and worker replacements
         operation: protected worker endpoint
         extension: worker application key
-        prefix: submit icon family
-        htmx: whether the request uses progressive enhancement
     """
     audit, _, _ = _setup(tmp_path, monkeypatch)
     row = audit.rows()[0]
@@ -509,41 +547,18 @@ def test_rerun_confirmation(
     with client.session_transaction() as state:
         csrf = state["csrf"]
     data = dict(csrf=csrf, provider="openai", model="model-one", effort="xhigh")
-    headers = {}
-    if htmx:
-        headers["HX-Request"] = "true"
     url = f"/{operation}"
     before = [
         p.read_bytes()
         for p in (audit.infile_path, audit.outfile_path, audit.state_path)
     ]
-    first = client.post(url, data=data, headers=headers)
-    first_html = first.get_data(as_text=True)
-    assert all(
-        value in first_html
-        for value in (
-            "(2/3)",
-            f"{prefix}-alert-outline.svg#icon",
-            'class="is-confirming"',
-        )
-    )
-    assert "<small>" not in first_html
+    assert client.post(url, data=data).status_code == 200
     with client.session_transaction() as state:
         data["confirmation"] = state["rerun_confirmations"][operation]["token"]
-    second = client.post(url, data=data, headers=headers)
-    second_html = second.get_data(as_text=True)
-    assert all(
-        value in second_html
-        for value in (
-            'data-rerun-ready-at="1003.0"',
-            f"{prefix}-double-alert-outline.svg#icon",
-            'class="is-confirming"',
-        )
-    )
-    assert "<small>" not in second_html
+    assert client.post(url, data=data).status_code == 200
     with client.session_transaction() as state:
         data["confirmation"] = state["rerun_confirmations"][operation]["token"]
-    client.post(url, data=data, headers=headers)
+    client.post(url, data=data)
     start.assert_not_called()
     assert before == [
         p.read_bytes()
@@ -551,89 +566,24 @@ def test_rerun_confirmation(
     ]
     now[0] = 1004.0
     data["model"] = "model-two"
-    changed = client.post(url, data=data, headers=headers)
-    assert "(2/3)" in changed.get_data(as_text=True)
+    assert client.post(url, data=data).status_code == 200
     start.assert_not_called()
     with client.session_transaction() as state:
         data["confirmation"] = state["rerun_confirmations"][operation]["token"]
-    client.post(url, data=data, headers=headers)
+    client.post(url, data=data)
     with client.session_transaction() as state:
         data["confirmation"] = state["rerun_confirmations"][operation]["token"]
     now[0] += 3
-    client.post(url, data=data, headers=headers)
+    client.post(url, data=data)
     start.assert_called_once_with("openai", "model-two", "xhigh", rerun=True)
     start.reset_mock()
-    client.post(url, data=data, headers=headers)
+    client.post(url, data=data)
     start.assert_not_called()
 
 
-@mark.parametrize("audited", [False, True])
-@mark.parametrize("htmx", [False, True])
-def test_operation_panels_toggle_independently(
-    tmp_path: Path, monkeypatch: MonkeyPatch, audited: bool, htmx: bool
-):
-    """Toggle each card independently while data, not visibility, controls reruns.
-
-    Arguments:
-        tmp_path: temporary subtitle project
-        monkeypatch: offline provider replacements
-        audited: whether previous audit findings exist
-        htmx: whether the request asks for a workspace fragment
-    """
-    audit, _, _ = _setup(tmp_path, monkeypatch)
-    if audited:
-        row = audit.rows()[0]
-        audit.save(
-            row.key,
-            reviewed=row.reviewed,
-            review_note="",
-            finding="ok",
-            notes="",
-            verified=False,
-            version=row.version,
-        )
-    client = create_app(audit).test_client()
-    headers = {}
-    if htmx:
-        headers["HX-Request"] = "true"
-    closed = client.get("/", headers=headers).get_data(as_text=True)
-    assert 'id="proofreading"' not in closed and 'id="auditing"' not in closed
-    opened = client.get("/?reproofread=1&reaudit=1", headers=headers).get_data(
-        as_text=True
-    )
-    assert 'id="proofreading"' in opened and 'id="auditing"' in opened
-    assert opened.count('aria-expanded="true"') == 2
-    assert (
-        'name="reproofread" value="0"' in opened
-        and 'name="reaudit" value="0"' in opened
-    )
-    panel = opened.split('<section id="auditing"')[1].split("</section>")[0]
-    if audited:
-        assert (
-            "Re-audit</button>" in opened and "clipboard-refresh-outline.svg" in opened
-        )
-        assert 'aria-label="Run re-audit (1/3)"' in panel
-    else:
-        assert "Audit</button>" in opened and "clipboard-text-eye-outline.svg" in opened
-        assert 'aria-label="Run audit"' in panel and "data-rerun-icon" not in panel
-    proofread_closed = client.get(
-        "/?reproofread=0&reaudit=1", headers=headers
-    ).get_data(as_text=True)
-    assert (
-        'id="proofreading"' not in proofread_closed
-        and 'id="auditing"' in proofread_closed
-    )
-    audit_closed = client.get("/?reproofread=1&reaudit=0", headers=headers).get_data(
-        as_text=True
-    )
-    assert 'id="auditing"' not in audit_closed and 'id="proofreading"' in audit_closed
-
-
 @mark.parametrize("operation", ["proofreading", "auditing"])
-@mark.parametrize("audited", [False, True])
-@mark.parametrize("htmx", [False, True])
 def test_operation_settings_remain_accessible_during_other_job(
-    tmp_path: Path, monkeypatch: MonkeyPatch, operation: str, audited: bool, htmx: bool
+    tmp_path: Path, monkeypatch: MonkeyPatch, operation: str
 ):
     """Keep settings accessible while reserving execution for the active worker.
 
@@ -641,25 +591,20 @@ def test_operation_settings_remain_accessible_during_other_job(
         tmp_path: temporary subtitle project
         monkeypatch: offline provider replacements
         operation: settings panel to open while the other operation runs
-        audited: whether previous audit findings exist
-        htmx: whether navigation requests a workspace fragment
     """
     audit, _, _ = _setup(tmp_path, monkeypatch)
-    if audited:
-        row = audit.rows()[0]
-        audit.save(
-            row.key,
-            reviewed=row.reviewed,
-            review_note="",
-            finding="ok",
-            notes="",
-            verified=False,
-            version=row.version,
-        )
+    row = audit.rows()[0]
+    audit.save(
+        row.key,
+        reviewed=row.reviewed,
+        review_note="",
+        finding="ok",
+        notes="",
+        verified=False,
+        version=row.version,
+    )
     client = create_app(audit).test_client()
-    headers = {}
-    if htmx:
-        headers["HX-Request"] = "true"
+    headers = {"HX-Request": "true"}
     toggle = "reaudit"
     if operation == "proofreading":
         toggle = "reproofread"

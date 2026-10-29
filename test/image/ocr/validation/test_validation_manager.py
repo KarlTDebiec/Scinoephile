@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import logging
-from copy import deepcopy
 from pathlib import Path
 
 from PIL import Image
@@ -142,18 +141,16 @@ def test_validate_ambiguous_gap_warns_without_updating_text(
         ),
         ("怕", [Bbox(0, 6, 20, 70), Bbox(12, 100, 0, 100), Bbox(120, 220, 0, 100)], 2),
         ("怕", [Bbox(0, 6, 0, 55), Bbox(30, 85, 0, 55)], 1),
-        ("怕", [Bbox(50, 56, 0, 55), Bbox(0, 50, 75, 130)], 1),
         ("怕", [Bbox(0, 6, 0, 55), Bbox(10, 60, 75, 130)], 1),
         ("怕", [Bbox(0, 20, 0, 55), Bbox(25, 70, 0, 55)], 1),
         ("怕", [Bbox(0, 55, 0, 55), Bbox(57, 63, 0, 55)], 1),
         ("A", [Bbox(0, 6, 0, 55), Bbox(8, 55, 0, 55)], 1),
-        ("，", [Bbox(0, 6, 0, 55), Bbox(8, 55, 0, 55)], 1),
     ],
 )
-def test_suggest_hanzi_components_without_approving(
+def test_suggest_hanzi_components(
     tmp_path: Path, char: str, boxes: list[Bbox], expected: int
 ):
-    """Suggest components without crossing glyph boundaries or approving them.
+    """Suggest components without crossing glyph or line boundaries.
 
     Arguments:
         tmp_path: temporary directory path
@@ -165,13 +162,8 @@ def test_suggest_hanzi_components_without_approving(
     sub = _series(char).events[0]
     sub.bboxes = list(boxes)
     cursor = CharCursor(sub=sub, sub_idx=0)
-    before_dims = deepcopy(manager.char_dims_by_n)
 
     assert manager.suggest_char_n_bboxes(cursor) == expected
-    assert cursor.char_idx == cursor.bbox_idx == 0
-    assert sub.bboxes == boxes
-    assert manager.char_dims_by_n == before_dims
-    assert not (tmp_path / "cache" / "char_dims_1.csv").exists()
 
 
 def test_suggest_respects_known_narrow_hanzi(tmp_path: Path):

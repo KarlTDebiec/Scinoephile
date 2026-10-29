@@ -65,7 +65,8 @@ forms remain in place during HTMX saves.
 Audit notes, findings, and the **Verified** checkbox remain separate from native
 case verification. Verified means the audit finding was checked; it can accompany
 an incorrect proposal. It does not silently approve an entire multi-subtitle JSON
-case. Editing linked text clears independent verification on the other linked rows.
+case. Editing linked text resets other changed occurrences to Unaudited, clears
+their obsolete audit notes, and clears independent verification.
 
 Audit status uses an explicit enum: Unaudited, Review, and OK. Previous Incorrect
 and Needs checking statuses migrate to Review; Unassessed migrates to Unaudited.
@@ -74,8 +75,8 @@ to work. Legacy Markdown notes are imported at the boundary, including Review;,
 Incorrect;, and Check; prefixes as Review.
 
 Filter by verification, changed/unchanged text, audit status, or Unicode search.
-Dropdowns update immediately, search is debounced, and the funnel icon clears all
-filters. URLs preserve filters; later block batches append as you scroll. Each
+Dropdowns update immediately; changed search text waits for a 750 ms typing pause.
+Enter submits immediately, and the funnel icon clears all filters. URLs preserve filters; later block batches append as you scroll. Each
 status option includes a count adjusted for the other filters and search. Search
 also accepts `block 27` to select one original block. The `--json` file remains
 the native decision log; independent findings remain in the SQLite sidecar.
@@ -84,8 +85,9 @@ the native decision log; independent findings remain in the SQLite sidecar.
 
 Outer cards group subtitles into numbered proofreading blocks, collapsed by default.
 The native summary header uses Block N at left, count/time centered in the border,
-and a boxed plus/minus disclosure icon at right. Only the boxed disclosure toggles a block; its title links to a view filtered
-to that block. CSS places the header on the card border; no JavaScript swaps, initializes,
+and a boxed plus/minus disclosure icon at right. Clicking the header, including
+the subtitle count and time, toggles the block. The Block N link navigates to a view
+filtered to that block. CSS places the header on the card border; no JavaScript swaps, initializes,
 or replaces the individual accordion control. Existing JSON query
 boundaries determine groups; overlapping queries are kept together. Rows without
 logged queries use the original three-second pause boundaries. The first five matching blocks render initially, collapsed. Additional complete
@@ -147,11 +149,12 @@ changing display modes, so their positions remain identical.
 ## Autosave and validation
 
 With enhancement enabled, textarea blur and audit/verification control changes
-save through HTMX. The footer replaces the visible Save label with a boxed sync
-indicator with a fixed width and visible Saved/Saving/Unsaved/Invalid/Error labels: green check for saved, rotating sync for saving, disk for an unsaved
+save through HTMX. The footer shows a noninteractive icon-and-text status aligned
+with the neighboring controls, with a fixed width for Saved/Saving/Unsaved/Invalid/
+Error labels: green check for saved, rotating sync for saving, disk for an unsaved
 valid draft, and red warning for invalid input or a failed save. The tooltip and
-accessible name explain the state; the control also retries a valid failed save.
-Without scripts it remains an ordinary Save button.
+accessible name explain the state. An ordinary Save button remains available
+when scripts or HTMX are unavailable.
 
 Text differing from the original requires a nonblank proofreading Note. Browser
 constraints highlight incomplete text/note pairs and block submission; server
@@ -164,7 +167,8 @@ sidecar, while proofreading text and Note update the output SRT/native JSON.
 Autosave acknowledges with the new version, diff display, and counts instead of
 replacing editable fields. Per-form weak state records the submitted snapshot;
 newer typing stays intact, and another blur during an active save coalesces into
-a subsequent valid save. Failed requests retain drafts and show a retry state.
+a subsequent valid save. Failed requests retain drafts and show an error state;
+focusing and leaving a text field retries the save.
 Shared-decision updates do not replace newer drafts in related rows. Stale or
 external changes remain conflicts; an error never becomes a green saved check.
 
@@ -210,9 +214,11 @@ and project-specific proofreading context persist in the sidecar for the next ru
 
 Auditing compares original and current proofread text in full context blocks. It
 stores explicit Review/OK findings and notes independently of the proofreading
-JSON. Completed blocks persist as they finish. Re-audit makes fresh requests for
-the whole saved file, preserving subtitle text, proofreading notes, and human
-verification. Failed blocks retain their previous findings.
+JSON. Completed blocks persist as they finish. Re-audit processes the whole saved
+file through the shared response cache, preserving subtitle text, proofreading
+notes, and human verification. Matching block inputs, provider settings, and
+prompts reuse cached results; only cache misses make new requests. Failed blocks
+retain their previous findings.
 
 **Verify All Visible** uses two clicks: the first turns the button yellow without
 changing progress; the second verifies every row matching the current filters,
