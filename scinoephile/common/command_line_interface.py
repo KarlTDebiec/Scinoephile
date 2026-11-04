@@ -7,6 +7,7 @@ from __future__ import annotations
 import re
 from abc import ABC, abstractmethod
 from argparse import (
+    SUPPRESS,
     Action,
     ArgumentParser,
     Namespace,
@@ -104,6 +105,9 @@ class CommandLineInterface(ABC):
     ) -> ArgumentParser:
         """Construct argument parser.
 
+        Child logging defaults preserve parent values. Explicit child options override
+        parent values, and verbosity counts restart at each command level.
+
         Arguments:
             subparsers: Subparsers group to which a new subparser will be added; if
               None, a new ArgumentParser will be created
@@ -124,6 +128,15 @@ class CommandLineInterface(ABC):
             )
 
         cls.add_arguments_to_argparser(parser)
+        if subparsers is not None:
+            default_placeholder = "%(default)s"
+            for action in parser._actions:  # noqa: SLF001
+                if action.dest in {"verbosity", "log_file"}:
+                    if isinstance(action.help, str):
+                        action.help = action.help.replace(
+                            default_placeholder, str(action.default)
+                        )
+                    action.default = SUPPRESS
 
         return parser
 

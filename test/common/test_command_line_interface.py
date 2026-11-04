@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from argparse import SUPPRESS, ArgumentParser
+from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 from typing import ClassVar
@@ -302,11 +302,7 @@ def test_subparser_suppressed_verbosity_default(
     """
     parser = TestCli.argparser()
     subparsers = parser.add_subparsers(dest="command", required=True)
-    child = AnotherTestCli.argparser(subparsers=subparsers)
-    for action in child._actions:
-        if action.dest == "verbosity":
-            action.default = SUPPRESS
-
+    AnotherTestCli.argparser(subparsers=subparsers)
     parsed = parser.parse_args([AnotherTestCli.name(), *arguments])
     assert parsed.verbosity == expected_verbosity
 
