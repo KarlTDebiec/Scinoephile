@@ -304,7 +304,11 @@ class GuidedTranscriber:
             output_events.extend(output_block.events)
 
         output_events.sort(key=lambda event: event.start)
-        output = AudioSeries(audio=audio_series.audio, events=output_events)
+        output = AudioSeries(
+            audio=audio_series.audio,
+            events=output_events,
+            audio_start_ms=audio_series.audio_start_ms,
+        )
         logger.info(f"Concatenated Series:\n{output.to_simple_string()}")
         self.aligner.update_all_test_cases()
         return output
@@ -322,7 +326,7 @@ class GuidedTranscriber:
         """
         offset = audio_block.buffered_start
         if offset is None:
-            offset = audio_block[0].start
+            offset = audio_block.audio_start_ms
         expected_last_start = max(0.0, (reference_block[-1].start - offset) / 1000)
         segments = self._transcribe_block_audio(
             audio_block.audio, expected_last_start=expected_last_start
