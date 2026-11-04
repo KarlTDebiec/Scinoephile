@@ -69,4 +69,5 @@ Subsystem-specific design belongs in focused documents so this overview remains
 stable:
 
 - [Caching](CACHING.md)
+- [Dependency compatibility](DEPENDENCIES.md)
 - [Prompt optimization and persistence](PROMPT_OPTIMIZATION.md)
