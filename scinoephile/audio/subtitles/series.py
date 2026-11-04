@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from collections.abc import Sequence
 from copy import deepcopy
@@ -32,6 +33,9 @@ from .subtitle import AudioSubtitle
 __all__ = ["AudioSeries", "AudioSeriesLoadKwargs"]
 
 logger = getLogger(__name__)
+
+_AUDIO_METADATA_NAME = ".scinoephile-audio.json"
+"""Reserved filename for the WAV export's absolute audio origin."""
 
 
 class AudioSeriesLoadKwargs(TypedDict, total=False):
@@ -182,6 +186,10 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
     ) -> Self:
         """Load series from a directory of wav files.
 
+        Absolute cue timestamps are retained using the optional
+        `.scinoephile-audio.json` metadata file. Legacy directories without metadata
+        start their audio at timestamp zero.
+
         Arguments:
             path: input directory path
             encoding: input file encoding
@@ -199,6 +207,8 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
             validated_srt_path = val_input_path(
                 validated_path / f"{validated_path.stem}.srt"
             )
+            if format_ is None:
+                format_ = "srt"
             text_series = Series.load(
                 validated_srt_path,
                 encoding=encoding,
@@ -211,13 +221,32 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
                 validated_path / f"{validated_path.stem}.wav"
             )
             full_audio = AudioSegment.from_wav(validated_audio_path)
+            audio_start_ms = 0
+            metadata_path = validated_path / _AUDIO_METADATA_NAME
+            if metadata_path.exists():
+                metadata: object = json.loads(metadata_path.read_text(encoding="utf-8"))
+                if (
+                    not isinstance(metadata, dict)
+                    or type(metadata.get("version")) is not int
+                    or metadata["version"] != 1
+                ):
+                    raise ValueError("Invalid audio metadata version")
+                audio_start_ms = metadata.get("audio_start_ms")
+                if type(audio_start_ms) is not int or audio_start_ms < 0:
+                    raise ValueError(
+                        "Audio metadata audio_start_ms must be a nonnegative integer"
+                    )
+            text_series.shift(ms=-audio_start_ms)
+            series = cls.build_series(text_series, full_audio, buffer)
+            series.shift(ms=audio_start_ms)
+            series._audio_start_ms = audio_start_ms
         except (OSError, PydubException, UnicodeError, ValueError) as exc:
             raise ScinoephileError(
                 f"Unable to load {cls.__name__} from {path}: {exc}"
             ) from exc
         logger.info(f"Loaded full audio from {validated_audio_path}")
 
-        return cls.build_series(text_series, full_audio, buffer)
+        return series
 
     @classmethod
     def load_from_media(
@@ -411,7 +440,11 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
             output_dir_path: path to output directory
         Raises:
             IsADirectoryError: if a generated file conflicts with a directory
+            ValueError: if the audio origin is not a nonnegative integer
         """
+        if type(self._audio_start_ms) is not int or self._audio_start_ms < 0:
+            raise ValueError("Audio origin must be a nonnegative integer")
+
         # Produce every managed file before changing existing output
         with get_temp_directory_path(
             parent_dir_path=output_dir_path.parent, prefix=f".{output_dir_path.name}."
@@ -440,6 +473,15 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
             srt_path = staging_dir_path / f"{output_dir_path.stem}.srt"
             super().save(srt_path, format_="srt")
             staged_paths.append(srt_path)
+
+            # Stage the origin so cropped audio retains absolute subtitle timing
+            metadata_path = staging_dir_path / _AUDIO_METADATA_NAME
+            metadata_path.write_text(
+                json.dumps({"version": 1, "audio_start_ms": self._audio_start_ms})
+                + "\n",
+                encoding="utf-8",
+            )
+            staged_paths.append(metadata_path)
 
             # Reject conflicts before replacing any existing managed files
             for staged_path in staged_paths:
