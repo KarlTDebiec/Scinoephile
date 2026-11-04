@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import Action, ArgumentParser
 
-from scinoephile.common import CommandLineInterface
+from scinoephile.common.cli import CommandLineInterface
 
 __all__ = ["get_cli_action", "get_cli_action_group_title", "get_parser_action"]
 

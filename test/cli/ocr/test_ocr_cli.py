@@ -13,7 +13,7 @@ from typing import Any
 from pytest import MonkeyPatch, raises
 
 from scinoephile.cli.ocr import OcrLensCli, OcrPaddleCli, OcrTesseractCli
-from scinoephile.common import CommandLineInterface
+from scinoephile.common.cli import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language

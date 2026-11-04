@@ -56,12 +56,11 @@ the concrete dependency visible according to the rules in `STYLE.md`, allowing
 the hierarchy test to evaluate the real dependency graph.
 
 The reusable CLI implementation belongs to
-`common.cli.command_line_interface`. Both `common` and `common.cli` expose the same
-`CommandLineInterface` class through their public facades. Direct imports from the
-former `common.command_line_interface` module must use the new owning module.
+`common.cli.command_line_interface`, exposed by the owning `common.cli` package.
+Callers import the class from that package or its implementation module.
 Validator keyword-argument `TypedDict` definitions belong to `common.validation`,
 alongside the validators they describe; `common.argument_parsing` consumes those
-definitions for its argparse adapters.
+definitions through the validation module for its argparse adapters.
 
 Within `common`, CLI helpers and validation are independent peers above argument
 parsing and testing utilities. CLI helpers depend only on the earlier shared

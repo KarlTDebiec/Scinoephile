@@ -14,7 +14,8 @@ from typing import Any
 
 from pytest import fixture, mark, raises, skip
 
-from scinoephile.common import CommandLineInterface, package_root
+from scinoephile.common import package_root
+from scinoephile.common.cli import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 
 from .series_assertions import assert_series_equal

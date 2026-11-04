@@ -14,7 +14,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .cli.command_line_interface import CommandLineInterface
 from .exceptions import (
     ArgumentConflictError,
     DirectoryExistsError,
@@ -36,7 +35,6 @@ If this file is '/path/to/package/common/__init__.py', the value is
 
 __all__ = [
     "ArgumentConflictError",
-    "CommandLineInterface",
     "DirectoryExistsError",
     "DirectoryNotFoundError",
     "ExecutableNotFoundError",

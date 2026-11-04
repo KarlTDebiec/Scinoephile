@@ -15,14 +15,10 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Unpack
 
+from . import validation
 from .duration import parse_duration
 from .exceptions import NotAFileError
 from .validation import (
-    FloatValidatorKwargs,
-    IntValidatorKwargs,
-    OutputDirValidatorKwargs,
-    OutputPathValidatorKwargs,
-    StrValidatorKwargs,
     val_float,
     val_input_dir_path,
     val_input_file_or_dir_path,
@@ -203,7 +199,7 @@ def get_validator[T](function: Callable[..., T], **kwargs: Any) -> Callable[[Any
 
 
 def float_arg(
-    **kwargs: Unpack[FloatValidatorKwargs],
+    **kwargs: Unpack[validation.FloatValidatorKwargs],
 ) -> Callable[[Any], float | list[float]]:
     """Validate a float argument.
 
@@ -352,7 +348,9 @@ def input_file_arg(
     return wrapped
 
 
-def int_arg(**kwargs: Unpack[IntValidatorKwargs]) -> Callable[[Any], int | list[int]]:
+def int_arg(
+    **kwargs: Unpack[validation.IntValidatorKwargs],
+) -> Callable[[Any], int | list[int]]:
     """Validate an int argument.
 
     Arguments:
@@ -396,7 +394,7 @@ def named_input_file_arg() -> Callable[[Any], tuple[str, Path]]:
 
 
 def output_dir_arg(
-    **kwargs: Unpack[OutputDirValidatorKwargs],
+    **kwargs: Unpack[validation.OutputDirValidatorKwargs],
 ) -> Callable[[Any], Path | list[Path]]:
     """Validate an output directory path argument.
 
@@ -409,7 +407,7 @@ def output_dir_arg(
 
 
 def output_file_arg(
-    **kwargs: Unpack[OutputPathValidatorKwargs],
+    **kwargs: Unpack[validation.OutputPathValidatorKwargs],
 ) -> Callable[[Any], Path | list[Path]]:
     """Validate an output file path argument.
 
@@ -421,7 +419,7 @@ def output_file_arg(
     return get_validator(val_output_path, **kwargs)
 
 
-def str_arg(**kwargs: Unpack[StrValidatorKwargs]) -> Callable[[Any], str]:
+def str_arg(**kwargs: Unpack[validation.StrValidatorKwargs]) -> Callable[[Any], str]:
     """Validate a string argument.
 
     Arguments:
