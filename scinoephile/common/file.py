@@ -4,21 +4,16 @@
 
 from __future__ import annotations
 
-import sys
 from collections.abc import Generator
 from contextlib import contextmanager
-from errno import EACCES, EAGAIN, EDEADLK
 from logging import getLogger
-from math import isfinite
 from os import fsync, remove
 from pathlib import Path
 from shutil import move, rmtree
 from tempfile import NamedTemporaryFile, mkdtemp
-from time import monotonic, sleep
 from typing import TextIO, cast
 
 __all__ = [
-    "file_lock",
     "get_temp_directory_path",
     "get_temp_file_path",
     "open_atomic_text_file",
@@ -26,69 +21,6 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
-
-
-@contextmanager
-def file_lock(  # noqa: PLR0912
-    file_path: Path, *, timeout: float = 5.0
-) -> Generator[None]:
-    """Hold an exclusive OS file lock with a bounded wait for competing writers.
-
-    Every writer must use the same lock file for the entire read-modify-write
-    operation. The file remains on disk and must not be replaced or unlinked while
-    writers can use it. Closing the handle releases the lock, including after a crash.
-    Acquisition is not reentrant, even within one process.
-
-    Arguments:
-        file_path: persistent lock file, with parent directories created as needed
-        timeout: maximum acquisition wait in seconds; zero fails immediately if held
-    Yields:
-        control while the exclusive lock is held
-    Raises:
-        BlockingIOError: if another writer holds the lock beyond the timeout
-        OSError: if opening, locking, or unlocking the file fails
-        ValueError: if timeout is negative or nonfinite
-    """
-    if not isfinite(timeout):
-        raise ValueError("File lock timeout must be finite.")
-    if timeout < 0:
-        raise ValueError("File lock timeout must not be negative.")
-    file_path.parent.mkdir(parents=True, exist_ok=True)
-    with file_path.open("a+b") as handle:
-        if sys.platform == "win32":
-            import msvcrt  # noqa: PLC0415
-
-            if file_path.stat().st_size == 0:
-                handle.write(b"\0")
-                handle.flush()
-            handle.seek(0)
-        else:
-            import fcntl  # noqa: PLC0415
-
-        deadline = monotonic() + timeout
-        while True:
-            try:
-                if sys.platform == "win32":
-                    msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
-                else:
-                    fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except OSError as exc:
-                if exc.errno not in {EACCES, EAGAIN, EDEADLK}:
-                    raise
-                remaining = deadline - monotonic()
-                if remaining <= 0:
-                    raise BlockingIOError(f"File lock is held: {file_path}") from exc
-                sleep(min(0.05, remaining))
-            else:
-                break
-        try:
-            yield
-        finally:
-            if sys.platform == "win32":
-                handle.seek(0)
-                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
-            else:
-                fcntl.flock(handle, fcntl.LOCK_UN)
 
 
 @contextmanager

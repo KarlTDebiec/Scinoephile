@@ -8,7 +8,6 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common import package_root
-from scinoephile.common.file import file_lock
 from scinoephile.common.validation import val_input_dir_path, val_output_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.paths import get_runtime_data_root_path
@@ -36,12 +35,7 @@ MAX_CHAR_DIM_BBOXES = 6
 
 
 class ValidationManager:
-    """Validate OCR text and merge approvals safely across sessions.
-
-    Each durable update reloads its latest CSV under the target directory's
-    persistent `.validation.lock`, applies one decision, and saves atomically.
-    In-memory approval data changes only after persistence succeeds.
-    """
+    """Validates OCRed subtitle text using source images."""
 
     char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
     """Data structure for characters in one or more bboxes.
@@ -87,42 +81,6 @@ class ValidationManager:
             raise ScinoephileError(
                 f"Unable to initialize OCR validation data: {exc}"
             ) from exc
-
-    def get_pair_gaps(self, char_pair: tuple[str, str]) -> tuple[int, int, int, int]:
-        """Get known spacing limits without changing saved approvals.
-
-        A pair not yet seen by this session is loaded under the data lock so an
-        approval saved by another session takes precedence over heuristic defaults.
-        Defaults are remembered in this session without writing them to storage.
-
-        Arguments:
-            char_pair: character pair whose spacing limits are needed
-        Returns:
-            approved spacing limits or heuristic defaults for the pair
-        Raises:
-            ScinoephileError: if acquiring the data lock or loading approvals fails
-        """
-        cutoffs = self.char_pair_gaps.get(char_pair)
-        if cutoffs is not None:
-            return cutoffs
-        try:
-            file_path = self._char_pair_gaps_path()
-            with file_lock(file_path.parent / ".validation.lock"):
-                saved_pair_gaps = {}
-                if file_path.exists():
-                    saved_pair_gaps = load_char_pair_gaps(file_path)
-                cutoffs = saved_pair_gaps.get(char_pair)
-                if cutoffs is None:
-                    cutoffs = get_default_char_pair_cutoffs(*char_pair)
-                if not self.dev:
-                    self.user_char_pair_gaps = saved_pair_gaps
-                self.char_pair_gaps.update(saved_pair_gaps)
-                self.char_pair_gaps[char_pair] = cutoffs
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to load OCR character pair gaps: {exc}"
-            ) from exc
-        return cutoffs
 
     def validate(self, series: ImageSeries) -> ImageSeries:
         """Validate all subtitles in an image series.
@@ -427,7 +385,10 @@ class ValidationManager:
                 continue
 
             # Validate
-            cutoffs = self.get_pair_gaps(cursor.char_pair)
+            cutoffs = self.char_pair_gaps.get(cursor.char_pair)
+            if not cutoffs:
+                cutoffs = get_default_char_pair_cutoffs(cursor.char_1, cursor.char_2)
+                self.update_pair_gaps(cursor.char_pair, cutoffs)
 
             # Adjacent
             if cursor.gap <= cutoffs[0]:
@@ -528,109 +489,78 @@ class ValidationManager:
         cursor.gap_chars = replacement
 
     def update_char_dims(self, char: str, dims: tuple[int, ...]):
-        """Merge one approved character dimension into the latest durable data.
+        """Update char dims and save.
 
         Arguments:
-            char: character
-            dims: dimensions including width, height, gap values
-        Raises:
-            ScinoephileError: if acquiring the data lock, loading, or saving fails
+            char: Character
+            dims: Dimensions including width, height, gap values
         """
         n = (len(dims) + 1) // 3
-        if dims in self.char_dims_by_n[n].get(char, set()):
+        dims_set = self.char_dims_by_n[n].setdefault(char, set())
+        if dims in dims_set:
             return
-        try:
-            file_path = self._char_dims_path(n)
-            with file_lock(file_path.parent / ".validation.lock"):
-                output_char_dims = {}
-                if file_path.exists():
-                    output_char_dims = load_char_dims(file_path)
-                if dims not in output_char_dims.get(char, set()):
-                    output_char_dims.setdefault(char, set()).add(dims)
-                    save_char_dims(output_char_dims, file_path)
-                if not self.dev:
-                    self.user_char_dims_by_n[n] = output_char_dims
-                for saved_char, dims_set in output_char_dims.items():
-                    self.char_dims_by_n[n].setdefault(saved_char, set()).update(
-                        dims_set
-                    )
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to save OCR character dimensions: {exc}"
-            ) from exc
+        dims_set.add(dims)
         logger.info(f"Added ({char}, {dims})")
+        if self.dev:
+            output_char_dims = self.char_dims_by_n[n]
+        else:
+            output_char_dims = self.user_char_dims_by_n.setdefault(n, {})
+            output_char_dims.setdefault(char, set()).add(dims)
+        save_char_dims(output_char_dims, self._char_dims_path(n))
 
     def _update_char_grp_dims(self, group: str, dims: tuple[int, ...]):
-        """Merge one approved character group into the latest durable data.
+        """Update char group dims and save.
 
         Arguments:
-            group: group of characters
-            dims: dimensions including width and height
-        Raises:
-            ScinoephileError: if acquiring the data lock, loading, or saving fails
+            group: Group of characters
+            dims: Dimensions including width and height
         """
         n = len(group)
-        if dims in self.char_grp_dims_by_n.get(n, {}).get(group, set()):
+        dims_set = self.char_grp_dims_by_n.setdefault(n, {}).setdefault(group, set())
+        if dims in dims_set:
             return
-        try:
-            file_path = self._char_grp_dims_path()
-            with file_lock(file_path.parent / ".validation.lock"):
-                output_char_grp_dims = {}
-                if file_path.exists():
-                    output_char_grp_dims = load_char_grp_dims(file_path)
-                dims_set = output_char_grp_dims.setdefault(n, {}).setdefault(
-                    group, set()
-                )
-                if dims not in dims_set:
-                    dims_set.add(dims)
-                    save_char_grp_dims(output_char_grp_dims, file_path)
-                if not self.dev:
-                    self.user_char_grp_dims_by_n = output_char_grp_dims
-                for group_size, group_dims in output_char_grp_dims.items():
-                    for saved_group, saved_dims in group_dims.items():
-                        self.char_grp_dims_by_n.setdefault(group_size, {}).setdefault(
-                            saved_group, set()
-                        ).update(saved_dims)
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to save OCR character group dimensions: {exc}"
-            ) from exc
+        dims_set.add(dims)
         logger.info(f"Added ({group}, {dims})")
+        if self.dev:
+            output_char_grp_dims = self.char_grp_dims_by_n
+        else:
+            output_char_grp_dims = self.user_char_grp_dims_by_n
+            output_char_grp_dims.setdefault(n, {}).setdefault(group, set()).add(dims)
+        save_char_grp_dims(output_char_grp_dims, self._char_grp_dims_path())
 
     def update_pair_gaps(
         self, char_pair: tuple[str, str], cutoffs: tuple[int, int, int, int]
     ):
-        """Apply one pair-gap decision without restoring stale overrides.
+        """Update char pair gaps and save.
 
         Arguments:
             char_pair: character pair
-            cutoffs: explicitly approved limits; heuristic defaults request a reset
-        Raises:
-            ScinoephileError: if acquiring the data lock, loading, or saving fails
+            cutoffs: cutoffs
         """
-        try:
-            file_path = self._char_pair_gaps_path()
-            with file_lock(file_path.parent / ".validation.lock"):
-                output_char_pair_gaps = {}
-                if file_path.exists():
-                    output_char_pair_gaps = load_char_pair_gaps(file_path)
-                previous_cutoffs = output_char_pair_gaps.get(char_pair)
-                if cutoffs == get_default_char_pair_cutoffs(*char_pair):
-                    if previous_cutoffs is not None:
-                        output_char_pair_gaps.pop(char_pair)
-                        save_char_pair_gaps(output_char_pair_gaps, file_path)
-                elif previous_cutoffs != cutoffs:
-                    output_char_pair_gaps[char_pair] = cutoffs
-                    save_char_pair_gaps(output_char_pair_gaps, file_path)
-                if not self.dev:
-                    self.user_char_pair_gaps = output_char_pair_gaps
-                self.char_pair_gaps.update(output_char_pair_gaps)
-                self.char_pair_gaps[char_pair] = cutoffs
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to save OCR character pair gaps: {exc}"
-            ) from exc
+        previous_cutoffs = self.char_pair_gaps.get(char_pair)
+        if previous_cutoffs == cutoffs:
+            return
+        if cutoffs == get_default_char_pair_cutoffs(*char_pair):
+            self.char_pair_gaps[char_pair] = cutoffs
+            if previous_cutoffs is None:
+                return
+            if self.dev:
+                output_char_pair_gaps = self.char_pair_gaps
+            elif char_pair in self.user_char_pair_gaps:
+                self.user_char_pair_gaps.pop(char_pair, None)
+                output_char_pair_gaps = self.user_char_pair_gaps
+            else:
+                return
+            save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
+            return
+        self.char_pair_gaps[char_pair] = cutoffs
         logger.info(f"Added ({char_pair}, {cutoffs})")
+        if self.dev:
+            output_char_pair_gaps = self.char_pair_gaps
+        else:
+            self.user_char_pair_gaps[char_pair] = cutoffs
+            output_char_pair_gaps = self.user_char_pair_gaps
+        save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
 
     def _char_dims_path(self, n: int) -> Path:
         """Get a character-dimensions CSV path.
