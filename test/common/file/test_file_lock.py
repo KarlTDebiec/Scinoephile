@@ -10,6 +10,7 @@ from time import monotonic
 from pytest import raises
 
 from scinoephile.common.file import file_lock
+from test.helpers import parametrize
 
 
 def test_file_lock_rejects_negative_timeout(tmp_path: Path):
@@ -23,6 +24,21 @@ def test_file_lock_rejects_negative_timeout(tmp_path: Path):
         with file_lock(lock_path, timeout=-1):
             pass
     assert not lock_path.exists()
+
+
+@parametrize("timeout", [float("nan"), float("inf"), float("-inf")])
+def test_file_lock_rejects_nonfinite_timeout(tmp_path: Path, timeout: float):
+    """Reject unbounded waits before creating any lock directory or file.
+
+    Arguments:
+        tmp_path: temporary directory for the lock
+        timeout: nonfinite acquisition timeout
+    """
+    lock_path = tmp_path / "data/writer.lock"
+    with raises(ValueError, match="must be finite"):
+        with file_lock(lock_path, timeout=timeout):
+            pass
+    assert not lock_path.parent.exists()
 
 
 def test_file_lock_releases_after_failure(tmp_path: Path):
