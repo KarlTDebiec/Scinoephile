@@ -161,7 +161,7 @@ def add_llm_test_case_json_arg(
     dest: str = "json_path",
     help_text: str = "JSON file containing test cases",
 ):
-    """Add a test-case JSON persistence argument.
+    """Add a test-case JSON persistence argument without creating its directory.
 
     Arguments:
         llm_arg_group: argument group to which the JSON argument is added
@@ -170,7 +170,10 @@ def add_llm_test_case_json_arg(
         help_text: argument help text
     """
     llm_arg_group.add_argument(
-        option_name, dest=dest, type=output_file_arg(exist_ok=True), help=help_text
+        option_name,
+        dest=dest,
+        type=output_file_arg(exist_ok=True, create=False),
+        help=help_text,
     )
 
 

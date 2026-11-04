@@ -30,7 +30,7 @@ from .helpers.blocks import (
     get_block_range_indexes,
 )
 from .helpers.cache import CACHE_LOCALIZATIONS, CacheArguments, add_cache_args
-from .helpers.io import read_series, write_series
+from .helpers.io import read_series, validate_series_output, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
@@ -194,6 +194,7 @@ class ReviewCli(ScinoephileCliBase):
             parser.error("--overwrite may only be used with --outfile")
         if guide_language is not None and guide_infile_path is None:
             parser.error("--guide-language requires --guide-infile")
+        validate_series_output(parser, outfile_path, overwrite)
 
         # Read input
         series = read_series(parser, infile_path, allow_stdin=True)
