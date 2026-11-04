@@ -3,7 +3,7 @@
 <head>
    <meta charset="UTF-8" />
    <title>OCR validation</title>
-   <script src="{{ url_for('static', filename='htmx.min.js') }}"></script>
+   <script src="{{ url_for('static', filename='htmx.min.js') }}" defer></script>
    <style>
       {% for row in style_rows %}
       #subtitle-{{ row.sub_idx }} {
