@@ -115,17 +115,23 @@ def get_temp_directory_path(
 
 
 @contextmanager
-def get_temp_file_path(suffix: str | None = None) -> Generator[Path]:
+def get_temp_file_path(
+    suffix: str | None = None, *, parent_dir_path: Path | None = None
+) -> Generator[Path]:
     """Provide path to a temporary file and remove it once no longer needed.
+
+    The initially created file is closed and removed before yielding, so callers may
+    create their own output at the path. The parent directory must already exist.
 
     Arguments:
         suffix: suffix of named temporary file
+        parent_dir_path: parent directory, defaulting to the system temporary directory
     Yields:
         path to temporary file
     """
     temp_file_path = None
     try:
-        temp_file = NamedTemporaryFile(delete=False, suffix=suffix)
+        temp_file = NamedTemporaryFile(delete=False, suffix=suffix, dir=parent_dir_path)
         temp_file.close()
         temp_file_path = Path(temp_file.name)
         remove(temp_file_path)
