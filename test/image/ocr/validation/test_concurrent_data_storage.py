@@ -13,16 +13,21 @@ from textwrap import dedent
 from time import monotonic, sleep
 from unittest.mock import Mock
 
+from PIL import Image
 from pytest import MonkeyPatch, fixture, raises
 
 from scinoephile.common.file import file_lock
 from scinoephile.core import ScinoephileError
+from scinoephile.image.bbox import Bbox
 from scinoephile.image.ocr.validation import ValidationManager, validation_manager
 from scinoephile.image.ocr.validation.char_pair_gaps import (
     get_default_char_pair_cutoffs,
     load_char_pair_gaps,
 )
+from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
+from scinoephile.web.ocr_validation.session import OcrValidationSession
 from test.helpers import parametrize
+from test.helpers.ocr_validation import make_ocr_html_dir, patch_ocr_validation_bboxes
 
 
 @fixture
@@ -75,6 +80,72 @@ def test_stale_managers_preserve_all_approval_types(
 
 
 @parametrize("dev", [False, True])
+@parametrize("entrypoint", ["manager", "web"])
+def test_first_gap_lookup_preserves_another_sessions_approval(
+    tmp_path: Path,
+    repo_root_path: Path,
+    monkeypatch: MonkeyPatch,
+    dev: bool,
+    entrypoint: str,
+):
+    """Use a newly saved spacing approval when a stale session first sees the pair.
+
+    Arguments:
+        tmp_path: temporary directory for runtime data and subtitle images
+        repo_root_path: isolated repository data root
+        monkeypatch: fixture replacing bbox detection with known character positions
+        dev: whether approvals belong to repository data
+        entrypoint: validation path encountering the previously unseen pair
+    """
+    data_dir_path = tmp_path / "data"
+    first = ValidationManager(validation_data_dir_path=data_dir_path, dev=dev)
+    session = None
+    if entrypoint == "web":
+        html_dir_path = make_ocr_html_dir(tmp_path, text="A B")
+        session = OcrValidationSession.from_dir_path(
+            html_dir_path, validation_data_dir_path=data_dir_path, dev=dev
+        )
+        second = session.manager
+        bbox_target = "scinoephile.web.ocr_validation.session.get_bboxes"
+    else:
+        second = ValidationManager(validation_data_dir_path=data_dir_path, dev=dev)
+        bbox_target = "scinoephile.image.ocr.validation.validation_manager.get_bboxes"
+    second.char_dims_by_n[1] = {"A": {(10, 20)}, "B": {(10, 20)}}
+    assert ("A", "B") not in second.char_pair_gaps
+    patch_ocr_validation_bboxes(
+        monkeypatch, [Bbox(0, 10, 0, 20), Bbox(13, 23, 0, 20)], target=bbox_target
+    )
+
+    first.update_pair_gaps(("A", "B"), (1, 2, 3, 4))
+    output_dir_path = data_dir_path
+    if dev:
+        output_dir_path = repo_root_path / "data/ocr"
+    saved_path = output_dir_path / "char_pair_gaps.csv"
+    saved_data = saved_path.read_bytes()
+
+    if session is not None:
+        row = session.subtitle_row(0)
+        actual_text = row.text
+        assert row.concern is None
+    else:
+        series = ImageSeries(
+            events=[
+                ImageSubtitle(
+                    start=1000,
+                    end=2000,
+                    img=Image.new("LA", (40, 24), (255, 255)),
+                    text="A B",
+                )
+            ]
+        )
+        actual_text = second.validate(series).events[0].text
+
+    assert saved_path.read_bytes() == saved_data
+    assert second.char_pair_gaps[("A", "B")] == (1, 2, 3, 4)
+    assert actual_text == "A B"
+
+
+@parametrize("dev", [False, True])
 def test_stale_pair_gap_reset_removes_only_its_current_override(
     tmp_path: Path, repo_root_path: Path, dev: bool
 ):
@@ -106,7 +177,43 @@ def test_stale_pair_gap_reset_removes_only_its_current_override(
     assert first.char_pair_gaps[("A", "B")] == default_cutoffs
 
 
-@parametrize("operation", ["character", "group", "gap"])
+@parametrize("dev", [False, True])
+@parametrize("has_saved_approval", [False, True])
+def test_default_gap_lookup_does_not_change_saved_approvals(
+    tmp_path: Path, repo_root_path: Path, dev: bool, has_saved_approval: bool
+):
+    """Keep heuristic defaults in memory without creating or rewriting CSV data.
+
+    Arguments:
+        tmp_path: temporary directory for runtime data
+        repo_root_path: isolated repository data root
+        dev: whether approvals belong to repository data
+        has_saved_approval: whether another session has saved an unrelated approval
+    """
+    data_dir_path = tmp_path / "data"
+    first = ValidationManager(validation_data_dir_path=data_dir_path, dev=dev)
+    second = ValidationManager(validation_data_dir_path=data_dir_path, dev=dev)
+    output_dir_path = data_dir_path
+    if dev:
+        output_dir_path = repo_root_path / "data/ocr"
+    saved_path = output_dir_path / "char_pair_gaps.csv"
+    saved_data = None
+    if has_saved_approval:
+        first.update_pair_gaps(("C", "D"), (5, 6, 7, 8))
+        saved_data = saved_path.read_bytes()
+
+    default_cutoffs = get_default_char_pair_cutoffs("A", "B")
+    assert second.get_pair_gaps(("A", "B")) == default_cutoffs
+    assert second.get_pair_gaps(("A", "B")) == default_cutoffs
+    assert second.char_pair_gaps[("A", "B")] == default_cutoffs
+    if saved_data is None:
+        assert not saved_path.exists()
+    else:
+        assert saved_path.read_bytes() == saved_data
+        assert second.char_pair_gaps[("C", "D")] == (5, 6, 7, 8)
+
+
+@parametrize("operation", ["character", "group", "gap", "lookup"])
 def test_lock_contention_is_user_facing_and_preserves_session_state(
     tmp_path: Path, repo_root_path: Path, monkeypatch: MonkeyPatch, operation: str
 ):
@@ -128,6 +235,8 @@ def test_lock_contention_is_user_facing_and_preserves_session_state(
                 manager.update_char_dims("A", (10, 20))
             elif operation == "group":
                 manager._update_char_grp_dims("AB", (50, 20))
+            elif operation == "lookup":
+                manager.get_pair_gaps(("A", "B"))
             else:
                 manager.update_pair_gaps(("A", "B"), (1, 2, 3, 4))
     assert vars(manager) == state

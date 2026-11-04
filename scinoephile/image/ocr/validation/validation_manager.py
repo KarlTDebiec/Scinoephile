@@ -88,6 +88,42 @@ class ValidationManager:
                 f"Unable to initialize OCR validation data: {exc}"
             ) from exc
 
+    def get_pair_gaps(self, char_pair: tuple[str, str]) -> tuple[int, int, int, int]:
+        """Get known spacing limits without changing saved approvals.
+
+        A pair not yet seen by this session is loaded under the data lock so an
+        approval saved by another session takes precedence over heuristic defaults.
+        Defaults are remembered in this session without writing them to storage.
+
+        Arguments:
+            char_pair: character pair whose spacing limits are needed
+        Returns:
+            approved spacing limits or heuristic defaults for the pair
+        Raises:
+            ScinoephileError: if acquiring the data lock or loading approvals fails
+        """
+        cutoffs = self.char_pair_gaps.get(char_pair)
+        if cutoffs is not None:
+            return cutoffs
+        try:
+            file_path = self._char_pair_gaps_path()
+            with file_lock(file_path.parent / ".validation.lock"):
+                saved_pair_gaps = {}
+                if file_path.exists():
+                    saved_pair_gaps = load_char_pair_gaps(file_path)
+                cutoffs = saved_pair_gaps.get(char_pair)
+                if cutoffs is None:
+                    cutoffs = get_default_char_pair_cutoffs(*char_pair)
+                if not self.dev:
+                    self.user_char_pair_gaps = saved_pair_gaps
+                self.char_pair_gaps.update(saved_pair_gaps)
+                self.char_pair_gaps[char_pair] = cutoffs
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load OCR character pair gaps: {exc}"
+            ) from exc
+        return cutoffs
+
     def validate(self, series: ImageSeries) -> ImageSeries:
         """Validate all subtitles in an image series.
 
@@ -391,10 +427,7 @@ class ValidationManager:
                 continue
 
             # Validate
-            cutoffs = self.char_pair_gaps.get(cursor.char_pair)
-            if not cutoffs:
-                cutoffs = get_default_char_pair_cutoffs(cursor.char_1, cursor.char_2)
-                self.update_pair_gaps(cursor.char_pair, cutoffs)
+            cutoffs = self.get_pair_gaps(cursor.char_pair)
 
             # Adjacent
             if cursor.gap <= cutoffs[0]:
@@ -571,7 +604,7 @@ class ValidationManager:
 
         Arguments:
             char_pair: character pair
-            cutoffs: cutoffs
+            cutoffs: explicitly approved limits; heuristic defaults request a reset
         Raises:
             ScinoephileError: if acquiring the data lock, loading, or saving fails
         """
