@@ -240,7 +240,10 @@ class TranscriptionAligner:
                 f"SYNC GROUPS:\n{get_sync_groups_string(alignment.sync_groups)}"
             )
 
-        nascent_transcription = AudioSeries(audio=alignment.transcription.audio)
+        nascent_transcription = AudioSeries(
+            audio=alignment.transcription.audio,
+            audio_start_ms=alignment.transcription.audio_start_ms,
+        )
         nascent_sync_groups: list[SyncGroup] = []
         punctuation_queryer = self.punctuation_processor.queryer
         punctuation_prompt = cast(PunctuationPrompt, punctuation_queryer.prompt)

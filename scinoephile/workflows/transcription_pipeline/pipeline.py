@@ -408,7 +408,11 @@ class TranscriptionPipeline:
             excluded_blocks,
         )
         log_transcription_blocks(self.last_alignment_artifact, self.last_run_manifest)
-        return get_series_from_segments(output_segments, audio=audio_series.audio)
+        return get_series_from_segments(
+            output_segments,
+            audio=audio_series.audio,
+            offset=audio_series.audio_start_ms,
+        )
 
     def _apply_block_exclusions(
         self, selected_blocks: Sequence[SpeechBlock], excluded_blocks: tuple[int, ...]

@@ -38,7 +38,7 @@ def get_series_from_segments(
     Arguments:
         segments: transcribed segments to compile
         audio: series audio
-        offset: time offset to apply
+        offset: absolute timestamp of the beginning of audio in milliseconds
     Returns:
         compiled subtitle series
     """
@@ -52,7 +52,7 @@ def get_series_from_segments(
         )
         events.append(event)
 
-    return AudioSeries(audio=audio, events=events)
+    return AudioSeries(audio=audio, events=events, audio_start_ms=offset)
 
 
 def get_series_with_sub_split_at_idx(
@@ -72,6 +72,7 @@ def get_series_with_sub_split_at_idx(
     return AudioSeries(
         audio=series.audio,
         events=series.events[:sub_idx] + [one, two] + series.events[sub_idx + 1 :],
+        audio_start_ms=series.audio_start_ms,
     )
 
 

@@ -62,21 +62,31 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
     @override
     # Audio series require a sound source in addition to subtitle events
     def __init__(  # ty: ignore[invalid-method-override]
-        self, audio: AudioSegment, events: list[AudioSubtitle] | None = None
+        self,
+        audio: AudioSegment,
+        events: list[AudioSubtitle] | None = None,
+        *,
+        audio_start_ms: int = 0,
     ):
         """Initialize.
 
         Arguments:
             audio: Series audio
             events: individual subtitle events
+            audio_start_ms: absolute timestamp corresponding to the start of audio
         Raises:
+            TypeError: if the audio origin is not an integer
             ValueError: if a value is invalid
         """
         if audio is None:
             raise ValueError("AudioSeries requires audio")
+        if type(audio_start_ms) is not int:
+            raise TypeError("Audio origin must be an integer")
+        if audio_start_ms < 0:
+            raise ValueError("Audio origin must be nonnegative")
         super().__init__()
         self._audio = audio
-        self._audio_start_ms = 0
+        self._audio_start_ms = audio_start_ms
         """Source timestamp corresponding to the start of the audio."""
         if events is not None:
             self.events = events
@@ -98,6 +108,11 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
             audio: Audio of series
         """
         self._audio = audio
+
+    @property
+    def audio_start_ms(self) -> int:
+        """Absolute timestamp in milliseconds corresponding to the start of audio."""
+        return self._audio_start_ms
 
     @property
     @override

@@ -11,6 +11,7 @@ from unittest.mock import Mock
 import numpy as np
 from pydantic import ValidationError
 from pydub import AudioSegment
+from pydub.generators import Sine
 from pytest import LogCaptureFixture, MonkeyPatch, mark, raises
 
 from scinoephile.analysis.alignment.timed_msa import (
@@ -360,6 +361,27 @@ def test_process_rejects_invalid_excluded_blocks(exclude_blocks: list[object]):
 
     with raises(ValueError, match="Excluded transcription blocks"):
         pipeline.process(audio_series, exclude_blocks=cast(list[int], exclude_blocks))
+
+
+def test_process_preserves_audio_origin_for_cropped_source():
+    """Map local pipeline output back to the supplied audio's absolute timeline."""
+    pipeline, _ = _get_pipeline()
+    audio = Sine(440).to_audio_segment(duration=1000)
+    audio_series = AudioSeries(audio=audio, audio_start_ms=10000)
+
+    output = pipeline.process(audio_series)
+
+    assert pipeline.last_alignment_artifact is not None
+    subtitle = pipeline.last_alignment_artifact.blocks[0].subtitles[0]
+    assert output.audio_start_ms == 10000
+    assert [(event.start, event.end) for event in output] == [
+        (10000 + subtitle.start_ms, 10000 + subtitle.end_ms)
+    ]
+    assert (
+        output.slice(0, 1).audio.raw_data
+        == audio[subtitle.start_ms : subtitle.end_ms].raw_data
+    )
+    assert len(output.slice(0, 1).audio) > 0
 
 
 def test_process_preserves_text_anywhere_in_block():
