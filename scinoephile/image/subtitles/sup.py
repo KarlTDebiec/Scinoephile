@@ -11,27 +11,6 @@ __all__ = ["read_sup_image_array", "read_sup_palette", "read_sup_series"]
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
-def _render_sup_image(
-    compressed_image: np.ndarray, height: int, width: int, palette: np.ndarray
-) -> np.ndarray:
-    """Render an RGBA subtitle image from palette and compressed image data.
-
-    Arguments:
-        compressed_image: palette-index image data
-        height: image height
-        width: image width
-        palette: RGBA palette
-    Returns:
-        rendered RGBA image
-    """
-    image = np.zeros((height, width, 4), np.uint8)
-    for i in range(height):
-        for j in range(width):
-            image[i, j] = palette[compressed_image[i, j]]
-    return image
-
-
-@nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
 def read_sup_image_array(  # noqa: PLR0912, PLR0915
     bytes_: np.ndarray, height: int, width: int
 ) -> np.ndarray:
@@ -135,6 +114,9 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
 ) -> tuple[list[float], list[float], list[np.ndarray]]:
     """Read subtitle images and times from a block of bytes.
 
+    Combine referenced image objects using their screen positions and source crops.
+    Output canvases cover the object rectangles rather than the complete video frame.
+
     Arguments:
         bytes_: block of bytes
     Returns:
@@ -147,8 +129,7 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
     images = []
 
     palette = np.zeros((256, 4), np.uint8)
-    current_image = np.zeros((0, 0), np.uint8)
-    has_current_image = False
+    object_images = {}
 
     pending_image_data = np.zeros(0, np.uint8)
     pending_image_data_length = -1
@@ -164,7 +145,9 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
 
     set_timestamp = -1.0
     set_composition_number = -1
-    set_has_object = False
+    set_composition = np.zeros((0, 7), np.int64)
+    set_height = 0
+    set_width = 0
 
     byte_i = 0
     while byte_i < len(bytes_):
@@ -250,10 +233,9 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
             if (sequence_descriptor & 0x40) != 0:
                 if len(pending_image_data) != pending_image_data_length:
                     raise ValueError("SUP image segment data is truncated.")
-                current_image = read_sup_image_array(
+                object_images[pending_image_object_id] = read_sup_image_array(
                     pending_image_data, pending_image_height, pending_image_width
                 )
-                has_current_image = True
                 pending_image_data = np.zeros(0, np.uint8)
                 pending_image_data_length = -1
                 pending_image_height = 0
@@ -263,28 +245,25 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
         elif segment_kind == 0x16:  # Presentation Composition
             if size < 11:
                 raise ValueError("SUP presentation composition segment is truncated.")
+            if (segment_bytes[7] & 0xC0) != 0:
+                object_images.clear()
             set_composition_number = int(segment_bytes[5]) * 256 + int(segment_bytes[6])
-            set_has_object = segment_bytes[10] > 0
+            set_width = int(segment_bytes[0]) * 256 + int(segment_bytes[1])
+            set_height = int(segment_bytes[2]) * 256 + int(segment_bytes[3])
+            set_composition = _read_sup_composition(segment_bytes)
         elif segment_kind == 0x80:  # End
             if set_timestamp < 0:
                 raise ValueError("Unexpected empty display set in SUP data.")
 
-            if set_has_object:
+            if len(set_composition) > 0:
                 if set_composition_number != active_composition_number:
                     if has_active_image:
                         starts.append(active_start)
                         ends.append(set_timestamp)
                         images.append(active_image)
-                    if not has_current_image:
-                        raise ValueError(
-                            "Encountered object display set without image data."
-                        )
                     active_start = set_timestamp
-                    active_image = _render_sup_image(
-                        current_image,
-                        current_image.shape[0],
-                        current_image.shape[1],
-                        palette,
+                    active_image = _render_sup_composition(
+                        object_images, set_composition, palette, set_width, set_height
                     )
                     has_active_image = True
                     active_composition_number = set_composition_number
@@ -299,7 +278,7 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
 
             set_timestamp = -1.0
             set_composition_number = -1
-            set_has_object = False
+            set_composition = np.zeros((0, 7), np.int64)
 
         byte_i += size
 
@@ -312,3 +291,159 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
         images.append(active_image)
 
     return starts, ends, images
+
+
+@nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
+def _composite_sup_image(target: np.ndarray, source: np.ndarray, x: int, y: int):
+    """Composite one RGBA object over an existing subtitle canvas.
+
+    Arguments:
+        target: destination RGBA canvas
+        source: source RGBA object
+        x: destination horizontal position
+        y: destination vertical position
+    """
+    for row in range(source.shape[0]):
+        for col in range(source.shape[1]):
+            source_alpha = int(source[row, col, 3]) / 255.0
+            if source_alpha == 0:
+                continue
+            target_alpha = int(target[y + row, x + col, 3]) / 255.0
+            output_alpha = source_alpha + target_alpha * (1 - source_alpha)
+            for channel in range(3):
+                target[y + row, x + col, channel] = round(
+                    (
+                        int(source[row, col, channel]) * source_alpha
+                        + int(target[y + row, x + col, channel])
+                        * target_alpha
+                        * (1 - source_alpha)
+                    )
+                    / output_alpha
+                )
+            target[y + row, x + col, 3] = round(output_alpha * 255)
+
+
+@nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
+def _read_sup_composition(bytes_: np.ndarray) -> np.ndarray:
+    """Read object references, placements, and optional source crops from a PCS.
+
+    Arguments:
+        bytes_: complete presentation composition segment payload
+    Returns:
+        rows containing object ID, x, y, crop x, crop y, crop width, and crop height
+    Raises:
+        ValueError: if an object reference or crop is truncated
+    """
+    composition = np.zeros((int(bytes_[10]), 7), np.int64)
+    byte_i = 11
+    for object_i in range(len(composition)):
+        if byte_i + 8 > len(bytes_):
+            raise ValueError("SUP composition object reference is truncated.")
+        composition[object_i, 0] = int(bytes_[byte_i]) * 256 + int(bytes_[byte_i + 1])
+        composition[object_i, 1] = int(bytes_[byte_i + 4]) * 256 + int(
+            bytes_[byte_i + 5]
+        )
+        composition[object_i, 2] = int(bytes_[byte_i + 6]) * 256 + int(
+            bytes_[byte_i + 7]
+        )
+        is_cropped = (bytes_[byte_i + 3] & 0x80) != 0
+        byte_i += 8
+        composition[object_i, 5] = -1
+        composition[object_i, 6] = -1
+        if is_cropped:
+            if byte_i + 8 > len(bytes_):
+                raise ValueError("SUP composition object crop is truncated.")
+            for crop_i in range(4):
+                composition[object_i, crop_i + 3] = int(
+                    bytes_[byte_i + crop_i * 2]
+                ) * 256 + int(bytes_[byte_i + crop_i * 2 + 1])
+            byte_i += 8
+    return composition
+
+
+@nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
+def _render_sup_composition(
+    object_images: dict[int, np.ndarray],
+    composition: np.ndarray,
+    palette: np.ndarray,
+    screen_width: int,
+    screen_height: int,
+) -> np.ndarray:
+    """Render referenced objects into their combined bounding rectangle.
+
+    Preserve object dimensions for single-object compositions and retain relative
+    screen positions when a composition contains multiple objects.
+
+    Arguments:
+        object_images: decoded palette-index images keyed by object ID
+        composition: referenced object IDs, placements, and optional source crops
+        palette: RGBA palette
+        screen_width: declared video width
+        screen_height: declared video height
+    Returns:
+        RGBA subtitle canvas trimmed to its object rectangles
+    Raises:
+        ValueError: if an object is undefined or its crop or placement is invalid
+    """
+    rendered_images = []
+    positions = []
+    min_x = screen_width
+    min_y = screen_height
+    max_x = 0
+    max_y = 0
+    for reference in composition:
+        object_id = reference[0]
+        if object_id not in object_images:
+            raise ValueError("SUP composition references an undefined image object.")
+        compressed_image = object_images[object_id]
+        x, y, crop_x, crop_y, width, height = reference[1:]
+        if width < 0:
+            height, width = compressed_image.shape
+        if (
+            width <= 0
+            or height <= 0
+            or crop_x + width > compressed_image.shape[1]
+            or crop_y + height > compressed_image.shape[0]
+        ):
+            raise ValueError("SUP composition object crop exceeds image bounds.")
+        if x + width > screen_width or y + height > screen_height:
+            raise ValueError("SUP composition object placement exceeds video bounds.")
+        rendered_images.append(
+            _render_sup_image(
+                compressed_image[crop_y : crop_y + height, crop_x : crop_x + width],
+                height,
+                width,
+                palette,
+            )
+        )
+        positions.append((x, y))
+        min_x = min(min_x, x)
+        min_y = min(min_y, y)
+        max_x = max(max_x, x + width)
+        max_y = max(max_y, y + height)
+
+    image = np.zeros((max_y - min_y, max_x - min_x, 4), np.uint8)
+    for object_image, (x, y) in zip(rendered_images, positions):
+        _composite_sup_image(image, object_image, x - min_x, y - min_y)
+    return image
+
+
+@nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
+def _render_sup_image(
+    compressed_image: np.ndarray, height: int, width: int, palette: np.ndarray
+) -> np.ndarray:
+    """Render an RGBA subtitle image from palette and compressed image data.
+
+    Arguments:
+        compressed_image: palette-index image data
+        height: image height
+        width: image width
+        palette: RGBA palette
+    Returns:
+        rendered RGBA image
+    """
+    image = np.zeros((height, width, 4), np.uint8)
+    for i in range(height):
+        for j in range(width):
+            image[i, j] = palette[compressed_image[i, j]]
+    return image
