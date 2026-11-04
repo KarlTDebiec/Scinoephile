@@ -18,6 +18,9 @@ from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.ocr.validation.char_cursor import CharCursor
 from scinoephile.image.ocr.validation.char_dims import get_dims_tuple
+from scinoephile.image.ocr.validation.char_pair_gaps import (
+    get_default_char_pair_cutoffs,
+)
 from scinoephile.image.ocr.validation.gap_cursor import GapCursor
 from scinoephile.image.subtitles import ImageSeries
 
@@ -306,7 +309,7 @@ class OcrValidationSession:
             raise ValueError(f"Subtitle {sub_idx} has no gap concern.")
 
         cursor = self._gap_cursor(state)
-        cutoffs = self.manager.get_pair_gaps(cursor.char_pair)
+        cutoffs = self._gap_cutoffs(cursor)
         if state.concern.kind == ConcernKind.SPACE_GAP:
             expected_gap_chars = self._resolve_space_gap_action(cursor, cutoffs, action)
         else:
@@ -384,6 +387,20 @@ class OcrValidationSession:
         if state.gap_cursor is None:
             raise ValueError("Gap cursor is not initialized.")
         return state.gap_cursor
+
+    def _gap_cutoffs(self, cursor: GapCursor) -> tuple[int, int, int, int]:
+        """Get existing or default cutoffs for the current gap.
+
+        Arguments:
+            cursor: gap cursor
+        Returns:
+            gap cutoff tuple
+        """
+        cutoffs = self.manager.char_pair_gaps.get(cursor.char_pair)
+        if cutoffs is None:
+            cutoffs = get_default_char_pair_cutoffs(cursor.char_1, cursor.char_2)
+            self.manager.update_pair_gaps(cursor.char_pair, cutoffs)
+        return cutoffs
 
     def _gap_concern(
         self,
@@ -546,7 +563,7 @@ class OcrValidationSession:
                 cursor.advance()
                 continue
 
-            cutoffs = self.manager.get_pair_gaps(cursor.char_pair)
+            cutoffs = self._gap_cutoffs(cursor)
             concern = self._scan_gap_with_cutoffs(cursor, cutoffs)
             if concern is not None:
                 return concern
