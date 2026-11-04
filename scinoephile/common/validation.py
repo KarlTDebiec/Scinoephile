@@ -12,7 +12,7 @@ from os.path import defpath, expanduser, expandvars
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from platform import system
 from shutil import which
-from typing import Any, TypeAliasType, cast, get_args, overload
+from typing import Any, TypeAliasType, TypedDict, cast, get_args, overload
 
 from .exceptions import (
     ArgumentConflictError,
@@ -23,6 +23,11 @@ from .exceptions import (
 )
 
 __all__ = [
+    "FloatValidatorKwargs",
+    "IntValidatorKwargs",
+    "OutputDirValidatorKwargs",
+    "OutputPathValidatorKwargs",
+    "StrValidatorKwargs",
     "val_child_path",
     "val_executable",
     "val_float",
@@ -38,6 +43,59 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
+
+
+class FloatValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_float."""
+
+    n_values: int | None
+    """required number of values."""
+    min_value: float | None
+    """minimum allowed value."""
+    max_value: float | None
+    """maximum allowed value."""
+    min_exclusive: bool
+    """whether to exclude the minimum; requires min_value."""
+    max_exclusive: bool
+    """whether to exclude the maximum; requires max_value."""
+    finite: bool
+    """whether to reject NaN and infinities."""
+
+
+class IntValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_int."""
+
+    n_values: int | None
+    """required number of values."""
+    min_value: int | None
+    """minimum allowed value."""
+    max_value: int | None
+    """maximum allowed value."""
+    acceptable_values: Collection[int] | None
+    """explicit set of acceptable values."""
+
+
+class OutputDirValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_output_dir_path."""
+
+    create: bool
+    """whether missing output directories should be created."""
+
+
+class OutputPathValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_output_path."""
+
+    exist_ok: bool
+    """whether existing output files are accepted."""
+    create: bool
+    """whether missing parent directories should be created."""
+
+
+class StrValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_str."""
+
+    options: Collection[str]
+    """allowed string options."""
 
 
 def val_child_path(parent_dir_path: str | PathLike[str], child_name: str) -> Path:

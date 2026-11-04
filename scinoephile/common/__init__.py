@@ -6,15 +6,15 @@ This module should not import from other modules outside the standard library.
 
 Package hierarchy (modules may import from any above):
 * csv / described_enum / duration / exceptions / file / logs / subprocess
-* command_line_interface / validation
-* argument_parsing / cli / testing
+* cli / validation
+* argument_parsing / testing
 """
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from .command_line_interface import CommandLineInterface
+from .cli.command_line_interface import CommandLineInterface
 from .exceptions import (
     ArgumentConflictError,
     DirectoryExistsError,

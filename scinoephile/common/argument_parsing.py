@@ -9,15 +9,20 @@ from argparse import (
     ArgumentTypeError,
     _ArgumentGroup,  # noqa pylint
 )
-from collections.abc import Callable, Collection
+from collections.abc import Callable
 from datetime import timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, TypedDict, Unpack
+from typing import Any, Unpack
 
 from .duration import parse_duration
 from .exceptions import NotAFileError
 from .validation import (
+    FloatValidatorKwargs,
+    IntValidatorKwargs,
+    OutputDirValidatorKwargs,
+    OutputPathValidatorKwargs,
+    StrValidatorKwargs,
     val_float,
     val_input_dir_path,
     val_input_file_or_dir_path,
@@ -29,11 +34,6 @@ from .validation import (
 )
 
 __all__ = [
-    "FloatValidatorKwargs",
-    "IntValidatorKwargs",
-    "OutputDirValidatorKwargs",
-    "OutputPathValidatorKwargs",
-    "StrValidatorKwargs",
     "duration_arg",
     "enum_arg",
     "enum_metavar",
@@ -53,59 +53,6 @@ __all__ = [
     "output_file_arg",
     "str_arg",
 ]
-
-
-class FloatValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_float."""
-
-    n_values: int | None
-    """required number of values."""
-    min_value: float | None
-    """minimum allowed value."""
-    max_value: float | None
-    """maximum allowed value."""
-    min_exclusive: bool
-    """whether to exclude the minimum; requires min_value."""
-    max_exclusive: bool
-    """whether to exclude the maximum; requires max_value."""
-    finite: bool
-    """whether to reject NaN and infinities."""
-
-
-class IntValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_int."""
-
-    n_values: int | None
-    """required number of values."""
-    min_value: int | None
-    """minimum allowed value."""
-    max_value: int | None
-    """maximum allowed value."""
-    acceptable_values: Collection[int] | None
-    """explicit set of acceptable values."""
-
-
-class OutputPathValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_output_path."""
-
-    exist_ok: bool
-    """whether existing output files are accepted."""
-    create: bool
-    """whether missing parent directories should be created."""
-
-
-class OutputDirValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_output_dir_path."""
-
-    create: bool
-    """whether missing output directories should be created."""
-
-
-class StrValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_str."""
-
-    options: Collection[str]
-    """allowed string options."""
 
 
 def get_optional_args_group(parser: ArgumentParser) -> _ArgumentGroup:
