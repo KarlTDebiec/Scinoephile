@@ -156,9 +156,9 @@ class DemucsCache:
         # Export beside the target so replacement is atomic on the same filesystem
         try:
             with TemporaryDirectory(
-                dir=cache_path.parent, prefix=f".{cache_path.stem}-"
+                dir=cache_path.parent, prefix=".demucs-"
             ) as temp_dir:
-                staging_path = Path(temp_dir) / cache_path.name
+                staging_path = Path(temp_dir) / "vocals.wav"
                 vocals.export(staging_path, format="wav")
                 staging_path.replace(cache_path)
         except (CouldntEncodeError, OSError) as exc:
