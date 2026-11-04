@@ -79,7 +79,7 @@ paddle-build = [
     "jinja2>=3.1.6",
     "ninja>=1.13.0",
     "pip>=25.3",
-    "pybind11-stubgen>=2.5.5",
+    "pybind11-stubgen==2.5.5",
     "pyyaml>=6.0.2",
     "wheel>=0.45.1",
 ]
