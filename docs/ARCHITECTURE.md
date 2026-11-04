@@ -68,6 +68,6 @@ for users, and delegate substantive work to lower packages.
 Subsystem-specific design belongs in focused documents so this overview remains
 stable:
 
-- [Caching](CACHING.md)
 - [Audio subtitle directories](AUDIO_SUBTITLES.md)
+- [Caching](CACHING.md)
 - [Prompt optimization and persistence](PROMPT_OPTIMIZATION.md)
