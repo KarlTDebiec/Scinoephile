@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Collection, Iterable
 from logging import getLogger
+from math import isfinite
 from os import PathLike, fspath
 from os.path import defpath, expanduser, expandvars
 from pathlib import Path, PurePosixPath, PureWindowsPath
@@ -117,6 +118,9 @@ def val_float(
     n_values: int | None = None,
     min_value: float | None = None,
     max_value: float | None = None,
+    min_exclusive: bool = False,
+    max_exclusive: bool = False,
+    finite: bool = False,
 ) -> float: ...
 
 
@@ -127,6 +131,9 @@ def val_float(
     n_values: int | None = None,
     min_value: float | None = None,
     max_value: float | None = None,
+    min_exclusive: bool = False,
+    max_exclusive: bool = False,
+    finite: bool = False,
 ) -> list[float]: ...
 
 
@@ -136,23 +143,34 @@ def val_float(
     n_values: int | None = None,
     min_value: float | None = None,
     max_value: float | None = None,
+    min_exclusive: bool = False,
+    max_exclusive: bool = False,
+    finite: bool = False,
 ) -> float | list[float]:
     """Validate one or more floats.
 
     Arguments:
-        value: Single value or iterable of values to validate
-        n_values: Number of values expected, if applicable
-        min_value: Minimum value of float, if applicable
-        max_value: Maximum value of float, if applicable
+        value: single value or iterable of values to validate
+        n_values: number of values expected, if applicable
+        min_value: minimum value of float, if applicable
+        max_value: maximum value of float, if applicable
+        min_exclusive: whether to exclude min_value; requires min_value
+        max_exclusive: whether to exclude max_value; requires max_value
+        finite: whether to reject NaN and infinities; defaults to False
     Returns:
-        Single float or list of floats depending on input
+        single float or list of floats depending on input
     Raises:
-        ArgumentConflictError: If min_value is greater than max_value
-        TypeError: If a value may not be cast to a float
-        ValueError: If a value is invalid or the list is the wrong length
+        ArgumentConflictError: if bounds conflict or an exclusive bound is missing
+        TypeError: if a value may not be cast to a float
+        ValueError: if a value is invalid or the list is the wrong length
     """
     if min_value is not None and max_value is not None and (min_value >= max_value):
         raise ArgumentConflictError("min_value must be less than max_value")
+
+    if min_exclusive and min_value is None:
+        raise ArgumentConflictError("min_exclusive requires min_value")
+    if max_exclusive and max_value is None:
+        raise ArgumentConflictError("max_exclusive requires max_value")
 
     def _val_float(value_to_validate: Any) -> float:
         """Validate a single value as a float.
@@ -172,6 +190,14 @@ def val_float(
                 f"{value_to_validate} is of type "
                 f"{type(value_to_validate)}, cannot be cast to float"
             ) from exc
+        if finite and not isfinite(validated_value):
+            raise ValueError(f"{validated_value} must be finite")
+        if min_exclusive and validated_value == min_value:
+            raise ValueError(
+                f"{validated_value} must be greater than minimum {min_value}"
+            )
+        if max_exclusive and validated_value == max_value:
+            raise ValueError(f"{validated_value} must be less than maximum {max_value}")
         if min_value is not None and validated_value < min_value:
             raise ValueError(
                 f"{validated_value} is less than minimum value of {min_value}"
