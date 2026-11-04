@@ -9,7 +9,9 @@ Load optional dependencies through `core.dependencies.web` and construct apps wi
   does not authorize arbitrary Host headers; select a concrete host for access
   through a different address or hostname.
 - Send the session's `csrf_token` in every mutation form, or use the
-  `X-CSRF-Token` header. Reject foreign origins and cross-site mutation requests.
+  `X-CSRF-Token` header. Reject explicit foreign origins and cross-site requests
+  for every method, including GET routes that scan and persist validation results.
+  Allow initial browser navigation without origin or fetch-context headers.
 - Preserve ordinary POST form actions alongside HTMX attributes. Return the full
   document, or redirect to it, after submissions without HTMX.
 - Serve scripts locally with deferred loading. Keep session responses uncached and
