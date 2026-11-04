@@ -9,12 +9,6 @@ Scinoephile is a package for working with Chinese/English bilingual subtitles, w
 focus on combining separate Chinese and English subtitles into synchronized bilingual
 subtitles.
 
-## Installation
-
-Use Python 3.14 and uv. Optional OCR extras build Paddle from source; follow
-the [Paddle source-build guide](docs/PADDLE_SOURCE.md) for CPU and Windows CUDA
-setup.
-
 ## Notices
 
 Third-party license and data-source acknowledgements are listed in

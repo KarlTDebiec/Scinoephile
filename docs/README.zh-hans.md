@@ -6,8 +6,3 @@
 [English](/README.md) | [繁體中文](/docs/README.zh-hant.md) | [简体中文](/docs/README.zh-hans.md) | [繁體粵文](/docs/README.yue-hant.md) | [简体粤文](/docs/README.yue-hans.md)
 
 Scinoephile 是一个用于处理中英文双语字幕的套件，重点在于将分开的中文和英文字幕合并为同步的双语字幕。
-
-## 安装
-
-使用 Python 3.14 和 uv。OCR 需要从源码编译 Paddle；CPU 和 Windows CUDA 环境的配置请参阅
-[Paddle 源码编译指南](PADDLE_SOURCE.md)。
