@@ -9,6 +9,7 @@ from collections.abc import Generator
 from contextlib import contextmanager
 from errno import EACCES, EAGAIN, EDEADLK
 from logging import getLogger
+from math import isfinite
 from os import fsync, remove
 from pathlib import Path
 from shutil import move, rmtree
@@ -46,8 +47,10 @@ def file_lock(  # noqa: PLR0912
     Raises:
         BlockingIOError: if another writer holds the lock beyond the timeout
         OSError: if opening, locking, or unlocking the file fails
-        ValueError: if timeout is negative
+        ValueError: if timeout is negative or nonfinite
     """
+    if not isfinite(timeout):
+        raise ValueError("File lock timeout must be finite.")
     if timeout < 0:
         raise ValueError("File lock timeout must not be negative.")
     file_path.parent.mkdir(parents=True, exist_ok=True)
