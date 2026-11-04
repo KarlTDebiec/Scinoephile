@@ -3,8 +3,13 @@
 Review [docs/STYLE.md](/docs/STYLE.md) and
 [docs/DOCUMENTATION.md](/docs/DOCUMENTATION.md) before planning or coding.
 
+Review [docs/CONTRIBUTING.md](/docs/CONTRIBUTING.md) before creating or editing
+issues and pull requests.
+
 ## Code
 
+* Do not retain compatibility shims when moving or renaming project code. Update
+  callers and remove former import paths, aliases, and forwarding modules.
 * Review [docs/ARCHITECTURE.md](/docs/ARCHITECTURE.md) for package boundaries,
   dependency direction, and how the CLI maps onto `core` and domain modules.
 * Review [docs/STYLE.md](/docs/STYLE.md) for code style conventions (typing,
