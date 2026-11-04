@@ -4,8 +4,13 @@
 
 from __future__ import annotations
 
+import ctypes
 import os
+import signal
 import sys
+from collections.abc import Generator
+from contextlib import contextmanager
+from ctypes import wintypes
 from pathlib import Path
 from subprocess import Popen, TimeoutExpired
 from threading import enumerate as enumerate_threads
@@ -175,58 +180,53 @@ def test_timeout_cleans_up_inherited_pipes(
         monkeypatch.setattr(
             subprocess_module, "_terminate_process_tree", kill_direct_child
         )
-    heartbeat_path = tmp_path / "heartbeat.txt"
-    descendant_code = (
-        "import sys, time\nfrom pathlib import Path\n"
-        "print('descendant output', flush=True)\n"
-        "print('descendant error', file=sys.stderr, flush=True)\n"
-        f"heartbeat = Path({str(heartbeat_path)!r})\n"
-        "heartbeat.write_text('0')\n"
-        "for i in range(1, 61):\n"
-        " heartbeat.write_text(str(i))\n time.sleep(0.05)\n"
-    )
-    parent_code = (
-        "import subprocess, sys, time\nfrom pathlib import Path\n"
-        f"subprocess.Popen([sys.executable, '-S', '-c', {descendant_code!r}])\n"
-        f"heartbeat = Path({str(heartbeat_path)!r})\n"
-        "while not heartbeat.exists():\n    time.sleep(0.01)\n"
-        "print('parent ready', flush=True)\n"
-    )
-    if not parent_exits:
-        parent_code += "time.sleep(10)"
-    # Keep interpreter site initialization outside this short cleanup regression
-    command = [sys.executable, "-S", "-c", parent_code]
-    start_time = monotonic()
-    if live:
-        with raises(TimeoutExpired) as exc:
-            run_command_live(command, timeout=1.0)
-        stdout = exc.value.output
-        stderr = exc.value.stderr
-    else:
-        exitcode, stdout, stderr = run_command(
-            command, timeout=1.0, acceptable_exitcodes=[0, -9, 1]
-        )
-        if parent_exits:
-            assert exitcode == 0
+    with _inherited_pipe_command(tmp_path, parent_exits) as (
+        command,
+        heartbeat_path,
+        ready_path,
+    ):
+        # Allow both interpreters to reach readiness under parallel load
+        timeout = 5.0
+        start_time = monotonic()
+        if live:
+            with raises(TimeoutExpired) as exc:
+                run_command_live(command, timeout=timeout)
+            stdout = exc.value.output
+            stderr = exc.value.stderr
         else:
-            assert exitcode != 0
-    assert monotonic() - start_time < 2.0
-    assert isinstance(stdout, str)
-    assert isinstance(stderr, str)
-    assert "parent ready" in stdout
-    assert "descendant output" in stdout
-    assert "descendant error" in stderr
-    assert heartbeat_path.exists()
-    assert not any(
-        thread.name.startswith("scinoephile-reader-") for thread in enumerate_threads()
-    )
-    sleep(0.1)
-    heartbeat = heartbeat_path.read_text()
-    sleep(0.2)
-    if kill_tree:
-        assert heartbeat_path.read_text() == heartbeat
-    else:
-        assert heartbeat_path.read_text() != heartbeat
+            exitcode, stdout, stderr = run_command(
+                command, timeout=timeout, acceptable_exitcodes=[0, -9, 1]
+            )
+            if parent_exits:
+                assert exitcode == 0, f"stdout={stdout!r}; stderr={stderr!r}"
+            else:
+                assert exitcode != 0
+        elapsed = monotonic() - start_time
+        diagnostic = f"elapsed={elapsed:.3f}; stdout={stdout!r}; stderr={stderr!r}"
+        assert timeout <= elapsed < timeout + 2.0, diagnostic
+        assert isinstance(stdout, str)
+        assert isinstance(stderr, str)
+        assert ready_path.exists(), diagnostic
+        assert "parent ready" in stdout, diagnostic
+        assert "descendant output" in stdout, diagnostic
+        assert "descendant error" in stderr, diagnostic
+        assert heartbeat_path.exists(), diagnostic
+        assert not any(
+            thread.name.startswith("scinoephile-reader-")
+            for thread in enumerate_threads()
+        )
+        heartbeat = heartbeat_path.read_text()
+        if kill_tree:
+            sleep(0.2)
+            assert heartbeat_path.read_text() == heartbeat
+        else:
+            heartbeat_deadline = monotonic() + 2.0
+            while (
+                heartbeat_path.read_text() == heartbeat
+                and monotonic() < heartbeat_deadline
+            ):
+                sleep(0.05)
+            assert heartbeat_path.read_text() != heartbeat
 
 
 @parametrize("live", [False, True])
@@ -248,3 +248,91 @@ def test_capture_preserves_complete_output(live: bool):
     assert exitcode == 0
     assert stdout == "x" * 131072
     assert stderr == "y" * 131072
+
+
+@contextmanager
+def _inherited_pipe_command(
+    tmp_path: Path, parent_exits: bool
+) -> Generator[tuple[list[str], Path, Path]]:
+    """Build an inherited-pipe command and always clean up its owned descendant.
+
+    Arguments:
+        tmp_path: directory containing only this command's control files
+        parent_exits: whether the direct child exits after its descendant is ready
+    Yields:
+        command, descendant heartbeat path, and direct-child readiness path
+    """
+    heartbeat_path = tmp_path / "heartbeat.txt"
+    pid_path = tmp_path / "descendant.pid"
+    ready_path = tmp_path / "parent.ready"
+    stop_path = tmp_path / "stop"
+    descendant_code = (
+        "import sys, time\nfrom pathlib import Path\n"
+        "print('descendant output', flush=True)\n"
+        "print('descendant error', file=sys.stderr, flush=True)\n"
+        f"heartbeat = Path({str(heartbeat_path)!r})\n"
+        f"stop = Path({str(stop_path)!r})\n"
+        "with heartbeat.open('a') as output:\n"
+        " for i in range(1200):\n"
+        "  if stop.exists():\n   break\n"
+        "  output.write(str(i) + '\\n')\n  output.flush()\n  time.sleep(0.05)\n"
+    )
+    parent_code = (
+        "import subprocess, sys, time\nfrom pathlib import Path\n"
+        "descendant = subprocess.Popen("
+        f"[sys.executable, '-S', '-c', {descendant_code!r}])\n"
+        f"Path({str(pid_path)!r}).write_text(str(descendant.pid))\n"
+        f"heartbeat = Path({str(heartbeat_path)!r})\n"
+        "while not heartbeat.exists():\n    time.sleep(0.01)\n"
+        "print('parent ready', flush=True)\n"
+        f"Path({str(ready_path)!r}).write_text('ready')\n"
+    )
+    if not parent_exits:
+        parent_code += "time.sleep(60)"
+    try:
+        yield [sys.executable, "-S", "-c", parent_code], heartbeat_path, ready_path
+    finally:
+        stop_path.touch()
+        if pid_path.exists():
+            _terminate_test_descendant(int(pid_path.read_text()))
+
+
+def _terminate_test_descendant(pid: int):
+    """Terminate the fixture's owned descendant even if an assertion fails.
+
+    Arguments:
+        pid: descendant process ID recorded by the command fixture
+    Raises:
+        OSError: if an existing Windows descendant cannot be opened or terminated
+    """
+    if os.name != "nt":
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        return
+
+    api = ctypes.WinDLL("kernel32", use_last_error=True)
+    api.OpenProcess.restype = wintypes.HANDLE
+    api.OpenProcess.argtypes = (wintypes.DWORD, wintypes.BOOL, wintypes.DWORD)
+    api.TerminateProcess.restype = wintypes.BOOL
+    api.TerminateProcess.argtypes = (wintypes.HANDLE, wintypes.UINT)
+    api.WaitForSingleObject.restype = wintypes.DWORD
+    api.WaitForSingleObject.argtypes = (wintypes.HANDLE, wintypes.DWORD)
+    api.CloseHandle.restype = wintypes.BOOL
+    api.CloseHandle.argtypes = (wintypes.HANDLE,)
+    handle = api.OpenProcess(0x00100001, False, pid)
+    if not handle:
+        error = ctypes.get_last_error()
+        if error != 87:
+            raise ctypes.WinError(error)
+        return
+    try:
+        if api.WaitForSingleObject(handle, 0) == 258:
+            if not api.TerminateProcess(handle, 1):
+                error = ctypes.get_last_error()
+                if api.WaitForSingleObject(handle, 1000) != 0:
+                    raise ctypes.WinError(error)
+        assert api.WaitForSingleObject(handle, 5000) == 0
+    finally:
+        api.CloseHandle(handle)
