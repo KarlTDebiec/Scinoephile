@@ -102,7 +102,7 @@ def test_get_cached_subtitle_stream_path_includes_cache_version(
     cache = SubtitleCache(tmp_path / "cache")
     first_cache_path = cache.get_path(infile_path, stream)
 
-    monkeypatch.setattr("scinoephile.media.subtitles.cache._CACHE_VERSION", 2)
+    monkeypatch.setattr("scinoephile.media.subtitles.cache._CACHE_VERSION", 3)
 
     assert cache.get_path(infile_path, stream) != first_cache_path
 

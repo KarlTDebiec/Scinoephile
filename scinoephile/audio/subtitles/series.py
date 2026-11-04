@@ -318,7 +318,7 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
 
     @override
     def _copy_with_events(self, events: Sequence[Subtitle]) -> Self:
-        """Copy this audio series with a selected collection of events.
+        """Copy selected events with audio spanning their complete timing envelope.
 
         Arguments:
             events: events to include in the copied series
@@ -334,9 +334,10 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
             audio_events.append(deepcopy(event))
 
         if events:
-            start = events[0].start
+            start = min(event.start for event in events)
+            end = max(event.end for event in events)
             audio = self.audio[
-                start - self._audio_start_ms : events[-1].end - self._audio_start_ms
+                start - self._audio_start_ms : end - self._audio_start_ms
             ]
         else:
             start = self._audio_start_ms
