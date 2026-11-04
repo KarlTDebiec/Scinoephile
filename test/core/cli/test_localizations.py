@@ -10,7 +10,7 @@ from unittest.mock import patch
 from pytest import MonkeyPatch
 
 from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS
-from scinoephile.common.command_line_interface import CommandLineInterface
+from scinoephile.common.cli.command_line_interface import CommandLineInterface
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.cli.scinoephile_cli_base import ScinoephileCliBase
 from test.helpers import parametrize

@@ -1,9 +1,217 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Reusable command-line interface base class."""
+"""ABC for command-line interfaces."""
 
 from __future__ import annotations
 
-from scinoephile.common.command_line_interface import CommandLineInterface
+import re
+from abc import ABC, abstractmethod
+from argparse import (
+    SUPPRESS,
+    Action,
+    ArgumentParser,
+    Namespace,
+    RawDescriptionHelpFormatter,
+    _SubParsersAction,  # noqa pylint
+)
+from collections.abc import Sequence
+from datetime import datetime
+from inspect import cleandoc
+from logging import FileHandler, Formatter, getLogger
+from pathlib import Path
+from sys import argv
+from typing import Any
+
+from scinoephile.common.logs import DEFAULT_LOG_FORMAT, configure_logging
 
 __all__ = ["CommandLineInterface"]
+
+logger = getLogger(__name__)
+
+
+class _VerbosityAction(Action):
+    """Count verbosity from warnings even when a child suppresses its default."""
+
+    def __call__(
+        self,
+        parser: ArgumentParser,
+        namespace: Namespace,
+        values: object,
+        option_string: str | None = None,
+    ):
+        """Increase verbosity for one occurrence of the option.
+
+        Arguments:
+            parser: active parser
+            namespace: parsed arguments
+            values: unused value for this zero-argument option
+            option_string: option used to invoke the action
+        """
+        setattr(namespace, self.dest, getattr(namespace, self.dest, 1) + 1)
+
+
+class CommandLineInterface(ABC):
+    """ABC for command-line interfaces."""
+
+    @classmethod
+    def add_arguments_to_argparser(cls, parser: ArgumentParser):
+        """Add arguments to a nascent argument parser.
+
+        Arguments:
+            parser: Nascent argument parser
+        """
+        verbosity = parser.add_mutually_exclusive_group()
+        verbosity.add_argument(
+            "-v",
+            "--verbose",
+            action=_VerbosityAction,
+            nargs=0,
+            default=1,
+            dest="verbosity",
+            help=(
+                "increase console verbosity; use -v for info and -vv for debug "
+                "(default: warnings and errors)"
+            ),
+        )
+        verbosity.add_argument(
+            "-q",
+            "--quiet",
+            action="store_const",
+            const=0,
+            dest="verbosity",
+            help="show only errors",
+        )
+
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        parser.add_argument(
+            "-l",
+            "--log-file",
+            nargs="?",
+            const=f"{cls.name()}.{timestamp}.log",
+            required=False,
+            type=str,
+            help=(
+                "write logs to an optional path; without a value, use "
+                "<command>.YYYY-MM-DD_hh-mm-ss.log in the current directory"
+            ),
+        )
+        for action_group in parser._action_groups:  # noqa: SLF001
+            if action_group.title in {"optional arguments", "options"}:
+                action_group.title = "additional arguments"
+
+    @classmethod
+    def argparser(
+        cls, *, subparsers: _SubParsersAction | None = None
+    ) -> ArgumentParser:
+        """Construct argument parser.
+
+        Child logging defaults preserve parent values. Explicit child options override
+        parent values, and verbosity counts restart at each command level.
+
+        Arguments:
+            subparsers: Subparsers group to which a new subparser will be added; if
+              None, a new ArgumentParser will be created
+        Returns:
+            Argument parser
+        """
+        if not subparsers:
+            parser = ArgumentParser(
+                description=str(cls.description()),
+                formatter_class=RawDescriptionHelpFormatter,
+            )
+        else:
+            parser = subparsers.add_parser(
+                name=cls.name(),
+                description=cls.description(),
+                help=cls.help(),
+                formatter_class=RawDescriptionHelpFormatter,
+            )
+
+        cls.add_arguments_to_argparser(parser)
+        if subparsers is not None:
+            default_placeholder = "%(default)s"
+            for action in parser._actions:  # noqa: SLF001
+                if action.dest in {"verbosity", "log_file"}:
+                    if isinstance(action.help, str):
+                        action.help = action.help.replace(
+                            default_placeholder, str(action.default)
+                        )
+                    action.default = SUPPRESS
+
+        return parser
+
+    @classmethod
+    def description(cls) -> str:
+        """Get the long description displayed below usage.
+
+        Returns:
+            long tool description
+        """
+        return cleandoc(cls.__doc__) if cls.__doc__ else ""
+
+    @classmethod
+    def help(cls) -> str:
+        """Get the short description used when this tool is a subparser.
+
+        Returns:
+            short tool description
+        """
+        text = re.split(r"\.\s+", str(cls.description()))[0].rstrip(".")
+        return text[0].lower() + text[1:]
+
+    @classmethod
+    def main(cls, arguments: Sequence[str] | None = None):
+        """Execute from command line.
+
+        Arguments:
+            arguments: explicit tokens, or process arguments when omitted
+        """
+        parser = cls.argparser()
+        kwargs = vars(parser.parse_args(arguments))
+
+        # Configure logging
+        verbosity = kwargs.pop("verbosity", 1)
+        configure_logging(verbosity)
+
+        # File logging
+        log_file = kwargs.pop("log_file")
+        if log_file:
+            log_file_path = Path(log_file).resolve()
+            file_handler = FileHandler(log_file_path, encoding="utf-8")
+            file_handler.setLevel(getLogger().level)
+            formatter = Formatter(DEFAULT_LOG_FORMAT)
+            file_handler.setFormatter(formatter)
+            getLogger().addHandler(file_handler)
+            logger.info(f"Logging to {log_file_path} at level {getLogger().level}")
+
+        cls._main(**kwargs)
+
+    @classmethod
+    def name(cls) -> str:
+        """Get the name used to define this tool as a subparser.
+
+        Returns:
+            subparser name
+        """
+        name = cls.__name__
+        if name.endswith("Cli"):
+            name = name[:-3]
+        return name.lower()
+
+    @staticmethod
+    def log_command_line():
+        """Log the command line with which the script was run."""
+        args = argv[:]
+        command_line = " ".join(args)
+        logger.info(f"Run with command line: {command_line}")
+
+    @classmethod
+    @abstractmethod
+    def _main(cls, *args: Any, **kwargs: Any):
+        """Execute with provided command-line arguments.
+
+        Arguments:
+            *args: positional command-line arguments
+            **kwargs: parsed command-line arguments
+        """
+        raise NotImplementedError()

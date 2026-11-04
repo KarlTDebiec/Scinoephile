@@ -12,7 +12,7 @@ from platform import system
 from shlex import split
 from unittest.mock import patch
 
-from .command_line_interface import CommandLineInterface
+from .cli.command_line_interface import CommandLineInterface
 
 __all__ = ["echo_command", "run_cli_with_args"]
 
