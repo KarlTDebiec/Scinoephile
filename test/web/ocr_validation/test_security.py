@@ -120,6 +120,62 @@ def test_untrusted_hosts_are_rejected(app: Flask, host: str):
         assert response.status_code == 400
 
 
+@parametrize("endpoint", ["/", "/subtitles/0/validation.png"])
+@parametrize(
+    "headers",
+    [
+        {"Origin": "https://attacker.example"},
+        {"Origin": "null"},
+        {"Origin": "http://localhost:12345"},
+        {"Sec-Fetch-Site": "cross-site"},
+    ],
+)
+def test_foreign_gets_cannot_persist_validation_results(
+    tmp_path: Path, monkeypatch: MonkeyPatch, endpoint: str, headers: dict[str, str]
+):
+    """Reject foreign GETs before automatic gap scanning can rewrite authored text.
+
+    Arguments:
+        tmp_path: temporary directory for authored and validation data
+        monkeypatch: fixture selecting deterministic character boxes
+        endpoint: document or image route that scans subtitle validation state
+        headers: foreign origin or browser fetch context
+    """
+    image_dir_path = make_ocr_html_dir(tmp_path, text="AB")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(20, 30, 0, 20)])
+    session = prepared_gap_session(image_dir_path, tmp_path)
+    client = create_app(session).test_client()
+    index_path = image_dir_path / "index.html"
+    original = index_path.read_bytes()
+
+    response = client.get(endpoint, headers=headers)
+
+    assert response.status_code == 403
+    assert index_path.read_bytes() == original
+    assert session.series.events[0].text == "AB"
+    assert not (tmp_path / "validation-data").exists()
+    allowed = client.get(endpoint, headers={"Origin": "http://localhost"})
+    assert allowed.status_code == 200
+    assert index_path.read_bytes() != original
+    assert session.series.events[0].text.replace(" ", "") == "AB"
+    assert " " in session.series.events[0].text
+
+
+@parametrize(
+    "headers", [{}, {"Origin": "http://localhost"}, {"Sec-Fetch-Site": "same-origin"}]
+)
+def test_local_asset_gets_remain_accessible(app: Flask, headers: dict[str, str]):
+    """Allow headerless navigation and same-origin requests for bundled assets.
+
+    Arguments:
+        app: real OCR validation app
+        headers: initial navigation or same-origin browser headers
+    """
+    assert (
+        app.test_client().get("/static/htmx.min.js", headers=headers).status_code == 200
+    )
+
+
 @parametrize(
     ("host", "base_url"),
     [

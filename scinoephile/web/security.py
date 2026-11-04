@@ -54,14 +54,14 @@ def create_local_app(
 
     @app.before_request
     def protect_local_requests():
-        """Reject foreign mutation origins and require the session's CSRF token."""
+        """Reject foreign requests and require the session's mutation token."""
         request = flask.request
+        origin = request.headers.get("Origin")
+        if origin and origin != request.host_url.rstrip("/"):
+            flask.abort(403)
+        if request.headers.get("Sec-Fetch-Site") == "cross-site":
+            flask.abort(403)
         if request.method not in {"GET", "HEAD", "OPTIONS"}:
-            origin = request.headers.get("Origin")
-            if origin and origin != request.host_url.rstrip("/"):
-                flask.abort(403)
-            if request.headers.get("Sec-Fetch-Site") == "cross-site":
-                flask.abort(403)
             expected = flask.session.get("csrf_token", "")
             supplied = request.headers.get("X-CSRF-Token") or request.form.get(
                 "csrf_token", ""
