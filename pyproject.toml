@@ -20,7 +20,8 @@ dependencies = [
     "hkscs-unicode-converter>=1.1.0",
     "jieba>=0.42.1",
     "numba>=0.67.0",
-    "numpy>=2.5.2",
+    # NumPy 2.1 is the first release supporting Python 3.13
+    "numpy>=2.1",
     "openai>=2.53.0",
     "opencc>=1.4.1",
     "pillow>=12.3.0",
@@ -170,7 +171,6 @@ scinoephile = [
 
 [tool.uv]
 override-dependencies = [
-    "numpy>=2.5.2",
     "torch>=2.13.0",
     "torchaudio>=2.11.0",
     "transformers>=5.15.0",

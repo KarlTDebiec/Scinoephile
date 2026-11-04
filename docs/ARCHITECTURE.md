@@ -70,4 +70,5 @@ stable:
 
 - [Caching](CACHING.md)
 - [Audio subtitle directories](AUDIO_SUBTITLES.md)
+- [Dependency compatibility](DEPENDENCIES.md)
 - [Prompt optimization and persistence](PROMPT_OPTIMIZATION.md)
