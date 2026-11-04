@@ -64,6 +64,12 @@ class FloatValidatorKwargs(TypedDict, total=False):
     """minimum allowed value."""
     max_value: float | None
     """maximum allowed value."""
+    min_exclusive: bool
+    """whether to exclude the minimum; requires min_value."""
+    max_exclusive: bool
+    """whether to exclude the maximum; requires max_value."""
+    finite: bool
+    """whether to reject NaN and infinities."""
 
 
 class IntValidatorKwargs(TypedDict, total=False):
