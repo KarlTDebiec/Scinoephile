@@ -153,7 +153,7 @@ def test_default_model_loads_from_pinned_snapshot(monkeypatch: MonkeyPatch):
         WHISPER_LARGE_V3_CANTONESE_MODEL.name, WHISPER_LARGE_V3_CANTONESE_MODEL.revision
     )
     whisper_timestamped.load_model.assert_called_once_with(
-        "/cached/snapshot", device="cpu"
+        str(Path("/cached/snapshot")), device="cpu"
     )
 
 
@@ -186,8 +186,8 @@ def test_model_retries_with_complete_snapshot_after_missing_cached_file(
 
     assert model.model is loaded_model
     assert load_model.call_args_list == [
-        call("/cached/snapshot", device="cpu"),
-        call("/downloaded/snapshot", device="cpu"),
+        call(str(Path("/cached/snapshot")), device="cpu"),
+        call(str(Path("/downloaded/snapshot")), device="cpu"),
     ]
     snapshot_download.assert_called_once_with(
         repo_id=_CUSTOM_MODEL.name, revision=_CUSTOM_MODEL.revision
