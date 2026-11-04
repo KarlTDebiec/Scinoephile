@@ -101,7 +101,10 @@ class VoiceActivityCache:
 
         expected_cache_identity = self._get_cache_identity(audio, cache_identity)
         try:
-            with np.load(cache_path, allow_pickle=False) as payload:
+            with (
+                cache_path.open("rb") as cache_file,
+                np.load(cache_file, allow_pickle=False) as payload,
+            ):
                 raw_cache_identity = payload["cache_identity"].item()
                 if not isinstance(raw_cache_identity, str):
                     raise ValueError("cache identity must be serialized text")
