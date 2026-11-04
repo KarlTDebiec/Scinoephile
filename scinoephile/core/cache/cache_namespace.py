@@ -41,6 +41,7 @@ class CacheNamespace(StrEnum):
             for child_path in parent_dir_path.iterdir()
             if child_path.is_dir()
             and not child_path.is_symlink()
+            and not child_path.is_junction()
             and _is_portable_child_name(child_path.name)
         )
 
@@ -56,16 +57,16 @@ class CacheNamespace(StrEnum):
             validated cache namespace directory path
         Raises:
             NotADirectoryError: if the namespace path is not a directory
-            ValueError: if an existing namespace ancestor is a symbolic link
+            ValueError: if an existing namespace ancestor is a symbolic link or junction
         """
         namespace_path = PurePosixPath(self.get_name(operation=operation))
         namespace_dir_path = cache_root_path
         for part in namespace_path.parts:
             namespace_dir_path /= part
-            if namespace_dir_path.is_symlink():
+            if namespace_dir_path.is_symlink() or namespace_dir_path.is_junction():
                 raise ValueError(
                     f"Cache namespace {self.name} traverses symbolic link "
-                    f"{namespace_dir_path}"
+                    f"or junction {namespace_dir_path}"
                 )
         return val_output_dir_path(namespace_dir_path)
 
@@ -130,20 +131,20 @@ def _get_namespace_template_path(value: str) -> PurePosixPath:
 def _is_discoverable_dir_path(
     cache_root_path: Path, relative_dir_path: PurePosixPath
 ) -> bool:
-    """Check whether a cache directory exists without traversing symlinks.
+    """Check whether a cache directory exists without traversing filesystem links.
 
     Arguments:
         cache_root_path: cache root directory path
         relative_dir_path: portable directory path relative to the cache root
     Returns:
-        whether the directory exists without symlinked namespace ancestors
+        whether the directory exists without linked namespace ancestors
     """
     dir_path = cache_root_path
     if not dir_path.is_dir():
         return False
     for part in relative_dir_path.parts:
         dir_path /= part
-        if dir_path.is_symlink() or not dir_path.is_dir():
+        if dir_path.is_symlink() or dir_path.is_junction() or not dir_path.is_dir():
             return False
     return True
 

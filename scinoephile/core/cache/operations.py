@@ -177,7 +177,11 @@ def _build_cache_entry(
         size_bytes=size_bytes,
         file_count=file_count,
         modified_at=modified_at,
-        is_dir=entry_path.is_dir() and not entry_path.is_symlink(),
+        is_dir=(
+            entry_path.is_dir()
+            and not entry_path.is_symlink()
+            and not entry_path.is_junction()
+        ),
     )
 
 
@@ -211,6 +215,7 @@ def _clear_registered_cache_entries(
     if dry_run:
         return entries
     for entry in entries:
+        _get_namespace_dir_path(cache_root_path, entry.namespace)
         remove_cache_artifact(entry.path)
 
     # Preserve nested namespaces that were not selected for clearing
@@ -229,6 +234,7 @@ def _clear_registered_cache_entries(
             if (
                 namespace_dir_path.is_dir()
                 and not namespace_dir_path.is_symlink()
+                and not namespace_dir_path.is_junction()
                 and not any(namespace_dir_path.iterdir())
             ):
                 removable_namespace_names.append(namespace_name)
@@ -253,6 +259,7 @@ def _clear_registered_cache_entries(
                 parent_dir_path != cache_root_path
                 and parent_dir_path.is_dir()
                 and not parent_dir_path.is_symlink()
+                and not parent_dir_path.is_junction()
                 and not any(parent_dir_path.iterdir())
             ):
                 parent_dir_path.rmdir()
@@ -339,8 +346,18 @@ def _get_namespace_dir_path(cache_root_path: Path, namespace_name: str) -> Path:
         namespace_name: portable cache namespace name
     Returns:
         cache namespace directory path
+    Raises:
+        ValueError: if the namespace traverses a symbolic link or junction
     """
-    return cache_root_path.joinpath(*PurePosixPath(namespace_name).parts)
+    namespace_dir_path = cache_root_path
+    for part in PurePosixPath(namespace_name).parts:
+        namespace_dir_path /= part
+        if namespace_dir_path.is_symlink() or namespace_dir_path.is_junction():
+            raise ValueError(
+                f"Cache namespace {namespace_name!r} traverses symbolic link "
+                f"or junction {namespace_dir_path}"
+            )
+    return namespace_dir_path
 
 
 def _get_namespace_names(
@@ -364,24 +381,29 @@ def _get_namespace_names(
 
 
 def _measure_path(entry_path: Path) -> tuple[int, int, datetime]:
-    """Measure a cache entry without following symlinked directories.
+    """Measure a cache entry without following symbolic links or junctions.
 
     Arguments:
         entry_path: path to measure
     Returns:
         size, file count, and newest modification time
     """
-    stat = entry_path.lstat()
-    is_directory = entry_path.is_dir() and not entry_path.is_symlink()
-    size_bytes = 0 if is_directory else stat.st_size
-    file_count = 0 if is_directory else 1
-    modified_at = datetime.fromtimestamp(stat.st_mtime).astimezone()
-    if is_directory:
-        for child_path in entry_path.rglob("*"):
-            child_stat = child_path.lstat()
-            if not child_path.is_dir() or child_path.is_symlink():
-                size_bytes += child_stat.st_size
-                file_count += 1
-            child_modified_at = datetime.fromtimestamp(child_stat.st_mtime).astimezone()
-            modified_at = max(modified_at, child_modified_at)
+    size_bytes = 0
+    file_count = 0
+    modified_at = datetime.fromtimestamp(entry_path.lstat().st_mtime).astimezone()
+    pending_paths = [entry_path]
+    while pending_paths:
+        child_path = pending_paths.pop()
+        child_stat = child_path.lstat()
+        if (
+            child_path.is_dir()
+            and not child_path.is_symlink()
+            and not child_path.is_junction()
+        ):
+            pending_paths.extend(child_path.iterdir())
+        else:
+            size_bytes += child_stat.st_size
+            file_count += 1
+        child_modified_at = datetime.fromtimestamp(child_stat.st_mtime).astimezone()
+        modified_at = max(modified_at, child_modified_at)
     return size_bytes, file_count, modified_at
