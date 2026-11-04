@@ -10,7 +10,7 @@ from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
 
-from scinoephile.cli.helpers.io import read_series, write_series
+from scinoephile.cli.helpers.io import read_series, validate_series_output, write_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -225,6 +225,7 @@ class MultiStackCli(ScinoephileCliBase):
             parser.error("--top-infile and --bottom-infile may not both be '-'")
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
+        validate_series_output(parser, outfile_path, overwrite)
 
         # Read inputs
         top = read_series(parser, top_infile_path, allow_stdin=True)
