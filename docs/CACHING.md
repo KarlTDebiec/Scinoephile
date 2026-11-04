@@ -96,7 +96,10 @@ operation can be reused. Do not clear an entire namespace for overwrite.
 Writes should be atomic whenever practical. Stage them on the destination
 filesystem and replace the destination only after the new artifact is complete.
 Failed production or serialization must not leave a partial entry that can be
-mistaken for a hit. Recursive removal must not follow symbolic links.
+mistaken for a hit. Namespace paths below the selected cache root must not traverse
+symbolic links or Windows junctions. Inspection and recursive removal must not follow
+either kind of link; clearing removes linked entries themselves. The selected cache
+root may itself be a link to the intended cache storage.
 
 ## CLI and maintenance
 
