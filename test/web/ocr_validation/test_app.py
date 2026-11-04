@@ -77,7 +77,8 @@ def test_run_app_wraps_server_errors(monkeypatch: MonkeyPatch):
         "scinoephile.web.ocr_validation.app._port_is_in_use", lambda host, port: False
     )
     monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.app.create_app", lambda session: object()
+        "scinoephile.web.ocr_validation.app.create_app",
+        lambda session, *, host: object(),
     )
     monkeypatch.setattr(
         "werkzeug.serving.make_server",
@@ -183,7 +184,8 @@ def test_run_app_uses_available_port_when_requested_port_is_in_use(
         "scinoephile.web.ocr_validation.app._port_is_in_use", lambda host, port: True
     )
     monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.app.create_app", lambda session: FakeApp()
+        "scinoephile.web.ocr_validation.app.create_app",
+        lambda session, *, host: FakeApp(),
     )
     monkeypatch.setattr("werkzeug.serving.make_server", fake_make_server)
 
@@ -202,6 +204,7 @@ def test_web_package_imports_flask_only_when_needed():
             "-c",
             (
                 "import sys;"
+                f"sys.path.insert(0, {str(Path(__file__).resolve().parents[3])!r});"
                 "import scinoephile.web.ocr_validation;"
                 "raise SystemExit('flask' in sys.modules)"
             ),

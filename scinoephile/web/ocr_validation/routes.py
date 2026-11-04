@@ -89,29 +89,29 @@ def register_routes(app: FlaskApp):
         return _png_response(image)
 
     @app.post("/subtitles/<int:sub_idx>/text")
-    def update_text(sub_idx: int) -> str:
+    def update_text(sub_idx: int) -> str | FlaskResponse:
         """Update one subtitle's OCR text.
 
         Arguments:
             sub_idx: zero-based subtitle index
         Returns:
-            rendered updated subtitle row
+            updated row fragment or redirect back to the full document
         """
         session = _session()
         text = request.form.get(f"text-{sub_idx}")
         if text is None:
             text = request.form.get("text", "")
         row = session.update_text(sub_idx, text)
-        return _render_subtitle_row(session, row)
+        return _updated_subtitle_response(session, row)
 
     @app.post("/subtitles/<int:sub_idx>/concern/char")
-    def resolve_char(sub_idx: int) -> str:
+    def resolve_char(sub_idx: int) -> str | FlaskResponse:
         """Resolve one character bbox concern.
 
         Arguments:
             sub_idx: zero-based subtitle index
         Returns:
-            rendered updated subtitle row
+            updated row fragment or redirect back to the full document
         """
         session = _session()
         action = request.form.get("action")
@@ -124,23 +124,23 @@ def register_routes(app: FlaskApp):
         except ValueError:
             abort(400, "Invalid integer for n_bboxes.")
         row = session.resolve_char_concern(sub_idx, action=action, n_bboxes=n_bboxes)
-        return _render_subtitle_row(session, row)
+        return _updated_subtitle_response(session, row)
 
     @app.post("/subtitles/<int:sub_idx>/concern/gap")
-    def resolve_gap(sub_idx: int) -> str:
+    def resolve_gap(sub_idx: int) -> str | FlaskResponse:
         """Resolve one spacing concern.
 
         Arguments:
             sub_idx: zero-based subtitle index
         Returns:
-            rendered updated subtitle row
+            updated row fragment or redirect back to the full document
         """
         session = _session()
         action = request.form.get("action")
         if action is None:
             abort(400, "Missing action.")
         row = session.resolve_gap_concern(sub_idx, action=action)
-        return _render_subtitle_row(session, row)
+        return _updated_subtitle_response(session, row)
 
 
 def _handle_index_error(exc: IndexError) -> tuple[str, int]:
@@ -299,3 +299,19 @@ def _session() -> OcrValidationSession:
     if not isinstance(session, OcrValidationSession):
         raise TypeError("OCR validation session is not configured.")
     return session
+
+
+def _updated_subtitle_response(
+    session: OcrValidationSession, row: SubtitleRowView
+) -> str | FlaskResponse:
+    """Return an updated row for HTMX or restore the document after an ordinary form.
+
+    Arguments:
+        session: OCR validation session
+        row: updated subtitle row view model
+    Returns:
+        row fragment or redirect back to the full subtitle list
+    """
+    if request.headers.get("HX-Request") != "true":
+        return flask.redirect(flask.url_for("index", _anchor=f"sub-{row.number}"), 303)
+    return _render_subtitle_row(session, row)
