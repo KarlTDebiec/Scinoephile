@@ -18,6 +18,7 @@ from scinoephile.core.cache.operations import (
     get_cache_entries,
     get_cache_stats,
 )
+from test.helpers import create_symlink_or_skip
 from test.helpers.files import set_mtime, write_cache_file
 
 
@@ -285,7 +286,7 @@ def test_clear_cache_all_does_not_follow_root_symlinks(tmp_path: Path):
     cache_root_path.mkdir()
     target_path = write_cache_file(tmp_path / "target/data.json")
     link_path = cache_root_path / "linked"
-    link_path.symlink_to(target_path.parent, target_is_directory=True)
+    create_symlink_or_skip(link_path, target_path.parent, target_is_directory=True)
 
     clear_cache(cache_root_path, _CACHE_REGISTRY, entire_cache=True)
 
