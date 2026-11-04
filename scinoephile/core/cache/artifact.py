@@ -11,15 +11,17 @@ __all__ = ["remove_cache_artifact"]
 
 
 def remove_cache_artifact(artifact_path: Path) -> bool:
-    """Remove a cache artifact without following directory symbolic links.
+    """Remove a cache artifact without following directory symbolic links or junctions.
 
     Arguments:
-        artifact_path: cache file, directory, or symbolic link to remove
+        artifact_path: cache file, directory, symbolic link, or junction to remove
     Returns:
         whether an artifact was removed
     """
     try:
-        if artifact_path.is_dir() and not artifact_path.is_symlink():
+        if artifact_path.is_junction():
+            artifact_path.rmdir()
+        elif artifact_path.is_dir() and not artifact_path.is_symlink():
             rmtree(artifact_path)
         else:
             artifact_path.unlink()
