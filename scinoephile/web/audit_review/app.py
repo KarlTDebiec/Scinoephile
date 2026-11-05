@@ -9,13 +9,14 @@ from logging import getLogger
 from secrets import compare_digest, token_urlsafe
 from time import time
 from typing import TYPE_CHECKING
-from urllib.parse import urlencode, urlsplit
+from urllib.parse import urlencode
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
 from scinoephile.core.llms import ReasoningEffort
 from scinoephile.llms.providers.registry import get_provider_names
+from scinoephile.web.security import create_local_app
 
 from .auditing import AuditingJob
 from .proofreading import ProofreadingJob
@@ -40,11 +41,7 @@ def create_app(audit: AuditSession) -> FlaskApp:
         local Flask application
     """
     flask = import_flask()
-    app = flask.Flask(
-        __name__,
-        static_folder=str(package_root / "web/static"),
-        template_folder=str(package_root / "web/audit_review/templates"),
-    )
+    app = create_local_app(__name__, package_root / "web/static", require_htmx=False)
     app.register_blueprint(
         flask.Blueprint(
             "audit_review_assets",
@@ -58,7 +55,6 @@ def create_app(audit: AuditSession) -> FlaskApp:
         SESSION_COOKIE_SAMESITE="Strict",
         MAX_CONTENT_LENGTH=100_000,
     )
-    app.json.ensure_ascii = False
 
     _register_operation_routes(app, audit)
 
@@ -162,9 +158,11 @@ def create_app(audit: AuditSession) -> FlaskApp:
         Returns:
             UTF-8 audit progress download
         """
-        response = flask.jsonify(
-            {"title": audit.title, "rows": [asdict(row) for row in audit.rows()]}
+        body = app.json.dumps(
+            {"title": audit.title, "rows": [asdict(row) for row in audit.rows()]},
+            ensure_ascii=False,
         )
+        response = flask.Response(body, mimetype="application/json")
         response.headers["Content-Disposition"] = (
             'attachment; filename="audit-progress.json"'
         )
@@ -286,22 +284,6 @@ def _parse_filters(values: Mapping[str, str]) -> AuditFilters:
     )
 
 
-def _protect_local_forms():
-    """Reject untrusted Host, cross-origin writes, and stale CSRF tokens."""
-    flask = import_flask()
-    host = urlsplit(flask.request.host_url).hostname
-    if host not in {"127.0.0.1", "localhost", "::1"}:
-        flask.abort(403)
-    if flask.request.method == "POST":
-        origin = flask.request.headers.get("Origin")
-        if origin and origin.rstrip("/") != flask.request.host_url.rstrip("/"):
-            flask.abort(403)
-        expected = flask.session.get("csrf", "")
-        received = flask.request.form.get("csrf", "")
-        if not expected or not compare_digest(expected, received):
-            flask.abort(403)
-
-
 def _register_auditing_routes(app: FlaskApp, audit: AuditSession):
     """Register the independent audit card and background worker.
 
@@ -405,11 +387,11 @@ def _register_operation_routes(app: FlaskApp, audit: AuditSession):
         app: local audit application
         audit: source-backed session owning output creation
     """
+    app.before_request(_require_csrf)
     _register_auditing_routes(app, audit)
     _register_verification_routes(app, audit)
     _register_preview_routes(app, audit)
     flask = import_flask()
-    app.before_request(_protect_local_forms)
     proofreading = ProofreadingJob(audit)
     app.extensions["audit_proofreading"] = proofreading
 
@@ -591,3 +573,14 @@ def _register_verification_routes(app: FlaskApp, audit: AuditSession):
                 {"HX-Retarget": "#workspace", "HX-Reswap": "outerHTML"},
             )
         return flask.redirect(f"/?{urlencode(asdict(filters))}", code=303)
+
+
+def _require_csrf():
+    """Require a valid session token for edits, including native form submissions."""
+    flask = import_flask()
+    if flask.request.method in {"GET", "HEAD", "OPTIONS"}:
+        return
+    expected = flask.session.get("csrf", "")
+    received = flask.request.form.get("csrf", "")
+    if not expected or not received.isascii() or not compare_digest(expected, received):
+        flask.abort(403)

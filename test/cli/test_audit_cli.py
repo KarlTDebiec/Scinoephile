@@ -31,7 +31,7 @@ from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
 from scinoephile.cli.audit.audit_transcription_cli import AuditTranscriptionCli
 from scinoephile.cli.audit.audit_translation_cli import AuditTranslationCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
+from scinoephile.common.cli.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
 
 

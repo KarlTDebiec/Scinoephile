@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.common.argument_parsing import (
+from scinoephile.common.cli.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     output_file_arg,

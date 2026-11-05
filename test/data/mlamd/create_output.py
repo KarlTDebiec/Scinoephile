@@ -9,7 +9,7 @@ from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import VadMode
-from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.common.logs import configure_logging
 from scinoephile.core import Language
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
@@ -30,7 +30,7 @@ from test.helpers import test_data_root
 title_root = test_data_root / Path(__file__).parent.name
 input_path = title_root / "input"
 output_path = title_root / "output"
-set_logging_verbosity(2)
+configure_logging(2)
 
 actions = {
     "eng_ocr",

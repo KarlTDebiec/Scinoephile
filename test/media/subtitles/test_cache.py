@@ -18,7 +18,7 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.media.subtitles.cache import SubtitleCache
 from scinoephile.media.subtitles.extractor import SubtitleExtractor
-from test.helpers import create_symlink_or_skip
+from test.common.common_test_support import create_symlink_or_skip
 from test.helpers.files import set_mtime
 from test.helpers.media_subtitles import (
     cache_subtitle_stream,
@@ -102,7 +102,7 @@ def test_get_cached_subtitle_stream_path_includes_cache_version(
     cache = SubtitleCache(tmp_path / "cache")
     first_cache_path = cache.get_path(infile_path, stream)
 
-    monkeypatch.setattr("scinoephile.media.subtitles.cache._CACHE_VERSION", 2)
+    monkeypatch.setattr("scinoephile.media.subtitles.cache._CACHE_VERSION", 3)
 
     assert cache.get_path(infile_path, stream) != first_cache_path
 

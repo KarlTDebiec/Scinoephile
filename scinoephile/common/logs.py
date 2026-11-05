@@ -11,7 +11,7 @@ from typing import TextIO
 DEFAULT_LOG_FORMAT = "%(levelname)s: %(name)s: %(message)s"
 """Default format for log messages."""
 
-__all__ = ["DEFAULT_LOG_FORMAT", "configure_logging", "set_logging_verbosity"]
+__all__ = ["DEFAULT_LOG_FORMAT", "configure_logging"]
 
 
 def configure_logging(verbosity: int = 1, log_format: str | None = None):
@@ -48,17 +48,6 @@ def configure_logging(verbosity: int = 1, log_format: str | None = None):
     formatter = Formatter(log_format)
     console_handler.setFormatter(formatter)
     root_logger.addHandler(console_handler)
-
-
-def set_logging_verbosity(verbosity: int):
-    """Set the level of verbosity of logging.
-
-    Deprecated: Use configure_logging() instead for better control.
-
-    Arguments:
-        verbosity: level of verbosity (0=ERROR, 1=WARNING, 2=INFO, 3+=DEBUG)
-    """
-    configure_logging(verbosity)
 
 
 def _get_unicode_safe_stderr() -> TextIO:

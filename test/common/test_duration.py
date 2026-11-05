@@ -6,13 +6,11 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-from pytest import raises
-
-from scinoephile.common.duration import parse_duration
-from test.helpers import parametrize
+from common.duration import parse_duration
+from pytest import mark, raises
 
 
-@parametrize(
+@mark.parametrize(
     ("value", "expected"),
     [
         ("30s", timedelta(seconds=30)),

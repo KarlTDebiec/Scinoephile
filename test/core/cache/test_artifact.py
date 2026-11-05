@@ -7,6 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.core.cache.artifact import remove_cache_artifact
+from test.common.common_test_support import create_symlink_or_skip
 from test.helpers import parametrize
 
 
@@ -27,9 +28,9 @@ def test_remove_cache_artifact_handles_wrong_filesystem_types(
         (artifact_path / "nested.txt").write_text("nested", encoding="utf-8")
     elif artifact_type == "symlink":
         target_path.write_text("target", encoding="utf-8")
-        artifact_path.symlink_to(target_path)
+        create_symlink_or_skip(artifact_path, target_path)
     else:
-        artifact_path.symlink_to(target_path)
+        create_symlink_or_skip(artifact_path, target_path)
 
     assert remove_cache_artifact(artifact_path)
     assert not artifact_path.exists()

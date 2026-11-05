@@ -7,7 +7,10 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, output_file_arg
+from scinoephile.common.cli.argument_parsing import (
+    get_arg_groups_by_name,
+    output_file_arg,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.optimization.persistence.prompts.sync import sync_prompts

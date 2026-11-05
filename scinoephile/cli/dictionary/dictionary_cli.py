@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Any
 
-from scinoephile.common import CommandLineInterface
+from scinoephile.common.cli import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .build.dictionary_build_cli import DictionaryBuildCli

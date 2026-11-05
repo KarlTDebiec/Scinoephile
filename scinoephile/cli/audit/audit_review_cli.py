@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser, RawDescriptionHelpFormatter, _SubParsersAction
 from typing import Any
 
-from scinoephile.common import CommandLineInterface
+from scinoephile.common.cli import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .audit_review_report_cli import AuditReviewReportCli

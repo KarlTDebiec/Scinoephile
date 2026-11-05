@@ -16,7 +16,7 @@ from scinoephile.cli.helpers.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_auto_argument,
 )
-from scinoephile.cli.helpers.io import read_series, write_series
+from scinoephile.cli.helpers.io import read_series, validate_series_output, write_series
 from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
@@ -24,7 +24,7 @@ from scinoephile.cli.helpers.llms import (
     add_llm_test_case_json_arg,
     read_llm_additional_context,
 )
-from scinoephile.common.argument_parsing import (
+from scinoephile.common.cli.argument_parsing import (
     enum_arg,
     enum_metavar,
     get_arg_groups_by_name,
@@ -221,6 +221,7 @@ class OcrFuseCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
+        validate_series_output(parser, outfile_path, overwrite)
         if language is Language.eng:
             if tesseract_infile_path is None:
                 parser.error("--tesseract-infile is required when --language is eng")

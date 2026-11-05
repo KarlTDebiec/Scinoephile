@@ -7,8 +7,8 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.io import read_series, write_series
-from scinoephile.common.argument_parsing import (
+from scinoephile.cli.helpers.io import read_series, validate_series_output, write_series
+from scinoephile.common.cli.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
@@ -192,6 +192,7 @@ class MultiTimewarpCli(ScinoephileCliBase):
             parser.error("--anchor-infile and --mobile-infile may not both be '-'")
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
+        validate_series_output(parser, outfile_path, overwrite)
 
         # Read inputs
         anchor = read_series(parser, anchor_infile_path, allow_stdin=True)

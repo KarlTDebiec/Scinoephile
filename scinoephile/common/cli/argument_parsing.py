@@ -9,31 +9,17 @@ from argparse import (
     ArgumentTypeError,
     _ArgumentGroup,  # noqa pylint
 )
-from collections.abc import Callable, Collection
+from collections.abc import Callable
 from datetime import timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, TypedDict, Unpack
+from typing import Any, Unpack
 
-from .duration import parse_duration
-from .exceptions import NotAFileError
-from .validation import (
-    val_float,
-    val_input_dir_path,
-    val_input_file_or_dir_path,
-    val_input_path,
-    val_int,
-    val_output_dir_path,
-    val_output_path,
-    val_str,
-)
+from .. import validation
+from ..duration import parse_duration
+from ..exceptions import NotAFileError
 
 __all__ = [
-    "FloatValidatorKwargs",
-    "IntValidatorKwargs",
-    "OutputDirValidatorKwargs",
-    "OutputPathValidatorKwargs",
-    "StrValidatorKwargs",
     "duration_arg",
     "enum_arg",
     "enum_metavar",
@@ -53,53 +39,6 @@ __all__ = [
     "output_file_arg",
     "str_arg",
 ]
-
-
-class FloatValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_float."""
-
-    n_values: int | None
-    """required number of values."""
-    min_value: float | None
-    """minimum allowed value."""
-    max_value: float | None
-    """maximum allowed value."""
-
-
-class IntValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_int."""
-
-    n_values: int | None
-    """required number of values."""
-    min_value: int | None
-    """minimum allowed value."""
-    max_value: int | None
-    """maximum allowed value."""
-    acceptable_values: Collection[int] | None
-    """explicit set of acceptable values."""
-
-
-class OutputPathValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_output_path."""
-
-    exist_ok: bool
-    """whether existing output files are accepted."""
-    create: bool
-    """whether missing parent directories should be created."""
-
-
-class OutputDirValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_output_dir_path."""
-
-    create: bool
-    """whether missing output directories should be created."""
-
-
-class StrValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_str."""
-
-    options: Collection[str]
-    """allowed string options."""
 
 
 def get_optional_args_group(parser: ArgumentParser) -> _ArgumentGroup:
@@ -250,7 +189,7 @@ def get_validator[T](function: Callable[..., T], **kwargs: Any) -> Callable[[Any
 
 
 def float_arg(
-    **kwargs: Unpack[FloatValidatorKwargs],
+    **kwargs: Unpack[validation.FloatValidatorKwargs],
 ) -> Callable[[Any], float | list[float]]:
     """Validate a float argument.
 
@@ -259,7 +198,7 @@ def float_arg(
     Returns:
         value validator function
     """
-    return get_validator(val_float, **kwargs)
+    return get_validator(validation.val_float, **kwargs)
 
 
 def duration_arg(value: str) -> timedelta:
@@ -354,7 +293,7 @@ def input_dir_arg() -> Callable[[Any], Path | list[Path]]:
     Returns:
         value validator function
     """
-    return get_validator(val_input_dir_path)
+    return get_validator(validation.val_input_dir_path)
 
 
 def input_file_or_dir_arg() -> Callable[[Any], Path | list[Path]]:
@@ -363,7 +302,7 @@ def input_file_or_dir_arg() -> Callable[[Any], Path | list[Path]]:
     Returns:
         value validator function
     """
-    return get_validator(val_input_file_or_dir_path)
+    return get_validator(validation.val_input_file_or_dir_path)
 
 
 def input_file_arg(
@@ -377,7 +316,7 @@ def input_file_arg(
         value validator function
     """
     if not allow_stdin:
-        return get_validator(val_input_path)
+        return get_validator(validation.val_input_path)
 
     def wrapped(value: Any) -> Path | str | list[Path]:
         """Validate an input file path argument, with optional stdin support.
@@ -392,14 +331,16 @@ def input_file_arg(
         if str(value) == "-":
             return "-"
         try:
-            return val_input_path(value)
+            return validation.val_input_path(value)
         except (FileNotFoundError, NotAFileError, TypeError) as exc:
             raise ArgumentTypeError(str(exc)) from exc
 
     return wrapped
 
 
-def int_arg(**kwargs: Unpack[IntValidatorKwargs]) -> Callable[[Any], int | list[int]]:
+def int_arg(
+    **kwargs: Unpack[validation.IntValidatorKwargs],
+) -> Callable[[Any], int | list[int]]:
     """Validate an int argument.
 
     Arguments:
@@ -407,7 +348,7 @@ def int_arg(**kwargs: Unpack[IntValidatorKwargs]) -> Callable[[Any], int | list[
     Returns:
         value validator function
     """
-    return get_validator(val_int, **kwargs)
+    return get_validator(validation.val_int, **kwargs)
 
 
 def named_input_file_arg() -> Callable[[Any], tuple[str, Path]]:
@@ -435,7 +376,7 @@ def named_input_file_arg() -> Callable[[Any], tuple[str, Path]]:
                 "named input files must use nonblank NAME=PATH syntax"
             )
         try:
-            return name, val_input_path(raw_path)
+            return name, validation.val_input_path(raw_path)
         except (OSError, TypeError, ValueError) as exc:
             raise ArgumentTypeError(str(exc)) from exc
 
@@ -443,7 +384,7 @@ def named_input_file_arg() -> Callable[[Any], tuple[str, Path]]:
 
 
 def output_dir_arg(
-    **kwargs: Unpack[OutputDirValidatorKwargs],
+    **kwargs: Unpack[validation.OutputDirValidatorKwargs],
 ) -> Callable[[Any], Path | list[Path]]:
     """Validate an output directory path argument.
 
@@ -452,11 +393,11 @@ def output_dir_arg(
     Returns:
         value validator function
     """
-    return get_validator(val_output_dir_path, **kwargs)
+    return get_validator(validation.val_output_dir_path, **kwargs)
 
 
 def output_file_arg(
-    **kwargs: Unpack[OutputPathValidatorKwargs],
+    **kwargs: Unpack[validation.OutputPathValidatorKwargs],
 ) -> Callable[[Any], Path | list[Path]]:
     """Validate an output file path argument.
 
@@ -465,10 +406,10 @@ def output_file_arg(
     Returns:
         value validator function
     """
-    return get_validator(val_output_path, **kwargs)
+    return get_validator(validation.val_output_path, **kwargs)
 
 
-def str_arg(**kwargs: Unpack[StrValidatorKwargs]) -> Callable[[Any], str]:
+def str_arg(**kwargs: Unpack[validation.StrValidatorKwargs]) -> Callable[[Any], str]:
     """Validate a string argument.
 
     Arguments:
@@ -476,4 +417,4 @@ def str_arg(**kwargs: Unpack[StrValidatorKwargs]) -> Callable[[Any], str]:
     Returns:
         value validator function
     """
-    return get_validator(val_str, **kwargs)
+    return get_validator(validation.val_str, **kwargs)

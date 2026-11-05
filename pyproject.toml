@@ -125,6 +125,9 @@ split-on-trailing-comma = false
 [tool.ruff.lint.pydocstyle]
 convention = 'google'
 
+[tool.ty.environment]
+extra-paths = ["scinoephile", "test/common"]
+
 [tool.ty.analysis]
 allowed-unresolved-imports = [
     "chrome_lens_py",

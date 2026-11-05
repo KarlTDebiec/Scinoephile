@@ -7,7 +7,7 @@ from __future__ import annotations
 from os import PathLike
 from pathlib import Path
 
-from scinoephile.common.validation import (
+from common.validation import (
     val_child_path,
     val_input_dir_path,
     val_input_file_or_dir_path,
@@ -58,4 +58,9 @@ def test_path_validators_accept_custom_string_pathlike(tmp_path: Path):
     assert (
         val_output_dir_path(_CustomPath(output_dir_path)) == output_dir_path.resolve()
     )
+    assert (
+        val_input_path(_CustomPath(output_path), must_exist=False)
+        == output_path.resolve()
+    )
+    assert not output_path.parent.exists()
     assert val_output_path(_CustomPath(output_path)) == output_path.resolve()

@@ -11,6 +11,7 @@ from pytest import MonkeyPatch, raises
 
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms.cache import LlmCache
+from test.common.common_test_support import create_symlink_or_skip
 from test.helpers import parametrize
 from test.helpers.files import set_mtime
 
@@ -164,9 +165,9 @@ def test_llm_cache_discards_wrong_filesystem_type(tmp_path: Path, artifact_type:
         cache_path.mkdir()
     elif artifact_type == "symlink":
         target_path.write_text("target", encoding="utf-8")
-        cache_path.symlink_to(target_path)
+        create_symlink_or_skip(cache_path, target_path)
     else:
-        cache_path.symlink_to(target_path)
+        create_symlink_or_skip(cache_path, target_path)
 
     assert cache.load(*_CACHE_INPUTS) is None
     assert not cache_path.exists()

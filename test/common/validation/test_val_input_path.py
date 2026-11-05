@@ -6,11 +6,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from common.exceptions import NotAFileError
+from common.validation import val_input_path
+from common_test_support import create_symlink_or_skip
 from pytest import MonkeyPatch, raises
-
-from scinoephile.common.exceptions import NotAFileError
-from scinoephile.common.validation import val_input_path
-from test.helpers import create_symlink_or_skip
 
 
 def test_val_input_path_accepts_file_path_values(tmp_path: Path):
@@ -24,6 +23,33 @@ def test_val_input_path_accepts_file_path_values(tmp_path: Path):
 
     assert val_input_path(file_path) == file_path.resolve()
     assert val_input_path(str(file_path)) == file_path.resolve()
+
+
+def test_val_input_path_allows_missing_paths(tmp_path: Path, monkeypatch: MonkeyPatch):
+    """Allow missing input paths when callers opt in.
+
+    Arguments:
+        tmp_path: temporary directory for existing and missing paths
+        monkeypatch: fixture for isolating the working directory and environment
+    """
+    existing_path = tmp_path / "present.txt"
+    existing_path.touch()
+    missing_path = tmp_path / "missing" / "%06d.png"
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("TEST_INPUT_ROOT", str(tmp_path))
+
+    assert val_input_path("missing/%06d.png", must_exist=False) == missing_path
+    assert (
+        val_input_path("$TEST_INPUT_ROOT/missing/%06d.png", must_exist=False)
+        == missing_path
+    )
+    assert val_input_path([existing_path, missing_path], must_exist=False) == [
+        existing_path,
+        missing_path,
+    ]
+    assert not missing_path.parent.exists()
+    with raises(NotAFileError):
+        val_input_path(tmp_path, must_exist=False)
 
 
 def test_val_input_path_rejects_missing_and_directory_paths(tmp_path: Path):

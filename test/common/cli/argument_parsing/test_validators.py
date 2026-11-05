@@ -1,15 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of common.argument_parsing."""
+"""Tests of common.cli.argument_parsing."""
 
 from __future__ import annotations
 
-from argparse import ArgumentTypeError
+from argparse import ArgumentParser, ArgumentTypeError
 from pathlib import Path
 
-from pytest import raises
-
-from scinoephile.common.argument_parsing import (
+from common.cli.argument_parsing import (
     duration_arg,
     float_arg,
     input_dir_arg,
@@ -21,6 +19,8 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
+from common.exceptions import ArgumentConflictError
+from pytest import mark, raises
 
 
 def test_duration_arg():
@@ -41,6 +41,36 @@ def test_float_arg():
 
     with raises(ArgumentTypeError, match="less than minimum value"):
         validator("-1.0")
+
+
+@mark.parametrize("value", ["0", "1", "-1", "2", "nan", "inf", "-inf"])
+def test_float_arg_exclusive_and_finite_constraints(value: str):
+    """Adapt shared open-bound and finite validation into argument errors.
+
+    Arguments:
+        value: value outside a finite open interval
+    """
+    validator = float_arg(
+        min_value=0, max_value=1, min_exclusive=True, max_exclusive=True, finite=True
+    )
+    assert validator("0.5") == 0.5
+    with raises(ArgumentTypeError):
+        validator(value)
+    parser = ArgumentParser()
+    parser.add_argument("--value", type=validator)
+    with raises(SystemExit) as excinfo:
+        parser.parse_args([f"--value={value}"])
+    assert excinfo.value.code == 2
+
+
+def test_float_arg_preserves_configuration_errors():
+    """Propagate invalid bound configurations as configuration errors."""
+    with raises(ArgumentConflictError, match="min_value must be less than max_value"):
+        float_arg(min_value=1, max_value=0)("0.5")
+    with raises(ArgumentConflictError, match="min_exclusive requires min_value"):
+        float_arg(min_exclusive=True)("0.5")
+    with raises(ArgumentConflictError, match="max_exclusive requires max_value"):
+        float_arg(max_exclusive=True)("0.5")
 
 
 def test_int_arg():

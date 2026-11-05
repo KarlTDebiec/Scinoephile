@@ -25,7 +25,7 @@ jobs:
         run: git fetch --depth=1 origin $DEFAULT_BRANCH
 
       - name: Define a cache dependency glob
-        uses: astral-sh/setup-uv@v10.3.2
+        uses: astral-sh/setup-uv@v10.3.3
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
@@ -52,4 +52,4 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
-          uv run pytest -n auto -v --cov=scinoephile --cov-report term test
+          uv run pytest -n auto -v --durations=25 --cov=scinoephile --cov-report term test

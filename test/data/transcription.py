@@ -6,7 +6,15 @@ from __future__ import annotations
 
 from collections.abc import Generator
 from contextlib import contextmanager
-from logging import WARNING, Filter, LogRecord, getLogger
+from logging import (
+    INFO,
+    WARNING,
+    Filter,
+    LogRecord,
+    getLevelName,
+    getLogger,
+    makeLogRecord,
+)
 from pathlib import Path
 from shutil import copy2
 from typing import Any
@@ -41,18 +49,21 @@ class _RelogLanguageMismatchFilter(Filter):
         super().__init__()
         self.expected_message = expected_message
 
-    def filter(self, record: LogRecord) -> bool:
-        """Relog the expected warning and allow all other records.
+    def filter(self, record: LogRecord) -> bool | LogRecord:
+        """Replace the expected warning with an info record.
 
         Arguments:
             record: log record to inspect
         Returns:
-            whether the original record should continue to handlers
+            replacement info record, or True to keep the original record
         """
         if record.levelno != WARNING or record.getMessage() != self.expected_message:
             return True
-        logger.info(record.getMessage())
-        return False
+        # Returning a record avoids recursive logging inside a logging filter
+        return makeLogRecord(
+            record.__dict__
+            | {"name": logger.name, "levelno": INFO, "levelname": getLevelName(INFO)}
+        )
 
 
 def get_reference_for_guide_blocks(

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.common.logs import configure_logging
 from scinoephile.core import Language
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
@@ -49,7 +49,7 @@ transcription_additional_context = """
 - 金剛圈 / 緊箍兒：套喺孫悟空頭上、約束佢取經嘅法器，按實際讀音選詞。
 """
 
-set_logging_verbosity(2)
+configure_logging(2)
 
 actions = {
     "eng_ocr",

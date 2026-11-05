@@ -17,9 +17,15 @@
 * Use single-dot relative imports for imports rooted in the module's containing
   package, including its modules and child packages (for example,
   `from .foo import bar` or `from .child.foo import bar`).
-* Use the absolute path to the concrete module or package for imports that must
-  climb to a parent package or reach one of its other children. Do not use
-  multi-dot relative imports (for example, `from ..foo import bar`).
+* Outside `common`, use the absolute path to the concrete module or package for
+  imports that must climb to a parent package or reach one of its other children.
+  Do not use multi-dot relative imports there (for example,
+  `from ..foo import bar`).
+* Keep `common` portable between projects. Imports between its modules must be
+  relative, including parent-relative imports such as
+  `from ..validation import val_float` inside `common.cli`. These imports must
+  remain within `common`; do not name the containing project or import its other
+  packages. Standard-library and third-party imports remain absolute.
 * Public names may be imported from another package's `__init__.py` facade when
   they are listed in that package's `__all__`.
 * Within a package subtree, do not import a name re-exported by one of the

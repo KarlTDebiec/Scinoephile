@@ -2,19 +2,19 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """General-purpose code not tied to a particular project.
 
-This module should not import from other modules outside the standard library.
+Utilities in this package depend only on the standard library and one another.
 
 Package hierarchy (modules may import from any above):
-* csv / described_enum / duration / exceptions / file / logs / subprocess
-* command_line_interface / validation
-* argument_parsing / cli / testing
+* archive / csv / described_enum / duration / exceptions / file / logs / subprocess
+* validation
+* cli
+* testing
 """
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from .command_line_interface import CommandLineInterface
 from .exceptions import (
     ArgumentConflictError,
     DirectoryExistsError,
@@ -36,7 +36,6 @@ If this file is '/path/to/package/common/__init__.py', the value is
 
 __all__ = [
     "ArgumentConflictError",
-    "CommandLineInterface",
     "DirectoryExistsError",
     "DirectoryNotFoundError",
     "ExecutableNotFoundError",

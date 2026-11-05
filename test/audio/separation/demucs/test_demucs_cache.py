@@ -157,6 +157,30 @@ def test_demucs_cache_overwrites_matching_entry_once(tmp_path: Path):
     assert overwrite_cache.load(audio) is not None
 
 
+def test_save_avoids_repeating_hash_in_long_staging_path(tmp_path: Path):
+    """Test staging stays below Windows' path limit when the final path fits.
+
+    Arguments:
+        tmp_path: temporary cache root
+    """
+    cache_root_path = tmp_path
+    padding_length = 150 - len(str(tmp_path / "audio/separation/demucs")) - 1
+    if padding_length > 0:
+        cache_root_path /= "x" * padding_length
+    audio = AudioSegment.silent(duration=100)
+    cache = DemucsCache(cache_root_path, "model")
+    cache_path = cache.get_path(audio)
+    old_staging_path = (
+        cache_path.parent / f".{cache_path.stem}-12345678" / cache_path.name
+    )
+    assert len(str(cache_path)) < 260 < len(str(old_staging_path))
+
+    assert cache.save(audio, audio) == cache_path
+
+    assert cache.load(audio) is not None
+    assert list(cache_path.parent.iterdir()) == [cache_path]
+
+
 def test_save_failure_preserves_existing_cached_vocals(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
@@ -187,3 +211,4 @@ def test_save_failure_preserves_existing_cached_vocals(
     with raises(ScinoephileError, match="Unable to write Demucs vocals cache"):
         cache.save(audio, audio)
     assert cache_path.read_bytes() == existing_payload
+    assert list(cache_path.parent.iterdir()) == [cache_path]

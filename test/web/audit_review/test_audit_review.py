@@ -302,6 +302,11 @@ def test_web_edits_escape_content_and_require_csrf(tmp_path: Path):
     client = create_app(audit).test_client()
     row = audit.rows()[0]
     assert client.post(f"/rows/{row.key}", data={}).status_code == 403
+    assert client.get("/", headers={"Host": "evil.example"}).status_code == 400
+    assert (
+        client.get("/export", headers={"Sec-Fetch-Site": "cross-site"}).status_code
+        == 403
+    )
     text = client.get("/").get_data(as_text=True)
     assert "&lt;script&gt;alert(1)&lt;/script&gt;" in text
     with client.session_transaction() as session:
@@ -321,7 +326,10 @@ def test_web_edits_escape_content_and_require_csrf(tmp_path: Path):
         ).status_code
         == 403
     )
-    assert client.post(f"/rows/{row.key}", data=data).status_code == 303
+    response = client.post(
+        f"/rows/{row.key}", data=data, headers={"Origin": "http://localhost"}
+    )
+    assert response.status_code == 303
     assert "Hello, corrected." in audit.outfile_path.read_text()
     conflict = client.post(
         f"/rows/{row.key}", data=data, headers={"HX-Request": "true"}

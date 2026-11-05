@@ -6,11 +6,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from common.exceptions import DirectoryNotFoundError
+from common.validation import val_input_dir_path
+from common_test_support import create_symlink_or_skip
 from pytest import MonkeyPatch, raises
-
-from scinoephile.common.exceptions import DirectoryNotFoundError
-from scinoephile.common.validation import val_input_dir_path
-from test.helpers import create_symlink_or_skip
 
 
 def test_val_input_dir_path_accepts_directory_path_values(tmp_path: Path):

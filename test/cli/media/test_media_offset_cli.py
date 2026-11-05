@@ -170,22 +170,23 @@ def test_media_offset_cli_rejects_start_time_argument(
 
 
 @parametrize(
-    "argument",
+    ("argument", "expected_error"),
     [
-        "--max-offset",
-        "--sample-rate",
-        "--duration",
-        "--coarse-step",
-        "--sample-windows",
+        ("--max-offset", "must be greater than minimum"),
+        ("--sample-rate", "must be greater than minimum"),
+        ("--duration", "must be greater than minimum"),
+        ("--coarse-step", "must be greater than minimum"),
+        ("--sample-windows", "is less than minimum value"),
     ],
 )
 def test_media_offset_cli_rejects_zero_positive_arguments(
-    argument: str, tmp_path: Path, capsys: CaptureFixture[str]
+    argument: str, expected_error: str, tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test media offset CLI rejects zero for positive arguments.
 
     Arguments:
         argument: argument to test
+        expected_error: diagnostic for the violated lower bound
         tmp_path: temporary directory provided by pytest
         capsys: pytest output capture fixture
     """
@@ -202,4 +203,42 @@ def test_media_offset_cli_rejects_zero_positive_arguments(
             f"{argument} 0",
         )
 
-    assert "is less than minimum value" in capsys.readouterr().err
+    assert expected_error in capsys.readouterr().err
+
+
+@parametrize(
+    "argument", ["--max-offset", "--sample-rate", "--duration", "--coarse-step"]
+)
+@parametrize("value", ["nan", "inf", "-inf"])
+def test_media_offset_cli_rejects_nonfinite_arguments(
+    argument: str, value: str, tmp_path: Path, capsys: CaptureFixture[str]
+):
+    """Reject non-finite search parameters before probing or sampling video.
+
+    Arguments:
+        argument: floating-point option being validated
+        value: non-finite representation supplied to the option
+        tmp_path: temporary directory for input files
+        capsys: fixture capturing the parser diagnostic
+    """
+    reference_infile_path = tmp_path / "reference.mkv"
+    target_infile_path = tmp_path / "target.mkv"
+    reference_infile_path.touch()
+    target_infile_path.touch()
+
+    with patch(
+        "scinoephile.cli.media.media_offset_cli.get_video_offset"
+    ) as mock_detect:
+        with raises(SystemExit) as excinfo:
+            MediaOffsetCli.main(
+                [
+                    "--reference-infile",
+                    str(reference_infile_path),
+                    "--target-infile",
+                    str(target_infile_path),
+                    f"{argument}={value}",
+                ]
+            )
+    assert excinfo.value.code == 2
+    assert "must be finite" in capsys.readouterr().err
+    mock_detect.assert_not_called()

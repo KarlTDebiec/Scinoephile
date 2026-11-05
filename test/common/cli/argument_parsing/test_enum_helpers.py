@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from enum import StrEnum
 
-from scinoephile.common.argument_parsing import (
+from common.cli.argument_parsing import (
     enum_metavar,
     enum_options,
     enum_options_list_str,

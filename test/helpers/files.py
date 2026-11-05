@@ -32,24 +32,13 @@ def get_python_files(target_dir_path: Path) -> list[Path]:
     Returns:
         sorted Python file paths
     """
-    return sorted(
-        file_path
-        for file_path in target_dir_path.rglob("*.py")
-        if not _is_excluded_path(file_path, target_dir_path)
-    )
-
-
-def _is_excluded_path(file_path: Path, target_dir_path: Path) -> bool:
-    """Check whether a discovered file falls under an excluded directory.
-
-    Arguments:
-        file_path: discovered file path
-        target_dir_path: recursive scan root
-    Returns:
-        whether the file should be omitted from the scan
-    """
-    relative_file_path = file_path.relative_to(target_dir_path)
-    return any(part in _EXCLUDED_DIR_NAMES for part in relative_file_path.parts)
+    file_paths = []
+    for dir_path, dir_names, file_names in target_dir_path.walk():
+        dir_names[:] = [name for name in dir_names if name not in _EXCLUDED_DIR_NAMES]
+        file_paths.extend(
+            dir_path / name for name in file_names if Path(name).match("*.py")
+        )
+    return sorted(file_paths)
 
 
 def set_mtime(path: Path, timestamp: float) -> None:

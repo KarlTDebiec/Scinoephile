@@ -9,7 +9,7 @@ from pathlib import Path
 from pytest import MonkeyPatch, raises
 
 from scinoephile.core.cache.cache_namespace import CacheNamespace
-from test.helpers import create_symlink_or_skip
+from test.common.common_test_support import create_symlink_or_skip
 
 
 class _CacheNamespace(CacheNamespace):
