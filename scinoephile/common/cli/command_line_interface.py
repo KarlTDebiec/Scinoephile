@@ -198,6 +198,18 @@ class CommandLineInterface(ABC):
             name = name[:-3]
         return name.lower()
 
+    @classmethod
+    def subcommand_dest(cls) -> str:
+        """Get the argparse destination for this CLI's command selection.
+
+        The qualified class name distinguishes containers. Dots distinguish
+        routing metadata from ordinary keyword arguments passed to leaf commands.
+
+        Returns:
+            namespaced destination used by parser construction and dispatch
+        """
+        return f"{cls.__module__}.{cls.__qualname__}.subcommand"
+
     @staticmethod
     def log_command_line():
         """Log the command line with which the script was run."""

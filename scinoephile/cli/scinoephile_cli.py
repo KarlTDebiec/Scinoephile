@@ -7,8 +7,9 @@ from __future__ import annotations
 from argparse import SUPPRESS, ArgumentParser
 from typing import Any
 
-from scinoephile.common.cli import CommandLineInterface, ListAllCommandsAction
+from scinoephile.common.cli import ListAllCommandsAction
 from scinoephile.common.cli.argument_parsing import get_arg_groups_by_name
+from scinoephile.common.cli.entry_points import get_cli_commands
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .audit import AuditCli
@@ -125,10 +126,14 @@ class ScinoephileCli(ScinoephileCliBase):
             root_cli_class=cls,
         )
 
+        try:
+            subcommands = cls.subcommands()
+        except ValueError as exc:
+            parser.error(str(exc))
+
         subparsers = parser.add_subparsers(
-            dest="subcommand_name", help="subcommand", required=True
+            dest=cls.subcommand_dest(), help="subcommand", required=True
         )
-        subcommands = cls.subcommands()
         for name in sorted(subcommands):
             subcommands[name].argparser(subparsers=subparsers)
         get_arg_groups_by_name(
@@ -136,33 +141,39 @@ class ScinoephileCli(ScinoephileCliBase):
         )
 
     @classmethod
-    def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
-        """Names and types of tools wrapped by command-line interface.
+    def subcommands(cls) -> dict[str, type[ScinoephileCliBase]]:
+        """Get built-in and installed top-level CLI commands.
 
         Returns:
             mapping of subcommand names to CLI classes
+        Raises:
+            ValueError: if an installed command cannot be registered
         """
-        return {
-            AuditCli.name(): AuditCli,
-            DictionaryCli.name(): DictionaryCli,
-            MediaCli.name(): MediaCli,
-            MultiCli.name(): MultiCli,
-            OcrCli.name(): OcrCli,
-            ProcessCli.name(): ProcessCli,
-            ReviewCli.name(): ReviewCli,
-            TranscribeCli.name(): TranscribeCli,
-            TranslateCli.name(): TranslateCli,
-            UtilityCli.name(): UtilityCli,
-        }
+        return get_cli_commands(
+            {
+                AuditCli.name(): AuditCli,
+                DictionaryCli.name(): DictionaryCli,
+                MediaCli.name(): MediaCli,
+                MultiCli.name(): MultiCli,
+                OcrCli.name(): OcrCli,
+                ProcessCli.name(): ProcessCli,
+                ReviewCli.name(): ReviewCli,
+                TranscribeCli.name(): TranscribeCli,
+                TranslateCli.name(): TranslateCli,
+                UtilityCli.name(): UtilityCli,
+            },
+            group="scinoephile.cli.commands",
+            base_class=ScinoephileCliBase,
+        )
 
     @classmethod
-    def _main(cls, *, subcommand_name: str, **kwargs: Any):
+    def _main(cls, **kwargs: Any):
         """Dispatch to a top-level Scinoephile subcommand.
 
         Arguments:
-            subcommand_name: selected top-level subcommand
-            **kwargs: arguments forwarded to the selected subcommand
+            **kwargs: routing metadata and arguments for the selected subcommand
         """
+        subcommand_name = kwargs.pop(cls.subcommand_dest())
         cls.subcommands()[subcommand_name]._main(**kwargs)
 
 

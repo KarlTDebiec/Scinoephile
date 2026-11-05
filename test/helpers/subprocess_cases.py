@@ -10,32 +10,32 @@ from scinoephile.common.testing import echo_command
 
 __all__ = ["SUBPROCESS_SUCCESS_CASES"]
 
-SUBPROCESS_SUCCESS_CASES: list[tuple[str, list[str], tuple[str, ...]]] = [
-    ("echo", echo_command("Hello World"), ("Hello World",)),
-    ("arguments", echo_command("arg1", "arg2", "arg3"), ("arg1", "arg2", "arg3")),
-    ("spaces", echo_command("hello world"), ("hello world",)),
+SUBPROCESS_SUCCESS_CASES: list[tuple[str, list[str], str]] = [
+    ("echo", echo_command("Hello World"), "Hello World\n"),
+    ("arguments", echo_command("arg1", "arg2", "arg3"), "arg1 arg2 arg3\n"),
+    ("spaces", echo_command("hello world"), "hello world\n"),
     (
         "special-chars",
         echo_command("$HOME", "$(whoami)", "; ls"),
-        ("$HOME", "$(whoami)", "; ls"),
+        "$HOME $(whoami) ; ls\n",
     ),
-    ("semicolon-literal", echo_command("test; rm -rf /"), ("test; rm -rf /",)),
+    ("semicolon-literal", echo_command("test; rm -rf /"), "test; rm -rf /\n"),
     (
         "pipe-literal",
         echo_command("test | cat /etc/passwd"),
-        ("test | cat /etc/passwd",),
+        "test | cat /etc/passwd\n",
     ),
-    ("backticks-literal", echo_command("`whoami`"), ("`whoami`",)),
+    ("backticks-literal", echo_command("`whoami`"), "`whoami`\n"),
     (
         "quotes",
         echo_command("'single quotes'", '"double quotes"'),
-        ("'single quotes'", '"double quotes"'),
+        "'single quotes' \"double quotes\"\n",
     ),
     (
         "multiple-lines",
         [sys.executable, "-c", "print('line1'); print('line2')"],
-        ("line1", "line2"),
+        "line1\nline2\n",
     ),
-    ("empty-output", [sys.executable, "-c", ""], ()),
-    ("full-path", [sys.executable, "-c", "print('test')"], ("test",)),
+    ("empty-output", [sys.executable, "-c", ""], ""),
+    ("full-path", [sys.executable, "-c", "print('test')"], "test\n"),
 ]

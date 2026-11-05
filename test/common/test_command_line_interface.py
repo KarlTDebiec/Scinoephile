@@ -6,12 +6,15 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from collections.abc import Sequence
+from importlib.machinery import ModuleSpec
+from inspect import getfile
 from pathlib import Path
 from typing import ClassVar
 from unittest.mock import patch
 
-from pytest import MonkeyPatch, raises
+from pytest import CaptureFixture, MonkeyPatch, raises
 
+import __main__
 from scinoephile.common.cli import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from test import helpers
@@ -286,6 +289,36 @@ def test_run_cli_with_args_quoted_values():
     ArgsCaptureCli.captured.clear()
     run_cli_with_args(ArgsCaptureCli, '--name "value with spaces"')
     assert ArgsCaptureCli.captured.get("name") == "value with spaces"
+
+
+@parametrize("module_name", ["__main__", "pytest.__main__"])
+def test_run_cli_with_args_script_invocation(
+    module_name: str, capsys: CaptureFixture[str]
+):
+    """Use script identity during a test invocation and restore the host identity.
+
+    Arguments:
+        module_name: module identity of the calling process
+        capsys: fixture capturing command output
+    """
+    module_spec = ModuleSpec(module_name, loader=None)
+    main = TestCli.main
+
+    def run_as_script():
+        """Verify script identity before constructing the parser."""
+        assert __main__.__spec__ is None
+        main()
+
+    with patch.object(__main__, "__spec__", module_spec):
+        with patch.object(TestCli, "main", side_effect=run_as_script):
+            with raises(SystemExit) as excinfo:
+                run_cli_with_args(TestCli, "--help")
+        assert __main__.__spec__ is module_spec
+
+    output = capsys.readouterr()
+    assert excinfo.value.code == 0
+    assert output.out.startswith(f"usage: {Path(getfile(TestCli)).name} ")
+    assert output.err == ""
 
 
 @parametrize(
