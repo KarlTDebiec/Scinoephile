@@ -127,7 +127,7 @@ def test_review_cli_no_op_persists_json_without_response_cache(tmp_path: Path):
     """
     input_path = tmp_path / "input.srt"
     output_path = tmp_path / "output.srt"
-    json_path = tmp_path / "review.json"
+    json_path = tmp_path / "test-cases" / "review.json"
     cache_root_path = tmp_path / "cache"
     input_path.write_text(
         "1\n00:00:00,000 --> 00:00:01,000\nUnique no-op subtitle.\n", encoding="utf-8"

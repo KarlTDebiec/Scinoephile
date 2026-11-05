@@ -32,7 +32,7 @@ from .helpers.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_auto_argument,
 )
-from .helpers.io import read_series, write_series
+from .helpers.io import read_series, validate_series_output, write_series
 
 __all__ = ["ProcessCli"]
 
@@ -201,6 +201,7 @@ class ProcessCli(ScinoephileCliBase):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
+        validate_series_output(parser, outfile_path, overwrite)
 
         # Read input and resolve language
         series = read_series(parser, infile_path, allow_stdin=True)

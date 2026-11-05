@@ -18,7 +18,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 
-__all__ = ["read_image_series", "read_series", "write_series"]
+__all__ = ["read_image_series", "read_series", "validate_series_output", "write_series"]
 
 
 def read_image_series(parser: ArgumentParser, infile: str | Path) -> ImageSeries:
@@ -64,6 +64,32 @@ def read_series(
         parser.error(str(exc))
 
 
+def validate_series_output(
+    parser: ArgumentParser, outfile: str | Path | None, overwrite: bool
+) -> Path | None:
+    """Check a subtitle destination before processing without creating directories.
+
+    Call this before workflows or providers can write JSON or cache entries.
+    The writer repeats this check in case the destination appears during processing.
+
+    Arguments:
+        parser: parser used for user-facing error output
+        outfile: output path, or None or "-" for stdout
+        overwrite: whether existing files may be overwritten
+    Returns:
+        validated output file path, or None for stdout
+    """
+    if outfile is None or str(outfile) == "-":
+        return None
+    try:
+        outfile_path = val_output_path(outfile, exist_ok=True, create=False)
+    except OSError as exc:
+        parser.error(str(exc))
+    if outfile_path.exists() and not overwrite:
+        parser.error(f"{outfile_path} already exists")
+    return outfile_path
+
+
 def write_series(
     parser: ArgumentParser,
     series: Series,
@@ -81,15 +107,13 @@ def write_series(
         overwrite: whether existing files may be overwritten
         format_: output file format
     """
-    if str(outfile) == "-":
+    outfile_path = validate_series_output(parser, outfile, overwrite)
+    if outfile_path is None:
         stdout.write(series.to_string(format_=format_))
         return
 
     try:
-        outfile_path = val_output_path(outfile, exist_ok=True)
-    except (FileExistsError, NotAFileError) as exc:
+        outfile_path = val_output_path(outfile_path, exist_ok=True)
+    except OSError as exc:
         parser.error(str(exc))
-
-    if outfile_path.exists() and not overwrite:
-        parser.error(f"{outfile_path} already exists")
     series.save(outfile_path, format_=format_)

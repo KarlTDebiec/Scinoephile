@@ -35,7 +35,7 @@ from .helpers.blocks import (
     get_block_range_indexes,
 )
 from .helpers.cache import CACHE_LOCALIZATIONS, CacheArguments, add_cache_args
-from .helpers.io import read_series, write_series
+from .helpers.io import read_series, validate_series_output, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
@@ -230,6 +230,7 @@ class TranslateCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
+        validate_series_output(parser, outfile_path, overwrite)
 
         # Read inputs
         source = read_series(parser, infile_path, allow_stdin=True)
