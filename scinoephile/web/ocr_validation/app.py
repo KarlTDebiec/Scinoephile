@@ -10,7 +10,8 @@ from typing import TYPE_CHECKING
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
-from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
+from scinoephile.core.dependencies.web import import_werkzeug_serving
+from scinoephile.web.security import create_local_app
 
 from .session import OcrValidationSession
 
@@ -22,21 +23,21 @@ __all__ = ["create_app", "run_app"]
 logger = getLogger(__name__)
 
 
-def create_app(session: OcrValidationSession) -> FlaskApp:
+def create_app(session: OcrValidationSession, *, host: str = "127.0.0.1") -> FlaskApp:
     """Create the OCR validation Flask app.
 
     Arguments:
         session: OCR validation session
+        host: explicitly configured bind host trusted by request validation
     Returns:
         Flask app
     Raises:
         DependencyError: if optional web dependencies are not installed
     """
-    flask = import_flask()
     from .routes import register_routes  # noqa: PLC0415
 
     static_dir_path = package_root / "web/static"
-    app = flask.Flask(__name__, static_folder=str(static_dir_path))
+    app = create_local_app(__name__, static_dir_path, host=host)
     app.config["OCR_VALIDATION_SESSION"] = session
     app.config["OCR_VALIDATION_SERVER"] = None
     register_routes(app)
@@ -56,7 +57,7 @@ def run_app(session: OcrValidationSession, host: str, port: int):
     """
     werkzeug_serving = import_werkzeug_serving()
 
-    app = create_app(session)
+    app = create_app(session, host=host)
     try:
         server_port = port
         if _port_is_in_use(_connection_host(host), port):
