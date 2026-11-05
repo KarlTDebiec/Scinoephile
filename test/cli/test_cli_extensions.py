@@ -89,6 +89,9 @@ def test_installed_extension(
     result = subprocess.run(
         [
             sys.executable,
+            # Apply the pytest warning filter to this separate interpreter
+            "-W",
+            "ignore:Couldn't find ffmpeg or avconv:RuntimeWarning:pydub.utils",
             "-c",
             "from scinoephile.cli.scinoephile_cli import ScinoephileCli; "
             "ScinoephileCli.main()",
