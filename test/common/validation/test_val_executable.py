@@ -7,13 +7,9 @@ from __future__ import annotations
 from pathlib import Path
 from platform import system
 
+from common.exceptions import ExecutableNotFoundError, UnsupportedPlatformError
+from common.validation import val_executable
 from pytest import raises
-
-from scinoephile.common.exceptions import (
-    ExecutableNotFoundError,
-    UnsupportedPlatformError,
-)
-from scinoephile.common.validation import val_executable
 
 
 def test_val_executable_valid():

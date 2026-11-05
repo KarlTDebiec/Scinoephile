@@ -63,17 +63,6 @@ The console entry point is declared in [`pyproject.toml`](../pyproject.toml).
 text. CLI classes should parse and validate inputs, translate domain failures
 for users, and delegate substantive work to lower packages.
 
-Installed Python distributions can register top-level commands in the
-`scinoephile.cli.commands` entry-point group. Each entry must refer to a concrete
-`ScinoephileCliBase` subclass, and its name must match the class's `name()`
-and be distinct from all other commands. For example, a distribution can
-register an `ExampleCli` class as follows.
-
-```toml
-[project.entry-points."scinoephile.cli.commands"]
-example = "my_extension.cli:ExampleCli"
-```
-
 ## Focused design documents
 
 Subsystem-specific design belongs in focused documents so this overview remains

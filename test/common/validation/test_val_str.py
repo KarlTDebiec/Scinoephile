@@ -4,9 +4,8 @@
 
 from __future__ import annotations
 
+from common.validation import val_str
 from pytest import mark, raises
-
-from scinoephile.common.validation import val_str
 
 
 @mark.parametrize(

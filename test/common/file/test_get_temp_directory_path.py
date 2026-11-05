@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from common.file import get_temp_directory_path
 from pytest import raises
-
-from scinoephile.common.file import get_temp_directory_path
 
 
 def test_get_temp_directory_path():

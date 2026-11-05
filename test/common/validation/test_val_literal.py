@@ -7,10 +7,9 @@ from __future__ import annotations
 from contextlib import AbstractContextManager, nullcontext
 from typing import Any, Literal
 
+from common.exceptions import ArgumentConflictError
+from common.validation import val_literal
 from pytest import mark, param, raises
-
-from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.common.validation import val_literal
 
 type Color = Literal["red", "green", "blue"]
 type Level = Literal[1, 2, 3]

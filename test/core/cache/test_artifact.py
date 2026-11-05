@@ -7,7 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.core.cache.artifact import remove_cache_artifact
-from test.helpers import create_symlink_or_skip, parametrize
+from test.common.common_test_support import create_symlink_or_skip
+from test.helpers import parametrize
 
 
 @parametrize("artifact_type", ["directory", "symlink", "broken_symlink"])

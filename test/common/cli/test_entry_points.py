@@ -7,11 +7,10 @@ from __future__ import annotations
 from importlib.metadata import EntryPoint
 from unittest.mock import patch
 
+import common.cli.entry_points as command_entries
+from common.cli import CommandLineInterface
+from common.cli.entry_points import get_cli_commands
 from pytest import FixtureRequest, fixture, mark, raises
-
-import scinoephile.common.cli.entry_points as command_entries
-from scinoephile.common.cli import CommandLineInterface
-from scinoephile.common.cli.entry_points import get_cli_commands
 
 
 class ExtraCli(CommandLineInterface):

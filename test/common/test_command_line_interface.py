@@ -12,13 +12,11 @@ from pathlib import Path
 from typing import ClassVar
 from unittest.mock import patch
 
-from pytest import CaptureFixture, MonkeyPatch, raises
+from common.cli import CommandLineInterface
+from common.testing import run_cli_with_args
+from pytest import CaptureFixture, mark, raises
 
 import __main__
-from scinoephile.common.cli import CommandLineInterface
-from scinoephile.common.testing import run_cli_with_args
-from test import helpers
-from test.helpers import parametrize
 
 
 class ArgsCaptureCli(CommandLineInterface):
@@ -45,28 +43,6 @@ class ArgsCaptureCli(CommandLineInterface):
             name: name
         """
         cls.captured["name"] = name
-
-
-class RequiredArgCli(CommandLineInterface):
-    """Test CLI that requires an argument."""
-
-    @classmethod
-    def add_arguments_to_argparser(cls, parser: ArgumentParser):
-        """Add arguments to a nascent argument parser.
-
-        Arguments:
-            parser: nascent argument parser
-        """
-        super().add_arguments_to_argparser(parser)
-        parser.add_argument("--name", required=True)
-
-    @classmethod
-    def _main(cls, *, name: str):
-        """Execute test CLI.
-
-        Arguments:
-            name: name
-        """
 
 
 class TestCli(CommandLineInterface):
@@ -109,7 +85,7 @@ class ReportTool(CommandLineInterface):
         pass
 
 
-@parametrize(
+@mark.parametrize(
     ("cli_cls", "expected_name"),
     [(TestCli, "test"), (AnotherTestCli, "anothertest"), (ReportTool, "reporttool")],
 )
@@ -208,13 +184,8 @@ def test_argparser_with_subparsers():
 
 def test_log_command_line():
     """Test log_command_line() logs the command line."""
-    with patch(
-        "scinoephile.common.cli.command_line_interface.argv",
-        ["script.py", "arg1", "arg2"],
-    ):
-        with patch(
-            "scinoephile.common.cli.command_line_interface.logger.info"
-        ) as mock_info:
+    with patch("common.cli.command_line_interface.argv", ["script.py", "arg1", "arg2"]):
+        with patch("common.cli.command_line_interface.logger.info") as mock_info:
             TestCli.log_command_line()
             mock_info.assert_called_once()
             call_args = mock_info.call_args[0][0]
@@ -229,7 +200,7 @@ def test_main_basic():
             mock_main.assert_called_once()
 
 
-@parametrize("arguments", [[], (), ["-v"], ("-vv",)])
+@mark.parametrize("arguments", [[], (), ["-v"], ("-vv",)])
 def test_main_explicit_arguments(arguments: Sequence[str]):
     """Execute explicit tokens without reading process arguments.
 
@@ -239,7 +210,7 @@ def test_main_explicit_arguments(arguments: Sequence[str]):
     with patch("sys.argv", ["test_script.py", "--invalid-process-option"]):
         with patch.object(TestCli, "_main") as mock_main:
             with patch(
-                "scinoephile.common.cli.command_line_interface.configure_logging"
+                "common.cli.command_line_interface.configure_logging"
             ) as mock_logging:
                 TestCli.main(arguments)
 
@@ -291,7 +262,7 @@ def test_run_cli_with_args_quoted_values():
     assert ArgsCaptureCli.captured.get("name") == "value with spaces"
 
 
-@parametrize("module_name", ["__main__", "pytest.__main__"])
+@mark.parametrize("module_name", ["__main__", "pytest.__main__"])
 def test_run_cli_with_args_script_invocation(
     module_name: str, capsys: CaptureFixture[str]
 ):
@@ -321,7 +292,7 @@ def test_run_cli_with_args_script_invocation(
     assert output.err == ""
 
 
-@parametrize(
+@mark.parametrize(
     ("arguments", "expected_verbosity"),
     [([], 1), (["-v"], 2), (["--verbose"], 2), (["-vv"], 3), (["-q"], 0)],
 )
@@ -339,23 +310,3 @@ def test_subparser_suppressed_verbosity_default(
     AnotherTestCli.argparser(subparsers=subparsers)
     parsed = parser.parse_args([AnotherTestCli.name(), *arguments])
     assert parsed.verbosity == expected_verbosity
-
-
-def test_assert_cli_usage_failure_reports_streams(monkeypatch: MonkeyPatch):
-    """Test CLI usage assertion failures include expected and actual streams.
-
-    Arguments:
-        monkeypatch: pytest monkeypatch fixture
-    """
-    monkeypatch.setattr(
-        helpers, "get_usage_prefix", lambda cli: "usage: intentionally-wrong.py"
-    )
-
-    with raises(AssertionError) as excinfo:
-        helpers.assert_cli_usage((RequiredArgCli,))
-
-    message = str(excinfo.value)
-    assert "Expected stderr to start with:" in message
-    assert "usage: intentionally-wrong.py" in message
-    assert "Actual stderr:" in message
-    assert "Actual stdout:" in message

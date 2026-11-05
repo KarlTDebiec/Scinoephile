@@ -76,7 +76,7 @@ def _split_cli_args(args: str) -> list[str]:
     kernel32.LocalFree.argtypes = [c_void_p]
     kernel32.LocalFree.restype = c_void_p
 
-    argv = shell32.CommandLineToArgvW(f"pipescaler-test {args}", byref(argc))
+    argv = shell32.CommandLineToArgvW(f"cli-test {args}", byref(argc))
     if not argv:
         return []
     try:

@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from common.validation import val_output_dir_path
 from pytest import MonkeyPatch, raises
-
-from scinoephile.common.validation import val_output_dir_path
 
 
 def test_val_output_dir_path_accepts_path_values_and_creates_directories(

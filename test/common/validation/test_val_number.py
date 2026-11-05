@@ -8,10 +8,9 @@ from collections.abc import Callable
 from contextlib import AbstractContextManager, nullcontext
 from typing import Any
 
+from common.exceptions import ArgumentConflictError
+from common.validation import val_float, val_int
 from pytest import mark, param, raises
-
-from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.common.validation import val_float, val_int
 
 
 @mark.parametrize("validator", [val_int, val_float], ids=["int", "float"])

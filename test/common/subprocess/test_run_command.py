@@ -16,12 +16,40 @@ from subprocess import Popen, TimeoutExpired
 from threading import enumerate as enumerate_threads
 from time import monotonic, sleep
 
-from pytest import FixtureRequest, MonkeyPatch, fixture, raises
+from common import subprocess as subprocess_module
+from common.subprocess import run_command, run_command_live
+from common.testing import echo_command
+from pytest import FixtureRequest, MonkeyPatch, fixture, mark, raises
 
-from scinoephile.common import subprocess as subprocess_module
-from scinoephile.common.subprocess import run_command, run_command_live
-from test.helpers import parametrize
-from test.helpers.subprocess_cases import SUBPROCESS_SUCCESS_CASES
+_SUBPROCESS_SUCCESS_CASES: list[tuple[str, list[str], str]] = [
+    ("echo", echo_command("Hello World"), "Hello World\n"),
+    ("arguments", echo_command("arg1", "arg2", "arg3"), "arg1 arg2 arg3\n"),
+    ("spaces", echo_command("hello world"), "hello world\n"),
+    (
+        "special-chars",
+        echo_command("$HOME", "$(whoami)", "; ls"),
+        "$HOME $(whoami) ; ls\n",
+    ),
+    ("semicolon-literal", echo_command("test; rm -rf /"), "test; rm -rf /\n"),
+    (
+        "pipe-literal",
+        echo_command("test | cat /etc/passwd"),
+        "test | cat /etc/passwd\n",
+    ),
+    ("backticks-literal", echo_command("`whoami`"), "`whoami`\n"),
+    (
+        "quotes",
+        echo_command("'single quotes'", '"double quotes"'),
+        "'single quotes' \"double quotes\"\n",
+    ),
+    (
+        "multiple-lines",
+        [sys.executable, "-c", "print('line1'); print('line2')"],
+        "line1\nline2\n",
+    ),
+    ("empty-output", [sys.executable, "-c", ""], ""),
+    ("full-path", [sys.executable, "-c", "print('test')"], "test\n"),
+]
 
 
 @fixture(params=[run_command, run_command_live], ids=["capture", "live"])
@@ -36,10 +64,10 @@ def run(request: FixtureRequest) -> Callable[..., tuple[int, str, str]]:
     return request.param
 
 
-@parametrize(
+@mark.parametrize(
     ("command", "expected_stdout"),
-    [(command, expected) for _, command, expected in SUBPROCESS_SUCCESS_CASES],
-    ids=[name for name, _, _ in SUBPROCESS_SUCCESS_CASES],
+    [(command, expected) for _, command, expected in _SUBPROCESS_SUCCESS_CASES],
+    ids=[name for name, _, _ in _SUBPROCESS_SUCCESS_CASES],
 )
 def test_run_command_success_cases(
     run: Callable[..., tuple[int, str, str]], command: list[str], expected_stdout: str
@@ -73,7 +101,7 @@ def test_run_command_with_stderr(run: Callable[..., tuple[int, str, str]]):
     assert stderr == "error message"
 
 
-@parametrize(
+@mark.parametrize(
     "code, acceptable, error",
     [(0, None, None), (1, None, ValueError), (42, [42], None)],
 )
@@ -129,13 +157,13 @@ def test_run_command_with_env(run: Callable[..., tuple[int, str, str]]):
         run: subprocess interface
     """
     env = os.environ.copy()
-    env["SCINOEPHILE_TEST_RUN_COMMAND_ENV"] = "expected"
+    env["COMMON_TEST_RUN_COMMAND_ENV"] = "expected"
 
     exitcode, stdout, stderr = run(
         [
             sys.executable,
             "-c",
-            "import os; print(os.environ['SCINOEPHILE_TEST_RUN_COMMAND_ENV'])",
+            "import os; print(os.environ['COMMON_TEST_RUN_COMMAND_ENV'])",
         ],
         env=env,
     )
@@ -159,7 +187,7 @@ def test_run_command_timeout():
     assert elapsed < 1.0
 
 
-@parametrize(
+@mark.parametrize(
     "payload, expected", [("Hello 世界".encode(), "Hello 世界"), (b"\xff", "ÿ")]
 )
 def test_output_decoding(
@@ -187,7 +215,7 @@ def test_live_timeout():
     assert monotonic() - start_time < 1.0
 
 
-@parametrize(
+@mark.parametrize(
     ("live", "parent_exits", "kill_tree"),
     [
         (False, False, True),
@@ -279,7 +307,7 @@ def test_timeout_cleans_up_inherited_pipes(
             assert heartbeat_path.read_text() != heartbeat
 
 
-@parametrize("live", [False, True])
+@mark.parametrize("live", [False, True])
 def test_capture_preserves_complete_output(live: bool):
     """Capture both streams beyond pipe-buffer sizes without truncation.
 

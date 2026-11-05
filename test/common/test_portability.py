@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 from textwrap import dedent
 
-from scinoephile.common import package_root
+from common import package_root
 
 
 def test_common_runs_in_another_project(tmp_path: Path):
@@ -36,7 +36,7 @@ def test_common_runs_in_another_project(tmp_path: Path):
         from pathlib import Path
 
         sys.path.insert(0, sys.argv[1])
-        assert importlib.util.find_spec("scinoephile") is None
+        assert importlib.util.find_spec("common") is None
 
         import portable_project.common as common
         for module in pkgutil.walk_packages(common.__path__, f"{common.__name__}."):
@@ -51,7 +51,7 @@ def test_common_runs_in_another_project(tmp_path: Path):
         )
         assert CommandLineInterface.argparser().parse_args([]).log_file is None
         assert float_arg(min_value=0)("1.5") == 1.5
-        assert "scinoephile" not in sys.modules
+        assert "common" not in sys.modules
         """
     )
     result = subprocess.run(

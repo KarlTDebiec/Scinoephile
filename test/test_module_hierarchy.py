@@ -208,6 +208,16 @@ def test_module_import_style_rules(tmp_path: Path):
             "common imports must not name the containing project",
         ),
         (
+            "common/cli/top_level_from.py",
+            "from common.validation import value\n",
+            "imports within common must be relative",
+        ),
+        (
+            "common/cli/top_level_import.py",
+            "import pathlib, common.validation as checks\n",
+            "imports within common must be relative",
+        ),
+        (
             "common/cli/project_alias.py",
             "from example import common\n",
             "common imports must not name the containing project",
@@ -594,21 +604,21 @@ def get_absolute_import_from_style_violations(
         violation descriptions
     """
     module_name = node.module
-    if module_name is None or not (
-        module_name == root_package_name
-        or module_name.startswith(f"{root_package_name}.")
-    ):
+    if module_name is None:
         return []
-
-    if current_package_parts[1:2] == ["common"]:
+    module_root = module_name.partition(".")[0]
+    inside_common = current_package_parts[1:2] == ["common"]
+    if inside_common and module_root in {root_package_name, "common"}:
+        reason = "common imports must not name the containing project"
+        if module_root == "common":
+            reason = "imports within common must be relative"
         return [
             format_import_style_violation(
-                file_path,
-                node,
-                "common imports must not name the containing project",
-                package_parent_path=package_parent_path,
+                file_path, node, reason, package_parent_path=package_parent_path
             )
         ]
+    if module_root != root_package_name:
+        return []
 
     current_package_name = ".".join(current_package_parts)
     if module_name.startswith(f"{current_package_name}."):
@@ -624,9 +634,7 @@ def get_absolute_import_from_style_violations(
     target_path = get_module_source_path(
         module_name, package_parent_path=package_parent_path
     )
-    if target_path is None:
-        return []
-    if target_path.name != "__init__.py":
+    if target_path is None or target_path.name != "__init__.py":
         return []
 
     target_module_parts = module_name.split(".")
@@ -692,22 +700,20 @@ def get_absolute_import_style_violations(
     """
     violations: list[str] = []
     current_package_name = ".".join(current_package_parts)
+    inside_common = current_package_parts[1:2] == ["common"]
     for alias in node.names:
-        if not (
-            alias.name == root_package_name
-            or alias.name.startswith(f"{root_package_name}.")
-        ):
-            continue
-
-        if current_package_parts[1:2] == ["common"]:
+        module_root = alias.name.partition(".")[0]
+        if inside_common and module_root in {root_package_name, "common"}:
+            reason = "common imports must not name the containing project"
+            if module_root == "common":
+                reason = "imports within common must be relative"
             violations.append(
                 format_import_style_violation(
-                    file_path,
-                    node,
-                    "common imports must not name the containing project",
-                    package_parent_path=package_parent_path,
+                    file_path, node, reason, package_parent_path=package_parent_path
                 )
             )
+            continue
+        if module_root != root_package_name:
             continue
 
         if alias.name.startswith(f"{current_package_name}."):

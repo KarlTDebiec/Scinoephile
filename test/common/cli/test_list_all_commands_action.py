@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from common.cli import CommandLineInterface, ListAllCommandsAction
 from pytest import MonkeyPatch, mark
-
-from scinoephile.common.cli import CommandLineInterface, ListAllCommandsAction
 
 
 class EmptyCli(CommandLineInterface):

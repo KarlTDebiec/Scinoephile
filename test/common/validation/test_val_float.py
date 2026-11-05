@@ -6,11 +6,9 @@ from __future__ import annotations
 
 from math import inf, isnan, nextafter
 
-from pytest import raises
-
-from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.common.validation import val_float
-from test.helpers import parametrize
+from common.exceptions import ArgumentConflictError
+from common.validation import val_float
+from pytest import mark, raises
 
 
 def test_val_float_exclusive_bounds():
@@ -37,7 +35,7 @@ def test_val_float_exclusive_bounds_require_values():
         val_float(1, max_exclusive=True)
 
 
-@parametrize("value", ["nan", "inf", "-inf"])
+@mark.parametrize("value", ["nan", "inf", "-inf"])
 def test_val_float_finite_constraint(value: str):
     """Reject non-finite scalars only when finite validation is requested.
 
@@ -76,7 +74,7 @@ def test_val_float_new_constraints_apply_to_iterables():
         val_float([0.5], n_values=2, finite=True)
 
 
-@parametrize(
+@mark.parametrize(
     ("value", "expected"),
     [(3.14, 3.14), ("3.14", 3.14), (-1.5, -1.5), (["1.0", "2.5"], [1.0, 2.5])],
 )

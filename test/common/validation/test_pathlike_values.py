@@ -7,7 +7,7 @@ from __future__ import annotations
 from os import PathLike
 from pathlib import Path
 
-from scinoephile.common.validation import (
+from common.validation import (
     val_child_path,
     val_input_dir_path,
     val_input_file_or_dir_path,

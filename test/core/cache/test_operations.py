@@ -18,7 +18,7 @@ from scinoephile.core.cache.operations import (
     get_cache_entries,
     get_cache_stats,
 )
-from test.helpers import create_symlink_or_skip
+from test.common.common_test_support import create_symlink_or_skip
 from test.helpers.files import set_mtime, write_cache_file
 
 

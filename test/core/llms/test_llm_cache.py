@@ -11,7 +11,8 @@ from pytest import MonkeyPatch, raises
 
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms.cache import LlmCache
-from test.helpers import create_symlink_or_skip, parametrize
+from test.common.common_test_support import create_symlink_or_skip
+from test.helpers import parametrize
 from test.helpers.files import set_mtime
 
 _CACHE_INPUTS: tuple[CacheIdentity, str, str, str] = (

@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from argparse import ArgumentTypeError
 
+from common.cli.argument_parsing import get_validator
 from pytest import raises
-
-from scinoephile.common.cli.argument_parsing import get_validator
 
 
 def test_get_validator_basic():

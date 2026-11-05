@@ -7,8 +7,7 @@ from __future__ import annotations
 from pathlib import PurePosixPath
 
 import pytest
-
-from scinoephile.common.archive import ZipMemberPaths
+from common.archive import ZipMemberPaths
 
 
 def test_normalization_and_shared_directories():

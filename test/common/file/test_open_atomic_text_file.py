@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from common.file import open_atomic_text_file
 from pytest import raises
-
-from scinoephile.common.file import open_atomic_text_file
 
 
 def test_open_atomic_text_file_replaces_output_on_success(tmp_path: Path):
