@@ -9,7 +9,7 @@ from datetime import timedelta
 from pathlib import Path
 
 from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_root_arg
-from scinoephile.common.argument_parsing import (
+from scinoephile.common.cli.argument_parsing import (
     duration_arg,
     get_arg_groups_by_name,
     int_arg,

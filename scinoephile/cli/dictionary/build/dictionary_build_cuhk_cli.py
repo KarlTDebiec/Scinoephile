@@ -13,7 +13,7 @@ from scinoephile.cli.helpers.cache import (
     CacheArguments,
     add_cache_args,
 )
-from scinoephile.common.argument_parsing import (
+from scinoephile.common.cli.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
     int_arg,

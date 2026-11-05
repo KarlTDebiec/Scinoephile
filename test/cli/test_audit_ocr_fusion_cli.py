@@ -11,7 +11,7 @@ from pytest import CaptureFixture, raises
 
 from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
-from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
+from scinoephile.common.cli.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
 
 

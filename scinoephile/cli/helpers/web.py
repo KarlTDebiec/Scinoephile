@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import _ArgumentGroup  # noqa: PLC2701
 from dataclasses import dataclass
 
-from scinoephile.common.argument_parsing import int_arg
+from scinoephile.common.cli.argument_parsing import int_arg
 
 from .argument_bundle_field_action import ArgumentBundleFieldAction
 

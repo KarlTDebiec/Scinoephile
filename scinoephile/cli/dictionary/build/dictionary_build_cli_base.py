@@ -11,7 +11,10 @@ from logging import getLogger
 from pathlib import Path
 from typing import ClassVar
 
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, output_file_arg
+from scinoephile.common.cli.argument_parsing import (
+    get_arg_groups_by_name,
+    output_file_arg,
+)
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.dictionaries import DictionarySource
 

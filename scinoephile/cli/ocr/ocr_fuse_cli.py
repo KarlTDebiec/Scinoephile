@@ -24,7 +24,7 @@ from scinoephile.cli.helpers.llms import (
     add_llm_test_case_json_arg,
     read_llm_additional_context,
 )
-from scinoephile.common.argument_parsing import (
+from scinoephile.common.cli.argument_parsing import (
     enum_arg,
     enum_metavar,
     get_arg_groups_by_name,

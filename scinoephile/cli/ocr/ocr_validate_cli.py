@@ -12,7 +12,7 @@ from scinoephile.cli.helpers.web import (
     WebServerArguments,
     add_web_server_args,
 )
-from scinoephile.common.argument_parsing import (
+from scinoephile.common.cli.argument_parsing import (
     get_arg_groups_by_name,
     output_dir_arg,
     output_file_arg,

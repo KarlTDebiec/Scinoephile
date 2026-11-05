@@ -8,7 +8,10 @@ from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
 
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
+from scinoephile.common.cli.argument_parsing import (
+    get_arg_groups_by_name,
+    input_file_arg,
+)
 from scinoephile.dictionaries.gzzj import GzzjDictionaryService
 from scinoephile.dictionaries.gzzj.constants import GZZJ_SOURCE
 

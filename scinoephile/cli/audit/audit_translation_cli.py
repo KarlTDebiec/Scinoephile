@@ -15,7 +15,10 @@ from scinoephile.analysis.audit.translation import (
 )
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
+from scinoephile.common.cli.argument_parsing import (
+    get_arg_groups_by_name,
+    input_file_arg,
+)
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_translation import GuidedTranslationManager

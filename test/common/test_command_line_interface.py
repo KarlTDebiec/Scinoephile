@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 from pytest import MonkeyPatch, raises
 
-from scinoephile.common.cli.command_line_interface import CommandLineInterface
+from scinoephile.common.cli import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from test import helpers
 from test.helpers import parametrize

@@ -6,8 +6,9 @@ This module should not import from other modules outside the standard library.
 
 Package hierarchy (modules may import from any above):
 * csv / described_enum / duration / exceptions / file / logs / subprocess
-* cli / validation
-* argument_parsing / testing
+* validation
+* cli
+* testing
 """
 
 from __future__ import annotations

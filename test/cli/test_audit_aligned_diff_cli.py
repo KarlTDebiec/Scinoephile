@@ -10,7 +10,7 @@ from pytest import CaptureFixture
 
 from scinoephile.analysis.audit.aligned_diff import AlignedDiffAuditFilter
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
-from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
+from scinoephile.common.cli.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
 
 

@@ -10,7 +10,7 @@ from pathlib import Path
 
 import requests
 
-from scinoephile.common.argument_parsing import get_arg_groups_by_name
+from scinoephile.common.cli.argument_parsing import get_arg_groups_by_name
 from scinoephile.dictionaries.kaifangcidian import KaifangcidianDictionaryService
 from scinoephile.dictionaries.kaifangcidian.constants import KAIFANGCIDIAN_SOURCE
 

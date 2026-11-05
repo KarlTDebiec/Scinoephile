@@ -3,7 +3,7 @@
 """Reusable command-line interface helpers.
 
 Package hierarchy (modules may import from any above):
-* command_line_interface
+* argument_parsing / command_line_interface
 * list_all_commands_action
 """
 

@@ -13,7 +13,7 @@ from scinoephile.analysis.audit.aligned_diff import (
 )
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import (
+from scinoephile.common.cli.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,

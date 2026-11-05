@@ -55,17 +55,6 @@ Package `__init__.py` files may expose deliberate public facades through
 the concrete dependency visible according to the rules in `STYLE.md`, allowing
 the hierarchy test to evaluate the real dependency graph.
 
-The reusable CLI implementation belongs to
-`common.cli.command_line_interface`, exposed by the owning `common.cli` package.
-Callers import the class from that package or its implementation module.
-Validator keyword-argument `TypedDict` definitions belong to `common.validation`,
-alongside the validators they describe; `common.argument_parsing` consumes those
-definitions through the validation module for its argparse adapters.
-
-Within `common`, CLI helpers and validation are independent peers above argument
-parsing and testing utilities. CLI helpers depend only on the earlier shared
-utilities, while testing utilities may use the CLI implementation directly.
-
 ## Command-line interface
 
 The console entry point is declared in [`pyproject.toml`](../pyproject.toml).
