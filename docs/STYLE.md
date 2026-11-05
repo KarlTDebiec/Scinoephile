@@ -190,7 +190,3 @@
 ## Documentation
 * Follow [`DOCUMENTATION.md`](DOCUMENTATION.md) for documentation coverage,
   formatting, sections, and decorator-specific exemptions.
-
-## Web interfaces
-
-For HTML, CSS, JavaScript, and local web applications, follow [WEB.md](WEB.md).

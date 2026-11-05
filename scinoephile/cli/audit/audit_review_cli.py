@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser, RawDescriptionHelpFormatter, _SubParsersAction
+from argparse import ArgumentParser
 from typing import Any
 
 from scinoephile.common.cli import CommandLineInterface
@@ -12,7 +12,6 @@ from scinoephile.core.cli import ScinoephileCliBase
 
 from .audit_review_report_cli import AuditReviewReportCli
 from .audit_review_serve_cli import AuditReviewServeCli
-from .review_argument_parser import ReviewArgumentParser
 
 __all__ = ["AuditReviewCli"]
 
@@ -42,33 +41,11 @@ class AuditReviewCli(ScinoephileCliBase):
             parser: nascent review command parser
         """
         super().add_arguments_to_argparser(parser)
-        if isinstance(parser, ReviewArgumentParser):
-            parser.default_review_report = True
         subparsers = parser.add_subparsers(
             dest="review_subcommand_name", help="subcommand", required=True
         )
         for command in cls.subcommands().values():
             command.argparser(subparsers=subparsers)
-
-    @classmethod
-    def argparser(
-        cls, *, subparsers: _SubParsersAction | None = None
-    ) -> ArgumentParser:
-        """Build a parser supporting legacy report invocations.
-
-        Arguments:
-            subparsers: optional parent command collection
-        Returns:
-            localized review command parser
-        """
-        if subparsers is not None:
-            return super().argparser(subparsers=subparsers)
-        parser = ReviewArgumentParser(
-            description=cls.description(), formatter_class=RawDescriptionHelpFormatter
-        )
-        cls.add_arguments_to_argparser(parser)
-        cls.localize_parser(parser)
-        return parser
 
     @classmethod
     def name(cls) -> str:

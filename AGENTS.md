@@ -73,7 +73,3 @@ issues and pull requests.
 * To reproduce order-sensitive failures, run tests serially:
   * `cd test && UV_CACHE_DIR=/tmp/uv-cache uv run pytest`
 * You may run pytest with a timeout of up to 10 minutes without asking the user.
-
-## Web interfaces
-
-Review [docs/WEB.md](docs/WEB.md) before editing web templates or browser assets.

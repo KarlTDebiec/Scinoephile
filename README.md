@@ -9,6 +9,9 @@ Scinoephile is a package for working with Chinese/English bilingual subtitles, w
 focus on combining separate Chinese and English subtitles into synchronized bilingual
 subtitles.
 
+See the [audit editor quickstart](docs/AUDIT_WEB.md) to proofread and audit subtitles
+in a local browser.
+
 ## Notices
 
 Third-party license and data-source acknowledgements are listed in

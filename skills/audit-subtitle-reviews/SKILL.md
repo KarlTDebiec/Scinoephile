@@ -37,8 +37,8 @@ and write each independent judgment in its `Notes` cell.
 
 | Available inputs | Command |
 |---|---|
-| One original/reviewed pair | `audit review --reviewed` |
-| Target, guide, and guided-review JSON | `audit review --guide` |
+| One original/reviewed pair | `audit review report --reviewed` |
+| Target, guide, and guided-review JSON | `audit review report --guide` |
 | Hant review plus review of its simplified form | `audit review-trad` |
 | Parallel Hans and Hant-to-Hans paths | `audit review-dual` |
 
@@ -74,7 +74,7 @@ Always set `UV_CACHE_DIR=/tmp/uv-cache`.
 Regular review:
 
 ```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
+UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review report \
   --original <original.srt> \
   --reviewed <reviewed.srt> \
   --json <review.json> \
@@ -87,7 +87,7 @@ The JSON is optional for regular review unless using `--filter unverified`.
 Guided review:
 
 ```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
+UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review report \
   --original <target.srt> \
   --guide <guide.srt> \
   --json <guided-review.json> \

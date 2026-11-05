@@ -606,7 +606,8 @@ class AuditSession:
             rerun: back up and replace existing proofreading from current OCR
             settings: effective run settings and decision-reuse provenance
         Raises:
-            ValueError: if the run lost its reservation or project files changed
+            ValueError: if the run lost its reservation, files changed, or the
+                new output cannot be saved as SRT
             ScinoephileError: if publishing files or progress fails
         """
         with self._lock, closing(sqlite3.connect(self.state_path)) as db:
@@ -747,7 +748,7 @@ class AuditSession:
         verified: bool,
         version: int,
     ) -> set[str]:
-        """Save edited subtitles and optional native JSON with stale-write checks.
+        """Save proofreading and audit progress with stale-write checks.
 
         Arguments:
             key: immutable source-row identity
@@ -795,27 +796,37 @@ class AuditSession:
                         "This row changed in another tab. Reload before saving."
                     )
                 self._check_file_fingerprints()
-                updated, decisions = self._prepare_edit(
-                    rows, current, reviewed, review_note
+                proofreading_changed = (
+                    not self.outfile_path.exists()
+                    or reviewed != current.reviewed
+                    or review_note != current.review_note
                 )
-                affected = {row.key for row in updated if row != rows[row.index - 1]}
-                affected.add(key)
-                for row in updated:
-                    if row.key not in affected:
-                        continue
-                    saved = replace(
+                if proofreading_changed:
+                    updated, decisions = self._prepare_edit(
+                        rows, current, reviewed, review_note
+                    )
+                else:
+                    updated, decisions = rows, self.decisions
+                affected = {
+                    row.key: replace(
                         row, verified=False, finding=AuditStatus.unaudited, notes=""
                     )
-                    if row.key == key:
-                        saved = replace(
-                            saved, notes=notes, finding=finding, verified=verified
-                        )
-                    db.execute(
-                        "INSERT INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?) "
-                        "ON CONFLICT(key) DO UPDATE SET reviewed=excluded.reviewed, "
-                        "review_note=excluded.review_note, notes=excluded.notes, "
-                        "finding=excluded.finding, verified=excluded.verified, "
-                        "version=excluded.version",
+                    for row in updated
+                    if row != rows[row.index - 1]
+                }
+                affected[key] = replace(
+                    updated[current.index - 1],
+                    notes=notes,
+                    finding=finding,
+                    verified=verified,
+                )
+                db.executemany(
+                    "INSERT INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?) "
+                    "ON CONFLICT(key) DO UPDATE SET reviewed=excluded.reviewed, "
+                    "review_note=excluded.review_note, notes=excluded.notes, "
+                    "finding=excluded.finding, verified=excluded.verified, "
+                    "version=excluded.version",
+                    [
                         (
                             saved.key,
                             saved.reviewed,
@@ -824,9 +835,12 @@ class AuditSession:
                             saved.finding,
                             int(saved.verified),
                             saved.version + 1,
-                        ),
-                    )
-                originals = self._write_files(updated, decisions)
+                        )
+                        for saved in affected.values()
+                    ],
+                )
+                if proofreading_changed:
+                    originals = self._write_files(updated, decisions)
                 db.commit()
             except (OSError, sqlite3.Error) as exc:
                 db.rollback()
@@ -837,7 +851,7 @@ class AuditSession:
             self._rows = updated
             self._rows_by_key = {row.key: row for row in updated}
             self._fingerprints = self._file_fingerprints()
-            return affected
+            return set(affected)
 
     def verification_token(self, filters: AuditFilters) -> str:
         """Identify the full filtered selection, including unloaded subtitles.
@@ -1078,6 +1092,8 @@ class AuditSession:
             note: new revision explanation
         Returns:
             candidate rows and optional native decision log
+        Raises:
+            ValueError: if starting a decision log would change existing subtitles
         """
         decisions = self.decisions
         if decisions is None:
@@ -1092,6 +1108,12 @@ class AuditSession:
             for row in rows:
                 if row.changed:
                     decisions.edit(row.index - 1, row.reviewed, row.review_note)
+            seeded_texts, _ = decisions.render()
+            if seeded_texts != [row.reviewed for row in rows]:
+                raise ValueError(
+                    "Existing corrections differ across linked subtitles. "
+                    "Open the editor without --json to keep those corrections."
+                )
         decisions.edit(current.index - 1, text, note)
         texts, revision_notes = decisions.render()
         return [
@@ -1150,6 +1172,7 @@ class AuditSession:
         Returns:
             original file contents for rollback if the database commit fails
         Raises:
+            ValueError: if the output cannot round-trip through SRT
             BaseException: if writing fails, after restoring replaced files
         """
         if source is None:
@@ -1157,7 +1180,16 @@ class AuditSession:
         output = deepcopy(source)
         for subtitle, row in zip(output, rows, strict=True):
             subtitle.text = row.reviewed.replace("\n", "\\N")
-        writes = {self.outfile_path: output.to_string("srt")}
+        content = output.to_string("srt")
+        reloaded = Series.from_string(content, format_="srt")
+        if [(s.start, s.end, s.text_with_newline) for s in reloaded] != [
+            (row.start, row.end, row.reviewed) for row in rows
+        ]:
+            raise ValueError(
+                "Subtitle text cannot be saved unchanged in SRT. "
+                "Remove leading or trailing whitespace and SRT control sequences."
+            )
+        writes = {self.outfile_path: content}
         if decisions is not None and self.json_path is not None:
             writes[self.json_path] = decisions.serialize()
         originals: dict[Path, bytes | None] = {p: None for p in writes}

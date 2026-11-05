@@ -183,6 +183,63 @@ def test_start_without_json_and_create_optional_json_on_save(tmp_path: Path):
     assert [r.reviewed for r in loaded.rows()] == ["Edited manually.", "Also edited."]
 
 
+def test_saving_an_audit_verdict_preserves_distinct_existing_corrections(
+    tmp_path: Path,
+):
+    """Keep independently edited repeats when opening output with a new JSON path.
+
+    Arguments:
+        tmp_path: temporary project directory
+    """
+    infile_path = tmp_path / "original.srt"
+    outfile_path = tmp_path / "reviewed.srt"
+    json_path = tmp_path / "review.json"
+    source = (
+        "1\n00:00:00,000 --> 00:00:01,000\nSame line.\n\n"
+        "2\n00:00:07,000 --> 00:00:08,000\nSame line.\n\n"
+        "3\n00:00:14,000 --> 00:00:15,000\nUnrelated.\n"
+    )
+    infile_path.write_text(source, encoding="utf-8")
+    first, second, rest = source.split("Same line.")
+    outfile_path.write_text(
+        f"{first}First saved version.{second}Second saved version.{rest}",
+        encoding="utf-8",
+    )
+    before = outfile_path.read_bytes()
+    audit = AuditSession(
+        infile_path, outfile_path, json_path=json_path, language=Language.eng
+    )
+    row = audit.rows()[2]
+    audit.save(
+        row.key,
+        reviewed=row.reviewed,
+        review_note=row.review_note,
+        notes="",
+        finding="ok",
+        verified=True,
+        version=row.version,
+    )
+    assert audit.rows()[2].verified
+    assert outfile_path.read_bytes() == before
+    assert not json_path.exists()
+
+    with raises(
+        ValueError, match="Existing corrections differ across linked subtitles"
+    ):
+        audit.save(
+            row.key,
+            reviewed="Third correction.",
+            review_note="Manual",
+            notes="",
+            finding="ok",
+            verified=False,
+            version=audit.rows()[2].version,
+        )
+    assert outfile_path.read_bytes() == before
+    assert not json_path.exists()
+    assert audit.rows()[2].verified and audit.rows()[2].reviewed == "Unrelated."
+
+
 def test_rejects_aliases_bad_output_and_external_edits(tmp_path: Path):
     """Reject unsafe paths and externally changed files rather than overwriting.
 
@@ -407,7 +464,7 @@ def test_review_serve_cli_accepts_subtitles_and_optional_json(
         "scinoephile.cli.audit.audit_review_serve_cli.serve_audit", fake_serve
     )
     arguments = (
-        f'audit review serve --infile "{audit.infile_path}" '
+        f'audit review -v serve --infile "{audit.infile_path}" '
         f'--outfile "{audit.outfile_path}" --language eng --port 5038'
     )
     run_cli_with_args(ScinoephileCli, arguments)
@@ -524,6 +581,40 @@ def test_historical_queries_and_multiline_edits_round_trip(tmp_path: Path):
     )
     assert restored.rows()[0].reviewed == "第一行。\nSecond line."
     assert restored.rows()[0].verified
+
+
+@mark.parametrize("reviewed", ["New text ", "New text\n", r"First line\NSecond line"])
+def test_rejects_edits_that_cannot_round_trip_in_srt(tmp_path: Path, reviewed: str):
+    """Keep the SRT and JSON in agreement after rejecting lossy text.
+
+    Arguments:
+        tmp_path: temporary project directory
+        reviewed: text that the SRT serializer would change
+    """
+    audit = _materialize_output(_make_session(tmp_path))
+    assert audit.json_path is not None
+    paths = [audit.outfile_path, audit.json_path]
+    before = [path.read_bytes() for path in paths]
+    row = audit.rows()[0]
+    with raises(ValueError, match="cannot be saved unchanged in SRT"):
+        audit.save(
+            row.key,
+            reviewed=reviewed,
+            review_note="Manual",
+            notes="",
+            finding="ok",
+            verified=True,
+            version=row.version,
+        )
+    assert [path.read_bytes() for path in paths] == before
+    restored = AuditSession(
+        audit.infile_path,
+        audit.outfile_path,
+        json_path=audit.json_path,
+        language=audit.language,
+    )
+    assert restored.rows()[0].reviewed == row.reviewed
+    assert restored.rows()[0].version == row.version
 
 
 def test_blocks_follow_json_requests_and_keep_filtered_context(tmp_path: Path):
