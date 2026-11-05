@@ -115,7 +115,7 @@ class VoiceActivityCache:
                 )
                 if trace.duration_ms != len(audio):
                     raise ValueError("cache duration does not match source audio")
-        except (BadZipFile, KeyError, OSError, TypeError, ValueError) as exc:
+        except (BadZipFile, EOFError, KeyError, OSError, TypeError, ValueError) as exc:
             remove_cache_artifact(cache_path)
             logger.warning(
                 f"Discarded invalid voice activity trace cache {cache_path}: {exc}"
