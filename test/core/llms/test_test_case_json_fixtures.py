@@ -7,10 +7,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from pydantic import JsonValue, TypeAdapter
 from pytest import mark
 
 from scinoephile.core import Language
-from scinoephile.core.llms import Manager
+from scinoephile.core.llms import Manager, TestCase
 from scinoephile.core.llms.utils import (
     load_test_cases_from_json,
     save_test_cases_to_json,
@@ -80,32 +81,54 @@ def _localize_prompt_text(text: str) -> str:
         for input_path, _ in _TEST_CASE_FILES
     ],
 )
-def test_tracked_test_case_json_round_trips_canonically(
+def test_tracked_test_case_json_is_valid_and_round_trips(
     input_path: Path, manager_cls: type[Manager], tmp_path: Path
 ):
-    """Tracked JSON should round-trip canonically through localized models.
+    """Validate every fixture and round-trip representative localized cases.
 
     Arguments:
         input_path: path to the tracked JSON fixture
         manager_cls: operation manager used to validate the fixture
         tmp_path: temporary output directory
     """
-    raw_test_cases = json.loads(input_path.read_text(encoding="utf-8"))
+    raw_test_cases = TypeAdapter(list[dict[str, JsonValue]]).validate_json(
+        input_path.read_text(encoding="utf-8"), strict=True
+    )
+    assert raw_test_cases
+    base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
+
+    # Validate the entire corpus once, including expensive transcription consensus
+    representatives: dict[bool, TestCase] = {}
+    for raw_test_case in raw_test_cases:
+        test_case = base_test_case_cls.model_validate(
+            raw_test_case,
+            by_alias=True,
+            by_name=False,
+            strict=True,
+            extra="forbid",
+            context={"alias_only": True},
+        )
+        representatives.setdefault(test_case.answer is not None, test_case)
+
+    # Alias conversion needs answered and unanswered cases, not every movie line
+    base_test_cases = list(representatives.values())
+    canonical_data = [
+        test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)
+        for test_case in base_test_cases
+    ]
+    sample_path = tmp_path / "sample.json"
+    sample_path.write_text(json.dumps(canonical_data), encoding="utf-8")
     localized_prompt = manager_cls.base_prompt.transformed(
         Language.zho_hans, _localize_prompt_text
     )
     localized_test_cases = load_test_cases_from_json(
-        input_path, manager_cls, prompt=localized_prompt
+        sample_path, manager_cls, prompt=localized_prompt
     )
     assert localized_test_cases
 
-    base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
-    base_test_cases = []
-    for raw_test_case, localized_test_case in zip(
-        raw_test_cases, localized_test_cases, strict=True
+    for base_test_case, localized_test_case in zip(
+        base_test_cases, localized_test_cases, strict=True
     ):
-        base_test_case = base_test_case_cls.model_validate(raw_test_case)
-        base_test_cases.append(base_test_case)
         round_tripped_test_case = base_test_case_cls.model_validate(
             localized_test_case.model_dump(mode="json")
         )
@@ -114,10 +137,6 @@ def test_tracked_test_case_json_round_trips_canonically(
     output_path = tmp_path / input_path.name
     save_test_cases_to_json(output_path, localized_test_cases, manager_cls)
     saved_data = json.loads(output_path.read_text(encoding="utf-8"))
-    canonical_data = [
-        test_case.model_dump(mode="json", by_alias=True, exclude_defaults=True)
-        for test_case in base_test_cases
-    ]
     assert saved_data == canonical_data
 
     reloaded_test_cases = load_test_cases_from_json(

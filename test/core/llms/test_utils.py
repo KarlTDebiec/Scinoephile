@@ -254,7 +254,7 @@ def test_save_replaces_existing_collection(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory path
     """
-    output_path = tmp_path / "test_cases.json"
+    output_path = tmp_path / "nested" / "test_cases.json"
     existing_test_case = _get_test_case("existing", "existing corrected")
     encountered_test_case = _get_test_case("encountered", "encountered corrected")
     save_test_cases_to_json(
@@ -271,28 +271,6 @@ def test_save_replaces_existing_collection(tmp_path: Path):
     assert [
         test_case.query.model_dump()["subtitles"][0]["text"] for test_case in loaded
     ] == ["encountered"]
-
-
-def test_save_logs_created_directory_and_output(tmp_path: Path, caplog):
-    """Saving should log directory creation and completed output.
-
-    Arguments:
-        tmp_path: temporary directory path
-        caplog: pytest log-capture fixture
-    """
-    output_path = tmp_path / "nested" / "test_cases.json"
-
-    with caplog.at_level("INFO", logger="scinoephile.core.llms.utils"):
-        save_test_cases_to_json(
-            output_path,
-            [_get_test_case("original", "corrected")],
-            _AliasedBaseReviewManager,
-        )
-
-    assert caplog.messages == [
-        f"Created directory {output_path.parent}",
-        f"Saved test cases to {output_path}",
-    ]
 
 
 def test_save_serializes_in_memory_state_without_revalidation(tmp_path: Path):

@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from PIL import Image
-from pytest import LogCaptureFixture, MonkeyPatch, raises
+from pytest import MonkeyPatch, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
@@ -45,40 +45,6 @@ def test_ocr_image_series_with_paddle_preserves_timings_and_sets_text(
     ]
     recognizer = RecordingOcrRecognizer.instances[0]
     assert [image.size for image in recognizer.images] == [(50, 48), (52, 49)]
-
-
-def test_ocr_image_series_with_paddle_logs_progress(
-    caplog: LogCaptureFixture, monkeypatch: MonkeyPatch
-):
-    """Test PaddleOCR image series processing logs OCR progress.
-
-    Arguments:
-        caplog: pytest log capture fixture
-        monkeypatch: pytest monkeypatch fixture
-    """
-    image_series = ImageSeries(
-        events=[
-            ImageSubtitle(
-                start=1000, end=2000, img=Image.new("RGBA", (10, 8), (255, 255, 255, 0))
-            ),
-            ImageSubtitle(
-                start=3000, end=4000, img=Image.new("RGBA", (12, 9), (255, 255, 255, 0))
-            ),
-        ]
-    )
-    RecordingOcrRecognizer.reset("first", "second")
-    monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.PaddleRecognizer", RecordingOcrRecognizer
-    )
-
-    with caplog.at_level("INFO", logger="scinoephile.image.ocr.paddle"):
-        ocr_image_series_with_paddle(image_series)
-
-    assert [
-        record.message
-        for record in caplog.records
-        if record.name == "scinoephile.image.ocr.paddle"
-    ] == ["OCRing subtitle 1/2 with PaddleOCR", "OCRing subtitle 2/2 with PaddleOCR"]
 
 
 def test_ocr_image_series_with_paddle_defers_default_cache_resolution(

@@ -4,68 +4,65 @@
 
 from __future__ import annotations
 
-from pytest import raises
+from pytest import mark, raises
 
 from scinoephile.common.validation import val_str
 
 
-def test_val_str_valid():
-    """Test validation of valid string."""
-    assert val_str("option1", ["option1", "option2", "option3"]) == "option1"
-    assert val_str("option2", ["option1", "option2", "option3"]) == "option2"
+@mark.parametrize(
+    ("value", "options", "message"),
+    [
+        (
+            "invalid",
+            ["option1", "option2"],
+            "'invalid' is not one of the supported values: option1, option2",
+        ),
+        (None, ["option1", "option2"], "'none' is not one of the supported values"),
+        ("any", [], "'any' is not one of the supported values: $"),
+    ],
+    ids=["unknown", "none-input", "empty-options"],
+)
+def test_val_str_rejects_unknown_choice(
+    value: str | None, options: list[str], message: str
+):
+    """Reject values outside the allowed choices, including an empty choice set.
 
-
-def test_val_str_case_insensitive():
-    """Test case-insensitive validation."""
-    assert val_str("OPTION1", ["option1", "option2"]) == "option1"
-    assert val_str("Option1", ["option1", "option2"]) == "option1"
-    assert val_str("option1", ["OPTION1", "OPTION2"]) == "OPTION1"
-
-
-def test_val_str_invalid_option():
-    """Test validation with invalid option."""
-    with raises(
-        ValueError,
-        match="'invalid' is not one of the supported values: option1, option2",
-    ):
-        val_str("invalid", ["option1", "option2"])
-
-
-def test_val_str_from_int():
-    """Test validation of string from int."""
-    assert val_str(1, ["1", "2", "3"]) == "1"
-
-
-def test_val_str_invalid_type():
-    """Test validation with None value that gets cast to string.
-
-    Note: None is cast to string "None", which becomes "none" when lowercased.
-    This doesn't match any of the provided options, so ValueError is raised.
+    Arguments:
+        value: invalid candidate value
+        options: allowed choices
+        message: expected diagnostic fragment
     """
-    with raises(
-        ValueError, match="'none' is not one of the supported values: option1, option2"
-    ):
-        val_str(None, ["option1", "option2"])
+    with raises(ValueError, match=message):
+        val_str(value, options)
 
 
-def test_val_str_empty_options():
-    """Test validation with empty options list."""
-    with raises(ValueError, match="'any' is not one of the supported values: $"):
-        val_str("any", [])
+@mark.parametrize(
+    ("value", "options", "expected"),
+    [
+        ("option2", ["option1", "option2"], "option2"),
+        ("Option1", ["option1", "option2"], "option1"),
+        ("option1", ["OPTION1", "OPTION2"], "OPTION1"),
+        (1, ["1", "2"], "1"),
+        ("NONE", [None, "option2"], "None"),
+        ("ONLY", ["only"], "only"),
+    ],
+    ids=[
+        "membership",
+        "case-insensitive",
+        "canonical-case",
+        "integer",
+        "none-option",
+        "single-option",
+    ],
+)
+def test_val_str_returns_canonical_choice(
+    value: str | int, options: list[str | None], expected: str
+):
+    """Normalize input and return the matching option's string representation.
 
-
-def test_val_str_single_option():
-    """Test validation with single option."""
-    assert val_str("only", ["only"]) == "only"
-    assert val_str("ONLY", ["only"]) == "only"
-
-
-def test_val_str_invalid_option_type():
-    """Test validation with None in options list.
-
-    Note: None is cast to string "None", which becomes "none" when lowercased.
-    The function performs case-insensitive matching, so "none", "None", and
-    "NONE" all match the "None" option.
+    Arguments:
+        value: candidate value
+        options: allowed choices before string conversion
+        expected: canonical string for the matching choice
     """
-    assert val_str("none", [None, "option2"]) == "None"
-    assert val_str("NONE", [None, "option2"]) == "None"
+    assert val_str(value, options) == expected
