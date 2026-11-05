@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of common.command_line_interface."""
+"""Tests of common.cli.command_line_interface."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 from pytest import MonkeyPatch, raises
 
-from scinoephile.common.command_line_interface import CommandLineInterface
+from scinoephile.common.cli import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from test import helpers
 from test.helpers import parametrize
@@ -206,10 +206,11 @@ def test_argparser_with_subparsers():
 def test_log_command_line():
     """Test log_command_line() logs the command line."""
     with patch(
-        "scinoephile.common.command_line_interface.argv", ["script.py", "arg1", "arg2"]
+        "scinoephile.common.cli.command_line_interface.argv",
+        ["script.py", "arg1", "arg2"],
     ):
         with patch(
-            "scinoephile.common.command_line_interface.logger.info"
+            "scinoephile.common.cli.command_line_interface.logger.info"
         ) as mock_info:
             TestCli.log_command_line()
             mock_info.assert_called_once()
@@ -235,7 +236,7 @@ def test_main_explicit_arguments(arguments: Sequence[str]):
     with patch("sys.argv", ["test_script.py", "--invalid-process-option"]):
         with patch.object(TestCli, "_main") as mock_main:
             with patch(
-                "scinoephile.common.command_line_interface.configure_logging"
+                "scinoephile.common.cli.command_line_interface.configure_logging"
             ) as mock_logging:
                 TestCli.main(arguments)
 

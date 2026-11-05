@@ -10,7 +10,7 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.cli.helpers.io import read_series, validate_series_output, write_series
-from scinoephile.common.argument_parsing import (
+from scinoephile.common.cli.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,

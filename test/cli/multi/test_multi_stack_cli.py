@@ -11,7 +11,7 @@ from pathlib import Path
 from pytest import raises
 
 from scinoephile.cli.multi.multi_stack_cli import MultiStackCli, StackSyncMode
-from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
+from scinoephile.common.cli.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
 from test.helpers import assert_series_equal, parametrize

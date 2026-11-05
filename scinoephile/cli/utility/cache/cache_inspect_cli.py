@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Literal
 
 from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_root_arg
-from scinoephile.common.argument_parsing import duration_arg, get_arg_groups_by_name
+from scinoephile.common.cli.argument_parsing import duration_arg, get_arg_groups_by_name
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import get_cache_entries, get_cache_stats
 from scinoephile.core.cli import ScinoephileCliBase

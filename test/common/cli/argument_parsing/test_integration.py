@@ -1,13 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of common.argument_parsing."""
+"""Tests of common.cli.argument_parsing."""
 
 from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.common.argument_parsing import input_file_arg, int_arg
+from scinoephile.common.cli.argument_parsing import input_file_arg, int_arg
 
 
 def test_validators_in_argparse(tmp_path: Path):

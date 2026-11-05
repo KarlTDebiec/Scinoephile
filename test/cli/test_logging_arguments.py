@@ -140,10 +140,10 @@ def test_nested_main_uses_parent_logging_options(tmp_path: Path):
     log_file_path = tmp_path / "root.log"
     with patch.object(MediaProbeCli, "_main") as mock_main:
         with patch(
-            "scinoephile.common.command_line_interface.configure_logging"
+            "scinoephile.common.cli.command_line_interface.configure_logging"
         ) as mock_logging:
             with patch(
-                "scinoephile.common.command_line_interface.getLogger"
+                "scinoephile.common.cli.command_line_interface.getLogger"
             ) as mock_get_logger:
                 mock_get_logger.return_value.level = 10
                 ScinoephileCli.main(

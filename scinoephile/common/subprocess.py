@@ -181,7 +181,7 @@ def _collect_output(
                 target=_read_stream,
                 args=(stream, chunks, stop_event),
                 kwargs={"live": live},
-                name=f"scinoephile-reader-{label}-{child.pid}",
+                name=f"subprocess-reader-{label}-{child.pid}",
                 daemon=True,
             )
             reader.start()

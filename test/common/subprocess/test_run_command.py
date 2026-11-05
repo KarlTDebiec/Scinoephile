@@ -212,7 +212,7 @@ def test_timeout_cleans_up_inherited_pipes(
         assert "descendant error" in stderr, diagnostic
         assert heartbeat_path.exists(), diagnostic
         assert not any(
-            thread.name.startswith("scinoephile-reader-")
+            thread.name.startswith("subprocess-reader-")
             for thread in enumerate_threads()
         )
         heartbeat = heartbeat_path.read_text()
