@@ -17,13 +17,10 @@
 {% if row.concern is none %}
 {% elif row.concern.kind == "char-dims" %}
    <form
-      action="/subtitles/{{ row.sub_idx }}/concern/char"
-      method="post"
       hx-post="/subtitles/{{ row.sub_idx }}/concern/char"
       hx-target="#subtitle-{{ row.sub_idx }}"
       hx-swap="outerHTML"
    >
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
       <input type="hidden" name="n_bboxes" value="{{ row.concern.n_bboxes }}" />
       <table>
          <thead>
@@ -60,13 +57,10 @@
    </form>
 {% elif row.concern.kind == "space-gap" or row.concern.kind == "tab-gap" %}
    <form
-      action="/subtitles/{{ row.sub_idx }}/concern/gap"
-      method="post"
       hx-post="/subtitles/{{ row.sub_idx }}/concern/gap"
       hx-target="#subtitle-{{ row.sub_idx }}"
       hx-swap="outerHTML"
    >
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
       <table>
          <thead>
             <tr>

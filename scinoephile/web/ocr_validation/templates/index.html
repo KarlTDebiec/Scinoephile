@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" hx-headers='{{ {"X-CSRF-Token": session.csrf_token}|tojson }}'>
 <head>
    <meta charset="UTF-8" />
    <title>OCR validation</title>

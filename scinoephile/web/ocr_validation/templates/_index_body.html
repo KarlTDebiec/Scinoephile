@@ -3,14 +3,11 @@
 {% endfor %}
 <div class="validation-controls">
    <form
-      action="/filters/done"
-      method="post"
       class="filter-toggle"
       hx-post="/filters/done"
       hx-target="body"
       hx-swap="innerHTML"
    >
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
       {% if include_done_subtitles %}
          <input type="hidden" name="include_done_subtitles" value="0" />
          <button
@@ -28,13 +25,10 @@
       {% endif %}
    </form>
    <form
-      action="/exit"
-      method="post"
       hx-post="/exit"
       hx-target="body"
       hx-swap="innerHTML"
    >
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
       <button type="submit">Exit Validation</button>
    </form>
 </div>

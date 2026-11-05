@@ -34,7 +34,7 @@ def test_index_renders_subtitle_list(tmp_path: Path):
     response = app.test_client().get("/")
 
     assert response.status_code == 200
-    assert b'<html lang="en">' in response.data
+    assert b'<html lang="en"' in response.data
     assert b"https://unpkg.com/htmx.org" not in response.data
     assert b'src="/static/htmx.min.js"' in response.data
     assert b'class="subtitle"' in response.data

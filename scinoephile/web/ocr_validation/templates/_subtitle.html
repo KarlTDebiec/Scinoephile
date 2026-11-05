@@ -20,28 +20,17 @@
                loading="eager"
             />
          {% endif %}
-         <form
-            action="/subtitles/{{ row.sub_idx }}/text"
-            method="post"
+         <textarea
+            id="subtitle-text-{{ row.sub_idx }}"
+            name="text-{{ row.sub_idx }}"
+            autocomplete="off"
+            rows="1"
             hx-post="/subtitles/{{ row.sub_idx }}/text"
+            hx-trigger="blur changed"
             hx-target="#subtitle-{{ row.sub_idx }}"
             hx-swap="outerHTML"
-         >
-            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-            <textarea
-               id="subtitle-text-{{ row.sub_idx }}"
-               name="text-{{ row.sub_idx }}"
-               autocomplete="off"
-               rows="1"
-               hx-post="/subtitles/{{ row.sub_idx }}/text"
-               hx-trigger="blur changed"
-               hx-include="closest form"
-               hx-target="#subtitle-{{ row.sub_idx }}"
-               hx-swap="outerHTML"
-               wrap="off"
-            >{{ row.text.replace("\\N", "\n") }}</textarea>
-            <button type="submit">Save text</button>
-         </form>
+            wrap="off"
+         >{{ row.text.replace("\\N", "\n") }}</textarea>
       </figure>
       {% include "_concern.html" %}
    </div>

@@ -45,7 +45,6 @@ def create_local_app(
     app = flask.Flask(name, static_folder=str(static_dir_path))
     app.config.update(
         SECRET_KEY=token_hex(32),
-        MAX_CONTENT_LENGTH=65536,
         TRUSTED_HOSTS=trusted_hosts,
         SESSION_COOKIE_NAME=f"scinoephile_{token_hex(8)}",
         SESSION_COOKIE_HTTPONLY=True,
@@ -59,13 +58,11 @@ def create_local_app(
         origin = request.headers.get("Origin")
         if origin and origin != request.host_url.rstrip("/"):
             flask.abort(403)
-        if request.headers.get("Sec-Fetch-Site") == "cross-site":
+        if request.headers.get("Sec-Fetch-Site") in {"cross-site", "same-site"}:
             flask.abort(403)
         if request.method not in {"GET", "HEAD", "OPTIONS"}:
             expected = flask.session.get("csrf_token", "")
-            supplied = request.headers.get("X-CSRF-Token") or request.form.get(
-                "csrf_token", ""
-            )
+            supplied = request.headers.get("X-CSRF-Token", "")
             if not expected or not compare_digest(
                 expected.encode("utf-8"), supplied.encode("utf-8")
             ):
