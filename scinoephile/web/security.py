@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from secrets import compare_digest, token_hex
 from typing import TYPE_CHECKING
 
 from scinoephile.core.dependencies.web import import_flask
@@ -19,12 +18,11 @@ __all__ = ["create_local_app"]
 def create_local_app(
     name: str, static_dir_path: Path, *, host: str = "127.0.0.1"
 ) -> FlaskApp:
-    """Create an authoring app with trusted hosts and session-bound mutation tokens.
+    """Create a local app with trusted hosts and HTMX-only editing requests.
 
     Loopback names and the explicit bind host are trusted. Wildcard binds retain
-    loopback access without trusting arbitrary Host headers. Templates retain Flask's
-    default location beneath the caller's application package.
-    Each server uses a separate cookie name because browser cookies ignore ports.
+    loopback access without trusting arbitrary Host headers. Requiring HTMX's custom
+    header prevents foreign forms from editing data while CORS remains disabled.
 
     Arguments:
         name: Flask application import name used to locate domain templates
@@ -43,31 +41,22 @@ def create_local_app(
             trusted_host = f"[{host}]"
         trusted_hosts.append(trusted_host)
     app = flask.Flask(name, static_folder=str(static_dir_path))
-    app.config.update(
-        SECRET_KEY=token_hex(32),
-        TRUSTED_HOSTS=trusted_hosts,
-        SESSION_COOKIE_NAME=f"scinoephile_{token_hex(8)}",
-        SESSION_COOKIE_HTTPONLY=True,
-        SESSION_COOKIE_SAMESITE="Strict",
-    )
+    app.config["TRUSTED_HOSTS"] = trusted_hosts
 
     @app.before_request
     def protect_local_requests():
-        """Reject foreign requests and require the session's mutation token."""
+        """Reject foreign browser requests and require HTMX for mutations."""
         request = flask.request
         origin = request.headers.get("Origin")
         if origin and origin != request.host_url.rstrip("/"):
             flask.abort(403)
         if request.headers.get("Sec-Fetch-Site") in {"cross-site", "same-site"}:
             flask.abort(403)
-        if request.method not in {"GET", "HEAD", "OPTIONS"}:
-            expected = flask.session.get("csrf_token", "")
-            supplied = request.headers.get("X-CSRF-Token", "")
-            if not expected or not compare_digest(
-                expected.encode("utf-8"), supplied.encode("utf-8")
-            ):
-                flask.abort(403)
-        flask.session.setdefault("csrf_token", token_hex(32))
+        if (
+            request.method not in {"GET", "HEAD", "OPTIONS"}
+            and request.headers.get("HX-Request") != "true"
+        ):
+            flask.abort(403)
 
     @app.after_request
     def protect_response(response: FlaskResponse) -> FlaskResponse:

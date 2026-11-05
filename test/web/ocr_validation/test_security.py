@@ -4,10 +4,8 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
-from bs4 import BeautifulSoup, Tag
 from flask import Flask
 from pytest import MonkeyPatch, fixture
 
@@ -53,10 +51,8 @@ def app(tmp_path: Path, monkeypatch: MonkeyPatch) -> Flask:
         "/exit",
     ],
 )
-def test_mutations_require_the_browser_session_token(
-    app: Flask, tmp_path: Path, endpoint: str
-):
-    """Reject missing or invalid tokens before editing, saving, or shutdown.
+def test_mutations_require_the_htmx_header(app: Flask, tmp_path: Path, endpoint: str):
+    """Reject ordinary forms before editing, saving, or shutdown.
 
     Arguments:
         app: real OCR validation app
@@ -65,9 +61,9 @@ def test_mutations_require_the_browser_session_token(
     """
     original = (tmp_path / "image/index.html").read_bytes()
     client = app.test_client()
-    client.get("/")
-    for token in ("", "wrong", "错"):
-        assert client.post(endpoint, headers={"X-CSRF-Token": token}).status_code == 403
+    for headers in ({}, {"HX-Request": "false"}):
+        response = client.post(endpoint, data={"HX-Request": "true"}, headers=headers)
+        assert response.status_code == 403
     assert (tmp_path / "image/index.html").read_bytes() == original
     assert not (tmp_path / "output.srt").exists()
     assert not (tmp_path / "validation").exists()
@@ -83,10 +79,10 @@ def test_mutations_require_the_browser_session_token(
         {"Sec-Fetch-Site": "same-site"},
     ],
 )
-def test_foreign_mutations_are_rejected_even_with_a_valid_token(
+def test_foreign_mutations_are_rejected_with_the_htmx_header(
     app: Flask, tmp_path: Path, headers: dict[str, str]
 ):
-    """Reject foreign requests even when they supply a valid browser token.
+    """Reject foreign requests even when they claim to come from HTMX.
 
     Arguments:
         app: real OCR validation app
@@ -94,11 +90,10 @@ def test_foreign_mutations_are_rejected_even_with_a_valid_token(
         headers: foreign origin or browser fetch context
     """
     client = app.test_client()
-    page = client.get("/")
     response = client.post(
         "/subtitles/0/text",
         data={"text-0": "unauthorized"},
-        headers={**_csrf_headers(page.get_data(as_text=True)), **headers},
+        headers={"HX-Request": "true", **headers},
     )
     assert response.status_code == 403
     assert "unauthorized" not in (tmp_path / "image/index.html").read_text(
@@ -185,29 +180,35 @@ def test_configured_hosts_accept_same_origin_edits(
         base_url: browser address for that server
     """
     client = create_app(app.config["OCR_VALIDATION_SESSION"], host=host).test_client()
-    page = client.get("/", base_url=base_url)
+    assert client.get("/", base_url=base_url).status_code == 200
     response = client.post(
         "/subtitles/0/text",
         data={"text-0": "B"},
         base_url=base_url,
-        headers={**_csrf_headers(page.get_data(as_text=True)), "Origin": base_url},
+        headers={"HX-Request": "true", "Origin": base_url},
     )
     assert response.status_code == 200
     assert b'id="subtitle-0"' in response.data
     assert app.config["OCR_VALIDATION_SESSION"].series.events[0].text == "B"
 
 
-def test_tokens_are_bound_to_the_browser_session(app: Flask):
-    """Reject a token copied from a different browser session.
+def test_foreign_custom_header_preflight_is_not_authorized(app: Flask):
+    """Keep browsers from authorizing foreign HTMX requests through CORS.
 
     Arguments:
         app: real OCR validation app
     """
-    first = app.test_client()
-    second = app.test_client()
-    headers = _csrf_headers(first.get("/").get_data(as_text=True))
-    second.get("/")
-    assert second.post("/filters/done", headers=headers).status_code == 403
+    response = app.test_client().options(
+        "/subtitles/0/text",
+        headers={
+            "Origin": "https://attacker.example",
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "HX-Request",
+        },
+    )
+    assert response.status_code == 403
+    assert "Access-Control-Allow-Origin" not in response.headers
+    assert "Access-Control-Allow-Headers" not in response.headers
 
 
 def test_htmx_keeps_box_selection_until_approval(
@@ -226,7 +227,8 @@ def test_htmx_keeps_box_selection_until_approval(
     )
     clear_validation_data(session)
     client = create_app(session).test_client()
-    headers = _csrf_headers(client.get("/").get_data(as_text=True))
+    client.get("/")
+    headers = {"HX-Request": "true"}
 
     expanded = client.post(
         "/subtitles/0/concern/char",
@@ -262,20 +264,3 @@ def test_security_headers_cover_documents_assets_and_rejections(app: Flask):
         assert response.headers["Cache-Control"] == "no-store"
         assert response.headers["X-Content-Type-Options"] == "nosniff"
         assert "frame-ancestors 'none'" in response.headers["Content-Security-Policy"]
-
-
-def _csrf_headers(html: str) -> dict[str, str]:
-    """Read the inherited headers actually supplied to HTMX by the page.
-
-    Arguments:
-        html: rendered editor page
-    Returns:
-        HTMX request headers with the browser's protection token
-    """
-    root = BeautifulSoup(html, "html.parser").find("html")
-    assert isinstance(root, Tag)
-    encoded = root.get("hx-headers")
-    assert isinstance(encoded, str)
-    token = json.loads(encoded)["X-CSRF-Token"]
-    assert isinstance(token, str) and token
-    return {"HX-Request": "true", "X-CSRF-Token": token}

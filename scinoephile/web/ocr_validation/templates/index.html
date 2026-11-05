@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" hx-headers='{{ {"X-CSRF-Token": session.csrf_token}|tojson }}'>
+<html lang="en">
 <head>
    <meta charset="UTF-8" />
    <title>OCR validation</title>
-   <script src="{{ url_for('static', filename='htmx.min.js') }}" defer></script>
+   <script src="{{ url_for('static', filename='htmx.min.js') }}"></script>
    <style>
       {% for row in style_rows %}
       #subtitle-{{ row.sub_idx }} {

@@ -8,7 +8,6 @@ from io import BytesIO
 from pathlib import Path
 
 from flask import Flask
-from flask.testing import FlaskClient
 from PIL import Image
 from pytest import MonkeyPatch
 
@@ -34,7 +33,7 @@ def test_index_renders_subtitle_list(tmp_path: Path):
     response = app.test_client().get("/")
 
     assert response.status_code == 200
-    assert b'<html lang="en"' in response.data
+    assert b'<html lang="en">' in response.data
     assert b"https://unpkg.com/htmx.org" not in response.data
     assert b'src="/static/htmx.min.js"' in response.data
     assert b'class="subtitle"' in response.data
@@ -195,7 +194,7 @@ def test_done_filter_route_toggles_ok_subtitles(
     response = client.post(
         "/filters/done",
         data={"include_done_subtitles": "1"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+        headers={"HX-Request": "true"},
     )
 
     assert response.status_code == 200
@@ -208,7 +207,7 @@ def test_done_filter_route_toggles_ok_subtitles(
     response = client.post(
         "/filters/done",
         data={"include_done_subtitles": "0"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+        headers={"HX-Request": "true"},
     )
 
     assert response.status_code == 200
@@ -246,11 +245,7 @@ def test_exit_route_saves_output_and_shuts_down_server(tmp_path: Path):
     server = FakeServer()
     app.config["OCR_VALIDATION_SERVER"] = server
 
-    client = app.test_client()
-
-    response = client.post(
-        "/exit", headers={"HX-Request": "true", **_csrf_headers(client)}
-    )
+    response = app.test_client().post("/exit", headers={"HX-Request": "true"})
 
     assert response.status_code == 200
     assert b"Validation exited. You can close this tab." in response.data
@@ -280,12 +275,10 @@ def test_char_concern_image_url_changes_after_accept(
     assert response.status_code == 200
     assert b'src="/subtitles/0/concern.png?v=char-dims-0-0-1"' in response.data
 
-    client = app.test_client()
-
-    response = client.post(
+    response = app.test_client().post(
         "/subtitles/0/concern/char",
         data={"action": "accept", "n_bboxes": "1"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+        headers={"HX-Request": "true"},
     )
 
     assert response.status_code == 200
@@ -368,12 +361,8 @@ def test_text_update_route_rewrites_row(tmp_path: Path):
     html_dir_path = make_ocr_html_dir(tmp_path, text="old")
     app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
 
-    client = app.test_client()
-
-    response = client.post(
-        "/subtitles/0/text",
-        data={"text-0": "new"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+    response = app.test_client().post(
+        "/subtitles/0/text", data={"text-0": "new"}, headers={"HX-Request": "true"}
     )
 
     assert response.status_code == 200
@@ -390,12 +379,8 @@ def test_text_update_route_rejects_missing_subtitle(tmp_path: Path):
     html_dir_path = make_ocr_html_dir(tmp_path, text="old")
     app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
 
-    client = app.test_client()
-
-    response = client.post(
-        "/subtitles/1/text",
-        data={"text": "new"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+    response = app.test_client().post(
+        "/subtitles/1/text", data={"text": "new"}, headers={"HX-Request": "true"}
     )
 
     assert response.status_code == 404
@@ -441,12 +426,10 @@ def test_char_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatc
     """
     app = _char_concern_app(tmp_path, monkeypatch)
 
-    client = app.test_client()
-
-    response = client.post(
+    response = app.test_client().post(
         "/subtitles/0/concern/char",
         data={"action": "accept", "n_bboxes": "1"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+        headers={"HX-Request": "true"},
     )
 
     assert response.status_code == 200
@@ -464,12 +447,10 @@ def test_char_concern_route_rejects_invalid_action(
     """
     app = _char_concern_app(tmp_path, monkeypatch)
 
-    client = app.test_client()
-
-    response = client.post(
+    response = app.test_client().post(
         "/subtitles/0/concern/char",
         data={"action": "bogus", "n_bboxes": "1"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+        headers={"HX-Request": "true"},
     )
 
     assert response.status_code == 400
@@ -486,12 +467,10 @@ def test_char_concern_route_rejects_missing_subtitle(
     """
     app = _char_concern_app(tmp_path, monkeypatch)
 
-    client = app.test_client()
-
-    response = client.post(
+    response = app.test_client().post(
         "/subtitles/1/concern/char",
         data={"action": "accept", "n_bboxes": "1"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+        headers={"HX-Request": "true"},
     )
 
     assert response.status_code == 404
@@ -509,12 +488,10 @@ def test_gap_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatch
     session = prepared_gap_session(html_dir_path, tmp_path)
     app = create_app(session)
 
-    client = app.test_client()
-
-    response = client.post(
+    response = app.test_client().post(
         "/subtitles/0/concern/gap",
         data={"action": "space"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+        headers={"HX-Request": "true"},
     )
 
     assert response.status_code == 200
@@ -536,12 +513,10 @@ def test_gap_concern_route_rejects_invalid_action(
     session = prepared_gap_session(html_dir_path, tmp_path)
     app = create_app(session)
 
-    client = app.test_client()
-
-    response = client.post(
+    response = app.test_client().post(
         "/subtitles/0/concern/gap",
         data={"action": "bogus"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+        headers={"HX-Request": "true"},
     )
 
     assert response.status_code == 400
@@ -558,12 +533,10 @@ def test_gap_concern_route_rejects_missing_subtitle(
     """
     app = _char_concern_app(tmp_path, monkeypatch)
 
-    client = app.test_client()
-
-    response = client.post(
+    response = app.test_client().post(
         "/subtitles/1/concern/gap",
         data={"action": "space"},
-        headers={"HX-Request": "true", **_csrf_headers(client)},
+        headers={"HX-Request": "true"},
     )
 
     assert response.status_code == 404
@@ -635,19 +608,6 @@ def _assert_index_textarea(html: bytes):
     assert b"--subtitle-font-size:" in html
     assert b"overflow: hidden" in html
     assert b'wrap="off"' in html
-
-
-def _csrf_headers(client: FlaskClient) -> dict[str, str]:
-    """Initialize a browser session and supply its CSRF token for route tests.
-
-    Arguments:
-        client: browser session used for the mutation
-    Returns:
-        CSRF header matching the client's signed session cookie
-    """
-    client.get("/static/htmx.min.js")
-    with client.session_transaction() as browser_session:
-        return {"X-CSRF-Token": browser_session["csrf_token"]}
 
 
 def _done_app(
