@@ -12,7 +12,12 @@ from unittest.mock import patch
 
 from pytest import raises
 
-from scinoephile.cli.helpers.io import read_image_series, read_series, write_series
+from scinoephile.cli.helpers.io import (
+    read_image_series,
+    read_series,
+    validate_series_output,
+    write_series,
+)
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
@@ -110,6 +115,59 @@ def test_read_series_maps_stdin_errors_to_parser_error(exception: Exception):
 
     assert excinfo.value.code == 2
     assert str(exception) in stderr.getvalue()
+
+
+@parametrize("outfile", [None, "-"])
+def test_validate_series_output_accepts_stdout(outfile: str | None):
+    """Accept implicit and explicit stdout without requiring a file destination.
+
+    Arguments:
+        outfile: implicit or explicit stdout selection
+    """
+    assert validate_series_output(ArgumentParser(), outfile, overwrite=False) is None
+
+
+def test_validate_series_output_does_not_create_directories(tmp_path: Path):
+    """Validate a new destination while leaving parent creation to the writer.
+
+    Arguments:
+        tmp_path: temporary directory for a missing output directory
+    """
+    outfile_path = tmp_path / "missing" / "output.srt"
+    assert validate_series_output(ArgumentParser(), outfile_path, False) == outfile_path
+    assert not outfile_path.parent.exists()
+
+
+def test_validate_series_output_rejects_directories(tmp_path: Path):
+    """Report a directory destination as a normal CLI argument error.
+
+    Arguments:
+        tmp_path: existing directory that cannot contain subtitle file contents
+    """
+    with raises(SystemExit) as excinfo:
+        validate_series_output(ArgumentParser(), tmp_path, overwrite=True)
+    assert excinfo.value.code == 2
+
+
+def test_write_series_checks_for_files_created_after_validation(tmp_path: Path):
+    """Preserve a destination created while the workflow was processing subtitles.
+
+    Arguments:
+        tmp_path: temporary directory containing the new competing output
+    """
+    parser = ArgumentParser()
+    outfile_path = tmp_path / "output.srt"
+    validate_series_output(parser, outfile_path, overwrite=False)
+    outfile_path.write_text("another writer", encoding="utf-8")
+    series = Series(events=[Subtitle(start=0, end=1000, text="processed")])
+
+    with patch.object(series, "save") as save:
+        with raises(SystemExit) as excinfo:
+            write_series(parser, series, outfile_path, overwrite=False)
+
+    assert excinfo.value.code == 2
+    save.assert_not_called()
+    assert outfile_path.read_text(encoding="utf-8") == "another writer"
 
 
 def test_write_series_defaults_to_srt_format(tmp_path: Path):

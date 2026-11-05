@@ -101,7 +101,10 @@ class VoiceActivityCache:
 
         expected_cache_identity = self._get_cache_identity(audio, cache_identity)
         try:
-            with np.load(cache_path, allow_pickle=False) as payload:
+            with (
+                cache_path.open("rb") as cache_file,
+                np.load(cache_file, allow_pickle=False) as payload,
+            ):
                 raw_cache_identity = payload["cache_identity"].item()
                 if not isinstance(raw_cache_identity, str):
                     raise ValueError("cache identity must be serialized text")
@@ -115,7 +118,7 @@ class VoiceActivityCache:
                 )
                 if trace.duration_ms != len(audio):
                     raise ValueError("cache duration does not match source audio")
-        except (BadZipFile, KeyError, OSError, TypeError, ValueError) as exc:
+        except (BadZipFile, EOFError, KeyError, OSError, TypeError, ValueError) as exc:
             remove_cache_artifact(cache_path)
             logger.warning(
                 f"Discarded invalid voice activity trace cache {cache_path}: {exc}"

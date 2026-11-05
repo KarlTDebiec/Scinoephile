@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from contextlib import redirect_stderr, redirect_stdout
+from errno import ENOSYS, ENOTSUP
 from functools import partial
 from inspect import getfile
 from io import StringIO
@@ -124,7 +125,10 @@ def build_subcommands(cli: tuple[type[CommandLineInterface], ...]) -> str:
 def create_symlink_or_skip(
     symlink_path: Path, target_path: Path, *, target_is_directory: bool = False
 ):
-    """Create a symlink, skipping when Windows privileges do not allow it.
+    """Create a symlink, skipping only when the environment lacks the capability.
+
+    Missing Windows privileges and explicit unsupported-operation errors skip the
+    caller. Other filesystem failures propagate so broken test setup remains visible.
 
     Arguments:
         symlink_path: path at which to create the symlink
@@ -135,9 +139,14 @@ def create_symlink_or_skip(
     """
     try:
         symlink_path.symlink_to(target_path, target_is_directory=target_is_directory)
+    except NotImplementedError:
+        skip("Symbolic link creation is not implemented on this platform")
     except OSError as exc:
-        if getattr(exc, "winerror", None) == 1314:
-            skip("Windows symlink privilege is not available")
+        if getattr(exc, "winerror", None) in {50, 1314} or exc.errno in {
+            ENOSYS,
+            ENOTSUP,
+        }:
+            skip(f"Symbolic link creation is unavailable: {exc}")
         raise
 
 

@@ -20,7 +20,7 @@ __all__ = ["SubtitleCache"]
 
 logger = getLogger(__name__)
 
-_CACHE_VERSION = 1
+_CACHE_VERSION = 2
 """Current subtitle stream cache version."""
 
 
