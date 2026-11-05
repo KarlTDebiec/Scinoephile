@@ -4,9 +4,8 @@
 
 from __future__ import annotations
 
+from common.validation import val_index_range
 from pytest import raises
-
-from scinoephile.common.validation import val_index_range
 
 
 def test_val_index_range_builds_default_and_selected_ranges():

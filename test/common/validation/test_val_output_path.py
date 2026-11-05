@@ -6,10 +6,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from common.exceptions import NotAFileError
+from common.validation import val_output_path
 from pytest import MonkeyPatch, raises
-
-from scinoephile.common.exceptions import NotAFileError
-from scinoephile.common.validation import val_output_path
 
 
 def test_val_output_path_accepts_path_values_and_creates_parents(tmp_path: Path):

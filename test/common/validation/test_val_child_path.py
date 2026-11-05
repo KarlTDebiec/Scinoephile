@@ -6,10 +6,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pytest import param, raises
-
-from scinoephile.common.validation import val_child_path
-from test.helpers import create_symlink_or_skip, parametrize
+from common.validation import val_child_path
+from common_test_support import create_symlink_or_skip
+from pytest import mark, param, raises
 
 
 def test_val_child_path_accepts_contained_filename(tmp_path: Path):
@@ -27,7 +26,7 @@ def test_val_child_path_accepts_contained_filename(tmp_path: Path):
     )
 
 
-@parametrize(
+@mark.parametrize(
     "child_name",
     [
         param("", id="empty"),

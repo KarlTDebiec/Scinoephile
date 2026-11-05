@@ -4,14 +4,17 @@
 
 from __future__ import annotations
 
-from scinoephile.common.cli import CommandLineInterface, ListAllCommandsAction
+from typing import Any
+
+from common.cli import CommandLineInterface, ListAllCommandsAction
+from pytest import MonkeyPatch, mark
 
 
 class EmptyCli(CommandLineInterface):
     """Empty CLI for testing command listing."""
 
     @classmethod
-    def _main(cls, **kwargs):
+    def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments.
 
         Arguments:
@@ -26,7 +29,7 @@ class NoncallableSubcommandsCli(CommandLineInterface):
     """Noncallable subcommands attribute."""
 
     @classmethod
-    def _main(cls, **kwargs):
+    def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments.
 
         Arguments:
@@ -47,7 +50,7 @@ class NonmappingSubcommandsCli(CommandLineInterface):
         return []
 
     @classmethod
-    def _main(cls, **kwargs):
+    def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments.
 
         Arguments:
@@ -68,7 +71,7 @@ class InvalidSubcommandCli(CommandLineInterface):
         return {"invalid": object()}
 
     @classmethod
-    def _main(cls, **kwargs):
+    def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments.
 
         Arguments:
@@ -104,14 +107,33 @@ def test_iter_command_rows_ignores_invalid_subcommand_values():
     assert rows == []
 
 
-def test_format_command_row_wraps_long_command_description_readably():
-    """Test long command names do not break description wrapping."""
+@mark.parametrize(("help_position", "width"), [(24, 80), (12, 50)])
+def test_format_command_row_wraps_long_command_description_readably(
+    help_position: int, width: int, monkeypatch: MonkeyPatch
+):
+    """Test long command names do not break description wrapping.
+
+    Arguments:
+        help_position: configured description indentation
+        width: maximum width for wrapped descriptions
+        monkeypatch: fixture for configuring the help layout
+    """
+    monkeypatch.setattr(ListAllCommandsAction, "help_position", help_position)
+    monkeypatch.setattr(ListAllCommandsAction, "width", width)
     command_name = "command-name-that-is-longer-than-the-help-position"
+    description = (
+        "This long description explains the command in enough detail to require "
+        "several wrapped lines while keeping every word readable and in order."
+    )
     output = ListAllCommandsAction.format_command_row(
-        command_name, "description text that should stay readable", len(command_name)
+        command_name, description, len(command_name)
     )
 
-    assert output.startswith(f"{command_name}\n")
-    assert (
-        "                        description text that should stay readable" in output
+    command_line, *description_lines = output.splitlines()
+    assert command_line == command_name
+    assert len(description_lines) > 1
+    assert " ".join(line.strip() for line in description_lines) == description
+    assert all(
+        len(line) - len(line.lstrip()) == help_position for line in description_lines
     )
+    assert all(len(line) <= width for line in description_lines)

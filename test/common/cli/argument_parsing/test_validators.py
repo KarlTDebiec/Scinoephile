@@ -7,9 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser, ArgumentTypeError
 from pathlib import Path
 
-from pytest import raises
-
-from scinoephile.common.cli.argument_parsing import (
+from common.cli.argument_parsing import (
     duration_arg,
     float_arg,
     input_dir_arg,
@@ -21,8 +19,8 @@ from scinoephile.common.cli.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
-from test.helpers import parametrize
+from common.exceptions import ArgumentConflictError
+from pytest import mark, raises
 
 
 def test_duration_arg():
@@ -45,7 +43,7 @@ def test_float_arg():
         validator("-1.0")
 
 
-@parametrize("value", ["0", "1", "-1", "2", "nan", "inf", "-inf"])
+@mark.parametrize("value", ["0", "1", "-1", "2", "nan", "inf", "-inf"])
 def test_float_arg_exclusive_and_finite_constraints(value: str):
     """Adapt shared open-bound and finite validation into argument errors.
 

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.common.logs import configure_logging
 from scinoephile.core import Language
 from test.data.ocr import process_ocr
 from test.data.stacking import process_zho_hans_eng
@@ -14,7 +14,7 @@ from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
 output_path = title_root / "output"
-set_logging_verbosity(2)
+configure_logging(2)
 
 actions = {"eng_ocr", "zho-Hans_ocr", "zho-Hant_ocr", "zho-Hans_eng"}
 

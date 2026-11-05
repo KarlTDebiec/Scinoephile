@@ -4,9 +4,8 @@
 
 from __future__ import annotations
 
+from common.csv import parse_csv_int_list, parse_csv_str_list
 from pytest import raises
-
-from scinoephile.common.csv import parse_csv_int_list, parse_csv_str_list
 
 
 def test_parse_csv_int_list_empty():

@@ -2,10 +2,10 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """General-purpose code not tied to a particular project.
 
-This module should not import from other modules outside the standard library.
+Utilities in this package depend only on the standard library and one another.
 
 Package hierarchy (modules may import from any above):
-* csv / described_enum / duration / exceptions / file / logs / subprocess
+* archive / csv / described_enum / duration / exceptions / file / logs / subprocess
 * validation
 * cli
 * testing

@@ -12,7 +12,9 @@ from platform import system
 from shlex import split
 from unittest.mock import patch
 
-from .cli import CommandLineInterface
+import __main__
+
+from .cli.command_line_interface import CommandLineInterface
 
 __all__ = ["echo_command", "run_cli_with_args"]
 
@@ -38,13 +40,16 @@ def echo_command(*arguments: str) -> list[str]:
 
 
 def run_cli_with_args(cli: type[CommandLineInterface], args: str = ""):
-    """Run CommandLineInterface as if from shell with provided args.
+    """Run a CLI as a Python script with provided command-line arguments.
 
     Arguments:
-        cli: CommandLineInterface to run
-        args: Arguments to pass
+        cli: command-line interface to run as a script
+        args: command-line arguments to pass
     """
-    with patch.object(sys, "argv", [getfile(cli)] + _split_cli_args(args)):
+    with (
+        patch.object(sys, "argv", [getfile(cli)] + _split_cli_args(args)),
+        patch.object(__main__, "__spec__", None),
+    ):
         cli.main()
 
 
@@ -71,7 +76,7 @@ def _split_cli_args(args: str) -> list[str]:
     kernel32.LocalFree.argtypes = [c_void_p]
     kernel32.LocalFree.restype = c_void_p
 
-    argv = shell32.CommandLineToArgvW(f"pipescaler-test {args}", byref(argc))
+    argv = shell32.CommandLineToArgvW(f"cli-test {args}", byref(argc))
     if not argv:
         return []
     try:

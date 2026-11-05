@@ -18,7 +18,7 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.media.subtitles.cache import SubtitleCache
 from scinoephile.media.subtitles.extractor import SubtitleExtractor
-from test.helpers import create_symlink_or_skip
+from test.common.common_test_support import create_symlink_or_skip
 from test.helpers.files import set_mtime
 from test.helpers.media_subtitles import (
     cache_subtitle_stream,

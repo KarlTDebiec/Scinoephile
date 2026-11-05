@@ -8,10 +8,9 @@ from collections.abc import Callable
 from contextlib import AbstractContextManager, nullcontext
 from typing import Any
 
+from common.exceptions import ArgumentConflictError
+from common.validation import val_float, val_int
 from pytest import mark, param, raises
-
-from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.common.validation import val_float, val_int
 
 
 @mark.parametrize("validator", [val_int, val_float], ids=["int", "float"])
@@ -92,7 +91,15 @@ def test_numeric_validation(
     if exception is not None:
         expectation = raises(exception, match=message)
     with expectation:
-        assert validator(value, **options) == expected
+        result = validator(value, **options)
+        assert result == expected
+        scalar_type: type[int] | type[float] = float
+        if validator is val_int:
+            scalar_type = int
+        if isinstance(result, list):
+            assert all(type(item) is scalar_type for item in result)
+        else:
+            assert type(result) is scalar_type
 
 
 @mark.parametrize("validator", [val_int, val_float], ids=["int", "float"])

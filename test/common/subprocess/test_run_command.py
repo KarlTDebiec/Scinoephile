@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of common.subprocess.run_command."""
+"""Tests of captured and live subprocess execution."""
 
 from __future__ import annotations
 
@@ -8,80 +8,139 @@ import ctypes
 import os
 import signal
 import sys
-from collections.abc import Generator
-from contextlib import contextmanager
+from collections.abc import Callable, Generator
+from contextlib import AbstractContextManager, contextmanager, nullcontext
 from ctypes import wintypes
 from pathlib import Path
 from subprocess import Popen, TimeoutExpired
 from threading import enumerate as enumerate_threads
 from time import monotonic, sleep
 
-from pytest import MonkeyPatch, raises
+from common import subprocess as subprocess_module
+from common.subprocess import run_command, run_command_live
+from common.testing import echo_command
+from pytest import FixtureRequest, MonkeyPatch, fixture, mark, raises
 
-from scinoephile.common import subprocess as subprocess_module
-from scinoephile.common.subprocess import run_command, run_command_live
-from test.helpers import parametrize
-from test.helpers.subprocess_cases import SUBPROCESS_SUCCESS_CASES
+_SUBPROCESS_SUCCESS_CASES: list[tuple[str, list[str], str]] = [
+    ("echo", echo_command("Hello World"), "Hello World\n"),
+    ("arguments", echo_command("arg1", "arg2", "arg3"), "arg1 arg2 arg3\n"),
+    ("spaces", echo_command("hello world"), "hello world\n"),
+    (
+        "special-chars",
+        echo_command("$HOME", "$(whoami)", "; ls"),
+        "$HOME $(whoami) ; ls\n",
+    ),
+    ("semicolon-literal", echo_command("test; rm -rf /"), "test; rm -rf /\n"),
+    (
+        "pipe-literal",
+        echo_command("test | cat /etc/passwd"),
+        "test | cat /etc/passwd\n",
+    ),
+    ("backticks-literal", echo_command("`whoami`"), "`whoami`\n"),
+    (
+        "quotes",
+        echo_command("'single quotes'", '"double quotes"'),
+        "'single quotes' \"double quotes\"\n",
+    ),
+    (
+        "multiple-lines",
+        [sys.executable, "-c", "print('line1'); print('line2')"],
+        "line1\nline2\n",
+    ),
+    ("empty-output", [sys.executable, "-c", ""], ""),
+    ("full-path", [sys.executable, "-c", "print('test')"], "test\n"),
+]
 
 
-@parametrize(
-    ("command", "expected_stdout_fragments"),
-    [(command, fragments) for _, command, fragments in SUBPROCESS_SUCCESS_CASES],
-    ids=[name for name, _, _ in SUBPROCESS_SUCCESS_CASES],
-)
-def test_run_command_success_cases(
-    command: list[str], expected_stdout_fragments: tuple[str, ...]
-):
-    """Test running successful commands.
+@fixture(params=[run_command, run_command_live], ids=["capture", "live"])
+def run(request: FixtureRequest) -> Callable[..., tuple[int, str, str]]:
+    """Provide each public subprocess interface for the shared contract checks.
 
     Arguments:
-        command: command to run
-        expected_stdout_fragments: expected stdout fragments
+        request: parametrized subprocess function
+    Returns:
+        subprocess function under test
     """
-    exitcode, stdout, stderr = run_command(command)
+    return request.param
 
+
+@mark.parametrize(
+    ("command", "expected_stdout"),
+    [(command, expected) for _, command, expected in _SUBPROCESS_SUCCESS_CASES],
+    ids=[name for name, _, _ in _SUBPROCESS_SUCCESS_CASES],
+)
+def test_run_command_success_cases(
+    run: Callable[..., tuple[int, str, str]], command: list[str], expected_stdout: str
+):
+    """Preserve literal arguments, multiple lines, and empty output.
+
+    Arguments:
+        run: subprocess interface
+        command: command to run
+        expected_stdout: complete normalized output
+    """
+    exitcode, stdout, stderr = run(command)
     assert exitcode == 0
     assert stderr == ""
-    if not expected_stdout_fragments:
-        assert stdout == ""
-    for fragment in expected_stdout_fragments:
-        assert fragment in stdout
+    assert stdout.replace("\r\n", "\n") == expected_stdout
 
 
-def test_run_command_with_stderr():
-    """Test running a command that writes to stderr."""
-    # Use Python to write to stderr.
-    exitcode, stdout, stderr = run_command(
+def test_run_command_with_stderr(run: Callable[..., tuple[int, str, str]]):
+    """Capture the child's standard error separately from standard output.
+
+    Arguments:
+        run: subprocess interface
+    """
+    exitcode, stdout, stderr = run(
         [sys.executable, "-c", "import sys; sys.stderr.write('error message')"],
         acceptable_exitcodes=[0],
     )
 
     assert exitcode == 0
-    assert "error message" in stderr
+    assert stdout == ""
+    assert stderr == "error message"
 
 
-def test_run_command_failure_default():
-    """Test running a command that fails with default acceptable exitcodes."""
-    with raises(ValueError, match="failed with exit code"):
-        run_command([sys.executable, "-c", "import sys; sys.exit(1)"])
+@mark.parametrize(
+    "code, acceptable, error",
+    [(0, None, None), (1, None, ValueError), (42, [42], None)],
+)
+def test_exit_codes(
+    run: Callable[..., tuple[int, str, str]],
+    code: int,
+    acceptable: list[int] | None,
+    error: type[Exception] | None,
+):
+    """Reject failures unless the caller explicitly accepts their exit status.
+
+    Arguments:
+        run: subprocess interface
+        code: child exit status
+        acceptable: accepted statuses, or none for defaults
+        error: expected exception, or none for success
+    """
+    options = {}
+    if acceptable is not None:
+        options["acceptable_exitcodes"] = acceptable
+    expectation: AbstractContextManager[object] = nullcontext()
+    if error is not None:
+        expectation = raises(error, match="failed with exit code")
+    with expectation:
+        assert run(
+            [sys.executable, "-c", f"import sys; sys.exit({code})"], **options
+        ) == (code, "", "")
 
 
-def test_run_command_failure_custom_acceptable():
-    """Test running a command with custom acceptable exitcodes."""
-    exitcode, stdout, stderr = run_command(
-        [sys.executable, "-c", "import sys; sys.exit(42)"], acceptable_exitcodes=[42]
-    )
-
-    assert exitcode == 42
-
-
-def test_run_command_with_cwd_path(tmp_path: Path):
+def test_run_command_with_cwd_path(
+    run: Callable[..., tuple[int, str, str]], tmp_path: Path
+):
     """Test running a command with a working directory.
 
     Arguments:
+        run: subprocess interface
         tmp_path: temporary directory provided by pytest
     """
-    exitcode, stdout, stderr = run_command(
+    exitcode, stdout, stderr = run(
         [sys.executable, "-c", "from pathlib import Path; print(Path.cwd())"],
         cwd_path=tmp_path,
     )
@@ -91,16 +150,20 @@ def test_run_command_with_cwd_path(tmp_path: Path):
     assert stderr == ""
 
 
-def test_run_command_with_env():
-    """Test running a command with environment variables."""
-    env = os.environ.copy()
-    env["SCINOEPHILE_TEST_RUN_COMMAND_ENV"] = "expected"
+def test_run_command_with_env(run: Callable[..., tuple[int, str, str]]):
+    """Test running a command with environment variables.
 
-    exitcode, stdout, stderr = run_command(
+    Arguments:
+        run: subprocess interface
+    """
+    env = os.environ.copy()
+    env["COMMON_TEST_RUN_COMMAND_ENV"] = "expected"
+
+    exitcode, stdout, stderr = run(
         [
             sys.executable,
             "-c",
-            "import os; print(os.environ['SCINOEPHILE_TEST_RUN_COMMAND_ENV'])",
+            "import os; print(os.environ['COMMON_TEST_RUN_COMMAND_ENV'])",
         ],
         env=env,
     )
@@ -124,20 +187,35 @@ def test_run_command_timeout():
     assert elapsed < 1.0
 
 
-def test_run_command_unicode_output():
-    """Test handling of Unicode output."""
-    env = os.environ.copy()
-    env["PYTHONIOENCODING"] = "utf-8"
+@mark.parametrize(
+    "payload, expected", [("Hello 世界".encode(), "Hello 世界"), (b"\xff", "ÿ")]
+)
+def test_output_decoding(
+    run: Callable[..., tuple[int, str, str]], payload: bytes, expected: str
+):
+    """Decode Unicode and fallback byte encodings without losing characters.
 
-    exitcode, stdout, stderr = run_command(
-        [sys.executable, "-c", "print('Hello 世界')"], env=env
-    )
+    Arguments:
+        run: subprocess interface
+        payload: child output bytes
+        expected: decoded output
+    """
+    assert run(
+        [sys.executable, "-c", f"import sys; sys.stdout.buffer.write({payload!r})"]
+    ) == (0, expected, "")
 
-    assert exitcode == 0
-    assert "Hello" in stdout
+
+def test_live_timeout():
+    """Raise a timeout from the streaming interface without waiting for the child."""
+    start_time = monotonic()
+    with raises(TimeoutExpired):
+        run_command_live(
+            [sys.executable, "-c", "import time; time.sleep(2)"], timeout=0
+        )
+    assert monotonic() - start_time < 1.0
 
 
-@parametrize(
+@mark.parametrize(
     ("live", "parent_exits", "kill_tree"),
     [
         (False, False, True),
@@ -229,7 +307,7 @@ def test_timeout_cleans_up_inherited_pipes(
             assert heartbeat_path.read_text() != heartbeat
 
 
-@parametrize("live", [False, True])
+@mark.parametrize("live", [False, True])
 def test_capture_preserves_complete_output(live: bool):
     """Capture both streams beyond pipe-buffer sizes without truncation.
 

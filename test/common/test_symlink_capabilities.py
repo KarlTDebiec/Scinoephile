@@ -8,12 +8,11 @@ from errno import EACCES, EEXIST, EINVAL, EIO, ENOENT, ENOSYS, ENOTSUP, EPERM
 from pathlib import Path
 from unittest.mock import patch
 
-from pytest import MonkeyPatch, raises, skip
+from common_test_support import create_symlink_or_skip
+from pytest import MonkeyPatch, mark, raises, skip
 
-from test.helpers import create_symlink_or_skip, parametrize
 
-
-@parametrize("target_is_directory", [False, True])
+@mark.parametrize("target_is_directory", [False, True])
 def test_create_symlink_or_skip_preserves_creation_arguments(
     tmp_path: Path, target_is_directory: bool
 ):
@@ -34,7 +33,7 @@ def test_create_symlink_or_skip_preserves_creation_arguments(
     )
 
 
-@parametrize("error_number", [EACCES, EEXIST, EINVAL, EIO, ENOENT, EPERM])
+@mark.parametrize("error_number", [EACCES, EEXIST, EINVAL, EIO, ENOENT, EPERM])
 def test_create_symlink_or_skip_propagates_filesystem_errors(
     tmp_path: Path, error_number: int
 ):
@@ -51,7 +50,7 @@ def test_create_symlink_or_skip_propagates_filesystem_errors(
     assert excinfo.value is error
 
 
-@parametrize(
+@mark.parametrize(
     "error",
     [
         NotImplementedError(),
@@ -73,7 +72,7 @@ def test_create_symlink_or_skip_skips_unsupported_operation(
             create_symlink_or_skip(tmp_path / "link", tmp_path / "target")
 
 
-@parametrize("winerror", [50, 1314])
+@mark.parametrize("winerror", [50, 1314])
 def test_create_symlink_or_skip_skips_windows_capability_errors(
     tmp_path: Path, monkeypatch: MonkeyPatch, winerror: int
 ):

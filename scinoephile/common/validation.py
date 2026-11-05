@@ -12,7 +12,7 @@ from os.path import defpath, expanduser, expandvars
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from platform import system
 from shutil import which
-from typing import Any, TypeAliasType, cast, get_args, overload
+from typing import Any, TypeAliasType, TypedDict, cast, get_args, overload
 
 from .exceptions import (
     ArgumentConflictError,
@@ -23,6 +23,11 @@ from .exceptions import (
 )
 
 __all__ = [
+    "FloatValidatorKwargs",
+    "IntValidatorKwargs",
+    "OutputDirValidatorKwargs",
+    "OutputPathValidatorKwargs",
+    "StrValidatorKwargs",
     "val_child_path",
     "val_executable",
     "val_float",
@@ -38,6 +43,59 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
+
+
+class FloatValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_float."""
+
+    n_values: int | None
+    """Required number of values."""
+    min_value: float | None
+    """Minimum allowed value."""
+    max_value: float | None
+    """Maximum allowed value."""
+    min_exclusive: bool
+    """Whether to exclude the minimum. Requires min_value."""
+    max_exclusive: bool
+    """Whether to exclude the maximum. Requires max_value."""
+    finite: bool
+    """Whether to reject NaN and infinities."""
+
+
+class IntValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_int."""
+
+    n_values: int | None
+    """Required number of values."""
+    min_value: int | None
+    """Minimum allowed value."""
+    max_value: int | None
+    """Maximum allowed value."""
+    acceptable_values: Collection[int] | None
+    """Explicit set of acceptable values."""
+
+
+class OutputDirValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_output_dir_path."""
+
+    create: bool
+    """Whether missing output directories should be created."""
+
+
+class OutputPathValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_output_path."""
+
+    exist_ok: bool
+    """Whether existing output files are accepted."""
+    create: bool
+    """Whether missing parent directories should be created."""
+
+
+class StrValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_str."""
+
+    options: Collection[str]
+    """Allowed string options."""
 
 
 def val_child_path(parent_dir_path: str | PathLike[str], child_name: str) -> Path:
@@ -377,39 +435,44 @@ def val_input_file_or_dir_path(
 
 
 @overload
-def val_input_path(value: str | PathLike[str]) -> Path: ...
+def val_input_path(value: str | PathLike[str], *, must_exist: bool = True) -> Path: ...
 
 
 @overload
-def val_input_path(value: Iterable[str | PathLike[str]]) -> list[Path]: ...
+def val_input_path(
+    value: Iterable[str | PathLike[str]], *, must_exist: bool = True
+) -> list[Path]: ...
 
 
 def val_input_path(
     value: str | PathLike[str] | Iterable[str | PathLike[str]],
+    *,
+    must_exist: bool = True,
 ) -> Path | list[Path]:
     """Validate input file path(s) and make them absolute.
 
     Arguments:
-        value: Path or paths to input files
+        value: path or paths to input files
+        must_exist: whether input files must already exist
     Returns:
-        Validated path or paths
+        validated path or paths
     Raises:
-        FileNotFoundError: If any file does not exist
-        NotAFileError: If any path is not a file
-        TypeError: If any value cannot be cast to Path
+        FileNotFoundError: if a file does not exist and must_exist is True
+        NotAFileError: if an existing path is not a file
+        TypeError: if any value cannot be cast to Path
     """
 
     def _val_input_path(value_to_validate: str | PathLike[str]) -> Path:
         """Validate a path.
 
         Arguments:
-            value_to_validate: Path to validate
+            value_to_validate: path to validate
         Returns:
-            Validated path
+            validated path
         Raises:
-            FileNotFoundError: If path does not exist
-            NotAFileError: If path is not a file
-            TypeError: If value cannot be cast to Path
+            FileNotFoundError: if the file does not exist and must_exist is True
+            NotAFileError: if an existing path is not a file
+            TypeError: if the value cannot be cast to Path
         """
         try:
             validated_value = Path(
@@ -421,8 +484,9 @@ def val_input_path(
                 f"{type(value_to_validate)}, cannot be cast to Path"
             ) from exc
         if not validated_value.exists():
-            raise FileNotFoundError(f"Input file {validated_value} does not exist")
-        if not validated_value.is_file():
+            if must_exist:
+                raise FileNotFoundError(f"Input file {validated_value} does not exist")
+        elif not validated_value.is_file():
             raise NotAFileError(f"Input file {validated_value} is not a file")
         return validated_value
 

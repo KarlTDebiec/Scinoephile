@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.common.logs import configure_logging
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
 from test.data.aligned_transcription import process_transcription
@@ -14,7 +14,7 @@ from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.helpers import test_data_root
 
-set_logging_verbosity(2)
+configure_logging(2)
 
 title_root = test_data_root / Path(__file__).parent.name
 output_path = title_root / "output"

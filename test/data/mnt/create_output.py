@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.common.logs import configure_logging
 from scinoephile.core import Language
 from scinoephile.core.script import OpenCCConfig
 from scinoephile.core.stacking import get_stacked_series
@@ -24,7 +24,7 @@ from test.helpers import test_data_root
 title_root = test_data_root / Path(__file__).parent.name
 input_path = title_root / "input"
 output_path = title_root / "output"
-set_logging_verbosity(2)
+configure_logging(2)
 
 eng_ocr_path = output_path / "eng_ocr"
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
