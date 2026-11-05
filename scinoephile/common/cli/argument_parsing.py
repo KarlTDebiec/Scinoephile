@@ -15,9 +15,9 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, TypedDict, Unpack
 
-from scinoephile.common.duration import parse_duration
-from scinoephile.common.exceptions import NotAFileError
-from scinoephile.common.validation import (
+from ..duration import parse_duration
+from ..exceptions import NotAFileError
+from ..validation import (
     val_float,
     val_input_dir_path,
     val_input_file_or_dir_path,

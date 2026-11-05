@@ -102,6 +102,21 @@ def test_module_import_style_rules(tmp_path: Path):
             '__all__ = ["Sibling"]\n'
         ),
         "feature/sibling/models.py": "MODEL = object()\n",
+        "common/__init__.py": (
+            "from .errors import PublicError\n__all__ = ['PublicError']\n"
+        ),
+        "common/errors.py": "class PublicError(Exception):\n    pass\n",
+        "common/validation.py": "value = 1\n",
+        "common/cli/__init__.py": (
+            "class PublicCli:\n    pass\n__all__ = ['PublicCli']\n"
+        ),
+        "common/cli/deep/__init__.py": "",
+        "common/sibling/__init__.py": (
+            "class PublicSibling:\n    pass\n"
+            "class HiddenSibling:\n    pass\n"
+            "__all__ = ['PublicSibling']\n"
+        ),
+        "common_tools/__init__.py": "",
     }
     for relative_path, source in fixture_sources.items():
         file_path = package_dir_path / relative_path
@@ -175,6 +190,88 @@ def test_module_import_style_rules(tmp_path: Path):
             "import example.core\n",
             "own ancestor package facades may not be used internally",
         ),
+        ("common/cli/parent_relative.py", "from ..validation import value\n", None),
+        ("common/cli/parent_alias.py", "from .. import validation\n", None),
+        (
+            "common/cli/deep/parent_relative.py",
+            "from ...validation import value\n",
+            None,
+        ),
+        (
+            "common/cli/parent_absolute.py",
+            "from example.common.validation import value\n",
+            "common imports must not name the containing project",
+        ),
+        (
+            "common/cli/parent_absolute_plain.py",
+            "import pathlib, example.common.validation as checks\n",
+            "common imports must not name the containing project",
+        ),
+        (
+            "common/cli/project_alias.py",
+            "from example import common\n",
+            "common imports must not name the containing project",
+        ),
+        (
+            "common/cli/domain_import.py",
+            "from example.core.errors import PublicError\n",
+            "common imports must not name the containing project",
+        ),
+        (
+            "common/cli/unknown_project_module.py",
+            "import example.missing\n",
+            "common imports must not name the containing project",
+        ),
+        (
+            "common/cli/type_checking.py",
+            "from typing import TYPE_CHECKING\n"
+            "if TYPE_CHECKING:\n    from example.missing import Value\n",
+            "common imports must not name the containing project",
+        ),
+        (
+            "common/cli/lazy_import.py",
+            "def load():\n    from example.missing import Value\n",
+            "common imports must not name the containing project",
+        ),
+        (
+            "common/cli/outside_common.py",
+            "from ...core.errors import PublicError\n",
+            "relative imports from common must stay inside common",
+        ),
+        (
+            "common/cli/outside_common_alias.py",
+            "from ... import core\n",
+            "relative imports from common must stay inside common",
+        ),
+        (
+            "common/cli/past_project_root.py",
+            "from .....missing import value\n",
+            "relative imports from common must stay inside common",
+        ),
+        (
+            "common/outside_common.py",
+            "from ..shared import value\n",
+            "relative imports from common must stay inside common",
+        ),
+        (
+            "common/cli/ancestor_facade.py",
+            "from .. import PublicError\n",
+            "own ancestor package facades may not be used internally",
+        ),
+        (
+            "common/cli/deep/ancestor_facade.py",
+            "from .. import PublicCli\n",
+            "own ancestor package facades may not be used internally",
+        ),
+        ("common/cli/sibling_facade.py", "from ..sibling import PublicSibling\n", None),
+        (
+            "common/cli/private_sibling_facade.py",
+            "from ..sibling import HiddenSibling\n",
+            "package facade imports must name exports listed in __all__",
+        ),
+        ("common/testing.py", "from .cli import PublicCli\n", None),
+        ("common/stdlib.py", "from pathlib import Path\n", None),
+        ("common_tools/parent_absolute.py", "from example.shared import value\n", None),
     ]
     for relative_path, source, expected_reason in cases:
         file_path = package_dir_path / relative_path
@@ -503,6 +600,16 @@ def get_absolute_import_from_style_violations(
     ):
         return []
 
+    if current_package_parts[1:2] == ["common"]:
+        return [
+            format_import_style_violation(
+                file_path,
+                node,
+                "common imports must not name the containing project",
+                package_parent_path=package_parent_path,
+            )
+        ]
+
     current_package_name = ".".join(current_package_parts)
     if module_name.startswith(f"{current_package_name}."):
         return [
@@ -590,6 +697,17 @@ def get_absolute_import_style_violations(
             alias.name == root_package_name
             or alias.name.startswith(f"{root_package_name}.")
         ):
+            continue
+
+        if current_package_parts[1:2] == ["common"]:
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "common imports must not name the containing project",
+                    package_parent_path=package_parent_path,
+                )
+            )
             continue
 
         if alias.name.startswith(f"{current_package_name}."):
@@ -696,8 +814,8 @@ def get_relative_import_style_violations(
     Returns:
         violation descriptions
     """
-    current_package_name = ".".join(current_package_parts)
-    if node.level != 1:
+    inside_common = current_package_parts[1:2] == ["common"]
+    if node.level != 1 and not inside_common:
         return [
             format_import_style_violation(
                 file_path,
@@ -707,9 +825,21 @@ def get_relative_import_style_violations(
             )
         ]
 
-    target_module_name = current_package_name
+    parent_length = len(current_package_parts) - node.level + 1
+    if inside_common and parent_length < 2:
+        return [
+            format_import_style_violation(
+                file_path,
+                node,
+                "relative imports from common must stay inside common",
+                package_parent_path=package_parent_path,
+            )
+        ]
+
+    target_module_parts = current_package_parts[:parent_length]
     if node.module:
-        target_module_name = f"{target_module_name}.{node.module}"
+        target_module_parts.extend(node.module.split("."))
+    target_module_name = ".".join(target_module_parts)
     target_path = get_module_source_path(
         target_module_name, package_parent_path=package_parent_path
     )
@@ -727,7 +857,18 @@ def get_relative_import_style_violations(
             continue
         if target_path is None or target_path.name != "__init__.py":
             continue
-        if package_exports is None or alias.name not in package_exports:
+        if node.level > 1 and (
+            target_module_parts == current_package_parts[: len(target_module_parts)]
+        ):
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "own ancestor package facades may not be used internally",
+                    package_parent_path=package_parent_path,
+                )
+            )
+        elif package_exports is None or alias.name not in package_exports:
             violations.append(
                 format_import_style_violation(
                     file_path,
