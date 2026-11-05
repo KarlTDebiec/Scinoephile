@@ -98,7 +98,7 @@ def test_private_import_violations_are_detected():
     tree = ast.parse(
         """from argparse import _ArgumentGroup
 from external_library import _ExternalType
-from scinoephile.common.argument_parsing import _ProjectHelper
+from scinoephile.common.cli.argument_parsing import _ProjectHelper
 from .ten import TenVadProvider as _provider
 from .ten import _TenVadProvider
 from .pyannote import (
@@ -113,7 +113,7 @@ from .pyannote import (
 
     assert [violation.message for violation in violations] == [
         "imports private name `_ProjectHelper` from "
-        "`scinoephile.common.argument_parsing`",
+        "`scinoephile.common.cli.argument_parsing`",
         "imports private name `_TenVadProvider` from `.ten`",
         "imports private name `_PyannoteVadProvider` from `.pyannote`",
     ]

@@ -12,7 +12,7 @@ from scinoephile.cli.helpers.cache import (
     CacheArguments,
     add_cache_args,
 )
-from scinoephile.common.argument_parsing import (
+from scinoephile.common.cli.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     output_dir_arg,

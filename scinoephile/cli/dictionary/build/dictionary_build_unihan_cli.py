@@ -11,7 +11,10 @@ from pathlib import Path
 
 import requests
 
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
+from scinoephile.common.cli.argument_parsing import (
+    get_arg_groups_by_name,
+    input_file_arg,
+)
 from scinoephile.dictionaries.unihan import UnihanDictionaryService
 from scinoephile.dictionaries.unihan.constants import UNIHAN_SOURCE
 

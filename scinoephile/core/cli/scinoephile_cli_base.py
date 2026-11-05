@@ -12,7 +12,7 @@ from inspect import cleandoc
 from os import getenv
 from typing import ClassVar
 
-from scinoephile.common import CommandLineInterface
+from scinoephile.common.cli import CommandLineInterface
 
 from .constants import DEFAULT_CLI_LOCALE, LOCALE_ALIASES
 from .localization import BASE_CLI_LOCALIZATIONS, merge_localizations

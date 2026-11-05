@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser, _ArgumentGroup  # noqa: PLC2701
 
-from scinoephile.common.argument_parsing import int_arg
+from scinoephile.common.cli.argument_parsing import int_arg
 
 __all__ = ["BLOCK_LOCALIZATIONS", "add_block_range_args", "get_block_range_indexes"]
 

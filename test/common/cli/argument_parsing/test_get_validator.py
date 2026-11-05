@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of common.argument_parsing.get_validator."""
+"""Tests of common.cli.argument_parsing.get_validator."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from argparse import ArgumentTypeError
 
 from pytest import raises
 
-from scinoephile.common.argument_parsing import get_validator
+from scinoephile.common.cli.argument_parsing import get_validator
 
 
 def test_get_validator_basic():

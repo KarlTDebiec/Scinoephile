@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from functools import partial
 from pathlib import Path
 
-from scinoephile.common.argument_parsing import output_dir_arg
+from scinoephile.common.cli.argument_parsing import output_dir_arg
 from scinoephile.core.paths import get_runtime_cache_root_path
 
 from .argument_bundle_field_action import ArgumentBundleFieldAction

@@ -7,9 +7,8 @@ from __future__ import annotations
 from argparse import SUPPRESS, ArgumentParser
 from typing import Any
 
-from scinoephile.common import CommandLineInterface
-from scinoephile.common.argument_parsing import get_arg_groups_by_name
-from scinoephile.common.cli import ListAllCommandsAction
+from scinoephile.common.cli import CommandLineInterface, ListAllCommandsAction
+from scinoephile.common.cli.argument_parsing import get_arg_groups_by_name
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .audit import AuditCli

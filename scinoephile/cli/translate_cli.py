@@ -11,7 +11,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Any
 
-from scinoephile.common.argument_parsing import (
+from scinoephile.common.cli.argument_parsing import (
     enum_arg,
     enum_metavar,
     get_arg_groups_by_name,

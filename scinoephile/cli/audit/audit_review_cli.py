@@ -16,7 +16,10 @@ from scinoephile.analysis.audit.review import (
 )
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
+from scinoephile.common.cli.argument_parsing import (
+    get_arg_groups_by_name,
+    input_file_arg,
+)
 from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.id import get_series_language

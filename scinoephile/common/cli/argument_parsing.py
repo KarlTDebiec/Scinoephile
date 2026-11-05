@@ -15,9 +15,9 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, TypedDict, Unpack
 
-from .duration import parse_duration
-from .exceptions import NotAFileError
-from .validation import (
+from ..duration import parse_duration
+from ..exceptions import NotAFileError
+from ..validation import (
     val_float,
     val_input_dir_path,
     val_input_file_or_dir_path,
@@ -85,6 +85,13 @@ class IntValidatorKwargs(TypedDict, total=False):
     """explicit set of acceptable values."""
 
 
+class OutputDirValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_output_dir_path."""
+
+    create: bool
+    """whether missing output directories should be created."""
+
+
 class OutputPathValidatorKwargs(TypedDict, total=False):
     """Keyword arguments for val_output_path."""
 
@@ -92,13 +99,6 @@ class OutputPathValidatorKwargs(TypedDict, total=False):
     """whether existing output files are accepted."""
     create: bool
     """whether missing parent directories should be created."""
-
-
-class OutputDirValidatorKwargs(TypedDict, total=False):
-    """Keyword arguments for val_output_dir_path."""
-
-    create: bool
-    """whether missing output directories should be created."""
 
 
 class StrValidatorKwargs(TypedDict, total=False):
