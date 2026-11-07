@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <meta charset="UTF-8" />
-   <title>OCR validation</title>
-   <script src="{{ url_for('static', filename='htmx.min.js') }}"></script>
-   <style>
+  <head>
+    <meta charset="UTF-8" />
+    <title>OCR validation</title>
+    <script src="{{ url_for('static', filename='htmx.min.js') }}"></script>
+    <style>
       {% for row in style_rows %}
       #subtitle-{{ row.sub_idx }} {
          --subtitle-image-width: {{ row.image_width }}px;
@@ -146,9 +146,7 @@
             padding: 0.35em 0.6em;
          }
       }
-   </style>
-</head>
-<body>
-   {{ index_body|safe }}
-</body>
+    </style>
+  </head>
+  <body>{{ index_body|safe }}</body>
 </html>

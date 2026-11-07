@@ -1,0 +1,67 @@
+name: JavaScript
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'push' && github.sha || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: JavaScript
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      UV_CACHE_DIR: /tmp/uv-cache
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Detect relevant changes
+        id: changes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          relevant=true
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            git diff --name-only --no-renames -z "$BASE_SHA...$HEAD_SHA" -- \
+              '*.js' 'pyproject.toml' 'uv.lock' \
+              '.github/workflows/javascript.yml' ':(exclude)*.min.js' \
+              > "$RUNNER_TEMP/javascript-changes"
+            relevant=false
+            if [[ -s "$RUNNER_TEMP/javascript-changes" ]]; then
+              relevant=true
+            fi
+          fi
+          echo "relevant=$relevant" >> "$GITHUB_OUTPUT"
+
+      - name: Set up uv
+        if: steps.changes.outputs.relevant == 'true'
+        uses: astral-sh/setup-uv@v10.3.3
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+          python-version: '3.13'
+
+      - name: Install web checking tools
+        if: steps.changes.outputs.relevant == 'true'
+        run: uv sync --only-group web-checks --locked
+
+      - name: Check JavaScript formatting
+        if: steps.changes.outputs.relevant == 'true'
+        run: |
+          git ls-files -z -- '*.js' ':(exclude)*.min.js' |
+            xargs -0 -r uv run --no-sync js-beautify \
+              --replace -s 4 -m 2 -w 88 -n --eol '\n'
+          git diff --exit-code -- '*.js' ':(exclude)*.min.js'
