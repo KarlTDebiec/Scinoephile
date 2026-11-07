@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import TextIO
 from unittest.mock import patch
 
+from bs4 import BeautifulSoup
 from pytest import MonkeyPatch, mark, raises
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
@@ -789,9 +790,9 @@ def test_history_restore_returns_full_document(tmp_path: Path):
         "/?finding=review",
         headers={"HX-Request": "true", "HX-History-Restore-Request": "true"},
     ).get_data(as_text=True)
-    assert "<!doctype html>" in document
+    assert "<!doctype html>" in document.lower()
     fragment = client.get("/", headers={"HX-Request": "true"}).get_data(as_text=True)
-    assert "<!doctype html>" not in fragment
+    assert "<!doctype html>" not in fragment.lower()
 
 
 def test_block_batches_use_stable_cursors(tmp_path: Path):
@@ -823,7 +824,12 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
     ).get_data(as_text=True)
     assert batch.count('class="audit-row"') == 3
     assert '<details id="block-8"' in batch and 'id="workspace"' not in batch
-    assert 'id="loaded-through" name="through" value="8"' in batch
+    assert (
+        BeautifulSoup(batch, "html.parser").select_one(
+            'input#loaded-through[name="through"][value="8"]'
+        )
+        is not None
+    )
     assert 'hx-trigger="intersect once"' not in batch
     prefix = audit.page(AuditFilters(), through=8)
     assert len(prefix.blocks) == 8 and not prefix.has_more
@@ -938,7 +944,12 @@ def test_autosave_retains_incrementally_loaded_scope(tmp_path: Path):
         ),
         headers={"HX-Request": "true", "HX-Target": f"sync-{row.key}"},
     ).get_data(as_text=True)
-    assert 'id="loaded-through" name="through" value="2"' in result
+    assert (
+        BeautifulSoup(result, "html.parser").select_one(
+            'input#loaded-through[name="through"][value="2"]'
+        )
+        is not None
+    )
     assert 'id="block-2" hx-swap-oob="delete"' not in result
     assert f'id="form-{audit.rows()[0].key}"' not in result
     assert "<textarea" not in result
@@ -1054,7 +1065,7 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
         data=dict(csrf=csrf, selection=audit.verification_token(AuditFilters())),
     )
     assert native.status_code == 200
-    assert "<!doctype html>" in native.get_data(as_text=True)
+    assert "<!doctype html>" in native.get_data(as_text=True).lower()
     assert not audit.rows()[0].verified
     native = client.post(
         "/verify-visible",

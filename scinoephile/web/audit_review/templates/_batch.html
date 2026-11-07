@@ -1,3 +1,6 @@
-{% for block in page.blocks %}{% include '_block.html' %}{% endfor %}
-{% include '_load_more.html' %}
-{% set oob=true %}{% include '_stream_state.html' %}
+{% for block in page.blocks %}
+  {% include "_block.html" %}
+{% endfor %}
+{% include "_load_more.html" %}
+{% set oob = true %}
+{% include "_stream_state.html" %}

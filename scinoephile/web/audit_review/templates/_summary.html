@@ -1,1 +1,4 @@
-<output id="summary" role="status" title="Matching subtitles" aria-label="{{ page.matching }} matching subtitles"{% if oob %} hx-swap-oob="outerHTML"{% endif %}>{{ "{:,}".format(page.matching) }}</output>
+<output id="summary"
+        role="status"
+        title="Matching subtitles"
+        aria-label="{{ page.matching }} matching subtitles"{% if oob %} hx-swap-oob="outerHTML"{% endif %}>{{ "{:,}".format(page.matching) }}</output>

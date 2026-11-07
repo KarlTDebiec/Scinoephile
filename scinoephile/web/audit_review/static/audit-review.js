@@ -12,7 +12,8 @@ function syncProofread(input) {
     const changed = normalize(input.value) !== normalize(input.dataset.original);
     const preview = input.closest(".inline-proofread");
     preview.classList.toggle(
-        "is-dirty", normalize(input.value) !== normalize(preview.querySelector("pre").textContent)
+        "is-dirty", normalize(input.value) !== normalize(preview.querySelector(
+            "pre").textContent)
     );
     const status = input.form.querySelector("[data-proofreading-status]");
     status.dataset.proofreadingStatus = "unchanged";
@@ -42,7 +43,8 @@ document.addEventListener("input", event => {
     const state = getSaveState(form);
     state.error = "";
     state.pending = false;
-    if (event.target.matches("textarea[data-original]")) syncProofread(event.target);
+    if (event.target.matches("textarea[data-original]")) syncProofread(event
+        .target);
     else syncSaveStatus(form);
 });
 // Keep the ordinary search submit available until HTMX has initialized.
@@ -72,7 +74,8 @@ function syncBlockToggle() {
 document.addEventListener("click", event => {
     if (!event.target.closest("[data-toggle-blocks]")) return;
     const expand = !document.querySelector("details.audit-block[open]");
-    document.querySelector("#workspace").toggleAttribute("data-loading-paused", !expand);
+    document.querySelector("#workspace").toggleAttribute("data-loading-paused",
+        !expand);
     for (const block of document.querySelectorAll("details.audit-block")) {
         block.open = expand;
     }
@@ -108,8 +111,11 @@ function reviewValues(form) {
 function getSaveState(form) {
     if (!saveStates.has(form)) {
         saveStates.set(form, {
-            saved: JSON.stringify(reviewValues(form)), sent: null,
-            inFlight: false, pending: false, error: ""
+            saved: JSON.stringify(reviewValues(form)),
+            sent: null,
+            inFlight: false,
+            pending: false,
+            error: ""
         });
     }
     return saveStates.get(form);
@@ -122,7 +128,8 @@ function getSaveState(form) {
 function hasReviewDrafts() {
     return Array.from(document.querySelectorAll(".audit-row form")).some(form => {
         const state = getSaveState(form);
-        return state.inFlight || JSON.stringify(reviewValues(form)) !== state.saved;
+        return state.inFlight || JSON.stringify(reviewValues(form)) !== state
+            .saved;
     });
 }
 
@@ -144,8 +151,10 @@ function validateReviewForm(form) {
     }
     text.setCustomValidity(textError);
     let noteError = "";
-    if (note.required && !note.value.trim()) noteError = "A note is required for changed text.";
-    else if (note.value.length > 1000) noteError = "Use up to 1,000 characters for the note.";
+    if (note.required && !note.value.trim()) noteError =
+        "A note is required for changed text.";
+    else if (note.value.length > 1000) noteError =
+        "Use up to 1,000 characters for the note.";
     note.setCustomValidity(noteError);
     let auditError = "";
     if (auditNote.required && !auditNote.value.trim()) {
@@ -172,17 +181,27 @@ function syncSaveStatus(form) {
     const invalid = validateReviewForm(form);
     let status = "saved";
     let message = "Saved";
-    if (state.error) { status = "error"; message = state.error; }
-    else if (invalid) { status = "invalid"; message = invalid; }
-    else if (state.inFlight) { status = "saving"; message = "Saving…"; }
-    else if (JSON.stringify(reviewValues(form)) !== state.saved) {
-        status = "unsaved"; message = "Unsaved changes — leave the field to save.";
+    if (state.error) {
+        status = "error";
+        message = state.error;
+    } else if (invalid) {
+        status = "invalid";
+        message = invalid;
+    } else if (state.inFlight) {
+        status = "saving";
+        message = "Saving…";
+    } else if (JSON.stringify(reviewValues(form)) !== state.saved) {
+        status = "unsaved";
+        message = "Unsaved changes — leave the field to save.";
     }
     indicator.dataset.saveState = status;
     indicator.querySelector("span").textContent = {
-        saved: "Saved", saving: "Saving…", unsaved: "Unsaved",
-        invalid: "Invalid", error: "Error"
-    }[status];
+        saved: "Saved",
+        saving: "Saving…",
+        unsaved: "Unsaved",
+        invalid: "Invalid",
+        error: "Error"
+    } [status];
     indicator.title = message;
     indicator.setAttribute("aria-label", message);
     indicator.setAttribute("aria-busy", String(state.inFlight));
@@ -194,20 +213,27 @@ function syncSaveStatus(form) {
  */
 function requestReviewSave(form) {
     const state = getSaveState(form);
-    if (state.inFlight) { state.pending = true; return; }
-    if (validateReviewForm(form) || JSON.stringify(reviewValues(form)) === state.saved) {
+    if (state.inFlight) {
+        state.pending = true;
+        return;
+    }
+    if (validateReviewForm(form) || JSON.stringify(reviewValues(form)) === state
+        .saved) {
         syncSaveStatus(form);
         return;
     }
     state.inFlight = true;
     state.error = "";
     syncSaveStatus(form);
-    form.dispatchEvent(new Event("review:save", {bubbles: true}));
+    form.dispatchEvent(new Event("review:save", {
+        bubbles: true
+    }));
 }
 
 document.addEventListener("change", event => {
     const form = event.target.closest(".audit-row form");
-    if (form && event.target.matches("select, input[type=checkbox]")) requestReviewSave(form);
+    if (form && event.target.matches("select, input[type=checkbox]"))
+        requestReviewSave(form);
 });
 
 // Run before HTMX synchronization: a filter request must not abort an active save.
@@ -238,7 +264,8 @@ document.addEventListener("htmx:beforeSwap", event => {
     // A superseded preview must not overwrite either side of a newer draft's diff.
     const input = event.detail.requestConfig.elt;
     if (!input.matches("textarea[data-original]")) return;
-    if (input.value.replace(/\r\n?/g, "\n") !== event.detail.requestConfig.parameters.reviewed) {
+    if (input.value.replace(/\r\n?/g, "\n") !== event.detail.requestConfig
+        .parameters.reviewed) {
         event.detail.shouldSwap = false;
     }
 });
@@ -254,7 +281,8 @@ document.addEventListener("htmx:afterRequest", event => {
     const retry = state.pending;
     state.inFlight = false;
     state.pending = false;
-    if (event.detail.xhr.status >= 200 && event.detail.xhr.status < 300 && state.sent) {
+    if (event.detail.xhr.status >= 200 && event.detail.xhr.status < 300 && state
+        .sent) {
         state.saved = JSON.stringify(state.sent);
         // Updating defaults never replaces a focused textarea or its newer value.
         for (const name of ["reviewed", "review_note", "notes"]) {
@@ -262,7 +290,8 @@ document.addEventListener("htmx:afterRequest", event => {
         }
         state.error = "";
     } else {
-        state.error = "Not saved — focus and leave a text field to retry. If this row changed elsewhere, reload first.";
+        state.error =
+            "Not saved — focus and leave a text field to retry. If this row changed elsewhere, reload first.";
     }
     state.sent = null;
     if (!form.isConnected) return;
@@ -277,9 +306,11 @@ document.addEventListener("htmx:oobBeforeSwap", event => {
     for (const form of target.querySelectorAll("form")) {
         const state = getSaveState(form);
         const signature = JSON.stringify(reviewValues(form));
-        if (signature !== state.saved && signature !== JSON.stringify(state.sent)) {
+        if (signature !== state.saved && signature !== JSON.stringify(state
+                .sent)) {
             event.detail.shouldSwap = false;
-            state.error = "A related subtitle changed — reload before saving this draft.";
+            state.error =
+                "A related subtitle changed — reload before saving this draft.";
             syncSaveStatus(form);
         }
     }
@@ -292,7 +323,9 @@ document.addEventListener("focusout", event => {
 });
 // Operations replace the workspace; preserve incomplete subtitle drafts.
 document.addEventListener("submit", event => {
-    if (!event.target.matches("#proofreading form, #auditing form, [data-verify-visible], [data-reaudit], [data-reproofread]")) return;
+    if (!event.target.matches(
+            "#proofreading form, #auditing form, [data-verify-visible], [data-reaudit], [data-reproofread]"
+        )) return;
     if (!hasReviewDrafts()) return;
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -300,6 +333,7 @@ document.addEventListener("submit", event => {
     message.hidden = false;
     message.textContent = "Save subtitle drafts before running an operation.";
     if (event.target.matches("#auditing form")) {
-        document.querySelector("[data-auditing-message]").textContent = message.textContent;
+        document.querySelector("[data-auditing-message]").textContent = message
+            .textContent;
     }
 }, true);
