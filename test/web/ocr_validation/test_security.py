@@ -101,18 +101,23 @@ def test_foreign_mutations_are_rejected_with_the_htmx_header(
     )
 
 
-@parametrize("host", ["attacker.example", "localhost.attacker.example"])
-def test_untrusted_hosts_are_rejected(app: Flask, host: str):
+@parametrize("bind_host", ["127.0.0.1", "0.0.0.0", "::", "2001:db8::2"])
+@parametrize(
+    "host", ["attacker.example", "localhost.attacker.example", "[::2]", "[2001:db8::1]"]
+)
+def test_untrusted_hosts_are_rejected(app: Flask, bind_host: str, host: str):
     """Reject DNS rebinding hosts for documents and bundled scripts.
 
     Arguments:
         app: real OCR validation app
+        bind_host: explicitly configured bind host or wildcard address
         host: foreign Host header
     """
+    client = create_app(
+        app.config["OCR_VALIDATION_SESSION"], host=bind_host
+    ).test_client()
     for route in ("/", "/static/htmx.min.js"):
-        assert (
-            app.test_client().get(route, base_url=f"http://{host}").status_code == 400
-        )
+        assert client.get(route, base_url=f"http://{host}").status_code == 400
 
 
 @parametrize("endpoint", ["/", "/subtitles/0/validation.png"])
@@ -162,8 +167,13 @@ def test_foreign_gets_cannot_persist_validation_results(
     ("host", "base_url"),
     [
         ("127.0.0.1", "http://127.0.0.1:5000"),
+        ("127.0.0.1", "http://[::1]:5000"),
         ("::1", "http://[::1]:5000"),
+        ("[::1]", "http://[::1]:5000"),
+        ("2001:db8::1", "http://[2001:db8::1]:5000"),
+        ("[2001:db8::1]", "http://[2001:db8::1]:5000"),
         ("local.example", "http://local.example:5000"),
+        ("LOCAL.EXAMPLE", "http://local.example:5000"),
         ("192.0.2.5", "http://192.0.2.5:5000"),
         ("0.0.0.0", "http://localhost:5000"),
         ("::", "http://[::1]:5000"),
@@ -190,6 +200,19 @@ def test_configured_hosts_accept_same_origin_edits(
     assert response.status_code == 200
     assert b'id="subtitle-0"' in response.data
     assert app.config["OCR_VALIDATION_SESSION"].series.events[0].text == "B"
+
+
+@parametrize("host", ["", "bad host", "user@localhost", "localhost:65536", "[::::]"])
+def test_malformed_hosts_are_rejected(app: Flask, host: str):
+    """Reject malformed Host headers before serving local documents or scripts.
+
+    Arguments:
+        app: real OCR validation app
+        host: malformed Host header supplied without URL normalization
+    """
+    for route in ("/", "/static/htmx.min.js"):
+        with app.test_request_context(route, environ_overrides={"HTTP_HOST": host}):
+            assert app.full_dispatch_request().status_code == 400
 
 
 def test_foreign_custom_header_preflight_is_not_authorized(app: Flask):
