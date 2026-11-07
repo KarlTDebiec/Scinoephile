@@ -6,12 +6,13 @@ from __future__ import annotations
 
 from logging import getLogger
 from pathlib import Path
+from statistics import median
 
 from scinoephile.common import package_root
 from scinoephile.common.validation import val_input_dir_path, val_output_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.paths import get_runtime_data_root_path
-from scinoephile.core.text import WHITESPACE_CHARS
+from scinoephile.core.text import RE_HANZI, WHITESPACE_CHARS
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
@@ -319,6 +320,67 @@ class ValidationManager:
                     cursor.advance(n_chars=1, n_bboxes=1)
                     return True
         return False
+
+    def suggest_char_n_bboxes(self, cursor: CharCursor) -> int:
+        """Suggest an initial Hanzi selection without approving dimensions.
+
+        Arguments:
+            cursor: current character and unmerged bbox candidates
+        Returns:
+            suggested number of bboxes, defaulting to one when uncertain
+        """
+        if not RE_HANZI.fullmatch(cursor.char):
+            return 1
+        boxes = cursor.bboxes
+        if cursor.bbox_idx >= len(boxes):
+            return 1
+
+        # Estimate this subtitle's font size and the current character's width
+        font_height = max(box.height for box in boxes)
+        if font_height <= 0:
+            return 1
+        known_widths = [
+            sum(dims[::3]) + sum(dims[2::3])
+            for char_dims in self.char_dims_by_n.values()
+            for dims in char_dims.get(cursor.char, set())
+            if 0.8 * font_height <= max(dims[1::3]) <= 1.2 * font_height
+        ]
+        if known_widths:
+            target_width = median(known_widths)
+        else:
+            full_widths = [
+                box.width
+                for box in boxes
+                if 0.7 * font_height <= box.width <= 1.3 * font_height
+            ]
+            target_width = float(font_height)
+            if full_widths:
+                target_width = median(full_widths)
+        first = boxes[cursor.bbox_idx]
+        if target_width <= 0 or first.width >= 0.85 * target_width:
+            return 1
+
+        # Consider only nearby components on the same line, within one glyph
+        best_count = 1
+        best_distance = abs(first.width - target_width)
+        max_count = min(MAX_CHAR_DIM_BBOXES, len(boxes) - cursor.bbox_idx)
+        merged = first
+        for count in range(2, max_count + 1):
+            previous = boxes[cursor.bbox_idx + count - 2]
+            following = boxes[cursor.bbox_idx + count - 1]
+            gap = following.x1 - previous.x2
+            if gap < 0 or gap > max(2, 0.15 * font_height):
+                break
+            if following.y1 >= merged.y2 or following.y2 <= merged.y1:
+                break
+            merged = get_merged_bbox([merged, following])
+            if merged.width > 1.25 * target_width:
+                break
+            distance = abs(merged.width - target_width)
+            if distance <= 0.25 * target_width and distance < best_distance:
+                best_count = count
+                best_distance = distance
+        return best_count
 
     def _validate_gaps(  # noqa: PLR0912, PLR0915
         self, sub: ImageSubtitle, sub_idx: int
