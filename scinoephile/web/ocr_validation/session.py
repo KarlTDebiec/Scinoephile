@@ -519,7 +519,6 @@ class OcrValidationSession:
             if self.manager.match_char_dims(cursor):
                 continue
 
-            state.char_n_bboxes = self.manager.suggest_char_n_bboxes(cursor)
             return self._char_dims_concern(state)
 
         if cursor.bbox_idx != len(cursor.bboxes):
