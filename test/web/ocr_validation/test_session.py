@@ -345,6 +345,50 @@ def test_accept_char_dims_marks_single_char_done(
     ) == "A,10,20\n"
 
 
+def test_hanzi_suggestion_remains_unapproved_and_can_be_adjusted(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Suggest the complete glyph while preserving confirmation and adjustment.
+
+    Arguments:
+        tmp_path: temporary directory path
+        monkeypatch: pytest monkeypatch fixture
+    """
+    html_dir_path = make_ocr_html_dir(tmp_path, text="怕")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [
+            Bbox(0, 6, 12, 29),
+            Bbox(11, 14, 0, 55),
+            Bbox(18, 23, 12, 23),
+            Bbox(28, 56, 0, 55),
+        ],
+    )
+    session = OcrValidationSession.from_dir_path(
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
+    )
+    clear_validation_data(session)
+
+    row = session.subtitle_row(0)
+    assert isinstance(row.concern, CharDimsConcern)
+    assert row.concern.n_bboxes == 4
+    assert all("怕" not in dims for dims in session.manager.char_dims_by_n.values())
+
+    row = session.resolve_char_concern(0, action="contract", n_bboxes=4)
+    assert isinstance(row.concern, CharDimsConcern)
+    assert row.concern.n_bboxes == 3
+    row = session.subtitle_row(0)
+    assert isinstance(row.concern, CharDimsConcern)
+    assert row.concern.n_bboxes == 3
+
+    row = session.resolve_char_concern(0, action="expand", n_bboxes=3)
+    assert isinstance(row.concern, CharDimsConcern)
+    assert row.concern.n_bboxes == 4
+    row = session.resolve_char_concern(0, action="accept", n_bboxes=4)
+    assert row.concern is None
+    assert "怕" in session.manager.char_dims_by_n[4]
+
+
 def test_contract_char_dims_reduces_selection(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test contracting character dimensions reduces the selected bbox count.
 
