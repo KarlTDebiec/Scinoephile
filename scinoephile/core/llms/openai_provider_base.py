@@ -20,7 +20,7 @@ from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.exceptions import ScinoephileError
 
 from .answer import Answer
-from .llm_provider import ChatCompletionKwargs, LLMProvider
+from .llm_provider import ChatCompletionKwargs, LLMProvider, ReasoningEffort
 from .metrics import ChatCompletionMetrics
 from .tool_box import ToolBox
 
@@ -55,6 +55,7 @@ class OpenAIProviderBase(LLMProvider):
         base_url: str | None = None,
         model: str | None = None,
         timeout_seconds: float = 120.0,
+        reasoning_effort: ReasoningEffort | str | None = None,
     ):
         """Initialize.
 
@@ -64,8 +65,9 @@ class OpenAIProviderBase(LLMProvider):
             base_url: explicit base URL; if omitted, provider default is used
             model: model identifier override
             timeout_seconds: timeout for each provider request
+            reasoning_effort: requested reasoning level; None preserves API defaults
         Raises:
-            ValueError: if timeout_seconds is not positive
+            ValueError: if timeout or reasoning configuration is unsupported
         """
         if timeout_seconds <= 0:
             raise ValueError("timeout_seconds must be positive.")
@@ -78,6 +80,10 @@ class OpenAIProviderBase(LLMProvider):
             self.base_url = base_url
         if model is not None:
             self.model = model
+        self._reasoning_effort: ReasoningEffort | None = None
+        if reasoning_effort is not None:
+            self._reasoning_effort = ReasoningEffort(reasoning_effort)
+        self._reasoning_options = self._get_reasoning_options(self._reasoning_effort)
 
     @property
     def api_key(self) -> str | None:
@@ -110,7 +116,18 @@ class OpenAIProviderBase(LLMProvider):
                 "use_strict_tools": self.use_strict_tools,
             }
         )
+        if self._reasoning_options:
+            identity["reasoning"] = self._reasoning_options.copy()
         return identity
+
+    @property
+    def reasoning_effort(self) -> ReasoningEffort | None:
+        """Get the requested reasoning effort fixed for this provider instance.
+
+        Returns:
+            requested level, or None to preserve the API default
+        """
+        return self._reasoning_effort
 
     @property
     def sync_client(self) -> OpenAI:
@@ -167,6 +184,7 @@ class OpenAIProviderBase(LLMProvider):
             request_kwargs = self._build_request_kwargs(
                 response_format, openai_tools, kwargs
             )
+            request_kwargs.update(self._reasoning_options)
             if prompt_cache_key is not None:
                 request_kwargs["prompt_cache_key"] = prompt_cache_key
                 request_kwargs["prompt_cache_options"] = {"mode": "explicit"}
@@ -259,6 +277,22 @@ class OpenAIProviderBase(LLMProvider):
             }
             for tool in tool_box.specs
         ]
+
+    def _get_reasoning_options(self, effort: ReasoningEffort | None) -> dict[str, Any]:
+        """Translate reasoning configuration; concrete providers opt into support.
+
+        Arguments:
+            effort: requested reasoning level, or None for the API default
+        Returns:
+            provider-specific completion request options
+        Raises:
+            ValueError: if this provider has not implemented reasoning controls
+        """
+        if effort is not None:
+            raise ValueError(
+                f"{type(self).__name__} does not support explicit reasoning effort"
+            )
+        return {}
 
     def _query(
         self, messages: list[dict[str, Any]], request_kwargs: dict[str, Any]

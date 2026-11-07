@@ -4,9 +4,9 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import Any, ClassVar
 
-from scinoephile.core.llms import OpenAIProviderBase
+from scinoephile.core.llms import OpenAIProviderBase, ReasoningEffort
 
 __all__ = ["OpenAIProvider"]
 
@@ -28,3 +28,15 @@ class OpenAIProvider(OpenAIProviderBase):
 
     explicit_prompt_caching = True
     """Whether requests should mark and route a stable cached prefix."""
+
+    def _get_reasoning_options(self, effort: ReasoningEffort | None) -> dict[str, Any]:
+        """Translate OpenAI reasoning effort without overriding omitted defaults.
+
+        Arguments:
+            effort: requested reasoning level, or None for the API default
+        Returns:
+            OpenAI completion parameters; model-specific support is API-validated
+        """
+        if effort is None:
+            return {}
+        return {"reasoning_effort": effort.value}
