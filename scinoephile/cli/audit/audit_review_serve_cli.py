@@ -29,24 +29,52 @@ __all__ = ["AuditReviewServeCli"]
 AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "serve the subtitle audit browser": "启动字幕审核网页浏览器",
-        "original subtitle SRT file": "原始字幕 SRT 文件",
-        "edited SRT file; resume if present": "编辑后字幕 SRT 文件（存在时继续编辑）",
-        "optional read/write proofreading decision JSON; created on save": (
-            "可选读写校对决策 JSON；保存时创建"
+        (
+            "Requires the 'web' extra. Default address: http://127.0.0.1:5020/. "
+            "Proofreading and auditing make model requests only when started "
+            "in the browser."
+        ): (
+            "需要安装 'web' 可选依赖。默认地址：http://127.0.0.1:5020/。"
+            "只有在浏览器中启动校对或审核时才会请求语言模型。"
         ),
-        "optional Markdown audit notes to import": "可选导入的 Markdown 审核备注",
+        "original subtitle SRT file (read-only)": "原始字幕 SRT 文件（只读）",
+        (
+            "edited SRT file; resume if present; audit progress is kept in "
+            "<output-stem>.review.sqlite3"
+        ): "编辑后 SRT；存在则继续；审核进度：<output-stem>.review.sqlite3",
+        (
+            "optional proofreading decision JSON; created or updated by "
+            "proofreading edits"
+        ): "可选校对决策 JSON；编辑校对内容时创建或更新",
+        "optional read-only Markdown audit notes to import": (
+            "可选导入的只读 Markdown 审核备注"
+        ),
         "subtitle language (default: auto-detect)": "字幕语言（默认：从输入检测）",
         "display title (default: input filename stem)": "显示标题（默认：输入文件名）",
         "audit web UI must use a loopback host": "审核网页界面必须使用本机回环地址",
     },
     "zh-hant": {
         "serve the subtitle audit browser": "啟動字幕稽核網頁瀏覽器",
-        "original subtitle SRT file": "原始字幕 SRT 檔",
-        "edited SRT file; resume if present": "編輯後字幕 SRT 檔（存在時繼續編輯）",
-        "optional read/write proofreading decision JSON; created on save": (
-            "可選讀寫校對決策 JSON；儲存時建立"
+        (
+            "Requires the 'web' extra. Default address: http://127.0.0.1:5020/. "
+            "Proofreading and auditing make model requests only when started "
+            "in the browser."
+        ): (
+            "需要安裝 'web' 選用相依套件。預設網址：http://127.0.0.1:5020/。"
+            "只有在瀏覽器中啟動校對或稽核時才會請求語言模型。"
         ),
-        "optional Markdown audit notes to import": "可選匯入的 Markdown 稽核備註",
+        "original subtitle SRT file (read-only)": "原始字幕 SRT 檔（唯讀）",
+        (
+            "edited SRT file; resume if present; audit progress is kept in "
+            "<output-stem>.review.sqlite3"
+        ): "編輯後 SRT；存在時繼續；稽核進度：<output-stem>.review.sqlite3",
+        (
+            "optional proofreading decision JSON; created or updated by "
+            "proofreading edits"
+        ): "可選校對決策 JSON；編輯校對內容時建立或更新",
+        "optional read-only Markdown audit notes to import": (
+            "可選匯入的唯讀 Markdown 稽核備註"
+        ),
         "subtitle language (default: auto-detect)": "字幕語言（預設：從輸入偵測）",
         "display title (default: input filename stem)": "顯示標題（預設：輸入檔名）",
         "audit web UI must use a loopback host": "稽核網頁介面必須使用本機回環位址",
@@ -56,7 +84,11 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class AuditReviewServeCli(ScinoephileCliBase):
-    """Serve the subtitle audit browser."""
+    """Serve the subtitle audit browser.
+
+    Requires the 'web' extra. Default address: http://127.0.0.1:5020/.
+    Proofreading and auditing make model requests only when started in the browser.
+    """
 
     localizations = merge_localizations(
         WEB_LOCALIZATIONS, AUDIT_REVIEW_SERVE_LOCALIZATIONS
@@ -84,19 +116,22 @@ class AuditReviewServeCli(ScinoephileCliBase):
             dest="infile_path",
             required=True,
             type=input_file_arg(),
-            help="original subtitle SRT file",
+            help="original subtitle SRT file (read-only)",
         )
         groups["input arguments"].add_argument(
             "--json",
             dest="json_path",
             type=output_file_arg(exist_ok=True),
-            help="optional read/write proofreading decision JSON; created on save",
+            help=(
+                "optional proofreading decision JSON; created or updated by "
+                "proofreading edits"
+            ),
         )
         groups["input arguments"].add_argument(
             "--audit-notes",
             dest="report_path",
             type=input_file_arg(),
-            help="optional Markdown audit notes to import",
+            help="optional read-only Markdown audit notes to import",
         )
         groups["input arguments"].add_argument(
             "--language",
@@ -109,7 +144,10 @@ class AuditReviewServeCli(ScinoephileCliBase):
             dest="outfile_path",
             required=True,
             type=output_file_arg(exist_ok=True),
-            help="edited SRT file; resume if present",
+            help=(
+                "edited SRT file; resume if present; audit progress is kept in "
+                "<output-stem>.review.sqlite3"
+            ),
         )
         groups["web arguments"].add_argument(
             "--title", help="display title (default: input filename stem)"
