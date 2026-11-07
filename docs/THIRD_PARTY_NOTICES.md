@@ -232,11 +232,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## htmx (vendored web UI runtime)
 
-Scinoephile vendors the HTMX runtime for the OCR validation web UI:
+Scinoephile vendors the HTMX runtime for its local web editors:
 
 - Project: https://github.com/bigskysoftware/htmx
 - Package: https://www.npmjs.com/package/htmx.org/v/2.0.4
-- Vendored file: `scinoephile/web/ocr_validation/static/htmx.min.js`
+- Vendored file: `scinoephile/web/static/htmx.min.js`
 - License: 0BSD
 
 The HTMX package metadata for version 2.0.4 identifies the package license as
@@ -341,3 +341,12 @@ licensing:
 Scinoephile can build from local Kaikki JSONL snapshots under
 `scinoephile/data/dictionaries/wiktionary/`, or from an explicit
 `--source-jsonl-path` during `dictionary build wiktionary`.
+
+## Material Design Icons (audit review interface)
+
+The audit editor bundles [Pictogrammers Material Design Icons v7.4.47](https://github.com/Templarian/MaterialDesign-SVG/tree/v7.4.47).
+The upstream notice and Apache 2.0 license are in
+`scinoephile/web/audit_review/static/mdi.LICENSE` and `apache-2.0.LICENSE`.
+The SVGs use a common ID and inherit text color. Individual files identify
+adapted artwork, including composite controls and the filter icon alignment
+from aXYom32.

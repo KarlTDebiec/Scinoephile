@@ -17,18 +17,24 @@ __all__ = ["create_local_app"]
 
 
 def create_local_app(
-    name: str, static_dir_path: Path, *, host: str = "127.0.0.1"
+    name: str,
+    static_dir_path: Path,
+    *,
+    host: str = "127.0.0.1",
+    require_htmx: bool = True,
 ) -> FlaskApp:
-    """Create a local app with trusted hosts and HTMX-only editing requests.
+    """Create a local app with trusted hosts and protected editing requests.
 
     Loopback names and the explicit bind host are trusted. Wildcard binds retain
     loopback access without trusting arbitrary Host headers. Requiring HTMX's custom
     header prevents foreign forms from editing data while CORS remains disabled.
+    Apps that accept native forms must check a session CSRF token on mutations.
 
     Arguments:
         name: Flask application import name used to locate domain templates
         static_dir_path: existing shared browser asset directory
         host: explicitly configured bind host, or a wildcard bind address
+        require_htmx: whether all editing requests must carry the HTMX header
     Returns:
         Flask app with local request checks and defensive response headers
     Raises:
@@ -43,7 +49,7 @@ def create_local_app(
 
     @app.before_request
     def protect_local_requests():
-        """Reject foreign browser requests and require HTMX for mutations."""
+        """Reject foreign browser requests and enforce the editing request policy."""
         request = flask.request
         # Match complete hostnames without treating IPv6 colons as port separators
         try:
@@ -58,7 +64,8 @@ def create_local_app(
         if request.headers.get("Sec-Fetch-Site") in {"cross-site", "same-site"}:
             flask.abort(403)
         if (
-            request.method not in {"GET", "HEAD", "OPTIONS"}
+            require_htmx
+            and request.method not in {"GET", "HEAD", "OPTIONS"}
             and request.headers.get("HX-Request") != "true"
         ):
             flask.abort(403)

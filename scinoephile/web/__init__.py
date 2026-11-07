@@ -4,5 +4,5 @@
 
 Package hierarchy (modules may import from any above):
 * security
-* ocr_validation
+* audit_review / ocr_validation
 """

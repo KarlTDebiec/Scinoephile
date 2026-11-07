@@ -24,6 +24,8 @@ __all__ = [
     "ReviewAuditComparison",
     "ReviewAuditFilter",
     "ReviewAuditPair",
+    "ReviewAuditMetadata",
+    "get_review_metadata",
     "audit_review",
 ]
 
@@ -74,7 +76,7 @@ class ReviewAuditComparison:
 
 
 @dataclass(frozen=True, kw_only=True)
-class _ReviewAuditMetadata:
+class ReviewAuditMetadata:
     """Matched notes and verification state for one review decision log."""
 
     covered_indexes: frozenset[int]
@@ -158,7 +160,7 @@ def audit_review(
     # Match block-based log data against the complete inputs
     try:
         review_metadata = tuple(
-            _get_review_metadata(review.review_cases, original, reviewed)
+            get_review_metadata(review.review_cases, original, reviewed)
             for review, (original, reviewed) in zip(reviews, review_series, strict=True)
         )
         notes = tuple(metadata.notes_by_index for metadata in review_metadata)
@@ -218,6 +220,74 @@ def audit_review(
         last_index=last_index,
         first_block=first_block,
         last_block=last_block,
+    )
+
+
+def get_review_metadata(
+    review_cases: Sequence[TestCase],
+    original: tuple[str, ...],
+    reviewed: tuple[str, ...],
+) -> ReviewAuditMetadata:
+    """Match the latest current review cases to subtitle text.
+
+    Arguments:
+        review_cases: deserialized review test cases
+        original: original subtitle text
+        reviewed: reviewed subtitle text
+    Returns:
+        current notes and verification metadata
+    Raises:
+        ValueError: if a current query's answer does not match reviewed subtitles
+    """
+    # Retain the latest logged decision for each deduplicated query
+    latest_cases_by_query = {
+        review_case.query.key: (case_index, review_case)
+        for case_index, review_case in enumerate(review_cases, 1)
+    }
+
+    # Match current cases once and derive all report metadata together
+    covered_indexes: set[int] = set()
+    notes_by_index: dict[int, list[str]] = {}
+    unverified_indexes: set[int] = set()
+    for case_index, review_case in latest_cases_by_query.values():
+        query_texts, revised_texts, revision_by_index = _get_review_case_data(
+            review_case
+        )
+        candidate_starts = [
+            start
+            for start in range(len(original) - len(query_texts) + 1)
+            if original[start : start + len(query_texts)] == query_texts
+        ]
+        if not candidate_starts:
+            # Persisted logs retain historical queries after their input changes
+            continue
+
+        matched_starts = [
+            start
+            for start in candidate_starts
+            if reviewed[start : start + len(revised_texts)] == revised_texts
+        ]
+        if not matched_starts:
+            raise ValueError(
+                f"Review test case {case_index} does not match its subtitle pair"
+            )
+
+        for start in matched_starts:
+            matched_indexes = set(range(start, start + len(query_texts)))
+            covered_indexes.update(matched_indexes)
+            if not review_case.verified:
+                unverified_indexes.update(matched_indexes)
+            for local_index, revision in revision_by_index.items():
+                index = start + local_index - 1
+                note = cast(str, revision["note"]).strip()
+                notes = notes_by_index.setdefault(index, [])
+                if note not in notes:
+                    notes.append(note)
+
+    return ReviewAuditMetadata(
+        covered_indexes=frozenset(covered_indexes),
+        notes_by_index={index: tuple(notes) for index, notes in notes_by_index.items()},
+        unverified_indexes=frozenset(unverified_indexes),
     )
 
 
@@ -447,71 +517,3 @@ def _get_review_case_data(
         revised_texts_list.append(revised_text)
     revised_texts = tuple(revised_texts_list)
     return query_texts, revised_texts, revision_by_index
-
-
-def _get_review_metadata(
-    review_cases: Sequence[TestCase],
-    original: tuple[str, ...],
-    reviewed: tuple[str, ...],
-) -> _ReviewAuditMetadata:
-    """Match the latest current review cases to subtitle text.
-
-    Arguments:
-        review_cases: deserialized review test cases
-        original: original subtitle text
-        reviewed: reviewed subtitle text
-    Returns:
-        current notes and verification metadata
-    Raises:
-        ValueError: if a current query's answer does not match reviewed subtitles
-    """
-    # Retain the latest logged decision for each deduplicated query
-    latest_cases_by_query = {
-        review_case.query.key: (case_index, review_case)
-        for case_index, review_case in enumerate(review_cases, 1)
-    }
-
-    # Match current cases once and derive all report metadata together
-    covered_indexes: set[int] = set()
-    notes_by_index: dict[int, list[str]] = {}
-    unverified_indexes: set[int] = set()
-    for case_index, review_case in latest_cases_by_query.values():
-        query_texts, revised_texts, revision_by_index = _get_review_case_data(
-            review_case
-        )
-        candidate_starts = [
-            start
-            for start in range(len(original) - len(query_texts) + 1)
-            if original[start : start + len(query_texts)] == query_texts
-        ]
-        if not candidate_starts:
-            # Persisted logs retain historical queries after their input changes
-            continue
-
-        matched_starts = [
-            start
-            for start in candidate_starts
-            if reviewed[start : start + len(revised_texts)] == revised_texts
-        ]
-        if not matched_starts:
-            raise ValueError(
-                f"Review test case {case_index} does not match its subtitle pair"
-            )
-
-        for start in matched_starts:
-            matched_indexes = set(range(start, start + len(query_texts)))
-            covered_indexes.update(matched_indexes)
-            if not review_case.verified:
-                unverified_indexes.update(matched_indexes)
-            for local_index, revision in revision_by_index.items():
-                index = start + local_index - 1
-                note = cast(str, revision["note"]).strip()
-                notes = notes_by_index.setdefault(index, [])
-                if note not in notes:
-                    notes.append(note)
-
-    return _ReviewAuditMetadata(
-        covered_indexes=frozenset(covered_indexes),
-        notes_by_index={index: tuple(notes) for index, notes in notes_by_index.items()},
-        unverified_indexes=frozenset(unverified_indexes),
-    )

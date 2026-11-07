@@ -38,6 +38,13 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     expected_package_file_paths = [
         "web/static/htmx.min.js",
         "web/ocr_validation/templates/index.html",
+        "web/audit_review/templates/index.html",
+        "web/audit_review/templates/_row.html",
+        "web/audit_review/static/audit-review.css",
+        "web/audit_review/static/audit-review.js",
+        "web/audit_review/static/icons/checkbox-marked.svg",
+        "web/audit_review/static/mdi.LICENSE",
+        "web/audit_review/static/apache-2.0.LICENSE",
     ]
     ignored_local_dump_path.parent.mkdir(parents=True, exist_ok=True)
     ignored_local_dump_path.write_text("{}\n", encoding="utf-8")

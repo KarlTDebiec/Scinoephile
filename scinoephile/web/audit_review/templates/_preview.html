@@ -1,0 +1,3 @@
+{% set differences = row.differences %}
+<pre id="original-diff-{{ row.key }}" hx-swap-oob="outerHTML">{% for text, kind in differences[0] %}<span class="diff-{{ kind }}">{{ text }}</span>{% endfor %}</pre>
+<pre id="proofread-diff-{{ row.key }}" aria-hidden="true">{% for text, kind in differences[1] %}<span class="diff-{{ kind }}">{{ text }}</span>{% endfor %}</pre>
