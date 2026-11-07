@@ -36,7 +36,7 @@ jobs:
           relevant=true
           if [[ "$EVENT_NAME" == "pull_request" ]]; then
             git diff --name-only --no-renames -z "$BASE_SHA...$HEAD_SHA" -- \
-              '*.js' 'scripts/format_javascript.py' 'pyproject.toml' 'uv.lock' \
+              '*.js' 'pyproject.toml' 'uv.lock' \
               '.github/workflows/javascript.yml' ':(exclude)*.min.js' \
               > "$RUNNER_TEMP/javascript-changes"
             relevant=false
@@ -60,4 +60,8 @@ jobs:
 
       - name: Check JavaScript formatting
         if: steps.changes.outputs.relevant == 'true'
-        run: uv run --no-sync python scripts/format_javascript.py --check
+        run: |
+          git ls-files -z -- '*.js' ':(exclude)*.min.js' |
+            xargs -0 -r uv run --no-sync js-beautify \
+              --replace -s 4 -m 2 -w 88 -n --eol '\n'
+          git diff --exit-code -- '*.js' ':(exclude)*.min.js'
