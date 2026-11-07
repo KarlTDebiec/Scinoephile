@@ -35,17 +35,15 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
         for path in source_data_dir_path.rglob("*")
         if path.is_file() and path != ignored_local_dump_path
     )
-    expected_package_file_paths = [
-        "web/static/htmx.min.js",
-        "web/ocr_validation/templates/index.html",
-        "web/audit_review/templates/index.html",
-        "web/audit_review/templates/_row.html",
-        "web/audit_review/static/audit-review.css",
-        "web/audit_review/static/audit-review.js",
-        "web/audit_review/static/icons/checkbox-marked.svg",
-        "web/audit_review/static/mdi.LICENSE",
-        "web/audit_review/static/apache-2.0.LICENSE",
-    ]
+    expected_package_file_paths = sorted(
+        path.relative_to(build_source_dir_path / "scinoephile").as_posix()
+        for dir_name in ("static", "templates")
+        for asset_dir_path in (build_source_dir_path / "scinoephile/web").rglob(
+            dir_name
+        )
+        for path in asset_dir_path.rglob("*")
+        if path.is_file()
+    )
     ignored_local_dump_path.parent.mkdir(parents=True, exist_ok=True)
     ignored_local_dump_path.write_text("{}\n", encoding="utf-8")
 
