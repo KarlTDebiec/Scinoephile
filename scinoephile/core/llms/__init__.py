@@ -18,7 +18,7 @@ from __future__ import annotations
 from .answer import Answer
 from .cache import LlmCache
 from .cache_namespace import LlmCacheNamespace
-from .llm_provider import ChatCompletionKwargs, LLMProvider
+from .llm_provider import ChatCompletionKwargs, LLMProvider, ReasoningEffort
 from .manager import Manager, PromptModelField
 from .metrics import ChatCompletionMetrics, ChatCompletionMetricsSummary
 from .openai_provider_base import OpenAIProviderBase
@@ -48,6 +48,7 @@ __all__ = [
     "PromptModelField",
     "Query",
     "Queryer",
+    "ReasoningEffort",
     "SharedPromptLocalizationFields",
     "TestCase",
     "TestCaseSubtitle",

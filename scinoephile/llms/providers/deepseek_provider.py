@@ -4,11 +4,14 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from logging import getLogger
+from typing import Any, ClassVar
 
-from scinoephile.core.llms import OpenAIProviderBase
+from scinoephile.core.llms import OpenAIProviderBase, ReasoningEffort
 
 __all__ = ["DeepSeekProvider"]
+
+logger = getLogger(__name__)
 
 
 class DeepSeekProvider(OpenAIProviderBase):
@@ -33,3 +36,27 @@ class DeepSeekProvider(OpenAIProviderBase):
     def use_strict_tools(self) -> bool:
         """Whether DeepSeek strict tool schemas should be enabled."""
         return bool(self.base_url and self.base_url.rstrip("/").endswith("/beta"))
+
+    def _get_reasoning_options(self, effort: ReasoningEffort | None) -> dict[str, Any]:
+        """Translate requested levels to DeepSeek's documented thinking controls.
+
+        Arguments:
+            effort: requested reasoning level, or None for the API default
+        Returns:
+            effective DeepSeek thinking toggle and reasoning effort
+        """
+        if effort is None:
+            return {}
+        if effort == ReasoningEffort.none:
+            return {"extra_body": {"thinking": {"type": "disabled"}}}
+        effective = effort
+        if effort == ReasoningEffort.minimal:
+            effective = ReasoningEffort.low
+        elif effort in {ReasoningEffort.medium, ReasoningEffort.xhigh}:
+            effective = ReasoningEffort.high
+        if effective != effort:
+            logger.info(f"DeepSeek maps reasoning effort {effort} to {effective}")
+        return {
+            "reasoning_effort": effective.value,
+            "extra_body": {"thinking": {"type": "enabled"}},
+        }
