@@ -97,17 +97,6 @@ max_attribute_length = 88
 # Local application pages do not need search-engine descriptions.
 ignore = "H030"
 
-[tool.jsbeautifier]
-indent_size = 4
-indent_char = " "
-indent_with_tabs = false
-brace_style = "collapse"
-preserve_newlines = true
-max_preserve_newlines = 2
-wrap_line_length = 88
-end_with_newline = true
-eol = "\n"
-
 [tool.pytest.ini_options]
 log_cli = true
 log_cli_level = "INFO"
