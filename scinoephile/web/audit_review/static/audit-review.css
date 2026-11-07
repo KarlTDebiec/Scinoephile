@@ -58,7 +58,7 @@ body {
 }
 h1 { margin: 0; }
 a { color: var(--link); }
-svg { flex: none; fill: currentColor; vertical-align: middle; }
+svg { flex: none; fill: currentColor; }
 :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
 input, textarea, select, button {
@@ -111,23 +111,24 @@ select {
 }
 
 
+nav[aria-label="Filters"], nav[aria-label="Operations"] {
+  padding: .5rem;
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+  border-radius: .5rem;
+  background: var(--surface);
+}
 nav[aria-label="Filters"] {
   display: grid;
   grid-template-columns: 2.5rem minmax(0, 1fr);
   grid-template-rows: 2.5rem 2.5rem;
   align-items: start;
   gap: .5rem;
-  padding: .5rem;
-  margin: 1rem 0;
-  border: 1px solid var(--border);
-  border-radius: .5rem;
-  background: var(--surface);
 
   & > form:first-child {
     grid-column: 1;
     grid-row: 1;
     & button {
-      & > svg { flex: none; width: 28px; height: 28px; }
       & > svg:last-child { display: none; }
       &:not(:disabled) {
         & > svg:first-child { display: none; }
@@ -135,21 +136,15 @@ nav[aria-label="Filters"] {
       }
     }
   }
-  & :is(input, select, button) { height: 2.5rem; }
+  & :is(input, select) { height: 2.5rem; }
   & select { min-width: 0; }
-  & select > button {
-    width: 100%;
-    height: auto;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    justify-content: start;
-  }
-  & button {
+  & select > button:hover { background: transparent; }
+  & > form > button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 2.5rem;
+    height: 2.5rem;
     padding: .25rem;
 
     &[hidden] { display: none; }
@@ -177,13 +172,7 @@ nav[aria-label="Operations"] {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-start;
   gap: .5rem;
-  padding: .5rem;
-  margin: 1rem 0;
-  border: 1px solid var(--border);
-  border-radius: .5rem;
-  background: var(--surface);
 
   & > form > button, & > button {
     display: inline-flex;
@@ -219,7 +208,6 @@ nav[aria-label="Operations"] {
   display: grid;
   grid-column: 2;
   grid-row: 1 / 3;
-  min-width: 0;
   gap: .5rem;
   grid-template-columns: repeat(3, minmax(0, 1fr)) 2.5rem;
   grid-template-rows: 2.5rem 2.5rem;
@@ -241,7 +229,6 @@ nav[aria-label="Operations"] {
 }
 
 .audit-block {
-  min-width: 0;
   border: 1px solid var(--border);
   border-radius: .5rem;
   padding: 0 1rem 1rem;
@@ -278,8 +265,7 @@ nav[aria-label="Operations"] {
       place-items: center;
       width: 1.5rem;
       height: 1.5rem;
-      line-height: 0;
-      & svg { grid-area: 1 / 1; display: block; }
+      & svg { grid-area: 1 / 1; }
       & svg:first-child { visibility: hidden; }
     }
   }
@@ -360,7 +346,6 @@ nav[aria-label="Operations"] {
       background: transparent;
       border-color: transparent;
       padding: 0;
-      margin: 0;
       font: .9rem/1.5 system-ui, sans-serif;
 
       &:hover, &:focus { background: var(--background); border-color: var(--border); }
@@ -492,25 +477,21 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 ui-monospac
   padding: .5rem .75rem;
   flex-basis: 100%;
   min-width: 0;
-  margin: 0;
   border: 1px solid var(--border);
   border-radius: .5rem;
   background: var(--surface);
 
   &[hidden] { display: none; }
-  & > svg { display: block; }
   & p:empty { display: none; }
   & p { margin: .25rem 0; &:first-child { margin-top: 0; } &:last-child { margin-bottom: 0; } }
   & form { display: flex; align-items: end; flex-wrap: wrap; gap: .75rem; }
   & form > :is(input:not([type=hidden]), select) { min-width: 8rem; flex: 1; height: 2.5rem; }
-  & input { width: 100%; min-width: 0; }
   & button {
     display: grid;
     place-items: center;
     width: 2.5rem;
     height: 2.5rem;
     padding: 0;
-    box-sizing: border-box;
 
     &:disabled {
       color: var(--muted);
