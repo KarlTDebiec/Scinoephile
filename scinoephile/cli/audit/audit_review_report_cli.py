@@ -9,12 +9,12 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from scinoephile.analysis.audit.guided_review import audit_guided_review
-from scinoephile.analysis.audit.review import (
+from scinoephile.analysis.audit.review import audit_review
+from scinoephile.analysis.audit.review_filters import (
     ReviewAuditFilter,
     ReviewAuditFilters,
-    ReviewAuditPair,
-    audit_review,
 )
+from scinoephile.analysis.audit.review_inputs import ReviewAuditPair
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.cli.argument_parsing import (

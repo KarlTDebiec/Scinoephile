@@ -12,10 +12,12 @@ from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.audit.aligned_diff import AlignedDiffAuditFilter
 from scinoephile.analysis.audit.delineation import DelineationAuditFilter
-from scinoephile.analysis.audit.dual_review import DualReviewAuditFilter
 from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
 from scinoephile.analysis.audit.punctuation import PunctuationAuditFilter
-from scinoephile.analysis.audit.review import ReviewAuditFilter
+from scinoephile.analysis.audit.review_filters import (
+    DualReviewAuditFilter,
+    ReviewAuditFilter,
+)
 from scinoephile.analysis.audit.translation import TranslationAuditFilter
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli

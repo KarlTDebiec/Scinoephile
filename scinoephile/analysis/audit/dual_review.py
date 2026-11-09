@@ -5,35 +5,15 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from enum import StrEnum
 
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
-from .review import (
-    ReviewAuditComparison,
-    ReviewAuditFilters,
-    ReviewAuditPair,
-    audit_review,
-)
+from .review import audit_review
+from .review_filters import ReviewAuditFilters
+from .review_inputs import ReviewAuditComparison, ReviewAuditPair
 
-__all__ = ["DualReviewAuditFilter", "audit_dual_review"]
-
-
-class DualReviewAuditFilter(StrEnum):
-    """Row filters supported by a dual-review audit."""
-
-    all = "all"
-    """Include every eligible row."""
-
-    changes = "changes"
-    """Include rows with a review edit or final discrepancy."""
-
-    discrepancies = "discrepancies"
-    """Include only final discrepancies between review paths."""
-
-    unverified = "unverified"
-    """Include only rows from cases not marked as verified."""
+__all__ = ["audit_dual_review"]
 
 
 def audit_dual_review(

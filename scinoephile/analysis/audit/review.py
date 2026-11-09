@@ -5,154 +5,25 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Mapping, Sequence
-from dataclasses import dataclass
-from enum import StrEnum
-from typing import cast
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import TestCase
-from scinoephile.core.subtitles import Series
 
+from . import review_filters, review_inputs, review_metadata
 from .utils import (
     AuditColumn,
     format_audit_report,
-    format_block_range,
-    format_index_range,
     format_verification_marker,
     get_event_indexes_in_range,
-    validate_audit_range,
 )
 
-__all__ = [
-    "ReviewAuditComparison",
-    "ReviewAuditFilter",
-    "ReviewAuditFilters",
-    "ReviewAuditPair",
-    "ReviewAuditMetadata",
-    "get_review_metadata",
-    "audit_review",
-]
-
-
-class ReviewAuditFilter(StrEnum):
-    """Row filters supported by a subtitle review audit."""
-
-    all = "all"
-    """Include every eligible row."""
-
-    changes = "changes"
-    """Include only rows with review edits."""
-
-    unverified = "unverified"
-    """Include only rows from cases not marked as verified."""
-
-
-@dataclass(frozen=True, kw_only=True)
-class ReviewAuditFilters:
-    """Row, character, and range filters shared by review audit reports."""
-
-    row_filter: StrEnum = ReviewAuditFilter.changes
-    """Row filter selected for the review workflow."""
-    character_filter: tuple[str, ...] = ()
-    """Characters to match in the subtitle text."""
-    first_index: int | None = None
-    """First included one-based subtitle index."""
-    last_index: int | None = None
-    """Last included one-based subtitle index."""
-    first_block: int | None = None
-    """First included one-based workflow block number."""
-    last_block: int | None = None
-    """Last included one-based workflow block number."""
-
-    def __post_init__(self):
-        """Validate the bounds before applying them to a review."""
-        validate_audit_range(
-            self.first_index, self.last_index, self.first_block, self.last_block
-        )
-
-    def get_summary_items(self, *, index_track_name: str | None = None) -> list[str]:
-        """Describe the active filters for the report summary.
-
-        Arguments:
-            index_track_name: optional name of the indexed subtitle track
-        Returns:
-            report summary items describing the filters
-        """
-        items = [f"row filter: {self.row_filter.value}"]
-        if self.character_filter:
-            items.append(f"character filter: {', '.join(self.character_filter)}")
-        index_range = format_index_range(
-            self.first_index, self.last_index, track_name=index_track_name
-        )
-        if index_range is not None:
-            items.append(index_range)
-        block_range = format_block_range(self.first_block, self.last_block)
-        if block_range is not None:
-            items.append(block_range)
-        return items
-
-    def matches_characters(self, texts: Iterable[str]) -> bool:
-        """Check whether any of the supplied texts matches the character filter.
-
-        Arguments:
-            texts: subtitle texts to search for each row
-        Returns:
-            whether the filter is empty or any character occurs in the texts
-        """
-        return not self.character_filter or any(
-            character in text for text in texts for character in self.character_filter
-        )
-
-
-@dataclass(frozen=True, kw_only=True)
-class ReviewAuditPair:
-    """One subtitle review's input, output, and optional notes.
-
-    A pair is the reusable unit shared by single-review, sequential, and parallel
-    audit workflows.
-    """
-
-    label: str
-    """Human-readable label used in the report, without the word "review"."""
-    original: Series
-    """Subtitle series before review."""
-    reviewed: Series
-    """Subtitle series after review."""
-    review_cases: Sequence[TestCase] = ()
-    """Optional review test cases containing revision notes."""
-
-
-@dataclass(frozen=True, kw_only=True)
-class ReviewAuditComparison:
-    """One final comparison between outputs of an audit workflow."""
-
-    column_label: str
-    """Human-readable label used for the report table column."""
-    summary_label: str
-    """Human-readable label used before "discrepancies" in the summary."""
-    left: Series
-    """Left-hand subtitle series."""
-    right: Series
-    """Right-hand subtitle series."""
-
-
-@dataclass(frozen=True, kw_only=True)
-class ReviewAuditMetadata:
-    """Matched notes and verification state for one review decision log."""
-
-    covered_indexes: frozenset[int]
-    """Zero-based subtitle indexes covered by current logged cases."""
-    notes_by_index: Mapping[int, tuple[str, ...]]
-    """Current revision notes keyed by zero-based subtitle index."""
-    unverified_indexes: frozenset[int]
-    """Covered subtitle indexes belonging to unverified cases."""
+__all__ = ["audit_review"]
 
 
 def audit_review(
     *,
-    reviews: Sequence[ReviewAuditPair],
-    comparisons: Sequence[ReviewAuditComparison] = (),
-    filters: ReviewAuditFilters = ReviewAuditFilters(),
+    reviews: Sequence[review_inputs.ReviewAuditPair],
+    comparisons: Sequence[review_inputs.ReviewAuditComparison] = (),
+    filters: review_filters.ReviewAuditFilters = review_filters.ReviewAuditFilters(),
 ) -> str:
     """Audit a composition of review pairs and final comparisons.
 
@@ -210,17 +81,19 @@ def audit_review(
 
     # Match block-based log data against the complete inputs
     try:
-        review_metadata = tuple(
-            get_review_metadata(review.review_cases, original, reviewed)
+        metadata_by_review = tuple(
+            review_metadata.get_review_metadata(review.review_cases, original, reviewed)
             for review, (original, reviewed) in zip(reviews, review_series, strict=True)
         )
-        notes = tuple(metadata.notes_by_index for metadata in review_metadata)
+        notes = tuple(metadata.notes_by_index for metadata in metadata_by_review)
         covered_indexes = frozenset(
-            index for metadata in review_metadata for index in metadata.covered_indexes
+            index
+            for metadata in metadata_by_review
+            for index in metadata.covered_indexes
         )
         unverified_indexes = frozenset(
             index
-            for metadata in review_metadata
+            for metadata in metadata_by_review
             for index in metadata.unverified_indexes
         )
         has_review_cases = any(review.review_cases for review in reviews)
@@ -268,87 +141,19 @@ def audit_review(
     )
 
 
-def get_review_metadata(
-    review_cases: Sequence[TestCase],
-    original: tuple[str, ...],
-    reviewed: tuple[str, ...],
-) -> ReviewAuditMetadata:
-    """Match the latest current review cases to subtitle text.
-
-    Arguments:
-        review_cases: deserialized review test cases
-        original: original subtitle text
-        reviewed: reviewed subtitle text
-    Returns:
-        current notes and verification metadata
-    Raises:
-        ValueError: if a current query's answer does not match reviewed subtitles
-    """
-    # Retain the latest logged decision for each deduplicated query
-    latest_cases_by_query = {
-        review_case.query.key: (case_index, review_case)
-        for case_index, review_case in enumerate(review_cases, 1)
-    }
-
-    # Match current cases once and derive all report metadata together
-    covered_indexes: set[int] = set()
-    notes_by_index: dict[int, list[str]] = {}
-    unverified_indexes: set[int] = set()
-    for case_index, review_case in latest_cases_by_query.values():
-        query_texts, revised_texts, revision_by_index = _get_review_case_data(
-            review_case
-        )
-        candidate_starts = [
-            start
-            for start in range(len(original) - len(query_texts) + 1)
-            if original[start : start + len(query_texts)] == query_texts
-        ]
-        if not candidate_starts:
-            # Persisted logs retain historical queries after their input changes
-            continue
-
-        matched_starts = [
-            start
-            for start in candidate_starts
-            if reviewed[start : start + len(revised_texts)] == revised_texts
-        ]
-        if not matched_starts:
-            raise ValueError(
-                f"Review test case {case_index} does not match its subtitle pair"
-            )
-
-        for start in matched_starts:
-            matched_indexes = set(range(start, start + len(query_texts)))
-            covered_indexes.update(matched_indexes)
-            if not review_case.verified:
-                unverified_indexes.update(matched_indexes)
-            for local_index, revision in revision_by_index.items():
-                index = start + local_index - 1
-                note = cast(str, revision["note"]).strip()
-                notes = notes_by_index.setdefault(index, [])
-                if note not in notes:
-                    notes.append(note)
-
-    return ReviewAuditMetadata(
-        covered_indexes=frozenset(covered_indexes),
-        notes_by_index={index: tuple(notes) for index, notes in notes_by_index.items()},
-        unverified_indexes=frozenset(unverified_indexes),
-    )
-
-
 def _format_report(
     *,
-    reviews: Sequence[ReviewAuditPair],
+    reviews: Sequence[review_inputs.ReviewAuditPair],
     review_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     review_changes: Sequence[set[int]],
     notes: Sequence[Mapping[int, Sequence[str]]],
-    comparisons: Sequence[ReviewAuditComparison],
+    comparisons: Sequence[review_inputs.ReviewAuditComparison],
     comparison_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     comparison_changes: Sequence[set[int]],
     covered_indexes: frozenset[int],
     has_review_cases: bool,
     indexes: Sequence[int],
-    filters: ReviewAuditFilters,
+    filters: review_filters.ReviewAuditFilters,
     unverified_indexes: frozenset[int],
 ) -> str:
     """Build semantic review data and format it with the shared renderer.
@@ -463,7 +268,7 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    filters: ReviewAuditFilters,
+    filters: review_filters.ReviewAuditFilters,
     unverified_indexes: frozenset[int],
 ) -> list[int]:
     """Get subtitle indexes selected for the report.
@@ -505,36 +310,3 @@ def _get_filtered_indexes(
             if filters.matches_characters(subtitles[index] for subtitles in series)
         }
     return sorted(selected_indexes)
-
-
-def _get_review_case_data(
-    review_case: TestCase,
-) -> tuple[tuple[str, ...], tuple[str, ...], dict[int, dict[str, int | str]]]:
-    """Get query, reviewed, and revision data from a review test case.
-
-    Arguments:
-        review_case: deserialized review test case
-    Returns:
-        query texts, expected reviewed texts, and revisions keyed by local index
-    """
-    answer = review_case.answer
-    query_subtitles = cast(
-        list[dict[str, int | str]], review_case.query.model_dump()["subtitles"]
-    )
-    answer_revisions: list[dict[str, int | str]] = []
-    if answer is not None:
-        answer_revisions = cast(
-            list[dict[str, int | str]], answer.model_dump()["revisions"]
-        )
-    query_texts = tuple(cast(str, subtitle["text"]) for subtitle in query_subtitles)
-    revision_by_index = {
-        cast(int, revision["index"]): revision for revision in answer_revisions
-    }
-    revised_texts_list = []
-    for local_index, query_text in enumerate(query_texts, 1):
-        revised_text = query_text
-        if local_index in revision_by_index:
-            revised_text = cast(str, revision_by_index[local_index]["text"])
-        revised_texts_list.append(revised_text)
-    revised_texts = tuple(revised_texts_list)
-    return query_texts, revised_texts, revision_by_index

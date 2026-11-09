@@ -15,7 +15,7 @@ from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.guided_review import GuidedReviewTestCase
 
-from .review import ReviewAuditFilter, ReviewAuditFilters
+from .review_filters import ReviewAuditFilter, ReviewAuditFilters
 from .utils import (
     AuditResult,
     format_audit_report,

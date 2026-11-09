@@ -7,7 +7,10 @@ from __future__ import annotations
 from pytest import raises
 
 from scinoephile.analysis.audit.guided_review import audit_guided_review
-from scinoephile.analysis.audit.review import ReviewAuditFilter, ReviewAuditFilters
+from scinoephile.analysis.audit.review_filters import (
+    ReviewAuditFilter,
+    ReviewAuditFilters,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.guided_review import GuidedReviewTestCase

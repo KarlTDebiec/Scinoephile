@@ -8,13 +8,13 @@ from enum import StrEnum
 
 from pytest import raises
 
-from scinoephile.analysis.audit.dual_review import DualReviewAuditFilter
-from scinoephile.analysis.audit.review import (
+from scinoephile.analysis.audit.review import audit_review
+from scinoephile.analysis.audit.review_filters import (
+    DualReviewAuditFilter,
     ReviewAuditFilter,
     ReviewAuditFilters,
-    ReviewAuditPair,
-    audit_review,
 )
+from scinoephile.analysis.audit.review_inputs import ReviewAuditPair
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.review import ReviewTestCase
