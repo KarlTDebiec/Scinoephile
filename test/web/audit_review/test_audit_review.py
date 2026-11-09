@@ -126,7 +126,7 @@ def test_revert_removes_sparse_revision(tmp_path: Path):
         reviewed=row.original,
         review_note="",
         notes="Rejected proposal",
-        finding="incorrect",
+        finding="review",
         verified=True,
         version=0,
     )
@@ -776,42 +776,6 @@ def _make_session(dir_path: Path, *, with_json: bool = True) -> AuditSession:
         language=Language.eng,
         report_path=report_path,
     )
-
-
-def test_audit_statuses_migrate_legacy_progress(tmp_path: Path):
-    """Merge legacy verdicts without losing saved notes or human verification.
-
-    Arguments:
-        tmp_path: temporary project directory
-    """
-    audit = _make_session(tmp_path)
-    assert audit.rows()[0].finding is AuditStatus.review
-    assert audit.page(AuditFilters(finding="review")).matching == 1
-    for legacy, expected in (
-        ("incorrect", AuditStatus.review),
-        ("check", AuditStatus.review),
-        ("unassessed", AuditStatus.unaudited),
-    ):
-        row = audit.rows()[0]
-        audit.save(
-            row.key,
-            version=row.version,
-            reviewed=row.reviewed,
-            review_note=row.review_note,
-            notes="Keep this audit note",
-            finding="review",
-            verified=True,
-        )
-        with sqlite3.connect(audit.state_path) as db:
-            db.execute("UPDATE review_edits SET finding = ?", (legacy,))
-        audit = _make_session(tmp_path)
-        migrated = audit.rows()[0]
-        assert migrated.finding is expected
-        assert migrated.notes == "Keep this audit note"
-        assert migrated.verified
-        assert migrated.version == row.version + 2
-        assert AuditFilters(finding=legacy).finding == expected
-    assert AuditFilters(finding="flagged").finding == AuditStatus.review
 
 
 def test_history_restore_returns_full_document(tmp_path: Path):

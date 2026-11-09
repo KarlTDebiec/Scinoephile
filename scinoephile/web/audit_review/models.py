@@ -10,14 +10,7 @@ from enum import StrEnum
 
 from scinoephile.analysis.alignment import pairwise
 
-__all__ = [
-    "LEGACY_AUDIT_STATUSES",
-    "AuditBlock",
-    "AuditFilters",
-    "AuditPage",
-    "AuditRow",
-    "AuditStatus",
-]
+__all__ = ["AuditBlock", "AuditFilters", "AuditPage", "AuditRow", "AuditStatus"]
 
 
 class AuditStatus(StrEnum):
@@ -29,15 +22,6 @@ class AuditStatus(StrEnum):
     """The subtitle needs human review."""
     ok = "ok"
     """The audit found no issue."""
-
-
-LEGACY_AUDIT_STATUSES = {
-    "unassessed": AuditStatus.unaudited,
-    "incorrect": AuditStatus.review,
-    "check": AuditStatus.review,
-    "flagged": AuditStatus.review,
-}
-"""Former verdict values accepted in saved state and bookmarks."""
 
 
 @dataclass(frozen=True)
@@ -52,12 +36,6 @@ class AuditFilters:
     """all, unaudited, review, or ok audit statuses."""
     q: str = ""
     """Unicode text search or an exact block selector such as block 160."""
-
-    def __post_init__(self):
-        """Normalize bookmarks using the previous audit categories."""
-        object.__setattr__(
-            self, "finding", LEGACY_AUDIT_STATUSES.get(self.finding, self.finding)
-        )
 
     def counts(self, rows: list[AuditRow]) -> dict[str, dict[str, int]]:
         """Count each option with search and the other status filters applied.

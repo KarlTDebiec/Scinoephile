@@ -26,13 +26,7 @@ from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 
 from .decisions import ReviewDecisions
 from .exceptions import InvalidReviewSubtitleError
-from .models import (
-    LEGACY_AUDIT_STATUSES,
-    AuditFilters,
-    AuditPage,
-    AuditRow,
-    AuditStatus,
-)
+from .models import AuditFilters, AuditPage, AuditRow, AuditStatus
 from .pagination import get_audit_page, get_verification_token
 
 __all__ = ["AuditSession"]
@@ -135,12 +129,6 @@ class AuditSession:
                     "INSERT OR REPLACE INTO review_metadata VALUES ('source', ?)",
                     (self._source_content,),
                 )
-                for previous, status in LEGACY_AUDIT_STATUSES.items():
-                    db.execute(
-                        "UPDATE review_edits SET finding = ?, version = version + 1 "
-                        "WHERE finding = ?",
-                        (status.value, previous),
-                    )
             self._fingerprints = self._file_fingerprints()
         except (OSError, ValueError, sqlite3.Error) as exc:
             raise ScinoephileError(f"Unable to open review editor: {exc}") from exc
@@ -520,7 +508,7 @@ class AuditSession:
         if len(review_note) > 1000:
             raise ValueError("Revision notes must not exceed 1000 characters")
         try:
-            finding = AuditStatus(LEGACY_AUDIT_STATUSES.get(finding, finding))
+            finding = AuditStatus(finding)
         except ValueError as exc:
             raise ValueError("Unknown audit verdict") from exc
         _validate_audit_notes(finding, notes)
