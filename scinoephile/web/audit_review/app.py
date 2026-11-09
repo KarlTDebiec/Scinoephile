@@ -50,11 +50,7 @@ def create_app(audit: AuditSession) -> FlaskApp:
             static_url_path="/audit-review-assets",
         )
     )
-    app.config.update(
-        SECRET_KEY=token_urlsafe(32),
-        SESSION_COOKIE_SAMESITE="Strict",
-        MAX_CONTENT_LENGTH=100_000,
-    )
+    app.config["MAX_CONTENT_LENGTH"] = 100_000
 
     _register_operation_routes(app, audit)
 
@@ -279,7 +275,6 @@ def _get_view_context(
         "filters": page.filters,
         "query": urlencode(dict(values, through=page.last_block)),
         "next_url": f"/?{urlencode(dict(values, after=page.last_block))}",
-        "csrf": flask.session.setdefault("csrf", token_urlsafe(32)),
     }
 
 
@@ -351,10 +346,7 @@ def _register_auditing_routes(app: FlaskApp, audit: AuditSession):
                         show_auditing=True,
                     )
                 return flask.render_template(
-                    "_auditing.html",
-                    auditing=state,
-                    show_auditing=True,
-                    csrf=flask.session["csrf"],
+                    "_auditing.html", auditing=state, show_auditing=True
                 )
             auditing.start(
                 flask.request.form.get("provider", ""),
@@ -369,7 +361,6 @@ def _register_auditing_routes(app: FlaskApp, audit: AuditSession):
                     auditing=auditing.snapshot(),
                     auditing_message=str(exc),
                     show_auditing=True,
-                    csrf=flask.session["csrf"],
                 )
             return flask.render_template("error.html", message=str(exc)), 409
         if flask.request.headers.get("HX-Request") == "true":
@@ -398,7 +389,6 @@ def _register_operation_routes(app: FlaskApp, audit: AuditSession):
         app: local audit application
         audit: source-backed session owning output creation
     """
-    app.before_request(_require_csrf)
     _register_auditing_routes(app, audit)
     _register_verification_routes(app, audit)
     _register_preview_routes(app, audit)
@@ -457,7 +447,6 @@ def _register_operation_routes(app: FlaskApp, audit: AuditSession):
                     proofreading=state,
                     reproofreading=True,
                     show_proofreading=True,
-                    csrf=flask.session["csrf"],
                 )
             proofreading.start(
                 flask.request.form.get("provider", ""),
@@ -474,7 +463,6 @@ def _register_operation_routes(app: FlaskApp, audit: AuditSession):
                 return "", 200, {"HX-Refresh": "true"}
             return flask.render_template(
                 "_proofreading.html",
-                csrf=flask.session["csrf"],
                 proofreading=state,
                 proofreading_message=message,
                 reproofreading=rerun,
@@ -496,11 +484,7 @@ def _register_operation_routes(app: FlaskApp, audit: AuditSession):
         state = proofreading.snapshot()
         if state.status in {"complete", "error"}:
             return "", 200, {"HX-Refresh": "true"}
-        return flask.render_template(
-            "_proofreading.html",
-            csrf=flask.session.setdefault("csrf", token_urlsafe(32)),
-            proofreading=state,
-        )
+        return flask.render_template("_proofreading.html", proofreading=state)
 
 
 def _register_preview_routes(app: FlaskApp, audit: AuditSession):
@@ -583,14 +567,3 @@ def _register_verification_routes(app: FlaskApp, audit: AuditSession):
                 {"HX-Retarget": "#workspace", "HX-Reswap": "outerHTML"},
             )
         return flask.redirect(f"/?{urlencode(asdict(filters))}", code=303)
-
-
-def _require_csrf():
-    """Require a valid session token for edits, including native form submissions."""
-    flask = import_flask()
-    if flask.request.method in {"GET", "HEAD", "OPTIONS"}:
-        return
-    expected = flask.session.get("csrf", "")
-    received = flask.request.form.get("csrf", "")
-    if not expected or not received.isascii() or not compare_digest(expected, received):
-        flask.abort(403)

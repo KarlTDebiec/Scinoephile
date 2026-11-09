@@ -1,7 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Audit error</title>
-  </head>
-  <body><h1>Unable to show the audit</h1>{% include "_message.html" %}</body></html>
+{% extends "shared/base.html" %}
+{% block title %}Audit error{% endblock %}
+{% block scripts %}{% endblock %}
+{% block body %}
+  <main>
+    <h1>Unable to show the audit</h1>
+    {% include "_message.html" %}
+  </main>
+{% endblock %}

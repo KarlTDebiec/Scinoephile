@@ -4,7 +4,7 @@
     <h1>{{ audit.title }}</h1>
     <div id="messages" role="status" aria-live="polite"></div>
     {% set active = filters.verification != 'all' or filters.changes != 'all' or filters.finding != 'all' or filters.q %}
-    <nav aria-label="Filters">
+    <nav class="editor-toolbar" aria-label="Filters">
       <form method="get"
             action="{{ url_for('index') }}"
             hx-get="{{ url_for('index') }}"
@@ -48,7 +48,7 @@
       </form>
       {% include "_summary.html" %}
     </nav>
-    <nav aria-label="Operations">
+    <nav class="editor-toolbar" aria-label="Operations">
       <form method="get"
             action="{{ url_for('index') }}"
             hx-get="{{ url_for('index') }}"

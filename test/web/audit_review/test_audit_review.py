@@ -825,6 +825,9 @@ def test_history_restore_returns_full_document(tmp_path: Path):
         headers={"HX-Request": "true", "HX-History-Restore-Request": "true"},
     ).get_data(as_text=True)
     assert "<!doctype html>" in document.lower()
+    assert 'href="/static/editor.css"' in document
+    stylesheet = client.get("/static/editor.css")
+    assert stylesheet.status_code == 200 and stylesheet.mimetype == "text/css"
     fragment = client.get("/", headers={"HX-Request": "true"}).get_data(as_text=True)
     assert "<!doctype html>" not in fragment.lower()
 

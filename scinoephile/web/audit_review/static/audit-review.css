@@ -1,42 +1,11 @@
 :root {
-  color-scheme: light dark;
-  --background: #fff;
-  --text: #222;
-  --surface: #f5f5f5;
-  --border: #bbb;
-  --link: #164bb8;
-  --error: #a00;
-  --warning-background: #fff3cd;
-  --warning-text: #664d03;
-  --warning-border: #c99500;
   --substitute: #8a3198;
-  --muted: color-mix(in srgb, var(--text) 60%, var(--background));
-  background: var(--background);
-  color: var(--text);
-  scrollbar-gutter: stable;
 
   @media (prefers-color-scheme: dark) {
-    --background: #191b1e;
-    --text: #e4e6e8;
-    --surface: #23262a;
-    --border: #555;
-    --link: #9ecbff;
-    --error: #ff9b9b;
-    --warning-background: #4b3c0a;
-    --warning-text: #ffe08a;
-    --warning-border: #b58a16;
     --substitute: #d7a5ff;
   }
 }
 
-body {
-  max-width: 86rem;
-  margin: 1rem auto 2rem;
-  padding: 0 1rem;
-  font: 1rem/1.5 system-ui, sans-serif;
-
-  @media (width < 38rem) { padding: 0 .5rem; }
-}
 #workspace > header {
   position: sticky;
   top: 1rem;
@@ -56,26 +25,6 @@ body {
     border-radius: .5rem;
   }
 }
-h1 { margin: 0; }
-a { color: var(--link); }
-svg { flex: none; fill: currentColor; }
-:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
-
-input, textarea, select, button {
-  box-sizing: border-box;
-  font: inherit;
-  color: inherit;
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: .25rem;
-  padding: .35rem .5rem;
-}
-input[type=search], textarea, select { width: 100%; }
-button {
-  cursor: pointer;
-  &:hover { background: var(--surface); }
-}
-textarea { field-sizing: content; }
 
 select {
   &, &::picker(select) { appearance: base-select; }
@@ -111,13 +60,6 @@ select {
 }
 
 
-nav[aria-label="Filters"], nav[aria-label="Operations"] {
-  padding: .5rem;
-  margin: 1rem 0;
-  border: 1px solid var(--border);
-  border-radius: .5rem;
-  background: var(--surface);
-}
 nav[aria-label="Filters"] {
   display: grid;
   grid-template-columns: 2.5rem minmax(0, 1fr);
@@ -429,9 +371,6 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 ui-monospac
 }
 
 .shared { font-size: .85rem; color: var(--link); }
-.error { color: var(--error); }
-.empty { padding: 2rem; text-align: center; }
-.htmx-request button { cursor: progress; }
 
 
 .save-status {
