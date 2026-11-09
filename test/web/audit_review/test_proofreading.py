@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import json
 import sqlite3
 from pathlib import Path
 from threading import Event
@@ -235,6 +236,49 @@ def test_retry_refreshes_cache_after_unwritable_proofreading(
     _join(job)
     assert job.snapshot().status == "complete", job.snapshot().error
     assert audit.outfile_path.exists() and provider.calls == 4
+
+
+def test_unwritable_imported_decisions_are_reported_before_querying(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Identify the unusable imported cue and preserve the supplied decision log.
+
+    Arguments:
+        tmp_path: temporary subtitle project
+        monkeypatch: offline dependency patches
+    """
+    audit, provider, _ = _setup(tmp_path, monkeypatch)
+    assert audit.json_path is not None
+    native_decisions = json.dumps(
+        [
+            {
+                "query": {"subtitles": [{"index": 1, "text": "Hello."}]},
+                "answer": {
+                    "revisions": [
+                        {"index": 1, "text": "Hello there.\n\nSecond.", "note": "Edit"}
+                    ]
+                },
+            }
+        ]
+    )
+    audit.json_path.write_text(native_decisions, encoding="utf-8")
+    audit = AuditSession(
+        audit.infile_path,
+        audit.outfile_path,
+        json_path=audit.json_path,
+        language=Language.eng,
+    )
+    job = ProofreadingJob(audit)
+    job.start("openai", "", "")
+    _join(job)
+    assert job.snapshot().status == "error"
+    assert "Subtitle 1 text cannot be saved unchanged in SRT" in job.snapshot().error
+    assert "Correct the existing proofreading decisions" in job.snapshot().error
+    assert provider.calls == 0
+    assert not audit.outfile_path.exists()
+    assert (
+        audit.json_path is not None and audit.json_path.read_text() == native_decisions
+    )
 
 
 def test_running_job_rejects_duplicates_and_edits(

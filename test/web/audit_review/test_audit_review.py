@@ -947,11 +947,19 @@ def test_autosave_acknowledges_without_replacing_editable_fields(tmp_path: Path)
     assert audit.rows()[0].version == 1
 
 
-def test_autosave_resets_an_unchanged_verdict_after_text_edit(tmp_path: Path):
-    """Clear the old finding and verification when only proofreading changes.
+@mark.parametrize(
+    ("notes", "expected_finding"),
+    [("Old concern", AuditStatus.unaudited), ("Updated concern", AuditStatus.review)],
+)
+def test_autosave_clears_old_approval_after_text_edit(
+    tmp_path: Path, notes: str, expected_finding: AuditStatus
+):
+    """Invalidate old approval and retain explicitly changed audit notes.
 
     Arguments:
         tmp_path: temporary project directory
+        notes: unchanged or deliberately changed audit notes
+        expected_finding: verdict saved with the new subtitle text
     """
     audit = _materialize_output(_make_session(tmp_path))
     row = audit.rows()[0]
@@ -959,8 +967,8 @@ def test_autosave_resets_an_unchanged_verdict_after_text_edit(tmp_path: Path):
         row.key,
         reviewed=row.reviewed,
         review_note=row.review_note,
-        finding="ok",
-        notes="",
+        finding="review",
+        notes="Old concern",
         verified=True,
         version=row.version,
     )
@@ -977,7 +985,7 @@ def test_autosave_resets_an_unchanged_verdict_after_text_edit(tmp_path: Path):
             reviewed="Hello, corrected.",
             review_note="Corrected punctuation",
             finding=row.finding,
-            notes=row.notes,
+            notes=notes,
             verified="on",
         ),
         headers={"HX-Request": "true", "HX-Target": f"sync-{row.key}"},
@@ -985,9 +993,14 @@ def test_autosave_resets_an_unchanged_verdict_after_text_edit(tmp_path: Path):
     assert response.status_code == 200
     saved = audit.rows()[0]
     assert saved.reviewed == "Hello, corrected."
-    assert saved.finding is AuditStatus.unaudited and not saved.verified
+    assert saved.finding is expected_finding and not saved.verified
+    expected_notes = ""
+    if expected_finding is AuditStatus.review:
+        expected_notes = notes
+    assert saved.notes == expected_notes
     html = response.get_data(as_text=True)
-    assert 'data-finding="unaudited"' in html and 'data-verified="false"' in html
+    assert f'data-finding="{expected_finding}"' in html
+    assert 'data-verified="false"' in html
 
 
 def test_autosave_retains_incrementally_loaded_scope(tmp_path: Path):

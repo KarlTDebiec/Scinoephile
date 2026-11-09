@@ -9,7 +9,7 @@ from pathlib import Path
 
 from scinoephile.core import Language
 from scinoephile.core.llms.utils import load_test_cases_from_json
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.text import replace_control_characters
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 from scinoephile.llms.review import ReviewManager, ReviewTestCase
@@ -90,10 +90,10 @@ class ReviewDecisions:
             self.cases[case_index] = self.case_cls.model_validate(data)
 
     def normalize_srt_revisions(self):
-        """Normalize whitespace and line breaks in active native revisions for SRT.
+        """Normalize active native revisions and check that each fits in SRT.
 
         Raises:
-            InvalidReviewSubtitleError: if a revision normalizes to empty text
+            InvalidReviewSubtitleError: if a revision cannot round-trip through SRT
         """
         for case_index, starts in self.locations.items():
             case = self.cases[case_index]
@@ -105,10 +105,16 @@ class ReviewDecisions:
                 text = text.replace("\r\n", "\n").replace("\r", "\n")
                 text = text.replace(r"\N", "\n").replace(r"\n", "\n")
                 text = text.replace(r"\h", " ").strip()
-                if not text:
+                cue = Series(events=[Subtitle(start=0, end=1000, text=text)])
+                parsed = Series.from_string(cue.to_string("srt"), format_="srt")
+                if (
+                    not text
+                    or len(parsed) != 1
+                    or parsed.events[0].text_with_newline != text
+                ):
                     raise InvalidReviewSubtitleError(
-                        f"Proofreading returned text that cannot be saved as SRT "
-                        f"for subtitle {starts[0] + revision.index}."
+                        f"Subtitle {starts[0] + revision.index} text cannot be saved "
+                        "unchanged in SRT."
                     )
                 if text != case.query.subtitles[revision.index - 1].text:
                     revisions.append(

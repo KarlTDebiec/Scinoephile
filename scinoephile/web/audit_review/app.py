@@ -198,6 +198,8 @@ def serve_audit(audit: AuditSession, *, host: str = "127.0.0.1", port: int = 502
 def _confirm_rerun(operation: str, *, rerun: bool) -> bool:
     """Require two preparation clicks and a delayed third click for a rerun.
 
+    A normal start clears any pending rerun confirmation for the operation.
+
     Arguments:
         operation: worker whose settings and confirmation must match
         rerun: whether existing persisted output will be replaced
@@ -207,7 +209,10 @@ def _confirm_rerun(operation: str, *, rerun: bool) -> bool:
         ValueError: if the submitted provider or reasoning is unsupported
     """
     flask = import_flask()
+    pending = dict(flask.session.get("rerun_confirmations", {}))
     if not rerun:
+        if pending.pop(operation, None) is not None:
+            flask.session["rerun_confirmations"] = pending
         return True
     settings = {
         name: flask.request.form.get(name, "")
@@ -217,7 +222,6 @@ def _confirm_rerun(operation: str, *, rerun: bool) -> bool:
         ReasoningEffort(settings["effort"])
     if settings["provider"] not in get_provider_names():
         raise ValueError("Choose a supported provider")
-    pending = dict(flask.session.get("rerun_confirmations", {}))
     current = pending.get(operation, {})
     supplied = flask.request.form.get("confirmation", "")
     matches = (

@@ -233,8 +233,17 @@ def test_audit_partial_failure_resumes_only_remaining_blocks(
     before = audit.rows()[:2]
     page = client.get("/").get_data(as_text=True)
     assert "Resume audit" in page and "Run full re-audit" in page
+    rerun = dict(data, rerun="on")
+    for _ in range(2):
+        assert client.post("/auditing", data=rerun).status_code == 200
+        with client.session_transaction() as state:
+            confirmation = state["rerun_confirmations"]["auditing"]
+            rerun["confirmation"] = confirmation["token"]
+    assert confirmation["stage"] == 2
     provider.fail_at = 0
     assert client.post("/auditing", data=data).status_code == 303
+    with client.session_transaction() as state:
+        assert "auditing" not in state["rerun_confirmations"]
     _join(job)
     assert job.snapshot().status == "complete" and job.snapshot().total == 1
     assert [s["index"] for s in provider.queries[-1]["subtitles"]] == [3]

@@ -165,6 +165,8 @@ class ProofreadingJob:
             rerun: whether existing output is being replaced
         Returns:
             reviewer, run provenance, and reusable authored query keys
+        Raises:
+            ValueError: if existing decisions contain a revision that cannot be saved
         """
         saved = self.audit.proofreading_settings
         context = saved.get("context", "")
@@ -208,13 +210,14 @@ class ProofreadingJob:
             )
             identity = get_proofreading_request_identity(reviewer, provider, settings)
         settings["request_identity"] = identity
-        known = {
-            case.query.key
-            for case in ReviewDecisions(
-                source, self.audit.language, decisions_path
-            ).cases
-            if case.answer is not None
-        }
+        existing = ReviewDecisions(source, self.audit.language, decisions_path)
+        try:
+            existing.normalize_srt_revisions()
+        except InvalidReviewSubtitleError as exc:
+            raise ValueError(
+                f"{exc} Correct the existing proofreading decisions before retrying."
+            ) from exc
+        known = {case.query.key for case in existing.cases if case.answer is not None}
         return reviewer, settings, known
 
     def _run(self, provider: LLMProvider, rerun: bool, source: Series):

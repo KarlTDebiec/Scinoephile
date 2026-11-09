@@ -824,7 +824,8 @@ class AuditSession:
                         updated[current.index - 1],
                         notes=notes,
                         finding=finding,
-                        verified=verified,
+                        verified=verified
+                        and (key not in affected or not current.verified),
                     )
                 db.executemany(
                     "INSERT INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?) "
