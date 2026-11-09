@@ -9,7 +9,7 @@ from logging import getLogger
 from threading import RLock, Thread
 
 from scinoephile.core.llms import LLMProvider, Queryer, ReasoningEffort
-from scinoephile.lang.eng.review import ReviewAuditPromptEng
+from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
     get_provider,

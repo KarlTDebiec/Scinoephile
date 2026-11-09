@@ -17,7 +17,7 @@ from scinoephile.core import Language
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
-from scinoephile.lang.eng.review import ReviewAuditPromptEng
+from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
 from scinoephile.llms.review_audit import ReviewAuditQuery, ReviewAuditTestCase
 from scinoephile.web.audit_review import auditing
 from scinoephile.web.audit_review.app import create_app
