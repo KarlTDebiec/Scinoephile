@@ -24,29 +24,7 @@ from scinoephile.web.jobs import BackgroundJob
 
 from . import state
 
-__all__ = ["ProofreadingJob", "get_proofreading_request_identity"]
-
-
-def get_proofreading_request_identity(
-    reviewer: ReviewProcessor, provider: LLMProvider, settings: dict[str, str]
-) -> str:
-    """Identify the request configuration associated with authored decisions.
-
-    Arguments:
-        reviewer: configured proofreading processor and shared examples
-        provider: effective non-secret provider configuration
-        settings: requested settings, excluding any previous request identity
-    Returns:
-        provenance digest; response-cache ownership remains with the query executor
-    """
-    provenance = {
-        **settings,
-        "provider_identity": provider.cache_identity,
-        "system_prompt": reviewer.queryer.system_prompt,
-        "query_schema": reviewer.test_case_cls.query_cls.model_json_schema(),
-        "answer_schema": reviewer.test_case_cls.answer_cls.model_json_schema(),
-    }
-    return sha256(json.dumps(provenance, sort_keys=True).encode()).hexdigest()
+__all__ = ["ProofreadingJob"]
 
 
 class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
@@ -153,7 +131,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
             "effort": self._state.effort,
             "context": context,
         }
-        identity = get_proofreading_request_identity(reviewer, provider, settings)
+        identity = self._get_proofreading_request_identity(reviewer, provider, settings)
         reuse = not rerun or saved.get("request_identity") == identity
         if not reuse and decisions_path.exists():
             decisions_path.unlink()
@@ -164,7 +142,9 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
                 additional_context=context or None,
                 overwrite_cache=self._refresh_cache,
             )
-            identity = get_proofreading_request_identity(reviewer, provider, settings)
+            identity = self._get_proofreading_request_identity(
+                reviewer, provider, settings
+            )
         settings["request_identity"] = identity
         existing = ReviewDecisions(source, self.audit.language, decisions_path)
         try:
@@ -216,3 +196,25 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
             self._refresh_cache = True
             raise
         self._refresh_cache = False
+
+    @staticmethod
+    def _get_proofreading_request_identity(
+        reviewer: ReviewProcessor, provider: LLMProvider, settings: dict[str, str]
+    ) -> str:
+        """Hash the request configuration to decide whether to reuse saved decisions.
+
+        Arguments:
+            reviewer: configured proofreading processor
+            provider: effective provider configuration
+            settings: requested settings, excluding any previous request identity
+        Returns:
+            SHA-256 hash of the proofreading request configuration
+        """
+        provenance = {
+            **settings,
+            "provider_identity": provider.cache_identity,
+            "system_prompt": reviewer.queryer.system_prompt,
+            "query_schema": reviewer.test_case_cls.query_cls.model_json_schema(),
+            "answer_schema": reviewer.test_case_cls.answer_cls.model_json_schema(),
+        }
+        return sha256(json.dumps(provenance, sort_keys=True).encode()).hexdigest()
