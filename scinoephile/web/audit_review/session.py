@@ -4,21 +4,14 @@
 
 from __future__ import annotations
 
-import json
-import re
 import sqlite3
 from contextlib import closing
 from copy import deepcopy
 from dataclasses import replace
 from hashlib import sha256
-from html import unescape
-from os import fsync
 from pathlib import Path
-from shutil import copy2
-from tempfile import NamedTemporaryFile, mkdtemp
 from threading import RLock
 
-from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -26,9 +19,26 @@ from scinoephile.lang.id import get_series_language
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 
 from .decisions import ReviewDecisions
-from .exceptions import InvalidReviewSubtitleError
+from .files import (
+    backup_review_files,
+    get_file_fingerprints,
+    parse_source_srt,
+    restore_files,
+    validate_project_paths,
+    write_review_files,
+)
 from .models import AuditFilters, AuditPage, AuditRow, AuditStatus
 from .pagination import get_audit_page, get_verification_token
+from .rows import build_audit_rows
+from .store import (
+    backup_progress,
+    initialize_progress,
+    load_proofreading_settings,
+    load_saved_rows,
+    load_saved_source,
+    save_proofreading_progress,
+    save_rows,
+)
 
 __all__ = ["AuditSession"]
 
@@ -79,24 +89,20 @@ class AuditSession:
                 report_path = val_input_path(report_path)
             self.state_path = self.outfile_path.with_suffix(".review.sqlite3")
             self.title = title or self.infile_path.stem
-            self._validate_paths(report_path)
+            validate_project_paths(
+                self.infile_path,
+                self.outfile_path,
+                self.state_path,
+                json_path=self.json_path,
+                report_path=report_path,
+            )
             self._source_content = self.infile_path.read_bytes()
             if self.state_path.exists() and self.outfile_path.exists():
                 with closing(sqlite3.connect(self.state_path)) as db:
-                    if db.execute(
-                        "SELECT 1 FROM sqlite_master WHERE name='review_metadata'"
-                    ).fetchone():
-                        stored = db.execute(
-                            "SELECT value FROM review_metadata WHERE name='source'"
-                        ).fetchone()
-                        if stored is not None:
-                            self._source_content = bytes(stored[0])
-            self.original = Series.from_string(
-                self._source_content.decode("utf-8-sig")
-                .replace("\r\n", "\n")
-                .replace("\r", "\n"),
-                format_="srt",
-            )
+                    stored = load_saved_source(db)
+                    if stored is not None:
+                        self._source_content = stored
+            self.original = parse_source_srt(self._source_content)
             detected = language or get_series_language(self.original)
             if detected is None or detected not in DEFAULT_PROMPTS:
                 raise ValueError("Specify a supported proofreading language")
@@ -106,34 +112,18 @@ class AuditSession:
                 self.decisions = ReviewDecisions(
                     self.original, self.language, self.json_path
                 )
-            self._block_ranges = self._get_block_ranges()
-            block_numbers = {
-                index: number
-                for number, (first, last) in enumerate(self._block_ranges, 1)
-                for index in range(first, last)
-            }
-            self._rows = [
-                replace(row, block_number=block_numbers[row.index - 1])
-                for row in self._load_rows(report_path)
-            ]
+            self._rows, self._block_ranges = build_audit_rows(
+                self.original,
+                self._source_content,
+                self.language,
+                self.decisions,
+                outfile_path=self.outfile_path,
+                report_path=report_path,
+            )
             self._rows_by_key = {row.key: row for row in self._rows}
             self.state_path.parent.mkdir(parents=True, exist_ok=True)
             with closing(sqlite3.connect(self.state_path)) as db, db:
-                db.execute(
-                    "CREATE TABLE IF NOT EXISTS review_edits ("
-                    "key TEXT PRIMARY KEY, reviewed TEXT NOT NULL, "
-                    "review_note TEXT NOT NULL, notes TEXT NOT NULL, "
-                    "finding TEXT NOT NULL, verified INTEGER NOT NULL, "
-                    "version INTEGER NOT NULL)"
-                )
-                db.execute(
-                    "CREATE TABLE IF NOT EXISTS review_metadata ("
-                    "name TEXT PRIMARY KEY, value BLOB NOT NULL)"
-                )
-                db.execute(
-                    "INSERT OR REPLACE INTO review_metadata VALUES ('source', ?)",
-                    (self._source_content,),
-                )
+                initialize_progress(db, self._source_content)
             self._fingerprints = self._file_fingerprints()
         except (OSError, ValueError, sqlite3.Error) as exc:
             raise ScinoephileError(f"Unable to open review editor: {exc}") from exc
@@ -159,12 +149,7 @@ class AuditSession:
     def proofreading_settings(self) -> dict[str, str]:
         """Last successful proofreading settings and authored-decision provenance."""
         with self._lock, closing(sqlite3.connect(self.state_path)) as db:
-            stored = db.execute(
-                "SELECT value FROM review_metadata WHERE name='proofreading'"
-            ).fetchone()
-        if stored is None:
-            return {}
-        return json.loads(bytes(stored[0]).decode("utf-8"))
+            return load_proofreading_settings(db)
 
     def begin_auditing(
         self, *, rerun: bool = False
@@ -220,10 +205,7 @@ class AuditSession:
             if fingerprints[1:] != self._fingerprints[1:]:
                 raise ValueError("Output or JSON changed outside this session")
             content = self.infile_path.read_bytes()
-            source = Series.from_string(
-                content.decode("utf-8-sig").replace("\r\n", "\n").replace("\r", "\n"),
-                format_="srt",
-            )
+            source = parse_source_srt(content)
             if [(s.start, s.end) for s in source] != [
                 (s.start, s.end) for s in self.original
             ]:
@@ -300,6 +282,7 @@ class AuditSession:
             current = {row.key: row for row in self.rows()}
             try:
                 with db:
+                    updated = []
                     for row in block:
                         if not rerun and (
                             row.verified or row.finding != AuditStatus.unaudited
@@ -312,19 +295,15 @@ class AuditSession:
                             raise ValueError("Invalid automated audit verdict")
                         if (status == AuditStatus.review) != bool(note.strip()):
                             raise ValueError("Only Review verdicts require audit notes")
-                        db.execute(
-                            "INSERT OR REPLACE INTO review_edits VALUES "
-                            "(?, ?, ?, ?, ?, ?, ?)",
-                            (
-                                row.key,
-                                row.reviewed,
-                                row.review_note,
-                                note.strip(),
-                                status,
-                                int(row.verified),
-                                row.version + 1,
-                            ),
+                        updated.append(
+                            replace(
+                                row,
+                                notes=note.strip(),
+                                finding=AuditStatus(status),
+                                version=row.version + 1,
+                            )
                         )
+                    save_rows(db, updated)
             except sqlite3.Error as exc:
                 raise ScinoephileError(f"Unable to save audit findings: {exc}") from exc
 
@@ -359,80 +338,49 @@ class AuditSession:
             source = self._proofreading_source
             content = self._proofreading_content
             assert source is not None and content is not None
-            source_digest = sha256(content).hexdigest()
             decisions = ReviewDecisions(source, self.language, decisions_path)
             decisions.normalize_srt_revisions()
-            texts, notes = decisions.render()
-            ranges = self._get_block_ranges(decisions, source=source)
-            blocks = {
-                index: number
-                for number, (first, last) in enumerate(ranges, 1)
-                for index in range(first, last)
-            }
+            updated, ranges = build_audit_rows(
+                source, content, self.language, decisions
+            )
             previous = self.rows()
-            updated = []
-            for row in previous:
-                current = replace(
-                    row,
-                    key=sha256(
-                        f"{source_digest}:{self.language.code}:{row.index - 1}".encode()
-                    ).hexdigest(),
-                    original=source.events[row.index - 1].text_with_newline,
-                    reviewed=texts[row.index - 1],
-                    review_note=notes[row.index - 1],
-                    block_number=blocks[row.index - 1],
-                    shared_indexes=decisions.shared_indexes(row.index - 1),
-                    version=row.version + 1,
-                )
+            for index, (row, replacement) in enumerate(
+                zip(previous, updated, strict=True)
+            ):
+                current = replace(replacement, version=row.version + 1)
                 if (
-                    current.original != row.original
-                    or current.reviewed != row.reviewed
-                    or current.review_note != row.review_note
+                    current.original == row.original
+                    and current.reviewed == row.reviewed
+                    and current.review_note == row.review_note
                 ):
                     current = replace(
-                        current, finding=AuditStatus.unaudited, notes="", verified=False
+                        current,
+                        finding=row.finding,
+                        notes=row.notes,
+                        verified=row.verified,
                     )
-                updated.append(current)
+                updated[index] = current
             originals = None
             try:
                 if rerun:
-                    self._backup_proofreading(db)
-                db.execute("BEGIN IMMEDIATE")
-                db.executemany(
-                    "DELETE FROM review_edits WHERE key=?",
-                    [(row.key,) for row in previous],
-                )
-                db.executemany(
-                    "INSERT OR REPLACE INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?)",
-                    [
-                        (
-                            row.key,
-                            row.reviewed,
-                            row.review_note,
-                            row.notes,
-                            row.finding,
-                            int(row.verified),
-                            row.version,
-                        )
-                        for row in updated
-                    ],
-                )
-                db.execute(
-                    "INSERT OR REPLACE INTO review_metadata VALUES ('source', ?)",
-                    (content,),
-                )
-                if settings is not None:
-                    db.execute(
-                        "INSERT OR REPLACE INTO review_metadata "
-                        "VALUES ('proofreading', ?)",
-                        (json.dumps(settings).encode("utf-8"),),
+                    backup_dir_path = backup_review_files(
+                        self.outfile_path, self.json_path
                     )
-                originals = self._write_files(updated, decisions, source=source)
+                    backup_progress(db, backup_dir_path / "review.sqlite3")
+                db.execute("BEGIN IMMEDIATE")
+                save_proofreading_progress(db, previous, updated, content, settings)
+                originals = write_review_files(
+                    source,
+                    updated,
+                    self.outfile_path,
+                    decisions=decisions,
+                    json_path=self.json_path,
+                )
                 db.commit()
             except (OSError, sqlite3.Error) as exc:
                 db.rollback()
                 if originals is not None:
-                    _restore_files(originals)
+                    restore_files(originals)
                 raise ScinoephileError(
                     f"Unable to publish proofreading: {exc}"
                 ) from exc
@@ -451,28 +399,12 @@ class AuditSession:
             current editable rows and their audit progress
         """
         with self._lock, closing(sqlite3.connect(self.state_path)) as db:
-            saved = {
-                row[0]: row[1:] for row in db.execute("SELECT * FROM review_edits")
-            }
-            rows = []
-            for row in self._rows:
-                current = row
-                if row.key in saved:
-                    text, note, notes, finding, verified, version = saved[row.key]
-                    current = replace(row, version=version)
-                    native_matches = note == row.review_note
-                    if self.decisions is None or not self.decisions.cases:
-                        native_matches = True
-                    if text == row.reviewed and native_matches:
-                        current = replace(
-                            current,
-                            review_note=note,
-                            notes=notes,
-                            finding=AuditStatus(finding),
-                            verified=bool(verified),
-                        )
-                rows.append(current)
-            return rows
+            return load_saved_rows(
+                db,
+                self._rows,
+                match_review_note=self.decisions is not None
+                and bool(self.decisions.cases),
+            )
 
     def save(
         self,
@@ -563,32 +495,26 @@ class AuditSession:
                         verified=verified
                         and (key not in affected or not current.verified),
                     )
-                db.executemany(
-                    "INSERT INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?) "
-                    "ON CONFLICT(key) DO UPDATE SET reviewed=excluded.reviewed, "
-                    "review_note=excluded.review_note, notes=excluded.notes, "
-                    "finding=excluded.finding, verified=excluded.verified, "
-                    "version=excluded.version",
-                    [
-                        (
-                            saved.key,
-                            saved.reviewed,
-                            saved.review_note,
-                            saved.notes,
-                            saved.finding,
-                            int(saved.verified),
-                            saved.version + 1,
-                        )
-                        for saved in affected.values()
-                    ],
+                save_rows(
+                    db,
+                    (
+                        replace(row, version=row.version + 1)
+                        for row in affected.values()
+                    ),
                 )
                 if proofreading_changed:
-                    originals = self._write_files(updated, decisions)
+                    originals = write_review_files(
+                        self.original,
+                        updated,
+                        self.outfile_path,
+                        decisions=decisions,
+                        json_path=self.json_path,
+                    )
                 db.commit()
             except (OSError, sqlite3.Error) as exc:
                 db.rollback()
                 if originals is not None:
-                    _restore_files(originals)
+                    restore_files(originals)
                 raise ScinoephileError(f"Unable to save review edits: {exc}") from exc
             self.decisions = decisions
             self._rows = updated
@@ -625,43 +551,17 @@ class AuditSession:
                 rows = [row for row in matching if not row.verified]
                 for row in rows:
                     _validate_audit_notes(row.finding, row.notes)
-                db.executemany(
-                    "INSERT OR REPLACE INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?)",
-                    [
-                        (
-                            row.key,
-                            row.reviewed,
-                            row.review_note,
-                            row.notes,
-                            row.finding,
-                            1,
-                            row.version + 1,
-                        )
+                save_rows(
+                    db,
+                    (
+                        replace(row, verified=True, version=row.version + 1)
                         for row in rows
-                    ],
+                    ),
                 )
                 db.commit()
             except sqlite3.Error as exc:
                 raise ScinoephileError(f"Unable to verify subtitles: {exc}") from exc
             return len(rows)
-
-    def _backup_proofreading(self, db: sqlite3.Connection):
-        """Snapshot existing output and review state before a successful rerun.
-
-        Arguments:
-            db: current review database before its write transaction begins
-        """
-        backup_dir_path = Path(
-            mkdtemp(
-                prefix=f"{self.outfile_path.stem}.before-reproofread-",
-                dir=self.outfile_path.parent,
-            )
-        )
-        copy2(self.outfile_path, backup_dir_path / "proofread.srt")
-        if self.json_path is not None and self.json_path.exists():
-            copy2(self.json_path, backup_dir_path / "review.json")
-        with closing(sqlite3.connect(backup_dir_path / "review.sqlite3")) as backup_db:
-            db.backup(backup_db)
 
     def _check_file_fingerprints(self):
         """Reject changes made outside the active editor's write transaction.
@@ -680,132 +580,14 @@ class AuditSession:
             )
 
     def _file_fingerprints(self) -> tuple[bytes | None, ...]:
-        """Hash source and writable files to reject external edits on save.
+        """Hash the project's source and writable files.
 
         Returns:
-            content digests, including absent optional files
+            digests for the input, output, and optional decisions in that order
         """
-        fingerprints = []
-        for file_path in (self.infile_path, self.outfile_path, self.json_path):
-            value = None
-            if file_path is not None and file_path.exists():
-                value = sha256(file_path.read_bytes()).digest()
-            fingerprints.append(value)
-        return tuple(fingerprints)
-
-    def _get_block_ranges(
-        self, decisions: ReviewDecisions | None = None, *, source: Series | None = None
-    ) -> list[tuple[int, int]]:
-        """Resolve logged query boundaries, falling back to original pause blocks.
-
-        Arguments:
-            decisions: candidate decisions, or current session decisions
-            source: candidate input, or the published source baseline
-        Returns:
-            nonoverlapping zero-based inclusive/exclusive subtitle ranges
-        """
-        if decisions is None:
-            decisions = self.decisions
-        if source is None:
-            source = self.original
-        count = len(source)
-        if not count:
-            return []
-        joined = [False] * (count - 1)
-        covered = set()
-        if decisions is not None:
-            for case_index, starts in decisions.locations.items():
-                size = len(decisions.cases[case_index].query.subtitles)
-                for first in starts:
-                    covered.update(range(first, first + size))
-                    for index in range(first, first + size - 1):
-                        joined[index] = True
-        for first, last in Series.get_block_indexes_by_pause(source):
-            for index in range(first, last - 1):
-                if index not in covered and index + 1 not in covered:
-                    joined[index] = True
-        boundaries = [0]
-        boundaries.extend(index + 1 for index, value in enumerate(joined) if not value)
-        boundaries.append(count)
-        return list(zip(boundaries[:-1], boundaries[1:], strict=True))
-
-    def _load_output(self) -> tuple[list[str], list[str]]:
-        """Load output or native proposals and validate their correspondence.
-
-        Returns:
-            editable output text and native revision explanations
-        Raises:
-            ValueError: if output timings or JSON answers disagree
-        """
-        texts = [s.text_with_newline for s in self.original]
-        revision_notes = [""] * len(texts)
-        if self.decisions is not None:
-            texts, revision_notes = self.decisions.render()
-        if self.outfile_path.exists():
-            output = Series.load(self.outfile_path)
-            if [(s.start, s.end) for s in output] != [
-                (s.start, s.end) for s in self.original
-            ]:
-                raise ValueError("Original and output subtitle timings must match")
-            output_texts = [s.text_with_newline for s in output]
-            if self.decisions is not None and self.decisions.cases:
-                if output_texts != texts:
-                    raise ValueError("Output subtitles disagree with the review JSON")
-            else:
-                texts = output_texts
-        return texts, revision_notes
-
-    def _load_rows(self, report_path: Path | None) -> list[AuditRow]:
-        """Load saved output or native proposals and optional independent notes.
-
-        Arguments:
-            report_path: optional report used only for audit-note import
-        Returns:
-            source rows with editable text and revision notes
-        Raises:
-            ValueError: if output timings or decision answers conflict
-        """
-        texts, revision_notes = self._load_output()
-        imported = {}
-        if report_path is not None:
-            imported = _load_report_notes(report_path, len(self.original))
-        label = self.language.code
-        if self.language == Language.eng:
-            label = "English"
-        source_digest = sha256(self._source_content).hexdigest()
-        rows = []
-        for index, source in enumerate(self.original.events):
-            note = imported.get(index + 1, "")
-            finding = AuditStatus.unaudited
-            if note == "OK":
-                finding = AuditStatus.ok
-                note = ""
-            elif note.startswith(("Review;", "Incorrect;", "Check;")):
-                finding = AuditStatus.review
-            shared = (index + 1,)
-            if self.decisions is not None:
-                shared = self.decisions.shared_indexes(index)
-            key = sha256(
-                f"{source_digest}:{self.language.code}:{index}".encode()
-            ).hexdigest()
-            rows.append(
-                AuditRow(
-                    key=key,
-                    track_id=self.language.code,
-                    label=label,
-                    language=self.language.code,
-                    index=index + 1,
-                    start=source.start,
-                    end=source.end,
-                    original=source.text_with_newline,
-                    reviewed=texts[index],
-                    review_note=revision_notes[index],
-                    notes=note,
-                    finding=finding,
-                    shared_indexes=shared,
-                )
-            )
-        return rows
+        return get_file_fingerprints(
+            self.infile_path, self.outfile_path, self.json_path
+        )
 
     def _prepare_edit(
         self, rows: list[AuditRow], current: AuditRow, text: str, note: str
@@ -852,151 +634,6 @@ class AuditSession:
             )
             for row in rows
         ], decisions
-
-    def _validate_paths(self, report_path: Path | None):
-        """Require distinct subtitle, JSON, progress and optional report files.
-
-        Arguments:
-            report_path: optional read-only report path
-        Raises:
-            ValueError: if paths collide or the output is not an SRT
-        """
-        paths = [self.infile_path, self.outfile_path, self.state_path]
-        if self.json_path is not None:
-            paths.append(self.json_path)
-        if report_path is not None:
-            paths.append(report_path)
-        if len(set(paths)) != len(paths):
-            raise ValueError(
-                "Input, output, JSON, progress and report paths must differ"
-            )
-        for index, left_path in enumerate(paths):
-            for right_path in paths[index + 1 :]:
-                if (
-                    left_path.exists()
-                    and right_path.exists()
-                    and left_path.samefile(right_path)
-                ):
-                    raise ValueError(
-                        "Input and writable files must not alias each other"
-                    )
-        if self.outfile_path.suffix.lower() != ".srt":
-            raise ValueError("The edited subtitle output must be an SRT file")
-
-    def _write_files(
-        self,
-        rows: list[AuditRow],
-        decisions: ReviewDecisions | None,
-        *,
-        source: Series | None = None,
-    ) -> dict[Path, bytes | None]:
-        """Replace each output atomically and restore files on an I/O failure.
-
-        Arguments:
-            rows: validated final subtitle rows
-            decisions: candidate native JSON decisions
-            source: candidate input, or the published source baseline
-        Returns:
-            original file contents for rollback if the database commit fails
-        Raises:
-            ValueError: if the output cannot round-trip through SRT
-            BaseException: if writing fails, after restoring replaced files
-        """
-        if source is None:
-            source = self.original
-        output = deepcopy(source)
-        for subtitle, row in zip(output, rows, strict=True):
-            subtitle.text = row.reviewed.replace("\n", "\\N")
-        content = output.to_string("srt")
-        reloaded = Series.from_string(content, format_="srt")
-        if [(s.start, s.end, s.text_with_newline) for s in reloaded] != [
-            (row.start, row.end, row.reviewed) for row in rows
-        ]:
-            raise InvalidReviewSubtitleError(
-                "Subtitle text cannot be saved unchanged in SRT. "
-                "Remove leading or trailing whitespace and SRT control sequences."
-            )
-        writes = {self.outfile_path: content}
-        if decisions is not None and self.json_path is not None:
-            writes[self.json_path] = decisions.serialize()
-        originals: dict[Path, bytes | None] = {p: None for p in writes}
-        for file_path in writes:
-            if file_path.exists():
-                originals[file_path] = file_path.read_bytes()
-        written = []
-        try:
-            for file_path, content in writes.items():
-                file_path.parent.mkdir(parents=True, exist_ok=True)
-                with open_atomic_text_file(file_path) as handle:
-                    handle.write(content)
-                written.append(file_path)
-        except BaseException:
-            _restore_files({p: originals[p] for p in reversed(written)})
-            raise
-        return originals
-
-
-def _load_report_notes(file_path: Path, count: int) -> dict[int, str]:
-    """Import only Notes from a generated audit table, never its rendered text.
-
-    Arguments:
-        file_path: existing Markdown audit report
-        count: number of source subtitles
-    Returns:
-        independent notes keyed by one-based subtitle number
-    Raises:
-        ValueError: if the table is malformed, duplicated, or out of range
-    """
-    columns = []
-    notes = {}
-    for line in file_path.read_text(encoding="utf-8").splitlines():
-        if not line.startswith("|"):
-            continue
-        cells = [cell.strip() for cell in re.split(r"(?<!\\)\|", line)[1:-1]]
-        if cells and cells[0] == "Subtitle":
-            columns = cells
-            continue
-        if not cells or not cells[0].isdigit():
-            continue
-        if len(cells) != len(columns) or "Notes" not in columns:
-            raise ValueError("Audit report has no valid Notes column")
-        index = int(cells[0])
-        if not 1 <= index <= count or index in notes:
-            raise ValueError("Audit report has duplicate or out-of-range row indexes")
-        notes[index] = unescape(
-            cells[columns.index("Notes")].replace("\\|", "|").replace("<br>", "\n")
-        )
-    if not notes:
-        raise ValueError("Audit report contains no subtitle rows")
-    return notes
-
-
-def _restore_files(originals: dict[Path, bytes | None]):
-    """Restore replaced files byte-for-byte after a failed save.
-
-    Arguments:
-        originals: old file bytes, or None for newly created outputs
-    Raises:
-        OSError: if restoring a file fails
-    """
-    for file_path, original in originals.items():
-        if original is None:
-            file_path.unlink(missing_ok=True)
-            continue
-        with NamedTemporaryFile("wb", dir=file_path.parent, delete=False) as handle:
-            temp_path = Path(handle.name)
-            try:
-                handle.write(original)
-                handle.flush()
-                fsync(handle.fileno())
-            except BaseException:
-                handle.close()
-                temp_path.unlink(missing_ok=True)
-                raise
-        try:
-            temp_path.replace(file_path)
-        finally:
-            temp_path.unlink(missing_ok=True)
 
 
 def _validate_audit_notes(finding: str, notes: str):

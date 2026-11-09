@@ -333,7 +333,7 @@ def test_failed_file_save_does_not_commit_text_or_progress(tmp_path: Path):
     before = audit.json_path.read_bytes()
     row = audit.rows()[0]
     with patch(
-        "scinoephile.web.audit_review.session.open_atomic_text_file",
+        "scinoephile.web.audit_review.files.open_atomic_text_file",
         side_effect=OSError("disk failure"),
     ):
         with raises(ScinoephileError, match="disk failure"):
@@ -555,7 +555,7 @@ def test_partial_write_failure_restores_existing_files(tmp_path: Path):
         with open_atomic_text_file(file_path) as handle:
             yield handle
 
-    with patch("scinoephile.web.audit_review.session.open_atomic_text_file", fail_json):
+    with patch("scinoephile.web.audit_review.files.open_atomic_text_file", fail_json):
         with raises(ScinoephileError, match="JSON write failed"):
             audit.save(
                 row.key,

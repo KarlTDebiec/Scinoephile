@@ -5,7 +5,8 @@
 Package hierarchy (modules may import from any above):
 * exceptions
 * decisions / job_settings / models
-* pagination
+* files / pagination / store
+* rows
 * session
 * auditing_job / proofreading_job
 * routes
