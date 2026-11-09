@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from scinoephile.core.llms import AnnotatedTestCaseSubtitle
 from scinoephile.llms.review import ReviewTestCase
 
-__all__ = ["ReviewAuditMetadata", "get_review_metadata"]
+__all__ = ["ReviewAuditMetadata", "get_review_audit_metadata"]
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -25,7 +25,7 @@ class ReviewAuditMetadata:
     """Covered subtitle indexes belonging to unverified cases."""
 
 
-def get_review_metadata(
+def get_review_audit_metadata(
     review_cases: Sequence[ReviewTestCase],
     original: tuple[str, ...],
     reviewed: tuple[str, ...],

@@ -10,7 +10,7 @@ from scinoephile.core import ScinoephileError
 
 from .review_filters import ReviewAuditFilter, ReviewAuditFilterGroup
 from .review_inputs import ReviewAuditComparison, ReviewAuditPair
-from .review_metadata import get_review_metadata
+from .review_metadata import get_review_audit_metadata
 from .utils import (
     AuditColumn,
     format_audit_report,
@@ -84,7 +84,7 @@ def audit_review(
     # Match block-based log data against the complete inputs
     try:
         metadata_by_review = tuple(
-            get_review_metadata(review.review_cases, original, reviewed)
+            get_review_audit_metadata(review.review_cases, original, reviewed)
             for review, (original, reviewed) in zip(reviews, review_series, strict=True)
         )
         notes = tuple(metadata.notes_by_index for metadata in metadata_by_review)
