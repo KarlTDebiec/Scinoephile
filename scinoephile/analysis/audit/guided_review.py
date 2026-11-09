@@ -57,6 +57,8 @@ class _GuidedReviewRow:
     """Result of the logged answer for this subtitle."""
     verified: bool
     """Whether the source test case is verified."""
+    matches_character_filter: bool
+    """Whether the target or revision passes the character filter."""
 
 
 def audit_guided_review(
@@ -65,6 +67,7 @@ def audit_guided_review(
     test_cases: Sequence[GuidedReviewTestCase],
     *,
     row_filter: ReviewAuditFilter = ReviewAuditFilter.changes,
+    character_filter: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -77,6 +80,7 @@ def audit_guided_review(
         guide: guide subtitle series provided for guided review
         test_cases: logged guided-review test cases
         row_filter: row status filter
+        character_filter: individual characters to match in the target or revision
         first_index: first 1-indexed target subtitle number to include
         last_index: last 1-indexed target subtitle number to include
         first_block: first 1-indexed paired block number to include
@@ -139,6 +143,12 @@ def audit_guided_review(
             else:
                 result = AuditResult.unchanged
 
+            target_text = block.target_texts[local_index - 1]
+            matches_character_filter = not character_filter or any(
+                character in target_text
+                or (revision is not None and character in revision.text)
+                for character in character_filter
+            )
             guide_text = "\n".join(guide_texts)
             if not guide_texts:
                 guide_text = "—"
@@ -157,6 +167,7 @@ def audit_guided_review(
                 test_case_index=test_case_index,
                 result=result,
                 verified=test_case.verified,
+                matches_character_filter=matches_character_filter,
             )
 
     all_rows = sorted(
@@ -169,7 +180,8 @@ def audit_guided_review(
     rows = [
         row
         for row in all_rows
-        if not (
+        if row.matches_character_filter
+        and not (
             row_filter is ReviewAuditFilter.changes
             and row.result is not AuditResult.changed
         )
@@ -178,17 +190,21 @@ def audit_guided_review(
     subtitles = len(all_rows)
     unchanged_subtitles = subtitles - revised_subtitles - unanswered_subtitles
     unverified_subtitles = subtitles - verified_subtitles
+    summary_items = [
+        f"subtitles: {subtitles}",
+        f"revised subtitles: {revised_subtitles}",
+        f"unchanged subtitles: {unchanged_subtitles}",
+        f"unanswered subtitles: {unanswered_subtitles}",
+        f"verified subtitles: {verified_subtitles}",
+        f"unverified subtitles: {unverified_subtitles}",
+        f"row filter: {row_filter.value}",
+    ]
+    if character_filter:
+        summary_items.append(f"character filter: {', '.join(character_filter)}")
+
     return format_audit_report(
         title="Guided Subtitle Review Audit",
-        summary_items=(
-            f"subtitles: {subtitles}",
-            f"revised subtitles: {revised_subtitles}",
-            f"unchanged subtitles: {unchanged_subtitles}",
-            f"unanswered subtitles: {unanswered_subtitles}",
-            f"verified subtitles: {verified_subtitles}",
-            f"unverified subtitles: {unverified_subtitles}",
-            f"row filter: {row_filter.value}",
-        ),
+        summary_items=summary_items,
         columns=(
             ("Index", "right"),
             ("Block", "right"),

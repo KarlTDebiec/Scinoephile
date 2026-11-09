@@ -135,8 +135,8 @@ Regular, guided, and traditional review support `all`, `changes`, and
 can be checked for missed corrections. Use `changes` only for an applied-edit
 audit. The `unverified` filter requires the corresponding JSON for every review
 path. Use inclusive `--first-index` and `--last-index`. `--characters` is
-available for regular, traditional, and dual review, with script variants added
-automatically; use it only for a requested or suspected conversion issue.
+available for regular, guided, traditional, and dual review. It adds script
+variants automatically. Use it only for a requested or suspected conversion issue.
 
 Use `--first-block` and `--last-block` for an inclusive, one-based workflow
 block range. In guided review these are paired target/guide blocks; in regular,

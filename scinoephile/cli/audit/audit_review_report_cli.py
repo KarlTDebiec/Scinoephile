@@ -47,11 +47,11 @@ AUDIT_REVIEW_REPORT_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "表示未标记为已验证的案例中的字幕（默认：%(default)s）"
         ),
         (
-            "characters to match in regular-review input; values may be separated "
-            "or combined, and simplified and traditional variants are included "
-            "automatically (default: no character filter)"
+            "characters to match in original or revised subtitles. Values may be "
+            "separated or combined, and simplified and traditional variants "
+            "are included automatically (default: no character filter)"
         ): (
-            "要在常规校对输入中匹配的字符；字符可分开或合并输入，并自动包含"
+            "要在原始或修订后的字幕中匹配的字符。字符可分开或合并输入，并自动包含"
             "简繁体变体（默认：无字符筛选）"
         ),
     },
@@ -71,11 +71,11 @@ AUDIT_REVIEW_REPORT_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "表示未標記為已驗證的案例中的字幕（預設：%(default)s）"
         ),
         (
-            "characters to match in regular-review input; values may be separated "
-            "or combined, and simplified and traditional variants are included "
-            "automatically (default: no character filter)"
+            "characters to match in original or revised subtitles. Values may be "
+            "separated or combined, and simplified and traditional variants "
+            "are included automatically (default: no character filter)"
         ): (
-            "要在常規校對輸入中搜尋的字元；字元可分開或合併輸入，並自動包含"
+            "要在原始或修訂後的字幕中搜尋的字元。字元可分開或合併輸入，並自動包含"
             "簡繁體變體（預設：無字元篩選）"
         ),
     },
@@ -146,11 +146,12 @@ class AuditReviewReportCli(AuditCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--characters",
+            dest="character_filter",
             default=(),
             metavar="CHARACTER",
             nargs="+",
             help=(
-                "characters to match in regular-review input; values may be "
+                "characters to match in original or revised subtitles. Values may be "
                 "separated or combined, and simplified and traditional variants "
                 "are included automatically (default: no character filter)"
             ),
@@ -175,6 +176,7 @@ class AuditReviewReportCli(AuditCliBase):
         json_path: Path,
         *,
         row_filter: ReviewAuditFilter,
+        character_filter: Sequence[str],
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -188,6 +190,7 @@ class AuditReviewReportCli(AuditCliBase):
             guide_path: guide subtitle SRT path
             json_path: guided-review test-case JSON path
             row_filter: rows to include in the report
+            character_filter: characters used to further limit included rows
             first_index: first target subtitle number to include
             last_index: last target subtitle number to include
             first_block: first paired block number to include
@@ -208,6 +211,7 @@ class AuditReviewReportCli(AuditCliBase):
             guide,
             test_cases,
             row_filter=row_filter,
+            character_filter=character_filter,
             first_index=first_index,
             last_index=last_index,
             first_block=first_block,
@@ -223,7 +227,7 @@ class AuditReviewReportCli(AuditCliBase):
         json_path: Path | None,
         *,
         row_filter: ReviewAuditFilter,
-        characters: Sequence[str],
+        character_filter: Sequence[str],
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -237,7 +241,7 @@ class AuditReviewReportCli(AuditCliBase):
             reviewed_path: reviewed subtitle SRT path
             json_path: optional regular-review test-case JSON path
             row_filter: rows to include in the report
-            characters: characters used to further limit included rows
+            character_filter: characters used to further limit included rows
             first_index: first subtitle number to include
             last_index: last subtitle number to include
             first_block: first workflow block number to include
@@ -277,7 +281,7 @@ class AuditReviewReportCli(AuditCliBase):
         return audit_review(
             reviews=reviews,
             row_filter=row_filter,
-            characters=get_zho_character_variants(characters),
+            character_filter=character_filter,
             first_index=first_index,
             last_index=last_index,
             first_block=first_block,
@@ -294,7 +298,7 @@ class AuditReviewReportCli(AuditCliBase):
         guide_path: Path | None,
         json_path: Path | None,
         row_filter: ReviewAuditFilter,
-        characters: Sequence[str],
+        character_filter: Sequence[str],
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -311,7 +315,7 @@ class AuditReviewReportCli(AuditCliBase):
             guide_path: optional guide subtitle SRT path
             json_path: optional review test-case JSON path
             row_filter: rows to include in the report
-            characters: characters used to further limit included regular rows
+            character_filter: characters used to further limit included rows
             first_index: first subtitle number to include
             last_index: last subtitle number to include
             first_block: first workflow block number to include
@@ -323,14 +327,13 @@ class AuditReviewReportCli(AuditCliBase):
         parser = _parser or cls.argparser()
         if row_filter is ReviewAuditFilter.unverified and json_path is None:
             parser.error("--filter unverified requires --json")
-        if guide_path is not None:
-            if json_path is None:
-                parser.error("--json is required with --guide")
-            if characters:
-                parser.error("--characters may only be used with --reviewed")
+        if guide_path is not None and json_path is None:
+            parser.error("--json is required with --guide")
 
         # Perform operation
         try:
+            if character_filter:
+                character_filter = get_zho_character_variants(character_filter)
             if guide_path is not None:
                 assert json_path is not None
                 report = cls._audit_guided(
@@ -339,6 +342,7 @@ class AuditReviewReportCli(AuditCliBase):
                     guide_path,
                     json_path,
                     row_filter=row_filter,
+                    character_filter=character_filter,
                     first_index=first_index,
                     last_index=last_index,
                     first_block=first_block,
@@ -352,7 +356,7 @@ class AuditReviewReportCli(AuditCliBase):
                     reviewed_path,
                     json_path,
                     row_filter=row_filter,
-                    characters=characters,
+                    character_filter=character_filter,
                     first_index=first_index,
                     last_index=last_index,
                     first_block=first_block,

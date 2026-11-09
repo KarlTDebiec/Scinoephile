@@ -201,6 +201,7 @@ class AuditReviewTradCli(AuditCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--characters",
+            dest="character_filter",
             default=(),
             metavar="CHARACTER",
             nargs="+",
@@ -234,7 +235,7 @@ class AuditReviewTradCli(AuditCliBase):
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
         row_filter: ReviewAuditFilter,
-        characters: Sequence[str],
+        character_filter: Sequence[str],
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -255,7 +256,7 @@ class AuditReviewTradCli(AuditCliBase):
             traditional_simplified_json_path: optional traditional-simplification
                 review test-case JSON path
             row_filter: rows to include in the report
-            characters: characters used to further limit included rows
+            character_filter: characters used to further limit included rows
             first_index: first subtitle number to include
             last_index: last subtitle number to include
             first_block: first workflow block number to include
@@ -303,7 +304,7 @@ class AuditReviewTradCli(AuditCliBase):
                     ),
                 ),
                 row_filter=row_filter,
-                characters=get_zho_character_variants(characters),
+                character_filter=get_zho_character_variants(character_filter),
                 first_index=first_index,
                 last_index=last_index,
                 first_block=first_block,

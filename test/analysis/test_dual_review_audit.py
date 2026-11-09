@@ -83,7 +83,7 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
     assert "| 4 |" in report
 
     report = audit_dual_review(
-        **inputs, row_filter=DualReviewAuditFilter.all, characters=("著", "丙")
+        **inputs, row_filter=DualReviewAuditFilter.all, character_filter=("著", "丙")
     )
     assert "- character filter: 著, 丙" in report
     assert "- table rows: 1" in report

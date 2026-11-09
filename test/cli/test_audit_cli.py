@@ -283,6 +283,17 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     assert "- subtitles: 1" in stdout
     assert "| 1 | 1 | 參考 | 原文<br>修訂 | correction |  |" in stdout
 
+    run_cli_with_args(AuditReviewReportCli, f"{arguments} --characters 订")
+    stdout = capsys.readouterr().out
+    assert "- character filter: 訂, 订" in stdout
+    assert "- table rows: 1" in stdout
+
+    run_cli_with_args(AuditReviewReportCli, f"{arguments} --characters 原")
+    assert "- table rows: 1" in capsys.readouterr().out
+
+    run_cli_with_args(AuditReviewReportCli, f"{arguments} --characters 參")
+    assert "- table rows: 0" in capsys.readouterr().out
+
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(AuditReviewReportCli, f"{arguments} --outfile {outfile_path}")
     assert capsys.readouterr().out == ""
@@ -340,7 +351,7 @@ def test_audit_review_cli_help_is_consistent():
         assert "all includes every subtitle" in filter_action.help
         assert "changes includes" in filter_action.help
         assert "unverified includes" in filter_action.help
-        character_help = actions["characters"].help
+        character_help = actions["character_filter"].help
         assert isinstance(character_help, str)
         assert "(default: no character filter)" in character_help
         for destination, action in actions.items():

@@ -92,7 +92,7 @@ def audit_review(
     reviews: Sequence[ReviewAuditPair],
     comparisons: Sequence[ReviewAuditComparison] = (),
     row_filter: StrEnum = ReviewAuditFilter.changes,
-    characters: Sequence[str] = (),
+    character_filter: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -104,7 +104,7 @@ def audit_review(
         reviews: ordered review pairs to audit
         comparisons: ordered final output comparisons to audit
         row_filter: row status filter
-        characters: individual characters whose occurrence limits included rows
+        character_filter: individual characters whose occurrence limits included rows
         first_index: first 1-indexed subtitle number to include, inclusive
         last_index: last 1-indexed subtitle number to include, inclusive
         first_block: first 1-indexed workflow block number to include, inclusive
@@ -200,7 +200,7 @@ def audit_review(
         indexes=indexes,
         row_filter=row_filter_value,
         unverified_indexes=unverified_indexes,
-        characters=characters,
+        character_filter=character_filter,
     )
     return _format_report(
         reviews=reviews,
@@ -215,7 +215,7 @@ def audit_review(
         indexes=selected_indexes,
         row_filter=row_filter_value,
         unverified_indexes=unverified_indexes,
-        characters=characters,
+        character_filter=character_filter,
         first_index=first_index,
         last_index=last_index,
         first_block=first_block,
@@ -305,7 +305,7 @@ def _format_report(
     indexes: Sequence[int],
     row_filter: str,
     unverified_indexes: frozenset[int],
-    characters: Sequence[str],
+    character_filter: Sequence[str],
     first_index: int | None,
     last_index: int | None,
     first_block: int | None,
@@ -326,7 +326,7 @@ def _format_report(
         indexes: zero-based subtitle indexes to include
         row_filter: active row filter
         unverified_indexes: subtitle indexes covered by unverified cases
-        characters: active character filter
+        character_filter: active character filter
         first_index: first included 1-indexed subtitle number
         last_index: last included 1-indexed subtitle number
         first_block: first included 1-indexed workflow block number
@@ -374,8 +374,8 @@ def _format_report(
         )
     )
     summary_items.append(f"row filter: {row_filter}")
-    if characters:
-        summary_items.append(f"character filter: {', '.join(characters)}")
+    if character_filter:
+        summary_items.append(f"character filter: {', '.join(character_filter)}")
 
     columns: list[AuditColumn] = [("Subtitle", "right")]
     columns.extend((review.label, "left") for review in reviews)
@@ -439,7 +439,7 @@ def _get_filtered_indexes(
     indexes: Iterable[int],
     row_filter: str,
     unverified_indexes: frozenset[int],
-    characters: Sequence[str],
+    character_filter: Sequence[str],
 ) -> list[int]:
     """Get subtitle indexes selected for the report.
 
@@ -450,7 +450,7 @@ def _get_filtered_indexes(
         indexes: zero-based subtitle indexes eligible for inclusion
         row_filter: row status filter
         unverified_indexes: subtitle indexes covered by unverified review cases
-        characters: optional character filter
+        character_filter: optional character filter
     Returns:
         selected subtitle indexes
     Raises:
@@ -473,14 +473,14 @@ def _get_filtered_indexes(
     else:
         raise AssertionError(f"Unexpected validated row filter {row_filter!r}")
 
-    if characters:
+    if character_filter:
         selected_indexes = {
             index
             for index in selected_indexes
             if any(
                 character in subtitles[index]
                 for subtitles in series
-                for character in characters
+                for character in character_filter
             )
         }
     return sorted(selected_indexes)

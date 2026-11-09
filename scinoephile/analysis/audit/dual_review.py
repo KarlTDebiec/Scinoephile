@@ -43,7 +43,7 @@ def audit_dual_review(
     traditional_simplified_review_cases: Sequence[TestCase] = (),
     simplified_review_cases: Sequence[TestCase] = (),
     row_filter: DualReviewAuditFilter = DualReviewAuditFilter.changes,
-    characters: Sequence[str] = (),
+    character_filter: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -64,7 +64,7 @@ def audit_dual_review(
             cases
         simplified_review_cases: simplified review test cases
         row_filter: row status filter
-        characters: individual characters whose occurrence limits included rows
+        character_filter: individual characters whose occurrence limits included rows
         first_index: first 1-indexed subtitle number to include, inclusive
         last_index: last 1-indexed subtitle number to include, inclusive
         first_block: first 1-indexed workflow block number to include, inclusive
@@ -104,7 +104,7 @@ def audit_dual_review(
             ),
         ),
         row_filter=row_filter,
-        characters=characters,
+        character_filter=character_filter,
         first_index=first_index,
         last_index=last_index,
         first_block=first_block,
