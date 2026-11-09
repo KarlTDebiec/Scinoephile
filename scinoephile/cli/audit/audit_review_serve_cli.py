@@ -141,6 +141,13 @@ class AuditReviewServeCli(ScinoephileCliBase):
             help="subtitle language (default: auto-detect)",
         )
 
+        # Web arguments
+        groups["web arguments"].add_argument(
+            "--title", help="display title (default: input filename stem)"
+        )
+        add_web_server_args(groups["web arguments"])
+        parser.set_defaults(web_args=WebServerArguments(port=5020))
+
         # Output arguments
         groups["output arguments"].add_argument(
             "-o",
@@ -153,13 +160,6 @@ class AuditReviewServeCli(ScinoephileCliBase):
                 "<output-stem>.review.sqlite3"
             ),
         )
-
-        # Web arguments
-        groups["web arguments"].add_argument(
-            "--title", help="display title (default: input filename stem)"
-        )
-        add_web_server_args(groups["web arguments"])
-        parser.set_defaults(web_args=WebServerArguments(port=5020))
 
     @classmethod
     def name(cls) -> str:
