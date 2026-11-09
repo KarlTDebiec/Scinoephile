@@ -26,7 +26,8 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 from scinoephile.llms.review import ReviewManager
 from scinoephile.web.audit_review.app import create_app, serve_audit
-from scinoephile.web.audit_review.session import AuditFilters, AuditSession, AuditStatus
+from scinoephile.web.audit_review.models import AuditFilters, AuditStatus
+from scinoephile.web.audit_review.session import AuditSession
 
 
 def test_dependent_filter_counts(tmp_path: Path):

@@ -23,7 +23,8 @@ from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditQuery
 from scinoephile.web.audit_review import auditing
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.auditing import AuditingJob
-from scinoephile.web.audit_review.session import AuditSession, AuditStatus
+from scinoephile.web.audit_review.models import AuditStatus
+from scinoephile.web.audit_review.session import AuditSession
 
 
 class _Provider(LLMProvider):

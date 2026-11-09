@@ -17,7 +17,8 @@ from scinoephile.llms.providers.registry import (
 )
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditSubtitle
 
-from .session import AuditRow, AuditSession, AuditStatus
+from .models import AuditRow, AuditStatus
+from .session import AuditSession
 
 __all__ = ["AuditingJob", "AuditingState"]
 

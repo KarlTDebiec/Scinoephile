@@ -7,11 +7,9 @@ from __future__ import annotations
 import json
 import re
 import sqlite3
-from collections.abc import Iterable
 from contextlib import closing
 from copy import deepcopy
-from dataclasses import dataclass, replace
-from enum import StrEnum
+from dataclasses import replace
 from hashlib import sha256
 from html import unescape
 from os import fsync
@@ -20,7 +18,6 @@ from shutil import copy2
 from tempfile import NamedTemporaryFile, mkdtemp
 from threading import RLock
 
-from scinoephile.analysis.alignment import pairwise
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -28,249 +25,16 @@ from scinoephile.lang.id import get_series_language
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 
 from .decisions import InvalidReviewSubtitleError, ReviewDecisions
+from .models import (
+    LEGACY_AUDIT_STATUSES,
+    AuditFilters,
+    AuditPage,
+    AuditRow,
+    AuditStatus,
+)
+from .pagination import get_audit_page, get_verification_token
 
-__all__ = [
-    "AuditBlock",
-    "AuditFilters",
-    "AuditPage",
-    "AuditRow",
-    "AuditSession",
-    "AuditStatus",
-]
-
-
-class AuditStatus(StrEnum):
-    """Explicit verdict for an independent proofreading audit."""
-
-    unaudited = "unaudited"
-    """No audit verdict has been recorded."""
-    review = "review"
-    """The subtitle needs human review."""
-    ok = "ok"
-    """The audit found no issue."""
-
-
-_LEGACY_STATUSES = {
-    "unassessed": AuditStatus.unaudited,
-    "incorrect": AuditStatus.review,
-    "check": AuditStatus.review,
-    "flagged": AuditStatus.review,
-}
-
-
-@dataclass(frozen=True)
-class AuditFilters:
-    """Bookmarkable audit filters."""
-
-    verification: str = "all"
-    """all, verified, or unverified audit progress."""
-    changes: str = "all"
-    """all, changed, or unchanged subtitle text."""
-    finding: str = "all"
-    """all, unaudited, review, or ok audit statuses."""
-    q: str = ""
-    """Unicode text search or an exact block selector such as block 160."""
-
-    def __post_init__(self):
-        """Normalize bookmarks using the previous audit categories."""
-        object.__setattr__(
-            self, "finding", _LEGACY_STATUSES.get(self.finding, self.finding)
-        )
-
-    def counts(self, rows: list[AuditRow]) -> dict[str, dict[str, int]]:
-        """Count each option with search and the other status filters applied.
-
-        Arguments:
-            rows: complete current subtitle snapshot, before pagination
-        Returns:
-            option counts keyed by filter name and option value
-        """
-        self.validate()
-        counts: dict[str, dict[str, int]] = {}
-        for name in ("changes", "finding", "verification"):
-            other_filters = replace(self, **{name: "all"})
-            matching = [row for row in rows if other_filters.matches(row)]
-            if name == "changes":
-                changed = sum(row.changed for row in matching)
-                options = {"changed": changed, "unchanged": len(matching) - changed}
-            elif name == "verification":
-                verified = sum(row.verified for row in matching)
-                options = {"verified": verified, "unverified": len(matching) - verified}
-            else:
-                options = {
-                    status: sum(row.finding == status for row in matching)
-                    for status in AuditStatus
-                }
-            counts[name] = {"all": len(matching), **options}
-        return counts
-
-    def matches(self, row: AuditRow) -> bool:
-        """Check whether one row matches these filters.
-
-        Arguments:
-            row: current audit row
-        Returns:
-            whether the row matches
-        """
-        if not {
-            "all": True,
-            "verified": row.verified,
-            "unverified": not row.verified,
-        }.get(self.verification, False):
-            return False
-        if not {"all": True, "changed": row.changed, "unchanged": not row.changed}.get(
-            self.changes, False
-        ):
-            return False
-        if self.finding not in {"all", row.finding}:
-            return False
-        block = re.fullmatch(r"block\s*[:#]?\s*(\d+)", self.q.strip(), re.IGNORECASE)
-        if block is not None:
-            return row.block_number == int(block[1])
-        searchable = (
-            f"{row.index} {row.original} {row.reviewed} {row.notes} {row.review_note}"
-        )
-        return self.q.casefold() in searchable.casefold()
-
-    def validate(self):
-        """Reject unsupported filter values.
-
-        Raises:
-            ValueError: if a filter is unsupported
-        """
-        for value, choices in (
-            (self.verification, {"all", "verified", "unverified"}),
-            (self.changes, {"all", "changed", "unchanged"}),
-            (self.finding, {"all", *AuditStatus}),
-        ):
-            if value not in choices:
-                raise ValueError(f"Unknown audit filter: {value}")
-
-
-@dataclass(frozen=True)
-class AuditRow:
-    """A subtitle pair, provenance, and its independent human audit state."""
-
-    key: str
-    """Content identity; changed inputs get fresh audit progress."""
-    track_id: str
-    """Track identifier."""
-    label: str
-    """Track display label."""
-    language: str
-    """Subtitle language tag."""
-    index: int
-    """One-based subtitle number."""
-    start: int
-    """Start time in milliseconds."""
-    end: int
-    """End time in milliseconds."""
-    original: str
-    """Validated source text."""
-    reviewed: str
-    """Proposed proofread text."""
-    review_note: str
-    """Read-only model explanation."""
-    notes: str
-    """Independent audit notes."""
-    finding: AuditStatus = AuditStatus.unaudited
-    """Independent audit verdict."""
-    verified: bool = False
-    """Human audit progress, independent of proofreading JSON verification."""
-    version: int = 0
-    """Optimistic concurrency version."""
-
-    shared_indexes: tuple[int, ...] = ()
-    """One-based subtitle indexes sharing this JSON decision."""
-
-    block_number: int = 0
-    """Stable one-based proofreading block number."""
-
-    @property
-    def changed(self) -> bool:
-        """Whether proofreading changed this subtitle."""
-        return self.original != self.reviewed
-
-    @property
-    def differences(self) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
-        """CLI-compatible pairwise diff spans with safely escaped text."""
-        if self.original == self.reviewed:
-            return [(self.original, "match")], [(self.reviewed, "match")]
-        original: list[tuple[str, str]] = []
-        reviewed: list[tuple[str, str]] = []
-        for column in pairwise.Alignment(self.original, self.reviewed).columns:
-            kind = column.operation.name.lower()
-            for character, spans in ((column.one, original), (column.two, reviewed)):
-                if character is None:
-                    continue
-                if spans and spans[-1][1] == kind:
-                    spans[-1] = (spans[-1][0] + character, kind)
-                else:
-                    spans.append((character, kind))
-        return original, reviewed
-
-    @property
-    def time_label(self) -> str:
-        """Start and end times including milliseconds."""
-        return f"{_format_time(self.start)} – {_format_time(self.end)}"
-
-
-@dataclass(frozen=True)
-class AuditBlock:
-    """A complete proofreading query group and its visible filtered rows."""
-
-    number: int
-    """Stable one-based block number in the complete subtitle track."""
-    first_index: int
-    """First one-based subtitle index in the complete block."""
-    last_index: int
-    """Last one-based subtitle index in the complete block."""
-    rows: list[AuditRow]
-    """Rows matching the active filters."""
-    start: int
-    """Start of the complete block in milliseconds."""
-    end: int
-    """End of the complete block in milliseconds."""
-
-    @property
-    def count(self) -> int:
-        """Total subtitle count before filtering."""
-        return self.last_index - self.first_index + 1
-
-    @property
-    def time_label(self) -> str:
-        """Full block time range in whole seconds, including hidden rows."""
-        start = _format_time(self.start, include_milliseconds=False)
-        end = _format_time(self.end, include_milliseconds=False)
-        return f"{start} – {end}"
-
-
-@dataclass(frozen=True)
-class AuditPage:
-    """A bounded batch or loaded prefix and project-wide progress counts."""
-
-    all_rows: list[AuditRow]
-    """Complete row snapshot from which this page was built."""
-    rows: list[AuditRow]
-    """Visible rows."""
-    blocks: list[AuditBlock]
-    """Loaded matching query groups, with filtered rows inside."""
-    filters: AuditFilters
-    """Normalized filters."""
-    total: int
-    """Total current source rows."""
-    verified: int
-    """Verified current source rows."""
-    matching: int
-    """Rows matching all filters, including unloaded blocks."""
-    verification_token: str
-    """Digest of the full filtered selection and its row versions."""
-    filter_counts: dict[str, dict[str, int]]
-    """Dependent option counts before pagination."""
-    last_block: int
-    """Stable source block cursor through which rows have loaded."""
-    has_more: bool
-    """Whether more matching blocks follow the loaded cursor."""
+__all__ = ["AuditSession"]
 
 
 class AuditSession:
@@ -370,7 +134,7 @@ class AuditSession:
                     "INSERT OR REPLACE INTO review_metadata VALUES ('source', ?)",
                     (self._source_content,),
                 )
-                for previous, status in _LEGACY_STATUSES.items():
+                for previous, status in LEGACY_AUDIT_STATUSES.items():
                     db.execute(
                         "UPDATE review_edits SET finding = ?, version = version + 1 "
                         "WHERE finding = ?",
@@ -507,44 +271,13 @@ class AuditSession:
         with self._lock:
             rows = self.rows()
             block_ranges = self._block_ranges
-        matching = [row for row in rows if filters.matches(row)]
-        by_block: dict[int, list[AuditRow]] = {}
-        for row in matching:
-            by_block.setdefault(row.block_number, []).append(row)
-        blocks = []
-        for number, visible in by_block.items():
-            first, last = block_ranges[number - 1]
-            blocks.append(
-                AuditBlock(
-                    number=number,
-                    first_index=first + 1,
-                    last_index=last,
-                    rows=visible,
-                    start=rows[first].start,
-                    end=max(row.end for row in rows[first:last]),
-                )
-            )
-        visible_blocks = [block for block in blocks if block.number > after][
-            : self.page_size
-        ]
-        last_block = after
-        if through is not None:
-            visible_blocks = [block for block in blocks if block.number <= through]
-            last_block = through
-        elif visible_blocks:
-            last_block = visible_blocks[-1].number
-        return AuditPage(
-            all_rows=rows,
-            rows=[row for block in visible_blocks for row in block.rows],
-            blocks=visible_blocks,
-            filters=filters,
-            total=len(rows),
-            verified=sum(row.verified for row in rows),
-            matching=len(matching),
-            verification_token=_get_verification_token(matching),
-            filter_counts=filters.counts(rows),
-            last_block=last_block,
-            has_more=any(block.number > last_block for block in blocks),
+        return get_audit_page(
+            rows,
+            block_ranges,
+            filters,
+            page_size=self.page_size,
+            after=after,
+            through=through,
         )
 
     def publish_audit(
@@ -786,7 +519,7 @@ class AuditSession:
         if len(review_note) > 1000:
             raise ValueError("Revision notes must not exceed 1000 characters")
         try:
-            finding = AuditStatus(_LEGACY_STATUSES.get(finding, finding))
+            finding = AuditStatus(LEGACY_AUDIT_STATUSES.get(finding, finding))
         except ValueError as exc:
             raise ValueError("Unknown audit verdict") from exc
         _validate_audit_notes(finding, notes)
@@ -891,7 +624,7 @@ class AuditSession:
                 db.execute("BEGIN IMMEDIATE")
                 filters.validate()
                 matching = [row for row in self.rows() if filters.matches(row)]
-                if token != _get_verification_token(matching):
+                if token != get_verification_token(matching):
                     raise ValueError(
                         "The matching subtitles changed. Reload before verifying."
                     )
@@ -1207,34 +940,6 @@ class AuditSession:
             _restore_files({p: originals[p] for p in reversed(written)})
             raise
         return originals
-
-
-def _format_time(milliseconds: int, *, include_milliseconds: bool = True) -> str:
-    """Format a subtitle timestamp with optional millisecond precision.
-
-    Arguments:
-        milliseconds: subtitle timestamp
-        include_milliseconds: whether to append fractional seconds
-    Returns:
-        hours, minutes, seconds and milliseconds
-    """
-    seconds, remainder = divmod(milliseconds, 1000)
-    formatted = f"{seconds // 3600:02d}:{seconds // 60 % 60:02d}:{seconds % 60:02d}"
-    if include_milliseconds:
-        formatted += f".{remainder:03d}"
-    return formatted
-
-
-def _get_verification_token(rows: Iterable[AuditRow]) -> str:
-    """Identify the matching row versions for bulk verification.
-
-    Arguments:
-        rows: rows matching the current filters in source order
-    Returns:
-        digest of the matching row identities and versions
-    """
-    selection = [(row.key, row.version) for row in rows]
-    return sha256(repr(selection).encode()).hexdigest()
 
 
 def _load_report_notes(file_path: Path, count: int) -> dict[int, str]:
