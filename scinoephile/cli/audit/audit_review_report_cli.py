@@ -265,16 +265,18 @@ class AuditReviewReportCli(AuditCliBase):
             parser.error("Unable to detect the language and script of subtitle inputs")
         language = detected_languages.pop()
 
+        reviews = (
+            ReviewAuditPair(
+                label=language.description,
+                original=original,
+                reviewed=reviewed,
+                review_cases=review_cases,
+            ),
+        )
+
         # Perform operation
         return audit_review(
-            reviews=(
-                ReviewAuditPair(
-                    label=language.description.removesuffix("."),
-                    original=original,
-                    reviewed=reviewed,
-                    review_cases=review_cases,
-                ),
-            ),
+            reviews=reviews,
             row_filter=row_filter,
             characters=get_zho_character_variants(characters),
             first_index=first_index,

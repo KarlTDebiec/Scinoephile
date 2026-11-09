@@ -58,15 +58,15 @@ def normalize_language_tag(language: str) -> str:
 class Language(DescribedEnum):
     """Languages explicitly supported by Scinoephile workflows."""
 
-    eng = ("eng", "English.")
+    eng = ("eng", "English")
     """English."""
-    yue_hans = ("yue-Hans", "Cantonese, simplified Chinese script.")
+    yue_hans = ("yue-Hans", "Cantonese, simplified Chinese script")
     """Cantonese in simplified Chinese script."""
-    yue_hant = ("yue-Hant", "Cantonese, traditional Chinese script.")
+    yue_hant = ("yue-Hant", "Cantonese, traditional Chinese script")
     """Cantonese in traditional Chinese script."""
-    zho_hans = ("zho-Hans", "Simplified Chinese.")
+    zho_hans = ("zho-Hans", "Simplified Chinese")
     """Simplified Chinese."""
-    zho_hant = ("zho-Hant", "Traditional Chinese.")
+    zho_hant = ("zho-Hant", "Traditional Chinese")
     """Traditional Chinese."""
 
     @property
