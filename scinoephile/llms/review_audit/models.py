@@ -11,6 +11,8 @@ from pydantic import Field, model_validator
 from scinoephile.core.llms import Answer, Query, TestCase
 from scinoephile.core.llms.models import LLMModel
 
+from .prompt import ReviewAuditPrompt
+
 __all__ = [
     "ReviewAuditAnswer",
     "ReviewAuditFinding",
@@ -105,6 +107,8 @@ class ReviewAuditTestCase(TestCase[ReviewAuditQuery, ReviewAuditAnswer]):
     """Query model used by the shared query executor."""
     answer_cls: ClassVar[type[ReviewAuditAnswer]] = ReviewAuditAnswer
     """Structured answer model used by the provider."""
+    prompt: ClassVar[ReviewAuditPrompt] = ReviewAuditPrompt()
+    """Text for LLM correspondence and validation errors."""
     query: ReviewAuditQuery
     """Context block to assess."""
     answer: ReviewAuditAnswer | None = None
@@ -122,5 +126,5 @@ class ReviewAuditTestCase(TestCase[ReviewAuditQuery, ReviewAuditAnswer]):
         if self.answer is not None:
             expected = [subtitle.index for subtitle in self.query.subtitles]
             if [finding.index for finding in self.answer.findings] != expected:
-                raise ValueError("Return every input index exactly once, in order")
+                raise ValueError(self.prompt.finding_indices_err)
         return self

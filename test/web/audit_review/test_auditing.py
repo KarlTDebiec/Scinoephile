@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import replace
 from pathlib import Path
 from threading import Event
 from typing import Any, Unpack
@@ -18,7 +19,7 @@ from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
-from scinoephile.llms.review_audit import ReviewAuditQuery, ReviewAuditTestCase
+from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditQuery
 from scinoephile.web.audit_review import auditing
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.auditing import AuditingJob
@@ -324,25 +325,36 @@ def test_audit_query_rejects_duplicate_or_reordered_subtitles(indexes: tuple[int
 
 
 @mark.parametrize(
-    "findings",
+    ("findings", "message"),
     [
-        [],
-        [{"index": 1, "status": "unaudited", "note": ""}],
-        [{"index": 1, "status": "review", "note": ""}],
-        [{"index": 2, "status": "ok", "note": ""}],
-        [{"index": 1, "status": "ok", "note": "unexpected"}],
+        ([], "Match the query indexes"),
+        ([{"index": 1, "status": "unaudited", "note": ""}], "Input should be"),
+        (
+            [{"index": 1, "status": "review", "note": ""}],
+            "Review findings require a note",
+        ),
+        ([{"index": 2, "status": "ok", "note": ""}], "Match the query indexes"),
+        (
+            [{"index": 1, "status": "ok", "note": "unexpected"}],
+            "OK findings must have an empty note",
+        ),
     ],
 )
 def test_audit_schema_rejects_incomplete_or_ambiguous_findings(
-    findings: list[dict[str, object]],
+    findings: list[dict[str, object]], message: str
 ):
     """Reject omissions, wrong indexes, unaudited answers and missing concern notes.
 
     Arguments:
         findings: invalid structured findings
+        message: expected validation feedback
     """
-    with raises(ValidationError):
-        ReviewAuditTestCase.model_validate(
+    prompt = replace(
+        ReviewAuditPromptEng, finding_indices_err="Match the query indexes"
+    )
+    test_case_cls = ReviewAuditManager.get_test_case_cls(prompt)
+    with raises(ValidationError, match=message):
+        test_case_cls.model_validate(
             {
                 "query": {
                     "language": "eng",

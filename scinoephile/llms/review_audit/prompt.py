@@ -14,3 +14,6 @@ __all__ = ["ReviewAuditPrompt"]
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ReviewAuditPrompt(Prompt):
     """Audit instructions and retry guidance for a proofread subtitle block."""
+
+    finding_indices_err: str = "Return every input index exactly once, in order."
+    """Error when finding indexes differ from the query."""

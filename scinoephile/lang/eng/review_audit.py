@@ -29,6 +29,5 @@ ReviewAuditPromptEng = ReviewAuditPrompt(
     answer_invalid_pre="The answer was invalid:",
     answer_invalid_post="Return a corrected structured answer.",
     test_case_invalid_pre="The findings do not match the input:",
-    test_case_invalid_post="Return every input index exactly once, in order.",
 )
 """English LLM correspondence text for independent audits of subtitle proofreading."""

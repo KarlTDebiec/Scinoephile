@@ -20,7 +20,7 @@ class ReviewAuditManager(Manager[ReviewAuditTestCase]):
 
     operation: ClassVar[str] = ReviewAuditTestCase.operation
     """Stable operation identifier used in persistence."""
-    base_prompt: ClassVar[ReviewAuditPrompt] = ReviewAuditPrompt()
+    base_prompt: ClassVar[ReviewAuditPrompt] = ReviewAuditTestCase.prompt
     """Base prompt defining the expected audit prompt type."""
     test_case_base_cls: ClassVar[type[TestCase]] = ReviewAuditTestCase
     """Static test-case model defining the audit schema."""
