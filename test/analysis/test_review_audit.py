@@ -14,7 +14,7 @@ from scinoephile.analysis.audit.review_filters import (
     ReviewAuditFilter,
     ReviewAuditFilterGroup,
 )
-from scinoephile.analysis.audit.review_inputs import ReviewAuditPair
+from scinoephile.analysis.audit.review_inputs import ReviewAuditBeforeAfterPair
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.review import ReviewTestCase
@@ -49,7 +49,7 @@ def test_audit_review_filters_unverified_cases():
 
     report = audit_review(
         reviews=(
-            ReviewAuditPair(
+            ReviewAuditBeforeAfterPair(
                 label="Test",
                 original=original,
                 reviewed=reviewed,
@@ -67,7 +67,7 @@ def test_audit_review_filters_unverified_cases():
 
     all_report = audit_review(
         reviews=(
-            ReviewAuditPair(
+            ReviewAuditBeforeAfterPair(
                 label="Test",
                 original=original,
                 reviewed=reviewed,
@@ -113,7 +113,7 @@ def test_audit_review_ignores_retained_historical_cases():
 
     report = audit_review(
         reviews=(
-            ReviewAuditPair(
+            ReviewAuditBeforeAfterPair(
                 label="Test",
                 original=original,
                 reviewed=reviewed,
@@ -134,7 +134,9 @@ def test_audit_review_ignores_retained_historical_cases():
 def test_audit_review_rejects_unsupported_filter():
     """Test unrelated filter enums cannot silently select unverified rows."""
     original = _get_series(("Input",))
-    reviews = (ReviewAuditPair(label="Test", original=original, reviewed=original),)
+    reviews = (
+        ReviewAuditBeforeAfterPair(label="Test", original=original, reviewed=original),
+    )
 
     with raises(ScinoephileError, match="unsupported row filter 'unsupported'"):
         audit_review(
@@ -163,7 +165,9 @@ def test_audit_review_selects_blocks():
             Subtitle(start=5_000, end=5_500, text="Third revised"),
         ]
     )
-    reviews = (ReviewAuditPair(label="Test", original=original, reviewed=reviewed),)
+    reviews = (
+        ReviewAuditBeforeAfterPair(label="Test", original=original, reviewed=reviewed),
+    )
 
     report = audit_review(
         reviews=reviews,
@@ -214,7 +218,7 @@ def test_audit_review_uses_latest_duplicate_case():
         }
     )
     reviews = (
-        ReviewAuditPair(
+        ReviewAuditBeforeAfterPair(
             label="Test",
             original=original,
             reviewed=reviewed,

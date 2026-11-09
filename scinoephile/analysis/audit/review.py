@@ -9,7 +9,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from scinoephile.core import ScinoephileError
 
 from .review_filters import ReviewAuditFilter, ReviewAuditFilterGroup
-from .review_inputs import ReviewAuditComparison, ReviewAuditPair
+from .review_inputs import ReviewAuditBeforeAfterPair, ReviewAuditSeriesPair
 from .review_metadata import get_review_audit_metadata
 from .utils import (
     AuditColumn,
@@ -23,8 +23,8 @@ __all__ = ["audit_review"]
 
 def audit_review(
     *,
-    reviews: Sequence[ReviewAuditPair],
-    comparisons: Sequence[ReviewAuditComparison] = (),
+    reviews: Sequence[ReviewAuditBeforeAfterPair],
+    comparisons: Sequence[ReviewAuditSeriesPair] = (),
     filters: ReviewAuditFilterGroup = ReviewAuditFilterGroup(),
 ) -> str:
     """Audit a composition of review pairs and final comparisons.
@@ -58,7 +58,7 @@ def audit_review(
     ) + tuple(
         series
         for comparison in comparisons
-        for series in (comparison.left, comparison.right)
+        for series in (comparison.one, comparison.two)
     )
     if len({len(series) for series in all_series}) != 1:
         raise ScinoephileError(
@@ -75,8 +75,8 @@ def audit_review(
     )
     comparison_series = tuple(
         (
-            tuple(subtitle.text_with_newline for subtitle in comparison.left),
-            tuple(subtitle.text_with_newline for subtitle in comparison.right),
+            tuple(subtitle.text_with_newline for subtitle in comparison.one),
+            tuple(subtitle.text_with_newline for subtitle in comparison.two),
         )
         for comparison in comparisons
     )
@@ -115,7 +115,7 @@ def audit_review(
         for original, reviewed in review_series
     )
     comparison_changes = tuple(
-        _get_changed_indexes(left, right, indexes) for left, right in comparison_series
+        _get_changed_indexes(one, two, indexes) for one, two in comparison_series
     )
     selected_indexes = _get_filtered_indexes(
         series=tuple(
@@ -145,11 +145,11 @@ def audit_review(
 
 def _format_report(
     *,
-    reviews: Sequence[ReviewAuditPair],
+    reviews: Sequence[ReviewAuditBeforeAfterPair],
     review_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     review_changes: Sequence[set[int]],
     notes: Sequence[Mapping[int, Sequence[str]]],
-    comparisons: Sequence[ReviewAuditComparison],
+    comparisons: Sequence[ReviewAuditSeriesPair],
     comparison_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     comparison_changes: Sequence[set[int]],
     covered_indexes: frozenset[int],
@@ -166,7 +166,7 @@ def _format_report(
         review_changes: changed subtitle indexes for each review
         notes: review notes by review and subtitle index
         comparisons: ordered comparison specifications
-        comparison_series: left- and right-hand subtitle text for each comparison
+        comparison_series: subtitle text for both series in each comparison
         comparison_changes: changed subtitle indexes for each comparison
         covered_indexes: subtitle indexes covered by logged cases
         has_review_cases: whether any review decision log was supplied
@@ -191,8 +191,8 @@ def _format_report(
             )
         )
         cells.extend(
-            _format_review_cell(index, changed_indexes, left, right)
-            for changed_indexes, (left, right) in zip(
+            _format_review_cell(index, changed_indexes, one, two)
+            for changed_indexes, (one, two) in zip(
                 comparison_changes, comparison_series, strict=True
             )
         )

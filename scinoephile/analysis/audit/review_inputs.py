@@ -10,25 +10,25 @@ from dataclasses import dataclass
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.review import ReviewTestCase
 
-__all__ = ["ReviewAuditComparison", "ReviewAuditPair"]
+__all__ = ["ReviewAuditBeforeAfterPair", "ReviewAuditSeriesPair"]
 
 
 @dataclass(frozen=True, kw_only=True)
-class ReviewAuditComparison:
+class ReviewAuditSeriesPair:
     """One final comparison between outputs of an audit workflow."""
 
     column_label: str
     """Human-readable label used for the report table column."""
     summary_label: str
     """Human-readable label used before "discrepancies" in the summary."""
-    left: Series
-    """Left-hand subtitle series."""
-    right: Series
-    """Right-hand subtitle series."""
+    one: Series
+    """First subtitle series in the comparison."""
+    two: Series
+    """Second subtitle series in the comparison."""
 
 
 @dataclass(frozen=True, kw_only=True)
-class ReviewAuditPair:
+class ReviewAuditBeforeAfterPair:
     """One subtitle review's input, output, and optional notes.
 
     A pair is the reusable unit shared by single-review, sequential, and parallel
