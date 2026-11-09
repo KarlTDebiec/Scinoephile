@@ -178,14 +178,21 @@ def serve_audit(audit: AuditSession, *, host: str = "127.0.0.1", port: int = 502
         audit: loaded audit project
         host: loopback host address
         port: local TCP port
+    Raises:
+        ScinoephileError: if a server I/O operation fails
     """
     serving = import_werkzeug_serving()
-    server = serving.make_server(host, port, create_app(audit), threaded=True)
-    logger.info(f"Subtitle audit: http://{host}:{port}/")
     try:
-        server.serve_forever()
-    finally:
-        server.server_close()
+        server = serving.make_server(host, port, create_app(audit), threaded=True)
+        try:
+            logger.info(f"Subtitle audit: http://{host}:{port}/")
+            server.serve_forever()
+        finally:
+            server.server_close()
+    except OSError as exc:
+        raise ScinoephileError(
+            f"Unable to run review editor on {host}:{port}: {exc}"
+        ) from exc
 
 
 def _confirm_rerun(operation: str, *, rerun: bool) -> bool:

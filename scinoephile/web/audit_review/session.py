@@ -296,13 +296,6 @@ class AuditSession:
         Raises:
             ScinoephileError: if files, paths, or review decisions are invalid
         """
-        self.infile_path = infile_path.resolve()
-        self.outfile_path = outfile_path.resolve()
-        self.json_path = None
-        if json_path is not None:
-            self.json_path = json_path.resolve()
-        self.state_path = self.outfile_path.with_suffix(".review.sqlite3")
-        self.title = title or self.infile_path.stem
         self._lock = RLock()
         self._auditing_running = False
         self._proofreading_running = False
@@ -310,6 +303,13 @@ class AuditSession:
         self._proofreading_content: bytes | None = None
         self._proofreading_fingerprints: tuple[bytes | None, ...] | None = None
         try:
+            self.infile_path = infile_path.resolve()
+            self.outfile_path = outfile_path.resolve()
+            self.json_path = None
+            if json_path is not None:
+                self.json_path = json_path.resolve()
+            self.state_path = self.outfile_path.with_suffix(".review.sqlite3")
+            self.title = title or self.infile_path.stem
             self._validate_paths(report_path)
             self._source_content = self.infile_path.read_bytes()
             if self.state_path.exists() and self.outfile_path.exists():

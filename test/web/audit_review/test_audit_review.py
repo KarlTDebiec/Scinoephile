@@ -20,11 +20,12 @@ from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.dependencies.web import import_werkzeug_serving
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 from scinoephile.llms.review import ReviewManager
-from scinoephile.web.audit_review.app import create_app
+from scinoephile.web.audit_review.app import create_app, serve_audit
 from scinoephile.web.audit_review.session import AuditFilters, AuditSession, AuditStatus
 
 
@@ -428,6 +429,39 @@ def test_htmx_updates_one_row_without_replacing_other_forms(tmp_path: Path):
     assert 'id="block-1" hx-swap-oob="delete"' in text
     assert 'id="form-' + audit.rows()[1].key not in text
     assert 'id="workspace"' not in text
+
+
+def test_review_session_wraps_path_resolution_errors(tmp_path: Path):
+    """Report path resolution failures as project errors.
+
+    Arguments:
+        tmp_path: temporary project directory
+    """
+    error = PermissionError("Unable to resolve subtitle path")
+    with (
+        patch.object(Path, "resolve", side_effect=error),
+        raises(ScinoephileError, match="Unable to open review editor") as exc,
+    ):
+        AuditSession(tmp_path / "source.srt", tmp_path / "edited.srt")
+
+    assert exc.value.__cause__ is error
+
+
+def test_review_serve_wraps_server_io_errors(tmp_path: Path):
+    """Report server I/O failures with the requested address.
+
+    Arguments:
+        tmp_path: temporary project directory
+    """
+    audit = _make_session(tmp_path)
+    error = OSError("Socket unavailable")
+    with (
+        patch.object(import_werkzeug_serving(), "make_server", side_effect=error),
+        raises(ScinoephileError, match=r"127\.0\.0\.1:5038: Socket unavailable") as exc,
+    ):
+        serve_audit(audit, port=5038)
+
+    assert exc.value.__cause__ is error
 
 
 def test_review_serve_cli_accepts_subtitles_and_optional_json(

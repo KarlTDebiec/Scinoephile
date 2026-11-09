@@ -211,5 +211,5 @@ class AuditReviewServeCli(ScinoephileCliBase):
                 host=web_args.host,
                 port=web_args.port,
             )
-        except (ScinoephileError, OSError) as exc:
+        except ScinoephileError as exc:
             parser.error(str(exc))
