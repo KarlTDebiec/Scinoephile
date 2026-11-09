@@ -20,7 +20,7 @@ ReadOnlyClassValue = RequiredClassValue
 
 
 class LLMModel(BaseModel):
-    """Base model for LLM queries, answers, and test cases."""
+    """Base model for LLM queries, answers, test cases, and their nested models."""
 
     model_config = ConfigDict(
         extra="forbid", ignored_types=(RequiredClassValue,), validate_by_name=True
