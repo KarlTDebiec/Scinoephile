@@ -14,7 +14,7 @@ from unittest.mock import Mock
 from pydantic import ValidationError
 from pytest import MonkeyPatch, mark, raises
 
-from scinoephile.cli.audit import audit_review_run_cli
+from scinoephile.cli.audit.review import audit_review_run_cli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language

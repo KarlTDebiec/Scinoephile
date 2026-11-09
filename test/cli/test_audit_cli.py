@@ -22,14 +22,14 @@ from scinoephile.cli.audit.audit_cli_base import AuditCliBase
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
 from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
-from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
-from scinoephile.cli.audit.audit_review_report_cli import AuditReviewReportCli
-from scinoephile.cli.audit.audit_review_run_cli import AuditReviewRunCli
-from scinoephile.cli.audit.audit_review_serve_cli import AuditReviewServeCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
 from scinoephile.cli.audit.audit_transcription_cli import AuditTranscriptionCli
 from scinoephile.cli.audit.audit_translation_cli import AuditTranslationCli
+from scinoephile.cli.audit.review import AuditReviewCli
+from scinoephile.cli.audit.review.audit_review_report_cli import AuditReviewReportCli
+from scinoephile.cli.audit.review.audit_review_run_cli import AuditReviewRunCli
+from scinoephile.cli.audit.review.audit_review_serve_cli import AuditReviewServeCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.cli.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args

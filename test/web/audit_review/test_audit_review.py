@@ -496,7 +496,7 @@ def test_review_serve_cli_accepts_subtitles_and_optional_json(
         )
 
     monkeypatch.setattr(
-        "scinoephile.cli.audit.audit_review_serve_cli.serve_audit", fake_serve
+        "scinoephile.cli.audit.review.audit_review_serve_cli.serve_audit", fake_serve
     )
     arguments = (
         f'audit review -v serve --infile "{audit.infile_path}" '
