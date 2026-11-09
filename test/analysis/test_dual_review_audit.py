@@ -13,10 +13,9 @@ from scinoephile.analysis.audit.review_filters import (
     ReviewAuditFilter,
     ReviewAuditFilterGroup,
 )
-from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.llms.review import ReviewManager
+from scinoephile.llms.review import ReviewManager, ReviewTestCase
 
 
 class _AuditInputs(TypedDict):
@@ -40,13 +39,13 @@ class _AuditInputs(TypedDict):
     simplified_reviewed: Series
     """Simplified reviewed subtitles."""
 
-    traditional_review_cases: list[TestCase]
+    traditional_review_cases: list[ReviewTestCase]
     """Traditional review test cases."""
 
-    traditional_simplified_review_cases: list[TestCase]
+    traditional_simplified_review_cases: list[ReviewTestCase]
     """Traditional simplification review test cases."""
 
-    simplified_review_cases: list[TestCase]
+    simplified_review_cases: list[ReviewTestCase]
     """Simplified review test cases."""
 
 
@@ -217,7 +216,7 @@ def _get_series(texts: tuple[str, ...]) -> Series:
     return Series(events=[Subtitle(text=text) for text in texts])
 
 
-def _load_review_cases(json_path: Path) -> list[TestCase]:
+def _load_review_cases(json_path: Path) -> list[ReviewTestCase]:
     """Load review test cases from a JSON fixture.
 
     Arguments:

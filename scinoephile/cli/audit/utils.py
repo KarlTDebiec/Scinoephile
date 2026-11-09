@@ -8,8 +8,7 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.core.llms import TestCase
-from scinoephile.llms.review import ReviewManager
+from scinoephile.llms.review import ReviewManager, ReviewTestCase
 
 from .audit_cli_base import AuditCliBase
 
@@ -18,7 +17,7 @@ __all__ = ["load_review_test_cases"]
 
 def load_review_test_cases(
     parser: ArgumentParser, json_path: Path | None
-) -> Sequence[TestCase]:
+) -> Sequence[ReviewTestCase]:
     """Load optional review test cases from JSON.
 
     Arguments:

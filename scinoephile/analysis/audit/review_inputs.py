@@ -7,8 +7,8 @@ from __future__ import annotations
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
+from scinoephile.llms.review import ReviewTestCase
 
 __all__ = ["ReviewAuditComparison", "ReviewAuditPair"]
 
@@ -41,5 +41,5 @@ class ReviewAuditPair:
     """Subtitle series before review."""
     reviewed: Series
     """Subtitle series after review."""
-    review_cases: Sequence[TestCase] = ()
+    review_cases: Sequence[ReviewTestCase] = ()
     """Optional review test cases containing revision notes."""

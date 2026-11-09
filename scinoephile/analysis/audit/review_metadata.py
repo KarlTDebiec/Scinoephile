@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from typing import cast
 
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import AnnotatedTestCaseSubtitle
+from scinoephile.llms.review import ReviewTestCase
 
 __all__ = ["ReviewAuditMetadata", "get_review_metadata"]
 
@@ -26,7 +26,7 @@ class ReviewAuditMetadata:
 
 
 def get_review_metadata(
-    review_cases: Sequence[TestCase],
+    review_cases: Sequence[ReviewTestCase],
     original: tuple[str, ...],
     reviewed: tuple[str, ...],
 ) -> ReviewAuditMetadata:
@@ -52,9 +52,7 @@ def get_review_metadata(
     notes_by_index: dict[int, list[str]] = {}
     unverified_indexes: set[int] = set()
     for case_index, review_case in latest_cases_by_query.values():
-        query_texts, revised_texts, revision_by_index = _get_review_case_data(
-            review_case
-        )
+        query_texts = tuple(subtitle.text for subtitle in review_case.query.subtitles)
         candidate_starts = [
             start
             for start in range(len(original) - len(query_texts) + 1)
@@ -63,6 +61,14 @@ def get_review_metadata(
         if not candidate_starts:
             # Persisted logs retain historical queries after their input changes
             continue
+
+        revisions: Sequence[AnnotatedTestCaseSubtitle] = ()
+        if review_case.answer is not None:
+            revisions = review_case.answer.revisions
+        expected_texts = list(query_texts)
+        for revision in revisions:
+            expected_texts[revision.index - 1] = revision.text
+        revised_texts = tuple(expected_texts)
 
         matched_starts = [
             start
@@ -79,9 +85,9 @@ def get_review_metadata(
             covered_indexes.update(matched_indexes)
             if not review_case.verified:
                 unverified_indexes.update(matched_indexes)
-            for local_index, revision in revision_by_index.items():
-                index = start + local_index - 1
-                note = cast(str, revision["note"]).strip()
+            for revision in revisions:
+                index = start + revision.index - 1
+                note = revision.note.strip()
                 notes = notes_by_index.setdefault(index, [])
                 if note not in notes:
                     notes.append(note)
@@ -91,36 +97,3 @@ def get_review_metadata(
         notes_by_index={index: tuple(notes) for index, notes in notes_by_index.items()},
         unverified_indexes=frozenset(unverified_indexes),
     )
-
-
-def _get_review_case_data(
-    review_case: TestCase,
-) -> tuple[tuple[str, ...], tuple[str, ...], dict[int, dict[str, int | str]]]:
-    """Get query, reviewed, and revision data from a review test case.
-
-    Arguments:
-        review_case: deserialized review test case
-    Returns:
-        query texts, expected reviewed texts, and revisions keyed by local index
-    """
-    answer = review_case.answer
-    query_subtitles = cast(
-        list[dict[str, int | str]], review_case.query.model_dump()["subtitles"]
-    )
-    answer_revisions: list[dict[str, int | str]] = []
-    if answer is not None:
-        answer_revisions = cast(
-            list[dict[str, int | str]], answer.model_dump()["revisions"]
-        )
-    query_texts = tuple(cast(str, subtitle["text"]) for subtitle in query_subtitles)
-    revision_by_index = {
-        cast(int, revision["index"]): revision for revision in answer_revisions
-    }
-    revised_texts_list = []
-    for local_index, query_text in enumerate(query_texts, 1):
-        revised_text = query_text
-        if local_index in revision_by_index:
-            revised_text = cast(str, revision_by_index[local_index]["text"])
-        revised_texts_list.append(revised_text)
-    revised_texts = tuple(revised_texts_list)
-    return query_texts, revised_texts, revision_by_index
