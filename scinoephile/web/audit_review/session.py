@@ -19,6 +19,7 @@ from tempfile import NamedTemporaryFile, mkdtemp
 from threading import RLock
 
 from scinoephile.common.file import open_atomic_text_file
+from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
@@ -67,11 +68,15 @@ class AuditSession:
         self._proofreading_content: bytes | None = None
         self._proofreading_fingerprints: tuple[bytes | None, ...] | None = None
         try:
-            self.infile_path = infile_path.resolve()
-            self.outfile_path = outfile_path.resolve()
+            self.infile_path = val_input_path(infile_path)
+            self.outfile_path = val_output_path(
+                outfile_path, exist_ok=True, create=False
+            )
             self.json_path = None
             if json_path is not None:
-                self.json_path = json_path.resolve()
+                self.json_path = val_output_path(json_path, exist_ok=True, create=False)
+            if report_path is not None:
+                report_path = val_input_path(report_path)
             self.state_path = self.outfile_path.with_suffix(".review.sqlite3")
             self.title = title or self.infile_path.stem
             self._validate_paths(report_path)
@@ -860,7 +865,7 @@ class AuditSession:
         if self.json_path is not None:
             paths.append(self.json_path)
         if report_path is not None:
-            paths.append(report_path.resolve())
+            paths.append(report_path)
         if len(set(paths)) != len(paths):
             raise ValueError(
                 "Input, output, JSON, progress and report paths must differ"
