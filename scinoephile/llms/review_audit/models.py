@@ -11,8 +11,6 @@ from pydantic import Field, model_validator
 from scinoephile.core.llms import Answer, Query, TestCase
 from scinoephile.core.llms.models import LLMModel
 
-from .prompt import ReviewAuditPrompt
-
 __all__ = [
     "ReviewAuditAnswer",
     "ReviewAuditFinding",
@@ -20,8 +18,6 @@ __all__ = [
     "ReviewAuditSubtitle",
     "ReviewAuditTestCase",
 ]
-
-_BASE_PROMPT = ReviewAuditPrompt()
 
 
 class ReviewAuditSubtitle(LLMModel):
@@ -68,8 +64,6 @@ class ReviewAuditFinding(LLMModel):
 class ReviewAuditQuery(Query):
     """One complete context block for independent proofreading audit."""
 
-    prompt: ClassVar[ReviewAuditPrompt] = _BASE_PROMPT
-    """Audit instructions and retry guidance."""
     language: str = Field(description="Language code shared by the subtitle pairs.")
     """Language code for all subtitle pairs."""
     subtitles: list[ReviewAuditSubtitle] = Field(
@@ -96,8 +90,6 @@ class ReviewAuditQuery(Query):
 class ReviewAuditAnswer(Answer):
     """Complete per-subtitle findings for one context block."""
 
-    prompt: ClassVar[ReviewAuditPrompt] = _BASE_PROMPT
-    """Audit instructions and retry guidance."""
     findings: list[ReviewAuditFinding] = Field(
         description="One finding per input subtitle, in the same order."
     )
@@ -113,8 +105,6 @@ class ReviewAuditTestCase(TestCase[ReviewAuditQuery, ReviewAuditAnswer]):
     """Query model used by the shared query executor."""
     answer_cls: ClassVar[type[ReviewAuditAnswer]] = ReviewAuditAnswer
     """Structured answer model used by the provider."""
-    prompt: ClassVar[ReviewAuditPrompt] = _BASE_PROMPT
-    """Audit instructions and retry guidance."""
     query: ReviewAuditQuery
     """Context block to assess."""
     answer: ReviewAuditAnswer | None = None

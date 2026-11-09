@@ -17,6 +17,7 @@ from scinoephile.core import Language
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
+from scinoephile.lang.eng.review import ReviewAuditPromptEng
 from scinoephile.llms.review_audit import ReviewAuditQuery, ReviewAuditTestCase
 from scinoephile.web.audit_review import auditing
 from scinoephile.web.audit_review.app import create_app
@@ -34,6 +35,7 @@ class _Provider(LLMProvider):
         self.release = Event()
         self.release.set()
         self.queries = []
+        self.system_prompts: list[str] = []
         self.fail_at = 0
         self.configuration = "default"
 
@@ -66,6 +68,7 @@ class _Provider(LLMProvider):
             raise RuntimeError("Worker gate timed out")
         query = json.loads(messages[1]["content"])
         self.queries.append(query)
+        self.system_prompts.append(messages[0]["content"])
         if self.fail_at == len(self.queries):
             raise RuntimeError("Intentional audit failure")
         findings = []
@@ -176,6 +179,7 @@ def test_audit_persists_findings_preserving_text_and_human_state(
         "openai", model="gpt-6-luna", reasoning_effort="xhigh"
     )
     assert len(provider.queries[0]["subtitles"]) == 2
+    assert provider.system_prompts == [ReviewAuditPromptEng.base_system_prompt] * 2
     assert [row.finding for row in audit.rows()] == [
         AuditStatus.review,
         AuditStatus.review,
