@@ -5,7 +5,8 @@
 Package hierarchy (modules may import from any above):
 * audit_cli_base
 * audit_aligned_diff_cli / audit_delineation_cli / audit_ocr_fusion_cli
-/ audit_punctuation_cli / audit_review_serve_cli / audit_transcription_cli
+/ audit_punctuation_cli / audit_review_run_cli / audit_review_serve_cli
+/ audit_transcription_cli
 / audit_translation_cli / utils
 * audit_review_report_cli / audit_review_dual_cli
 / audit_review_trad_cli

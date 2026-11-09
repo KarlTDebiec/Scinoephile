@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-import sqlite3
-from contextlib import closing
 from copy import deepcopy
 from dataclasses import replace
 from hashlib import sha256
@@ -23,22 +21,14 @@ from .files import (
     backup_review_files,
     get_file_hashes,
     parse_source_srt,
-    restore_files,
+    render_review_files,
     validate_project_paths,
-    write_review_files,
+    write_files,
 )
 from .models import AuditFilters, AuditPage, AuditRow, AuditStatus
 from .pagination import get_audit_page, get_verification_token
 from .rows import build_audit_rows
-from .store import (
-    backup_progress,
-    initialize_progress,
-    load_proofreading_settings,
-    load_saved_rows,
-    load_saved_source,
-    save_proofreading_progress,
-    save_rows,
-)
+from .store import AuditProgress
 
 __all__ = ["AuditSession"]
 
@@ -87,7 +77,7 @@ class AuditSession:
                 self.json_path = val_output_path(json_path, exist_ok=True, create=False)
             if report_path is not None:
                 report_path = val_input_path(report_path)
-            self.state_path = self.outfile_path.with_suffix(".review.sqlite3")
+            self.state_path = self.outfile_path.with_suffix(".audit.json")
             self.title = title or self.infile_path.stem
             validate_project_paths(
                 self.infile_path,
@@ -96,12 +86,27 @@ class AuditSession:
                 json_path=self.json_path,
                 report_path=report_path,
             )
-            self._source_content = self.infile_path.read_bytes()
-            if self.state_path.exists() and self.outfile_path.exists():
-                with closing(sqlite3.connect(self.state_path)) as db:
-                    stored = load_saved_source(db)
-                    if stored is not None:
-                        self._source_content = stored
+            content = self.infile_path.read_bytes()
+            write_progress = not self.state_path.exists()
+            if not write_progress:
+                self._progress = AuditProgress.model_validate_json(
+                    self.state_path.read_bytes()
+                )
+            else:
+                if self.outfile_path.with_suffix(".review.sqlite3").exists():
+                    raise ValueError(
+                        "Migrate the existing audit database to JSON first"
+                    )
+                self._progress = AuditProgress(
+                    source=content.decode("utf-8").splitlines(keepends=True)
+                )
+            self._source_content = "".join(self._progress.source).encode("utf-8")
+            if not self.outfile_path.exists() and self._source_content != content:
+                self._source_content = content
+                self._progress = AuditProgress(
+                    source=content.decode("utf-8").splitlines(keepends=True)
+                )
+                write_progress = True
             self.original = parse_source_srt(self._source_content)
             detected = language or get_series_language(self.original)
             if detected is None or detected not in DEFAULT_PROMPTS:
@@ -121,11 +126,11 @@ class AuditSession:
                 report_path=report_path,
             )
             self._rows_by_key = {row.key: row for row in self._rows}
-            self.state_path.parent.mkdir(parents=True, exist_ok=True)
-            with closing(sqlite3.connect(self.state_path)) as db, db:
-                initialize_progress(db, self._source_content)
-            self._saved_file_hashes = self._file_hashes()
-        except (OSError, ValueError, sqlite3.Error) as exc:
+            if write_progress:
+                self._write_progress(self._progress)
+            else:
+                self._saved_file_hashes = self._file_hashes()
+        except (OSError, ValueError) as exc:
             raise ScinoephileError(f"Unable to open review editor: {exc}") from exc
 
     @property
@@ -133,6 +138,12 @@ class AuditSession:
         """Return whether an independent audit currently owns the review state."""
         with self._lock:
             return self._auditing_running
+
+    @property
+    def block_count(self) -> int:
+        """Number of source context blocks, including previously audited blocks."""
+        with self._lock:
+            return len(self._block_ranges)
 
     @property
     def input_changed(self) -> bool:
@@ -148,16 +159,22 @@ class AuditSession:
     @property
     def proofreading_settings(self) -> dict[str, str]:
         """Last successful proofreading settings and authored-decision provenance."""
-        with self._lock, closing(sqlite3.connect(self.state_path)) as db:
-            return load_proofreading_settings(db)
+        with self._lock:
+            return self._progress.proofreading.copy()
 
     def begin_auditing(
-        self, *, rerun: bool = False
+        self,
+        *,
+        rerun: bool = False,
+        start_at_idx: int = 0,
+        stop_at_idx: int | None = None,
     ) -> tuple[tuple[AuditRow, ...], ...]:
         """Reserve saved proofreading for an initial audit or whole-file re-audit.
 
         Arguments:
             rerun: replace existing findings for all subtitles, retaining verification
+            start_at_idx: first source block to include, zero-based
+            stop_at_idx: exclusive source block boundary, or None for the end
         Returns:
             complete context blocks containing at least one eligible subtitle
         Raises:
@@ -172,7 +189,7 @@ class AuditSession:
             rows = self.rows()
             blocks = tuple(
                 tuple(rows[first:last])
-                for first, last in self._block_ranges
+                for first, last in self._block_ranges[start_at_idx:stop_at_idx]
                 if rerun
                 or any(
                     not row.verified and row.finding == AuditStatus.unaudited
@@ -273,38 +290,35 @@ class AuditSession:
             ValueError: if reservation, files or source row versions changed
             ScinoephileError: if audit progress cannot be persisted
         """
-        with self._lock, closing(sqlite3.connect(self.state_path)) as db:
+        with self._lock:
             if not self._auditing_running:
                 raise ValueError("No audit run is active")
             self._check_file_hashes()
             if set(findings) != {row.index for row in block}:
                 raise ValueError("Audit findings must cover the complete block")
             current = {row.key: row for row in self.rows()}
+            updated = []
+            for row in block:
+                if not rerun and (row.verified or row.finding != AuditStatus.unaudited):
+                    continue
+                if current[row.key] != row:
+                    raise ValueError("Subtitle changed during auditing")
+                status, note = findings[row.index]
+                if status not in {AuditStatus.ok, AuditStatus.review}:
+                    raise ValueError("Invalid automated audit verdict")
+                if (status == AuditStatus.review) != bool(note.strip()):
+                    raise ValueError("Only Review verdicts require audit notes")
+                updated.append(
+                    replace(
+                        row,
+                        notes=note.strip(),
+                        finding=AuditStatus(status),
+                        version=row.version + 1,
+                    )
+                )
             try:
-                with db:
-                    updated = []
-                    for row in block:
-                        if not rerun and (
-                            row.verified or row.finding != AuditStatus.unaudited
-                        ):
-                            continue
-                        if current[row.key] != row:
-                            raise ValueError("Subtitle changed during auditing")
-                        status, note = findings[row.index]
-                        if status not in {AuditStatus.ok, AuditStatus.review}:
-                            raise ValueError("Invalid automated audit verdict")
-                        if (status == AuditStatus.review) != bool(note.strip()):
-                            raise ValueError("Only Review verdicts require audit notes")
-                        updated.append(
-                            replace(
-                                row,
-                                notes=note.strip(),
-                                finding=AuditStatus(status),
-                                version=row.version + 1,
-                            )
-                        )
-                    save_rows(db, updated)
-            except sqlite3.Error as exc:
+                self._write_progress(self._progress.with_rows(updated))
+            except OSError as exc:
                 raise ScinoephileError(f"Unable to save audit findings: {exc}") from exc
 
     def publish_proofreading(
@@ -325,7 +339,7 @@ class AuditSession:
                 new output cannot be saved as SRT
             ScinoephileError: if publishing files or progress fails
         """
-        with self._lock, closing(sqlite3.connect(self.state_path)) as db:
+        with self._lock:
             if not self._proofreading_running:
                 raise ValueError("No proofreading run is active")
             if (
@@ -360,27 +374,26 @@ class AuditSession:
                         verified=row.verified,
                     )
                 updated[index] = current
-            originals = None
+            progress = AuditProgress(
+                source=content.decode("utf-8").splitlines(keepends=True),
+                proofreading=self._progress.proofreading
+                if settings is None
+                else settings,
+            ).with_rows(updated)
             try:
                 if rerun:
-                    backup_dir_path = backup_review_files(
-                        self.outfile_path, self.json_path
+                    backup_review_files(
+                        self.outfile_path, self.json_path, self.state_path
                     )
-                    backup_progress(db, backup_dir_path / "review.sqlite3")
-                db.execute("BEGIN IMMEDIATE")
-                save_proofreading_progress(db, previous, updated, content, settings)
-                originals = write_review_files(
+                writes = render_review_files(
                     source,
                     updated,
                     self.outfile_path,
                     decisions=decisions,
                     json_path=self.json_path,
                 )
-                db.commit()
-            except (OSError, sqlite3.Error) as exc:
-                db.rollback()
-                if originals is not None:
-                    restore_files(originals)
+                self._write_progress(progress, writes)
+            except OSError as exc:
                 raise ScinoephileError(
                     f"Unable to publish proofreading: {exc}"
                 ) from exc
@@ -390,7 +403,6 @@ class AuditSession:
             self._block_ranges = ranges
             self._rows = updated
             self._rows_by_key = {row.key: row for row in updated}
-            self._saved_file_hashes = self._file_hashes()
 
     def rows(self) -> list[AuditRow]:
         """Read current text and independent progress without stale form caching.
@@ -398,9 +410,8 @@ class AuditSession:
         Returns:
             current editable rows and their audit progress
         """
-        with self._lock, closing(sqlite3.connect(self.state_path)) as db:
-            return load_saved_rows(
-                db,
+        with self._lock:
+            return self._progress.apply(
                 self._rows,
                 match_review_note=self.decisions is not None
                 and bool(self.decisions.cases),
@@ -449,14 +460,12 @@ class AuditSession:
         except ValueError as exc:
             raise ValueError("Unknown audit verdict") from exc
         _validate_audit_notes(finding, notes)
-        with self._lock, closing(sqlite3.connect(self.state_path)) as db:
+        with self._lock:
             if self._proofreading_running or self._auditing_running:
                 raise ValueError(
                     "Wait for proofreading or auditing to finish before editing"
                 )
-            originals = None
             try:
-                db.execute("BEGIN IMMEDIATE")
                 rows = self.rows()
                 current = next(row for row in rows if row.key == key)
                 if version != current.version:
@@ -495,31 +504,24 @@ class AuditSession:
                         verified=verified
                         and (key not in affected or not current.verified),
                     )
-                save_rows(
-                    db,
-                    (
-                        replace(row, version=row.version + 1)
-                        for row in affected.values()
-                    ),
+                progress = self._progress.with_rows(
+                    replace(row, version=row.version + 1) for row in affected.values()
                 )
+                writes = {}
                 if proofreading_changed:
-                    originals = write_review_files(
+                    writes = render_review_files(
                         self.original,
                         updated,
                         self.outfile_path,
                         decisions=decisions,
                         json_path=self.json_path,
                     )
-                db.commit()
-            except (OSError, sqlite3.Error) as exc:
-                db.rollback()
-                if originals is not None:
-                    restore_files(originals)
+                self._write_progress(progress, writes)
+            except OSError as exc:
                 raise ScinoephileError(f"Unable to save review edits: {exc}") from exc
             self.decisions = decisions
             self._rows = updated
             self._rows_by_key = {row.key: row for row in updated}
-            self._saved_file_hashes = self._file_hashes()
             return set(affected)
 
     def verify_visible(self, filters: AuditFilters, token: str) -> int:
@@ -534,14 +536,13 @@ class AuditSession:
             ValueError: if output is absent, work is active, or the selection changed
             ScinoephileError: if verification cannot be persisted
         """
-        with self._lock, closing(sqlite3.connect(self.state_path)) as db:
+        with self._lock:
             if not self.outfile_path.exists():
                 raise ValueError("Run proofreading before verifying subtitles")
             if self._proofreading_running or self._auditing_running:
                 raise ValueError("Wait for proofreading or auditing to finish")
             self._check_file_hashes()
             try:
-                db.execute("BEGIN IMMEDIATE")
                 filters.validate()
                 matching = [row for row in self.rows() if filters.matches(row)]
                 if token != get_verification_token(matching):
@@ -551,15 +552,13 @@ class AuditSession:
                 rows = [row for row in matching if not row.verified]
                 for row in rows:
                     _validate_audit_notes(row.finding, row.notes)
-                save_rows(
-                    db,
-                    (
+                if rows:
+                    progress = self._progress.with_rows(
                         replace(row, verified=True, version=row.version + 1)
                         for row in rows
-                    ),
-                )
-                db.commit()
-            except sqlite3.Error as exc:
+                    )
+                    self._write_progress(progress)
+            except OSError as exc:
                 raise ScinoephileError(f"Unable to verify subtitles: {exc}") from exc
             return len(rows)
 
@@ -567,7 +566,7 @@ class AuditSession:
         """Reject changes made outside the active editor's write transaction.
 
         Raises:
-            ValueError: if original, output, or native decisions changed externally
+            ValueError: if project files changed externally
         """
         if self.input_changed:
             raise ValueError(
@@ -583,9 +582,11 @@ class AuditSession:
         """Hash the project's source and writable files.
 
         Returns:
-            hashes for the input, output, and optional decisions in that order
+            hashes for the input, output, proofreading JSON, and audit JSON
         """
-        return get_file_hashes(self.infile_path, self.outfile_path, self.json_path)
+        return get_file_hashes(
+            self.infile_path, self.outfile_path, self.json_path, self.state_path
+        )
 
     def _prepare_edit(
         self, rows: list[AuditRow], current: AuditRow, text: str, note: str
@@ -632,6 +633,24 @@ class AuditSession:
             )
             for row in rows
         ], decisions
+
+    def _write_progress(
+        self, progress: AuditProgress, writes: dict[Path, str] | None = None
+    ):
+        """Commit audit JSON alongside any changed proofreading files.
+
+        Arguments:
+            progress: candidate audit state
+            writes: candidate proofread SRT and native decisions, when changed
+        """
+        write_files(
+            {
+                **(writes or {}),
+                self.state_path: progress.model_dump_json(indent=2) + "\n",
+            }
+        )
+        self._progress = progress
+        self._saved_file_hashes = self._file_hashes()
 
 
 def _validate_audit_notes(finding: str, notes: str):

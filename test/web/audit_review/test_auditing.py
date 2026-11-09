@@ -14,6 +14,9 @@ from unittest.mock import Mock
 from pydantic import ValidationError
 from pytest import MonkeyPatch, mark, raises
 
+from scinoephile.cli.audit import audit_review_run_cli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
@@ -148,6 +151,56 @@ def _join(job: AuditingJob):
     assert job._thread is not None
     job._thread.join(15)
     assert not job._thread.is_alive()
+
+
+def test_cli_audit_resumes_in_the_browser(tmp_path: Path, monkeypatch: MonkeyPatch):
+    """Run direct LLM requests for selected blocks and resume saved findings.
+
+    Arguments:
+        tmp_path: temporary project and response cache
+        monkeypatch: offline provider replacement
+    """
+    audit, provider, factory = _setup(tmp_path, monkeypatch)
+    monkeypatch.setattr(audit_review_run_cli, "get_provider", factory)
+    context = tmp_path / "context.txt"
+    context.write_text("Check names.", encoding="utf-8")
+    assert audit.json_path is not None
+    arguments = (
+        f'audit review run --original "{audit.infile_path}" '
+        f'--reviewed "{audit.outfile_path}" --json "{audit.json_path}" '
+        f'--cache-dir "{tmp_path / "cache"}" '
+        f'--llm-additional-context-file "{context}" --llm-provider openai '
+        "--language eng --llm-model gpt-6-luna --llm-reasoning-effort xhigh"
+    )
+    files = (audit.infile_path, audit.outfile_path, audit.json_path)
+    before = [path.read_bytes() for path in files]
+    run_cli_with_args(ScinoephileCli, f"{arguments} --first-block 2 --last-block 2")
+    assert [subtitle["index"] for subtitle in provider.queries[0]["subtitles"]] == [3]
+    assert "Check names." in provider.system_prompts[0]
+    factory.assert_called_once_with(
+        "openai", model="gpt-6-luna", reasoning_effort="xhigh"
+    )
+    run_cli_with_args(ScinoephileCli, arguments)
+    assert len(provider.queries) == 2
+    assert [subtitle["index"] for subtitle in provider.queries[1]["subtitles"]] == [
+        1,
+        2,
+    ]
+    assert [path.read_bytes() for path in files] == before
+
+    reopened = AuditSession(
+        audit.infile_path,
+        audit.outfile_path,
+        json_path=audit.json_path,
+        language=Language.eng,
+    )
+    assert [row.finding for row in reopened.rows()] == [
+        AuditStatus.review,
+        AuditStatus.ok,
+        AuditStatus.ok,
+    ]
+    client = create_app(reopened).test_client()
+    assert b"Check this correction against context." in client.get("/").data
 
 
 def test_audit_persists_findings_preserving_text_and_human_state(

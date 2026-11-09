@@ -124,13 +124,17 @@ class LlmArguments:
 
 
 def add_llm_provider_args(
-    llm_arg_group: _ArgumentGroup, additional_help_arg_group: _ArgumentGroup
+    llm_arg_group: _ArgumentGroup,
+    additional_help_arg_group: _ArgumentGroup,
+    *,
+    allow_no_op: bool = True,
 ):
     """Add standard LLM provider arguments to argument groups.
 
     Arguments:
         llm_arg_group: group to which provider arguments are added
         additional_help_arg_group: group to which help-only arguments are added
+        allow_no_op: expose no-op mode when the operation has a neutral answer
     """
     llm_arg_group.add_argument(
         "--llm-provider",
@@ -175,18 +179,20 @@ def add_llm_provider_args(
         type=input_file_arg(),
         help="text file from which to read additional LLM prompt context",
     )
-    llm_arg_group.add_argument(
-        "--llm-no-op",
-        action=ArgumentBundleFieldAction,
-        bundle_type=LlmArguments,
-        const=True,
-        dest="llm_args",
-        field_name="no_op",
-        nargs=0,
-        help=(
-            "use neutral answers without calling an LLM or accessing its response cache"
-        ),
-    )
+    if allow_no_op:
+        llm_arg_group.add_argument(
+            "--llm-no-op",
+            action=ArgumentBundleFieldAction,
+            bundle_type=LlmArguments,
+            const=True,
+            dest="llm_args",
+            field_name="no_op",
+            nargs=0,
+            help=(
+                "use neutral answers without calling an LLM or accessing "
+                "its response cache"
+            ),
+        )
     additional_help_arg_group.add_argument(
         "--list-llm-providers",
         action=_ListLLMProvidersAction,

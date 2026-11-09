@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import json
-import sqlite3
 from pathlib import Path
 from threading import Event
 from typing import Any, Unpack
@@ -501,13 +500,9 @@ def test_reproofread_reloads_one_block_and_preserves_progress(
     backups = list(tmp_path.glob("*.before-reproofread-*"))
     assert len(backups) == 1
     assert (backups[0] / "proofread.srt").read_bytes() == before[audit.outfile_path]
-    with sqlite3.connect(backups[0] / "review.sqlite3") as db:
-        assert (
-            db.execute("SELECT COUNT(*) FROM review_edits WHERE verified=1").fetchone()[
-                0
-            ]
-            == 2
-        )
+    progress = json.loads((backups[0] / "audit.json").read_text(encoding="utf-8"))
+    assert sum(row["verified"] for row in progress["rows"].values()) == 2
+    assert "Corrected OCR." not in "".join(progress["source"])
     reopened = AuditSession(
         audit.infile_path,
         audit.outfile_path,

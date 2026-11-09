@@ -26,20 +26,23 @@ __all__ = [
     "load_report_notes",
     "load_review_output",
     "parse_source_srt",
-    "restore_files",
+    "render_review_files",
     "validate_project_paths",
-    "write_review_files",
+    "write_files",
 ]
 
 
-def backup_review_files(outfile_path: Path, json_path: Path | None) -> Path:
+def backup_review_files(
+    outfile_path: Path, json_path: Path | None, state_path: Path
+) -> Path:
     """Copy the existing proofreading output before a rerun.
 
     Arguments:
         outfile_path: current proofread SRT
         json_path: optional native proofreading decisions
+        state_path: audit progress file
     Returns:
-        backup directory for the files and review database
+        backup directory containing the previous project files
     """
     backup_dir_path = create_temp_directory(
         parent_dir_path=outfile_path.parent,
@@ -48,6 +51,8 @@ def backup_review_files(outfile_path: Path, json_path: Path | None) -> Path:
     copy2(outfile_path, backup_dir_path / "proofread.srt")
     if json_path is not None and json_path.exists():
         copy2(json_path, backup_dir_path / "review.json")
+    if state_path.exists():
+        copy2(state_path, backup_dir_path / "audit.json")
     return backup_dir_path
 
 
@@ -146,7 +151,108 @@ def parse_source_srt(content: bytes) -> Series:
     return Series.from_string(text, format_="srt")
 
 
-def restore_files(originals: dict[Path, bytes | None]):
+def render_review_files(
+    source: Series,
+    rows: list[AuditRow],
+    outfile_path: Path,
+    *,
+    decisions: ReviewDecisions | None,
+    json_path: Path | None,
+) -> dict[Path, str]:
+    """Serialize subtitle output and native decisions before replacing files.
+
+    Arguments:
+        source: original subtitle series for the output
+        rows: validated final subtitle rows
+        outfile_path: proofread subtitle output
+        decisions: candidate native JSON decisions
+        json_path: optional destination for the native decisions
+    Returns:
+        candidate contents keyed by output path
+    Raises:
+        ValueError: if the output cannot round-trip through SRT
+    """
+    output = deepcopy(source)
+    for subtitle, row in zip(output, rows, strict=True):
+        subtitle.text = row.reviewed.replace("\n", "\\N")
+    content = output.to_string("srt")
+    reloaded = Series.from_string(content, format_="srt")
+    if [(s.start, s.end, s.text_with_newline) for s in reloaded] != [
+        (row.start, row.end, row.reviewed) for row in rows
+    ]:
+        raise InvalidReviewSubtitleError(
+            "Subtitle text cannot be saved unchanged in SRT. "
+            "Remove leading or trailing whitespace and SRT control sequences."
+        )
+    writes = {outfile_path: content}
+    if decisions is not None and json_path is not None:
+        writes[json_path] = decisions.serialize()
+    return writes
+
+
+def validate_project_paths(
+    infile_path: Path,
+    outfile_path: Path,
+    state_path: Path,
+    *,
+    json_path: Path | None,
+    report_path: Path | None,
+):
+    """Require distinct subtitle, JSON, progress and optional report files.
+
+    Arguments:
+        infile_path: original subtitle path
+        outfile_path: proofread subtitle path
+        state_path: audit progress JSON path
+        json_path: optional native proofreading decisions path
+        report_path: optional read-only report path
+    Raises:
+        ValueError: if paths collide or the output is not an SRT
+    """
+    paths = [infile_path, outfile_path, state_path]
+    if json_path is not None:
+        paths.append(json_path)
+    if report_path is not None:
+        paths.append(report_path)
+    if len(set(paths)) != len(paths):
+        raise ValueError("Input, output, JSON, progress and report paths must differ")
+    for index, left_path in enumerate(paths):
+        for right_path in paths[index + 1 :]:
+            if (
+                left_path.exists()
+                and right_path.exists()
+                and left_path.samefile(right_path)
+            ):
+                raise ValueError("Input and writable files must not alias each other")
+    if outfile_path.suffix.lower() != ".srt":
+        raise ValueError("The edited subtitle output must be an SRT file")
+
+
+def write_files(writes: dict[Path, str]):
+    """Replace each output atomically and restore files on a write failure.
+
+    Arguments:
+        writes: new contents keyed by destination path
+    Raises:
+        BaseException: if writing fails, after restoring replaced files
+    """
+    originals: dict[Path, bytes | None] = {p: None for p in writes}
+    for file_path in writes:
+        if file_path.exists():
+            originals[file_path] = file_path.read_bytes()
+    written = []
+    try:
+        for file_path, content in writes.items():
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            with open_atomic_text_file(file_path) as handle:
+                handle.write(content)
+            written.append(file_path)
+    except BaseException:
+        _restore_files({p: originals[p] for p in reversed(written)})
+        raise
+
+
+def _restore_files(originals: dict[Path, bytes | None]):
     """Restore replaced files byte-for-byte after a failed save.
 
     Arguments:
@@ -172,95 +278,3 @@ def restore_files(originals: dict[Path, bytes | None]):
             temp_path.replace(file_path)
         finally:
             temp_path.unlink(missing_ok=True)
-
-
-def validate_project_paths(
-    infile_path: Path,
-    outfile_path: Path,
-    state_path: Path,
-    *,
-    json_path: Path | None,
-    report_path: Path | None,
-):
-    """Require distinct subtitle, JSON, progress and optional report files.
-
-    Arguments:
-        infile_path: original subtitle path
-        outfile_path: proofread subtitle path
-        state_path: audit progress database path
-        json_path: optional native proofreading decisions path
-        report_path: optional read-only report path
-    Raises:
-        ValueError: if paths collide or the output is not an SRT
-    """
-    paths = [infile_path, outfile_path, state_path]
-    if json_path is not None:
-        paths.append(json_path)
-    if report_path is not None:
-        paths.append(report_path)
-    if len(set(paths)) != len(paths):
-        raise ValueError("Input, output, JSON, progress and report paths must differ")
-    for index, left_path in enumerate(paths):
-        for right_path in paths[index + 1 :]:
-            if (
-                left_path.exists()
-                and right_path.exists()
-                and left_path.samefile(right_path)
-            ):
-                raise ValueError("Input and writable files must not alias each other")
-    if outfile_path.suffix.lower() != ".srt":
-        raise ValueError("The edited subtitle output must be an SRT file")
-
-
-def write_review_files(
-    source: Series,
-    rows: list[AuditRow],
-    outfile_path: Path,
-    *,
-    decisions: ReviewDecisions | None,
-    json_path: Path | None,
-) -> dict[Path, bytes | None]:
-    """Replace each output atomically and restore files on an I/O failure.
-
-    Arguments:
-        source: original subtitle series for the output
-        rows: validated final subtitle rows
-        outfile_path: proofread subtitle output
-        decisions: candidate native JSON decisions
-        json_path: optional destination for the native decisions
-    Returns:
-        original file contents for rollback if the database commit fails
-    Raises:
-        ValueError: if the output cannot round-trip through SRT
-        BaseException: if writing fails, after restoring replaced files
-    """
-    output = deepcopy(source)
-    for subtitle, row in zip(output, rows, strict=True):
-        subtitle.text = row.reviewed.replace("\n", "\\N")
-    content = output.to_string("srt")
-    reloaded = Series.from_string(content, format_="srt")
-    if [(s.start, s.end, s.text_with_newline) for s in reloaded] != [
-        (row.start, row.end, row.reviewed) for row in rows
-    ]:
-        raise InvalidReviewSubtitleError(
-            "Subtitle text cannot be saved unchanged in SRT. "
-            "Remove leading or trailing whitespace and SRT control sequences."
-        )
-    writes = {outfile_path: content}
-    if decisions is not None and json_path is not None:
-        writes[json_path] = decisions.serialize()
-    originals: dict[Path, bytes | None] = {p: None for p in writes}
-    for file_path in writes:
-        if file_path.exists():
-            originals[file_path] = file_path.read_bytes()
-    written = []
-    try:
-        for file_path, content in writes.items():
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            with open_atomic_text_file(file_path) as handle:
-                handle.write(content)
-            written.append(file_path)
-    except BaseException:
-        restore_files({p: originals[p] for p in reversed(written)})
-        raise
-    return originals

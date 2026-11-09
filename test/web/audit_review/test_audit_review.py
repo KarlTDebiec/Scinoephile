@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import json
-import sqlite3
 from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import replace
@@ -518,11 +517,15 @@ def test_review_serve_cli_accepts_subtitles_and_optional_json(
     )
 
 
-def test_partial_write_failure_restores_existing_files(tmp_path: Path):
-    """Restore subtitle bytes and progress when replacing the second file fails.
+@mark.parametrize("failed_path", ["json_path", "state_path"])
+def test_partial_write_failure_restores_existing_files(
+    tmp_path: Path, failed_path: str
+):
+    """Restore subtitle files and audit progress when replacing either JSON fails.
 
     Arguments:
         tmp_path: temporary project directory
+        failed_path: session attribute for the JSON whose replacement fails
     """
     audit = _make_session(tmp_path)
     row = audit.rows()[0]
@@ -538,19 +541,20 @@ def test_partial_write_failure_restores_existing_files(tmp_path: Path):
     assert audit.json_path is not None
     before_output = audit.outfile_path.read_bytes()
     before_json = audit.json_path.read_bytes()
+    before_progress = audit.state_path.read_bytes()
 
     @contextmanager
     def fail_json(file_path: Path) -> Generator[TextIO]:
-        """Fail the JSON replace after the subtitle write succeeds.
+        """Fail the selected replace after the subtitle write succeeds.
 
         Arguments:
             file_path: requested output path
         Yields:
-            normal atomic writer for subtitle writes
+            normal atomic writer for the other files
         Raises:
             OSError: for the JSON write
         """
-        if file_path == audit.json_path:
+        if file_path == getattr(audit, failed_path):
             raise OSError("JSON write failed")
         with open_atomic_text_file(file_path) as handle:
             yield handle
@@ -568,6 +572,7 @@ def test_partial_write_failure_restores_existing_files(tmp_path: Path):
             )
     assert audit.outfile_path.read_bytes() == before_output
     assert audit.json_path.read_bytes() == before_json
+    assert audit.state_path.read_bytes() == before_progress
     assert audit.rows()[0].reviewed == "First saved text."
     assert audit.rows()[0].version == 1
 
@@ -1260,11 +1265,22 @@ def test_bulk_verification_rejects_invalid_audit_notes(
     """
     audit = _materialize_output(_make_session(tmp_path))
     row = audit.rows()[0]
-    with sqlite3.connect(audit.state_path) as db:
-        db.execute(
-            "INSERT OR REPLACE INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (row.key, row.reviewed, row.review_note, notes, finding, 0, 1),
-        )
+    progress = json.loads(audit.state_path.read_text(encoding="utf-8"))
+    progress["rows"][str(row.index)] = dict(
+        reviewed=row.reviewed,
+        review_note=row.review_note,
+        notes=notes,
+        finding=finding,
+        verified=False,
+        version=1,
+    )
+    audit.state_path.write_text(json.dumps(progress), encoding="utf-8")
+    audit = AuditSession(
+        audit.infile_path,
+        audit.outfile_path,
+        json_path=audit.json_path,
+        language=Language.eng,
+    )
     filters = AuditFilters()
     with raises(ValueError, match=error):
         audit.verify_visible(filters, audit.page(filters).verification_token)

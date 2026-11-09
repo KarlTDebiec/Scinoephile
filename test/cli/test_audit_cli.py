@@ -25,6 +25,7 @@ from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_report_cli import AuditReviewReportCli
+from scinoephile.cli.audit.audit_review_run_cli import AuditReviewRunCli
 from scinoephile.cli.audit.audit_review_serve_cli import AuditReviewServeCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
 from scinoephile.cli.audit.audit_transcription_cli import AuditTranscriptionCli
@@ -42,6 +43,7 @@ def test_audit_cli_subcommands():
     assert issubclass(AuditReviewReportCli, AuditCliBase)
     assert AuditReviewCli.subcommands() == {
         "report": AuditReviewReportCli,
+        "run": AuditReviewRunCli,
         "serve": AuditReviewServeCli,
     }
     assert issubclass(AuditReviewDualCli, AuditCliBase)

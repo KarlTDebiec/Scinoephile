@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command group for Markdown and interactive proofreading review audits."""
+"""Command group for proofreading audits."""
 
 from __future__ import annotations
 
@@ -11,19 +11,20 @@ from scinoephile.common.cli import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .audit_review_report_cli import AuditReviewReportCli
+from .audit_review_run_cli import AuditReviewRunCli
 from .audit_review_serve_cli import AuditReviewServeCli
 
 __all__ = ["AuditReviewCli"]
 
 AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "audit subtitle reviews with reports or an interactive browser": (
-            "通过报告或交互式浏览器审核字幕校对"
+        "audit subtitle reviews from the terminal or browser": (
+            "通过终端或浏览器审核字幕校对"
         )
     },
     "zh-hant": {
-        "audit subtitle reviews with reports or an interactive browser": (
-            "透過報告或互動式瀏覽器稽核字幕校對"
+        "audit subtitle reviews from the terminal or browser": (
+            "透過終端機或瀏覽器稽核字幕校對"
         )
     },
 }
@@ -31,14 +32,14 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class AuditReviewCli(ScinoephileCliBase):
-    """Audit subtitle reviews with reports or an interactive browser."""
+    """Audit subtitle reviews from the terminal or browser."""
 
     localizations = AUDIT_REVIEW_LOCALIZATIONS
     """Translated review command group description."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
-        """Register the report and browser commands.
+        """Register the audit, report, and browser commands.
 
         Arguments:
             parser: nascent review command parser
@@ -64,16 +65,20 @@ class AuditReviewCli(ScinoephileCliBase):
         """Return review output modes and their CLI implementations.
 
         Returns:
-            report and serve command implementations
+            review command implementations keyed by name
         """
-        return {"report": AuditReviewReportCli, "serve": AuditReviewServeCli}
+        return {
+            "run": AuditReviewRunCli,
+            "report": AuditReviewReportCli,
+            "serve": AuditReviewServeCli,
+        }
 
     @classmethod
     def _main(cls, *, review_subcommand_name: str, **kwargs: Any):
         """Dispatch the selected review interface.
 
         Arguments:
-            review_subcommand_name: report or serve
+            review_subcommand_name: selected review command
             **kwargs: parsed arguments for the selected command
         """
         cls.subcommands()[review_subcommand_name]._main(**kwargs)

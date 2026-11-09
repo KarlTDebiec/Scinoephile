@@ -40,8 +40,8 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "original subtitle SRT file (read-only)": "原始字幕 SRT 文件（只读）",
         (
             "edited SRT file; resume if present; audit progress is kept in "
-            "<output-stem>.review.sqlite3"
-        ): "编辑后 SRT；存在则继续；审核进度：<output-stem>.review.sqlite3",
+            "<output-stem>.audit.json"
+        ): "编辑后 SRT；存在则继续；审核进度：<output-stem>.audit.json",
         (
             "optional proofreading decision JSON; created or updated by "
             "proofreading edits"
@@ -66,8 +66,8 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "original subtitle SRT file (read-only)": "原始字幕 SRT 檔（唯讀）",
         (
             "edited SRT file; resume if present; audit progress is kept in "
-            "<output-stem>.review.sqlite3"
-        ): "編輯後 SRT；存在時繼續；稽核進度：<output-stem>.review.sqlite3",
+            "<output-stem>.audit.json"
+        ): "編輯後 SRT；存在時繼續；稽核進度：<output-stem>.audit.json",
         (
             "optional proofreading decision JSON; created or updated by "
             "proofreading edits"
@@ -157,7 +157,7 @@ class AuditReviewServeCli(ScinoephileCliBase):
             type=output_file_arg(exist_ok=True),
             help=(
                 "edited SRT file; resume if present; audit progress is kept in "
-                "<output-stem>.review.sqlite3"
+                "<output-stem>.audit.json"
             ),
         )
 

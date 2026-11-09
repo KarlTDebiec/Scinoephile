@@ -7,15 +7,13 @@ from __future__ import annotations
 from dataclasses import replace
 from functools import partial
 
-from scinoephile.core.llms import LLMProvider, Queryer
-from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
-from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditSubtitle
 from scinoephile.web.audit_review.job_settings import get_job_provider
-from scinoephile.web.audit_review.models import AuditRow, AuditStatus
+from scinoephile.web.audit_review.models import AuditStatus
 from scinoephile.web.audit_review.session import AuditSession
 from scinoephile.web.jobs import BackgroundJob
 
 from . import state
+from .run import run_audit
 
 __all__ = ["AuditingJob"]
 
@@ -72,47 +70,14 @@ class AuditingJob(BackgroundJob[state.AuditingState]):
                     effort=effort,
                     rerun=rerun,
                 ),
-                work=partial(self._run, provider, blocks, rerun),
+                work=partial(
+                    run_audit,
+                    self.audit,
+                    blocks,
+                    provider,
+                    rerun=rerun,
+                    on_block=self._advance,
+                ),
                 release=self.audit.end_auditing,
                 start_error="Unable to start audit",
             )
-
-    def _run(
-        self,
-        provider: LLMProvider,
-        blocks: tuple[tuple[AuditRow, ...], ...],
-        rerun: bool,
-    ):
-        """Audit full context blocks and persist each completed block independently.
-
-        Arguments:
-            provider: configured provider shared across requests
-            blocks: immutable reserved context blocks
-            rerun: replace all findings, retaining verification marks
-        """
-        test_case_cls = ReviewAuditManager.get_test_case_cls(ReviewAuditPromptEng)
-        queryer = Queryer(test_case_cls, provider=provider)
-        for block in blocks:
-            query = test_case_cls.query_cls(
-                language=self.audit.language.code,
-                subtitles=[
-                    ReviewAuditSubtitle(
-                        index=row.index,
-                        original=row.original,
-                        proofread=row.reviewed,
-                        note=row.review_note,
-                    )
-                    for row in block
-                ],
-            )
-            result = queryer(test_case_cls(query=query))
-            assert result.answer is not None
-            self.audit.publish_audit(
-                block,
-                {
-                    item.index: (item.status, item.note)
-                    for item in result.answer.findings
-                },
-                rerun=rerun,
-            )
-            self._advance()
