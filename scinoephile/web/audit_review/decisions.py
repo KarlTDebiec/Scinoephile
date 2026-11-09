@@ -14,11 +14,9 @@ from scinoephile.core.text import replace_control_characters
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 from scinoephile.llms.review import ReviewManager, ReviewTestCase
 
-__all__ = ["InvalidReviewSubtitleError", "ReviewDecisions"]
+from . import exceptions
 
-
-class InvalidReviewSubtitleError(ValueError):
-    """A proofreading correction cannot be represented as one SRT subtitle."""
+__all__ = ["ReviewDecisions"]
 
 
 class ReviewDecisions:
@@ -112,7 +110,7 @@ class ReviewDecisions:
                     or len(parsed) != 1
                     or parsed.events[0].text_with_newline != text
                 ):
-                    raise InvalidReviewSubtitleError(
+                    raise exceptions.InvalidReviewSubtitleError(
                         f"Subtitle {starts[0] + revision.index} text cannot be saved "
                         "unchanged in SRT."
                     )

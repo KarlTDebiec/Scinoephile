@@ -24,7 +24,8 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 
-from .decisions import InvalidReviewSubtitleError, ReviewDecisions
+from .decisions import ReviewDecisions
+from .exceptions import InvalidReviewSubtitleError
 from .models import (
     LEGACY_AUDIT_STATUSES,
     AuditFilters,
