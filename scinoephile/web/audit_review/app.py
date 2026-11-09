@@ -12,7 +12,9 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
 from scinoephile.web.security import create_local_app
 
-from .routes import register_routes
+from .auditing.routes import register_auditing_routes
+from .proofreading.routes import register_proofreading_routes
+from .routes import register_editor_routes
 from .session import AuditSession
 
 if TYPE_CHECKING:
@@ -43,7 +45,9 @@ def create_app(audit: AuditSession) -> FlaskApp:
     )
     app.config["MAX_CONTENT_LENGTH"] = 100_000
 
-    register_routes(app, audit)
+    register_editor_routes(app, audit)
+    register_auditing_routes(app, audit)
+    register_proofreading_routes(app, audit)
     return app
 
 

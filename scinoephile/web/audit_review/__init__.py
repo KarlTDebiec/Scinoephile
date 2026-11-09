@@ -8,7 +8,7 @@ Package hierarchy (modules may import from any above):
 * files / pagination / store
 * rows
 * session
-* auditing_job / proofreading_job
-* routes
+* route_helpers
+* auditing / proofreading / routes
 * app
 """

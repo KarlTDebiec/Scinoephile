@@ -22,7 +22,7 @@ from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditQuery
 from scinoephile.web.audit_review import job_settings
 from scinoephile.web.audit_review.app import create_app
-from scinoephile.web.audit_review.auditing_job import AuditingJob
+from scinoephile.web.audit_review.auditing.job import AuditingJob
 from scinoephile.web.audit_review.models import AuditStatus
 from scinoephile.web.audit_review.session import AuditSession
 
@@ -558,7 +558,7 @@ def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
             data["confirmation"] = confirmation["token"]
     ready_at = confirmation["ready_at"]
     monkeypatch.setattr(
-        "scinoephile.web.audit_review.routes.time", lambda: ready_at + 1
+        "scinoephile.web.audit_review.route_helpers.time", lambda: ready_at + 1
     )
     provider.release.clear()
     provider.fail_at = 2
@@ -609,7 +609,9 @@ def test_rerun_confirmation(
     start = Mock()
     monkeypatch.setattr(app.extensions[extension], "start", start)
     now = [1000.0]
-    monkeypatch.setattr("scinoephile.web.audit_review.routes.time", lambda: now[0])
+    monkeypatch.setattr(
+        "scinoephile.web.audit_review.route_helpers.time", lambda: now[0]
+    )
     client = app.test_client()
     client.get("/")
     with client.session_transaction() as state:

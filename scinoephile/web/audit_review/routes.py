@@ -1,44 +1,37 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""HTTP routes for the subtitle audit editor."""
+"""Page, editing, and verification routes for the subtitle audit editor."""
 
 from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import asdict, replace
-from secrets import compare_digest, token_urlsafe
-from time import time
 from typing import TYPE_CHECKING
 from urllib.parse import urlencode
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask
-from scinoephile.core.llms import ReasoningEffort
-from scinoephile.llms.providers.registry import get_provider_names
 
-from .auditing_job import AuditingJob
-from .models import AuditFilters, AuditPage
-from .proofreading_job import ProofreadingJob
+from .models import AuditFilters
+from .route_helpers import get_view_context
 from .session import AuditSession
 
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.web import FlaskApp
 
-__all__ = ["register_routes"]
+__all__ = ["register_editor_routes"]
 
 
-def register_routes(app: FlaskApp, audit: AuditSession):
-    """Register the audit editor's page, editing, and background job routes.
+def register_editor_routes(app: FlaskApp, audit: AuditSession):
+    """Register routes for browsing, editing, verifying, and exporting audit rows.
 
     Arguments:
         app: local audit application
         audit: source-backed review session
     """
     flask = import_flask()
-    _register_auditing_routes(app, audit)
     _register_verification_routes(app, audit)
     _register_preview_routes(app, audit)
-    _register_proofreading_routes(app, audit)
 
     @app.get("/")
     def index():
@@ -48,7 +41,7 @@ def register_routes(app: FlaskApp, audit: AuditSession):
             rendered audit page
         """
         try:
-            view = _get_view_context(audit, _parse_filters(flask.request.args))
+            view = get_view_context(audit, _parse_filters(flask.request.args))
         except ValueError as exc:
             return flask.render_template("error.html", message=str(exc)), 400
         template = "index.html"
@@ -132,7 +125,7 @@ def register_routes(app: FlaskApp, audit: AuditSession):
             others=others,
             old_blocks=old_blocks,
             removed_blocks=old_blocks - {block.number for block in page.blocks},
-            **_get_view_context(audit, filters, page=page),
+            **get_view_context(audit, filters, page=page),
         )
 
     @app.get("/export")
@@ -153,91 +146,6 @@ def register_routes(app: FlaskApp, audit: AuditSession):
         return response
 
 
-def _confirm_rerun(operation: str, *, rerun: bool) -> bool:
-    """Require two preparation clicks and a delayed third click for a rerun.
-
-    A normal start clears any pending rerun confirmation for the operation.
-
-    Arguments:
-        operation: worker whose settings and confirmation must match
-        rerun: whether existing persisted output will be replaced
-    Returns:
-        whether this submission authorizes starting the worker
-    Raises:
-        ValueError: if the submitted provider or reasoning is unsupported
-    """
-    flask = import_flask()
-    pending = dict(flask.session.get("rerun_confirmations", {}))
-    if not rerun:
-        if pending.pop(operation, None) is not None:
-            flask.session["rerun_confirmations"] = pending
-        return True
-    settings = {
-        name: flask.request.form.get(name, "")
-        for name in ("provider", "model", "effort")
-    }
-    if settings["effort"]:
-        ReasoningEffort(settings["effort"])
-    if settings["provider"] not in get_provider_names():
-        raise ValueError("Choose a supported provider")
-    current = pending.get(operation, {})
-    supplied = flask.request.form.get("confirmation", "")
-    matches = (
-        supplied.isascii()
-        and compare_digest(supplied, current.get("token", ""))
-        and current.get("settings") == settings
-        and time() < current.get("expires_at", 0)
-    )
-    if matches and current.get("stage") == 2:
-        if time() < current["ready_at"]:
-            return False
-        pending.pop(operation, None)
-        flask.session["rerun_confirmations"] = pending
-        return True
-    stage = 1
-    if matches and current.get("stage") == 1:
-        stage = 2
-    pending[operation] = {
-        "stage": stage,
-        "token": token_urlsafe(24),
-        "settings": settings,
-        "ready_at": time() + 3,
-        "expires_at": time() + 600,
-    }
-    flask.session["rerun_confirmations"] = pending
-    return False
-
-
-def _get_view_context(
-    audit: AuditSession, filters: AuditFilters, *, page: AuditPage | None = None
-) -> dict[str, object]:
-    """Build a bounded view, stable next cursor, and native save context.
-
-    Arguments:
-        audit: active editable review session
-        filters: requested filter state
-        page: existing page snapshot when rendering a save response
-    Returns:
-        template context
-    """
-    flask = import_flask()
-    if page is None:
-        through = None
-        if flask.request.args.get("through"):
-            through = max(0, int(flask.request.args["through"]))
-        after = max(0, int(flask.request.args.get("after", "0")))
-        page = audit.page(filters, after=after, through=through)
-    values = asdict(page.filters)
-    return {
-        "verification_token": page.verification_token,
-        "audit": audit,
-        "page": page,
-        "filters": page.filters,
-        "query": urlencode(dict(values, through=page.last_block)),
-        "next_url": f"/?{urlencode(dict(values, after=page.last_block))}",
-    }
-
-
 def _parse_filters(values: Mapping[str, str]) -> AuditFilters:
     """Parse URL query filters shared by ordinary and HTMX requests.
 
@@ -252,94 +160,6 @@ def _parse_filters(values: Mapping[str, str]) -> AuditFilters:
         finding=values.get("finding", "all"),
         q=values.get("q", ""),
     )
-
-
-def _register_auditing_routes(app: FlaskApp, audit: AuditSession):
-    """Register the independent audit card and background worker.
-
-    Arguments:
-        app: local audit application
-        audit: source-backed review session
-    """
-    flask = import_flask()
-    auditing = AuditingJob(audit)
-    app.extensions["review_auditing"] = auditing
-
-    @app.context_processor
-    def auditing_context() -> dict[str, object]:
-        """Provide current independent audit progress.
-
-        Returns:
-            audit card state
-        """
-        state = auditing.snapshot()
-        visibility = flask.request.args.get("reaudit")
-        return {
-            "auditing": state,
-            "auditing_blocked": audit.proofreading_running,
-            "show_auditing": visibility == "1"
-            or (visibility is None and state.status in {"running", "error"}),
-        }
-
-    @app.post("/auditing")
-    def start_auditing():
-        """Reserve review state and show progress with editing temporarily disabled.
-
-        Returns:
-            current page reload or inline configuration error
-        """
-        rerun = flask.request.form.get("rerun") == "on"
-        try:
-            if not _confirm_rerun("auditing", rerun=rerun):
-                state = replace(
-                    auditing.snapshot(),
-                    **{
-                        name: flask.request.form.get(name, "")
-                        for name in ("provider", "model", "effort")
-                    },
-                )
-                if flask.request.headers.get("HX-Request") != "true":
-                    return flask.render_template(
-                        "index.html",
-                        **_get_view_context(audit, AuditFilters()),
-                        auditing=state,
-                        show_auditing=True,
-                    )
-                return flask.render_template(
-                    "_auditing.html", auditing=state, show_auditing=True
-                )
-            auditing.start(
-                flask.request.form.get("provider", ""),
-                flask.request.form.get("model", ""),
-                flask.request.form.get("effort", ""),
-                rerun=rerun,
-            )
-        except (ValueError, ScinoephileError) as exc:
-            if flask.request.headers.get("HX-Request") == "true":
-                return flask.render_template(
-                    "_auditing.html",
-                    auditing=auditing.snapshot(),
-                    auditing_message=str(exc),
-                    show_auditing=True,
-                )
-            return flask.render_template("error.html", message=str(exc)), 409
-        if flask.request.headers.get("HX-Request") == "true":
-            return "", 200, {"HX-Refresh": "true"}
-        return flask.redirect(flask.url_for("index"), code=303)
-
-    @app.get("/auditing")
-    def auditing_status():
-        """Poll only the audit card until completion or failure.
-
-        Returns:
-            progress fragment or reload when editable rows may be shown again
-        """
-        if flask.request.headers.get("HX-Request") != "true":
-            return flask.redirect(flask.url_for("index"), code=303)
-        state = auditing.snapshot()
-        if state.status in {"complete", "error"}:
-            return "", 200, {"HX-Refresh": "true"}
-        return flask.render_template("_auditing.html", auditing=state)
 
 
 def _register_preview_routes(app: FlaskApp, audit: AuditSession):
@@ -371,108 +191,6 @@ def _register_preview_routes(app: FlaskApp, audit: AuditSession):
         )
 
 
-def _register_proofreading_routes(app: FlaskApp, audit: AuditSession):
-    """Register the proofreading card and background worker.
-
-    Arguments:
-        app: local audit application
-        audit: source-backed session owning output creation
-    """
-    flask = import_flask()
-    proofreading = ProofreadingJob(audit)
-    app.extensions["audit_proofreading"] = proofreading
-
-    @app.context_processor
-    def proofreading_context() -> dict[str, object]:
-        """Provide shared provider choices and the current background job state.
-
-        Returns:
-            proofreading card context
-        """
-        state = proofreading.snapshot()
-        visibility = flask.request.args.get("reproofread")
-        return {
-            "proofreading": state,
-            "proofreading_blocked": audit.auditing_running,
-            "reproofreading": not state.available,
-            "show_proofreading": visibility == "1"
-            or (visibility is None and state.status in {"running", "error"}),
-            "provider_names": get_provider_names(),
-            "reasoning_levels": tuple(ReasoningEffort),
-        }
-
-    @app.post("/proofreading")
-    def start_proofreading():
-        """Start a CSRF-protected run and immediately return progress.
-
-        Returns:
-            current card, validation error, or ordinary redirect
-        """
-        message = ""
-        status = 200
-        rerun = audit.outfile_path.exists()
-        try:
-            if not _confirm_rerun("proofreading", rerun=rerun):
-                state = replace(
-                    proofreading.snapshot(),
-                    **{
-                        name: flask.request.form.get(name, "")
-                        for name in ("provider", "model", "effort")
-                    },
-                )
-                if flask.request.headers.get("HX-Request") != "true":
-                    return flask.render_template(
-                        "index.html",
-                        **_get_view_context(audit, AuditFilters()),
-                        proofreading=state,
-                        reproofreading=True,
-                        show_proofreading=True,
-                    )
-                return flask.render_template(
-                    "_proofreading.html",
-                    proofreading=state,
-                    reproofreading=True,
-                    show_proofreading=True,
-                )
-            proofreading.start(
-                flask.request.form.get("provider", ""),
-                flask.request.form.get("model", ""),
-                flask.request.form.get("effort", ""),
-                rerun=rerun,
-            )
-        except (ValueError, ScinoephileError) as exc:
-            message = str(exc)
-            status = 409
-        if flask.request.headers.get("HX-Request") == "true":
-            state = proofreading.snapshot()
-            if not message and state.status in {"running", "complete"}:
-                return "", 200, {"HX-Refresh": "true"}
-            return flask.render_template(
-                "_proofreading.html",
-                proofreading=state,
-                proofreading_message=message,
-                reproofreading=rerun,
-                show_proofreading=True,
-            ), status
-        if message:
-            return flask.render_template("error.html", message=message), status
-        return flask.redirect(flask.url_for("index"), code=303)
-
-    @app.get("/proofreading")
-    def proofreading_status():
-        """Refresh progress without replacing subtitle drafts or filter controls.
-
-        Returns:
-            progress card or a completed-run navigation
-        """
-        if flask.request.headers.get("HX-Request") != "true":
-            return flask.redirect(flask.url_for("index"), code=303)
-        state = proofreading.snapshot()
-        if state.status in {"complete", "error"}:
-            return "", 200, {"HX-Refresh": "true"}
-        return flask.render_template("_proofreading.html", proofreading=state)
-
-
 def _register_verification_routes(app: FlaskApp, audit: AuditSession):
     """Register filtered bulk verification with the ordinary form fallback.
 
@@ -495,7 +213,7 @@ def _register_verification_routes(app: FlaskApp, audit: AuditSession):
             filters = _parse_filters(flask.request.args)
             selection = flask.request.form.get("selection", "")
             if flask.request.form.get("confirm") != "on":
-                view = _get_view_context(audit, filters)
+                view = get_view_context(audit, filters)
                 if selection != view["verification_token"]:
                     raise ValueError(
                         "The matching subtitles changed. Reload before verifying."
@@ -518,7 +236,7 @@ def _register_verification_routes(app: FlaskApp, audit: AuditSession):
         if flask.request.headers.get("HX-Request") == "true":
             return (
                 flask.render_template(
-                    "_workspace.html", **_get_view_context(audit, filters)
+                    "_workspace.html", **get_view_context(audit, filters)
                 ),
                 200,
                 {"HX-Retarget": "#workspace", "HX-Reswap": "outerHTML"},

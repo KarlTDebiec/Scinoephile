@@ -16,12 +16,11 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import get_reviewer
 from scinoephile.llms.providers.registry import DEFAULT_PROVIDER_NAME
 from scinoephile.llms.review import ReviewProcessor
+from scinoephile.web.audit_review.decisions import ReviewDecisions
+from scinoephile.web.audit_review.exceptions import InvalidReviewSubtitleError
+from scinoephile.web.audit_review.job_settings import get_job_provider
+from scinoephile.web.audit_review.session import AuditSession
 from scinoephile.web.jobs import BackgroundJob, BackgroundJobState
-
-from .decisions import ReviewDecisions
-from .exceptions import InvalidReviewSubtitleError
-from .job_settings import get_job_provider
-from .session import AuditSession
 
 __all__ = ["ProofreadingJob", "ProofreadingState", "get_proofreading_request_identity"]
 
