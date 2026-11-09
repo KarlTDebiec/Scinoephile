@@ -85,11 +85,10 @@ def audit_guided_review(
         ScinoephileError: if filters are unsupported or a logged case cannot be
             matched uniquely to source data
     """
-    row_filter = filters.row_filter
-    if row_filter not in STANDARD_REVIEW_AUDIT_FILTERS:
+    if filters.row_filter not in STANDARD_REVIEW_AUDIT_FILTERS:
         raise ScinoephileError(
             "Unable to audit guided review: "
-            f"unsupported row filter {row_filter.value!r}"
+            f"unsupported row filter {filters.row_filter.value!r}"
         )
     block_pairs = get_block_pairs_by_pause(target, guide)
     validate_audit_block_count(
@@ -174,10 +173,10 @@ def audit_guided_review(
         for row in all_rows
         if row.matches_character_filter
         and not (
-            row_filter == ReviewAuditFilter.changes
+            filters.row_filter == ReviewAuditFilter.changes
             and row.result is not AuditResult.changed
         )
-        and not (row_filter == ReviewAuditFilter.unverified and row.verified)
+        and not (filters.row_filter == ReviewAuditFilter.unverified and row.verified)
     ]
     subtitles = len(all_rows)
     unchanged_subtitles = subtitles - revised_subtitles - unanswered_subtitles
