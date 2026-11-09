@@ -60,9 +60,9 @@ class Language(DescribedEnum):
 
     eng = ("eng", "English")
     """English."""
-    yue_hans = ("yue-Hans", "Cantonese, simplified Chinese script")
+    yue_hans = ("yue-Hans", "Simplified Cantonese")
     """Cantonese in simplified Chinese script."""
-    yue_hant = ("yue-Hant", "Cantonese, traditional Chinese script")
+    yue_hant = ("yue-Hant", "Traditional Cantonese")
     """Cantonese in traditional Chinese script."""
     zho_hans = ("zho-Hans", "Simplified Chinese")
     """Simplified Chinese."""

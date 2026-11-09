@@ -125,11 +125,11 @@ def test_audit_cli_uses_subtitle_block_help():
         (("他們正在這裡", "我們沒有這個東西", "她說這是真的嗎"), "Traditional Chinese"),
         (
             ("我唔知点解你冇这个", "佢哋系咪想睇这个", "咁样冇嘢喺这边"),
-            "Cantonese, simplified Chinese script",
+            "Simplified Cantonese",
         ),
         (
             ("我唔知點解你冇這個", "佢哋係咪想睇這個", "咁樣冇嘢喺這邊"),
-            "Cantonese, traditional Chinese script",
+            "Traditional Cantonese",
         ),
     ),
 )
