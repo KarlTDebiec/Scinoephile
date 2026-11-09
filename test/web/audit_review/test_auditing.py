@@ -22,7 +22,7 @@ from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditQuery
 from scinoephile.web.audit_review import job_settings
 from scinoephile.web.audit_review.app import create_app
-from scinoephile.web.audit_review.auditing import AuditingJob
+from scinoephile.web.audit_review.auditing_job import AuditingJob
 from scinoephile.web.audit_review.models import AuditStatus
 from scinoephile.web.audit_review.session import AuditSession
 

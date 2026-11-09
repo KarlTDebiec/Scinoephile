@@ -16,9 +16,9 @@ from scinoephile.core.dependencies.web import import_flask
 from scinoephile.core.llms import ReasoningEffort
 from scinoephile.llms.providers.registry import get_provider_names
 
-from .auditing import AuditingJob
+from .auditing_job import AuditingJob
 from .models import AuditFilters, AuditPage
-from .proofreading import ProofreadingJob
+from .proofreading_job import ProofreadingJob
 from .session import AuditSession
 
 if TYPE_CHECKING:

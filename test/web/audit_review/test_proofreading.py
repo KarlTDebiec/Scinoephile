@@ -20,9 +20,9 @@ from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import get_reviewer
 from scinoephile.web import jobs
-from scinoephile.web.audit_review import job_settings, proofreading
+from scinoephile.web.audit_review import job_settings, proofreading_job
 from scinoephile.web.audit_review.app import create_app
-from scinoephile.web.audit_review.proofreading import ProofreadingJob
+from scinoephile.web.audit_review.proofreading_job import ProofreadingJob
 from scinoephile.web.audit_review.session import AuditSession
 
 
@@ -124,7 +124,7 @@ def _setup(
         """
         return get_reviewer(*args, shared_test_cases=[], **kwargs)
 
-    monkeypatch.setattr(proofreading, "get_reviewer", reviewer)
+    monkeypatch.setattr(proofreading_job, "get_reviewer", reviewer)
     return audit, provider, factory
 
 

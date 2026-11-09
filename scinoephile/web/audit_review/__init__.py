@@ -6,7 +6,7 @@ Package hierarchy (modules may import from any above):
 * decisions / job_settings / models
 * pagination
 * session
-* proofreading / auditing
+* auditing_job / proofreading_job
 * routes
 * app
 """
