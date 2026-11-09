@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, replace
+from dataclasses import replace
 from functools import partial
 from hashlib import sha256
 from pathlib import Path
@@ -20,9 +20,11 @@ from scinoephile.web.audit_review.decisions import ReviewDecisions
 from scinoephile.web.audit_review.exceptions import InvalidReviewSubtitleError
 from scinoephile.web.audit_review.job_settings import get_job_provider
 from scinoephile.web.audit_review.session import AuditSession
-from scinoephile.web.jobs import BackgroundJob, BackgroundJobState
+from scinoephile.web.jobs import BackgroundJob
 
-__all__ = ["ProofreadingJob", "ProofreadingState", "get_proofreading_request_identity"]
+from . import state
+
+__all__ = ["ProofreadingJob", "get_proofreading_request_identity"]
 
 
 def get_proofreading_request_identity(
@@ -47,23 +49,7 @@ def get_proofreading_request_identity(
     return sha256(json.dumps(provenance, sort_keys=True).encode()).hexdigest()
 
 
-@dataclass(frozen=True)
-class ProofreadingState(BackgroundJobState):
-    """Snapshot of configuration and progress for one local run."""
-
-    available: bool = True
-    """Whether the configured subtitle output is absent."""
-    provider: str = DEFAULT_PROVIDER_NAME
-    """Selected provider name."""
-    model: str = ""
-    """Entered model override, blank for the provider default."""
-    effort: str = ""
-    """Requested reasoning effort, blank for the provider default."""
-    rerun: bool = False
-    """Whether this run replaces existing proofreading from original OCR."""
-
-
-class ProofreadingJob(BackgroundJob[ProofreadingState]):
+class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
     """Serialize proofreading starts and expose immutable progress snapshots."""
 
     def __init__(self, audit: AuditSession):
@@ -76,7 +62,7 @@ class ProofreadingJob(BackgroundJob[ProofreadingState]):
         """Source-backed review session."""
         saved = audit.proofreading_settings
         super().__init__(
-            ProofreadingState(
+            state.ProofreadingState(
                 provider=saved.get("provider", DEFAULT_PROVIDER_NAME),
                 model=saved.get("model", ""),
                 effort=saved.get("effort", ""),
@@ -85,7 +71,7 @@ class ProofreadingJob(BackgroundJob[ProofreadingState]):
         )
         self._refresh_cache = False
 
-    def snapshot(self) -> ProofreadingState:
+    def snapshot(self) -> state.ProofreadingState:
         """Read progress and the actual output-file availability.
 
         Returns:
@@ -111,7 +97,7 @@ class ProofreadingJob(BackgroundJob[ProofreadingState]):
         with self._lock:
             source = self.audit.begin_proofreading(rerun=rerun)
             self._start_worker(
-                ProofreadingState(
+                state.ProofreadingState(
                     total=len(source.blocks),
                     provider=provider_name,
                     model=model_name,

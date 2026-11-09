@@ -3,6 +3,7 @@
 """Subtitle proofreading workflow.
 
 Package hierarchy (modules may import from any above):
+* state
 * job
 * routes
 """

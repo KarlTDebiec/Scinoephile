@@ -4,40 +4,23 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import replace
 from functools import partial
 
 from scinoephile.core.llms import LLMProvider, Queryer
 from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
-from scinoephile.llms.providers.registry import DEFAULT_PROVIDER_NAME
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditSubtitle
 from scinoephile.web.audit_review.job_settings import get_job_provider
 from scinoephile.web.audit_review.models import AuditRow, AuditStatus
 from scinoephile.web.audit_review.session import AuditSession
-from scinoephile.web.jobs import BackgroundJob, BackgroundJobState
+from scinoephile.web.jobs import BackgroundJob
 
-__all__ = ["AuditingJob", "AuditingState"]
+from . import state
 
-
-@dataclass(frozen=True)
-class AuditingState(BackgroundJobState):
-    """Immutable configuration and progress for the independent audit card."""
-
-    available: bool = False
-    """Whether proofreading exists and unaudited subtitles remain."""
-    has_output: bool = False
-    """Whether persisted audit findings exist and a new full run would replace them."""
-    provider: str = DEFAULT_PROVIDER_NAME
-    """Registered provider selected in the form."""
-    model: str = ""
-    """Model override, blank for the provider default."""
-    effort: str = ""
-    """Reasoning override, blank for the provider default."""
-    rerun: bool = False
-    """Whether this run replaces existing findings across the entire file."""
+__all__ = ["AuditingJob"]
 
 
-class AuditingJob(BackgroundJob[AuditingState]):
+class AuditingJob(BackgroundJob[state.AuditingState]):
     """Run independent audits without modifying subtitle text or verification."""
 
     def __init__(self, audit: AuditSession):
@@ -48,9 +31,9 @@ class AuditingJob(BackgroundJob[AuditingState]):
         """
         self.audit = audit
         """Source-backed session owning independent audit state."""
-        super().__init__(AuditingState(), thread_name="proofreading-audit")
+        super().__init__(state.AuditingState(), thread_name="proofreading-audit")
 
-    def snapshot(self) -> AuditingState:
+    def snapshot(self) -> state.AuditingState:
         """Read progress and whether unaudited subtitles remain.
 
         Returns:
@@ -82,7 +65,7 @@ class AuditingJob(BackgroundJob[AuditingState]):
         with self._lock:
             blocks = self.audit.begin_auditing(rerun=rerun)
             self._start_worker(
-                AuditingState(
+                state.AuditingState(
                     total=len(blocks),
                     provider=provider_name,
                     model=model_name,
