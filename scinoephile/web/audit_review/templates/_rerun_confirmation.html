@@ -1,4 +1,4 @@
-{% macro rerun_button(operation, state, label, icon_prefix, blocked=false) %}
+{% macro rerun_button(operation, state, label, icon_prefix, blocked=false, show_label=false) %}
   {% from '_icons.html' import icon %}
   {% set candidate = session.get('rerun_confirmations', {}).get(operation, {}) %}
   {% set settings = {'provider': state.provider, 'model': state.model, 'effort': state.effort} %}
@@ -7,12 +7,15 @@
   {% if confirmation %}
     <input type="hidden" name="confirmation" value="{{ confirmation.token }}">
   {% endif %}
-  <button type="submit"{% if blocked %} disabled data-rerun-blocked{% endif %}
+  <button type="submit"
+          name="rerun"
+          value="on"{% if blocked %} disabled data-rerun-blocked{% endif %}
           {% if stage %}class="is-confirming"{% endif %}
           data-rerun-icon="{{ url_for('audit_review_assets.static', filename='icons/' ~ icon_prefix ~ '-outline.svg') }}#icon"
           aria-label="{{ label }} ({{ stage + 1 }}/3)"
           title="{{ ['Click to prepare ' ~ label|lower ~ ' (1/3)', 'Click again, then wait three seconds (2/3)', 'Wait three seconds after the second click, then click to start (3/3)'][stage] }}"
           {% if stage == 2 %}data-rerun-ready-at="{{ confirmation.ready_at }}"{% endif %}>
     {{ icon(icon_prefix ~ ['', '-alert', '-double-alert'][stage] ~ '-outline', 24) }}
+    {% if show_label %}<span>{{ label }}</span>{% endif %}
   </button>
 {% endmacro %}

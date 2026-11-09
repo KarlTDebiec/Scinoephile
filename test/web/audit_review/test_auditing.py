@@ -210,16 +210,35 @@ def test_audit_partial_failure_resumes_only_remaining_blocks(
     """
     audit, provider, _ = _setup(tmp_path, monkeypatch)
     provider.fail_at = 2
-    job = AuditingJob(audit)
-    job.start("openai", "", "")
+    app = create_app(audit)
+    job = app.extensions["review_auditing"]
+    client = app.test_client()
+    client.get("/?reaudit=1")
+    with client.session_transaction() as state:
+        data = dict(csrf=state["csrf"], provider="openai", model="", effort="")
+    assert client.post("/auditing", data=data).status_code == 303
     _join(job)
     assert job.snapshot().status == "error" and job.snapshot().completed == 1
     assert audit.rows()[2].finding == AuditStatus.unaudited
+    first = audit.rows()[0]
+    audit.save(
+        first.key,
+        reviewed=first.reviewed,
+        review_note=first.review_note,
+        finding="review",
+        notes="Human finding",
+        verified=True,
+        version=first.version,
+    )
+    before = audit.rows()[:2]
+    page = client.get("/").get_data(as_text=True)
+    assert "Resume audit" in page and "Run full re-audit" in page
     provider.fail_at = 0
-    job.start("openai", "", "")
+    assert client.post("/auditing", data=data).status_code == 303
     _join(job)
     assert job.snapshot().status == "complete" and job.snapshot().total == 1
     assert [s["index"] for s in provider.queries[-1]["subtitles"]] == [3]
+    assert audit.rows()[:2] == before
 
 
 def test_audit_rejects_missing_output_duplicate_runs_edits_and_external_change(
@@ -583,7 +602,9 @@ def test_rerun_confirmation(
     client.get("/")
     with client.session_transaction() as state:
         csrf = state["csrf"]
-    data = dict(csrf=csrf, provider="openai", model="model-one", effort="xhigh")
+    data = dict(
+        csrf=csrf, provider="openai", model="model-one", effort="xhigh", rerun="on"
+    )
     url = f"/{operation}"
     before = [
         p.read_bytes()

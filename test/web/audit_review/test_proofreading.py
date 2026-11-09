@@ -37,6 +37,7 @@ class _Provider(LLMProvider):
         self.fail = False
         self.configuration = "default"
         self.queries: list[str] = []
+        self.revision_text = "Hello there."
 
     @property
     def cache_identity(self) -> CacheIdentity:
@@ -72,7 +73,7 @@ class _Provider(LLMProvider):
         revisions = []
         if self.calls == 1:
             revisions = [
-                {"index": 1, "text": "Hello there.", "note": "Corrected wording."}
+                {"index": 1, "text": self.revision_text, "note": "Corrected wording."}
             ]
         return response_format.model_validate(
             {"revisions": revisions}, by_name=True
@@ -173,6 +174,67 @@ def test_background_run_publishes_output_and_resumes_notes(
     assert resumed.rows()[0].block_number == 1
     with raises(ValueError, match="already exists"):
         job.start("openai", "", "")
+
+
+@mark.parametrize(
+    ("revision", "expected", "note"),
+    [
+        (
+            r" Hello there.\NSecond line. ",
+            "Hello there.\nSecond line.",
+            "Corrected wording.",
+        ),
+        ("Hello. ", "Hello.", ""),
+    ],
+)
+def test_proofreading_normalizes_revisions_before_publication(
+    tmp_path: Path, monkeypatch: MonkeyPatch, revision: str, expected: str, note: str
+):
+    """Persist the same normalized revision in the SRT and native decisions.
+
+    Arguments:
+        tmp_path: temporary subtitle project
+        monkeypatch: offline dependency patches
+        revision: raw revision returned by the provider
+        expected: text after normalization
+        note: expected native revision note
+    """
+    audit, provider, _ = _setup(tmp_path, monkeypatch)
+    provider.revision_text = revision
+    job = ProofreadingJob(audit)
+    job.start("openai", "", "")
+    _join(job)
+    assert job.snapshot().status == "complete", job.snapshot().error
+    restored = AuditSession(
+        audit.infile_path,
+        audit.outfile_path,
+        json_path=audit.json_path,
+        language=Language.eng,
+    )
+    assert restored.rows()[0].reviewed == expected
+    assert restored.rows()[0].review_note == note
+
+
+def test_retry_refreshes_cache_after_unwritable_proofreading(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Retry rejected SRT output with fresh responses and publish usable subtitles.
+
+    Arguments:
+        tmp_path: temporary subtitle project
+        monkeypatch: offline dependency patches
+    """
+    audit, provider, _ = _setup(tmp_path, monkeypatch)
+    provider.revision_text = "Hello there.\n\nSecond line."
+    job = ProofreadingJob(audit)
+    job.start("openai", "", "")
+    _join(job)
+    assert "cannot be saved unchanged in SRT" in job.snapshot().error
+    assert not audit.outfile_path.exists() and provider.calls == 2
+    job.start("openai", "", "")
+    _join(job)
+    assert job.snapshot().status == "complete", job.snapshot().error
+    assert audit.outfile_path.exists() and provider.calls == 4
 
 
 def test_running_job_rejects_duplicates_and_edits(

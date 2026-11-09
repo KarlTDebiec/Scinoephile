@@ -283,10 +283,31 @@ document.addEventListener("htmx:afterRequest", event => {
     state.pending = false;
     if (event.detail.xhr.status >= 200 && event.detail.xhr.status < 300 && state
         .sent) {
-        state.saved = JSON.stringify(state.sent);
+        const saved = {
+            ...state.sent
+        };
+        const {
+            dataset
+        } = form.elements.namedItem("version");
+        if (dataset.finding !== undefined) {
+            const current = reviewValues(form);
+            saved.finding = dataset.finding;
+            saved.notes = JSON.parse(dataset.auditNote).replace(/\r\n?/g, "\n");
+            saved.verified = dataset.verified === "true";
+            // Accept server-side resets while keeping fields edited since submission.
+            for (const name of ["finding", "notes"]) {
+                if (current[name] === state.sent[name]) {
+                    form.elements.namedItem(name).value = saved[name];
+                }
+            }
+            if (current.verified === state.sent.verified) {
+                form.elements.namedItem("verified").checked = saved.verified;
+            }
+        }
+        state.saved = JSON.stringify(saved);
         // Updating defaults never replaces a focused textarea or its newer value.
         for (const name of ["reviewed", "review_note", "notes"]) {
-            form.elements.namedItem(name).defaultValue = state.sent[name];
+            form.elements.namedItem(name).defaultValue = saved[name];
         }
         state.error = "";
     } else {

@@ -83,9 +83,10 @@
         <input type="hidden"
                name="reproofread"
                value="{{ 1 if show_proofreading else 0 }}">
+        {% set full_audit_only = auditing.has_output and not auditing.available %}
         <button type="submit"
                 title="Show or hide auditing"
-                aria-expanded="{{ 'true' if show_auditing else 'false' }}"{% if not audit.outfile_path.exists() %} disabled{% endif %}>{{ icon('clipboard-text-clock-outline' if auditing.status == 'running' else ('clipboard-refresh-outline' if reauditing else 'clipboard-text-eye-outline')) }}{{ 'Re-audit' if reauditing else 'Audit' }}</button>
+                aria-expanded="{{ 'true' if show_auditing else 'false' }}"{% if not audit.outfile_path.exists() %} disabled{% endif %}>{{ icon('clipboard-text-clock-outline' if auditing.status == 'running' else ('clipboard-refresh-outline' if full_audit_only else 'clipboard-text-eye-outline')) }}{{ 'Re-audit' if full_audit_only else 'Audit' }}</button>
       </form>
       {% include "_verification.html" %}
       <button id="toggle-blocks"

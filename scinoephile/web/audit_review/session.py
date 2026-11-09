@@ -26,7 +26,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 
-from .decisions import ReviewDecisions
+from .decisions import InvalidReviewSubtitleError, ReviewDecisions
 
 __all__ = [
     "AuditBlock",
@@ -625,6 +625,7 @@ class AuditSession:
             assert source is not None and content is not None
             source_digest = sha256(content).hexdigest()
             decisions = ReviewDecisions(source, self.language, decisions_path)
+            decisions.normalize_srt_revisions()
             texts, notes = decisions.render()
             ranges = self._get_block_ranges(decisions, source=source)
             blocks = {
@@ -765,14 +766,13 @@ class AuditSession:
             ValueError: if text, verdict, or a stale save is invalid
             ScinoephileError: if saving files fails
         """
-        if key not in self._rows_by_key:
-            raise KeyError(key)
+        original = self._rows_by_key[key].original
         reviewed = reviewed.replace("\r\n", "\n").replace("\r", "\n")
         if not reviewed.strip() or len(reviewed) > 1000 or "\n\n" in reviewed:
             raise ValueError(
                 "Subtitle text must contain 1–1000 characters and no blank lines"
             )
-        if reviewed != self._rows_by_key[key].original and not review_note.strip():
+        if reviewed != original and not review_note.strip():
             raise ValueError("A note is required for changed proofreading text")
         if len(review_note) > 1000:
             raise ValueError("Revision notes must not exceed 1000 characters")
@@ -814,12 +814,18 @@ class AuditSession:
                     for row in updated
                     if row != rows[row.index - 1]
                 }
-                affected[key] = replace(
-                    updated[current.index - 1],
-                    notes=notes,
-                    finding=finding,
-                    verified=verified,
-                )
+                # Keep the reset unless the form also changed its audit decision
+                if key not in affected or (notes, finding, verified) != (
+                    current.notes,
+                    current.finding,
+                    current.verified,
+                ):
+                    affected[key] = replace(
+                        updated[current.index - 1],
+                        notes=notes,
+                        finding=finding,
+                        verified=verified,
+                    )
                 db.executemany(
                     "INSERT INTO review_edits VALUES (?, ?, ?, ?, ?, ?, ?) "
                     "ON CONFLICT(key) DO UPDATE SET reviewed=excluded.reviewed, "
@@ -1185,7 +1191,7 @@ class AuditSession:
         if [(s.start, s.end, s.text_with_newline) for s in reloaded] != [
             (row.start, row.end, row.reviewed) for row in rows
         ]:
-            raise ValueError(
+            raise InvalidReviewSubtitleError(
                 "Subtitle text cannot be saved unchanged in SRT. "
                 "Remove leading or trailing whitespace and SRT control sequences."
             )

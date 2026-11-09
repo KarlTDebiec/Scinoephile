@@ -314,7 +314,6 @@ def _register_auditing_routes(app: FlaskApp, audit: AuditSession):
         return {
             "auditing": state,
             "auditing_blocked": audit.proofreading_running,
-            "reauditing": state.has_output,
             "show_auditing": visibility == "1"
             or (visibility is None and state.status in {"running", "error"}),
         }
@@ -326,7 +325,7 @@ def _register_auditing_routes(app: FlaskApp, audit: AuditSession):
         Returns:
             current page reload or inline configuration error
         """
-        rerun = auditing.snapshot().has_output
+        rerun = flask.request.form.get("rerun") == "on"
         try:
             if not _confirm_rerun("auditing", rerun=rerun):
                 state = replace(
@@ -341,13 +340,11 @@ def _register_auditing_routes(app: FlaskApp, audit: AuditSession):
                         "index.html",
                         **_get_view_context(audit, AuditFilters()),
                         auditing=state,
-                        reauditing=True,
                         show_auditing=True,
                     )
                 return flask.render_template(
                     "_auditing.html",
                     auditing=state,
-                    reauditing=True,
                     show_auditing=True,
                     csrf=flask.session["csrf"],
                 )
@@ -363,7 +360,6 @@ def _register_auditing_routes(app: FlaskApp, audit: AuditSession):
                     "_auditing.html",
                     auditing=auditing.snapshot(),
                     auditing_message=str(exc),
-                    reauditing=rerun,
                     show_auditing=True,
                     csrf=flask.session["csrf"],
                 )

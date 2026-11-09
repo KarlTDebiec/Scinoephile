@@ -22,7 +22,7 @@ from scinoephile.llms.providers.registry import (
 )
 from scinoephile.llms.review import ReviewProcessor
 
-from .decisions import ReviewDecisions
+from .decisions import InvalidReviewSubtitleError, ReviewDecisions
 from .session import AuditSession
 
 __all__ = ["ProofreadingJob", "ProofreadingState", "get_proofreading_request_identity"]
@@ -95,6 +95,7 @@ class ProofreadingJob:
             effort=saved.get("effort", ""),
         )
         self._thread: Thread | None = None
+        self._refresh_cache = False
 
     def snapshot(self) -> ProofreadingState:
         """Read current progress and the actual output-file availability.
@@ -186,7 +187,7 @@ class ProofreadingJob:
             provider=provider,
             current_test_cases_path=decisions_path,
             additional_context=context or None,
-            overwrite_cache=False,
+            overwrite_cache=self._refresh_cache,
         )
         settings = {
             "provider": self._state.provider,
@@ -203,7 +204,7 @@ class ProofreadingJob:
                 provider=provider,
                 current_test_cases_path=decisions_path,
                 additional_context=context or None,
-                overwrite_cache=False,
+                overwrite_cache=self._refresh_cache,
             )
             identity = get_proofreading_request_identity(reviewer, provider, settings)
         settings["request_identity"] = identity
@@ -252,10 +253,13 @@ class ProofreadingJob:
                     decisions_path, rerun=rerun, settings=settings
                 )
             with self._lock:
+                self._refresh_cache = False
                 self._state = replace(self._state, status="complete")
         except Exception as exc:
             logger.exception("Subtitle proofreading failed")
             with self._lock:
+                if isinstance(exc, InvalidReviewSubtitleError):
+                    self._refresh_cache = True
                 self._state = replace(self._state, status="error", error=str(exc))
         finally:
             self.audit.end_proofreading()

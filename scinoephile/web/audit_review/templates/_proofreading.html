@@ -20,7 +20,6 @@
             hx-target="#proofreading"
             hx-swap="outerHTML"
             hx-sync="this:drop">
-        {% if reproofreading %}<input type="hidden" name="rerun" value="on">{% endif %}
         <input type="hidden" name="csrf" value="{{ csrf }}">
         <select name="provider" aria-label="Provider" title="Provider">{% for name in provider_names %}<option value="{{ name }}"{% if name == proofreading.provider %} selected{% endif %}>{{ name }}</option>{% endfor %}</select>
         <input aria-label="Model"

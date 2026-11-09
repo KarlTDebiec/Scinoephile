@@ -10,10 +10,15 @@ from pathlib import Path
 from scinoephile.core import Language
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
+from scinoephile.core.text import replace_control_characters
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 from scinoephile.llms.review import ReviewManager, ReviewTestCase
 
-__all__ = ["ReviewDecisions"]
+__all__ = ["InvalidReviewSubtitleError", "ReviewDecisions"]
+
+
+class InvalidReviewSubtitleError(ValueError):
+    """A proofreading correction cannot be represented as one SRT subtitle."""
 
 
 class ReviewDecisions:
@@ -83,6 +88,36 @@ class ReviewDecisions:
             if data.get("answer") != answer:
                 data.update(answer=answer, verified=False, few_shot=False)
             self.cases[case_index] = self.case_cls.model_validate(data)
+
+    def normalize_srt_revisions(self):
+        """Normalize whitespace and line breaks in active native revisions for SRT.
+
+        Raises:
+            InvalidReviewSubtitleError: if a revision normalizes to empty text
+        """
+        for case_index, starts in self.locations.items():
+            case = self.cases[case_index]
+            if case.answer is None:
+                continue
+            revisions = []
+            for revision in case.answer.revisions:
+                text = replace_control_characters(revision.text)
+                text = text.replace("\r\n", "\n").replace("\r", "\n")
+                text = text.replace(r"\N", "\n").replace(r"\n", "\n")
+                text = text.replace(r"\h", " ").strip()
+                if not text:
+                    raise InvalidReviewSubtitleError(
+                        f"Proofreading returned text that cannot be saved as SRT "
+                        f"for subtitle {starts[0] + revision.index}."
+                    )
+                if text != case.query.subtitles[revision.index - 1].text:
+                    revisions.append(
+                        {"index": revision.index, "text": text, "note": revision.note}
+                    )
+            data = case.model_dump(mode="json")
+            if data["answer"]["revisions"] != revisions:
+                data["answer"]["revisions"] = revisions
+                self.cases[case_index] = self.case_cls.model_validate(data)
 
     def render(self) -> tuple[list[str], list[str]]:
         """Apply current sparse answers to their exact original query matches.

@@ -947,6 +947,49 @@ def test_autosave_acknowledges_without_replacing_editable_fields(tmp_path: Path)
     assert audit.rows()[0].version == 1
 
 
+def test_autosave_resets_an_unchanged_verdict_after_text_edit(tmp_path: Path):
+    """Clear the old finding and verification when only proofreading changes.
+
+    Arguments:
+        tmp_path: temporary project directory
+    """
+    audit = _materialize_output(_make_session(tmp_path))
+    row = audit.rows()[0]
+    audit.save(
+        row.key,
+        reviewed=row.reviewed,
+        review_note=row.review_note,
+        finding="ok",
+        notes="",
+        verified=True,
+        version=row.version,
+    )
+    row = audit.rows()[0]
+    client = create_app(audit).test_client()
+    client.get("/")
+    with client.session_transaction() as state:
+        csrf = state["csrf"]
+    response = client.post(
+        f"/rows/{row.key}",
+        data=dict(
+            csrf=csrf,
+            version=row.version,
+            reviewed="Hello, corrected.",
+            review_note="Corrected punctuation",
+            finding=row.finding,
+            notes=row.notes,
+            verified="on",
+        ),
+        headers={"HX-Request": "true", "HX-Target": f"sync-{row.key}"},
+    )
+    assert response.status_code == 200
+    saved = audit.rows()[0]
+    assert saved.reviewed == "Hello, corrected."
+    assert saved.finding is AuditStatus.unaudited and not saved.verified
+    html = response.get_data(as_text=True)
+    assert 'data-finding="unaudited"' in html and 'data-verified="false"' in html
+
+
 def test_autosave_retains_incrementally_loaded_scope(tmp_path: Path):
     """Acknowledge a late-block save without deleting earlier blocks or drafts.
 
