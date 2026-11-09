@@ -110,6 +110,8 @@ class AuditReviewServeCli(ScinoephileCliBase):
             "output arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         groups["input arguments"].add_argument(
             "-i",
             "--infile",
@@ -138,6 +140,8 @@ class AuditReviewServeCli(ScinoephileCliBase):
             type=enum_arg(Language),
             help="subtitle language (default: auto-detect)",
         )
+
+        # Output arguments
         groups["output arguments"].add_argument(
             "-o",
             "--outfile",
@@ -149,6 +153,8 @@ class AuditReviewServeCli(ScinoephileCliBase):
                 "<output-stem>.review.sqlite3"
             ),
         )
+
+        # Web arguments
         groups["web arguments"].add_argument(
             "--title", help="display title (default: input filename stem)"
         )
