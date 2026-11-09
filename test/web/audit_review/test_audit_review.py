@@ -1073,7 +1073,7 @@ def test_bulk_verification_covers_unloaded_matches(tmp_path: Path):
         p: p.read_bytes()
         for p in (audit.infile_path, audit.outfile_path, audit.json_path)
     }
-    assert audit.verify_visible(filters, audit.verification_token(filters)) == 2
+    assert audit.verify_visible(filters, audit.page(filters).verification_token) == 2
     assert audit.page(filters).matching == 0
     for old, current in zip(before, audit.rows(), strict=True):
         assert current == replace(old, verified=True, version=old.version + 1)
@@ -1097,11 +1097,11 @@ def test_bulk_verification_filters_and_stale_selection(tmp_path: Path):
     filters = AuditFilters(
         changes="unchanged", finding="ok", verification="unverified", q="Same"
     )
-    token = audit.verification_token(filters)
+    token = audit.page(filters).verification_token
     with raises(ValueError, match="Run proofreading"):
         audit.verify_visible(filters, token)
     audit = _materialize_output(audit)
-    token = audit.verification_token(filters)
+    token = audit.page(filters).verification_token
     with patch.object(audit, "_auditing_running", True):
         with raises(ValueError, match="Wait for proofreading"):
             audit.verify_visible(filters, token)
@@ -1120,6 +1120,7 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
         tmp_path: isolated project directory
     """
     audit = _materialize_output(_make_session(tmp_path))
+    audit.page_size = 1
     client = create_app(audit).test_client()
     client.get("/")
     assert client.post("/verify-visible").status_code == 403
@@ -1127,7 +1128,7 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
         csrf = session["csrf"]
     filters = AuditFilters(changes="unchanged", finding="ok", verification="unverified")
     url = "/verify-visible?changes=unchanged&finding=ok&verification=unverified"
-    token = audit.verification_token(filters)
+    token = audit.page(filters).verification_token
     stale = client.post(
         url, data=dict(csrf=csrf, selection="stale"), headers={"HX-Request": "true"}
     )
@@ -1139,6 +1140,7 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
     assert prepared.status_code == 200
     confirmation = prepared.get_data(as_text=True)
     assert 'name="confirm" value="on"' in confirmation
+    assert "Verify 1 matching subtitle" in confirmation
     assert 'id="workspace"' not in confirmation
     assert not any(row.verified for row in audit.rows())
     result = client.post(
@@ -1152,15 +1154,19 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
     assert not audit.rows()[0].verified and audit.rows()[1].verified
     native = client.post(
         "/verify-visible",
-        data=dict(csrf=csrf, selection=audit.verification_token(AuditFilters())),
+        data=dict(csrf=csrf, selection=audit.page(AuditFilters()).verification_token),
     )
     assert native.status_code == 200
-    assert "<!doctype html>" in native.get_data(as_text=True).lower()
+    native_confirmation = native.get_data(as_text=True)
+    assert "<!doctype html>" in native_confirmation.lower()
+    assert "Verify 2 matching subtitles" in native_confirmation
     assert not audit.rows()[0].verified
     native = client.post(
         "/verify-visible",
         data=dict(
-            csrf=csrf, selection=audit.verification_token(AuditFilters()), confirm="on"
+            csrf=csrf,
+            selection=audit.page(AuditFilters()).verification_token,
+            confirm="on",
         ),
     )
     assert native.status_code == 303
@@ -1187,7 +1193,7 @@ def test_bulk_verification_confirmation_resets_and_rejects_stale_selection(
         path: path.read_bytes()
         for path in (audit.infile_path, audit.outfile_path, audit.json_path)
     }
-    token = audit.verification_token(AuditFilters())
+    token = audit.page(AuditFilters()).verification_token
     prepared = client.post("/verify-visible", data=dict(csrf=csrf, selection=token))
     assert 'name="confirm" value="on"' in prepared.get_data(as_text=True)
     assert audit.rows() == before
@@ -1211,6 +1217,7 @@ def test_bulk_verification_confirmation_resets_and_rejects_stale_selection(
     saved_html = saved.get_data(as_text=True)
     assert 'id="verify-visible"' in saved_html
     assert 'name="confirm"' not in saved_html
+    assert f'value="{audit.page(AuditFilters()).verification_token}"' in saved_html
     stale = client.post(
         "/verify-visible",
         data=dict(csrf=csrf, selection=token, confirm="on"),
@@ -1292,7 +1299,7 @@ def test_bulk_verification_rejects_invalid_audit_notes(
         )
     filters = AuditFilters()
     with raises(ValueError, match=error):
-        audit.verify_visible(filters, audit.verification_token(filters))
+        audit.verify_visible(filters, audit.page(filters).verification_token)
     assert not any(row.verified for row in audit.rows())
     assert audit.rows()[0].notes == notes
 

@@ -213,7 +213,7 @@ nav[aria-label="Operations"] {
   grid-template-rows: 2.5rem 2.5rem;
 
   & input[type=search] { grid-column: 1 / 4; grid-row: 2; min-width: 0; }
-  & button { grid-column: 4; grid-row: 2; }
+  & > button { grid-column: 4; grid-row: 2; }
   .has-live-search & {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     & > button { display: none; }

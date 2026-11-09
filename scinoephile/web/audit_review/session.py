@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import re
 import sqlite3
+from collections.abc import Iterable
 from contextlib import closing
 from copy import deepcopy
 from dataclasses import dataclass, replace
@@ -248,6 +249,8 @@ class AuditBlock:
 class AuditPage:
     """A bounded batch or loaded prefix and project-wide progress counts."""
 
+    all_rows: list[AuditRow]
+    """Complete row snapshot from which this page was built."""
     rows: list[AuditRow]
     """Visible rows."""
     blocks: list[AuditBlock]
@@ -260,6 +263,8 @@ class AuditPage:
     """Verified current source rows."""
     matching: int
     """Rows matching all filters, including unloaded blocks."""
+    verification_token: str
+    """Digest of the full filtered selection and its row versions."""
     filter_counts: dict[str, dict[str, int]]
     """Dependent option counts before pagination."""
     last_block: int
@@ -499,14 +504,16 @@ class AuditSession:
             loaded blocks and complete filtered progress counts
         """
         filters.validate()
-        rows = self.rows()
+        with self._lock:
+            rows = self.rows()
+            block_ranges = self._block_ranges
         matching = [row for row in rows if filters.matches(row)]
         by_block: dict[int, list[AuditRow]] = {}
         for row in matching:
             by_block.setdefault(row.block_number, []).append(row)
         blocks = []
         for number, visible in by_block.items():
-            first, last = self._block_ranges[number - 1]
+            first, last = block_ranges[number - 1]
             blocks.append(
                 AuditBlock(
                     number=number,
@@ -527,12 +534,14 @@ class AuditSession:
         elif visible_blocks:
             last_block = visible_blocks[-1].number
         return AuditPage(
+            all_rows=rows,
             rows=[row for block in visible_blocks for row in block.rows],
             blocks=visible_blocks,
             filters=filters,
             total=len(rows),
             verified=sum(row.verified for row in rows),
             matching=len(matching),
+            verification_token=_get_verification_token(matching),
             filter_counts=filters.counts(rows),
             last_block=last_block,
             has_more=any(block.number > last_block for block in blocks),
@@ -860,20 +869,6 @@ class AuditSession:
             self._fingerprints = self._file_fingerprints()
             return set(affected)
 
-    def verification_token(self, filters: AuditFilters) -> str:
-        """Identify the full filtered selection, including unloaded subtitles.
-
-        Arguments:
-            filters: current browser filters
-        Returns:
-            digest of matching row identities and edit versions
-        """
-        filters.validate()
-        selection = [
-            (row.key, row.version) for row in self.rows() if filters.matches(row)
-        ]
-        return sha256(repr(selection).encode()).hexdigest()
-
     def verify_visible(self, filters: AuditFilters, token: str) -> int:
         """Verify every matching subtitle atomically without changing its text.
 
@@ -894,15 +889,13 @@ class AuditSession:
             self._check_file_fingerprints()
             try:
                 db.execute("BEGIN IMMEDIATE")
-                if token != self.verification_token(filters):
+                filters.validate()
+                matching = [row for row in self.rows() if filters.matches(row)]
+                if token != _get_verification_token(matching):
                     raise ValueError(
                         "The matching subtitles changed. Reload before verifying."
                     )
-                rows = [
-                    row
-                    for row in self.rows()
-                    if filters.matches(row) and not row.verified
-                ]
+                rows = [row for row in matching if not row.verified]
                 for row in rows:
                     _validate_audit_notes(row.finding, row.notes)
                 db.executemany(
@@ -1230,6 +1223,18 @@ def _format_time(milliseconds: int, *, include_milliseconds: bool = True) -> str
     if include_milliseconds:
         formatted += f".{remainder:03d}"
     return formatted
+
+
+def _get_verification_token(rows: Iterable[AuditRow]) -> str:
+    """Identify the matching row versions for bulk verification.
+
+    Arguments:
+        rows: rows matching the current filters in source order
+    Returns:
+        digest of the matching row identities and versions
+    """
+    selection = [(row.key, row.version) for row in rows]
+    return sha256(repr(selection).encode()).hexdigest()
 
 
 def _load_report_notes(file_path: Path, count: int) -> dict[int, str]:

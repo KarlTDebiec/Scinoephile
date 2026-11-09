@@ -20,7 +20,7 @@ from scinoephile.web.security import create_local_app
 
 from .auditing import AuditingJob
 from .proofreading import ProofreadingJob
-from .session import AuditFilters, AuditSession
+from .session import AuditFilters, AuditPage, AuditSession
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -87,7 +87,10 @@ def create_app(audit: AuditSession) -> FlaskApp:
             key: content identity of the row
         Returns:
             updated row and out-of-band counts, or an ordinary redirect
+        Raises:
+            ValueError: if the saved row changed again, rendered as a conflict response
         """
+        is_htmx = flask.request.headers.get("HX-Request") == "true"
         try:
             filters = _parse_filters(flask.request.args)
             through_value = flask.request.form.get("through") or flask.request.args.get(
@@ -97,6 +100,7 @@ def create_app(audit: AuditSession) -> FlaskApp:
             if through_value is not None:
                 through = max(0, int(through_value))
             before = audit.page(filters, through=through)
+            version = int(flask.request.form["version"])
             affected = audit.save(
                 key,
                 reviewed=flask.request.form.get("reviewed", ""),
@@ -104,28 +108,26 @@ def create_app(audit: AuditSession) -> FlaskApp:
                 notes=flask.request.form.get("notes", ""),
                 finding=flask.request.form.get("finding", "unaudited"),
                 verified=flask.request.form.get("verified") == "on",
-                version=int(flask.request.form["version"]),
+                version=version,
             )
-            view = _get_view_context(audit, filters, through=through)
+            page = audit.page(filters, through=through)
+            current = next((row for row in page.all_rows if row.key == key), None)
+            if current is None or current.version != version + 1:
+                raise ValueError("This subtitle changed. Reload before editing.")
         except KeyError:
             flask.abort(404)
         except (ValueError, ScinoephileError) as exc:
-            if flask.request.headers.get("HX-Request") == "true":
+            if is_htmx:
                 return (
                     flask.render_template("_message.html", message=str(exc)),
                     409,
                     {"HX-Retarget": "#messages", "HX-Reswap": "innerHTML"},
                 )
             return flask.render_template("error.html", message=str(exc)), 409
-        page = audit.page(filters, through=through)
-        destination_values = dict(asdict(page.filters), through=page.last_block)
-        destination = f"/?{urlencode(destination_values)}#row-{key}"
-        if flask.request.headers.get("HX-Request") != "true":
+        if not is_htmx:
+            destination_values = dict(asdict(page.filters), through=page.last_block)
+            destination = f"/?{urlencode(destination_values)}#row-{key}"
             return flask.redirect(destination, code=303)
-        current = next(row for row in audit.rows() if row.key == key)
-        visible_row = None
-        if filters.matches(current):
-            visible_row = current
         old_keys = {row.key for row in before.rows}
         old_blocks = {block.number for block in before.blocks}
         additions = {
@@ -141,14 +143,14 @@ def create_app(audit: AuditSession) -> FlaskApp:
         }
         return flask.render_template(
             "_saved.html",
-            row=visible_row,
+            row=visible.get(key),
             current=current,
             autosave=flask.request.headers.get("HX-Target") == f"sync-{key}",
             additions=additions,
             others=others,
             old_blocks=old_blocks,
             removed_blocks=old_blocks - {block.number for block in page.blocks},
-            **view,
+            **_get_view_context(audit, filters, page=page),
         )
 
     @app.get("/export")
@@ -251,25 +253,27 @@ def _confirm_rerun(operation: str, *, rerun: bool) -> bool:
 
 
 def _get_view_context(
-    audit: AuditSession, filters: AuditFilters, *, through: int | None = None
+    audit: AuditSession, filters: AuditFilters, *, page: AuditPage | None = None
 ) -> dict[str, object]:
     """Build a bounded view, stable next cursor, and native save context.
 
     Arguments:
         audit: active editable review session
         filters: requested filter state
-        through: inclusive browser-loaded cursor during a save
+        page: existing page snapshot when rendering a save response
     Returns:
         template context
     """
     flask = import_flask()
-    if through is None and flask.request.args.get("through"):
-        through = max(0, int(flask.request.args["through"]))
-    after = max(0, int(flask.request.args.get("after", "0")))
-    page = audit.page(filters, after=after, through=through)
+    if page is None:
+        through = None
+        if flask.request.args.get("through"):
+            through = max(0, int(flask.request.args["through"]))
+        after = max(0, int(flask.request.args.get("after", "0")))
+        page = audit.page(filters, after=after, through=through)
     values = asdict(page.filters)
     return {
-        "verification_token": audit.verification_token(filters),
+        "verification_token": page.verification_token,
         "audit": audit,
         "page": page,
         "filters": page.filters,
@@ -549,18 +553,17 @@ def _register_verification_routes(app: FlaskApp, audit: AuditSession):
         try:
             filters = _parse_filters(flask.request.args)
             selection = flask.request.form.get("selection", "")
-            if selection != audit.verification_token(filters):
-                raise ValueError(
-                    "The matching subtitles changed. Reload before verifying."
-                )
             if flask.request.form.get("confirm") != "on":
+                view = _get_view_context(audit, filters)
+                if selection != view["verification_token"]:
+                    raise ValueError(
+                        "The matching subtitles changed. Reload before verifying."
+                    )
                 template = "index.html"
                 if flask.request.headers.get("HX-Request") == "true":
                     template = "_verification.html"
                 return flask.render_template(
-                    template,
-                    **_get_view_context(audit, filters),
-                    verification_pending=True,
+                    template, **view, verification_pending=True
                 )
             audit.verify_visible(filters, selection)
         except (ValueError, ScinoephileError) as exc:
