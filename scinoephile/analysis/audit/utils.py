@@ -15,13 +15,16 @@ __all__ = [
     "AuditColumn",
     "AuditResult",
     "format_audit_report",
+    "format_block_range",
     "format_index_range",
     "format_verification_marker",
     "get_contextual_index",
+    "get_event_indexes_in_range",
     "get_selected_event_indexes",
     "get_superseded_keys",
     "is_block_in_range",
     "resolve_contextual_index",
+    "validate_audit_block_count",
     "validate_audit_range",
 ]
 
@@ -108,7 +111,7 @@ def format_audit_report(
     )
     if index_range is not None:
         lines.append(f"- {index_range}")
-    block_range = _format_block_range(first_block, last_block)
+    block_range = format_block_range(first_block, last_block)
     if block_range is not None:
         lines.append(f"- {block_range}")
     lines.extend(
@@ -123,6 +126,24 @@ def format_audit_report(
         )
     )
     return "\n".join(lines) + "\n"
+
+
+def format_block_range(first_block: int | None, last_block: int | None) -> str | None:
+    """Format an optional block range for a report summary.
+
+    Arguments:
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+    Returns:
+        formatted block-range summary, or None if the range is unbounded
+    """
+    if first_block is None and last_block is None:
+        return None
+    if first_block is None:
+        return f"block range: through {last_block}"
+    if last_block is None:
+        return f"block range: from {first_block}"
+    return f"block range: {first_block} through {last_block}"
 
 
 def format_index_range(
@@ -235,6 +256,47 @@ def get_contextual_index(
     return None
 
 
+def get_event_indexes_in_range(
+    series: Series,
+    *,
+    first_index: int | None,
+    last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
+) -> frozenset[int]:
+    """Get event indexes selected by already validated bounds.
+
+    Arguments:
+        series: subtitle series whose event and block indexes are selected
+        first_index: first included one-based subtitle index, if filtering by index
+        last_index: last included one-based subtitle index, if filtering by index
+        first_block: first included one-based block number, if filtering by block
+        last_block: last included one-based block number, if filtering by block
+    Returns:
+        selected zero-based event indexes
+    Raises:
+        ScinoephileError: if a block bound exceeds the number of blocks
+    """
+    if first_block is None and last_block is None:
+        start = 0
+        if first_index is not None:
+            start = first_index - 1
+        stop = len(series)
+        if last_index is not None:
+            stop = min(last_index, stop)
+        return frozenset(range(start, stop))
+
+    block_indexes = Series.get_block_indexes_by_pause(series)
+    validate_audit_block_count(first_block, last_block, len(block_indexes))
+    selected_block_indexes = {
+        event_index
+        for block_number, (block_start, block_stop) in enumerate(block_indexes, 1)
+        if is_block_in_range(block_number, first_block, last_block)
+        for event_index in range(block_start, block_stop)
+    }
+    return frozenset(selected_block_indexes)
+
+
 def get_selected_event_indexes(
     series: Series,
     *,
@@ -243,7 +305,7 @@ def get_selected_event_indexes(
     first_block: int | None,
     last_block: int | None,
 ) -> frozenset[int]:
-    """Get event indexes selected by a subtitle-index or block range.
+    """Validate a subtitle-index or block range and select its event indexes.
 
     Arguments:
         series: subtitle series whose event and block indexes are selected
@@ -256,34 +318,14 @@ def get_selected_event_indexes(
     Raises:
         ScinoephileError: if selection ranges are invalid or mixed
     """
-    has_block_range = first_block is not None or last_block is not None
-    block_indexes = None
-    if has_block_range:
-        block_indexes = Series.get_block_indexes_by_pause(series)
-    block_count = None
-    if block_indexes is not None:
-        block_count = len(block_indexes)
-    validate_audit_range(
-        first_index, last_index, first_block, last_block, block_count=block_count
+    validate_audit_range(first_index, last_index, first_block, last_block)
+    return get_event_indexes_in_range(
+        series,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
     )
-
-    if not has_block_range:
-        start = 0
-        if first_index is not None:
-            start = first_index - 1
-        stop = len(series)
-        if last_index is not None:
-            stop = min(last_index, stop)
-        return frozenset(range(start, stop))
-
-    assert block_indexes is not None
-    selected_block_indexes = {
-        event_index
-        for block_number, (block_start, block_stop) in enumerate(block_indexes, 1)
-        if is_block_in_range(block_number, first_block, last_block)
-        for event_index in range(block_start, block_stop)
-    }
-    return frozenset(selected_block_indexes)
 
 
 def get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
@@ -352,6 +394,28 @@ def resolve_contextual_index(
     return index
 
 
+def validate_audit_block_count(
+    first_block: int | None, last_block: int | None, block_count: int
+):
+    """Check that the selected block bounds fit the available blocks.
+
+    Arguments:
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+        block_count: number of available workflow blocks
+    Raises:
+        ScinoephileError: if a bound exceeds the block count
+    """
+    if first_block is not None and first_block > block_count:
+        raise ScinoephileError(
+            f"First block must not exceed available block count {block_count}"
+        )
+    if last_block is not None and last_block > block_count:
+        raise ScinoephileError(
+            f"Last block must not exceed available block count {block_count}"
+        )
+
+
 def validate_audit_range(
     first_index: int | None,
     last_index: int | None,
@@ -376,7 +440,9 @@ def validate_audit_range(
     if has_index_range and has_block_range:
         raise ScinoephileError("Subtitle-index and block ranges are mutually exclusive")
     _validate_index_range(first_index, last_index)
-    _validate_block_range(first_block, last_block, block_count)
+    _validate_block_range(first_block, last_block)
+    if block_count is not None:
+        validate_audit_block_count(first_block, last_block, block_count)
 
 
 def _escape_table_cell(value: str) -> str:
@@ -390,33 +456,12 @@ def _escape_table_cell(value: str) -> str:
     return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
 
 
-def _format_block_range(first_block: int | None, last_block: int | None) -> str | None:
-    """Format an optional block range for a report summary.
-
-    Arguments:
-        first_block: first included one-based block number
-        last_block: last included one-based block number
-    Returns:
-        formatted block-range summary, or None if the range is unbounded
-    """
-    if first_block is None and last_block is None:
-        return None
-    if first_block is None:
-        return f"block range: through {last_block}"
-    if last_block is None:
-        return f"block range: from {first_block}"
-    return f"block range: {first_block} through {last_block}"
-
-
-def _validate_block_range(
-    first_block: int | None, last_block: int | None, block_count: int | None = None
-):
+def _validate_block_range(first_block: int | None, last_block: int | None):
     """Validate optional one-based block boundaries.
 
     Arguments:
         first_block: first included block number
         last_block: last included block number
-        block_count: number of available workflow blocks, if known
     Raises:
         ScinoephileError: if either boundary is invalid
     """
@@ -426,16 +471,6 @@ def _validate_block_range(
         raise ScinoephileError("Last block must be at least 1")
     if first_block is not None and last_block is not None and first_block > last_block:
         raise ScinoephileError("First block must be less than or equal to last block")
-    if block_count is None:
-        return
-    if first_block is not None and first_block > block_count:
-        raise ScinoephileError(
-            f"First block must not exceed available block count {block_count}"
-        )
-    if last_block is not None and last_block > block_count:
-        raise ScinoephileError(
-            f"Last block must not exceed available block count {block_count}"
-        )
 
 
 def _validate_index_range(first_index: int | None, last_index: int | None):

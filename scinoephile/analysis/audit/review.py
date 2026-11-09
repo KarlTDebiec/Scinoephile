@@ -16,13 +16,17 @@ from scinoephile.core.subtitles import Series
 from .utils import (
     AuditColumn,
     format_audit_report,
+    format_block_range,
+    format_index_range,
     format_verification_marker,
-    get_selected_event_indexes,
+    get_event_indexes_in_range,
+    validate_audit_range,
 )
 
 __all__ = [
     "ReviewAuditComparison",
     "ReviewAuditFilter",
+    "ReviewAuditFilters",
     "ReviewAuditPair",
     "ReviewAuditMetadata",
     "get_review_metadata",
@@ -41,6 +45,63 @@ class ReviewAuditFilter(StrEnum):
 
     unverified = "unverified"
     """Include only rows from cases not marked as verified."""
+
+
+@dataclass(frozen=True, kw_only=True)
+class ReviewAuditFilters:
+    """Row, character, and range filters shared by review audit reports."""
+
+    row_filter: StrEnum = ReviewAuditFilter.changes
+    """Row filter selected for the review workflow."""
+    character_filter: tuple[str, ...] = ()
+    """Characters to match in the subtitle text."""
+    first_index: int | None = None
+    """First included one-based subtitle index."""
+    last_index: int | None = None
+    """Last included one-based subtitle index."""
+    first_block: int | None = None
+    """First included one-based workflow block number."""
+    last_block: int | None = None
+    """Last included one-based workflow block number."""
+
+    def __post_init__(self):
+        """Validate the bounds before applying them to a review."""
+        validate_audit_range(
+            self.first_index, self.last_index, self.first_block, self.last_block
+        )
+
+    def get_summary_items(self, *, index_track_name: str | None = None) -> list[str]:
+        """Describe the active filters for the report summary.
+
+        Arguments:
+            index_track_name: optional name of the indexed subtitle track
+        Returns:
+            report summary items describing the filters
+        """
+        items = [f"row filter: {self.row_filter.value}"]
+        if self.character_filter:
+            items.append(f"character filter: {', '.join(self.character_filter)}")
+        index_range = format_index_range(
+            self.first_index, self.last_index, track_name=index_track_name
+        )
+        if index_range is not None:
+            items.append(index_range)
+        block_range = format_block_range(self.first_block, self.last_block)
+        if block_range is not None:
+            items.append(block_range)
+        return items
+
+    def matches_characters(self, texts: Iterable[str]) -> bool:
+        """Check whether any of the supplied texts matches the character filter.
+
+        Arguments:
+            texts: subtitle texts to search for each row
+        Returns:
+            whether the filter is empty or any character occurs in the texts
+        """
+        return not self.character_filter or any(
+            character in text for text in texts for character in self.character_filter
+        )
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -91,24 +152,14 @@ def audit_review(
     *,
     reviews: Sequence[ReviewAuditPair],
     comparisons: Sequence[ReviewAuditComparison] = (),
-    row_filter: StrEnum = ReviewAuditFilter.changes,
-    character_filter: Sequence[str] = (),
-    first_index: int | None = None,
-    last_index: int | None = None,
-    first_block: int | None = None,
-    last_block: int | None = None,
+    filters: ReviewAuditFilters = ReviewAuditFilters(),
 ) -> str:
     """Audit a composition of review pairs and final comparisons.
 
     Arguments:
         reviews: ordered review pairs to audit
         comparisons: ordered final output comparisons to audit
-        row_filter: row status filter
-        character_filter: individual characters whose occurrence limits included rows
-        first_index: first 1-indexed subtitle number to include, inclusive
-        last_index: last 1-indexed subtitle number to include, inclusive
-        first_block: first 1-indexed workflow block number to include, inclusive
-        last_block: last 1-indexed workflow block number to include, inclusive
+        filters: row, character, and range filters
     Returns:
         Markdown audit report
     Raises:
@@ -117,7 +168,7 @@ def audit_review(
     """
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
-    row_filter_value = row_filter.value
+    row_filter_value = filters.row_filter.value
     if row_filter_value not in {"all", "changes", "discrepancies", "unverified"}:
         raise ScinoephileError(
             f"Unable to audit subtitle reviews: unsupported row filter "
@@ -176,12 +227,12 @@ def audit_review(
     except ValueError as exc:
         raise ScinoephileError(f"Unable to audit subtitle reviews: {exc}") from exc
 
-    indexes = get_selected_event_indexes(
+    indexes = get_event_indexes_in_range(
         reviews[0].original,
-        first_index=first_index,
-        last_index=last_index,
-        first_block=first_block,
-        last_block=last_block,
+        first_index=filters.first_index,
+        last_index=filters.last_index,
+        first_block=filters.first_block,
+        last_block=filters.last_block,
     )
 
     review_changes = tuple(
@@ -198,9 +249,8 @@ def audit_review(
         review_changes=review_changes,
         comparison_changes=comparison_changes,
         indexes=indexes,
-        row_filter=row_filter_value,
+        filters=filters,
         unverified_indexes=unverified_indexes,
-        character_filter=character_filter,
     )
     return _format_report(
         reviews=reviews,
@@ -213,13 +263,8 @@ def audit_review(
         covered_indexes=covered_indexes,
         has_review_cases=has_review_cases,
         indexes=selected_indexes,
-        row_filter=row_filter_value,
+        filters=filters,
         unverified_indexes=unverified_indexes,
-        character_filter=character_filter,
-        first_index=first_index,
-        last_index=last_index,
-        first_block=first_block,
-        last_block=last_block,
     )
 
 
@@ -303,13 +348,8 @@ def _format_report(
     covered_indexes: frozenset[int],
     has_review_cases: bool,
     indexes: Sequence[int],
-    row_filter: str,
+    filters: ReviewAuditFilters,
     unverified_indexes: frozenset[int],
-    character_filter: Sequence[str],
-    first_index: int | None,
-    last_index: int | None,
-    first_block: int | None,
-    last_block: int | None,
 ) -> str:
     """Build semantic review data and format it with the shared renderer.
 
@@ -324,13 +364,8 @@ def _format_report(
         covered_indexes: subtitle indexes covered by logged cases
         has_review_cases: whether any review decision log was supplied
         indexes: zero-based subtitle indexes to include
-        row_filter: active row filter
+        filters: active row, character, and range filters
         unverified_indexes: subtitle indexes covered by unverified cases
-        character_filter: active character filter
-        first_index: first included 1-indexed subtitle number
-        last_index: last included 1-indexed subtitle number
-        first_block: first included 1-indexed workflow block number
-        last_block: last included 1-indexed workflow block number
     Returns:
         Markdown report
     """
@@ -373,9 +408,7 @@ def _format_report(
             comparisons, comparison_changes, strict=True
         )
     )
-    summary_items.append(f"row filter: {row_filter}")
-    if character_filter:
-        summary_items.append(f"character filter: {', '.join(character_filter)}")
+    summary_items.extend(filters.get_summary_items())
 
     columns: list[AuditColumn] = [("Subtitle", "right")]
     columns.extend((review.label, "left") for review in reviews)
@@ -384,14 +417,7 @@ def _format_report(
     if has_review_cases:
         columns.append(("Verified", "center"))
     return format_audit_report(
-        title="Review Audit",
-        summary_items=summary_items,
-        columns=columns,
-        rows=rows,
-        first_index=first_index,
-        last_index=last_index,
-        first_block=first_block,
-        last_block=last_block,
+        title="Review Audit", summary_items=summary_items, columns=columns, rows=rows
     )
 
 
@@ -437,9 +463,8 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    row_filter: str,
+    filters: ReviewAuditFilters,
     unverified_indexes: frozenset[int],
-    character_filter: Sequence[str],
 ) -> list[int]:
     """Get subtitle indexes selected for the report.
 
@@ -448,14 +473,14 @@ def _get_filtered_indexes(
         review_changes: changed subtitle indexes for each review
         comparison_changes: changed subtitle indexes for each comparison
         indexes: zero-based subtitle indexes eligible for inclusion
-        row_filter: row status filter
+        filters: row status and character filters
         unverified_indexes: subtitle indexes covered by unverified review cases
-        character_filter: optional character filter
     Returns:
         selected subtitle indexes
     Raises:
         AssertionError: if an internal invariant is violated
     """
+    row_filter = filters.row_filter.value
     if row_filter == "all":
         selected_indexes = set(indexes)
     elif row_filter == "changes":
@@ -473,15 +498,11 @@ def _get_filtered_indexes(
     else:
         raise AssertionError(f"Unexpected validated row filter {row_filter!r}")
 
-    if character_filter:
+    if filters.character_filter:
         selected_indexes = {
             index
             for index in selected_indexes
-            if any(
-                character in subtitles[index]
-                for subtitles in series
-                for character in character_filter
-            )
+            if filters.matches_characters(subtitles[index] for subtitles in series)
         }
     return sorted(selected_indexes)
 

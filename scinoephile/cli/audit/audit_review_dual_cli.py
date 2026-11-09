@@ -19,10 +19,9 @@ from scinoephile.common.cli.argument_parsing import (
     input_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
 from .audit_cli_base import AuditCliBase
-from .utils import load_review_test_cases
+from .utils import build_review_audit_filters, load_review_test_cases
 
 __all__ = ["AuditReviewDualCli"]
 
@@ -360,7 +359,6 @@ class AuditReviewDualCli(AuditCliBase):
                 "--filter unverified requires --simplified-json, "
                 "--traditional-json, and --traditional-simplified-json"
             )
-        character_filter = get_zho_character_variants(character_filter)
 
         # Read inputs
         simplified = read_series(parser, simplified_path)
@@ -389,6 +387,14 @@ class AuditReviewDualCli(AuditCliBase):
 
         # Perform operation
         try:
+            filters = build_review_audit_filters(
+                row_filter=row_filter,
+                character_filter=character_filter,
+                first_index=first_index,
+                last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
+            )
             report = audit_dual_review(
                 simplified=simplified,
                 simplified_reviewed=simplified_reviewed,
@@ -399,12 +405,7 @@ class AuditReviewDualCli(AuditCliBase):
                 simplified_review_cases=simplified_review_cases,
                 traditional_review_cases=traditional_review_cases,
                 traditional_simplified_review_cases=traditional_simplified_review_cases,
-                row_filter=row_filter,
-                character_filter=character_filter,
-                first_index=first_index,
-                last_index=last_index,
-                first_block=first_block,
-                last_block=last_block,
+                filters=filters,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

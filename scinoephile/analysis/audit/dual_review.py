@@ -10,7 +10,12 @@ from enum import StrEnum
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
-from .review import ReviewAuditComparison, ReviewAuditPair, audit_review
+from .review import (
+    ReviewAuditComparison,
+    ReviewAuditFilters,
+    ReviewAuditPair,
+    audit_review,
+)
 
 __all__ = ["DualReviewAuditFilter", "audit_dual_review"]
 
@@ -42,12 +47,7 @@ def audit_dual_review(
     traditional_review_cases: Sequence[TestCase] = (),
     traditional_simplified_review_cases: Sequence[TestCase] = (),
     simplified_review_cases: Sequence[TestCase] = (),
-    row_filter: DualReviewAuditFilter = DualReviewAuditFilter.changes,
-    character_filter: Sequence[str] = (),
-    first_index: int | None = None,
-    last_index: int | None = None,
-    first_block: int | None = None,
-    last_block: int | None = None,
+    filters: ReviewAuditFilters = ReviewAuditFilters(),
 ) -> str:
     """Audit parallel simplified and traditional-to-simplified review paths.
 
@@ -63,12 +63,7 @@ def audit_dual_review(
         traditional_simplified_review_cases: traditional simplification review test
             cases
         simplified_review_cases: simplified review test cases
-        row_filter: row status filter
-        character_filter: individual characters whose occurrence limits included rows
-        first_index: first 1-indexed subtitle number to include, inclusive
-        last_index: last 1-indexed subtitle number to include, inclusive
-        first_block: first 1-indexed workflow block number to include, inclusive
-        last_block: last 1-indexed workflow block number to include, inclusive
+        filters: row, character, and range filters
     Returns:
         Markdown audit report
     Raises:
@@ -103,10 +98,5 @@ def audit_dual_review(
                 right=traditional_simplified_reviewed,
             ),
         ),
-        row_filter=row_filter,
-        character_filter=character_filter,
-        first_index=first_index,
-        last_index=last_index,
-        first_block=first_block,
-        last_block=last_block,
+        filters=filters,
     )

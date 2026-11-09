@@ -11,6 +11,7 @@ from pathlib import Path
 from scinoephile.analysis.audit.guided_review import audit_guided_review
 from scinoephile.analysis.audit.review import (
     ReviewAuditFilter,
+    ReviewAuditFilters,
     ReviewAuditPair,
     audit_review,
 )
@@ -22,11 +23,10 @@ from scinoephile.common.cli.argument_parsing import (
 )
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.id import get_series_language
-from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 from scinoephile.llms.guided_review import GuidedReviewManager
 
 from .audit_cli_base import AuditCliBase
-from .utils import load_review_test_cases
+from .utils import build_review_audit_filters, load_review_test_cases
 
 __all__ = ["AuditReviewReportCli"]
 
@@ -175,12 +175,7 @@ class AuditReviewReportCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: ReviewAuditFilter,
-        character_filter: Sequence[str],
-        first_index: int | None,
-        last_index: int | None,
-        first_block: int | None,
-        last_block: int | None,
+        filters: ReviewAuditFilters,
     ) -> str:
         """Load and audit one guided-review workflow.
 
@@ -189,12 +184,7 @@ class AuditReviewReportCli(AuditCliBase):
             target_path: target subtitle SRT path
             guide_path: guide subtitle SRT path
             json_path: guided-review test-case JSON path
-            row_filter: rows to include in the report
-            character_filter: characters used to further limit included rows
-            first_index: first target subtitle number to include
-            last_index: last target subtitle number to include
-            first_block: first paired block number to include
-            last_block: last paired block number to include
+            filters: row, character, and range filters
         Returns:
             Markdown audit report
         """
@@ -206,17 +196,7 @@ class AuditReviewReportCli(AuditCliBase):
         )
 
         # Perform operation
-        return audit_guided_review(
-            target,
-            guide,
-            test_cases,
-            row_filter=row_filter,
-            character_filter=character_filter,
-            first_index=first_index,
-            last_index=last_index,
-            first_block=first_block,
-            last_block=last_block,
-        )
+        return audit_guided_review(target, guide, test_cases, filters=filters)
 
     @classmethod
     def _audit_regular(
@@ -226,12 +206,7 @@ class AuditReviewReportCli(AuditCliBase):
         reviewed_path: Path,
         json_path: Path | None,
         *,
-        row_filter: ReviewAuditFilter,
-        character_filter: Sequence[str],
-        first_index: int | None,
-        last_index: int | None,
-        first_block: int | None,
-        last_block: int | None,
+        filters: ReviewAuditFilters,
     ) -> str:
         """Load and audit one regular-review workflow.
 
@@ -240,12 +215,7 @@ class AuditReviewReportCli(AuditCliBase):
             original_path: original subtitle SRT path
             reviewed_path: reviewed subtitle SRT path
             json_path: optional regular-review test-case JSON path
-            row_filter: rows to include in the report
-            character_filter: characters used to further limit included rows
-            first_index: first subtitle number to include
-            last_index: last subtitle number to include
-            first_block: first workflow block number to include
-            last_block: last workflow block number to include
+            filters: row, character, and range filters
         Returns:
             Markdown audit report
         """
@@ -278,15 +248,7 @@ class AuditReviewReportCli(AuditCliBase):
                 review_cases=review_cases,
             ),
         )
-        return audit_review(
-            reviews=reviews,
-            row_filter=row_filter,
-            character_filter=character_filter,
-            first_index=first_index,
-            last_index=last_index,
-            first_block=first_block,
-            last_block=last_block,
-        )
+        return audit_review(reviews=reviews, filters=filters)
 
     @classmethod
     def _main(
@@ -332,35 +294,23 @@ class AuditReviewReportCli(AuditCliBase):
 
         # Perform operation
         try:
-            if character_filter:
-                character_filter = get_zho_character_variants(character_filter)
+            filters = build_review_audit_filters(
+                row_filter=row_filter,
+                character_filter=character_filter,
+                first_index=first_index,
+                last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
+            )
             if guide_path is not None:
                 assert json_path is not None
                 report = cls._audit_guided(
-                    parser,
-                    original_path,
-                    guide_path,
-                    json_path,
-                    row_filter=row_filter,
-                    character_filter=character_filter,
-                    first_index=first_index,
-                    last_index=last_index,
-                    first_block=first_block,
-                    last_block=last_block,
+                    parser, original_path, guide_path, json_path, filters=filters
                 )
             else:
                 assert reviewed_path is not None
                 report = cls._audit_regular(
-                    parser,
-                    original_path,
-                    reviewed_path,
-                    json_path,
-                    row_filter=row_filter,
-                    character_filter=character_filter,
-                    first_index=first_index,
-                    last_index=last_index,
-                    first_block=first_block,
-                    last_block=last_block,
+                    parser, original_path, reviewed_path, json_path, filters=filters
                 )
         except ScinoephileError as exc:
             parser.error(str(exc))
