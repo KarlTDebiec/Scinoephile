@@ -20,7 +20,6 @@ from scinoephile.common.cli.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
-from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.id import get_series_language
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
@@ -82,15 +81,6 @@ AUDIT_REVIEW_REPORT_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
 }
 """Localized help text keyed by locale and English source text."""
-
-_LANGUAGE_LABELS = {
-    Language.eng: "English",
-    Language.yue_hans: "Simplified Cantonese",
-    Language.yue_hant: "Traditional Cantonese",
-    Language.zho_hans: "Simplified Chinese",
-    Language.zho_hant: "Traditional Chinese",
-}
-"""Report labels keyed by automatically detected language."""
 
 
 class AuditReviewReportCli(AuditCliBase):
@@ -279,7 +269,7 @@ class AuditReviewReportCli(AuditCliBase):
         return audit_review(
             reviews=(
                 ReviewAuditPair(
-                    label=_LANGUAGE_LABELS[language],
+                    label=language.description.removesuffix("."),
                     original=original,
                     reviewed=reviewed,
                     review_cases=review_cases,
