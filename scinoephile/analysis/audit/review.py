@@ -41,13 +41,12 @@ def audit_review(
     """
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
-    row_filter = filters.row_filter
-    if row_filter not in ReviewAuditFilter:
+    if filters.row_filter not in ReviewAuditFilter:
         raise ScinoephileError(
             f"Unable to audit subtitle reviews: unsupported row filter "
-            f"{row_filter.value!r}"
+            f"{filters.row_filter.value!r}"
         )
-    if row_filter == ReviewAuditFilter.discrepancies and not comparisons:
+    if filters.row_filter == ReviewAuditFilter.discrepancies and not comparisons:
         raise ScinoephileError(
             "Unable to audit subtitle reviews: discrepancy filtering requires at "
             "least one comparison"
@@ -287,23 +286,22 @@ def _get_filtered_indexes(
     Raises:
         AssertionError: if an internal invariant is violated
     """
-    row_filter = filters.row_filter
-    if row_filter == ReviewAuditFilter.all:
+    if filters.row_filter == ReviewAuditFilter.all:
         selected_indexes = set(indexes)
-    elif row_filter == ReviewAuditFilter.changes:
+    elif filters.row_filter == ReviewAuditFilter.changes:
         selected_indexes = {
             index
             for changed_indexes in (*review_changes, *comparison_changes)
             for index in changed_indexes
         }
-    elif row_filter == ReviewAuditFilter.discrepancies:
+    elif filters.row_filter == ReviewAuditFilter.discrepancies:
         selected_indexes = {
             index for changed_indexes in comparison_changes for index in changed_indexes
         }
-    elif row_filter == ReviewAuditFilter.unverified:
+    elif filters.row_filter == ReviewAuditFilter.unverified:
         selected_indexes = set(indexes) & unverified_indexes
     else:
-        raise AssertionError(f"Unexpected validated row filter {row_filter!r}")
+        raise AssertionError(f"Unexpected validated row filter {filters.row_filter!r}")
 
     if filters.character_filter:
         selected_indexes = {
