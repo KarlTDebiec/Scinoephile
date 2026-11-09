@@ -5,10 +5,12 @@
 Package hierarchy (modules may import from any above):
 * prompt
 * models
+* manager
 """
 
 from __future__ import annotations
 
+from .manager import ReviewAuditManager
 from .models import (
     ReviewAuditAnswer,
     ReviewAuditFinding,
@@ -21,6 +23,7 @@ from .prompt import ReviewAuditPrompt
 __all__ = [
     "ReviewAuditAnswer",
     "ReviewAuditFinding",
+    "ReviewAuditManager",
     "ReviewAuditPrompt",
     "ReviewAuditQuery",
     "ReviewAuditSubtitle",

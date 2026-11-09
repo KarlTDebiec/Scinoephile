@@ -15,7 +15,6 @@ from scinoephile.core.exceptions import ScinoephileError
 from .cache import LlmCache
 from .llm_provider import LLMProvider
 from .metrics import ChatCompletionMetrics
-from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
 from .tool_box import ToolBox
@@ -34,7 +33,6 @@ class Queryer[TTestCase: TestCase]:
         verified_test_cases: list[TestCase] | None = None,
         *,
         provider: LLMProvider,
-        prompt: Prompt | None = None,
         cache_root_path: Path | None = None,
         additional_context: str | None = None,
         max_attempts: int = 5,
@@ -46,11 +44,10 @@ class Queryer[TTestCase: TestCase]:
         """Initialize.
 
         Arguments:
-            test_case_cls: class defining queries, verified answers, and default prompt
+            test_case_cls: class defining queries, verified answers, and prompt text
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
             provider: provider to use for queries
-            prompt: correspondence text to use in place of the test-case class prompt
             cache_root_path: root directory beneath which to cache
             additional_context: additional context to include in the system prompt
             max_attempts: maximum number of attempts
@@ -60,10 +57,8 @@ class Queryer[TTestCase: TestCase]:
             tool_box: available tools and handlers
         """
         self.test_case_cls = test_case_cls
-        """Class defining queries, answers, and the default prompt."""
-        if prompt is None:
-            prompt = test_case_cls.prompt
-        self.prompt = prompt
+        """Class defining queries, answers, and prompt text."""
+        self.prompt = test_case_cls.prompt
         """Text for LLM correspondence."""
         self.provider = provider
 

@@ -15,11 +15,7 @@ from scinoephile.llms.providers.registry import (
     get_provider,
     get_provider_names,
 )
-from scinoephile.llms.review_audit import (
-    ReviewAuditQuery,
-    ReviewAuditSubtitle,
-    ReviewAuditTestCase,
-)
+from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditSubtitle
 
 from .session import AuditRow, AuditSession, AuditStatus
 
@@ -145,11 +141,10 @@ class AuditingJob:
             rerun: replace all findings, retaining verification marks
         """
         try:
-            queryer = Queryer(
-                ReviewAuditTestCase, provider=provider, prompt=ReviewAuditPromptEng
-            )
+            test_case_cls = ReviewAuditManager.get_test_case_cls(ReviewAuditPromptEng)
+            queryer = Queryer(test_case_cls, provider=provider)
             for block in blocks:
-                query = ReviewAuditQuery(
+                query = test_case_cls.query_cls(
                     language=self.audit.language.code,
                     subtitles=[
                         ReviewAuditSubtitle(
@@ -161,7 +156,7 @@ class AuditingJob:
                         for row in block
                     ],
                 )
-                result = queryer(ReviewAuditTestCase(query=query))
+                result = queryer(test_case_cls(query=query))
                 assert result.answer is not None
                 self.audit.publish_audit(
                     block,
