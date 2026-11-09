@@ -8,4 +8,8 @@ __all__ = ["InvalidReviewSubtitleError"]
 
 
 class InvalidReviewSubtitleError(ValueError):
-    """A proofreading correction cannot be represented as one SRT subtitle."""
+    """Raised when saving to SRT would alter or lose a reviewed subtitle.
+
+    For example, reading the generated SRT back can strip trailing spaces from
+    the subtitle text.
+    """
