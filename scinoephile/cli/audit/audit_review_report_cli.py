@@ -23,10 +23,11 @@ from scinoephile.common.cli.argument_parsing import (
 )
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.id import get_series_language
+from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 from scinoephile.llms.guided_review import GuidedReviewManager
 
 from .audit_cli_base import AuditCliBase
-from .utils import build_review_audit_filters, load_review_test_cases
+from .utils import load_review_test_cases
 
 __all__ = ["AuditReviewReportCli"]
 
@@ -294,9 +295,9 @@ class AuditReviewReportCli(AuditCliBase):
 
         # Perform operation
         try:
-            filters = build_review_audit_filters(
+            filters = ReviewAuditFilters(
                 row_filter=row_filter,
-                character_filter=character_filter,
+                character_filter=get_zho_character_variants(character_filter),
                 first_index=first_index,
                 last_index=last_index,
                 first_block=first_block,

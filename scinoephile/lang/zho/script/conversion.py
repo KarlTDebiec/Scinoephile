@@ -54,6 +54,8 @@ def get_zho_character_variants(texts: Iterable[str]) -> tuple[str, ...]:
         sorted individual characters and their script variants
     """
     text = "".join(texts)
+    if not text:
+        return ()
     variants = set(text)
     variants.update(get_zho_converter(OpenCCConfig.s2t).convert(text))
     variants.update(get_zho_converter(OpenCCConfig.t2s).convert(text))

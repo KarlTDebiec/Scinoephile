@@ -10,6 +10,7 @@ from pathlib import Path
 
 from scinoephile.analysis.audit.review import (
     ReviewAuditFilter,
+    ReviewAuditFilters,
     ReviewAuditPair,
     audit_review,
 )
@@ -20,9 +21,10 @@ from scinoephile.common.cli.argument_parsing import (
     input_file_arg,
 )
 from scinoephile.core import ScinoephileError
+from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
 from .audit_cli_base import AuditCliBase
-from .utils import build_review_audit_filters, load_review_test_cases
+from .utils import load_review_test_cases
 
 __all__ = ["AuditReviewTradCli"]
 
@@ -287,9 +289,9 @@ class AuditReviewTradCli(AuditCliBase):
 
         # Perform operation
         try:
-            filters = build_review_audit_filters(
+            filters = ReviewAuditFilters(
                 row_filter=row_filter,
-                character_filter=character_filter,
+                character_filter=get_zho_character_variants(character_filter),
                 first_index=first_index,
                 last_index=last_index,
                 first_block=first_block,
