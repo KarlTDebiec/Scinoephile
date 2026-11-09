@@ -6,28 +6,23 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, replace
+from functools import partial
 from hashlib import sha256
-from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from threading import RLock, Thread
 
-from scinoephile.core.llms import LLMProvider, ReasoningEffort
+from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import get_reviewer
-from scinoephile.llms.providers.registry import (
-    DEFAULT_PROVIDER_NAME,
-    get_provider,
-    get_provider_names,
-)
+from scinoephile.llms.providers.registry import DEFAULT_PROVIDER_NAME
 from scinoephile.llms.review import ReviewProcessor
+from scinoephile.web.jobs import BackgroundJob, BackgroundJobState
 
 from .decisions import InvalidReviewSubtitleError, ReviewDecisions
+from .job_settings import get_job_provider
 from .session import AuditSession
 
 __all__ = ["ProofreadingJob", "ProofreadingState", "get_proofreading_request_identity"]
-
-logger = getLogger(__name__)
 
 
 def get_proofreading_request_identity(
@@ -53,17 +48,11 @@ def get_proofreading_request_identity(
 
 
 @dataclass(frozen=True)
-class ProofreadingState:
+class ProofreadingState(BackgroundJobState):
     """Snapshot of configuration and progress for one local run."""
 
-    status: str = "ready"
-    """Ready, running, complete, or error."""
     available: bool = True
     """Whether the configured subtitle output is absent."""
-    completed: int = 0
-    """Number of completed source blocks."""
-    total: int = 0
-    """Number of source blocks to proofread."""
     provider: str = DEFAULT_PROVIDER_NAME
     """Selected provider name."""
     model: str = ""
@@ -72,11 +61,9 @@ class ProofreadingState:
     """Requested reasoning effort, blank for the provider default."""
     rerun: bool = False
     """Whether this run replaces existing proofreading from original OCR."""
-    error: str = ""
-    """Failure message retained for retry."""
 
 
-class ProofreadingJob:
+class ProofreadingJob(BackgroundJob[ProofreadingState]):
     """Serialize proofreading starts and expose immutable progress snapshots."""
 
     def __init__(self, audit: AuditSession):
@@ -87,24 +74,16 @@ class ProofreadingJob:
         """
         self.audit = audit
         """Source-backed review session."""
-        self._lock = RLock()
         saved = audit.proofreading_settings
-        self._state = ProofreadingState(
-            provider=saved.get("provider", DEFAULT_PROVIDER_NAME),
-            model=saved.get("model", ""),
-            effort=saved.get("effort", ""),
+        super().__init__(
+            ProofreadingState(
+                provider=saved.get("provider", DEFAULT_PROVIDER_NAME),
+                model=saved.get("model", ""),
+                effort=saved.get("effort", ""),
+            ),
+            thread_name="subtitle-proofreading",
         )
-        self._thread: Thread | None = None
         self._refresh_cache = False
-
-    def snapshot(self) -> ProofreadingState:
-        """Read current progress and the actual output-file availability.
-
-        Returns:
-            thread-safe progress snapshot
-        """
-        with self._lock:
-            return replace(self._state, available=not self.audit.outfile_path.exists())
 
     def start(
         self, provider_name: str, model_name: str, effort: str, *, rerun: bool = False
@@ -119,39 +98,21 @@ class ProofreadingJob:
         Raises:
             ValueError: if configuration or session state prevents a run
         """
-        if provider_name not in get_provider_names():
-            raise ValueError("Choose a supported LLM provider")
-        model_name = model_name.strip()
-        if len(model_name) > 200 or any(ord(char) < 32 for char in model_name):
-            raise ValueError("Use a model identifier of up to 200 characters")
-        options: dict[str, str | None] = {"model": model_name or None}
-        if effort:
-            options["reasoning_effort"] = ReasoningEffort(effort)
-        provider = get_provider(provider_name, **options)
+        provider, model_name = get_job_provider(provider_name, model_name, effort)
         with self._lock:
             source = self.audit.begin_proofreading(rerun=rerun)
-            self._state = ProofreadingState(
-                status="running",
-                total=len(source.blocks),
-                provider=provider_name,
-                model=model_name,
-                effort=effort,
-                rerun=rerun,
+            self._start_worker(
+                ProofreadingState(
+                    total=len(source.blocks),
+                    provider=provider_name,
+                    model=model_name,
+                    effort=effort,
+                    rerun=rerun,
+                ),
+                work=partial(self._run, provider, rerun, source),
+                release=self.audit.end_proofreading,
+                start_error="Unable to start proofreading",
             )
-            try:
-                self._thread = Thread(
-                    target=self._run,
-                    args=(provider, rerun, source),
-                    daemon=True,
-                    name="subtitle-proofreading",
-                )
-                self._thread.start()
-            except Exception:
-                self.audit.end_proofreading()
-                self._state = replace(
-                    self._state, status="error", error="Unable to start proofreading"
-                )
-                raise
 
     def _prepare_reviewer(
         self, provider: LLMProvider, source: Series, decisions_path: Path, rerun: bool
@@ -227,6 +188,8 @@ class ProofreadingJob:
             provider: configured provider shared across source blocks
             rerun: replace saved output while reusing compatible decisions and caches
             source: current OCR snapshot reserved at the start of this run
+        Raises:
+            InvalidReviewSubtitleError: if a generated revision cannot be saved
         """
         try:
             with TemporaryDirectory(prefix="scinoephile-review-") as directory:
@@ -250,19 +213,19 @@ class ProofreadingJob:
                         reviewer.process(
                             source, start_at_idx=index, stop_at_idx=index + 1
                         )
-                    with self._lock:
-                        self._state = replace(self._state, completed=index + 1)
+                    self._advance()
                 self.audit.publish_proofreading(
                     decisions_path, rerun=rerun, settings=settings
                 )
-            with self._lock:
-                self._refresh_cache = False
-                self._state = replace(self._state, status="complete")
-        except Exception as exc:
-            logger.exception("Subtitle proofreading failed")
-            with self._lock:
-                if isinstance(exc, InvalidReviewSubtitleError):
-                    self._refresh_cache = True
-                self._state = replace(self._state, status="error", error=str(exc))
-        finally:
-            self.audit.end_proofreading()
+        except InvalidReviewSubtitleError:
+            self._refresh_cache = True
+            raise
+        self._refresh_cache = False
+
+    def _snapshot(self) -> ProofreadingState:
+        """Read progress and the actual output-file availability.
+
+        Returns:
+            immutable proofreading card state
+        """
+        return replace(self._state, available=not self.audit.outfile_path.exists())

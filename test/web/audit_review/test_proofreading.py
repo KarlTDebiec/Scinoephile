@@ -19,7 +19,8 @@ from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import get_reviewer
-from scinoephile.web.audit_review import proofreading
+from scinoephile.web import jobs
+from scinoephile.web.audit_review import job_settings, proofreading
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.proofreading import ProofreadingJob
 from scinoephile.web.audit_review.session import AuditSession
@@ -110,7 +111,7 @@ def _setup(
     )
     provider = _Provider()
     factory = Mock(return_value=provider)
-    monkeypatch.setattr(proofreading, "get_provider", factory)
+    monkeypatch.setattr(job_settings, "get_provider", factory)
 
     def reviewer(*args: Any, **kwargs: Any):
         """Construct the real processor without loading shared training examples.
@@ -339,6 +340,32 @@ def test_failure_and_retry_keep_absent_output(tmp_path: Path, monkeypatch: Monke
     assert not audit.outfile_path.exists()
     assert audit.json_path is not None and audit.json_path.read_text() == "[]\n"
     provider.fail = False
+    job.start("openai", "", "")
+    _join(job)
+    assert job.snapshot().status == "complete"
+
+
+def test_worker_start_failure_releases_session(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Allow retry after a thread fails to start with a reserved session.
+
+    Arguments:
+        tmp_path: temporary project directory
+        monkeypatch: offline dependencies and simulated thread failure
+    """
+    audit, provider, _ = _setup(tmp_path, monkeypatch)
+    job = ProofreadingJob(audit)
+    thread = Mock()
+    thread.start.side_effect = RuntimeError("Thread could not start")
+    with monkeypatch.context() as patch:
+        patch.setattr(jobs, "Thread", Mock(return_value=thread))
+        with raises(RuntimeError, match="Thread could not start"):
+            job.start("openai", "", "")
+
+    assert job.snapshot().status == "error"
+    assert job.snapshot().error == "Unable to start proofreading"
+    assert provider.calls == 0
     job.start("openai", "", "")
     _join(job)
     assert job.snapshot().status == "complete"

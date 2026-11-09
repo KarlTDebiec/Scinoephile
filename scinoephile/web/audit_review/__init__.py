@@ -3,7 +3,7 @@
 """Interactive subtitle review audits.
 
 Package hierarchy (modules may import from any above):
-* decisions / models
+* decisions / job_settings / models
 * pagination
 * session
 * proofreading / auditing

@@ -20,7 +20,7 @@ from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditQuery
-from scinoephile.web.audit_review import auditing
+from scinoephile.web.audit_review import job_settings
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.auditing import AuditingJob
 from scinoephile.web.audit_review.models import AuditStatus
@@ -135,7 +135,7 @@ def _setup(
         return provider
 
     factory = Mock(side_effect=provider_for_settings)
-    monkeypatch.setattr(auditing, "get_provider", factory)
+    monkeypatch.setattr(job_settings, "get_provider", factory)
     return audit, provider, factory
 
 
