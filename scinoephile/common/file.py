@@ -14,7 +14,7 @@ from tempfile import NamedTemporaryFile, mkdtemp
 from typing import TextIO, cast
 
 __all__ = [
-    "create_unique_directory",
+    "create_temp_directory",
     "get_temp_directory_path",
     "get_temp_file_path",
     "open_atomic_text_file",
@@ -24,10 +24,10 @@ __all__ = [
 logger = getLogger(__name__)
 
 
-def create_unique_directory(
+def create_temp_directory(
     *, parent_dir_path: Path | None = None, prefix: str | None = None
 ) -> Path:
-    """Create a uniquely named directory. The caller owns its cleanup.
+    """Create a temporary directory with a unique name. The caller owns cleanup.
 
     Arguments:
         parent_dir_path: parent directory, defaulting to the system temporary directory
@@ -50,7 +50,7 @@ def get_temp_directory_path(
     Yields:
         path to temporary directory
     """
-    temp_dir_path = create_unique_directory(
+    temp_dir_path = create_temp_directory(
         parent_dir_path=parent_dir_path, prefix=prefix
     )
     try:

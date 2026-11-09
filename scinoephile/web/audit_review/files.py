@@ -13,7 +13,7 @@ from pathlib import Path
 from shutil import copy2
 from tempfile import NamedTemporaryFile
 
-from scinoephile.common.file import create_unique_directory, open_atomic_text_file
+from scinoephile.common.file import create_temp_directory, open_atomic_text_file
 from scinoephile.core.subtitles import Series
 
 from .decisions import ReviewDecisions
@@ -41,7 +41,7 @@ def backup_review_files(outfile_path: Path, json_path: Path | None) -> Path:
     Returns:
         backup directory for the files and review database
     """
-    backup_dir_path = create_unique_directory(
+    backup_dir_path = create_temp_directory(
         parent_dir_path=outfile_path.parent,
         prefix=f"{outfile_path.stem}.before-reproofread-",
     )
