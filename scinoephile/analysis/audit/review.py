@@ -9,7 +9,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from scinoephile.core import ScinoephileError
 
 from .review_filters import ReviewAuditFilter, ReviewAuditFilterGroup
-from .review_inputs import ReviewAuditBeforeAfterPair, ReviewAuditSeriesPair
+from .review_inputs import ReviewAuditResultPair, ReviewAuditSeriesPair
 from .review_metadata import get_review_audit_metadata
 from .utils import (
     AuditColumn,
@@ -23,7 +23,7 @@ __all__ = ["audit_review"]
 
 def audit_review(
     *,
-    reviews: Sequence[ReviewAuditBeforeAfterPair],
+    reviews: Sequence[ReviewAuditResultPair],
     comparisons: Sequence[ReviewAuditSeriesPair] = (),
     filters: ReviewAuditFilterGroup = ReviewAuditFilterGroup(),
 ) -> str:
@@ -145,7 +145,7 @@ def audit_review(
 
 def _format_report(
     *,
-    reviews: Sequence[ReviewAuditBeforeAfterPair],
+    reviews: Sequence[ReviewAuditResultPair],
     review_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     review_changes: Sequence[set[int]],
     notes: Sequence[Mapping[int, Sequence[str]]],

@@ -11,7 +11,7 @@ from scinoephile.llms.review import ReviewTestCase
 
 from .review import audit_review
 from .review_filters import ReviewAuditFilterGroup
-from .review_inputs import ReviewAuditBeforeAfterPair, ReviewAuditSeriesPair
+from .review_inputs import ReviewAuditResultPair, ReviewAuditSeriesPair
 
 __all__ = ["audit_dual_review"]
 
@@ -51,19 +51,19 @@ def audit_dual_review(
     """
     return audit_review(
         reviews=(
-            ReviewAuditBeforeAfterPair(
+            ReviewAuditResultPair(
                 label="Simplified",
                 original=simplified,
                 reviewed=simplified_reviewed,
                 review_cases=simplified_review_cases,
             ),
-            ReviewAuditBeforeAfterPair(
+            ReviewAuditResultPair(
                 label="Traditional",
                 original=traditional,
                 reviewed=traditional_reviewed,
                 review_cases=traditional_review_cases,
             ),
-            ReviewAuditBeforeAfterPair(
+            ReviewAuditResultPair(
                 label="Traditional simplification",
                 original=traditional_simplified,
                 reviewed=traditional_simplified_reviewed,

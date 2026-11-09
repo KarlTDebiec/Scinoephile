@@ -15,7 +15,7 @@ from scinoephile.analysis.audit.review_filters import (
     ReviewAuditFilter,
     ReviewAuditFilterGroup,
 )
-from scinoephile.analysis.audit.review_inputs import ReviewAuditBeforeAfterPair
+from scinoephile.analysis.audit.review_inputs import ReviewAuditResultPair
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.cli.argument_parsing import (
@@ -244,7 +244,7 @@ class AuditReviewReportCli(AuditCliBase):
 
         # Perform operation
         reviews = (
-            ReviewAuditBeforeAfterPair(
+            ReviewAuditResultPair(
                 label=language.description,
                 original=original,
                 reviewed=reviewed,

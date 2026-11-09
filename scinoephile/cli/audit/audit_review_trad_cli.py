@@ -14,7 +14,7 @@ from scinoephile.analysis.audit.review_filters import (
     ReviewAuditFilter,
     ReviewAuditFilterGroup,
 )
-from scinoephile.analysis.audit.review_inputs import ReviewAuditBeforeAfterPair
+from scinoephile.analysis.audit.review_inputs import ReviewAuditResultPair
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.cli.argument_parsing import (
@@ -301,13 +301,13 @@ class AuditReviewTradCli(AuditCliBase):
             )
             report = audit_review(
                 reviews=(
-                    ReviewAuditBeforeAfterPair(
+                    ReviewAuditResultPair(
                         label="Traditional",
                         original=traditional,
                         reviewed=traditional_reviewed,
                         review_cases=traditional_review_cases,
                     ),
-                    ReviewAuditBeforeAfterPair(
+                    ReviewAuditResultPair(
                         label="Traditional simplification",
                         original=traditional_simplified,
                         reviewed=traditional_simplified_reviewed,
