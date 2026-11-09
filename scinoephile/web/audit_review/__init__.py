@@ -6,5 +6,6 @@ Package hierarchy (modules may import from any above):
 * decisions
 * session
 * proofreading / auditing
+* routes
 * app
 """

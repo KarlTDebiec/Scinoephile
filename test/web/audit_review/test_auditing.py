@@ -556,7 +556,9 @@ def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
             confirmation = state["rerun_confirmations"]["auditing"]
             data["confirmation"] = confirmation["token"]
     ready_at = confirmation["ready_at"]
-    monkeypatch.setattr("scinoephile.web.audit_review.app.time", lambda: ready_at + 1)
+    monkeypatch.setattr(
+        "scinoephile.web.audit_review.routes.time", lambda: ready_at + 1
+    )
     provider.release.clear()
     provider.fail_at = 2
     response = client.post(
@@ -606,7 +608,7 @@ def test_rerun_confirmation(
     start = Mock()
     monkeypatch.setattr(app.extensions[extension], "start", start)
     now = [1000.0]
-    monkeypatch.setattr("scinoephile.web.audit_review.app.time", lambda: now[0])
+    monkeypatch.setattr("scinoephile.web.audit_review.routes.time", lambda: now[0])
     client = app.test_client()
     client.get("/")
     with client.session_transaction() as state:
