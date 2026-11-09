@@ -31,7 +31,7 @@ from .utils import load_review_test_cases
 
 __all__ = ["AuditReviewReportCli"]
 
-AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
+AUDIT_REVIEW_REPORT_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "audit regular or guided subtitle reviews": "审核常规或引导式字幕校对",
         "original subtitle SRT file before review": "校对前的原始字幕 SRT 文件",
@@ -96,7 +96,7 @@ _LANGUAGE_LABELS = {
 class AuditReviewReportCli(AuditCliBase):
     """Audit regular or guided subtitle reviews."""
 
-    localizations = AUDIT_REVIEW_LOCALIZATIONS
+    localizations = AUDIT_REVIEW_REPORT_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

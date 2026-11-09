@@ -15,22 +15,25 @@ from .audit_review_serve_cli import AuditReviewServeCli
 
 __all__ = ["AuditReviewCli"]
 
+AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "audit subtitle reviews with reports or an interactive browser": (
+            "通过报告或交互式浏览器审核字幕校对"
+        )
+    },
+    "zh-hant": {
+        "audit subtitle reviews with reports or an interactive browser": (
+            "透過報告或互動式瀏覽器稽核字幕校對"
+        )
+    },
+}
+"""Translated review command group description."""
+
 
 class AuditReviewCli(ScinoephileCliBase):
     """Audit subtitle reviews with reports or an interactive browser."""
 
-    localizations = {
-        "zh-hans": {
-            "audit subtitle reviews with reports or an interactive browser": (
-                "通过报告或交互式浏览器审核字幕校对"
-            )
-        },
-        "zh-hant": {
-            "audit subtitle reviews with reports or an interactive browser": (
-                "透過報告或互動式瀏覽器稽核字幕校對"
-            )
-        },
-    }
+    localizations = AUDIT_REVIEW_LOCALIZATIONS
     """Translated review command group description."""
 
     @classmethod
