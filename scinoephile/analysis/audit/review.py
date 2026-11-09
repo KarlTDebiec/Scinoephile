@@ -8,7 +8,9 @@ from collections.abc import Iterable, Mapping, Sequence
 
 from scinoephile.core import ScinoephileError
 
-from . import review_filters, review_inputs, review_metadata
+from .review_filters import ReviewAuditFilter, ReviewAuditFilterGroup
+from .review_inputs import ReviewAuditComparison, ReviewAuditPair
+from .review_metadata import get_review_metadata
 from .utils import (
     AuditColumn,
     format_audit_report,
@@ -18,14 +20,12 @@ from .utils import (
 
 __all__ = ["audit_review"]
 
-_DEFAULT_FILTERS = review_filters.ReviewAuditFilterGroup()
-
 
 def audit_review(
     *,
-    reviews: Sequence[review_inputs.ReviewAuditPair],
-    comparisons: Sequence[review_inputs.ReviewAuditComparison] = (),
-    filters: review_filters.ReviewAuditFilterGroup = _DEFAULT_FILTERS,
+    reviews: Sequence[ReviewAuditPair],
+    comparisons: Sequence[ReviewAuditComparison] = (),
+    filters: ReviewAuditFilterGroup = ReviewAuditFilterGroup(),
 ) -> str:
     """Audit a composition of review pairs and final comparisons.
 
@@ -42,12 +42,12 @@ def audit_review(
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
     row_filter = filters.row_filter
-    if row_filter not in review_filters.ReviewAuditFilter:
+    if row_filter not in ReviewAuditFilter:
         raise ScinoephileError(
             f"Unable to audit subtitle reviews: unsupported row filter "
             f"{row_filter.value!r}"
         )
-    if row_filter == review_filters.ReviewAuditFilter.discrepancies and not comparisons:
+    if row_filter == ReviewAuditFilter.discrepancies and not comparisons:
         raise ScinoephileError(
             "Unable to audit subtitle reviews: discrepancy filtering requires at "
             "least one comparison"
@@ -84,7 +84,7 @@ def audit_review(
     # Match block-based log data against the complete inputs
     try:
         metadata_by_review = tuple(
-            review_metadata.get_review_metadata(review.review_cases, original, reviewed)
+            get_review_metadata(review.review_cases, original, reviewed)
             for review, (original, reviewed) in zip(reviews, review_series, strict=True)
         )
         notes = tuple(metadata.notes_by_index for metadata in metadata_by_review)
@@ -145,17 +145,17 @@ def audit_review(
 
 def _format_report(
     *,
-    reviews: Sequence[review_inputs.ReviewAuditPair],
+    reviews: Sequence[ReviewAuditPair],
     review_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     review_changes: Sequence[set[int]],
     notes: Sequence[Mapping[int, Sequence[str]]],
-    comparisons: Sequence[review_inputs.ReviewAuditComparison],
+    comparisons: Sequence[ReviewAuditComparison],
     comparison_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     comparison_changes: Sequence[set[int]],
     covered_indexes: frozenset[int],
     has_review_cases: bool,
     indexes: Sequence[int],
-    filters: review_filters.ReviewAuditFilterGroup,
+    filters: ReviewAuditFilterGroup,
     unverified_indexes: frozenset[int],
 ) -> str:
     """Build semantic review data and format it with the shared renderer.
@@ -270,7 +270,7 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    filters: review_filters.ReviewAuditFilterGroup,
+    filters: ReviewAuditFilterGroup,
     unverified_indexes: frozenset[int],
 ) -> list[int]:
     """Get subtitle indexes selected for the report.
@@ -288,19 +288,19 @@ def _get_filtered_indexes(
         AssertionError: if an internal invariant is violated
     """
     row_filter = filters.row_filter
-    if row_filter == review_filters.ReviewAuditFilter.all:
+    if row_filter == ReviewAuditFilter.all:
         selected_indexes = set(indexes)
-    elif row_filter == review_filters.ReviewAuditFilter.changes:
+    elif row_filter == ReviewAuditFilter.changes:
         selected_indexes = {
             index
             for changed_indexes in (*review_changes, *comparison_changes)
             for index in changed_indexes
         }
-    elif row_filter == review_filters.ReviewAuditFilter.discrepancies:
+    elif row_filter == ReviewAuditFilter.discrepancies:
         selected_indexes = {
             index for changed_indexes in comparison_changes for index in changed_indexes
         }
-    elif row_filter == review_filters.ReviewAuditFilter.unverified:
+    elif row_filter == ReviewAuditFilter.unverified:
         selected_indexes = set(indexes) & unverified_indexes
     else:
         raise AssertionError(f"Unexpected validated row filter {row_filter!r}")
