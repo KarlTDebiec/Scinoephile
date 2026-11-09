@@ -78,6 +78,20 @@ class ReviewAuditQuery(Query):
     )
     """Original/proofread pairs in their source order."""
 
+    @model_validator(mode="after")
+    def validate_subtitle_indexes(self) -> Self:
+        """Require unique subtitle indexes in source order.
+
+        Returns:
+            validated audit query
+        Raises:
+            ValueError: if subtitle indexes repeat or are out of order
+        """
+        indexes = [subtitle.index for subtitle in self.subtitles]
+        if indexes != sorted(set(indexes)):
+            raise ValueError("Audit subtitle indexes must be unique and increasing")
+        return self
+
 
 class ReviewAuditAnswer(Answer):
     """Complete per-subtitle findings for one context block."""

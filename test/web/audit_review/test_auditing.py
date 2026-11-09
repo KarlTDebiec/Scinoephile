@@ -17,7 +17,7 @@ from scinoephile.core import Language
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
-from scinoephile.llms.review_audit import ReviewAuditTestCase
+from scinoephile.llms.review_audit import ReviewAuditQuery, ReviewAuditTestCase
 from scinoephile.web.audit_review import auditing
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.auditing import AuditingJob
@@ -296,6 +296,27 @@ def test_audit_http_csrf_polling_and_completion(
         client.get("/auditing", headers={"HX-Request": "true"}).headers["HX-Refresh"]
         == "true"
     )
+
+
+@mark.parametrize("indexes", [(7, 7), (7, 4)])
+def test_audit_query_rejects_duplicate_or_reordered_subtitles(indexes: tuple[int, int]):
+    """Reject ambiguous subtitle indexes before requesting findings.
+
+    Arguments:
+        indexes: duplicate or reordered full-track subtitle indexes
+    """
+    with raises(
+        ValidationError, match="subtitle indexes must be unique and increasing"
+    ):
+        ReviewAuditQuery.model_validate(
+            {
+                "language": "eng",
+                "subtitles": [
+                    {"index": index, "original": "Hi.", "proofread": "Hi.", "note": ""}
+                    for index in indexes
+                ],
+            }
+        )
 
 
 @mark.parametrize(
