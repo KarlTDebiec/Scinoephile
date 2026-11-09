@@ -11,9 +11,9 @@ from html import unescape
 from os import fsync
 from pathlib import Path
 from shutil import copy2
-from tempfile import NamedTemporaryFile, mkdtemp
+from tempfile import NamedTemporaryFile
 
-from scinoephile.common.file import open_atomic_text_file
+from scinoephile.common.file import create_unique_directory, open_atomic_text_file
 from scinoephile.core.subtitles import Series
 
 from .decisions import ReviewDecisions
@@ -22,7 +22,7 @@ from .models import AuditRow
 
 __all__ = [
     "backup_review_files",
-    "get_file_fingerprints",
+    "get_file_hashes",
     "load_report_notes",
     "load_review_output",
     "parse_source_srt",
@@ -41,10 +41,9 @@ def backup_review_files(outfile_path: Path, json_path: Path | None) -> Path:
     Returns:
         backup directory for the files and review database
     """
-    backup_dir_path = Path(
-        mkdtemp(
-            prefix=f"{outfile_path.stem}.before-reproofread-", dir=outfile_path.parent
-        )
+    backup_dir_path = create_unique_directory(
+        parent_dir_path=outfile_path.parent,
+        prefix=f"{outfile_path.stem}.before-reproofread-",
     )
     copy2(outfile_path, backup_dir_path / "proofread.srt")
     if json_path is not None and json_path.exists():
@@ -52,21 +51,21 @@ def backup_review_files(outfile_path: Path, json_path: Path | None) -> Path:
     return backup_dir_path
 
 
-def get_file_fingerprints(*file_paths: Path | None) -> tuple[bytes | None, ...]:
+def get_file_hashes(*file_paths: Path | None) -> tuple[bytes | None, ...]:
     """Hash source and writable files to reject external edits on save.
 
     Arguments:
-        *file_paths: files in the order to fingerprint them
+        *file_paths: files in the order to hash them
     Returns:
-        content digests, including absent optional files
+        SHA-256 hashes, with None for absent files
     """
-    fingerprints = []
+    hashes = []
     for file_path in file_paths:
-        value = None
+        file_hash = None
         if file_path is not None and file_path.exists():
-            value = sha256(file_path.read_bytes()).digest()
-        fingerprints.append(value)
-    return tuple(fingerprints)
+            file_hash = sha256(file_path.read_bytes()).digest()
+        hashes.append(file_hash)
+    return tuple(hashes)
 
 
 def load_report_notes(file_path: Path, count: int) -> dict[int, str]:

@@ -21,7 +21,7 @@ from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 from .decisions import ReviewDecisions
 from .files import (
     backup_review_files,
-    get_file_fingerprints,
+    get_file_hashes,
     parse_source_srt,
     restore_files,
     validate_project_paths,
@@ -76,7 +76,7 @@ class AuditSession:
         self._proofreading_running = False
         self._proofreading_source: Series | None = None
         self._proofreading_content: bytes | None = None
-        self._proofreading_fingerprints: tuple[bytes | None, ...] | None = None
+        self._proofreading_file_hashes: tuple[bytes | None, ...] | None = None
         try:
             self.infile_path = val_input_path(infile_path)
             self.outfile_path = val_output_path(
@@ -124,7 +124,7 @@ class AuditSession:
             self.state_path.parent.mkdir(parents=True, exist_ok=True)
             with closing(sqlite3.connect(self.state_path)) as db, db:
                 initialize_progress(db, self._source_content)
-            self._fingerprints = self._file_fingerprints()
+            self._saved_file_hashes = self._file_hashes()
         except (OSError, ValueError, sqlite3.Error) as exc:
             raise ScinoephileError(f"Unable to open review editor: {exc}") from exc
 
@@ -168,7 +168,7 @@ class AuditSession:
                 raise ValueError("Wait for the current operation to finish")
             if not self.outfile_path.exists():
                 raise ValueError("Run proofreading before auditing")
-            self._check_file_fingerprints()
+            self._check_file_hashes()
             rows = self.rows()
             blocks = tuple(
                 tuple(rows[first:last])
@@ -201,8 +201,8 @@ class AuditSession:
                 raise ValueError("The proofreading output already exists")
             if rerun and not self.outfile_path.exists():
                 raise ValueError("Run proofreading before re-proofreading")
-            fingerprints = self._file_fingerprints()
-            if fingerprints[1:] != self._fingerprints[1:]:
+            file_hashes = self._file_hashes()
+            if file_hashes[1:] != self._saved_file_hashes[1:]:
                 raise ValueError("Output or JSON changed outside this session")
             content = self.infile_path.read_bytes()
             source = parse_source_srt(content)
@@ -210,11 +210,11 @@ class AuditSession:
                 (s.start, s.end) for s in self.original
             ]:
                 raise ValueError("OCR reload must preserve subtitle counts and timings")
-            if sha256(content).digest() != fingerprints[0]:
+            if sha256(content).digest() != file_hashes[0]:
                 raise ValueError("OCR input changed while it was being loaded")
             self._proofreading_source = source
             self._proofreading_content = content
-            self._proofreading_fingerprints = fingerprints
+            self._proofreading_file_hashes = file_hashes
             self._proofreading_running = True
             return source
 
@@ -229,7 +229,7 @@ class AuditSession:
             self._proofreading_running = False
             self._proofreading_source = None
             self._proofreading_content = None
-            self._proofreading_fingerprints = None
+            self._proofreading_file_hashes = None
 
     def page(
         self, filters: AuditFilters, *, after: int = 0, through: int | None = None
@@ -276,7 +276,7 @@ class AuditSession:
         with self._lock, closing(sqlite3.connect(self.state_path)) as db:
             if not self._auditing_running:
                 raise ValueError("No audit run is active")
-            self._check_file_fingerprints()
+            self._check_file_hashes()
             if set(findings) != {row.index for row in block}:
                 raise ValueError("Audit findings must cover the complete block")
             current = {row.key: row for row in self.rows()}
@@ -330,7 +330,7 @@ class AuditSession:
                 raise ValueError("No proofreading run is active")
             if (
                 self.outfile_path.exists() and not rerun
-            ) or self._file_fingerprints() != self._proofreading_fingerprints:
+            ) or self._file_hashes() != self._proofreading_file_hashes:
                 raise ValueError(
                     "Project files changed during proofreading; restart the app. "
                     "Output was not replaced."
@@ -390,7 +390,7 @@ class AuditSession:
             self._block_ranges = ranges
             self._rows = updated
             self._rows_by_key = {row.key: row for row in updated}
-            self._fingerprints = self._file_fingerprints()
+            self._saved_file_hashes = self._file_hashes()
 
     def rows(self) -> list[AuditRow]:
         """Read current text and independent progress without stale form caching.
@@ -463,7 +463,7 @@ class AuditSession:
                     raise ValueError(
                         "This row changed in another tab. Reload before saving."
                     )
-                self._check_file_fingerprints()
+                self._check_file_hashes()
                 proofreading_changed = (
                     not self.outfile_path.exists()
                     or reviewed != current.reviewed
@@ -519,7 +519,7 @@ class AuditSession:
             self.decisions = decisions
             self._rows = updated
             self._rows_by_key = {row.key: row for row in updated}
-            self._fingerprints = self._file_fingerprints()
+            self._saved_file_hashes = self._file_hashes()
             return set(affected)
 
     def verify_visible(self, filters: AuditFilters, token: str) -> int:
@@ -539,7 +539,7 @@ class AuditSession:
                 raise ValueError("Run proofreading before verifying subtitles")
             if self._proofreading_running or self._auditing_running:
                 raise ValueError("Wait for proofreading or auditing to finish")
-            self._check_file_fingerprints()
+            self._check_file_hashes()
             try:
                 db.execute("BEGIN IMMEDIATE")
                 filters.validate()
@@ -563,7 +563,7 @@ class AuditSession:
                 raise ScinoephileError(f"Unable to verify subtitles: {exc}") from exc
             return len(rows)
 
-    def _check_file_fingerprints(self):
+    def _check_file_hashes(self):
         """Reject changes made outside the active editor's write transaction.
 
         Raises:
@@ -573,21 +573,19 @@ class AuditSession:
             raise ValueError(
                 "OCR input changed. Re-proofread before editing or auditing."
             )
-        if self._file_fingerprints() != self._fingerprints:
+        if self._file_hashes() != self._saved_file_hashes:
             raise ValueError(
                 "A subtitle or JSON file changed outside this session. "
                 "Restart before saving."
             )
 
-    def _file_fingerprints(self) -> tuple[bytes | None, ...]:
+    def _file_hashes(self) -> tuple[bytes | None, ...]:
         """Hash the project's source and writable files.
 
         Returns:
-            digests for the input, output, and optional decisions in that order
+            hashes for the input, output, and optional decisions in that order
         """
-        return get_file_fingerprints(
-            self.infile_path, self.outfile_path, self.json_path
-        )
+        return get_file_hashes(self.infile_path, self.outfile_path, self.json_path)
 
     def _prepare_edit(
         self, rows: list[AuditRow], current: AuditRow, text: str, note: str
