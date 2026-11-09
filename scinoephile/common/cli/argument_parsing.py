@@ -217,11 +217,14 @@ def duration_arg(value: str) -> timedelta:
         raise ArgumentTypeError(str(exc)) from exc
 
 
-def enum_arg[T: Enum](enum_type: type[T]) -> Callable[[Any], T]:
+def enum_arg[T: Enum](
+    enum_type: type[T], *, choices: tuple[T, ...] | None = None
+) -> Callable[[Any], T]:
     """Validate an enum argument.
 
     Arguments:
         enum_type: enum class to parse
+        choices: accepted members, defaulting to the entire enum
     Returns:
         value validator function
     """
@@ -234,50 +237,67 @@ def enum_arg[T: Enum](enum_type: type[T]) -> Callable[[Any], T]:
         Returns:
             validated enum value
         Raises:
-            ArgumentTypeError: if value is not a valid enum value
+            ArgumentTypeError: if value does not identify an accepted enum member
         """
+        cause = None
         try:
-            return enum_type(value)
+            member = enum_type(value)
         except ValueError as exc:
-            options = ", ".join(enum_options(enum_type))
-            raise ArgumentTypeError(
-                f"{value!r} is not one of the supported values: {options}"
-            ) from exc
+            cause = exc
+        else:
+            if choices is None or member in choices:
+                return member
+
+        options = ", ".join(enum_options(enum_type, choices=choices))
+        raise ArgumentTypeError(
+            f"{value!r} is not one of the supported values: {options}"
+        ) from cause
 
     return wrapped
 
 
-def enum_metavar(enum_type: type[Enum]) -> str:
+def enum_metavar(
+    enum_type: type[Enum], *, choices: tuple[Enum, ...] | None = None
+) -> str:
     """Get argparse metavar for enum values.
 
     Arguments:
         enum_type: enum class
+        choices: accepted members, defaulting to the entire enum
     Returns:
         argparse metavar for enum values
     """
-    return f"{{{','.join(enum_options(enum_type))}}}"
+    return f"{{{','.join(enum_options(enum_type, choices=choices))}}}"
 
 
-def enum_options(enum_type: type[Enum]) -> tuple[str, ...]:
+def enum_options(
+    enum_type: type[Enum], *, choices: tuple[Enum, ...] | None = None
+) -> tuple[str, ...]:
     """Get enum values as strings.
 
     Arguments:
         enum_type: enum class
+        choices: accepted members, defaulting to the entire enum
     Returns:
-        enum values in declaration order
+        enum values in iteration order
     """
-    return tuple(str(member.value) for member in enum_type)
+    if choices is None:
+        choices = tuple(enum_type)
+    return tuple(str(member.value) for member in choices)
 
 
-def enum_options_list_str(enum_type: type[Enum]) -> str:
+def enum_options_list_str(
+    enum_type: type[Enum], *, choices: tuple[Enum, ...] | None = None
+) -> str:
     """Get human-readable enum value list.
 
     Arguments:
         enum_type: enum class
+        choices: accepted members, defaulting to the entire enum
     Returns:
         human-readable enum value list
     """
-    options = enum_options(enum_type)
+    options = enum_options(enum_type, choices=choices)
     if not options:
         return ""
     if len(options) == 1:

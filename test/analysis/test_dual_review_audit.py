@@ -10,8 +10,8 @@ from typing import TypedDict
 
 from scinoephile.analysis.audit.dual_review import audit_dual_review
 from scinoephile.analysis.audit.review_filters import (
-    DualReviewAuditFilter,
-    ReviewAuditFilters,
+    ReviewAuditFilter,
+    ReviewAuditFilterGroup,
 )
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
@@ -59,7 +59,7 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
     inputs = _get_audit_inputs(tmp_path)
 
     report = audit_dual_review(
-        **inputs, filters=ReviewAuditFilters(row_filter=DualReviewAuditFilter.changes)
+        **inputs, filters=ReviewAuditFilterGroup(row_filter=ReviewAuditFilter.changes)
     )
 
     assert "- simplified review edits: 1" in report
@@ -81,7 +81,7 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_dual_review(
         **inputs,
-        filters=ReviewAuditFilters(row_filter=DualReviewAuditFilter.discrepancies),
+        filters=ReviewAuditFilterGroup(row_filter=ReviewAuditFilter.discrepancies),
     )
     assert "- table rows: 2" in report
     assert "| 2 |" in report
@@ -90,8 +90,8 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_dual_review(
         **inputs,
-        filters=ReviewAuditFilters(
-            row_filter=DualReviewAuditFilter.all, character_filter=("著", "丙")
+        filters=ReviewAuditFilterGroup(
+            row_filter=ReviewAuditFilter.all, character_filter=("著", "丙")
         ),
     )
     assert "- character filter: 著, 丙" in report
@@ -101,8 +101,8 @@ def test_audit_dual_review_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_dual_review(
         **inputs,
-        filters=ReviewAuditFilters(
-            row_filter=DualReviewAuditFilter.all, first_index=2, last_index=3
+        filters=ReviewAuditFilterGroup(
+            row_filter=ReviewAuditFilter.all, first_index=2, last_index=3
         ),
     )
     assert "- final text discrepancies: 1" in report
@@ -125,7 +125,7 @@ def test_audit_dual_review_ignores_timing_differences(tmp_path: Path):
     inputs["traditional_reviewed"].events[1].end = 62_500
 
     report = audit_dual_review(
-        **inputs, filters=ReviewAuditFilters(row_filter=DualReviewAuditFilter.all)
+        **inputs, filters=ReviewAuditFilterGroup(row_filter=ReviewAuditFilter.all)
     )
 
     assert "- table rows: 4" in report

@@ -15,7 +15,11 @@ from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.guided_review import GuidedReviewTestCase
 
-from .review_filters import ReviewAuditFilter, ReviewAuditFilters
+from .review_filters import (
+    STANDARD_REVIEW_AUDIT_FILTERS,
+    ReviewAuditFilter,
+    ReviewAuditFilterGroup,
+)
 from .utils import (
     AuditResult,
     format_audit_report,
@@ -66,7 +70,7 @@ def audit_guided_review(
     guide: Series,
     test_cases: Sequence[GuidedReviewTestCase],
     *,
-    filters: ReviewAuditFilters = ReviewAuditFilters(),
+    filters: ReviewAuditFilterGroup = ReviewAuditFilterGroup(),
 ) -> str:
     """Audit logged guided-review decisions by target subtitle.
 
@@ -81,10 +85,11 @@ def audit_guided_review(
         ScinoephileError: if filters are unsupported or a logged case cannot be
             matched uniquely to source data
     """
-    row_filter = filters.row_filter.value
-    if row_filter not in ReviewAuditFilter:
+    row_filter = filters.row_filter
+    if row_filter not in STANDARD_REVIEW_AUDIT_FILTERS:
         raise ScinoephileError(
-            f"Unable to audit guided review: unsupported row filter {row_filter!r}"
+            "Unable to audit guided review: "
+            f"unsupported row filter {row_filter.value!r}"
         )
     block_pairs = get_block_pairs_by_pause(target, guide)
     validate_audit_block_count(
@@ -203,7 +208,7 @@ def audit_guided_review(
 
 
 def _block_intersects_range(
-    block: _GuidedReviewBlock, filters: ReviewAuditFilters
+    block: _GuidedReviewBlock, filters: ReviewAuditFilterGroup
 ) -> bool:
     """Check whether a guided-review block intersects an audit range.
 
@@ -234,7 +239,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
     ],
     block_pairs: Sequence[tuple[Series, Series]],
     *,
-    filters: ReviewAuditFilters,
+    filters: ReviewAuditFilterGroup,
 ) -> list[tuple[int, GuidedReviewTestCase, _GuidedReviewBlock]]:
     """Get current cases while ignoring superseded historical cases.
 
@@ -415,7 +420,7 @@ def _is_test_case_outside_range(
     guide: Series,
     guide_block_numbers: Sequence[int],
     *,
-    filters: ReviewAuditFilters,
+    filters: ReviewAuditFilterGroup,
 ) -> bool:
     """Check whether an unmatched case is provably outside a bounded range.
 

@@ -106,6 +106,7 @@ class AuditCliBase(ScinoephileCliBase):
         default: TFilter,
         *,
         description: str,
+        choices: tuple[TFilter, ...] | None = None,
     ):
         """Add a consistently formatted row-filter argument.
 
@@ -114,6 +115,7 @@ class AuditCliBase(ScinoephileCliBase):
             filter_type: enum defining accepted filter values
             default: default filter value
             description: semantic description of each accepted filter
+            choices: accepted members, defaulting to the entire enum
         """
         # Locate the shared operation group created by the audit base parser
         arg_groups = get_arg_groups_by_name(
@@ -125,16 +127,14 @@ class AuditCliBase(ScinoephileCliBase):
         )
 
         # Parse the filter directly to its enum while keeping help text uniform
+        options = enum_options_list_str(filter_type, choices=choices)
         arg_groups["operation arguments"].add_argument(
             "--filter",
             default=default,
             dest="row_filter",
-            metavar=enum_metavar(filter_type),
-            type=enum_arg(filter_type),
-            help=(
-                f"rows to include: {enum_options_list_str(filter_type)}; "
-                f"{description} (default: %(default)s)"
-            ),
+            metavar=enum_metavar(filter_type, choices=choices),
+            type=enum_arg(filter_type, choices=choices),
+            help=(f"rows to include: {options}; {description} (default: %(default)s)"),
         )
 
     @staticmethod

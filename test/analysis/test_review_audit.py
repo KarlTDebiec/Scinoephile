@@ -5,14 +5,14 @@
 from __future__ import annotations
 
 from enum import StrEnum
+from typing import cast
 
 from pytest import raises
 
 from scinoephile.analysis.audit.review import audit_review
 from scinoephile.analysis.audit.review_filters import (
-    DualReviewAuditFilter,
     ReviewAuditFilter,
-    ReviewAuditFilters,
+    ReviewAuditFilterGroup,
 )
 from scinoephile.analysis.audit.review_inputs import ReviewAuditPair
 from scinoephile.core import ScinoephileError
@@ -56,7 +56,7 @@ def test_audit_review_filters_unverified_cases():
                 review_cases=(unverified_case, verified_case),
             ),
         ),
-        filters=ReviewAuditFilters(row_filter=ReviewAuditFilter.unverified),
+        filters=ReviewAuditFilterGroup(row_filter=ReviewAuditFilter.unverified),
     )
 
     assert "- row filter: unverified" in report
@@ -74,7 +74,7 @@ def test_audit_review_filters_unverified_cases():
                 review_cases=(unverified_case, verified_case),
             ),
         ),
-        filters=ReviewAuditFilters(row_filter=ReviewAuditFilter.all),
+        filters=ReviewAuditFilterGroup(row_filter=ReviewAuditFilter.all),
     )
     assert "| 1 | First<br>First revised | Test review: Revised. |  |" in all_report
     assert "| 2 | Second |  | ✓ |" in all_report
@@ -120,7 +120,7 @@ def test_audit_review_ignores_retained_historical_cases():
                 review_cases=(historical_case, current_case),
             ),
         ),
-        filters=ReviewAuditFilters(row_filter=ReviewAuditFilter.all),
+        filters=ReviewAuditFilterGroup(row_filter=ReviewAuditFilter.all),
     )
 
     assert "Historical note." not in report
@@ -139,8 +139,10 @@ def test_audit_review_rejects_unsupported_filter():
     with raises(ScinoephileError, match="unsupported row filter 'unsupported'"):
         audit_review(
             reviews=reviews,
-            filters=ReviewAuditFilters(
-                row_filter=UnsupportedReviewAuditFilter.unsupported
+            filters=ReviewAuditFilterGroup(
+                row_filter=cast(
+                    ReviewAuditFilter, UnsupportedReviewAuditFilter.unsupported
+                )
             ),
         )
 
@@ -165,7 +167,7 @@ def test_audit_review_selects_blocks():
 
     report = audit_review(
         reviews=reviews,
-        filters=ReviewAuditFilters(
+        filters=ReviewAuditFilterGroup(
             row_filter=ReviewAuditFilter.all, first_block=2, last_block=2
         ),
     )
@@ -177,13 +179,14 @@ def test_audit_review_selects_blocks():
 
     with raises(ScinoephileError, match="mutually exclusive"):
         audit_review(
-            reviews=reviews, filters=ReviewAuditFilters(first_index=1, first_block=2)
+            reviews=reviews,
+            filters=ReviewAuditFilterGroup(first_index=1, first_block=2),
         )
 
     with raises(ScinoephileError, match="requires at least one comparison"):
         audit_review(
             reviews=reviews,
-            filters=ReviewAuditFilters(row_filter=DualReviewAuditFilter.discrepancies),
+            filters=ReviewAuditFilterGroup(row_filter=ReviewAuditFilter.discrepancies),
         )
 
 
@@ -220,11 +223,12 @@ def test_audit_review_uses_latest_duplicate_case():
     )
 
     report = audit_review(
-        reviews=reviews, filters=ReviewAuditFilters(row_filter=ReviewAuditFilter.all)
+        reviews=reviews,
+        filters=ReviewAuditFilterGroup(row_filter=ReviewAuditFilter.all),
     )
     unverified_report = audit_review(
         reviews=reviews,
-        filters=ReviewAuditFilters(row_filter=ReviewAuditFilter.unverified),
+        filters=ReviewAuditFilterGroup(row_filter=ReviewAuditFilter.unverified),
     )
 
     assert "Historical note." not in report

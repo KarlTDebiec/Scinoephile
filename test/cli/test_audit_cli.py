@@ -14,10 +14,7 @@ from scinoephile.analysis.audit.aligned_diff import AlignedDiffAuditFilter
 from scinoephile.analysis.audit.delineation import DelineationAuditFilter
 from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
 from scinoephile.analysis.audit.punctuation import PunctuationAuditFilter
-from scinoephile.analysis.audit.review_filters import (
-    DualReviewAuditFilter,
-    ReviewAuditFilter,
-)
+from scinoephile.analysis.audit.review_filters import ReviewAuditFilter
 from scinoephile.analysis.audit.translation import TranslationAuditFilter
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
@@ -73,7 +70,7 @@ def test_audit_cli_filter_enums():
         AuditOcrFusionCli: OcrFusionAuditFilter,
         AuditPunctuationCli: PunctuationAuditFilter,
         AuditReviewReportCli: ReviewAuditFilter,
-        AuditReviewDualCli: DualReviewAuditFilter,
+        AuditReviewDualCli: ReviewAuditFilter,
         AuditReviewTradCli: ReviewAuditFilter,
         AuditTranslationCli: TranslationAuditFilter,
     }
@@ -322,6 +319,10 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     assert "not allowed with argument --guide" in capsys.readouterr().err
 
     with raises(SystemExit):
+        run_cli_with_args(AuditReviewReportCli, f"{arguments} --filter discrepancies")
+    assert "supported values: all, changes, unverified" in capsys.readouterr().err
+
+    with raises(SystemExit):
         run_cli_with_args(
             AuditReviewReportCli,
             (f"--original {target_path} --guide {guide_path} --filter unverified"),
@@ -331,11 +332,6 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
 
 def test_audit_review_cli_help_is_consistent():
     """Test review audit help documents JSON inputs and option defaults."""
-    filter_types = {
-        AuditReviewReportCli: ReviewAuditFilter,
-        AuditReviewDualCli: DualReviewAuditFilter,
-        AuditReviewTradCli: ReviewAuditFilter,
-    }
     for cli_class in (AuditReviewReportCli, AuditReviewDualCli, AuditReviewTradCli):
         actions = {
             action.dest: action
@@ -344,12 +340,17 @@ def test_audit_review_cli_help_is_consistent():
         if cli_class is AuditReviewReportCli:
             assert "mode" not in actions
             assert actions["original_path"].option_strings == ["--original"]
-        filter_type = filter_types[cli_class]
+        options = (ReviewAuditFilter.all, ReviewAuditFilter.changes)
+        if cli_class is AuditReviewDualCli:
+            options += (ReviewAuditFilter.discrepancies,)
+        options += (ReviewAuditFilter.unverified,)
         filter_action = actions["row_filter"]
         assert filter_action.choices is None
-        assert filter_action.metavar == enum_metavar(filter_type)
+        assert filter_action.metavar == enum_metavar(ReviewAuditFilter, choices=options)
         assert isinstance(filter_action.help, str)
-        assert enum_options_list_str(filter_type) in filter_action.help
+        assert enum_options_list_str(ReviewAuditFilter, choices=options) in (
+            filter_action.help
+        )
         assert "all includes every subtitle" in filter_action.help
         assert "changes includes" in filter_action.help
         assert "unverified includes" in filter_action.help
@@ -394,8 +395,13 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     assert "- subtitle range: 1 through 1" in stdout
     assert "- table rows: 1" in stdout
 
-    run_cli_with_args(AuditReviewDualCli, f"{arguments} --first-block 1 --last-block 1")
-    assert "- block range: 1 through 1" in capsys.readouterr().out
+    run_cli_with_args(
+        AuditReviewDualCli,
+        f"{arguments} --first-block 1 --last-block 1 --filter discrepancies",
+    )
+    assert "- row filter: discrepancies\n- block range: 1 through 1" in (
+        capsys.readouterr().out
+    )
 
     run_cli_with_args(AuditReviewDualCli, f"{arguments} --characters 错这")
     stdout = capsys.readouterr().out
@@ -535,6 +541,10 @@ def test_audit_review_trad_cli(tmp_path: Path, capsys: CaptureFixture):
     assert "- traditional review edits: 1" in stdout
     assert "- traditional simplification review edits: 1" in stdout
     assert "| Subtitle | Traditional | Traditional simplification | Notes |" in stdout
+
+    with raises(SystemExit):
+        run_cli_with_args(AuditReviewTradCli, f"{arguments} --filter discrepancies")
+    assert "supported values: all, changes, unverified" in capsys.readouterr().err
 
     traditional_json_path = tmp_path / "traditional.json"
     traditional_json_path.write_text(

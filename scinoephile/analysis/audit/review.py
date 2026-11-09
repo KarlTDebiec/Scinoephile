@@ -18,12 +18,14 @@ from .utils import (
 
 __all__ = ["audit_review"]
 
+_DEFAULT_FILTERS = review_filters.ReviewAuditFilterGroup()
+
 
 def audit_review(
     *,
     reviews: Sequence[review_inputs.ReviewAuditPair],
     comparisons: Sequence[review_inputs.ReviewAuditComparison] = (),
-    filters: review_filters.ReviewAuditFilters = review_filters.ReviewAuditFilters(),
+    filters: review_filters.ReviewAuditFilterGroup = _DEFAULT_FILTERS,
 ) -> str:
     """Audit a composition of review pairs and final comparisons.
 
@@ -39,13 +41,13 @@ def audit_review(
     """
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
-    row_filter_value = filters.row_filter.value
-    if row_filter_value not in {"all", "changes", "discrepancies", "unverified"}:
+    row_filter = filters.row_filter
+    if row_filter not in review_filters.ReviewAuditFilter:
         raise ScinoephileError(
             f"Unable to audit subtitle reviews: unsupported row filter "
-            f"{row_filter_value!r}"
+            f"{row_filter.value!r}"
         )
-    if row_filter_value == "discrepancies" and not comparisons:
+    if row_filter == review_filters.ReviewAuditFilter.discrepancies and not comparisons:
         raise ScinoephileError(
             "Unable to audit subtitle reviews: discrepancy filtering requires at "
             "least one comparison"
@@ -153,7 +155,7 @@ def _format_report(
     covered_indexes: frozenset[int],
     has_review_cases: bool,
     indexes: Sequence[int],
-    filters: review_filters.ReviewAuditFilters,
+    filters: review_filters.ReviewAuditFilterGroup,
     unverified_indexes: frozenset[int],
 ) -> str:
     """Build semantic review data and format it with the shared renderer.
@@ -268,7 +270,7 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    filters: review_filters.ReviewAuditFilters,
+    filters: review_filters.ReviewAuditFilterGroup,
     unverified_indexes: frozenset[int],
 ) -> list[int]:
     """Get subtitle indexes selected for the report.
@@ -285,20 +287,20 @@ def _get_filtered_indexes(
     Raises:
         AssertionError: if an internal invariant is violated
     """
-    row_filter = filters.row_filter.value
-    if row_filter == "all":
+    row_filter = filters.row_filter
+    if row_filter == review_filters.ReviewAuditFilter.all:
         selected_indexes = set(indexes)
-    elif row_filter == "changes":
+    elif row_filter == review_filters.ReviewAuditFilter.changes:
         selected_indexes = {
             index
             for changed_indexes in (*review_changes, *comparison_changes)
             for index in changed_indexes
         }
-    elif row_filter == "discrepancies":
+    elif row_filter == review_filters.ReviewAuditFilter.discrepancies:
         selected_indexes = {
             index for changed_indexes in comparison_changes for index in changed_indexes
         }
-    elif row_filter == "unverified":
+    elif row_filter == review_filters.ReviewAuditFilter.unverified:
         selected_indexes = set(indexes) & unverified_indexes
     else:
         raise AssertionError(f"Unexpected validated row filter {row_filter!r}")

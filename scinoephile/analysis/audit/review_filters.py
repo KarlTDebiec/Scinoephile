@@ -10,23 +10,11 @@ from enum import StrEnum
 
 from .utils import format_block_range, format_index_range, validate_audit_range
 
-__all__ = ["DualReviewAuditFilter", "ReviewAuditFilter", "ReviewAuditFilters"]
-
-
-class DualReviewAuditFilter(StrEnum):
-    """Row filters supported by a dual-review audit."""
-
-    all = "all"
-    """Include every eligible row."""
-
-    changes = "changes"
-    """Include rows with a review edit or final discrepancy."""
-
-    discrepancies = "discrepancies"
-    """Include only final discrepancies between review paths."""
-
-    unverified = "unverified"
-    """Include only rows from cases not marked as verified."""
+__all__ = [
+    "STANDARD_REVIEW_AUDIT_FILTERS",
+    "ReviewAuditFilter",
+    "ReviewAuditFilterGroup",
+]
 
 
 class ReviewAuditFilter(StrEnum):
@@ -36,17 +24,28 @@ class ReviewAuditFilter(StrEnum):
     """Include every eligible row."""
 
     changes = "changes"
-    """Include only rows with review edits."""
+    """Include rows with review edits or final discrepancies, if compared."""
+
+    discrepancies = "discrepancies"
+    """Include only final discrepancies between review paths."""
 
     unverified = "unverified"
     """Include only rows from cases not marked as verified."""
 
 
+STANDARD_REVIEW_AUDIT_FILTERS = (
+    ReviewAuditFilter.all,
+    ReviewAuditFilter.changes,
+    ReviewAuditFilter.unverified,
+)
+"""Row filters for review audits without a final comparison."""
+
+
 @dataclass(frozen=True, kw_only=True)
-class ReviewAuditFilters:
+class ReviewAuditFilterGroup:
     """Row, character, and range filters shared by review audit reports."""
 
-    row_filter: StrEnum = ReviewAuditFilter.changes
+    row_filter: ReviewAuditFilter = ReviewAuditFilter.changes
     """Row filter selected for the review workflow."""
     character_filter: tuple[str, ...] = ()
     """Characters to match in the subtitle text."""

@@ -10,7 +10,7 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
 from .review import audit_review
-from .review_filters import ReviewAuditFilters
+from .review_filters import ReviewAuditFilterGroup
 from .review_inputs import ReviewAuditComparison, ReviewAuditPair
 
 __all__ = ["audit_dual_review"]
@@ -27,7 +27,7 @@ def audit_dual_review(
     traditional_review_cases: Sequence[TestCase] = (),
     traditional_simplified_review_cases: Sequence[TestCase] = (),
     simplified_review_cases: Sequence[TestCase] = (),
-    filters: ReviewAuditFilters = ReviewAuditFilters(),
+    filters: ReviewAuditFilterGroup = ReviewAuditFilterGroup(),
 ) -> str:
     """Audit parallel simplified and traditional-to-simplified review paths.
 

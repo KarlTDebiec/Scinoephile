@@ -11,8 +11,9 @@ from pathlib import Path
 from scinoephile.analysis.audit.guided_review import audit_guided_review
 from scinoephile.analysis.audit.review import audit_review
 from scinoephile.analysis.audit.review_filters import (
+    STANDARD_REVIEW_AUDIT_FILTERS,
     ReviewAuditFilter,
-    ReviewAuditFilters,
+    ReviewAuditFilterGroup,
 )
 from scinoephile.analysis.audit.review_inputs import ReviewAuditPair
 from scinoephile.cli.helpers.blocks import add_block_range_args
@@ -140,6 +141,7 @@ class AuditReviewReportCli(AuditCliBase):
             parser,
             ReviewAuditFilter,
             ReviewAuditFilter.changes,
+            choices=STANDARD_REVIEW_AUDIT_FILTERS,
             description=(
                 "all includes every subtitle; changes includes review edits; "
                 "unverified includes subtitles in cases not marked verified"
@@ -176,7 +178,7 @@ class AuditReviewReportCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        filters: ReviewAuditFilters,
+        filters: ReviewAuditFilterGroup,
     ) -> str:
         """Load and audit one guided-review workflow.
 
@@ -207,7 +209,7 @@ class AuditReviewReportCli(AuditCliBase):
         reviewed_path: Path,
         json_path: Path | None,
         *,
-        filters: ReviewAuditFilters,
+        filters: ReviewAuditFilterGroup,
     ) -> str:
         """Load and audit one regular-review workflow.
 
@@ -295,7 +297,7 @@ class AuditReviewReportCli(AuditCliBase):
 
         # Perform operation
         try:
-            filters = ReviewAuditFilters(
+            filters = ReviewAuditFilterGroup(
                 row_filter=row_filter,
                 character_filter=get_zho_character_variants(character_filter),
                 first_index=first_index,
