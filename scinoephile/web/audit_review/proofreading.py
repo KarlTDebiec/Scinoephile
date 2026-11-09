@@ -85,6 +85,15 @@ class ProofreadingJob(BackgroundJob[ProofreadingState]):
         )
         self._refresh_cache = False
 
+    def snapshot(self) -> ProofreadingState:
+        """Read progress and the actual output-file availability.
+
+        Returns:
+            immutable proofreading card state
+        """
+        with self._lock:
+            return replace(self._state, available=not self.audit.outfile_path.exists())
+
     def start(
         self, provider_name: str, model_name: str, effort: str, *, rerun: bool = False
     ):
@@ -221,11 +230,3 @@ class ProofreadingJob(BackgroundJob[ProofreadingState]):
             self._refresh_cache = True
             raise
         self._refresh_cache = False
-
-    def _snapshot(self) -> ProofreadingState:
-        """Read progress and the actual output-file availability.
-
-        Returns:
-            immutable proofreading card state
-        """
-        return replace(self._state, available=not self.audit.outfile_path.exists())

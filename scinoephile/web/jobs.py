@@ -50,7 +50,7 @@ class BackgroundJob[State: BackgroundJobState]:
             immutable state captured under the job lock
         """
         with self._lock:
-            return self._snapshot()
+            return self._state
 
     def _advance(self):
         """Record one completed unit of work."""
@@ -78,14 +78,6 @@ class BackgroundJob[State: BackgroundJobState]:
             with self._lock:
                 self._state = replace(self._state, status=status, error=error)
                 release()
-
-    def _snapshot(self) -> State:
-        """Read state while the job lock is held.
-
-        Returns:
-            immutable progress, optionally augmented by the workflow
-        """
-        return self._state
 
     def _start_worker(
         self,

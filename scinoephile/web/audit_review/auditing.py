@@ -51,6 +51,21 @@ class AuditingJob(BackgroundJob[AuditingState]):
         """Source-backed session owning independent audit state."""
         super().__init__(AuditingState(), thread_name="proofreading-audit")
 
+    def snapshot(self) -> AuditingState:
+        """Read progress and whether unaudited subtitles remain.
+
+        Returns:
+            immutable audit card state
+        """
+        with self._lock:
+            rows = self.audit.rows()
+            available = self.audit.outfile_path.exists() and any(
+                row.finding == AuditStatus.unaudited and not row.verified
+                for row in rows
+            )
+            has_output = any(row.finding != AuditStatus.unaudited for row in rows)
+            return replace(self._state, available=available, has_output=has_output)
+
     def start(
         self, provider_name: str, model_name: str, effort: str, *, rerun: bool = False
     ):
@@ -119,16 +134,3 @@ class AuditingJob(BackgroundJob[AuditingState]):
                 rerun=rerun,
             )
             self._advance()
-
-    def _snapshot(self) -> AuditingState:
-        """Read progress and whether unaudited subtitles remain.
-
-        Returns:
-            immutable audit card state
-        """
-        rows = self.audit.rows()
-        available = self.audit.outfile_path.exists() and any(
-            row.finding == AuditStatus.unaudited and not row.verified for row in rows
-        )
-        has_output = any(row.finding != AuditStatus.unaudited for row in rows)
-        return replace(self._state, available=available, has_output=has_output)
