@@ -1,3 +1,4 @@
+/* Replacement highlight for light and dark themes */
 :root {
   --substitute: #8a3198;
 
@@ -6,6 +7,7 @@
   }
 }
 
+/* Sticky workspace header and source-file warnings */
 #workspace > header {
   position: sticky;
   top: 1rem;
@@ -26,6 +28,7 @@
   }
 }
 
+/* Selects with icons in the picker and selected value */
 select {
   &, &::picker(select) { appearance: base-select; }
   &::picker(select) {
@@ -60,6 +63,7 @@ select {
 }
 
 
+/* Filter toolbar with a clear button and matching subtitle count */
 nav[aria-label="Filters"] {
   display: grid;
   grid-template-columns: 2.5rem minmax(0, 1fr);
@@ -110,6 +114,7 @@ nav[aria-label="Filters"] {
     color: var(--muted);
   }
 }
+/* Operation controls, confirmation states, and bulk block disclosure */
 nav[aria-label="Operations"] {
   display: flex;
   flex-wrap: wrap;
@@ -146,6 +151,7 @@ nav[aria-label="Operations"] {
   }
   & > p { flex-basis: 100%; margin: 0; color: var(--error); }
 }
+/* Search and status filters with a native submit fallback */
 #filters {
   display: grid;
   grid-column: 2;
@@ -163,6 +169,7 @@ nav[aria-label="Operations"] {
 }
 
 
+/* Timestamps in block summaries and subtitle legends */
 .block-time {
   font-size: .85rem;
   font-weight: 400;
@@ -170,6 +177,7 @@ nav[aria-label="Operations"] {
   white-space: nowrap;
 }
 
+/* Collapsible subtitle blocks and their disclosure animation */
 .audit-block {
   border: 1px solid var(--border);
   border-radius: .5rem;
@@ -240,6 +248,7 @@ nav[aria-label="Operations"] {
   @media (width < 38rem) { padding: 0 .5rem .5rem; }
 }
 
+/* Subtitle fields, revision notes, and the row action bar */
 .audit-row {
   content-visibility: auto;
   contain-intrinsic-size: auto 14rem;
@@ -336,17 +345,20 @@ nav[aria-label="Operations"] {
   }
 }
 
+/* Original and proofread text with inline change highlights */
 pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 ui-monospace, monospace; margin: 0; }
 .diff-substitute { color: var(--substitute); background: color-mix(in srgb, var(--substitute) 10%, var(--background)); }
 .diff-delete { color: var(--error); background: color-mix(in srgb, var(--error) 10%, var(--background)); }
 .diff-insert { color: var(--link); background: color-mix(in srgb, var(--link) 10%, var(--background)); }
 
+/* Stack the proofread diff and its editable textarea */
 .inline-proofread {
   display: grid;
   & > * { grid-area: 1 / 1; }
   & > pre { padding: 1px; pointer-events: none; visibility: hidden; }
 }
 
+/* Verification toggle backed by a native checkbox */
 .verification-toggle {
   position: relative;
   display: inline-flex;
@@ -370,9 +382,11 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 ui-monospac
   }
 }
 
+/* Notice for subtitles that share a proofreading decision */
 .shared { font-size: .85rem; color: var(--link); }
 
 
+/* Autosave feedback and the optional saving animation */
 .save-status {
   display: none;
   margin-left: auto;
@@ -400,6 +414,7 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 ui-monospac
 }
 @keyframes saving-spin { to { transform: rotate(360deg); } }
 
+/* Load the next block batch unless loading is paused */
 #load-more {
   padding: .75rem 0;
   text-align: right;
@@ -408,6 +423,7 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 ui-monospac
   #workspace[data-loading-paused] & { display: none; }
 }
 
+/* Background job cards for settings, confirmation, and progress */
 #proofreading, #auditing {
   display: grid;
   grid-template-columns: 1.5rem minmax(0, 1fr);

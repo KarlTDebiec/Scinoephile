@@ -1,3 +1,4 @@
+/* Light and dark editor palettes */
 :root {
   color-scheme: light dark;
   --background: #fff;
@@ -27,6 +28,7 @@
   }
 }
 
+/* Page width, typography, and focus indicators */
 body {
   max-width: 86rem;
   margin: 1rem auto 2rem;
@@ -41,6 +43,7 @@ a { color: var(--link); }
 svg { flex: none; fill: currentColor; }
 :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
+/* Defaults for native form controls */
 input, textarea, select, button {
   box-sizing: border-box;
   font: inherit;
@@ -57,6 +60,7 @@ button {
 }
 textarea { field-sizing: content; }
 
+/* Shared toolbar surface and spacing */
 .editor-toolbar {
   padding: .5rem;
   margin: 1rem 0;
@@ -64,6 +68,7 @@ textarea { field-sizing: content; }
   border-radius: .5rem;
   background: var(--surface);
 }
+/* Error, empty, and request-in-progress states */
 .error { color: var(--error); }
 .empty { padding: 2rem; text-align: center; }
 .htmx-request button { cursor: progress; }
