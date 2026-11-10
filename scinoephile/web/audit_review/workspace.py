@@ -75,10 +75,6 @@ class AuditPage:
     """Loaded matching query groups, with filtered rows inside."""
     filters: AuditFilters
     """Normalized filters."""
-    total: int
-    """Total current source rows."""
-    verified: int
-    """Verified current source rows."""
     matching: int
     """Rows matching all filters, including unloaded blocks."""
     verification: dict[str, VerificationSelection]
@@ -149,8 +145,6 @@ def get_audit_page(
         rows=[row for block in visible_blocks for row in block.rows],
         blocks=visible_blocks,
         filters=filters,
-        total=len(rows),
-        verified=sum(row.verified for row in rows),
         matching=len(matching),
         verification=verification,
         filter_counts=filters.counts(rows),

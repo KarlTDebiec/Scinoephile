@@ -3,7 +3,7 @@
 """Interactive subtitle review audits.
 
 Package hierarchy (modules may import from any above):
-* job_settings / rerun_confirmation / workspace
+* job_settings / workspace
 * auditing / editor_routes / proofreading
 * app
 """

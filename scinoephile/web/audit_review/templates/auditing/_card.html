@@ -1,4 +1,3 @@
-{% from '_rerun_confirmation.html' import rerun_button with context %}
 {% from '_icons.html' import icon %}
 <section id="auditing"
          aria-label="Auditing"{% if not show_auditing %} hidden{% endif %}{% if auditing.status == 'running' %} hx-get="{{ url_for('auditing_status', reaudit=1 if show_auditing else 0) }}" hx-trigger="every 5s" hx-swap="outerHTML"{% endif %}>
@@ -14,6 +13,7 @@
     {% elif auditing.available or auditing.has_output %}
       {% if auditing.error %}<p class="error"
                                 role="alert">{{ auditing.error }}</p>{% endif %}
+      {% if confirming_rerun %}<p role="status">Re-auditing may replace saved audit findings.</p>{% endif %}
       <form method="post"
             action="{{ url_for('start_auditing') }}"
             hx-post="{{ url_for('start_auditing') }}"
@@ -39,7 +39,16 @@
           </button>
         {% endif %}
         {% if auditing.has_output %}
-          {{ rerun_button('auditing', auditing, 'Run full re-audit', 'clipboard-text-play', blocked=auditing_blocked, show_label=auditing.available) }}
+          {% set rerun_label = 'Confirm re-audit' if confirming_rerun else 'Run full re-audit' %}
+          <button type="submit"
+                  name="rerun"
+                  value="{{ 'confirm' if confirming_rerun else 'on' }}"{% if auditing_blocked %} disabled{% endif %}
+                  {% if confirming_rerun %}class="is-confirming"{% endif %}
+                  aria-label="{{ rerun_label }}"
+                  title="{{ rerun_label }}">
+            {{ icon('clipboard-text-play-outline', 24) }}
+            {% if auditing.available or confirming_rerun %}<span>{{ rerun_label }}</span>{% endif %}
+          </button>
         {% endif %}
       </form>
       <p class="error" role="alert" data-auditing-message></p>

@@ -46,10 +46,6 @@ class AuditRow:
 
     key: str
     """Content identity; changed inputs get fresh audit progress."""
-    track_id: str
-    """Track identifier."""
-    label: str
-    """Track display label."""
     language: str
     """Subtitle language tag."""
     index: int
@@ -110,9 +106,6 @@ def build_audit_rows(
         for number, (first, last) in enumerate(block_ranges, 1)
         for index in range(first, last)
     }
-    label = language.code
-    if language == Language.eng:
-        label = "English"
     source_digest = source_hash.hex()
     verified = decisions.verified_indexes()
 
@@ -122,8 +115,6 @@ def build_audit_rows(
         rows.append(
             AuditRow(
                 key=key,
-                track_id=language.code,
-                label=label,
                 language=language.code,
                 index=index + 1,
                 start=subtitle.start,

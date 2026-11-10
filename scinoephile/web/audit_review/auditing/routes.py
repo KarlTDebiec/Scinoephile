@@ -11,7 +11,6 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask
 from scinoephile.operations.review_audit.filters import AuditFilters
 from scinoephile.operations.review_audit.project import ReviewAuditProject
-from scinoephile.web.audit_review.rerun_confirmation import confirm_rerun
 from scinoephile.web.audit_review.workspace import get_view_context
 
 from .job import AuditingJob
@@ -56,15 +55,15 @@ def register_auditing_routes(app: FlaskApp, audit: ReviewAuditProject):
         Returns:
             current page reload or inline configuration error
         """
-        rerun = flask.request.form.get("rerun") == "on"
+        rerun_action = flask.request.form.get("rerun")
+        rerun = rerun_action in {"on", "confirm"}
+        provider = flask.request.form.get("provider", "")
+        model = flask.request.form.get("model", "")
+        effort = flask.request.form.get("effort", "")
         try:
-            if not confirm_rerun("auditing", rerun=rerun):
+            if rerun_action == "on":
                 state = replace(
-                    auditing.snapshot(),
-                    **{
-                        name: flask.request.form.get(name, "")
-                        for name in ("provider", "model", "effort")
-                    },
+                    auditing.snapshot(), provider=provider, model=model, effort=effort
                 )
                 if flask.request.headers.get("HX-Request") != "true":
                     return flask.render_template(
@@ -72,16 +71,15 @@ def register_auditing_routes(app: FlaskApp, audit: ReviewAuditProject):
                         **get_view_context(audit, AuditFilters()),
                         auditing=state,
                         show_auditing=True,
+                        confirming_rerun=True,
                     )
                 return flask.render_template(
-                    "auditing/_card.html", auditing=state, show_auditing=True
+                    "auditing/_card.html",
+                    auditing=state,
+                    show_auditing=True,
+                    confirming_rerun=True,
                 )
-            auditing.start(
-                flask.request.form.get("provider", ""),
-                flask.request.form.get("model", ""),
-                flask.request.form.get("effort", ""),
-                rerun=rerun,
-            )
+            auditing.start(provider, model, effort, rerun=rerun)
         except (ValueError, ScinoephileError) as exc:
             if flask.request.headers.get("HX-Request") == "true":
                 return flask.render_template(

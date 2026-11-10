@@ -451,17 +451,11 @@ def test_audit_partial_failure_resumes_only_remaining_blocks(
     before = audit.rows()[:2]
     page = client.get("/").get_data(as_text=True)
     assert "Resume audit" in page and "Run full re-audit" in page
-    rerun = dict(data, rerun="on")
-    for _ in range(2):
-        assert client.post("/auditing", data=rerun).status_code == 200
-        with client.session_transaction() as state:
-            confirmation = state["rerun_confirmations"]["auditing"]
-            rerun["confirmation"] = confirmation["token"]
-    assert confirmation["stage"] == 2
+    prepared = client.post("/auditing", data=dict(data, rerun="on"))
+    assert prepared.status_code == 200
+    assert b"Confirm re-audit" in prepared.data
     provider.fail_at = 0
     assert client.post("/auditing", data=data).status_code == 303
-    with client.session_transaction() as state:
-        assert "auditing" not in state["rerun_confirmations"]
     _join(job)
     assert job.snapshot().status == "complete" and job.snapshot().total == 1
     assert [s["index"] for s in provider.queries[-1]["subtitles"]] == [3]
@@ -783,16 +777,10 @@ def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
         "effort": "xhigh",
         "rerun": "on",
     }
-    for _ in range(2):
-        prepared = client.post("/auditing", data=data, headers={"HX-Request": "true"})
-        assert prepared.status_code == 200
-        with client.session_transaction() as state:
-            confirmation = state["rerun_confirmations"]["auditing"]
-            data["confirmation"] = confirmation["token"]
-    ready_at = confirmation["ready_at"]
-    monkeypatch.setattr(
-        "scinoephile.web.audit_review.rerun_confirmation.time", lambda: ready_at + 1
-    )
+    prepared = client.post("/auditing", data=data, headers={"HX-Request": "true"})
+    assert prepared.status_code == 200
+    assert b"Re-auditing may replace saved audit findings." in prepared.data
+    data["rerun"] = "confirm"
     provider.release.clear()
     provider.fail_at = 2
     response = client.post(
@@ -819,11 +807,11 @@ def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
 def test_rerun_confirmation(
     tmp_path: Path, monkeypatch: MonkeyPatch, operation: str, extension: str
 ):
-    """Enforce three clicks and the delay even without JS; bind consent to settings.
+    """Require one confirmation of a rerun, including on ordinary forms.
 
     Arguments:
         tmp_path: temporary subtitle project
-        monkeypatch: clock and worker replacements
+        monkeypatch: offline provider and worker replacements
         operation: protected worker endpoint
         extension: worker application key
     """
@@ -841,10 +829,6 @@ def test_rerun_confirmation(
     app = create_app(audit)
     start = Mock()
     monkeypatch.setattr(app.extensions[extension], "start", start)
-    now = [1000.0]
-    monkeypatch.setattr(
-        "scinoephile.web.audit_review.rerun_confirmation.time", lambda: now[0]
-    )
     client = app.test_client()
     client.get("/")
     with client.session_transaction() as state:
@@ -853,37 +837,15 @@ def test_rerun_confirmation(
         csrf=csrf, provider="openai", model="model-one", effort="xhigh", rerun="on"
     )
     url = f"/{operation}"
-    before = [
-        p.read_bytes()
-        for p in (audit.infile_path, audit.outfile_path, audit.audit_json_path)
-    ]
-    assert client.post(url, data=data).status_code == 200
-    with client.session_transaction() as state:
-        data["confirmation"] = state["rerun_confirmations"][operation]["token"]
-    assert client.post(url, data=data).status_code == 200
-    with client.session_transaction() as state:
-        data["confirmation"] = state["rerun_confirmations"][operation]["token"]
-    client.post(url, data=data)
+    prepared = client.post(url, data=data)
+    assert prepared.status_code == 200
+    assert b"may replace saved" in prepared.data
+    assert b'name="rerun"' in prepared.data and b'value="confirm"' in prepared.data
+    assert b'value="model-one"' in prepared.data
     start.assert_not_called()
-    assert before == [
-        p.read_bytes()
-        for p in (audit.infile_path, audit.outfile_path, audit.audit_json_path)
-    ]
-    now[0] = 1004.0
-    data["model"] = "model-two"
-    assert client.post(url, data=data).status_code == 200
-    start.assert_not_called()
-    with client.session_transaction() as state:
-        data["confirmation"] = state["rerun_confirmations"][operation]["token"]
-    client.post(url, data=data)
-    with client.session_transaction() as state:
-        data["confirmation"] = state["rerun_confirmations"][operation]["token"]
-    now[0] += 3
-    client.post(url, data=data)
-    start.assert_called_once_with("openai", "model-two", "xhigh", rerun=True)
-    start.reset_mock()
-    client.post(url, data=data)
-    start.assert_not_called()
+    confirmed = client.post(url, data=dict(data, rerun="confirm"))
+    assert confirmed.status_code == 303
+    start.assert_called_once_with("openai", "model-one", "xhigh", rerun=True)
 
 
 @mark.parametrize("operation", ["proofreading", "auditing"])

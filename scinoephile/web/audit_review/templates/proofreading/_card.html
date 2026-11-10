@@ -1,4 +1,3 @@
-{% from '_rerun_confirmation.html' import rerun_button with context %}
 {% from '_icons.html' import icon %}
 <section id="proofreading"
          aria-label="Proofreading"{% if not show_proofreading %} hidden{% endif %}{% if proofreading.status == 'running' %} hx-get="{{ url_for('proofreading_status', reproofread=1 if show_proofreading else 0) }}" hx-trigger="every 5s" hx-swap="outerHTML"{% endif %}>
@@ -14,6 +13,7 @@
     {% elif proofreading.available or reproofreading %}
       {% if proofreading.error %}<p class="error"
                                     role="alert">{{ proofreading.error }}</p>{% endif %}
+      {% if confirming_rerun %}<p role="status">Re-proofreading may replace saved corrections.</p>{% endif %}
       <form method="post"
             action="{{ url_for('start_proofreading') }}"
             hx-post="{{ url_for('start_proofreading') }}"
@@ -29,13 +29,17 @@
                maxlength="200"
                placeholder="Provider default">
         <select name="effort" aria-label="Reasoning" title="Reasoning"><option value="">Provider default</option>{% for level in reasoning_levels %}<option value="{{ level.value }}"{% if level.value == proofreading.effort %} selected{% endif %}>{{ level.value }}</option>{% endfor %}</select>
-        {% if reproofreading %}
-          {{ rerun_button('proofreading', proofreading, 'Run re-proofreading', 'text-box-play', blocked=proofreading_blocked) }}
-        {% else %}
-          <button type="submit"{% if proofreading_blocked %} disabled{% endif %}
-                  aria-label="{{ 'Run re-proofreading' if reproofreading else 'Run proofreading' }}"
-                  title="{{ 'Run re-proofreading' if reproofreading else 'Run proofreading' }}">{{ icon('text-box-play-outline', 24) }}</button>
+        {% set run_label = 'Run re-proofreading' if reproofreading else 'Run proofreading' %}
+        {% if confirming_rerun %}
+          {% set run_label = "Confirm re-proofreading" %}
         {% endif %}
+        <button type="submit"{% if proofreading_blocked %} disabled{% endif %}
+                {% if confirming_rerun %}name="rerun" value="confirm" class="is-confirming"{% endif %}
+                aria-label="{{ run_label }}"
+                title="{{ run_label }}">
+          {{ icon('text-box-play-outline', 24) }}
+          {% if confirming_rerun %}<span>{{ run_label }}</span>{% endif %}
+        </button>
       </form>
     {% else %}
       {% if proofreading.error %}<p class="error"

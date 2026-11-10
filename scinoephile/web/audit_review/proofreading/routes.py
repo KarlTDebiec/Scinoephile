@@ -11,7 +11,6 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask
 from scinoephile.operations.review_audit.filters import AuditFilters
 from scinoephile.operations.review_audit.project import ReviewAuditProject
-from scinoephile.web.audit_review.rerun_confirmation import confirm_rerun
 from scinoephile.web.audit_review.workspace import get_view_context
 
 from .job import ProofreadingJob
@@ -60,14 +59,16 @@ def register_proofreading_routes(app: FlaskApp, audit: ReviewAuditProject):
         message = ""
         status = 200
         rerun = audit.outfile_path.exists()
+        provider = flask.request.form.get("provider", "")
+        model = flask.request.form.get("model", "")
+        effort = flask.request.form.get("effort", "")
         try:
-            if not confirm_rerun("proofreading", rerun=rerun):
+            if rerun and flask.request.form.get("rerun") != "confirm":
                 state = replace(
                     proofreading.snapshot(),
-                    **{
-                        name: flask.request.form.get(name, "")
-                        for name in ("provider", "model", "effort")
-                    },
+                    provider=provider,
+                    model=model,
+                    effort=effort,
                 )
                 if flask.request.headers.get("HX-Request") != "true":
                     return flask.render_template(
@@ -76,19 +77,16 @@ def register_proofreading_routes(app: FlaskApp, audit: ReviewAuditProject):
                         proofreading=state,
                         reproofreading=True,
                         show_proofreading=True,
+                        confirming_rerun=True,
                     )
                 return flask.render_template(
                     "proofreading/_card.html",
                     proofreading=state,
                     reproofreading=True,
                     show_proofreading=True,
+                    confirming_rerun=True,
                 )
-            proofreading.start(
-                flask.request.form.get("provider", ""),
-                flask.request.form.get("model", ""),
-                flask.request.form.get("effort", ""),
-                rerun=rerun,
-            )
+            proofreading.start(provider, model, effort, rerun=rerun)
         except (ValueError, ScinoephileError) as exc:
             message = str(exc)
             status = 409

@@ -55,36 +55,27 @@ class ProofreadingDecisions:
         Raises:
             ValueError: if native review validation fails
         """
-        if not self._get_case_indexes(index):
-            self._add_case(index)
-        texts, notes = self.render()
-        affected = {value - 1 for value in self.shared_indexes(index)}
-        for target in affected:
-            texts[target] = text
-            notes[target] = note.strip() or "Edited in the review browser."
-        for case_index, starts in self.locations.items():
-            case = self.cases[case_index]
-            if not any(
-                start + offset in affected
-                for start in starts
-                for offset in range(len(case.query.subtitles))
-            ):
-                continue
-            revisions = []
-            for offset, subtitle in enumerate(case.query.subtitles):
-                target = starts[0] + offset
-                if texts[target] != subtitle.text:
-                    revisions.append(
-                        {
-                            "index": offset + 1,
-                            "text": texts[target],
-                            "note": notes[target] or "Edited in the review browser.",
-                        }
-                    )
-            data = case.model_dump(mode="json")
-            answer = {"revisions": revisions}
-            if data.get("answer") != answer:
-                data.update(answer=answer, verified=False, few_shot=False)
+        location = self._get_case_location(index) or self._add_case(index)
+        if location is None:
+            return
+        case_index, subtitle_index = location
+        data = self.cases[case_index].model_dump(mode="json")
+        revisions = {}
+        if data["answer"] is not None:
+            revisions = {
+                revision["index"]: revision for revision in data["answer"]["revisions"]
+            }
+        if text == self.texts[index]:
+            revisions.pop(subtitle_index, None)
+        else:
+            revisions[subtitle_index] = {
+                "index": subtitle_index,
+                "text": text,
+                "note": note.strip() or "Edited in the review browser.",
+            }
+        answer = {"revisions": [revisions[index] for index in sorted(revisions)]}
+        if data["answer"] != answer:
+            data.update(answer=answer, verified=False, few_shot=False)
             self.cases[case_index] = self.case_cls.model_validate(data)
 
     def normalize_srt_revisions(self):
@@ -187,16 +178,17 @@ class ProofreadingDecisions:
         return verified
 
     def verify(self, index: int, *, verified: bool):
-        """Set verification on the proofreading cases covering a subtitle.
+        """Set verification on the proofreading case covering a subtitle.
 
         Arguments:
             index: zero-based source subtitle index
             verified: whether a human approves the complete proofreading answer
         """
-        if verified and not self._get_case_indexes(index):
-            self._add_case(index)
-        for case_index in self._get_case_indexes(index):
-            self._set_case_verified(case_index, verified=verified)
+        location = self._get_case_location(index)
+        if verified and location is None:
+            location = self._add_case(index)
+        if location is not None:
+            self._set_case_verified(location[0], verified=verified)
 
     def verify_blocks(self, ranges: list[tuple[int, int]]):
         """Approve existing cases and record unchanged answers for uncovered subtitles.
@@ -227,17 +219,20 @@ class ProofreadingDecisions:
             self.cases.extend(new_cases.values())
             self._index_cases()
 
-    def _add_case(self, index: int):
+    def _add_case(self, index: int) -> tuple[int, int] | None:
         """Create an unchanged answer for the editor block containing a subtitle.
 
         Arguments:
             index: zero-based source subtitle index
+        Returns:
+            case index and one-based subtitle index, if the subtitle exists
         """
         for first, last in self.block_ranges:
             if first <= index < last:
                 self.cases.append(self._build_unchanged_case(first, last))
                 self._index_cases()
-                return
+                return len(self.cases) - 1, index - first + 1
+        return None
 
     def _build_unchanged_case(
         self, first: int, last: int, *, verified: bool = False
@@ -264,22 +259,20 @@ class ProofreadingDecisions:
             }
         )
 
-    def _get_case_indexes(self, index: int) -> list[int]:
-        """Find active cases covering a source subtitle.
+    def _get_case_location(self, index: int) -> tuple[int, int] | None:
+        """Find the active case and subtitle position for a source subtitle.
 
         Arguments:
             index: zero-based source subtitle index
         Returns:
-            indexes into the case list
+            case index and one-based subtitle index, if an active case exists
         """
-        return [
-            case_index
-            for case_index, starts in self.locations.items()
-            if any(
-                start <= index < start + len(self.cases[case_index].query.subtitles)
-                for start in starts
-            )
-        ]
+        for case_index, starts in self.locations.items():
+            length = len(self.cases[case_index].query.subtitles)
+            for start in starts:
+                if start <= index < start + length:
+                    return case_index, index - start + 1
+        return None
 
     def _index_cases(self):
         """Match the latest answer for each query to its complete source blocks."""

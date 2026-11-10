@@ -8,8 +8,6 @@
   {{ super() }}
   <script defer
           src="{{ url_for('audit_review_assets.static', filename='audit-review.js') }}"></script>
-  <script defer
-          src="{{ url_for('audit_review_assets.static', filename='rerun-confirmation.js') }}"></script>
 {% endblock %}
 {% block body %}
   {% include "_workspace.html" %}
