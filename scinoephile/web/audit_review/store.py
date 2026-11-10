@@ -10,6 +10,8 @@ from typing import Annotated, Self
 
 from pydantic import BaseModel, Field
 
+from scinoephile.core import Language
+
 from .models import AuditRow, AuditStatus
 
 __all__ = ["AuditProgress", "SavedAuditRow"]
@@ -35,6 +37,8 @@ class SavedAuditRow(BaseModel):
 class AuditProgress(BaseModel):
     """Published source and independently editable audit findings."""
 
+    language: Language | None = None
+    """Language used for audit findings, absent in earlier progress files."""
     source: list[str]
     """Exact original SRT split into lines for readable Git diffs."""
     proofreading: dict[str, str] = Field(default_factory=dict)

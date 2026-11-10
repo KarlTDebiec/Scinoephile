@@ -1,7 +1,7 @@
 {% from '_icons.html' import icon %}
 <main id="workspace" hx-history-elt>
   <header>
-    <h1>{{ audit.title }}</h1>
+    <h1>{{ title }}</h1>
     <div id="messages" role="status" aria-live="polite"></div>
     {% set active = filters.verification != 'all' or filters.changes != 'all' or filters.finding != 'all' or filters.q %}
     <nav class="editor-toolbar" aria-label="Filters">
@@ -86,7 +86,7 @@
         {% set full_audit_only = auditing.has_output and not auditing.available %}
         <button type="submit"
                 title="Show or hide auditing"
-                aria-expanded="{{ 'true' if show_auditing else 'false' }}"{% if not audit.outfile_path.exists() %} disabled{% endif %}>{{ icon('clipboard-text-clock-outline' if auditing.status == 'running' else ('clipboard-refresh-outline' if full_audit_only else 'clipboard-text-eye-outline')) }}{{ 'Re-audit' if full_audit_only else 'Audit' }}</button>
+                aria-expanded="{{ 'true' if show_auditing else 'false' }}"{% if not has_output %} disabled{% endif %}>{{ icon('clipboard-text-clock-outline' if auditing.status == 'running' else ('clipboard-refresh-outline' if full_audit_only else 'clipboard-text-eye-outline')) }}{{ 'Re-audit' if full_audit_only else 'Audit' }}</button>
       </form>
       {% include "_verification.html" %}
       <button id="toggle-blocks"
@@ -105,13 +105,13 @@
       </button>
       <p data-operations-message role="status" hidden></p>
       {% if show_proofreading or proofreading.status == "running" %}
-        {% include "_proofreading.html" %}
+        {% include "proofreading/_card.html" %}
       {% endif %}
       {% if show_auditing or auditing.status == "running" %}
-        {% include "_auditing.html" %}
+        {% include "auditing/_card.html" %}
       {% endif %}
     </nav>
-    {% if audit.input_changed %}<p class="warning" role="status">OCR input changed. Re-proofread to load the current file.</p>{% endif %}
+    {% if input_changed %}<p class="warning" role="status">OCR input changed. Re-proofread to load the current file.</p>{% endif %}
   </header>
   <div id="audit-rows">
     {% for block in page.blocks %}

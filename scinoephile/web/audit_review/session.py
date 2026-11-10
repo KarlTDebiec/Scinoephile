@@ -1,11 +1,9 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Editable proofreading sessions with native decision JSON and subtitle output."""
+"""Coordinate review jobs and saves for one subtitle project."""
 
 from __future__ import annotations
 
-from copy import deepcopy
-from dataclasses import replace
 from hashlib import sha256
 from pathlib import Path
 from threading import RLock
@@ -17,18 +15,21 @@ from scinoephile.lang.id import get_series_language
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 
 from .decisions import ReviewDecisions
+from .edits import build_review_edit, prepare_review_edit
 from .files import (
     backup_review_files,
     get_file_hashes,
+    lock_review_files,
     parse_source_srt,
     render_review_files,
     validate_project_paths,
     write_files,
 )
 from .models import AuditFilters, AuditPage, AuditRow, AuditStatus
-from .pagination import get_audit_page, get_verification_token
-from .rows import build_audit_rows
+from .pagination import get_audit_page
+from .rows import apply_audit_findings, build_audit_rows, carry_audit_progress
 from .store import AuditProgress
+from .verification import prepare_bulk_verification
 
 __all__ = ["AuditSession"]
 
@@ -78,58 +79,18 @@ class AuditSession:
             if report_path is not None:
                 report_path = val_input_path(report_path)
             self.state_path = self.outfile_path.with_suffix(".audit.json")
+            self._lock_path = self.state_path.with_name(f".{self.state_path.stem}.lock")
             self.title = title or self.infile_path.stem
             validate_project_paths(
                 self.infile_path,
                 self.outfile_path,
                 self.state_path,
+                lock_path=self._lock_path,
                 json_path=self.json_path,
                 report_path=report_path,
             )
-            content = self.infile_path.read_bytes()
-            write_progress = not self.state_path.exists()
-            if not write_progress:
-                self._progress = AuditProgress.model_validate_json(
-                    self.state_path.read_bytes()
-                )
-            else:
-                if self.outfile_path.with_suffix(".review.sqlite3").exists():
-                    raise ValueError(
-                        "Migrate the existing audit database to JSON first"
-                    )
-                self._progress = AuditProgress(
-                    source=content.decode("utf-8").splitlines(keepends=True)
-                )
-            self._source_content = "".join(self._progress.source).encode("utf-8")
-            if not self.outfile_path.exists() and self._source_content != content:
-                self._source_content = content
-                self._progress = AuditProgress(
-                    source=content.decode("utf-8").splitlines(keepends=True)
-                )
-                write_progress = True
-            self.original = parse_source_srt(self._source_content)
-            detected = language or get_series_language(self.original)
-            if detected is None or detected not in DEFAULT_PROMPTS:
-                raise ValueError("Specify a supported proofreading language")
-            self.language = detected
-            self.decisions = None
-            if self.json_path is not None:
-                self.decisions = ReviewDecisions(
-                    self.original, self.language, self.json_path
-                )
-            self._rows, self._block_ranges = build_audit_rows(
-                self.original,
-                self._source_content,
-                self.language,
-                self.decisions,
-                outfile_path=self.outfile_path,
-                report_path=report_path,
-            )
-            self._rows_by_key = {row.key: row for row in self._rows}
-            if write_progress:
-                self._write_progress(self._progress)
-            else:
-                self._saved_file_hashes = self._file_hashes()
+            with lock_review_files(self._lock_path):
+                self._load_project(language, report_path)
         except (OSError, ValueError) as exc:
             raise ScinoephileError(f"Unable to open review editor: {exc}") from exc
 
@@ -149,6 +110,12 @@ class AuditSession:
     def input_changed(self) -> bool:
         """Whether the configured OCR file differs from the last published baseline."""
         return self.infile_path.read_bytes() != self._source_content
+
+    @property
+    def job_running(self) -> bool:
+        """Whether auditing or proofreading currently blocks row edits."""
+        with self._lock:
+            return self._auditing_running or self._proofreading_running
 
     @property
     def proofreading_running(self) -> bool:
@@ -180,7 +147,7 @@ class AuditSession:
         Raises:
             ValueError: if output is absent, a worker is active, or no rows qualify
         """
-        with self._lock:
+        with self._lock, lock_review_files(self._lock_path):
             if self._auditing_running or self._proofreading_running:
                 raise ValueError("Wait for the current operation to finish")
             if not self.outfile_path.exists():
@@ -211,7 +178,7 @@ class AuditSession:
         Raises:
             ValueError: if another run, structural change, or external edit conflicts
         """
-        with self._lock:
+        with self._lock, lock_review_files(self._lock_path):
             if self._proofreading_running or self._auditing_running:
                 raise ValueError("A proofreading or audit run is already running")
             if self.outfile_path.exists() and not rerun:
@@ -290,32 +257,11 @@ class AuditSession:
             ValueError: if reservation, files or source row versions changed
             ScinoephileError: if audit progress cannot be persisted
         """
-        with self._lock:
+        with self._lock, lock_review_files(self._lock_path):
             if not self._auditing_running:
                 raise ValueError("No audit run is active")
             self._check_file_hashes()
-            if set(findings) != {row.index for row in block}:
-                raise ValueError("Audit findings must cover the complete block")
-            current = {row.key: row for row in self.rows()}
-            updated = []
-            for row in block:
-                if not rerun and (row.verified or row.finding != AuditStatus.unaudited):
-                    continue
-                if current[row.key] != row:
-                    raise ValueError("Subtitle changed during auditing")
-                status, note = findings[row.index]
-                if status not in {AuditStatus.ok, AuditStatus.review}:
-                    raise ValueError("Invalid automated audit verdict")
-                if (status == AuditStatus.review) != bool(note.strip()):
-                    raise ValueError("Only Review verdicts require audit notes")
-                updated.append(
-                    replace(
-                        row,
-                        notes=note.strip(),
-                        finding=AuditStatus(status),
-                        version=row.version + 1,
-                    )
-                )
+            updated = apply_audit_findings(self.rows(), block, findings, rerun=rerun)
             try:
                 self._write_progress(self._progress.with_rows(updated))
             except OSError as exc:
@@ -339,7 +285,7 @@ class AuditSession:
                 new output cannot be saved as SRT
             ScinoephileError: if publishing files or progress fails
         """
-        with self._lock:
+        with self._lock, lock_review_files(self._lock_path):
             if not self._proofreading_running:
                 raise ValueError("No proofreading run is active")
             if (
@@ -357,24 +303,9 @@ class AuditSession:
             updated, ranges = build_audit_rows(
                 source, content, self.language, decisions
             )
-            previous = self.rows()
-            for index, (row, replacement) in enumerate(
-                zip(previous, updated, strict=True)
-            ):
-                current = replace(replacement, version=row.version + 1)
-                if (
-                    current.original == row.original
-                    and current.reviewed == row.reviewed
-                    and current.review_note == row.review_note
-                ):
-                    current = replace(
-                        current,
-                        finding=row.finding,
-                        notes=row.notes,
-                        verified=row.verified,
-                    )
-                updated[index] = current
+            updated = carry_audit_progress(self.rows(), updated)
             progress = AuditProgress(
+                language=self.language,
                 source=content.decode("utf-8").splitlines(keepends=True),
                 proofreading=self._progress.proofreading
                 if settings is None
@@ -402,7 +333,6 @@ class AuditSession:
             self.decisions = decisions
             self._block_ranges = ranges
             self._rows = updated
-            self._rows_by_key = {row.key: row for row in updated}
 
     def rows(self) -> list[AuditRow]:
         """Read current text and independent progress without stale form caching.
@@ -445,68 +375,41 @@ class AuditSession:
             ValueError: if text, verdict, or a stale save is invalid
             ScinoephileError: if saving files fails
         """
-        original = self._rows_by_key[key].original
-        reviewed = reviewed.replace("\r\n", "\n").replace("\r", "\n")
-        if not reviewed.strip() or len(reviewed) > 1000 or "\n\n" in reviewed:
-            raise ValueError(
-                "Subtitle text must contain 1–1000 characters and no blank lines"
+        with self._lock, lock_review_files(self._lock_path):
+            rows = self.rows()
+            current = next((row for row in rows if row.key == key), None)
+            if current is None:
+                raise KeyError(key)
+            draft = build_review_edit(
+                current,
+                reviewed=reviewed,
+                review_note=review_note,
+                notes=notes,
+                finding=finding,
+                verified=verified,
             )
-        if reviewed != original and not review_note.strip():
-            raise ValueError("A note is required for changed proofreading text")
-        if len(review_note) > 1000:
-            raise ValueError("Revision notes must not exceed 1000 characters")
-        try:
-            finding = AuditStatus(finding)
-        except ValueError as exc:
-            raise ValueError("Unknown audit verdict") from exc
-        _validate_audit_notes(finding, notes)
-        with self._lock:
             if self._proofreading_running or self._auditing_running:
                 raise ValueError(
                     "Wait for proofreading or auditing to finish before editing"
                 )
+            if version != current.version:
+                raise ValueError(
+                    "This row changed in another tab. Reload before saving."
+                )
             try:
-                rows = self.rows()
-                current = next(row for row in rows if row.key == key)
-                if version != current.version:
-                    raise ValueError(
-                        "This row changed in another tab. Reload before saving."
-                    )
                 self._check_file_hashes()
                 proofreading_changed = (
                     not self.outfile_path.exists()
-                    or reviewed != current.reviewed
-                    or review_note != current.review_note
+                    or draft.reviewed != current.reviewed
+                    or draft.review_note != current.review_note
                 )
-                if proofreading_changed:
-                    updated, decisions = self._prepare_edit(
-                        rows, current, reviewed, review_note
-                    )
-                else:
-                    updated, decisions = rows, self.decisions
-                affected = {
-                    row.key: replace(
-                        row, verified=False, finding=AuditStatus.unaudited, notes=""
-                    )
-                    for row in updated
-                    if row != rows[row.index - 1]
-                }
-                # Keep the reset unless the form also changed its audit decision
-                if key not in affected or (notes, finding, verified) != (
-                    current.notes,
-                    current.finding,
-                    current.verified,
-                ):
-                    affected[key] = replace(
-                        updated[current.index - 1],
-                        notes=notes,
-                        finding=finding,
-                        verified=verified
-                        and (key not in affected or not current.verified),
-                    )
-                progress = self._progress.with_rows(
-                    replace(row, version=row.version + 1) for row in affected.values()
+                updated, decisions, affected = prepare_review_edit(
+                    rows,
+                    draft,
+                    self.decisions,
+                    proofreading_changed=proofreading_changed,
                 )
+                progress = self._progress.with_rows(affected)
                 writes = {}
                 if proofreading_changed:
                     writes = render_review_files(
@@ -521,8 +424,7 @@ class AuditSession:
                 raise ScinoephileError(f"Unable to save review edits: {exc}") from exc
             self.decisions = decisions
             self._rows = updated
-            self._rows_by_key = {row.key: row for row in updated}
-            return set(affected)
+            return {row.key for row in affected}
 
     def verify_visible(self, filters: AuditFilters, token: str) -> int:
         """Verify every matching subtitle atomically without changing its text.
@@ -536,28 +438,16 @@ class AuditSession:
             ValueError: if output is absent, work is active, or the selection changed
             ScinoephileError: if verification cannot be persisted
         """
-        with self._lock:
+        with self._lock, lock_review_files(self._lock_path):
             if not self.outfile_path.exists():
                 raise ValueError("Run proofreading before verifying subtitles")
             if self._proofreading_running or self._auditing_running:
                 raise ValueError("Wait for proofreading or auditing to finish")
             self._check_file_hashes()
             try:
-                filters.validate()
-                matching = [row for row in self.rows() if filters.matches(row)]
-                if token != get_verification_token(matching):
-                    raise ValueError(
-                        "The matching subtitles changed. Reload before verifying."
-                    )
-                rows = [row for row in matching if not row.verified]
-                for row in rows:
-                    _validate_audit_notes(row.finding, row.notes)
+                rows = prepare_bulk_verification(self.rows(), filters, token)
                 if rows:
-                    progress = self._progress.with_rows(
-                        replace(row, verified=True, version=row.version + 1)
-                        for row in rows
-                    )
-                    self._write_progress(progress)
+                    self._write_progress(self._progress.with_rows(rows))
             except OSError as exc:
                 raise ScinoephileError(f"Unable to verify subtitles: {exc}") from exc
             return len(rows)
@@ -588,56 +478,69 @@ class AuditSession:
             self.infile_path, self.outfile_path, self.json_path, self.state_path
         )
 
-    def _prepare_edit(
-        self, rows: list[AuditRow], current: AuditRow, text: str, note: str
-    ) -> tuple[list[AuditRow], ReviewDecisions | None]:
-        """Build validated candidate text and native decisions before writing.
+    def _load_project(self, language: Language | None, report_path: Path | None):
+        """Load the project baseline and bind its saved findings to one language.
 
         Arguments:
-            rows: current text and audit progress
-            current: row being saved
-            text: new complete subtitle text
-            note: new revision explanation
-        Returns:
-            candidate rows and optional native decision log
+            language: explicit language, or None to use the saved or detected language
+            report_path: optional old Markdown report used to seed audit notes
         Raises:
-            ValueError: if starting a decision log would change existing subtitles
+            ValueError: if the baseline or language is incompatible with the project
         """
-        decisions = self.decisions
-        if decisions is None:
-            updated = list(rows)
-            updated[current.index - 1] = replace(
-                current, reviewed=text, review_note=note
+        content = self.infile_path.read_bytes()
+        write_progress = not self.state_path.exists()
+        if write_progress:
+            if self.outfile_path.with_suffix(".review.sqlite3").exists():
+                raise ValueError("Migrate the existing audit database to JSON first")
+            progress = AuditProgress(
+                source=content.decode("utf-8").splitlines(keepends=True)
             )
-            return updated, None
-        decisions = deepcopy(decisions)
-        # Seed any existing output edits when starting a new JSON log
-        if not decisions.cases:
-            for row in rows:
-                if row.changed:
-                    decisions.edit(row.index - 1, row.reviewed, row.review_note)
-            seeded_texts, _ = decisions.render()
-            if seeded_texts != [row.reviewed for row in rows]:
-                raise ValueError(
-                    "Existing corrections differ across linked subtitles. "
-                    "Open the editor without --json to keep those corrections."
-                )
-        decisions.edit(current.index - 1, text, note)
-        texts, revision_notes = decisions.render()
-        return [
-            replace(
-                row,
-                reviewed=texts[row.index - 1],
-                review_note=revision_notes[row.index - 1],
-                shared_indexes=decisions.shared_indexes(row.index - 1),
+        else:
+            progress = AuditProgress.model_validate_json(self.state_path.read_bytes())
+        self._source_content = "".join(progress.source).encode("utf-8")
+        if not self.outfile_path.exists() and self._source_content != content:
+            self._source_content = content
+            progress = AuditProgress(
+                language=progress.language,
+                source=content.decode("utf-8").splitlines(keepends=True),
             )
-            for row in rows
-        ], decisions
+            write_progress = True
+        self.original = parse_source_srt(self._source_content)
+        resolved = language or progress.language or get_series_language(self.original)
+        if resolved is None or resolved not in DEFAULT_PROMPTS:
+            raise ValueError("Specify a supported proofreading language")
+        if progress.language is not None and progress.language != resolved:
+            raise ValueError(
+                f"Audit progress uses language {progress.language.code}. "
+                f"Open it with --language {progress.language.code}."
+            )
+        self.language = resolved
+        if progress.language is None:
+            progress = progress.model_copy(update={"language": resolved})
+            write_progress = True
+        self._progress = progress
+        self.decisions = None
+        if self.json_path is not None:
+            self.decisions = ReviewDecisions(
+                self.original, self.language, self.json_path
+            )
+        self._rows, self._block_ranges = build_audit_rows(
+            self.original,
+            self._source_content,
+            self.language,
+            self.decisions,
+            outfile_path=self.outfile_path,
+            report_path=report_path,
+        )
+        if write_progress:
+            self._write_progress(progress)
+        else:
+            self._saved_file_hashes = self._file_hashes()
 
     def _write_progress(
         self, progress: AuditProgress, writes: dict[Path, str] | None = None
     ):
-        """Commit audit JSON alongside any changed proofreading files.
+        """Commit audit JSON and any proofreading files under the project lock.
 
         Arguments:
             progress: candidate audit state
@@ -651,18 +554,3 @@ class AuditSession:
         )
         self._progress = progress
         self._saved_file_hashes = self._file_hashes()
-
-
-def _validate_audit_notes(finding: str, notes: str):
-    """Require Review explanations and empty notes for OK verdicts.
-
-    Arguments:
-        finding: normalized audit verdict
-        notes: human or automated audit explanation
-    Raises:
-        ValueError: if Review lacks an explanation or OK has audit notes
-    """
-    if finding == AuditStatus.review and not notes.strip():
-        raise ValueError("Audit notes are required when audit status is Review")
-    if finding == AuditStatus.ok and notes:
-        raise ValueError("Clear audit notes when audit status is OK")

@@ -9,6 +9,7 @@ from dataclasses import dataclass, replace
 from enum import StrEnum
 
 from scinoephile.analysis.alignment import pairwise
+from scinoephile.core.timing import format_time_ms
 
 __all__ = ["AuditBlock", "AuditFilters", "AuditPage", "AuditRow", "AuditStatus"]
 
@@ -22,6 +23,19 @@ class AuditStatus(StrEnum):
     """The subtitle needs human review."""
     ok = "ok"
     """The audit found no issue."""
+
+    def validate_notes(self, notes: str):
+        """Require an explanation for a Review verdict and empty notes for OK.
+
+        Arguments:
+            notes: independent audit explanation
+        Raises:
+            ValueError: if the notes contradict the verdict
+        """
+        if self is AuditStatus.review and not notes.strip():
+            raise ValueError("Audit notes are required when audit status is Review")
+        if self is AuditStatus.ok and notes:
+            raise ValueError("Clear audit notes when audit status is OK")
 
 
 @dataclass(frozen=True)
@@ -172,7 +186,9 @@ class AuditRow:
     @property
     def time_label(self) -> str:
         """Start and end times including milliseconds."""
-        return f"{_format_time(self.start)} – {_format_time(self.end)}"
+        start = format_time_ms(self.start, include_milliseconds=True)
+        end = format_time_ms(self.end, include_milliseconds=True)
+        return f"{start} – {end}"
 
 
 @dataclass(frozen=True)
@@ -200,8 +216,8 @@ class AuditBlock:
     @property
     def time_label(self) -> str:
         """Full block time range in whole seconds, including hidden rows."""
-        start = _format_time(self.start, include_milliseconds=False)
-        end = _format_time(self.end, include_milliseconds=False)
+        start = format_time_ms(self.start)
+        end = format_time_ms(self.end)
         return f"{start} – {end}"
 
 
@@ -231,19 +247,3 @@ class AuditPage:
     """Stable source block cursor through which rows have loaded."""
     has_more: bool
     """Whether more matching blocks follow the loaded cursor."""
-
-
-def _format_time(milliseconds: int, *, include_milliseconds: bool = True) -> str:
-    """Format a subtitle timestamp with optional millisecond precision.
-
-    Arguments:
-        milliseconds: subtitle timestamp
-        include_milliseconds: whether to append fractional seconds
-    Returns:
-        hours, minutes, seconds and milliseconds
-    """
-    seconds, remainder = divmod(milliseconds, 1000)
-    formatted = f"{seconds // 3600:02d}:{seconds // 60 % 60:02d}:{seconds % 60:02d}"
-    if include_milliseconds:
-        formatted += f".{remainder:03d}"
-    return formatted

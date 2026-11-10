@@ -73,7 +73,7 @@ def register_auditing_routes(app: FlaskApp, audit: AuditSession):
                         show_auditing=True,
                     )
                 return flask.render_template(
-                    "_auditing.html", auditing=state, show_auditing=True
+                    "auditing/_card.html", auditing=state, show_auditing=True
                 )
             auditing.start(
                 flask.request.form.get("provider", ""),
@@ -84,7 +84,7 @@ def register_auditing_routes(app: FlaskApp, audit: AuditSession):
         except (ValueError, ScinoephileError) as exc:
             if flask.request.headers.get("HX-Request") == "true":
                 return flask.render_template(
-                    "_auditing.html",
+                    "auditing/_card.html",
                     auditing=auditing.snapshot(),
                     auditing_message=str(exc),
                     show_auditing=True,
@@ -106,4 +106,4 @@ def register_auditing_routes(app: FlaskApp, audit: AuditSession):
         state = auditing.snapshot()
         if state.status in {"complete", "error"}:
             return "", 200, {"HX-Refresh": "true"}
-        return flask.render_template("_auditing.html", auditing=state)
+        return flask.render_template("auditing/_card.html", auditing=state)

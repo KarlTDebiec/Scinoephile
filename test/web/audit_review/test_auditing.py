@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import json
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import replace
 from pathlib import Path
 from threading import Event
@@ -17,7 +18,7 @@ from pytest import MonkeyPatch, mark, raises
 from scinoephile.cli.audit.review import audit_review_run_cli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
-from scinoephile.core import Language
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
@@ -28,6 +29,7 @@ from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.auditing.job import AuditingJob
 from scinoephile.web.audit_review.models import AuditStatus
 from scinoephile.web.audit_review.session import AuditSession
+from scinoephile.web.audit_review.store import AuditProgress
 
 
 class _Provider(LLMProvider):
@@ -151,6 +153,108 @@ def _join(job: AuditingJob):
     assert job._thread is not None
     job._thread.join(15)
     assert not job._thread.is_alive()
+
+
+def test_audit_commit_serializes_editor_save(tmp_path: Path, monkeypatch: MonkeyPatch):
+    """Reject a stale editor save after an overlapping audit commit.
+
+    Arguments:
+        tmp_path: temporary project shared by two sessions
+        monkeypatch: gate for the first session's write
+    """
+    audit, _, _ = _setup(tmp_path, monkeypatch)
+    editor = AuditSession(
+        audit.infile_path, audit.outfile_path, json_path=audit.json_path
+    )
+    block = audit.begin_auditing()[0]
+    row = editor.rows()[-1]
+    writing, release, saving = Event(), Event(), Event()
+    write_progress = audit._write_progress
+
+    def hold_commit(progress: AuditProgress, writes: dict[Path, str] | None = None):
+        """Pause the audit after its stale-file check.
+
+        Arguments:
+            progress: pending audit progress
+            writes: optional other files in the commit
+        """
+        writing.set()
+        assert release.wait(5)
+        write_progress(progress, writes)
+
+    def save_edit():
+        """Attempt to save an independent row from the other session."""
+        saving.set()
+        editor.save(
+            row.key,
+            reviewed=row.reviewed,
+            review_note=row.review_note,
+            notes="Human finding.",
+            finding="review",
+            verified=True,
+            version=row.version,
+        )
+
+    monkeypatch.setattr(audit, "_write_progress", hold_commit)
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        commit = executor.submit(
+            audit.publish_audit, block, {item.index: ("ok", "") for item in block}
+        )
+        try:
+            assert writing.wait(5)
+            save = executor.submit(save_edit)
+            assert saving.wait(5)
+            with raises(TimeoutError):
+                save.result(timeout=0.25)
+        finally:
+            release.set()
+        commit.result(timeout=5)
+        with raises(ValueError, match="outside this session"):
+            save.result(timeout=5)
+    audit.end_auditing()
+    reopened = AuditSession(
+        audit.infile_path, audit.outfile_path, json_path=audit.json_path
+    )
+    assert all(item.finding == AuditStatus.ok for item in reopened.rows()[: len(block)])
+    assert reopened.rows()[-1] == row
+
+
+def test_audit_progress_is_bound_to_its_language(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Label older JSON on open, preserving findings for the correct language.
+
+    Arguments:
+        tmp_path: temporary project directory
+        monkeypatch: offline provider replacement
+    """
+    audit, _, _ = _setup(tmp_path, monkeypatch)
+    row = audit.rows()[0]
+    audit.save(
+        row.key,
+        reviewed=row.reviewed,
+        review_note=row.review_note,
+        notes="Human finding.",
+        finding="review",
+        verified=True,
+        version=row.version,
+    )
+    progress = json.loads(audit.state_path.read_bytes())
+    assert progress.pop("language") == "eng"
+    audit.state_path.write_text(json.dumps(progress), encoding="utf-8")
+
+    reopened = AuditSession(
+        audit.infile_path,
+        audit.outfile_path,
+        json_path=audit.json_path,
+        language=Language.eng,
+    )
+    assert reopened.rows() == audit.rows()
+    assert json.loads(audit.state_path.read_bytes())["language"] == "eng"
+    before = audit.state_path.read_bytes()
+    with raises(ScinoephileError, match="Audit progress uses language eng"):
+        AuditSession(audit.infile_path, audit.outfile_path, language=Language.yue_hant)
+    assert audit.state_path.read_bytes() == before
 
 
 def test_cli_audit_resumes_in_the_browser(tmp_path: Path, monkeypatch: MonkeyPatch):

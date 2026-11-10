@@ -10,6 +10,8 @@ from typing import TYPE_CHECKING
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
+from scinoephile.core.llms import ReasoningEffort
+from scinoephile.llms.providers.registry import get_provider_names
 from scinoephile.web.security import create_local_app
 
 from .auditing.routes import register_auditing_routes
@@ -44,6 +46,18 @@ def create_app(audit: AuditSession) -> FlaskApp:
         )
     )
     app.config["MAX_CONTENT_LENGTH"] = 100_000
+
+    @app.context_processor
+    def llm_choices() -> dict[str, object]:
+        """Expose the choices shared by the auditing and proofreading cards.
+
+        Returns:
+            available providers and reasoning levels
+        """
+        return {
+            "provider_names": get_provider_names(),
+            "reasoning_levels": tuple(ReasoningEffort),
+        }
 
     register_editor_routes(app, audit)
     register_auditing_routes(app, audit)

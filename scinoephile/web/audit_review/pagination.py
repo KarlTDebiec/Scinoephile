@@ -1,15 +1,15 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Pagination and selection tokens for the review audit editor."""
+"""Pagination for the review audit editor."""
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
-from hashlib import sha256
+from collections.abc import Sequence
 
+from . import verification
 from .models import AuditBlock, AuditFilters, AuditPage, AuditRow
 
-__all__ = ["get_audit_page", "get_verification_token"]
+__all__ = ["get_audit_page"]
 
 
 def get_audit_page(
@@ -65,20 +65,8 @@ def get_audit_page(
         total=len(rows),
         verified=sum(row.verified for row in rows),
         matching=len(matching),
-        verification_token=get_verification_token(matching),
+        verification_token=verification.get_verification_token(matching),
         filter_counts=filters.counts(rows),
         last_block=last_block,
         has_more=any(block.number > last_block for block in blocks),
     )
-
-
-def get_verification_token(rows: Iterable[AuditRow]) -> str:
-    """Identify the matching row versions for bulk verification.
-
-    Arguments:
-        rows: rows matching the current filters in source order
-    Returns:
-        digest of the matching row identities and versions
-    """
-    selection = [(row.key, row.version) for row in rows]
-    return sha256(repr(selection).encode()).hexdigest()

@@ -94,9 +94,13 @@ def get_view_context(
         after = max(0, int(flask.request.args.get("after", "0")))
         page = audit.page(filters, after=after, through=through)
     values = asdict(page.filters)
+    has_output = audit.outfile_path.exists()
     return {
         "verification_token": page.verification_token,
-        "audit": audit,
+        "title": audit.title,
+        "has_output": has_output,
+        "editing_blocked": not has_output or audit.job_running,
+        "input_changed": audit.input_changed,
         "page": page,
         "filters": page.filters,
         "query": urlencode(dict(values, through=page.last_block)),

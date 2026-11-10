@@ -5,6 +5,9 @@
 from __future__ import annotations
 
 import re
+import sys
+from collections.abc import Generator
+from contextlib import ExitStack, contextmanager
 from copy import deepcopy
 from hashlib import sha256
 from html import unescape
@@ -14,17 +17,24 @@ from shutil import copy2
 from tempfile import NamedTemporaryFile
 
 from scinoephile.common.file import create_temp_directory, open_atomic_text_file
+from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 
 from .decisions import ReviewDecisions
 from .exceptions import InvalidReviewSubtitleError
 from .models import AuditRow
 
+if sys.platform == "win32":
+    import msvcrt
+else:
+    import fcntl
+
 __all__ = [
     "backup_review_files",
     "get_file_hashes",
     "load_report_notes",
     "load_review_output",
+    "lock_review_files",
     "parse_source_srt",
     "render_review_files",
     "validate_project_paths",
@@ -139,6 +149,35 @@ def load_review_output(
     return texts, revision_notes
 
 
+@contextmanager
+def lock_review_files(lock_path: Path) -> Generator[None]:
+    """Lock a review project across processes while loading or committing files.
+
+    The lock file stays in place so waiting sessions share the same file.
+
+    Arguments:
+        lock_path: lock file beside the audit progress JSON
+    Yields:
+        control while holding the exclusive project lock
+    Raises:
+        ScinoephileError: if the lock cannot be acquired
+    """
+    with ExitStack() as stack:
+        try:
+            lock_path.parent.mkdir(parents=True, exist_ok=True)
+            handle = stack.enter_context(lock_path.open("a+b"))
+            if sys.platform == "win32":
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
+            else:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+        except OSError as exc:
+            raise ScinoephileError(
+                f"Unable to lock review project {lock_path}: {exc}"
+            ) from exc
+        yield
+
+
 def parse_source_srt(content: bytes) -> Series:
     """Read source subtitles from the captured SRT bytes.
 
@@ -195,6 +234,7 @@ def validate_project_paths(
     outfile_path: Path,
     state_path: Path,
     *,
+    lock_path: Path,
     json_path: Path | None,
     report_path: Path | None,
 ):
@@ -204,18 +244,21 @@ def validate_project_paths(
         infile_path: original subtitle path
         outfile_path: proofread subtitle path
         state_path: audit progress JSON path
+        lock_path: project lock file path
         json_path: optional native proofreading decisions path
         report_path: optional read-only report path
     Raises:
         ValueError: if paths collide or the output is not an SRT
     """
-    paths = [infile_path, outfile_path, state_path]
+    paths = [infile_path, outfile_path, state_path, lock_path]
     if json_path is not None:
         paths.append(json_path)
     if report_path is not None:
         paths.append(report_path)
     if len(set(paths)) != len(paths):
-        raise ValueError("Input, output, JSON, progress and report paths must differ")
+        raise ValueError(
+            "Input, output, JSON, progress, lock, and report paths must differ"
+        )
     for index, left_path in enumerate(paths):
         for right_path in paths[index + 1 :]:
             if (

@@ -1,9 +1,10 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Build audit rows and blocks from the subtitle and proofreading files."""
+"""Build and update audit rows from subtitle files and audit findings."""
 
 from __future__ import annotations
 
+from dataclasses import replace
 from hashlib import sha256
 from pathlib import Path
 
@@ -14,7 +15,49 @@ from .decisions import ReviewDecisions
 from .files import load_report_notes, load_review_output
 from .models import AuditRow, AuditStatus
 
-__all__ = ["build_audit_rows"]
+__all__ = ["apply_audit_findings", "build_audit_rows", "carry_audit_progress"]
+
+
+def apply_audit_findings(
+    rows: list[AuditRow],
+    block: tuple[AuditRow, ...],
+    findings: dict[int, tuple[str, str]],
+    *,
+    rerun: bool,
+) -> list[AuditRow]:
+    """Apply automated findings to a reserved block.
+
+    Arguments:
+        rows: current editor rows
+        block: reserved context rows supplied to the auditor
+        findings: verdict and note for each one-based index in the block
+        rerun: replace existing findings while retaining human verification
+    Returns:
+        candidate audit rows with new findings and versions
+    Raises:
+        ValueError: if the block changed or findings are incomplete or invalid
+    """
+    if set(findings) != {row.index for row in block}:
+        raise ValueError("Audit findings must cover the complete block")
+    current = {row.key: row for row in rows}
+    updated = []
+    for row in block:
+        if not rerun and (row.verified or row.finding != AuditStatus.unaudited):
+            continue
+        if current[row.key] != row:
+            raise ValueError("Subtitle changed during auditing")
+        status, note = findings[row.index]
+        if status not in {AuditStatus.ok, AuditStatus.review}:
+            raise ValueError("Invalid automated audit verdict")
+        note = note.strip()
+        if (status == AuditStatus.review) != bool(note):
+            raise ValueError("Only Review verdicts require audit notes")
+        updated.append(
+            replace(
+                row, notes=note, finding=AuditStatus(status), version=row.version + 1
+            )
+        )
+    return updated
 
 
 def build_audit_rows(
@@ -85,6 +128,32 @@ def build_audit_rows(
             )
         )
     return rows, block_ranges
+
+
+def carry_audit_progress(
+    previous: list[AuditRow], updated: list[AuditRow]
+) -> list[AuditRow]:
+    """Carry findings forward after re-proofreading when the audited text matches.
+
+    Arguments:
+        previous: rows from the previously published baseline
+        updated: rows from the new proofreading output, in the same order
+    Returns:
+        replacement rows with incremented versions and applicable audit progress
+    """
+    rows = []
+    for old, replacement in zip(previous, updated, strict=True):
+        current = replace(replacement, version=old.version + 1)
+        if (
+            current.original == old.original
+            and current.reviewed == old.reviewed
+            and current.review_note == old.review_note
+        ):
+            current = replace(
+                current, finding=old.finding, notes=old.notes, verified=old.verified
+            )
+        rows.append(current)
+    return rows
 
 
 def _get_block_ranges(

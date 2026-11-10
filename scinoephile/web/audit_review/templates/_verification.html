@@ -17,7 +17,7 @@
     <input type="hidden" name="confirm" value="on">
   {% endif %}
   <button type="submit"{% if verification_pending|default(false) %} class="is-confirming" title="Confirm verification"{% else %} title="Verify every subtitle matching the current filters, including unloaded blocks"{% endif %}
-          {% if not page.matching or not audit.outfile_path.exists() or audit.proofreading_running or audit.auditing_running %} disabled{% endif %}>
+          {% if not page.matching or editing_blocked %} disabled{% endif %}>
     {{ icon("checkbox-multiple-marked-outline") }}
     {% if verification_pending|default(false) %}
       Verify {{ '{:,}'.format(page.matching) }} matching subtitle{% if page.matching != 1 %}s{% endif %}

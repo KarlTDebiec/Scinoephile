@@ -1,9 +1,9 @@
 {% from '_icons.html' import icon, status_select, audit_options %}
 <fieldset id="row-{{ row.key }}"
-          class="audit-row"{% if not audit.outfile_path.exists() or audit.proofreading_running or audit.auditing_running %} disabled{% endif %}
+          class="audit-row"{% if editing_blocked %} disabled{% endif %}
           aria-label="Subtitle {{ row.index }}">
   <legend><span>Subtitle {{ row.index }}</span><span class="block-time">{{ row.time_label }}</span></legend>
-  {% if audit.outfile_path.exists() %}
+  {% if has_output %}
     {% set differences = row.differences %}
     <form id="form-{{ row.key }}"
           method="post"

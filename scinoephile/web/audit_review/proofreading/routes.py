@@ -9,8 +9,6 @@ from typing import TYPE_CHECKING
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask
-from scinoephile.core.llms import ReasoningEffort
-from scinoephile.llms.providers.registry import get_provider_names
 from scinoephile.web.audit_review.models import AuditFilters
 from scinoephile.web.audit_review.route_helpers import confirm_rerun, get_view_context
 from scinoephile.web.audit_review.session import AuditSession
@@ -36,7 +34,7 @@ def register_proofreading_routes(app: FlaskApp, audit: AuditSession):
 
     @app.context_processor
     def proofreading_context() -> dict[str, object]:
-        """Provide shared provider choices and the current background job state.
+        """Provide the current proofreading state and card visibility.
 
         Returns:
             proofreading card context
@@ -49,8 +47,6 @@ def register_proofreading_routes(app: FlaskApp, audit: AuditSession):
             "reproofreading": not state.available,
             "show_proofreading": visibility == "1"
             or (visibility is None and state.status in {"running", "error"}),
-            "provider_names": get_provider_names(),
-            "reasoning_levels": tuple(ReasoningEffort),
         }
 
     @app.post("/proofreading")
@@ -81,7 +77,7 @@ def register_proofreading_routes(app: FlaskApp, audit: AuditSession):
                         show_proofreading=True,
                     )
                 return flask.render_template(
-                    "_proofreading.html",
+                    "proofreading/_card.html",
                     proofreading=state,
                     reproofreading=True,
                     show_proofreading=True,
@@ -100,7 +96,7 @@ def register_proofreading_routes(app: FlaskApp, audit: AuditSession):
             if not message and state.status in {"running", "complete"}:
                 return "", 200, {"HX-Refresh": "true"}
             return flask.render_template(
-                "_proofreading.html",
+                "proofreading/_card.html",
                 proofreading=state,
                 proofreading_message=message,
                 reproofreading=rerun,
@@ -122,4 +118,4 @@ def register_proofreading_routes(app: FlaskApp, audit: AuditSession):
         state = proofreading.snapshot()
         if state.status in {"complete", "error"}:
             return "", 200, {"HX-Refresh": "true"}
-        return flask.render_template("_proofreading.html", proofreading=state)
+        return flask.render_template("proofreading/_card.html", proofreading=state)
