@@ -104,7 +104,7 @@ def build_audit_rows(
         baseline rows and their nonoverlapping subtitle block ranges
     """
     texts, revision_notes = decisions.render()
-    block_ranges = _get_block_ranges(source, decisions)
+    block_ranges = decisions.block_ranges
     block_numbers = {
         index: number
         for number, (first, last) in enumerate(block_ranges, 1)
@@ -138,35 +138,3 @@ def build_audit_rows(
             )
         )
     return rows, block_ranges
-
-
-def _get_block_ranges(
-    source: Series, decisions: ProofreadingDecisions
-) -> list[tuple[int, int]]:
-    """Use logged query boundaries or group the remaining subtitles by pauses.
-
-    Arguments:
-        source: original subtitle series
-        decisions: native proofreading decisions
-    Returns:
-        nonoverlapping zero-based inclusive/exclusive subtitle ranges
-    """
-    count = len(source)
-    if not count:
-        return []
-    joined = [False] * (count - 1)
-    covered = set()
-    for case_index, starts in decisions.locations.items():
-        size = len(decisions.cases[case_index].query.subtitles)
-        for first in starts:
-            covered.update(range(first, first + size))
-            for index in range(first, first + size - 1):
-                joined[index] = True
-    for first, last in Series.get_block_indexes_by_pause(source):
-        for index in range(first, last - 1):
-            if index not in covered and index + 1 not in covered:
-                joined[index] = True
-    boundaries = [0]
-    boundaries.extend(index + 1 for index, value in enumerate(joined) if not value)
-    boundaries.append(count)
-    return list(zip(boundaries[:-1], boundaries[1:], strict=True))

@@ -1176,6 +1176,79 @@ def test_bulk_verification_filters_and_stale_selection(tmp_path: Path):
     assert audit.rows()[1].version == 1
 
 
+@mark.parametrize("bulk", [False, True])
+def test_proofreading_approval_preserves_separate_audit_blocks(
+    tmp_path: Path, bulk: bool
+):
+    """Keep saved audits when visible text also occurs across hidden block boundaries.
+
+    Arguments:
+        tmp_path: isolated project directory
+        bulk: approve through the toolbar instead of the subtitle control
+    """
+    audit = _make_project(tmp_path, with_json=False)
+    source = audit.infile_path.read_text(encoding="utf-8")
+    source += (
+        "\n3\n00:00:10,000 --> 00:00:11,000\nHello.\n"
+        "\n4\n00:00:20,000 --> 00:00:21,000\nSame.\n"
+    )
+    audit.infile_path.write_text(source, encoding="utf-8")
+    audit.outfile_path.write_text(source, encoding="utf-8")
+    audit = ReviewAuditProject(
+        audit.infile_path, audit.outfile_path, language=Language.eng
+    )
+    for row in audit.rows()[2:]:
+        audit.save(
+            row.key,
+            reviewed=row.reviewed,
+            review_note="",
+            notes="",
+            finding="ok",
+            verified=True,
+            version=row.version,
+        )
+    audit_content = audit.audit_json_path.read_bytes()
+
+    if bulk:
+        filters = AuditFilters(q="block 1")
+        page = get_audit_page(audit.rows(), filters)
+        assert (
+            audit.verify_visible(
+                filters,
+                page.verification["proofreading"].token,
+                through=page.last_block,
+                proofreading=True,
+            )
+            == 1
+        )
+    else:
+        row = audit.rows()[0]
+        audit.save(
+            row.key,
+            reviewed=row.reviewed,
+            review_note="",
+            notes="",
+            finding="unaudited",
+            verified=False,
+            proofreading_verified=True,
+            version=row.version,
+        )
+
+    assert [row.proofreading_verified for row in audit.rows()] == [
+        True,
+        True,
+        False,
+        False,
+    ]
+    reopened = ReviewAuditProject(
+        audit.infile_path, audit.outfile_path, language=Language.eng
+    )
+    assert reopened.rows() == [replace(row, version=0) for row in audit.rows()]
+    assert [row.block_number for row in reopened.rows()] == [1, 1, 2, 3]
+    assert [row.verified for row in reopened.rows()] == [False, False, True, True]
+    assert reopened.audit_json_path.read_bytes() == audit_content
+
+
 def test_bulk_verification_http_and_native_form(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):

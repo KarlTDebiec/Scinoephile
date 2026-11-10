@@ -168,6 +168,7 @@ def test_generated_test_case_inherits_stable_metadata_schema():
         "difficulty",
         "few_shot",
         "verified",
+        "match_complete_blocks",
     ]
     assert schema["properties"]["difficulty"] == {
         "default": 0,
@@ -187,6 +188,12 @@ def test_generated_test_case_inherits_stable_metadata_schema():
         "title": "Verified",
         "type": "boolean",
     }
+    assert schema["properties"]["match_complete_blocks"] == {
+        "default": False,
+        "title": "Match Complete Blocks",
+        "type": "boolean",
+    }
+    assert "match_complete_blocks" not in schema["required"]
 
 
 def test_prompt_specific_factory_allows_aliases_reused_across_objects():
