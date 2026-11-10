@@ -266,7 +266,9 @@ def test_cli_audit_resumes_in_the_browser(tmp_path: Path, monkeypatch: MonkeyPat
         monkeypatch: offline provider replacement
     """
     audit, provider, factory = _setup(tmp_path, monkeypatch)
-    monkeypatch.setattr("scinoephile.workflows.review_audit.get_provider", factory)
+    monkeypatch.setattr(
+        "scinoephile.cli.audit.review.audit_review_run_cli.get_provider", factory
+    )
     context = tmp_path / "context.txt"
     context.write_text("Check names.", encoding="utf-8")
     assert audit.json_path is not None

@@ -33,8 +33,9 @@ from scinoephile.common.cli.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.llms.providers.registry import get_provider
 from scinoephile.operations.review_audit.project import ReviewAuditProject
-from scinoephile.workflows.review_audit import run_review_audit
+from scinoephile.operations.review_audit.run import run_audit_selection
 
 __all__ = ["AuditReviewRunCli"]
 
@@ -201,10 +202,10 @@ class AuditReviewRunCli(ScinoephileCliBase):
             start_at_idx, stop_at_idx = get_block_range_indexes(
                 parser, first_block, last_block, audit.block_count
             )
-            audited_blocks = run_review_audit(
+            provider = get_provider(llm_args.provider_name, **llm_args.provider_kwargs)
+            audited_blocks = run_audit_selection(
                 audit,
-                provider_name=llm_args.provider_name,
-                provider_kwargs=llm_args.provider_kwargs,
+                provider,
                 start_at_idx=start_at_idx,
                 stop_at_idx=stop_at_idx,
                 rerun=rerun,

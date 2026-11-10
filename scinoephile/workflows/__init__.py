@@ -5,8 +5,7 @@
 Package hierarchy (modules may import from any above):
 * cache_registry / helpers / ocr_fusion / ocr_validation / prompt_catalog
   / subtitle_extraction
-* clean / flatten / review / review_audit / romanize / transcription_alignment
-  / translation
+* clean / flatten / review / romanize / transcription_alignment / translation
 * multisource_transcription / ocr_processing
 * transcription_pipeline
 * transcription
