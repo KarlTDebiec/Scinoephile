@@ -370,5 +370,19 @@ nav[aria-label="Operations"] {
   }
 }
 
+/* Shared action bar at the bottom of a subtitle card */
+.subtitle-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem 1rem;
+  margin-top: .75rem;
+  padding-top: .75rem;
+  border-top: 1px solid var(--border);
+  font-size: .85rem;
+
+  & > button { margin-inline-start: auto; }
+}
+
 /* Hide automatic pagination while the workspace is collapsed */
 #workspace[data-loading-paused] #load-more { display: none; }

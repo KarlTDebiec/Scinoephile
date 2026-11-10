@@ -54,7 +54,8 @@ function syncOcrSave(form) {
         status = "unsaved";
         message = "Leave the field to save.";
     }
-    showEditorSaveStatus(form.querySelector(".save-status"), status, message, busy);
+    const row = form.closest(".ocr-row");
+    showEditorSaveStatus(row.querySelector(".save-status"), status, message, busy);
 }
 
 /**
@@ -77,7 +78,7 @@ function requestOcrSave(form) {
  */
 function enhanceOcrForms(root) {
     for (const form of root.querySelectorAll("[data-ocr-text]")) {
-        form.classList.add("is-enhanced");
+        form.closest(".ocr-row").classList.add("is-enhanced");
         syncOcrSave(form);
     }
 }

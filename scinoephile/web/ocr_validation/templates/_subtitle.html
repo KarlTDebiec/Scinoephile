@@ -8,14 +8,15 @@
   {# djlint:off H021 #}
   <div class="subtitle-frame"
        style="--image-width: {{ row.image_width }}px;
-              --glyph-size: {{ row.text_font_size_cqw_css }};
-              --glyph-spacing: {{ row.text_letter_spacing_cqw_css }};
+              --glyph-size: min({{ row.text_font_size_cqw_css }}, {{ row.text_font_size_px }}px);
+              --glyph-spacing: min({{ row.text_letter_spacing_cqw_css }}, {{ row.text_letter_spacing_px }}px);
               --glyph-fill: {{ row.text_color_css }};
               --glyph-edge: {{ row.text_shadow_color_css }}">
     {# djlint:on #}
     {% include "_preview.html" %}
     {% set text_url = url_for('update_subtitle', sub_idx=row.sub_idx, operation='text', status=status, q=query, through=through) %}
-    <form method="post"
+    <form id="text-form-{{ row.sub_idx }}"
+          method="post"
           action="{{ text_url }}"
           hx-post="{{ text_url }}"
           hx-target="#validation-{{ row.sub_idx }}"
@@ -25,18 +26,20 @@
           data-ocr-text>
       <input type="hidden" name="csrf" value="{{ csrf }}">
       <input type="hidden" name="version" value="{{ row.version }}">
-      <label for="subtitle-text-{{ row.sub_idx }}">OCR text</label>
       <textarea id="subtitle-text-{{ row.sub_idx }}"
                 name="text"
+                aria-label="Edit subtitle {{ row.number }} text"
                 autocomplete="off"
                 rows="1"
                 wrap="off">{{ "\n" ~ row.editable_text }}</textarea>
-      <footer class="ocr-save">
-        {% include "_row_status.html" %}
-        <button type="submit">Save text</button>
-        {{ save_status("save-status-" ~ row.sub_idx) }}
-      </footer>
     </form>
   </div>
   {% include "_validation.html" %}
+  <footer class="subtitle-footer">
+    {% include "_row_status.html" %}
+    <div class="ocr-save">
+      {{ save_status("save-status-" ~ row.sub_idx) }}
+      <button type="submit" form="text-form-{{ row.sub_idx }}">Save</button>
+    </div>
+  </footer>
 </fieldset>

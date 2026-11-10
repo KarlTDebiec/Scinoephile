@@ -63,7 +63,7 @@
         </dd>
       </dl>
       {% if row.shared_indexes|length > 1 %}<p class="shared">Shared JSON decision: saving text or a revision note updates subtitles {{ row.shared_indexes|join(", ") }}.</p>{% endif %}
-      <footer>
+      <footer class="subtitle-footer">
         <span data-proofreading-status="{% if row.changed %}changed{% else %}unchanged{% endif %}">
           <span>{{ icon("text-box-check-outline") }}Unchanged</span>
           <span>{{ icon("text-box-edit-outline") }}Changed</span>

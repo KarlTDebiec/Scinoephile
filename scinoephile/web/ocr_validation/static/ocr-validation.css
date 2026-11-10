@@ -13,12 +13,12 @@
 /* Source image and box outlines at the same scale */
 .subtitle-frame {
   container-type: inline-size;
-  width: min(100%, var(--image-width));
-  margin: .75rem auto 0;
+  margin-top: .75rem;
 }
 .ocr-preview {
   position: relative;
-  margin: 0;
+  width: min(100%, var(--image-width));
+  margin: 0 auto;
   background: var(--background);
   & img {
     display: block;
@@ -41,8 +41,10 @@
 
 /* Match the text editor to the image's size and glyph appearance */
 .subtitle-frame form {
-  & label { display: block; margin-top: .5rem; font-size: .875rem; }
+  margin-top: .5rem;
+
   & textarea {
+    --outline: var(--glyph-edge);
     display: block;
     min-height: 1.4em;
     font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
@@ -52,17 +54,21 @@
     padding: .1em 0;
     text-align: center;
     color: var(--glyph-fill);
-    text-shadow: 1px 1px var(--glyph-edge), -1px 1px var(--glyph-edge),
-      1px -1px var(--glyph-edge), -1px -1px var(--glyph-edge);
+    text-shadow: 1px 1px var(--outline), -1px 1px var(--outline),
+      1px -1px var(--outline), -1px -1px var(--outline);
     caret-color: var(--text);
+
+    @media (prefers-color-scheme: dark) {
+      color: rgb(from var(--glyph-fill) calc(255 - r) calc(255 - g) calc(255 - b));
+      --outline: rgb(from var(--glyph-edge) calc(255 - r) calc(255 - g) calc(255 - b));
+    }
   }
 }
 .ocr-save {
   display: flex;
   align-items: center;
   gap: .5rem;
-  margin-top: .4rem;
-  & .save-status { margin-left: auto; }
+  margin-inline-start: auto;
   .is-enhanced &:not(:has([data-save-state="error"])) > button[type=submit] {
     display: none;
   }

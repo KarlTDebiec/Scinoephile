@@ -51,18 +51,8 @@ nav[aria-label="Operations"] {
       & > textarea { color: transparent; caret-color: var(--text); }
     }
   }
-  & footer {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: .75rem 1rem;
-    margin-top: .75rem;
-    padding-top: .75rem;
-    border-top: 1px solid var(--border);
-    font-size: .85rem;
-
+  & .subtitle-footer {
     & select { width: auto; min-width: 9rem; }
-    & > button { margin-left: auto; }
     & [data-proofreading-status] {
       display: flex;
       align-items: center;
