@@ -45,7 +45,6 @@ authoritative hierarchy declaration above for ordering.
 | `llms` | Concrete prompt workflows, providers, and model-facing processing |
 | `media` | Media probing, subtitle extraction, cache analysis, and visual offset estimation |
 | `optimization` | Prompt optimization contracts, operation registry, and persistence |
-| `review_audit` | Proofreading audit projects, progress, and execution shared by the CLI and web editor |
 | `web` | Web interfaces for interactive operations |
 | `workflows` | Reusable end-to-end orchestration and application composition |
 

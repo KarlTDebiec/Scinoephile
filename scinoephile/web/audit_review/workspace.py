@@ -12,10 +12,10 @@ from urllib.parse import urlencode
 from scinoephile.analysis.alignment import pairwise
 from scinoephile.core.dependencies.web import import_flask
 from scinoephile.core.timing import format_time_ms
-from scinoephile.review_audit.filters import AuditFilters
-from scinoephile.review_audit.project import ReviewAuditProject
-from scinoephile.review_audit.rows import AuditRow
-from scinoephile.review_audit.verification import get_verification_token
+from scinoephile.workflows.review_audit.filters import AuditFilters
+from scinoephile.workflows.review_audit.project import ReviewAuditProject
+from scinoephile.workflows.review_audit.rows import AuditRow
+from scinoephile.workflows.review_audit.verification import get_verification_token
 
 __all__ = [
     "AuditBlock",

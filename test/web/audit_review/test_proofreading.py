@@ -18,12 +18,12 @@ from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import get_reviewer
-from scinoephile.review_audit.project import ReviewAuditProject
 from scinoephile.web import jobs
 from scinoephile.web.audit_review import job_settings
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.proofreading import job as proofreading_job
 from scinoephile.web.audit_review.proofreading.job import ProofreadingJob
+from scinoephile.workflows.review_audit.project import ReviewAuditProject
 
 
 class _Provider(LLMProvider):

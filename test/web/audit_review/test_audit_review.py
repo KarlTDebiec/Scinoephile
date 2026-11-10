@@ -24,11 +24,11 @@ from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 from scinoephile.llms.review import ReviewManager
-from scinoephile.review_audit.filters import AuditFilters
-from scinoephile.review_audit.project import ReviewAuditProject
-from scinoephile.review_audit.rows import AuditStatus
 from scinoephile.web.audit_review.app import create_app, serve_audit
 from scinoephile.web.audit_review.workspace import get_audit_page
+from scinoephile.workflows.review_audit.filters import AuditFilters
+from scinoephile.workflows.review_audit.project import ReviewAuditProject
+from scinoephile.workflows.review_audit.rows import AuditStatus
 
 
 def test_dependent_filter_counts(tmp_path: Path, monkeypatch: MonkeyPatch):
@@ -340,7 +340,7 @@ def test_failed_file_save_does_not_commit_text_or_progress(tmp_path: Path):
     before = audit.json_path.read_bytes()
     row = audit.rows()[0]
     with patch(
-        "scinoephile.review_audit.project_files.open_atomic_text_file",
+        "scinoephile.workflows.review_audit.project_files.open_atomic_text_file",
         side_effect=OSError("disk failure"),
     ):
         with raises(ScinoephileError, match="disk failure"):
@@ -571,7 +571,8 @@ def test_partial_write_failure_restores_existing_files(
             yield handle
 
     with patch(
-        "scinoephile.review_audit.project_files.open_atomic_text_file", fail_json
+        "scinoephile.workflows.review_audit.project_files.open_atomic_text_file",
+        fail_json,
     ):
         with raises(ScinoephileError, match="JSON write failed"):
             audit.save(

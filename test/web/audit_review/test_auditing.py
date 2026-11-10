@@ -24,12 +24,12 @@ from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditQuery
-from scinoephile.review_audit.audit_progress import AuditProgress
-from scinoephile.review_audit.project import ReviewAuditProject
-from scinoephile.review_audit.rows import AuditStatus
 from scinoephile.web.audit_review import job_settings
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.auditing.job import AuditingJob
+from scinoephile.workflows.review_audit.audit_progress import AuditProgress
+from scinoephile.workflows.review_audit.project import ReviewAuditProject
+from scinoephile.workflows.review_audit.rows import AuditStatus
 
 
 class _Provider(LLMProvider):

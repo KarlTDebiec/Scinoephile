@@ -12,8 +12,8 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
 from scinoephile.core.llms import ReasoningEffort
 from scinoephile.llms.providers.registry import get_provider_names
-from scinoephile.review_audit.project import ReviewAuditProject
 from scinoephile.web.security import create_local_app
+from scinoephile.workflows.review_audit.project import ReviewAuditProject
 
 from .auditing.routes import register_auditing_routes
 from .editor_routes import register_editor_routes

@@ -7,11 +7,11 @@ from __future__ import annotations
 from dataclasses import replace
 from functools import partial
 
-from scinoephile.review_audit.project import ReviewAuditProject
-from scinoephile.review_audit.rows import AuditStatus
-from scinoephile.review_audit.run import run_audit
 from scinoephile.web.audit_review.job_settings import get_job_provider
 from scinoephile.web.jobs import BackgroundJob
+from scinoephile.workflows.review_audit.project import ReviewAuditProject
+from scinoephile.workflows.review_audit.rows import AuditStatus
+from scinoephile.workflows.review_audit.run import run_audit
 
 from . import state
 

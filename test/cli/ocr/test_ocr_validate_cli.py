@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -12,6 +13,8 @@ from pytest import CaptureFixture, MonkeyPatch, raises
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
+from scinoephile.web.ocr_validation.app import open_validation_editor
+from scinoephile.workflows.ocr_validation import OcrValidationEditor
 
 
 def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
@@ -32,11 +35,9 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
         outfile_path_arg: Path,
         *,
         validation_data_dir_path: Path | str | None = None,
-        interactive: bool = False,
+        validation_editor: OcrValidationEditor | None = None,
         dev: bool = False,
         overwrite: bool = False,
-        host: str = "127.0.0.1",
-        port: int = 5000,
     ):
         """Capture OCR validation workflow arguments.
 
@@ -44,22 +45,18 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
             infile_path_arg: infile path arg value
             outfile_path_arg: outfile path arg value
             validation_data_dir_path: validation data dir path
-            interactive: interactive value
+            validation_editor: editor callback
             dev: dev value
             overwrite: overwrite value
-            host: host value
-            port: port value
         """
         validate_calls.append(
             {
                 "infile_path": infile_path_arg,
                 "outfile_path": outfile_path_arg,
                 "validation_data_dir_path": validation_data_dir_path,
-                "interactive": interactive,
+                "validation_editor": validation_editor,
                 "dev": dev,
                 "overwrite": overwrite,
-                "host": host,
-                "port": port,
             }
         )
         outfile_path_arg.write_text("validated", encoding="utf-8")
@@ -81,11 +78,9 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
             "infile_path": infile_path,
             "outfile_path": outfile_path,
             "validation_data_dir_path": validation_data_dir_path.resolve(),
-            "interactive": False,
+            "validation_editor": None,
             "dev": False,
             "overwrite": False,
-            "host": "127.0.0.1",
-            "port": 5000,
         }
     ]
     assert outfile_path.read_text(encoding="utf-8") == "validated"
@@ -108,11 +103,9 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
         outfile_path_arg: Path,
         *,
         validation_data_dir_path: Path | str | None = None,
-        interactive: bool = False,
+        validation_editor: OcrValidationEditor | None = None,
         dev: bool = False,
         overwrite: bool = False,
-        host: str = "127.0.0.1",
-        port: int = 5000,
     ):
         """Capture OCR validation workflow arguments.
 
@@ -120,22 +113,18 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
             infile_path_arg: infile path arg value
             outfile_path_arg: outfile path arg value
             validation_data_dir_path: validation data dir path
-            interactive: interactive value
+            validation_editor: editor callback
             dev: dev value
             overwrite: overwrite value
-            host: host value
-            port: port value
         """
         validate_calls.append(
             {
                 "infile_path": infile_path_arg,
                 "outfile_path": outfile_path_arg,
                 "validation_data_dir_path": validation_data_dir_path,
-                "interactive": interactive,
+                "validation_editor": validation_editor,
                 "dev": dev,
                 "overwrite": overwrite,
-                "host": host,
-                "port": port,
             }
         )
 
@@ -152,16 +141,17 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
         f"--outfile {outfile_path}",
     )
 
+    editor = validate_calls[0].pop("validation_editor")
+    assert isinstance(editor, partial)
+    assert editor.func is open_validation_editor
+    assert editor.keywords == {"host": "0.0.0.0", "port": 5050}
     assert validate_calls == [
         {
             "infile_path": infile_path,
             "outfile_path": outfile_path,
             "validation_data_dir_path": validation_data_dir_path.resolve(),
-            "interactive": True,
             "dev": True,
             "overwrite": False,
-            "host": "0.0.0.0",
-            "port": 5050,
         }
     ]
 

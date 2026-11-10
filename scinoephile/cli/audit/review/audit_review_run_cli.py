@@ -34,8 +34,8 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.review_audit.project import ReviewAuditProject
-from scinoephile.review_audit.run import run_audit
+from scinoephile.workflows.review_audit.project import ReviewAuditProject
+from scinoephile.workflows.review_audit.run import run_audit
 
 __all__ = ["AuditReviewRunCli"]
 
