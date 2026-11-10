@@ -89,7 +89,7 @@ class AuditRow:
 
 def build_audit_rows(
     source: Series,
-    source_content: bytes,
+    source_hash: bytes,
     language: Language,
     decisions: ProofreadingDecisions,
 ) -> tuple[list[AuditRow], list[tuple[int, int]]]:
@@ -97,7 +97,7 @@ def build_audit_rows(
 
     Arguments:
         source: original subtitle series
-        source_content: original SRT bytes used to identify the baseline
+        source_hash: hash of the original SRT used to identify the baseline
         language: proofreading language
         decisions: native proofreading decisions
     Returns:
@@ -113,7 +113,7 @@ def build_audit_rows(
     label = language.code
     if language == Language.eng:
         label = "English"
-    source_digest = sha256(source_content).hexdigest()
+    source_digest = source_hash.hex()
     verified = decisions.verified_indexes()
 
     rows = []

@@ -69,9 +69,6 @@ class ReviewAuditProject:
         self._lock = RLock()
         self._auditing_running = False
         self._proofreading_running = False
-        self._proofreading_source: Series | None = None
-        self._proofreading_content: bytes | None = None
-        self._proofreading_file_hashes: tuple[bytes | None, ...] | None = None
         try:
             self.infile_path = val_input_path(infile_path)
             self.outfile_path = val_output_path(
@@ -115,11 +112,6 @@ class ReviewAuditProject:
         """Number of source context blocks, including previously audited blocks."""
         with self._lock:
             return len(self._block_ranges)
-
-    @property
-    def input_changed(self) -> bool:
-        """Whether the configured OCR file differs from the last published baseline."""
-        return self.infile_path.read_bytes() != self._source_content
 
     @property
     def job_running(self) -> bool:
@@ -170,14 +162,14 @@ class ReviewAuditProject:
             return blocks
 
     def begin_proofreading(self, *, rerun: bool = False) -> Series:
-        """Reload the configured OCR input and reserve an immutable run snapshot.
+        """Reserve the project's original subtitles for proofreading.
 
         Arguments:
-            rerun: allow replacing existing output from current OCR
+            rerun: allow replacing existing proofreading output
         Returns:
-            freshly loaded source for the reserved worker
+            original subtitles for the reserved worker
         Raises:
-            ValueError: if another run, structural change, or external edit conflicts
+            ValueError: if another run or an external edit conflicts
         """
         with self._lock, lock_review_files(self._lock_path):
             if self._proofreading_running or self._auditing_running:
@@ -186,22 +178,9 @@ class ReviewAuditProject:
                 raise ValueError("The proofreading output already exists")
             if rerun and not self.outfile_path.exists():
                 raise ValueError("Run proofreading before re-proofreading")
-            file_hashes = self._file_hashes()
-            if file_hashes[1:] != self._saved_file_hashes[1:]:
-                raise ValueError("Output or JSON changed outside this session")
-            source = Series.load(self.infile_path, encoding="utf-8-sig", format_="srt")
-            content = self.infile_path.read_bytes()
-            if [(s.start, s.end) for s in source] != [
-                (s.start, s.end) for s in self.original
-            ]:
-                raise ValueError("OCR reload must preserve subtitle counts and timings")
-            if sha256(content).digest() != file_hashes[0]:
-                raise ValueError("OCR input changed while it was being loaded")
-            self._proofreading_source = source
-            self._proofreading_content = content
-            self._proofreading_file_hashes = file_hashes
+            self._check_file_hashes()
             self._proofreading_running = True
-            return source
+            return self.original
 
     def end_auditing(self):
         """Release the audit reservation on completion or failure."""
@@ -212,9 +191,6 @@ class ReviewAuditProject:
         """Release the reservation after worker completion or failure."""
         with self._lock:
             self._proofreading_running = False
-            self._proofreading_source = None
-            self._proofreading_content = None
-            self._proofreading_file_hashes = None
 
     def publish_audit(
         self,
@@ -263,7 +239,7 @@ class ReviewAuditProject:
 
         Arguments:
             decisions_path: completed temporary native proofreading decisions
-            rerun: back up and replace existing proofreading from current OCR
+            rerun: back up and replace existing proofreading
         Raises:
             ValueError: if the reservation is stale or revisions cannot be saved as SRT
             ScinoephileError: if publishing the output fails
@@ -271,21 +247,18 @@ class ReviewAuditProject:
         with self._lock, lock_review_files(self._lock_path):
             if not self._proofreading_running:
                 raise ValueError("No proofreading run is active")
-            if (
-                self.outfile_path.exists() and not rerun
-            ) or self._file_hashes() != self._proofreading_file_hashes:
-                raise ValueError(
-                    "Project files changed during proofreading; restart the app. "
-                    "Output was not replaced."
-                )
-            source = self._proofreading_source
-            content = self._proofreading_content
-            assert source is not None and content is not None
-            decisions = ProofreadingDecisions(source, self.language, decisions_path)
+            self._check_file_hashes()
+            if self.outfile_path.exists() and not rerun:
+                raise ValueError("The proofreading output already exists")
+            decisions = ProofreadingDecisions(
+                self.original, self.language, decisions_path
+            )
             decisions.normalize_srt_revisions()
-            rows, ranges = build_audit_rows(source, content, self.language, decisions)
+            rows, _ = build_audit_rows(
+                self.original, self._source_hash, self.language, decisions
+            )
             cases = {}
-            for first, last in ranges:
+            for first, last in self._block_ranges:
                 block = rows[first:last]
                 case = self._audit_cases.get(block[0].index)
                 if case is not None and case.query.key == get_audit_query(block).key:
@@ -303,7 +276,7 @@ class ReviewAuditProject:
                         self.audit_json_path,
                     )
                 writes = render_review_files(
-                    source,
+                    self.original,
                     rows,
                     self.outfile_path,
                     decisions=decisions,
@@ -314,10 +287,7 @@ class ReviewAuditProject:
                 raise ScinoephileError(
                     f"Unable to publish proofreading: {exc}"
                 ) from exc
-            self.original = source
-            self._source_content = content
             self.decisions = decisions
-            self._block_ranges = ranges
 
     def rows(self) -> list[AuditRow]:
         """Read the current project rows.
@@ -453,28 +423,14 @@ class ReviewAuditProject:
         Raises:
             ValueError: if project files changed externally
         """
-        if self.input_changed:
-            raise ValueError(
-                "OCR input changed. Re-proofread before editing or auditing."
-            )
-        if self._file_hashes() != self._saved_file_hashes:
+        if (
+            get_file_hashes(self.infile_path) != (self._source_hash,)
+            or self._output_file_hashes() != self._saved_output_file_hashes
+        ):
             raise ValueError(
                 "A subtitle or JSON file changed outside this session. "
                 "Restart before saving."
             )
-
-    def _file_hashes(self) -> tuple[bytes | None, ...]:
-        """Hash the project's source and writable files.
-
-        Returns:
-            hashes for the input, output, proofreading JSON, and audit JSON
-        """
-        return get_file_hashes(
-            self.infile_path,
-            self.outfile_path,
-            self.proofreading_json_path,
-            self.audit_json_path,
-        )
 
     def _load_project(self, language: Language | None):
         """Open both native case files and project them onto the original SRT.
@@ -484,12 +440,12 @@ class ReviewAuditProject:
         Raises:
             ValueError: if the language or saved case files are invalid
         """
-        self._source_content = self.infile_path.read_bytes()
+        self._source_hash = sha256(self.infile_path.read_bytes()).digest()
         self.original = Series.load(
             self.infile_path, encoding="utf-8-sig", format_="srt"
         )
-        if self.input_changed:
-            raise ValueError("OCR input changed while it was being loaded")
+        if get_file_hashes(self.infile_path) != (self._source_hash,):
+            raise ValueError("Original subtitles changed while they were being loaded")
         cases, saved_language = load_audit_cases(self.audit_json_path)
         if (
             language is not None
@@ -507,7 +463,7 @@ class ReviewAuditProject:
         )
         self.decisions.normalize_srt_revisions()
         rows, self._block_ranges = build_audit_rows(
-            self.original, self._source_content, self.language, self.decisions
+            self.original, self._source_hash, self.language, self.decisions
         )
         for first, last in self._block_ranges:
             rows[first:last] = apply_audit_case(rows[first:last], cases.get(first + 1))
@@ -538,7 +494,17 @@ class ReviewAuditProject:
         write_files(writes)
         self._rows = rows
         self._audit_cases = cases
-        self._saved_file_hashes = self._file_hashes()
+        self._saved_output_file_hashes = self._output_file_hashes()
+
+    def _output_file_hashes(self) -> tuple[bytes | None, ...]:
+        """Hash the project's writable files.
+
+        Returns:
+            hashes for the output SRT, proofreading JSON, and audit JSON
+        """
+        return get_file_hashes(
+            self.outfile_path, self.proofreading_json_path, self.audit_json_path
+        )
 
     def _prepare_save(
         self, current: AuditRow, draft: AuditRow, proofreading_verified: bool | None
@@ -613,7 +579,7 @@ class ReviewAuditProject:
         write_files(writes)
         self._rows = rows
         self._audit_cases = cases
-        self._saved_file_hashes = self._file_hashes()
+        self._saved_output_file_hashes = self._output_file_hashes()
 
     def _update_edited_blocks(
         self, rows: list[AuditRow], current: AuditRow, draft: AuditRow

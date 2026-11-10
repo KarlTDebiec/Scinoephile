@@ -122,7 +122,6 @@
         {% include "auditing/_card.html" %}
       {% endif %}
     </nav>
-    {% if input_changed %}<p class="warning" role="status">OCR input changed. Re-proofread to load the current file.</p>{% endif %}
   </header>
   <div id="audit-rows">
     {% for block in page.blocks %}

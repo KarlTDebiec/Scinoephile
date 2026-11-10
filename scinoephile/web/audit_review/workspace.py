@@ -229,7 +229,6 @@ def get_view_context(
     return {
         "has_output": has_output,
         "editing_blocked": not has_output or audit.job_running,
-        "input_changed": audit.input_changed,
         "page": page,
         "filters": page.filters,
         "query": urlencode(dict(values, through=page.last_block)),

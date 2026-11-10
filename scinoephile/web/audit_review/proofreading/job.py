@@ -59,7 +59,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingJobState]):
             provider_name: registered LLM provider
             model_name: optional model identifier override
             effort: shared reasoning level or blank for the provider default
-            rerun: replace output using current OCR and matching reusable results
+            rerun: replace output using matching reusable results
         Raises:
             ValueError: if configuration or session state prevents a run
         """
@@ -85,7 +85,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingJobState]):
         Arguments:
             provider: configured provider shared across source blocks
             rerun: replace saved output while reusing compatible decisions and caches
-            source: current OCR snapshot reserved at the start of this run
+            source: original subtitles reserved for this run
         Raises:
             InvalidReviewSubtitleError: if a generated revision cannot be saved
         """

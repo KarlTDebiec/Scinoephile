@@ -7,7 +7,7 @@
   }
 }
 
-/* Sticky workspace header and source-file warnings */
+/* Sticky workspace header */
 #workspace > header {
   position: sticky;
   top: 1rem;
@@ -18,14 +18,6 @@
   box-shadow: 0 -1rem var(--background);
 
   & > :last-child { margin-bottom: 0; }
-  & > .warning {
-    margin: 1rem 0 0;
-    padding: .5rem .75rem;
-    color: var(--warning-text);
-    background: var(--warning-background);
-    border: 1px solid var(--warning-border);
-    border-radius: .5rem;
-  }
 }
 
 /* Selects with icons in the picker and selected value */
