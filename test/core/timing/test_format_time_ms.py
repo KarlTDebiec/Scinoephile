@@ -11,3 +11,4 @@ def test_format_time_ms():
     """Test millisecond timestamp formatting."""
     assert format_time_ms(62_500) == "00:01:02"
     assert format_time_ms(3_725_250) == "01:02:05"
+    assert format_time_ms(3_725_005, include_milliseconds=True) == "01:02:05.005"

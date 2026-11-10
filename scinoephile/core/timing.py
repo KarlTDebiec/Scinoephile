@@ -12,18 +12,22 @@ from .subtitles import Series
 __all__ = ["format_time_ms", "get_series_timewarped"]
 
 
-def format_time_ms(time_ms: int) -> str:
-    """Format a millisecond timestamp as HH:MM:SS.
+def format_time_ms(time_ms: int, *, include_milliseconds: bool = False) -> str:
+    """Format a timestamp as HH:MM:SS with optional milliseconds.
 
     Arguments:
         time_ms: time in milliseconds
+        include_milliseconds: whether to append three fractional digits
     Returns:
-        timestamp formatted as HH:MM:SS
+        formatted timestamp
     """
-    total_seconds = time_ms // 1000
+    total_seconds, milliseconds = divmod(time_ms, 1000)
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
-    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+    formatted = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+    if include_milliseconds:
+        formatted += f".{milliseconds:03d}"
+    return formatted
 
 
 def get_series_timewarped(
