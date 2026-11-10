@@ -650,17 +650,14 @@ def test_rejects_edits_that_cannot_round_trip_in_srt(tmp_path: Path, reviewed: s
     assert restored.rows()[0].version == row.version
 
 
-def test_blocks_follow_json_requests_and_keep_filtered_context(tmp_path: Path):
-    """Logged queries override pause grouping and remain intact across pages.
+def test_saved_cases_use_source_blocks_and_keep_filtered_context(tmp_path: Path):
+    """Ignore partial queries and retain the source block when filtering rows.
 
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_project(tmp_path)
+    audit = _make_project(tmp_path, with_json=False)
     assert len(audit.original.blocks) == 1
-    assert len(get_audit_page(audit.rows(), AuditFilters()).blocks) == 2
-    assert get_audit_page(audit.rows(), AuditFilters()).blocks[0].first_index == 1
-    assert audit.json_path is not None
     audit.json_path.write_text(
         json.dumps(
             [
@@ -674,7 +671,13 @@ def test_blocks_follow_json_requests_and_keep_filtered_context(tmp_path: Path):
                     "answer": {
                         "revisions": [{"index": 1, "text": "Hallo.", "note": "Model"}]
                     },
-                }
+                },
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "Same."}]},
+                    "answer": {
+                        "revisions": [{"index": 1, "text": "Else.", "note": "Old"}]
+                    },
+                },
             ]
         )
     )
@@ -686,6 +689,7 @@ def test_blocks_follow_json_requests_and_keep_filtered_context(tmp_path: Path):
     )
     page = get_audit_page(audit.rows(), AuditFilters())
     assert len(page.rows) == 2 and len(page.blocks) == 1
+    assert [row.reviewed for row in page.rows] == ["Hallo.", "Same."]
     filtered = get_audit_page(audit.rows(), AuditFilters(proofreading="changed"))
     block = filtered.blocks[0]
     assert block.count == 2 and len(block.rows) == 1
@@ -732,9 +736,13 @@ def _make_project(dir_path: Path, *, with_json: bool = True) -> ReviewAuditProje
         editable review session
     """
     source_path = dir_path / "original.srt"
+    second_start = 3
+    if with_json:
+        second_start = 8
     source_path.write_text(
         "1\n00:00:01,000 --> 00:00:02,000\nHello.\n\n"
-        "2\n00:00:03,000 --> 00:00:04,000\nSame.\n",
+        f"2\n00:00:{second_start:02d},000 --> "
+        f"00:00:{second_start + 1:02d},000\nSame.\n",
         encoding="utf-8",
     )
     json_path = None

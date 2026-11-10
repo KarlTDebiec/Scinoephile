@@ -30,8 +30,12 @@ class ProofreadingDecisions:
             language: proofreading language
             json_path: existing or future native decision JSON
         """
-        self.original = original
         self.texts = tuple(s.text_with_newline for s in original)
+        self.block_ranges = Series.get_block_indexes_by_pause(original)
+        """Nonoverlapping subtitle blocks used for proofreading."""
+        self._block_starts: defaultdict[tuple[str, ...], list[int]] = defaultdict(list)
+        for first, last in self.block_ranges:
+            self._block_starts[self.texts[first:last]].append(first)
         self.case_cls = ReviewManager.get_test_case_cls(DEFAULT_PROMPTS[language])
         self.cases: list[ReviewTestCase] = []
         if json_path.exists():
@@ -39,8 +43,6 @@ class ProofreadingDecisions:
                 json_path, ReviewManager, DEFAULT_PROMPTS[language]
             )
         self.locations: dict[int, tuple[int, ...]] = {}
-        self.block_ranges: list[tuple[int, int]] = []
-        """Nonoverlapping query blocks, with uncovered subtitles grouped by pauses."""
         self._index_cases()
 
     def edit(self, index: int, text: str, note: str):
@@ -122,16 +124,13 @@ class ProofreadingDecisions:
                 self.cases[case_index] = self.case_cls.model_validate(data)
 
     def render(self) -> tuple[list[str], list[str]]:
-        """Apply current sparse answers to their exact original query matches.
+        """Apply current sparse answers to the matching original blocks.
 
         Returns:
             full output text and revision explanations in subtitle order
-        Raises:
-            ValueError: if overlapping current decisions conflict
         """
         texts = list(self.texts)
         notes = [""] * len(texts)
-        assigned: dict[int, str] = {}
         for case_index, starts in self.locations.items():
             case = self.cases[case_index]
             if case.answer is None:
@@ -145,11 +144,6 @@ class ProofreadingDecisions:
                         text = revisions[offset].text
                         note = revisions[offset].note
                     target = start + offset
-                    if target in assigned and assigned[target] != text:
-                        raise ValueError(
-                            f"Conflicting review decisions for subtitle {target + 1}"
-                        )
-                    assigned[target] = text
                     texts[target] = text
                     notes[target] = note
         return texts, notes
@@ -170,41 +164,27 @@ class ProofreadingDecisions:
         Returns:
             one-based linked subtitle indexes, including this subtitle
         """
-        affected = {index}
-        if not self._get_case_indexes(index):
-            for first, last in self.block_ranges:
-                if first <= index < last:
-                    query = self.texts[first:last]
-                    return tuple(
-                        start + index - first + 1
-                        for start, stop in self.block_ranges
-                        if self.texts[start:stop] == query
-                        and not self._get_case_indexes(start)
-                    )
-        previous = set()
-        while affected != previous:
-            previous = set(affected)
-            for case_index, starts in self.locations.items():
-                for offset in range(len(self.cases[case_index].query.subtitles)):
-                    linked = {start + offset for start in starts}
-                    if affected.intersection(linked):
-                        affected.update(linked)
-        return tuple(sorted(value + 1 for value in affected))
+        for first, last in self.block_ranges:
+            if first <= index < last:
+                return tuple(
+                    start + index - first + 1
+                    for start in self._block_starts[self.texts[first:last]]
+                )
+        return (index + 1,)
 
     def verified_indexes(self) -> set[int]:
         """Find which subtitles have verified proofreading cases.
 
         Returns:
-            zero-based indexes covered by verified cases only
+            zero-based indexes covered by verified cases
         """
         verified = set()
-        pending = set()
         for case_index, starts in self.locations.items():
             case = self.cases[case_index]
-            indexes = verified if case.verified else pending
-            for start in starts:
-                indexes.update(range(start, start + len(case.query.subtitles)))
-        return verified - pending
+            if case.verified:
+                for start in starts:
+                    verified.update(range(start, start + len(case.query.subtitles)))
+        return verified
 
     def verify(self, index: int, *, verified: bool):
         """Set verification on the proofreading cases covering a subtitle.
@@ -281,34 +261,8 @@ class ProofreadingDecisions:
                 },
                 "answer": {"revisions": []},
                 "verified": verified,
-                "match_complete_blocks": True,
             }
         )
-
-    def _get_block_ranges(self) -> list[tuple[int, int]]:
-        """Derive the block boundaries from native cases and source pauses.
-
-        Returns:
-            nonoverlapping zero-based subtitle ranges
-        """
-        if not self.texts:
-            return []
-        joined = [False] * (len(self.texts) - 1)
-        covered = set()
-        for case_index, starts in self.locations.items():
-            size = len(self.cases[case_index].query.subtitles)
-            for first in starts:
-                covered.update(range(first, first + size))
-                for index in range(first, first + size - 1):
-                    joined[index] = True
-        for first, last in Series.get_block_indexes_by_pause(self.original):
-            for index in range(first, last - 1):
-                if index not in covered and index + 1 not in covered:
-                    joined[index] = True
-        boundaries = [0]
-        boundaries.extend(index + 1 for index, value in enumerate(joined) if not value)
-        boundaries.append(len(self.texts))
-        return list(zip(boundaries[:-1], boundaries[1:], strict=True))
 
     def _get_case_indexes(self, index: int) -> list[int]:
         """Find active cases covering a source subtitle.
@@ -328,36 +282,15 @@ class ProofreadingDecisions:
         ]
 
     def _index_cases(self):
-        """Locate the latest native cases, then match approvals to uncovered blocks."""
+        """Match the latest answer for each query to its complete source blocks."""
         self.locations = {}
-        block_cases = {}
         latest = {case.query.key: index for index, case in enumerate(self.cases)}
         for case_index in latest.values():
             case = self.cases[case_index]
-            query = tuple(s.text for s in case.query.subtitles)
-            if case.match_complete_blocks:
-                block_cases[query] = case_index
-                continue
-            starts = tuple(
-                start
-                for start in range(len(self.texts) - len(query) + 1)
-                if self.texts[start : start + len(query)] == query
-            )
+            query = tuple(subtitle.text for subtitle in case.query.subtitles)
+            starts = self._block_starts.get(query)
             if starts:
-                self.locations[case_index] = starts
-
-        # Match editor cases after native cases have established the block boundaries
-        self.block_ranges = self._get_block_ranges()
-        if block_cases:
-            block_starts: defaultdict[int, list[int]] = defaultdict(list)
-            for first, last in self.block_ranges:
-                case_index = block_cases.get(self.texts[first:last])
-                if case_index is not None and not self._get_case_indexes(first):
-                    block_starts[case_index].append(first)
-            self.locations.update(
-                (case_index, tuple(starts))
-                for case_index, starts in block_starts.items()
-            )
+                self.locations[case_index] = tuple(starts)
 
     def _set_case_verified(self, case_index: int, *, verified: bool):
         """Update one case using the standard test-case verification rules.

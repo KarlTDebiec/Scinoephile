@@ -79,8 +79,6 @@ class ReviewTestCase(TestCase[ReviewQuery, ReviewAnswer]):
     """Subtitles to review."""
     answer: ReviewAnswer | None = None
     """Sparse subtitle revisions, if available."""
-    match_complete_blocks: bool = False
-    """Locate this editor-created case only at complete proofreading blocks."""
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on whether any subtitle is revised.
