@@ -11,6 +11,7 @@ from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
 from scinoephile.core.llms import ReasoningEffort
+from scinoephile.core.timing import format_time_ms
 from scinoephile.llms.providers.registry import get_provider_names
 from scinoephile.operations.review_audit.project import ReviewAuditProject
 from scinoephile.web.security import create_local_app
@@ -18,7 +19,7 @@ from scinoephile.web.security import create_local_app
 from .auditing.routes import register_auditing_routes
 from .editor_routes import register_editor_routes
 from .proofreading.routes import register_proofreading_routes
-from .workspace import get_row_differences, get_row_time_label
+from .workspace import get_row_differences
 
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.web import FlaskApp
@@ -29,7 +30,7 @@ logger = getLogger(__name__)
 
 
 def create_app(audit: ReviewAuditProject, *, title: str | None = None) -> FlaskApp:
-    """Create the proofreading editor; the original SRT remains read-only.
+    """Create the local proofreading and audit editor.
 
     Arguments:
         audit: loaded project and independent audit state
@@ -50,7 +51,7 @@ def create_app(audit: ReviewAuditProject, *, title: str | None = None) -> FlaskA
     app.config["MAX_CONTENT_LENGTH"] = 100_000
     title = title or audit.infile_path.stem
     app.add_template_filter(get_row_differences, "audit_differences")
-    app.add_template_filter(get_row_time_label, "audit_time_label")
+    app.add_template_filter(format_time_ms)
 
     @app.context_processor
     def editor_context() -> dict[str, object]:
@@ -78,7 +79,7 @@ def serve_audit(
     host: str = "127.0.0.1",
     port: int = 5020,
 ):
-    """Serve the local audit app using the existing optional web stack.
+    """Serve the audit editor on a local address.
 
     Arguments:
         audit: loaded audit project

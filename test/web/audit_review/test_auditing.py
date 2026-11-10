@@ -748,7 +748,7 @@ def test_reaudit_uses_saved_edits_and_invalidates_changed_verification(
 def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Offer explicit setup and retain old findings until fresh responses arrive.
+    """Re-audit every block and keep old findings for blocks that fail.
 
     Arguments:
         tmp_path: temporary project directory

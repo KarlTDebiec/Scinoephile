@@ -30,7 +30,7 @@ def get_review_audit_metadata(
     original: tuple[str, ...],
     reviewed: tuple[str, ...],
 ) -> ReviewAuditMetadata:
-    """Match the latest current review cases to subtitle text.
+    """Match the latest answer for each query to the original and reviewed subtitles.
 
     Arguments:
         review_cases: deserialized review test cases

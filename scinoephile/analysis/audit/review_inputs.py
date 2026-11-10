@@ -29,11 +29,7 @@ class ReviewAuditSeriesPair:
 
 @dataclass(frozen=True, kw_only=True)
 class ReviewAuditResultPair:
-    """One subtitle review's input, output, and optional notes.
-
-    A pair is the reusable unit shared by single-review, sequential, and parallel
-    audit workflows.
-    """
+    """One subtitle review's input, output, and optional test cases."""
 
     label: str
     """Human-readable label used in the report, without the word "review"."""

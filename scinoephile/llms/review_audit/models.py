@@ -36,7 +36,7 @@ class ReviewAuditSubtitle(LLMModel):
 
 
 class ReviewAuditFinding(LLMModel):
-    """An explicit audit verdict without authority to change subtitle text."""
+    """An audit finding for one subtitle."""
 
     index: int = Field(ge=1, description="Index of the corresponding input subtitle.")
     """One-based subtitle number in the full input."""
@@ -90,16 +90,16 @@ class ReviewAuditQuery(Query):
 
 
 class ReviewAuditAnswer(Answer):
-    """Complete per-subtitle findings for one context block."""
+    """Audit findings for a block of subtitles."""
 
     findings: list[ReviewAuditFinding] = Field(
         description="One finding per input subtitle, in the same order."
     )
-    """Exactly one finding for every queried subtitle."""
+    """Findings in subtitle order."""
 
 
 class ReviewAuditTestCase(TestCase[ReviewAuditQuery, ReviewAuditAnswer]):
-    """Cacheable audit query and strictly matched findings."""
+    """An audit query with its findings and verification state."""
 
     operation: ClassVar[str] = "review_audit"
     """Separate cache namespace from proofreading."""

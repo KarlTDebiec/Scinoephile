@@ -33,7 +33,9 @@ __all__ = ["AuditReviewReportCli"]
 
 AUDIT_REVIEW_REPORT_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "audit regular or guided subtitle reviews": "审核常规或引导式字幕校对",
+        "generate a Markdown report for regular or guided subtitle proofreading": (
+            "为常规或引导式字幕校对生成 Markdown 报告"
+        ),
         "original subtitle SRT file before review": "校对前的原始字幕 SRT 文件",
         "subtitle SRT file after regular review": "常规校对后的字幕 SRT 文件",
         "guide subtitle SRT file used for guided review": (
@@ -57,7 +59,9 @@ AUDIT_REVIEW_REPORT_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
     },
     "zh-hant": {
-        "audit regular or guided subtitle reviews": "稽核常規或引導式字幕校對",
+        "generate a Markdown report for regular or guided subtitle proofreading": (
+            "為常規或引導式字幕校對產生 Markdown 報告"
+        ),
         "original subtitle SRT file before review": "校對前的原始字幕 SRT 檔",
         "subtitle SRT file after regular review": "常規校對後的字幕 SRT 檔",
         "guide subtitle SRT file used for guided review": (
@@ -85,17 +89,17 @@ AUDIT_REVIEW_REPORT_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class AuditReviewReportCli(AuditCliBase):
-    """Audit regular or guided subtitle reviews."""
+    """Generate a Markdown report for regular or guided subtitle proofreading."""
 
     localizations = AUDIT_REVIEW_REPORT_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
-        """Add arguments to a nascent argument parser.
+        """Add input, filter, and output options for the report.
 
         Arguments:
-            parser: nascent argument parser
+            parser: parser to configure
         """
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
@@ -270,7 +274,7 @@ class AuditReviewReportCli(AuditCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments.
+        """Build the report and write it to a file or stdout.
 
         Arguments:
             _parser: parser used to report user-facing errors

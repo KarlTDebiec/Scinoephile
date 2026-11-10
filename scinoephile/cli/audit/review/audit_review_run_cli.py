@@ -49,8 +49,8 @@ AUDIT_REVIEW_RUN_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "proofread SRT output": "校对后的 SRT 输出",
         "proofreading JSON file (created if missing)": "校对 JSON 文件（不存在时创建）",
         "audit JSON file (created if missing)": "审核 JSON 文件（不存在时创建）",
-        "subtitle language (default: detected automatically)": (
-            "字幕语言（默认：自动检测）"
+        "subtitle language (default: saved audit language or auto-detect)": (
+            "字幕语言（默认：使用已保存的审核语言，否则自动检测）"
         ),
         "replace existing audit findings in the selected blocks": (
             "替换所选区块中已有的审核结果"
@@ -62,8 +62,8 @@ AUDIT_REVIEW_RUN_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "proofread SRT output": "校對後的 SRT 輸出",
         "proofreading JSON file (created if missing)": "校對 JSON 檔（不存在時建立）",
         "audit JSON file (created if missing)": "稽核 JSON 檔（不存在時建立）",
-        "subtitle language (default: detected automatically)": (
-            "字幕語言（預設：自動偵測）"
+        "subtitle language (default: saved audit language or auto-detect)": (
+            "字幕語言（預設：使用已儲存的稽核語言，否則自動偵測）"
         ),
         "replace existing audit findings in the selected blocks": (
             "取代所選區塊中已有的稽核結果"
@@ -86,10 +86,10 @@ class AuditReviewRunCli(ScinoephileCliBase):
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
-        """Add arguments to a nascent argument parser.
+        """Add file paths and audit settings.
 
         Arguments:
-            parser: nascent argument parser
+            parser: parser to configure
         """
         super().add_arguments_to_argparser(parser)
         groups = get_arg_groups_by_name(
@@ -137,7 +137,7 @@ class AuditReviewRunCli(ScinoephileCliBase):
             "--language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="subtitle language (default: detected automatically)",
+            help="subtitle language (default: saved audit language or auto-detect)",
         )
         groups["operation arguments"].add_argument(
             "--rerun",
@@ -180,7 +180,7 @@ class AuditReviewRunCli(ScinoephileCliBase):
         cache_args: CacheArguments,
         _parser: ArgumentParser | None = None,
     ):
-        """Run an audit and persist its findings block by block.
+        """Save audit findings to JSON after each block.
 
         Arguments:
             original_path: original SRT file

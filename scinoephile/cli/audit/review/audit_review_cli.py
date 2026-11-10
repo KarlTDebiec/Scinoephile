@@ -18,13 +18,13 @@ __all__ = ["AuditReviewCli"]
 
 AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "audit subtitle reviews from the terminal or browser": (
-            "通过终端或浏览器审核字幕校对"
+        "report on, audit, or edit subtitle proofreading": (
+            "生成字幕校对报告、运行审核或打开编辑器"
         )
     },
     "zh-hant": {
-        "audit subtitle reviews from the terminal or browser": (
-            "透過終端機或瀏覽器稽核字幕校對"
+        "report on, audit, or edit subtitle proofreading": (
+            "產生字幕校對報告、執行稽核或開啟編輯器"
         )
     },
 }
@@ -32,7 +32,7 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class AuditReviewCli(ScinoephileCliBase):
-    """Audit subtitle reviews from the terminal or browser."""
+    """Report on, audit, or edit subtitle proofreading."""
 
     localizations = AUDIT_REVIEW_LOCALIZATIONS
     """Translated review command group description."""
@@ -42,7 +42,7 @@ class AuditReviewCli(ScinoephileCliBase):
         """Register the audit, report, and browser commands.
 
         Arguments:
-            parser: nascent review command parser
+            parser: parser to configure
         """
         super().add_arguments_to_argparser(parser)
         subparsers = parser.add_subparsers(

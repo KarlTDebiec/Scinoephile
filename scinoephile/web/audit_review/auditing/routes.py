@@ -50,10 +50,10 @@ def register_auditing_routes(app: FlaskApp, audit: ReviewAuditProject):
 
     @app.post("/auditing")
     def start_auditing():
-        """Reserve review state and show progress with editing temporarily disabled.
+        """Start an audit or ask the user to confirm a rerun.
 
         Returns:
-            current page reload or inline configuration error
+            confirmation form, progress reload, or configuration error
         """
         rerun_action = flask.request.form.get("rerun")
         rerun = rerun_action in {"on", "confirm"}

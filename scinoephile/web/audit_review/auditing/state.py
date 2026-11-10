@@ -19,7 +19,7 @@ class AuditingJobState(BackgroundJobState):
     available: bool = False
     """Whether proofreading exists and unaudited subtitles remain."""
     has_output: bool = False
-    """Whether persisted audit findings exist and a new full run would replace them."""
+    """Whether any subtitle already has an audit finding."""
     provider: str = DEFAULT_PROVIDER_NAME
     """Registered provider selected in the form."""
     model: str = ""

@@ -68,7 +68,7 @@ def create_local_app(
 
     @app.before_request
     def protect_local_requests():
-        """Reject foreign browser requests and enforce the editing request policy."""
+        """Check the request host, origin, and credentials for edits."""
         request = flask.request
         # Match complete hostnames without treating IPv6 colons as port separators
         try:

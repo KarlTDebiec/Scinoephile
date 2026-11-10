@@ -6,7 +6,7 @@
        hx-swap="outerHTML"
        hx-push-url="true"
        hx-sync="#workspace:queue all">Block {{ block.number }}</a>
-    <span>{% include "_block_summary.html" %}, <span class="block-time">{{ block.time_label }}</span></span>
+    <span>{% include "_block_summary.html" %}, <span class="block-time">{{ block.start|format_time_ms }} – {{ block.end|format_time_ms }}</span></span>
     <span class="block-disclosure" aria-hidden="true">
       <svg width="24" height="24">
         <use href="{{ url_for('audit_review_assets.static', filename='icons/minus-box-outline.svg') }}#icon" />

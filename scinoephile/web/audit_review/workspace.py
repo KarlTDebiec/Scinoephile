@@ -11,7 +11,6 @@ from urllib.parse import urlencode
 
 from scinoephile.analysis.alignment import pairwise
 from scinoephile.core.dependencies.web import import_flask
-from scinoephile.core.timing import format_time_ms
 from scinoephile.operations.review_audit.filters import AuditFilters
 from scinoephile.operations.review_audit.project import ReviewAuditProject
 from scinoephile.operations.review_audit.rows import AuditRow
@@ -25,7 +24,6 @@ __all__ = [
     "AuditPage",
     "get_audit_page",
     "get_row_differences",
-    "get_row_time_label",
     "get_view_context",
 ]
 
@@ -55,17 +53,10 @@ class AuditBlock:
         """Total subtitle count before filtering."""
         return self.last_index - self.first_index + 1
 
-    @property
-    def time_label(self) -> str:
-        """Full block time range in whole seconds, including hidden rows."""
-        start = format_time_ms(self.start)
-        end = format_time_ms(self.end)
-        return f"{start} – {end}"
-
 
 @dataclass(frozen=True)
 class AuditPage:
-    """A bounded batch or loaded prefix and project-wide progress counts."""
+    """Subtitle rows and filter counts for the current view."""
 
     all_rows: list[AuditRow]
     """Complete row snapshot from which this page was built."""
@@ -80,9 +71,9 @@ class AuditPage:
     verification: dict[str, VerificationSelection]
     """Complete visible verification candidates for each operation."""
     filter_counts: dict[str, dict[str, int]]
-    """Dependent option counts before pagination."""
+    """Counts for each option with the other filter and search applied."""
     last_block: int
-    """Stable source block cursor through which rows have loaded."""
+    """Number of the last loaded block."""
     has_more: bool
     """Whether more matching blocks follow the loaded cursor."""
 
@@ -104,7 +95,7 @@ def get_audit_page(
         through: inclusive cursor for an already loaded prefix, or None for a batch
         append: whether to return only new blocks after the cursor
     Returns:
-        loaded blocks and complete filtered progress counts
+        loaded blocks, matching row count, and filter option counts
     """
     filters.validate()
     matching = []
@@ -179,19 +170,6 @@ def get_row_differences(
     return original, reviewed
 
 
-def get_row_time_label(row: AuditRow) -> str:
-    """Format the start and end of a subtitle for the workspace.
-
-    Arguments:
-        row: subtitle row with millisecond timestamps
-    Returns:
-        subtitle range including milliseconds
-    """
-    start = format_time_ms(row.start, include_milliseconds=True)
-    end = format_time_ms(row.end, include_milliseconds=True)
-    return f"{start} – {end}"
-
-
 def get_view_context(
     audit: ReviewAuditProject,
     filters: AuditFilters,
@@ -199,7 +177,7 @@ def get_view_context(
     page: AuditPage | None = None,
     append: bool = False,
 ) -> dict[str, object]:
-    """Build a bounded view, stable next cursor, and native save context.
+    """Prepare template data for the current subtitle view.
 
     Arguments:
         audit: open review audit project

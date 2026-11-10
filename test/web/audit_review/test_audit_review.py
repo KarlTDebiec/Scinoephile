@@ -773,7 +773,7 @@ def _make_project(dir_path: Path, *, with_json: bool = True) -> ReviewAuditProje
 
     Arguments:
         dir_path: temporary project directory
-        with_json: whether to seed existing native proofreading proposals
+        with_json: whether to prepopulate both case files
     Returns:
         editable review session
     """
@@ -1520,7 +1520,7 @@ def test_open_rejects_invalid_native_findings(tmp_path: Path, status: str, note:
 
 
 def _materialize_output(audit: ReviewAuditProject) -> ReviewAuditProject:
-    """Give editor UI tests an actual completed proofreading output.
+    """Write the proofread SRT from saved corrections and reopen the project.
 
     Arguments:
         audit: fixture whose native decisions supply the proposed text

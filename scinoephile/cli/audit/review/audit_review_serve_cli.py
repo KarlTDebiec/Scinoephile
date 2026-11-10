@@ -28,7 +28,7 @@ __all__ = ["AuditReviewServeCli"]
 
 AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "serve the subtitle audit browser": "启动字幕审核网页浏览器",
+        "start the local subtitle audit editor": "启动本地字幕审核编辑器",
         (
             "Requires the 'web' extra. Default address: http://127.0.0.1:5020/. "
             "Proofreading and auditing make model requests only when started "
@@ -41,12 +41,14 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "proofread SRT output": "校对后的 SRT 输出",
         "proofreading JSON file (created if missing)": "校对 JSON 文件（不存在时创建）",
         "audit JSON file (created if missing)": "审核 JSON 文件（不存在时创建）",
-        "subtitle language (default: auto-detect)": "字幕语言（默认：从输入检测）",
+        "subtitle language (default: saved audit language or auto-detect)": (
+            "字幕语言（默认：使用已保存的审核语言，否则自动检测）"
+        ),
         "display title (default: input filename stem)": "显示标题（默认：输入文件名）",
         "audit web UI must use a loopback host": "审核网页界面必须使用本机回环地址",
     },
     "zh-hant": {
-        "serve the subtitle audit browser": "啟動字幕稽核網頁瀏覽器",
+        "start the local subtitle audit editor": "啟動本機字幕稽核編輯器",
         (
             "Requires the 'web' extra. Default address: http://127.0.0.1:5020/. "
             "Proofreading and auditing make model requests only when started "
@@ -59,7 +61,9 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "proofread SRT output": "校對後的 SRT 輸出",
         "proofreading JSON file (created if missing)": "校對 JSON 檔（不存在時建立）",
         "audit JSON file (created if missing)": "稽核 JSON 檔（不存在時建立）",
-        "subtitle language (default: auto-detect)": "字幕語言（預設：從輸入偵測）",
+        "subtitle language (default: saved audit language or auto-detect)": (
+            "字幕語言（預設：使用已儲存的稽核語言，否則自動偵測）"
+        ),
         "display title (default: input filename stem)": "顯示標題（預設：輸入檔名）",
         "audit web UI must use a loopback host": "稽核網頁介面必須使用本機回環位址",
     },
@@ -68,7 +72,7 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class AuditReviewServeCli(ScinoephileCliBase):
-    """Serve the subtitle audit browser.
+    """Start the local subtitle audit editor.
 
     Requires the 'web' extra. Default address: http://127.0.0.1:5020/.
     Proofreading and auditing make model requests only when started in the browser.
@@ -84,7 +88,7 @@ class AuditReviewServeCli(ScinoephileCliBase):
         """Add project input and local web server settings.
 
         Arguments:
-            parser: nascent argument parser
+            parser: parser to configure
         """
         super().add_arguments_to_argparser(parser)
         groups = get_arg_groups_by_name(
@@ -121,7 +125,7 @@ class AuditReviewServeCli(ScinoephileCliBase):
         groups["input arguments"].add_argument(
             "--language",
             type=enum_arg(Language),
-            help="subtitle language (default: auto-detect)",
+            help="subtitle language (default: saved audit language or auto-detect)",
         )
 
         # Web arguments
@@ -163,7 +167,7 @@ class AuditReviewServeCli(ScinoephileCliBase):
         language: Language | None = None,
         _parser: ArgumentParser | None = None,
     ):
-        """Open a source-backed audit project and serve its local UI.
+        """Open the subtitle project and start its local editor.
 
         Arguments:
             infile_path: immutable source subtitles

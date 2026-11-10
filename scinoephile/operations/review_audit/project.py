@@ -16,6 +16,7 @@ from scinoephile.core.llms.utils import serialize_test_cases
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
+from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditTestCase
 
 from .audit_cases import (
@@ -31,7 +32,7 @@ from .project_files import (
     backup_review_files,
     get_file_hashes,
     lock_review_files,
-    render_review_files,
+    render_review_srt,
     write_files,
 )
 from .proofreading_decisions import ProofreadingDecisions
@@ -62,7 +63,8 @@ class ReviewAuditProject:
             outfile_path: generated proofread subtitles
             proofreading_json_path: proofreading test-case file
             audit_json_path: audit test-case file
-            language: language override, otherwise detected from the input
+            language: subtitle language, defaulting to the saved audit language or
+                automatic detection
         Raises:
             ScinoephileError: if files, paths, or review decisions are invalid
         """
@@ -103,7 +105,7 @@ class ReviewAuditProject:
 
     @property
     def auditing_running(self) -> bool:
-        """Return whether an independent audit currently owns the review state."""
+        """Whether an audit is running."""
         with self._lock:
             return self._auditing_running
 
@@ -121,7 +123,7 @@ class ReviewAuditProject:
 
     @property
     def proofreading_running(self) -> bool:
-        """Return whether an automated run currently owns output creation."""
+        """Whether proofreading is running."""
         with self._lock:
             return self._proofreading_running
 
@@ -132,14 +134,15 @@ class ReviewAuditProject:
         start_at_idx: int = 0,
         stop_at_idx: int | None = None,
     ) -> tuple[tuple[AuditRow, ...], ...]:
-        """Reserve saved proofreading for an initial audit or whole-file re-audit.
+        """Select blocks for auditing and prevent edits until the run ends.
 
         Arguments:
             rerun: audit blocks even if they already have saved findings
             start_at_idx: first source block to include, zero-based
             stop_at_idx: exclusive source block boundary, or None for the end
         Returns:
-            complete context blocks containing at least one eligible subtitle
+            complete blocks containing unaudited subtitles, or all selected blocks
+            on a rerun
         Raises:
             ValueError: if output is absent, a worker is active, or no rows qualify
         """
@@ -275,13 +278,12 @@ class ReviewAuditProject:
                         self.proofreading_json_path,
                         self.audit_json_path,
                     )
-                writes = render_review_files(
-                    self.original,
-                    rows,
-                    self.outfile_path,
-                    decisions=decisions,
-                    proofreading_json_path=self.proofreading_json_path,
-                )
+                writes = {
+                    self.outfile_path: render_review_srt(self.original, rows),
+                    self.proofreading_json_path: (
+                        serialize_test_cases(decisions.cases, ReviewManager) + "\n"
+                    ),
+                }
                 self._save_audit_cases(cases, rows, writes)
             except OSError as exc:
                 raise ScinoephileError(
@@ -418,7 +420,7 @@ class ReviewAuditProject:
             return len(ranges)
 
     def _check_file_hashes(self):
-        """Reject changes made outside the active editor's write transaction.
+        """Reject writes when project files have changed on disk.
 
         Raises:
             ValueError: if project files changed externally
@@ -433,10 +435,11 @@ class ReviewAuditProject:
             )
 
     def _load_project(self, language: Language | None):
-        """Open both native case files and project them onto the original SRT.
+        """Load the original subtitles and saved decisions, then check the output SRT.
 
         Arguments:
-            language: explicit language, or None to detect it from the original SRT
+            language: explicit language, or None to use the saved audit language or
+                detect it from the original SRT
         Raises:
             ValueError: if the language or saved case files are invalid
         """
@@ -483,14 +486,7 @@ class ReviewAuditProject:
             if [s.text_with_newline for s in output] != [row.reviewed for row in rows]:
                 raise ValueError("Output subtitles disagree with the proofreading JSON")
         elif has_decisions:
-            generated = render_review_files(
-                self.original,
-                rows,
-                self.outfile_path,
-                decisions=self.decisions,
-                proofreading_json_path=self.proofreading_json_path,
-            )
-            writes[self.outfile_path] = generated[self.outfile_path]
+            writes[self.outfile_path] = render_review_srt(self.original, rows)
         write_files(writes)
         self._rows = rows
         self._audit_cases = cases
@@ -543,15 +539,10 @@ class ReviewAuditProject:
                 for index, row in enumerate(rows)
             ]
             if text_changed:
-                writes = render_review_files(
-                    self.original,
-                    rows,
-                    self.outfile_path,
-                    decisions=decisions,
-                    proofreading_json_path=self.proofreading_json_path,
-                )
-            else:
-                writes[self.proofreading_json_path] = decisions.serialize()
+                writes[self.outfile_path] = render_review_srt(self.original, rows)
+            writes[self.proofreading_json_path] = (
+                serialize_test_cases(decisions.cases, ReviewManager) + "\n"
+            )
         return rows, decisions, writes
 
     def _save_audit_cases(
@@ -662,9 +653,8 @@ class ReviewAuditProject:
                 rows[index] = replace(
                     row, proofreading_verified=approved, version=row.version + 1
                 )
+        contents = serialize_test_cases(decisions.cases, ReviewManager) + "\n"
         self._save_audit_cases(
-            self._audit_cases,
-            rows,
-            {self.proofreading_json_path: decisions.serialize()},
+            self._audit_cases, rows, {self.proofreading_json_path: contents}
         )
         self.decisions = decisions

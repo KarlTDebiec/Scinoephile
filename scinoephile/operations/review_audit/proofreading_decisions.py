@@ -8,7 +8,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from scinoephile.core import Language
-from scinoephile.core.llms.utils import load_test_cases_from_json, serialize_test_cases
+from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.text import replace_control_characters
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
@@ -20,15 +20,15 @@ __all__ = ["ProofreadingDecisions"]
 
 
 class ProofreadingDecisions:
-    """Native sparse review answers matched to immutable subtitle query blocks."""
+    """Saved proofreading answers matched to complete subtitle blocks."""
 
     def __init__(self, original: Series, language: Language, json_path: Path):
         """Load an optional existing decision log without creating it.
 
         Arguments:
-            original: immutable source subtitles
+            original: original subtitles
             language: proofreading language
-            json_path: existing or future native decision JSON
+            json_path: path to the proofreading JSON file
         """
         self.texts = tuple(s.text_with_newline for s in original)
         self.block_ranges = Series.get_block_indexes_by_pause(original)
@@ -139,16 +139,8 @@ class ProofreadingDecisions:
                     notes[target] = note
         return texts, notes
 
-    def serialize(self) -> str:
-        """Serialize with the native base-prompt field names.
-
-        Returns:
-            validated native review JSON text
-        """
-        return serialize_test_cases(self.cases, ReviewManager) + "\n"
-
     def shared_indexes(self, index: int) -> tuple[int, ...]:
-        """Find all row positions linked through reused native query decisions.
+        """Find the same subtitle position in each identical block.
 
         Arguments:
             index: zero-based source subtitle index
@@ -286,7 +278,7 @@ class ProofreadingDecisions:
                 self.locations[case_index] = tuple(starts)
 
     def _set_case_verified(self, case_index: int, *, verified: bool):
-        """Update one case using the standard test-case verification rules.
+        """Set verification and clear few-shot status when unverified.
 
         Arguments:
             case_index: index into the active case list

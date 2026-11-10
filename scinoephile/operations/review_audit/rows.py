@@ -42,10 +42,10 @@ class AuditStatus(StrEnum):
 
 @dataclass(frozen=True)
 class AuditRow:
-    """A subtitle pair, provenance, and its independent human audit state."""
+    """Original and proofread subtitle text with audit findings and verification."""
 
     key: str
-    """Content identity; changed inputs get fresh audit progress."""
+    """Identifier derived from the source file, language, and subtitle number."""
     language: str
     """Subtitle language tag."""
     index: int
@@ -55,11 +55,11 @@ class AuditRow:
     end: int
     """End time in milliseconds."""
     original: str
-    """Validated source text."""
+    """Original subtitle text."""
     reviewed: str
-    """Proposed proofread text."""
+    """Proofread text."""
     review_note: str
-    """Read-only model explanation."""
+    """Reason for the proofreading correction."""
     notes: str
     """Independent audit notes."""
     finding: AuditStatus = AuditStatus.unaudited
@@ -69,7 +69,7 @@ class AuditRow:
     proofreading_verified: bool = False
     """Whether the proofreading test cases covering this row are verified."""
     version: int = 0
-    """Optimistic concurrency version."""
+    """Version used to reject edits from stale forms."""
 
     shared_indexes: tuple[int, ...] = ()
     """One-based subtitle indexes sharing this JSON decision."""

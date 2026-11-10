@@ -79,7 +79,7 @@ def save_test_cases_to_json[TTestCase: TestCase](
     """Write in-memory test cases to a JSON file atomically.
 
     Arguments:
-        output_path: path to JSON file to which to save
+        output_path: destination JSON file
         test_cases: test cases to save
         manager_cls: manager class defining persisted test-case field names
     """
@@ -101,7 +101,7 @@ def serialize_test_cases[TTestCase: TestCase](
         test_cases: validated test cases to serialize
         manager_cls: manager defining persisted test-case field names
     Returns:
-        native test-case JSON
+        JSON array using the base prompt's field names
     """
     base_test_case_cls = manager_cls.get_test_case_cls(prompt=manager_cls.base_prompt)
     serializer = TypeAdapter(base_test_case_cls)

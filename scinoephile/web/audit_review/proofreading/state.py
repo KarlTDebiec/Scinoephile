@@ -25,4 +25,4 @@ class ProofreadingJobState(BackgroundJobState):
     effort: str = ""
     """Requested reasoning effort, blank for the provider default."""
     rerun: bool = False
-    """Whether this run replaces existing proofreading from original OCR."""
+    """Whether the run replaces an existing proofreading output."""

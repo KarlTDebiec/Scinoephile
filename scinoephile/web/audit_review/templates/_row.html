@@ -2,7 +2,7 @@
 <fieldset id="row-{{ row.key }}"
           class="audit-row"{% if editing_blocked %} disabled{% endif %}
           aria-label="Subtitle {{ row.index }}">
-  <legend><span>Subtitle {{ row.index }}</span><span class="block-time">{{ row|audit_time_label }}</span></legend>
+  <legend><span>Subtitle {{ row.index }}</span><span class="block-time">{{ row.start|format_time_ms(include_milliseconds=true) }} – {{ row.end|format_time_ms(include_milliseconds=true) }}</span></legend>
   {% if has_output %}
     {% set differences = row|audit_differences %}
     <form id="form-{{ row.key }}"

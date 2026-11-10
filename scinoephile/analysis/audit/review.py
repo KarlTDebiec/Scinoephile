@@ -27,7 +27,7 @@ def audit_review(
     comparisons: Sequence[ReviewAuditSeriesPair] = (),
     filters: ReviewAuditFilterGroup = ReviewAuditFilterGroup(),
 ) -> str:
-    """Audit a composition of review pairs and final comparisons.
+    """Report proofreading edits and any differences between final subtitle tracks.
 
     Arguments:
         reviews: ordered review pairs to audit
@@ -157,7 +157,7 @@ def _format_report(
     filters: ReviewAuditFilterGroup,
     unverified_indexes: frozenset[int],
 ) -> str:
-    """Build semantic review data and format it with the shared renderer.
+    """Format the selected subtitle rows as a Markdown table.
 
     Arguments:
         reviews: ordered review-pair specifications
@@ -284,7 +284,7 @@ def _get_filtered_indexes(
     Returns:
         selected subtitle indexes
     Raises:
-        AssertionError: if an internal invariant is violated
+        AssertionError: if the row filter is unsupported
     """
     if filters.row_filter == ReviewAuditFilter.all:
         selected_indexes = set(indexes)

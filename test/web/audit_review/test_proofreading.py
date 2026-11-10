@@ -276,7 +276,7 @@ def test_unwritable_imported_decisions_are_reported_before_querying(
 def test_running_job_rejects_duplicates_and_edits(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Serialize starts and prevent edits before atomic output publication.
+    """Reject duplicate proofreading starts and edits while proofreading runs.
 
     Arguments:
         tmp_path: temporary project directory
@@ -308,7 +308,7 @@ def test_running_job_rejects_duplicates_and_edits(
 
 
 def test_failure_and_retry_keep_absent_output(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Failed requests leave source/destination decisions intact and permit retry.
+    """Keep the JSON and leave the output absent after a failed request, then retry.
 
     Arguments:
         tmp_path: temporary project directory
@@ -385,7 +385,7 @@ def test_external_output_is_never_replaced(tmp_path: Path, monkeypatch: MonkeyPa
 def test_card_http_csrf_progress_completion_and_validation(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Run through the protected HTTP form and refresh only after completion.
+    """Check CSRF, settings validation, and progress polling for proofreading.
 
     Arguments:
         tmp_path: temporary project directory

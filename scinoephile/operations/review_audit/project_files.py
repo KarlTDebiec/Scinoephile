@@ -19,7 +19,6 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 
 from .exceptions import InvalidReviewSubtitleError
-from .proofreading_decisions import ProofreadingDecisions
 from .rows import AuditRow
 
 if sys.platform == "win32":
@@ -31,7 +30,7 @@ __all__ = [
     "backup_review_files",
     "get_file_hashes",
     "lock_review_files",
-    "render_review_files",
+    "render_review_srt",
     "write_files",
 ]
 
@@ -39,7 +38,7 @@ __all__ = [
 def backup_review_files(
     outfile_path: Path, proofreading_json_path: Path, audit_json_path: Path
 ) -> Path:
-    """Copy the existing proofreading output before a rerun.
+    """Back up the proofread SRT and both JSON files before a rerun.
 
     Arguments:
         outfile_path: current proofread SRT
@@ -59,7 +58,7 @@ def backup_review_files(
     return backup_dir_path
 
 
-def get_file_hashes(*file_paths: Path | None) -> tuple[bytes | None, ...]:
+def get_file_hashes(*file_paths: Path) -> tuple[bytes | None, ...]:
     """Hash source and writable files to reject external edits on save.
 
     Arguments:
@@ -70,7 +69,7 @@ def get_file_hashes(*file_paths: Path | None) -> tuple[bytes | None, ...]:
     hashes = []
     for file_path in file_paths:
         file_hash = None
-        if file_path is not None and file_path.exists():
+        if file_path.exists():
             file_hash = sha256(file_path.read_bytes()).digest()
         hashes.append(file_hash)
     return tuple(hashes)
@@ -105,26 +104,16 @@ def lock_review_files(lock_path: Path) -> Generator[None]:
         yield
 
 
-def render_review_files(
-    source: Series,
-    rows: list[AuditRow],
-    outfile_path: Path,
-    *,
-    decisions: ProofreadingDecisions,
-    proofreading_json_path: Path,
-) -> dict[Path, str]:
-    """Serialize subtitle output and native decisions before replacing files.
+def render_review_srt(source: Series, rows: list[AuditRow]) -> str:
+    """Render edited subtitles as SRT and check that text and timing survive.
 
     Arguments:
-        source: original subtitle series for the output
-        rows: validated final subtitle rows
-        outfile_path: proofread subtitle output
-        decisions: candidate native JSON decisions
-        proofreading_json_path: destination for the native decisions
+        source: original subtitles
+        rows: edited subtitles in source order
     Returns:
-        candidate contents keyed by output path
+        SRT text with the edited subtitles
     Raises:
-        ValueError: if the output cannot round-trip through SRT
+        InvalidReviewSubtitleError: if writing SRT would change text or timing
     """
     output = deepcopy(source)
     for subtitle, row in zip(output, rows, strict=True):
@@ -138,7 +127,7 @@ def render_review_files(
             "Subtitle text cannot be saved unchanged in SRT. "
             "Remove leading or trailing whitespace and SRT control sequences."
         )
-    return {outfile_path: content, proofreading_json_path: decisions.serialize()}
+    return content
 
 
 def write_files(writes: dict[Path, str]):

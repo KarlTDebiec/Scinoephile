@@ -10,8 +10,10 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from scinoephile.core.llms import LLMProvider
+from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import get_reviewer
+from scinoephile.llms.review import ReviewManager
 from scinoephile.operations.review_audit.exceptions import InvalidReviewSubtitleError
 from scinoephile.operations.review_audit.project import ReviewAuditProject
 from scinoephile.operations.review_audit.proofreading_decisions import (
@@ -26,23 +28,23 @@ __all__ = ["ProofreadingJob"]
 
 
 class ProofreadingJob(BackgroundJob[state.ProofreadingJobState]):
-    """Serialize proofreading starts and expose immutable progress snapshots."""
+    """Run proofreading in the background and report progress."""
 
     def __init__(self, audit: ReviewAuditProject):
-        """Initialize a worker owner without starting requests.
+        """Set up a proofreading job for the open project.
 
         Arguments:
             audit: session whose output may be created
         """
         self.audit = audit
-        """Source-backed review session."""
+        """Subtitle project to proofread."""
         super().__init__(
             state.ProofreadingJobState(), thread_name="subtitle-proofreading"
         )
         self._refresh_cache = False
 
     def snapshot(self) -> state.ProofreadingJobState:
-        """Read progress and the actual output-file availability.
+        """Report progress and whether a first proofreading run is available.
 
         Returns:
             immutable proofreading card state
@@ -53,7 +55,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingJobState]):
     def start(
         self, provider_name: str, model_name: str, effort: str, *, rerun: bool = False
     ):
-        """Validate settings and start one background run from the original OCR.
+        """Start proofreading the original subtitles in a background thread.
 
         Arguments:
             provider_name: registered LLM provider
@@ -102,7 +104,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingJobState]):
                         f"{exc} Correct the existing proofreading decisions "
                         "before retrying."
                     ) from exc
-                decisions_path.write_text(existing.serialize(), encoding="utf-8")
+                save_test_cases_to_json(decisions_path, existing.cases, ReviewManager)
                 reviewer = get_reviewer(
                     self.audit.language,
                     provider=provider,

@@ -51,10 +51,10 @@ def register_proofreading_routes(app: FlaskApp, audit: ReviewAuditProject):
 
     @app.post("/proofreading")
     def start_proofreading():
-        """Start a CSRF-protected run and immediately return progress.
+        """Start proofreading or ask the user to confirm a rerun.
 
         Returns:
-            current card, validation error, or ordinary redirect
+            confirmation form, progress reload, or configuration error
         """
         message = ""
         status = 200
