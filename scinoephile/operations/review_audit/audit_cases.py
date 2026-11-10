@@ -32,13 +32,17 @@ __all__ = [
 def apply_audit_case(
     block: list[AuditRow], case: ReviewAuditTestCase | None
 ) -> list[AuditRow]:
-    """Restore findings only for a case matching the complete current query.
+    """Copy audit findings onto the subtitle rows they were based on.
+
+    The language, subtitle numbers, original text, proofread text, and
+    proofreading notes must match across the entire block. Rows without a
+    matching finding are marked unaudited.
 
     Arguments:
         block: current subtitle rows, in source order
-        case: saved case for this block, if available
+        case: audit results and the subtitles they describe, if available
     Returns:
-        rows with applicable findings and the block's verification state
+        copies of the rows with audit findings, notes, and verification updated
     """
     findings: dict[int, ReviewAuditFinding] = {}
     verified = False
@@ -66,7 +70,7 @@ def apply_audit_case(
 
 
 def build_audit_case(block: list[AuditRow]) -> ReviewAuditTestCase:
-    """Build a native case from the current findings for a block.
+    """Turn the findings entered for a subtitle block into an audit test case.
 
     Arguments:
         block: current subtitle rows and their findings in source order
@@ -90,12 +94,15 @@ def build_audit_case(block: list[AuditRow]) -> ReviewAuditTestCase:
 
 
 def get_audit_query(block: list[AuditRow] | tuple[AuditRow, ...]) -> ReviewAuditQuery:
-    """Build the audit query shared by the runner and saved-case lookup.
+    """Collect the subtitle text and proofreading notes for an audit.
+
+    The same fields identify saved findings for the block.
 
     Arguments:
-        block: complete ordered subtitle context
+        block: all subtitle rows in the block, in source order
     Returns:
-        query describing the exact proofreading to audit
+        query with the language, subtitle numbers, original and proofread text,
+        and proofreading notes
     """
     return ReviewAuditQuery(
         language=block[0].language,
@@ -114,7 +121,7 @@ def get_audit_query(block: list[AuditRow] | tuple[AuditRow, ...]) -> ReviewAudit
 def load_audit_cases(
     json_path: Path,
 ) -> tuple[dict[int, ReviewAuditTestCase], Language | None]:
-    """Read native audit cases and their shared subtitle language.
+    """Read saved audit results and their subtitle language from JSON.
 
     Arguments:
         json_path: project audit test-case file
@@ -144,7 +151,10 @@ def merge_audit_case(
     *,
     rerun: bool,
 ) -> tuple[list[AuditRow], ReviewAuditTestCase]:
-    """Apply new findings while retaining applicable manual findings and verification.
+    """Apply a new audit answer to a subtitle block.
+
+    When resuming an audit, keep manual findings from a matching draft.
+    If the new answer matches a previously verified answer, keep its verification.
 
     Arguments:
         block: reserved subtitle rows in source order
