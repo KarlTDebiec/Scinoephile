@@ -1,3 +1,4 @@
+{% from 'shared/_blocks.html' import block_summary %}
 {% if autosave|default(false) %}
   {% with row=current %}
     {% include "_synced.html" %}
@@ -27,7 +28,7 @@
       </div>
     {% endif %}
     {% set oob = true %}
-    {% include "_block_summary.html" %}
+    {{ block_summary(block, oob=true) }}
   {% endif %}
 {% endfor %}
 {% set oob = true %}

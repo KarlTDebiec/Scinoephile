@@ -149,7 +149,12 @@ def test_filters_and_pages_include_automatically_validated_rows(
     index_path = images_path / "index.html"
     original = index_path.read_text(encoding="utf-8")
     line = next(line for line in original.splitlines() if line.startswith("#1:"))
-    rows = [line.replace("#1:", f"#{number}:") for number in range(1, 11)]
+    rows = []
+    for number in range(1, 13):
+        start = 1 + 7 * ((number - 1) // 2) + (number - 1) % 2
+        rows.append(
+            line.replace("#1:1,000->2,000", f"#{number}:{start},000->{start + 1},000")
+        )
     index_path.write_text(original.replace(line, "\n".join(rows)), encoding="utf-8")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = _session(images_path, tmp_path)
@@ -158,26 +163,33 @@ def test_filters_and_pages_include_automatically_validated_rows(
 
     review = client.get("/")
     assert b"No subtitles match these filters." in review.data
-    assert b"10 of 10 validated" in review.data
+    assert b"12 of 12 validated" in review.data
     assert b'id="sub-1"' not in review.data
     first = client.get("/?status=all")
+    assert b'id="block-1" class="subtitle-block"' in first.data
     assert b'id="sub-1"' in first.data
-    assert b'id="sub-8"' in first.data
-    assert b'id="sub-9"' not in first.data
-    assert b'aria-label="Next page"' in first.data
-    next_page = client.get("/?status=all&after=8", headers=_HTMX)
-    assert b'id="sub-8"' not in next_page.data
-    assert b'id="sub-9"' in next_page.data
-    assert b'aria-label="Previous page"' in next_page.data
+    assert b'id="sub-10"' in first.data
+    assert b'id="sub-11"' not in first.data
+    assert b'aria-label="Load more blocks"' in first.data
+    next_page = client.get(
+        "/?status=all&after=5", headers={**_HTMX, "HX-Target": "load-more"}
+    )
+    assert b'id="sub-10"' not in next_page.data
+    assert b'id="sub-11"' in next_page.data
+    assert b'id="sub-12"' in next_page.data
+    assert b'aria-label="Load more blocks"' not in next_page.data
     assert b"<!DOCTYPE html>" not in next_page.data
     history = client.get(
-        "/?status=all&after=8", headers={**_HTMX, "HX-History-Restore-Request": "true"}
+        "/?status=all&after=5", headers={**_HTMX, "HX-History-Restore-Request": "true"}
     )
     assert b"<!DOCTYPE html>" in history.data
-    found = client.get("/?status=all&q=10")
-    assert b'id="sub-10"' in found.data
-    assert b'id="sub-9"' not in found.data
-    assert b"1 matching" in found.data
+    assert b'id="sub-1"' in history.data
+    assert b'id="sub-12"' in history.data
+    found = client.get("/?status=all&q=block+6")
+    assert b'id="sub-11"' in found.data
+    assert b'id="sub-12"' in found.data
+    assert b'id="sub-10"' not in found.data
+    assert b"2 matching" in found.data
 
 
 def test_ocr_page_serves_shared_assets_and_original_preview(tmp_path: Path):

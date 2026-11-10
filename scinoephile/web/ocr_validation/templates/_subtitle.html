@@ -1,12 +1,9 @@
+{% from 'shared/_blocks.html' import subtitle_legend %}
 {% from 'shared/_controls.html' import save_status %}
-<article id="subtitle-{{ row.sub_idx }}" class="ocr-row">
-  <header>
-    <h2 id="sub-{{ row.number }}">
-      <a href="#sub-{{ row.number }}">#{{ row.number }}</a>
-      <small>{{ row.start }} → {{ row.end }}</small>
-    </h2>
-    {% include "_row_status.html" %}
-  </header>
+<fieldset id="subtitle-{{ row.sub_idx }}"
+          class="ocr-row subtitle-row"
+          aria-label="Subtitle {{ row.number }}">
+  {{ subtitle_legend(row.number, row.start, row.end, "sub-" ~ row.number) }}
   {# Keep the source image and editable glyphs scaled together, including in partial pages. #}
   {# djlint:off H021 #}
   <div class="subtitle-frame"
@@ -17,12 +14,13 @@
               --glyph-edge: {{ row.text_shadow_color_css }}">
     {# djlint:on #}
     {% include "_preview.html" %}
-    {% set text_url = url_for('update_subtitle', sub_idx=row.sub_idx, operation='text', status=status, q=query, after=after) %}
+    {% set text_url = url_for('update_subtitle', sub_idx=row.sub_idx, operation='text', status=status, q=query, through=through) %}
     <form method="post"
           action="{{ text_url }}"
           hx-post="{{ text_url }}"
           hx-target="#validation-{{ row.sub_idx }}"
           hx-swap="outerHTML"
+          hx-include="#loaded-through"
           hx-sync="#workspace:queue all"
           data-ocr-text>
       <input type="hidden" name="csrf" value="{{ csrf }}">
@@ -33,11 +31,12 @@
                 autocomplete="off"
                 rows="1"
                 wrap="off">{{ "\n" ~ row.editable_text }}</textarea>
-      <div class="ocr-save">
+      <footer class="ocr-save">
+        {% include "_row_status.html" %}
         <button type="submit">Save text</button>
         {{ save_status("save-status-" ~ row.sub_idx) }}
-      </div>
+      </footer>
     </form>
   </div>
   {% include "_validation.html" %}
-</article>
+</fieldset>

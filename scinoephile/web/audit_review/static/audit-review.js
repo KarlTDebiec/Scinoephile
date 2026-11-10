@@ -31,7 +31,6 @@ function syncProofread(input) {
  * @param {Document|Element} root - Container owning the inserted subtitle rows.
  */
 function syncReviewFields(root) {
-    syncBlockToggle();
     for (const input of root.querySelectorAll("textarea[data-original]")) {
         syncProofread(input);
     }
@@ -47,47 +46,11 @@ document.addEventListener("input", event => {
         .target);
     else syncSaveStatus(form);
 });
-// Keep the ordinary search submit available until HTMX has initialized.
 document.addEventListener("htmx:load", event => {
-    document.documentElement.classList.add("has-live-search");
     syncReviewFields(event.detail.elt);
 });
 document.addEventListener("htmx:historyRestore", () => syncReviewFields(document));
 syncReviewFields(document);
-
-/** Reflect loaded native disclosure states in the optional bulk control. */
-function syncBlockToggle() {
-    const button = document.querySelector("[data-toggle-blocks]");
-    if (!button) return;
-    const blocks = document.querySelectorAll("details.audit-block");
-    const expanded = Array.from(blocks).some(block => block.open);
-    let label = "Expand all blocks";
-    if (expanded) {
-        label = "Collapse all blocks";
-        document.querySelector("#workspace").removeAttribute("data-loading-paused");
-    }
-    button.setAttribute("aria-expanded", String(expanded));
-    button.setAttribute("aria-label", label);
-    button.title = label;
-}
-
-document.addEventListener("click", event => {
-    if (!event.target.closest("[data-toggle-blocks]")) return;
-    const expand = !document.querySelector("details.audit-block[open]");
-    document.querySelector("#workspace").toggleAttribute("data-loading-paused",
-        !expand);
-    for (const block of document.querySelectorAll("details.audit-block")) {
-        block.open = expand;
-    }
-    syncBlockToggle();
-});
-// Native toggle does not bubble; capture also handles individual summary clicks.
-document.addEventListener("toggle", event => {
-    if (event.target.matches("details.audit-block")) syncBlockToggle();
-}, true);
-
-// Enable the bulk control once per document; CSS follows the native disclosure states.
-document.documentElement.classList.add("has-block-controls");
 
 /**
  * Read only persisted editable fields; ignore the CSRF token and version.
@@ -309,7 +272,7 @@ document.addEventListener("htmx:afterRequest", event => {
 // Row replacements and filtered block removals must retain newer subtitle drafts.
 document.addEventListener("htmx:oobBeforeSwap", event => {
     const target = event.detail.target;
-    if (!target.matches(".audit-row, .audit-block")) return;
+    if (!target.matches(".audit-row, .subtitle-block")) return;
     for (const form of target.querySelectorAll("form")) {
         const state = getSaveState(form);
         const signature = JSON.stringify(reviewValues(form));

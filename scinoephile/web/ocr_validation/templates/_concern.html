@@ -14,12 +14,13 @@
   {% endif %}
 {%- endmacro %}
 {% if row.concern.kind == "char-dims" %}
-  {% set action_url = url_for('update_subtitle', sub_idx=row.sub_idx, operation='char', status=status, q=query, after=after) %}
+  {% set action_url = url_for('update_subtitle', sub_idx=row.sub_idx, operation='char', status=status, q=query, through=through) %}
   <form method="post"
         action="{{ action_url }}"
         hx-post="{{ action_url }}"
         hx-target="#validation-{{ row.sub_idx }}"
         hx-swap="outerHTML"
+        hx-include="#loaded-through"
         hx-sync="#workspace:queue all"
         class="character-check"
         data-ocr-action>
@@ -48,12 +49,13 @@
     </fieldset>
   </form>
 {% elif row.concern.kind == "space-gap" or row.concern.kind == "tab-gap" %}
-  {% set action_url = url_for('update_subtitle', sub_idx=row.sub_idx, operation='gap', status=status, q=query, after=after) %}
+  {% set action_url = url_for('update_subtitle', sub_idx=row.sub_idx, operation='gap', status=status, q=query, through=through) %}
   <form method="post"
         action="{{ action_url }}"
         hx-post="{{ action_url }}"
         hx-target="#validation-{{ row.sub_idx }}"
         hx-swap="outerHTML"
+        hx-include="#loaded-through"
         hx-sync="#workspace:queue all"
         class="spacing-check"
         data-ocr-action>

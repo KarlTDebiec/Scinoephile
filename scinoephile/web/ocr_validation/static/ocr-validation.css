@@ -1,39 +1,7 @@
-/* Filter bar and subtitle cards */
-.ocr-toolbar {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: .75rem;
-  & form[role=search] {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: .5rem;
-    flex: 1 1 32rem;
-    & select { width: auto; }
-    & input { flex: 1; min-width: 8rem; width: auto; }
-  }
-  & p { margin: 0; }
-}
+/* Validation status and empty results */
 #messages:empty { display: none; }
-.ocr-rows:has(.ocr-row) > .empty { display: none; }
-.ocr-row {
-  min-width: 0;
-  margin: 1rem 0;
-  padding: .75rem;
-  border: 1px solid var(--border);
-  border-radius: .5rem;
-  background: var(--surface);
-  & header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: .25rem 1rem;
-  }
-  & h2 { margin: 0; font-size: 1rem; }
-  & h2 small { margin-inline-start: .4rem; color: var(--muted); font-weight: normal; }
-}
+.ocr-rows:has(.subtitle-block, #load-more:not(:empty)) > .empty { display: none; }
+
 .ocr-row-status {
   margin: 0;
   color: var(--muted);
@@ -41,7 +9,7 @@
   &[data-status="error"] { color: var(--error); }
 }
 
-/* Source image and theme-aware box outlines at the same scale */
+/* Source image and box outlines at the same scale */
 .subtitle-frame {
   container-type: inline-size;
   width: min(100%, var(--image-width));
@@ -51,7 +19,13 @@
   position: relative;
   margin: 0;
   background: var(--background);
-  & img { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+  & img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    @media (prefers-color-scheme: dark) { filter: invert(1); }
+  }
 }
 .ocr-boxes {
   position: absolute;
@@ -62,16 +36,6 @@
   pointer-events: none;
   fill: none;
   stroke-width: 1.5px;
-  --box-1: light-dark(#af173b, #ff8195);
-  --box-2: light-dark(#00629b, #6ed5ff);
-  --box-3: light-dark(#5e4b00, #ffdf65);
-  --box-4: light-dark(#6940a7, #d9a9ff);
-  --box-halo: light-dark(#fff, #000);
-
-  & rect { stroke: var(--box-1); filter: drop-shadow(0 0 1px var(--box-halo)); }
-  & rect:nth-child(4n+2) { stroke: var(--box-2); }
-  & rect:nth-child(4n+3) { stroke: var(--box-3); }
-  & rect:nth-child(4n) { stroke: var(--box-4); }
 }
 
 /* Match the text editor to the image's size and glyph appearance */
@@ -97,7 +61,10 @@
   align-items: center;
   gap: .5rem;
   margin-top: .4rem;
-  & .save-status { margin-left: 0; }
+  & .save-status { margin-left: auto; }
+  .is-enhanced &:not(:has([data-save-state="error"])) > button[type=submit] {
+    display: none;
+  }
 }
 
 /* Box selection, character confirmation, and spacing actions */

@@ -1,0 +1,2 @@
+{% from 'shared/_filters.html' import status_select %}
+{{ status_select("status", "Validation filter", filter_options, status, include_all=true, all_label="All subtitles", counts=counts, oob=oob|default(false)) }}

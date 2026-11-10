@@ -1,51 +1,30 @@
-{% from 'shared/_controls.html' import page_form %}
+{% from 'shared/_controls.html' import toggle_blocks %}
+{% from 'shared/_filters.html' import filter_toolbar %}
 <main id="workspace" hx-history-elt hx-history="false">
   <header>
     <h1>OCR validation</h1>
     <div id="messages" class="error" role="status"></div>
-    <nav class="editor-toolbar ocr-toolbar" aria-label="Subtitle filters">
-      <form method="get"
-            role="search"
-            action="{{ url_for('index') }}"
-            hx-get="{{ url_for('index') }}"
-            hx-target="#workspace"
-            hx-swap="outerHTML"
-            hx-push-url="true"
-            hx-sync="#workspace:queue all">
-        <label for="subtitle-status">Status</label>
-        <select id="subtitle-status" name="status">
-          {% for value, label in filters.items() %}
-            <option value="{{ value }}"{% if value == status %} selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-        <label for="subtitle-search">Search</label>
-        <input type="search"
-               id="subtitle-search"
-               name="q"
-               value="{{ query }}"
-               placeholder="Text or subtitle number">
-        <button type="submit">Filter</button>
-      </form>
-      {% include "_summary.html" %}
-      <form method="post"
-            action="{{ url_for('exit_validation') }}"
-            data-exit-validation>
-        <input type="hidden" name="csrf" value="{{ csrf }}">
-        <button type="submit">Exit Validation</button>
-      </form>
+    {% call(slot) filter_toolbar("ocr-search", query, status != "all" or query, "Text, subtitle number, or block number", {"status": "all"}) %}
+      {% if slot == "options" %}
+        {% include "_status_filter.html" %}
+      {% else %}
+        {% include "_summary.html" %}
+      {% endif %}
+    {% endcall %}
+    <nav class="editor-toolbar" aria-label="Operations">
+      <div class="operation-group">
+        <form method="post"
+              action="{{ url_for('exit_validation') }}"
+              data-exit-validation>
+          <input type="hidden" name="csrf" value="{{ csrf }}">
+          <button type="submit">Exit Validation</button>
+        </form>
+      </div>
+      {{ toggle_blocks() }}
     </nav>
   </header>
   <section class="ocr-rows" aria-label="Subtitles">
-    {% for row in rows %}
-      {% include "_subtitle.html" %}
-    {% endfor %}
+    {% include "_batch.html" %}
     <p class="empty">No subtitles match these filters.</p>
   </section>
-  <nav class="editor-pager" aria-label="Subtitle pages">
-    {% for cursor, label in [(previous_after, "Previous page"), (next_after, "Next page")] %}
-      {% if cursor is not none %}
-        {{ page_form(url_for('index'), {"status": status, "q": query, "after": cursor}, label, "#workspace", reverse=loop.first, push_url=true) }}
-      {% endif %}
-    {% endfor %}
-  </nav>
 </main>

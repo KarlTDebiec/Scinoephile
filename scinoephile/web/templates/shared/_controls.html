@@ -6,18 +6,37 @@
     <use href="{{ url_for(endpoint, filename='icons/' ~ name ~ '.svg') }}#icon" />
   </svg>
 {%- endmacro %}
-{% macro page_form(action, fields, label, target, hx_url=none, reverse=false, push_url=false) -%}
-  <form method="get"
-        action="{{ action }}"
-        hx-get="{{ hx_url or action }}"
-        hx-target="{{ target }}"
-        hx-swap="outerHTML"
-        hx-sync="#workspace:queue all"{% if push_url %} hx-push-url="true"{% endif %}>
-    {% for name, value in fields.items() %}
-      <input type="hidden" name="{{ name }}" value="{{ value }}">
-    {% endfor %}
-    <button type="submit" aria-label="{{ label }}" title="{{ label }}">{{ editor_icon("page-next-outline", css_class="previous-page" if reverse else none) }}</button>
-  </form>
+{% macro load_more_blocks(next_url, fields, has_more, oob=false) -%}
+  <div id="load-more"
+       class="editor-pager"{% if oob %} hx-swap-oob="outerHTML"{% endif %}{% if has_more %} hx-get="{{ next_url }}" hx-trigger="intersect once" hx-target="this" hx-swap="outerHTML" hx-sync="#workspace:queue all"{% endif %}>
+    {% if has_more %}
+      <form method="get"
+            action="{{ url_for('index') }}"
+            hx-get="{{ url_for('index') }}"
+            hx-target="#load-more"
+            hx-swap="outerHTML"
+            hx-sync="#workspace:queue all">
+        {% for name, value in fields.items() %}
+          <input type="hidden" name="{{ name }}" value="{{ value }}">
+        {% endfor %}
+        <button type="submit"
+                aria-label="Load more blocks"
+                title="Load more blocks">{{ editor_icon("page-next-outline") }}</button>
+      </form>
+    {% endif %}
+  </div>
+{%- endmacro %}
+{% macro toggle_blocks() -%}
+  <button id="toggle-blocks"
+          type="button"
+          data-toggle-blocks
+          hx-preserve
+          aria-label="Expand all blocks"
+          title="Expand all blocks"
+          aria-expanded="false">
+    {{ editor_icon('collapse-all-outline', 24) }}
+    {{ editor_icon('expand-all-outline', 24) }}
+  </button>
 {%- endmacro %}
 {% macro save_status(element_id) -%}
   <output id="{{ element_id }}"
@@ -32,4 +51,10 @@
     {{ editor_icon("alert-circle-outline", css_class="error") }}
     <span>Saved</span>
   </output>
+{%- endmacro %}
+{% macro loaded_through(cursor, oob=false) -%}
+  <input type="hidden"
+         id="loaded-through"
+         name="through"
+         value="{{ cursor }}"{% if oob %} hx-swap-oob="outerHTML"{% endif %}>
 {%- endmacro %}

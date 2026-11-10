@@ -28,9 +28,11 @@ function hasOcrDraft(form) {
     return ocrSaveState(form).sent !== null || input.value !== input.defaultValue;
 }
 
-/** @returns {boolean} Whether any subtitle has a draft. */
+/** @returns {boolean} Whether a subtitle has a draft or pending validation action. */
 function hasOcrDrafts() {
-    return Array.from(document.querySelectorAll("[data-ocr-text]")).some(hasOcrDraft);
+    return Array.from(document.querySelectorAll("[data-ocr-text]")).some(form =>
+        hasOcrDraft(form) || form.elements.namedItem("text").readOnly
+    );
 }
 
 /**
@@ -113,7 +115,12 @@ function finishOcrRequest(form, xhr, action) {
     state.pending = false;
     syncOcrSave(form);
     if (success && !hasOcrDraft(form) && result.dataset.visible === "false") {
+        const block = row.closest(".subtitle-block");
         row.remove();
+        if (block && !block.querySelector(".ocr-row")) {
+            block.remove();
+            syncBlockToggle();
+        }
     } else if (success && retry) {
         requestOcrSave(form);
     }

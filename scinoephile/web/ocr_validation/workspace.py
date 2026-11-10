@@ -1,0 +1,78 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Filter OCR concerns and assemble subtitle blocks for the editor."""
+
+from __future__ import annotations
+
+from re import fullmatch
+
+from scinoephile.web.blocks import SubtitleBlock
+
+from .concerns import CharDimsConcern, ErrorConcern, GapConcern
+from .session import OcrValidationSession
+
+__all__ = ["FILTER_OPTIONS", "get_filtered_blocks"]
+
+FILTER_OPTIONS = {
+    "needs-review": ("Needs review", "alert-circle-outline"),
+    "character": ("Character boxes", "text-box-edit-outline"),
+    "spacing": ("Spacing", "minus-box-outline"),
+    "blocked": ("Blocked", "alert-circle-outline"),
+    "done": ("Validated", "checkbox-marked"),
+}
+
+
+def get_filtered_blocks(
+    session: OcrValidationSession, status: str, query: str
+) -> tuple[list[SubtitleBlock[int]], dict[str, int], int]:
+    """Filter the track by concern, text, subtitle number, or block number.
+
+    Arguments:
+        session: current OCR validation session
+        status: requested concern status
+        query: search text, subtitle number, or a block selector
+    Returns:
+        matching blocks, status counts within the search, and total validated rows
+    """
+    concerns = session.subtitle_concerns()
+    counts = dict.fromkeys(("all", *FILTER_OPTIONS), 0)
+    query = query.casefold()
+    block_query = fullmatch(r"block\s*[:#]?\s*(\d+)", query)
+    blocks = []
+    for number, (first, last) in enumerate(session.block_ranges, 1):
+        if block_query is not None and int(block_query[1]) != number:
+            continue
+        visible = []
+        for index in range(first, last):
+            entry = session.entries[index]
+            if (
+                block_query is None
+                and query not in f"{entry.index} {entry.text}".casefold()
+            ):
+                continue
+            concern = concerns[index]
+            kind = "done"
+            if isinstance(concern, CharDimsConcern):
+                kind = "character"
+            elif isinstance(concern, GapConcern):
+                kind = "spacing"
+            elif isinstance(concern, ErrorConcern):
+                kind = "blocked"
+            counts["all"] += 1
+            counts[kind] += 1
+            if kind != "done":
+                counts["needs-review"] += 1
+            if status in {"all", kind} or (status == "needs-review" and kind != "done"):
+                visible.append(index)
+        if visible:
+            blocks.append(
+                SubtitleBlock(
+                    number=number,
+                    first_index=first + 1,
+                    last_index=last,
+                    rows=visible,
+                    start=session.entries[first].start,
+                    end=max(entry.end for entry in session.entries[first:last]),
+                )
+            )
+    return blocks, counts, concerns.count(None)

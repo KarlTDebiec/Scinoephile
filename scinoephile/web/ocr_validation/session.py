@@ -12,6 +12,7 @@ from typing import Self
 from PIL import Image
 
 from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series
 from scinoephile.core.text import WHITESPACE_CHARS
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.ocr.validation import ValidationManager
@@ -78,6 +79,7 @@ class OcrValidationSession:
         self.dir_path = dir_path
         self.entries = entries
         self.series = series
+        self.block_ranges = Series.get_block_indexes_by_pause(series)
         self.manager = manager
         self.outfile_path = outfile_path
         self.text_color_css = (
@@ -268,8 +270,8 @@ class OcrValidationSession:
         return SubtitleRowView(
             sub_idx=sub_idx,
             number=entry.index,
-            start=ImageSeries._format_html_time(entry.start),
-            end=ImageSeries._format_html_time(entry.end),
+            start=entry.start,
+            end=entry.end,
             image_width=subtitle.img.width,
             image_height=subtitle.img.height,
             text=entry.text,

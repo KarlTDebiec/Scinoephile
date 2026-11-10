@@ -41,8 +41,8 @@ def test_session_loads_rows_from_html_index(tmp_path: Path):
 
     row = session.subtitle_row(0)
     assert row.number == 1
-    assert row.start == "1,000"
-    assert row.end == "2,000"
+    assert row.start == 1000
+    assert row.end == 2000
     assert row.image_width == 2
     assert row.image_height == 2
     assert row.text == "recognized"

@@ -18,40 +18,9 @@ from scinoephile.operations.review_audit.verification import (
     VerificationSelection,
     get_verification_selection,
 )
+from scinoephile.web.blocks import SubtitleBlock, get_block_page
 
-__all__ = [
-    "AuditBlock",
-    "AuditPage",
-    "get_audit_page",
-    "get_row_differences",
-    "get_view_context",
-]
-
-_PAGE_SIZE = 5
-"""Maximum number of complete matching blocks in a new batch."""
-
-
-@dataclass(frozen=True)
-class AuditBlock:
-    """A complete proofreading query group and its visible filtered rows."""
-
-    number: int
-    """Stable one-based block number in the complete subtitle track."""
-    first_index: int
-    """First one-based subtitle index in the complete block."""
-    last_index: int
-    """Last one-based subtitle index in the complete block."""
-    rows: list[AuditRow]
-    """Rows matching the active filters."""
-    start: int
-    """Start of the complete block in milliseconds."""
-    end: int
-    """End of the complete block in milliseconds."""
-
-    @property
-    def count(self) -> int:
-        """Total subtitle count before filtering."""
-        return self.last_index - self.first_index + 1
+__all__ = ["AuditPage", "get_audit_page", "get_row_differences", "get_view_context"]
 
 
 @dataclass(frozen=True)
@@ -62,7 +31,7 @@ class AuditPage:
     """Complete row snapshot from which this page was built."""
     rows: list[AuditRow]
     """Visible rows."""
-    blocks: list[AuditBlock]
+    blocks: list[SubtitleBlock[AuditRow]]
     """Loaded matching query groups, with filtered rows inside."""
     filters: AuditFilters
     """Normalized filters."""
@@ -107,7 +76,7 @@ def get_audit_page(
             continue
         matching.extend(visible)
         blocks.append(
-            AuditBlock(
+            SubtitleBlock(
                 number=number,
                 first_index=block_rows[0].index,
                 last_index=block_rows[-1].index,
@@ -116,15 +85,9 @@ def get_audit_page(
                 end=max(row.end for row in block_rows),
             )
         )
-    visible_blocks = [block for block in blocks if block.number > after][:_PAGE_SIZE]
-    last_block = after
-    if through is not None:
-        visible_blocks = [block for block in blocks if block.number <= through]
-        last_block = through
-    elif visible_blocks:
-        last_block = visible_blocks[-1].number
-    if not append:
-        visible_blocks = [block for block in blocks if block.number <= last_block]
+    visible_blocks, last_block, has_more = get_block_page(
+        blocks, after=after, through=through, append=append
+    )
     verification = {
         operation: get_verification_selection(
             rows, filters, through=last_block, proofreading=proofreading
@@ -140,7 +103,7 @@ def get_audit_page(
         verification=verification,
         filter_counts=filters.counts(rows),
         last_block=last_block,
-        has_more=any(block.number > last_block for block in blocks),
+        has_more=has_more,
     )
 
 

@@ -207,10 +207,10 @@ class SubtitleRowView:
     """Zero-based subtitle index."""
     number: int
     """One-based subtitle number."""
-    start: str
-    """Formatted subtitle start time."""
-    end: str
-    """Formatted subtitle end time."""
+    start: int
+    """Subtitle start time in milliseconds."""
+    end: int
+    """Subtitle end time in milliseconds."""
     image_width: int
     """Subtitle image width in pixels."""
     image_height: int

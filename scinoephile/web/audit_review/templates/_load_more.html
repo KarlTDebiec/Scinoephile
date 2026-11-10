@@ -1,7 +1,2 @@
-{% from 'shared/_controls.html' import page_form %}
-<div id="load-more"
-     class="editor-pager"{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}{% if page.has_more %} hx-get="{{ next_url }}" hx-trigger="intersect once" hx-target="this" hx-swap="outerHTML" hx-sync="#workspace:queue all"{% endif %}>
-  {% if page.has_more %}
-    {{ page_form(url_for('index'), {"proofreading": filters.proofreading, "audit": filters.audit, "q": filters.q, "after": page.last_block}, "Load more blocks", "#load-more", hx_url=next_url) }}
-  {% endif %}
-</div>
+{% from 'shared/_controls.html' import load_more_blocks %}
+{{ load_more_blocks(next_url, {"proofreading": filters.proofreading, "audit": filters.audit, "q": filters.q, "after": page.last_block}, page.has_more, oob|default(false)) }}

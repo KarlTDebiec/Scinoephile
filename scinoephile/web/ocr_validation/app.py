@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
+from scinoephile.core.timing import format_time_ms
 from scinoephile.web.security import create_local_app
 
 from .session import OcrValidationSession
@@ -47,6 +48,7 @@ def create_app(session: OcrValidationSession, *, host: str = "127.0.0.1") -> Fla
             static_url_path="/ocr-validation-assets",
         )
     )
+    app.add_template_filter(format_time_ms)
     app.config["MAX_CONTENT_LENGTH"] = 100_000
     app.config["OCR_VALIDATION_SERVER"] = None
     register_routes(app, session)

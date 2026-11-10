@@ -5,6 +5,7 @@
 Package hierarchy (modules may import from any above):
 * concerns / html_index
 * session
+* workspace
 * routes
 * app
 """

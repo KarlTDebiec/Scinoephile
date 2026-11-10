@@ -1,0 +1,25 @@
+{% from 'shared/_controls.html' import editor_icon %}
+{% macro block_summary(block, oob=false) -%}
+  <span id="block-summary-{{ block.number }}"{% if oob %} hx-swap-oob="outerHTML"{% endif %}>{% if block.rows|length != block.count %}{{ block.rows|length }} of {% endif %}{{ block.count }} subtitle{% if block.count != 1 %}s{% endif %}</span>
+{%- endmacro %}
+{% macro subtitle_block(block, block_url) -%}
+  <details id="block-{{ block.number }}" class="subtitle-block">
+    <summary>
+      <a href="{{ block_url }}"
+         hx-get="{{ block_url }}"
+         hx-target="#workspace"
+         hx-swap="outerHTML"
+         hx-push-url="true"
+         hx-sync="#workspace:queue all">Block {{ block.number }}</a>
+      <span>{{ block_summary(block) }}, <span class="block-time">{{ block.start|format_time_ms }} – {{ block.end|format_time_ms }}</span></span>
+      <span class="block-disclosure" aria-hidden="true">
+        {{ editor_icon('minus-box-outline', 24) }}
+        {{ editor_icon('plus-box-outline', 24) }}
+      </span>
+    </summary>
+    <div id="block-rows-{{ block.number }}">{{ caller() }}</div>
+  </details>
+{%- endmacro %}
+{% macro subtitle_legend(number, start, end, anchor_id=none) -%}
+  <legend{% if anchor_id %} id="{{ anchor_id }}"{% endif %}><span>Subtitle {{ number }}</span><span class="block-time">{{ start|format_time_ms(include_milliseconds=true) }} – {{ end|format_time_ms(include_milliseconds=true) }}</span></legend>
+{%- endmacro %}

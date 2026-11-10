@@ -1,4 +1,2 @@
-<input type="hidden"
-       id="loaded-through"
-       name="through"
-       value="{{ page.last_block }}"{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}>
+{% from 'shared/_controls.html' import loaded_through %}
+{{ loaded_through(page.last_block, oob|default(false)) }}

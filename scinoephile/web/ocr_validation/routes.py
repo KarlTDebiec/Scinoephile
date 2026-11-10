@@ -4,15 +4,16 @@
 
 from __future__ import annotations
 
-from bisect import bisect_left
 from io import BytesIO
 from threading import Thread
 from typing import TYPE_CHECKING
 
 from scinoephile.core.dependencies.web import import_flask
+from scinoephile.web.blocks import get_block_page
 
-from .concerns import CharDimsConcern, ErrorConcern, GapConcern, SubtitleRowView
+from .concerns import CharDimsConcern, SubtitleRowView
 from .session import OcrValidationSession
+from .workspace import FILTER_OPTIONS, get_filtered_blocks
 
 __all__ = ["register_routes"]
 
@@ -21,15 +22,7 @@ if TYPE_CHECKING:
 
 flask = import_flask()
 request = flask.request
-_PAGE_SIZE = 8
-_FILTERS = {
-    "needs-review": "Needs review",
-    "all": "All subtitles",
-    "character": "Character boxes",
-    "spacing": "Spacing",
-    "blocked": "Blocked",
-    "done": "Validated",
-}
+_FILTER_CHOICES = tuple((key, *option) for key, option in FILTER_OPTIONS.items())
 
 
 def register_routes(app: FlaskApp, session: OcrValidationSession):
@@ -49,33 +42,30 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
         Returns:
             complete document or workspace fragment
         """
-        session.refresh_concerns()
-        status, query, after = _filters()
-        matches, validated = _matching_subtitles(session, status, query)
-        start = bisect_left(matches, after)
-        visible = matches[start : start + _PAGE_SIZE]
-        previous_after = None
-        if start > 0:
-            previous_after = 0
-            if start > _PAGE_SIZE:
-                previous_after = matches[start - _PAGE_SIZE - 1] + 1
-        next_after = None
-        if start + _PAGE_SIZE < len(matches):
-            next_after = visible[-1] + 1
-
+        append = _is_htmx() and request.headers.get("HX-Target") == "load-more"
+        if not append:
+            session.refresh_concerns()
+        status, query, after, through = _filters()
+        matching, counts, validated = get_filtered_blocks(session, status, query)
+        blocks, last_block, has_more = get_block_page(
+            matching, after=after, through=through, append=append
+        )
         template = "index.html"
-        if _is_htmx():
+        if append:
+            template = "_batch.html"
+        elif _is_htmx():
             template = "_workspace.html"
         return flask.render_template(
             template,
-            after=after,
-            filters=_FILTERS,
-            matched=len(matches),
-            next_after=next_after,
-            previous_after=previous_after,
+            blocks=blocks,
+            counts=counts,
+            filter_options=_FILTER_CHOICES,
+            has_more=has_more,
+            matched=counts[status],
             query=query,
-            rows=[session.subtitle_row(sub_idx) for sub_idx in visible],
             status=status,
+            subtitle_row=session.subtitle_row,
+            through=last_block,
             total=len(session.entries),
             validated=validated,
         )
@@ -154,20 +144,26 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
         return "Validation exited. You can close this tab."
 
 
-def _filters() -> tuple[str, str, int]:
-    """Read the status filter, text search, and pagination cursor.
+def _filters() -> tuple[str, str, int, int | None]:
+    """Read the status filter, search text, and loaded block cursors.
 
     Returns:
-        selected status, trimmed search text, and first candidate subtitle index
+        selected status, trimmed query, and cursors for new and loaded blocks
     """
     default = "needs-review"
     status = request.args.get("status", default)
-    if status not in _FILTERS:
+    if status != "all" and status not in FILTER_OPTIONS:
         status = default
+    through = request.form.get("through", type=int)
+    if through is None:
+        through = request.args.get("through", type=int)
+    if through is not None:
+        through = max(0, through)
     return (
         status,
         request.args.get("q", "").strip(),
         max(0, request.args.get("after", 0, type=int)),
+        through,
     )
 
 
@@ -205,40 +201,6 @@ def _is_htmx() -> bool:
     )
 
 
-def _matching_subtitles(
-    session: OcrValidationSession, status: str, query: str
-) -> tuple[list[int], int]:
-    """Find matching subtitles and count validated rows without building row views.
-
-    Arguments:
-        session: current validation state
-        status: requested concern filter
-        query: search text or subtitle number
-    Returns:
-        matching subtitle indices and total validated count
-    """
-    matches = []
-    validated = 0
-    query = query.casefold()
-    for sub_idx, concern in enumerate(session.subtitle_concerns()):
-        kind = "done"
-        if isinstance(concern, CharDimsConcern):
-            kind = "character"
-        elif isinstance(concern, GapConcern):
-            kind = "spacing"
-        elif isinstance(concern, ErrorConcern):
-            kind = "blocked"
-        else:
-            validated += 1
-        if status not in {"all", kind}:
-            if status != "needs-review" or kind == "done":
-                continue
-        entry = session.entries[sub_idx]
-        if query in entry.text.casefold() or query == str(entry.index):
-            matches.append(sub_idx)
-    return matches, validated
-
-
 def _render_update(
     session: OcrValidationSession, row: SubtitleRowView
 ) -> str | FlaskResponse:
@@ -250,25 +212,38 @@ def _render_update(
     Returns:
         fragments or a redirect back to the current page
     """
-    status, query, after = _filters()
-    matches, validated = _matching_subtitles(session, status, query)
-    visible = row.sub_idx in matches
+    status, query, _, through = _filters()
+    blocks, counts, validated = get_filtered_blocks(session, status, query)
+    block = next(
+        (
+            candidate
+            for candidate in blocks
+            if candidate.first_index <= row.sub_idx + 1 <= candidate.last_index
+        ),
+        None,
+    )
+    visible = block is not None and row.sub_idx in block.rows
     if not _is_htmx():
         anchor = None
         if visible:
             anchor = f"sub-{row.number}"
         return flask.redirect(
-            flask.url_for("index", status=status, q=query, after=after, _anchor=anchor),
+            flask.url_for(
+                "index", status=status, q=query, through=through, _anchor=anchor
+            ),
             code=303,
         )
     return flask.render_template(
         "_updated.html",
         row=row,
-        after=after,
+        block=block,
+        through=through,
         query=query,
         status=status,
         visible=visible,
-        matched=len(matches),
+        counts=counts,
+        filter_options=_FILTER_CHOICES,
+        matched=counts[status],
         total=len(session.entries),
         validated=validated,
     )

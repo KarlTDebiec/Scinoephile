@@ -1,4 +1,4 @@
-<p id="summary"
-   role="status"{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}>
-  {{ validated }} of {{ total }} validated · {{ matched }} matching
-</p>
+<output id="summary"
+        role="status"
+        title="{{ validated }} of {{ total }} validated"
+        aria-label="{{ matched }} matching subtitles"{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}>{{ "{:,}".format(matched) }}</output>

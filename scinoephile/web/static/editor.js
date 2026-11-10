@@ -38,3 +38,43 @@ function guardEditorNavigation(hasDrafts, message) {
         document.querySelector("#messages").textContent = message;
     });
 }
+
+/** Reflect loaded native disclosure states in the optional bulk control. */
+function syncBlockToggle() {
+    const button = document.querySelector("[data-toggle-blocks]");
+    if (!button) return;
+    const blocks = document.querySelectorAll("details.subtitle-block");
+    const expanded = Array.from(blocks).some(block => block.open);
+    let label = "Expand all blocks";
+    if (expanded) {
+        label = "Collapse all blocks";
+        document.querySelector("#workspace").removeAttribute("data-loading-paused");
+    }
+    button.setAttribute("aria-expanded", String(expanded));
+    button.setAttribute("aria-label", label);
+    button.title = label;
+}
+
+document.addEventListener("click", event => {
+    if (!event.target.closest("[data-toggle-blocks]")) return;
+    const expand = !document.querySelector("details.subtitle-block[open]");
+    document.querySelector("#workspace").toggleAttribute("data-loading-paused",
+        !expand);
+    for (const block of document.querySelectorAll("details.subtitle-block")) {
+        block.open = expand;
+    }
+    syncBlockToggle();
+});
+// Native toggle does not bubble; capture also handles individual summary clicks.
+document.addEventListener("toggle", event => {
+    if (event.target.matches("details.subtitle-block")) syncBlockToggle();
+}, true);
+
+// Enable the bulk control once per document; CSS follows the native disclosure states.
+document.documentElement.classList.add("has-block-controls");
+document.addEventListener("htmx:load", syncBlockToggle);
+document.addEventListener("htmx:historyRestore", syncBlockToggle);
+syncBlockToggle();
+
+// Leave the native search submit visible when HTMX is unavailable.
+if (window.htmx) document.documentElement.classList.add("has-live-search");

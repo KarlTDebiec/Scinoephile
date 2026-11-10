@@ -1,6 +1,9 @@
+{% from 'shared/_blocks.html' import block_summary %}
 {% include "_validation.html" %}
 {% set oob = true %}
 {% include "_preview.html" %}
 {% include "_row_status.html" %}
 {% include "_summary.html" %}
+{% include "_status_filter.html" %}
+{% if block %}{{ block_summary(block, oob=true) }}{% endif %}
 <div id="messages" hx-swap-oob="innerHTML"></div>

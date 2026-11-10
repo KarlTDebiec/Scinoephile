@@ -63,7 +63,7 @@ def test_dependent_filter_counts(tmp_path: Path, monkeypatch: MonkeyPatch):
     counts = AuditFilters(q="model explanation").counts(rows)
     assert counts["proofreading"]["all"] == counts["audit"]["review"] == 1
     assert AuditFilters(q="no matching subtitles").counts(rows)["audit"]["all"] == 0
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     page = get_audit_page(audit.rows(), AuditFilters(), after=1)
     assert page.filter_counts["proofreading"]["all"] == 2
 
@@ -746,7 +746,7 @@ def test_search_by_exact_block_number(tmp_path: Path, monkeypatch: MonkeyPatch):
         monkeypatch: configure a single block per page
     """
     audit = _make_project(tmp_path)
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     for query in ("block 2", "block:2", "BLOCK #2", " block 2 "):
         page = get_audit_page(audit.rows(), AuditFilters(q=query))
         assert [block.number for block in page.blocks] == [2]
@@ -906,14 +906,14 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
     assert len(page.rows) == 5 and len(page.blocks) == 5
     assert page.matching == 8 and page.last_block == 5 and page.has_more
     text = create_app(audit).test_client().get("/").get_data(as_text=True)
-    assert text.count('class="audit-row"') == 5
+    assert text.count('class="audit-row subtitle-row"') == 5
     assert '<details id="block-8"' not in text
     assert "loaded-through" in text and 'hx-trigger="intersect once"' in text
     client = create_app(audit).test_client()
     batch = client.get(
         "/?after=5", headers={"HX-Request": "true", "HX-Target": "load-more"}
     ).get_data(as_text=True)
-    assert batch.count('class="audit-row"') == 3
+    assert batch.count('class="audit-row subtitle-row"') == 3
     assert '<details id="block-8"' in batch and 'id="workspace"' not in batch
     assert (
         BeautifulSoup(batch, "html.parser").select_one(
@@ -928,7 +928,7 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
         assert form is not None and form["hx-swap-oob"] == "outerHTML"
         assert "through=8" in str(form["action"])
     native = client.get("/?after=5").get_data(as_text=True)
-    assert native.count('class="audit-row"') == 8
+    assert native.count('class="audit-row subtitle-row"') == 8
     prefix = get_audit_page(audit.rows(), AuditFilters(), through=8)
     assert len(prefix.blocks) == 8 and not prefix.has_more
 
@@ -1077,7 +1077,7 @@ def test_autosave_retains_incrementally_loaded_scope(
         monkeypatch: configure a single block per page
     """
     audit = _make_project(tmp_path)
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     client = create_app(audit).test_client()
     first = client.get("/").get_data(as_text=True)
     assert 'id="block-1"' in first and 'id="block-2"' not in first
@@ -1134,7 +1134,7 @@ def test_bulk_verification_only_covers_loaded_blocks(
         monkeypatch: configure a single block per page
     """
     audit = _make_project(tmp_path)
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     filters = AuditFilters()
     page = get_audit_page(audit.rows(), filters)
     assert len(page.rows) == 1
@@ -1185,7 +1185,7 @@ def test_bulk_proofreading_creates_cases_only_for_complete_visible_blocks(
         audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     client = create_app(audit).test_client()
     filtered = BeautifulSoup(client.get("/?q=Hello").data, "html.parser")
     button = filtered.select_one("#verify-visible-proofreading button")
@@ -1329,7 +1329,7 @@ def test_bulk_verification_http_and_native_form(
         monkeypatch: configure a single block per page
     """
     audit = _materialize_output(_make_project(tmp_path))
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     client = create_app(audit).test_client()
     client.get("/")
     assert client.post("/verify-visible/audit?through=2").status_code == 403
