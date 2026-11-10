@@ -4,12 +4,10 @@
 
 from __future__ import annotations
 
-from functools import partial
 from pathlib import Path
 
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.web.ocr_validation.app import open_validation_editor
 from scinoephile.workflows.ocr_validation import validate_ocr
 from test.helpers.series_files import get_ocr_text_series
 
@@ -84,8 +82,11 @@ def test_validate_ocr_runs_noninteractive_validation(
         infile_path,
         outfile_path,
         validation_data_dir_path=validation_data_dir_path,
+        interactive=False,
         dev=True,
         overwrite=False,
+        host="127.0.0.1",
+        port=5000,
     )
 
     assert load_calls == [infile_path]
@@ -143,18 +144,20 @@ def test_validate_ocr_runs_interactive_validation(monkeypatch, tmp_path: Path):
         get_ocr_text_series("interactive validated").save(outfile_path)
 
     monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.app.OcrValidationSession.from_dir_path",
+        "scinoephile.workflows.ocr_validation.OcrValidationSession.from_dir_path",
         fake_session_from_dir_path,
     )
-    monkeypatch.setattr("scinoephile.web.ocr_validation.app.run_app", fake_run_app)
+    monkeypatch.setattr("scinoephile.workflows.ocr_validation.run_app", fake_run_app)
 
     validated = validate_ocr(
         infile_path,
         outfile_path,
         validation_data_dir_path=validation_data_dir_path,
-        validation_editor=partial(open_validation_editor, host="0.0.0.0", port=5050),
+        interactive=True,
         dev=True,
         overwrite=False,
+        host="0.0.0.0",
+        port=5050,
     )
 
     assert run_calls == [

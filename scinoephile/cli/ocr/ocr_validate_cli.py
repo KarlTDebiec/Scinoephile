@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from functools import partial
 from pathlib import Path
 
 from scinoephile.cli.helpers.web import (
@@ -22,7 +21,6 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.paths import get_runtime_data_root_path
-from scinoephile.web.ocr_validation.app import open_validation_editor
 from scinoephile.workflows.ocr_validation import validate_ocr
 
 __all__ = ["OcrValidateCli"]
@@ -185,19 +183,16 @@ class OcrValidateCli(ScinoephileCliBase):
             parser.error(f"{infile_path} must be a directory when --interactive is set")
 
         # Perform operations
-        validation_editor = None
-        if interactive:
-            validation_editor = partial(
-                open_validation_editor, host=web_args.host, port=web_args.port
-            )
         try:
             validate_ocr(
                 infile_path,
                 outfile_path,
                 validation_data_dir_path=validation_data_dir_path,
-                validation_editor=validation_editor,
+                interactive=interactive,
                 dev=dev,
                 overwrite=overwrite,
+                host=web_args.host,
+                port=web_args.port,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

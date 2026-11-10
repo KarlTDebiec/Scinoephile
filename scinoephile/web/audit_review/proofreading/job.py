@@ -16,13 +16,13 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import get_reviewer
 from scinoephile.llms.providers.registry import DEFAULT_PROVIDER_NAME
 from scinoephile.llms.review import ReviewProcessor
-from scinoephile.web.audit_review.job_settings import get_job_provider
-from scinoephile.web.jobs import BackgroundJob
-from scinoephile.workflows.review_audit.exceptions import InvalidReviewSubtitleError
-from scinoephile.workflows.review_audit.project import ReviewAuditProject
-from scinoephile.workflows.review_audit.proofreading_decisions import (
+from scinoephile.operations.review_audit.exceptions import InvalidReviewSubtitleError
+from scinoephile.operations.review_audit.project import ReviewAuditProject
+from scinoephile.operations.review_audit.proofreading_decisions import (
     ProofreadingDecisions,
 )
+from scinoephile.web.audit_review.job_settings import get_job_provider
+from scinoephile.web.jobs import BackgroundJob
 
 from . import state
 

@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from functools import partial
 from pathlib import Path
 
 from scinoephile.cli.helpers.cache import (
@@ -36,7 +35,6 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.web.ocr_validation.app import open_validation_editor
 from scinoephile.workflows.ocr_processing import (
     OcrProcessingResult,
     OcrProcessingWorkflow,
@@ -233,11 +231,6 @@ class OcrProcessCli(ScinoephileCliBase):
         provider = get_provider(llm_args.provider_name, **llm_args.provider_kwargs)
 
         # Perform operations
-        validation_editor = None
-        if interactive:
-            validation_editor = partial(
-                open_validation_editor, host=web_args.host, port=web_args.port
-            )
         try:
             result = OcrProcessingWorkflow(
                 infile_path,
@@ -246,7 +239,9 @@ class OcrProcessCli(ScinoephileCliBase):
                 stream_index=stream_index,
                 cache_root_path=cache_args.root_path,
                 clean=clean,
-                validation_editor=validation_editor,
+                interactive=interactive,
+                host=web_args.host,
+                port=web_args.port,
                 dev=dev,
                 overwrite=overwrite,
                 overwrite_cache=cache_args.overwrite,

@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from logging import getLogger
-from pathlib import Path
 from socket import create_connection
 from typing import TYPE_CHECKING
 
@@ -19,7 +18,7 @@ from .session import OcrValidationSession
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.web import FlaskApp
 
-__all__ = ["create_app", "open_validation_editor", "run_app"]
+__all__ = ["create_app", "run_app"]
 
 logger = getLogger(__name__)
 
@@ -43,34 +42,6 @@ def create_app(session: OcrValidationSession, *, host: str = "127.0.0.1") -> Fla
     app.config["OCR_VALIDATION_SERVER"] = None
     register_routes(app)
     return app
-
-
-def open_validation_editor(
-    source_dir_path: Path,
-    outfile_path: Path,
-    *,
-    validation_data_dir_path: Path | str | None,
-    dev: bool,
-    host: str,
-    port: int,
-):
-    """Open the OCR validation editor for an image subtitle directory.
-
-    Arguments:
-        source_dir_path: directory containing OCR image subtitles
-        outfile_path: validated subtitle output path
-        validation_data_dir_path: local OCR validation data directory
-        dev: whether to write validation data updates to repo data
-        host: host address to bind
-        port: port to bind
-    """
-    session = OcrValidationSession.from_dir_path(
-        source_dir_path,
-        outfile_path=outfile_path,
-        validation_data_dir_path=validation_data_dir_path,
-        dev=dev,
-    )
-    run_app(session, host, port)
 
 
 def run_app(session: OcrValidationSession, host: str, port: int):

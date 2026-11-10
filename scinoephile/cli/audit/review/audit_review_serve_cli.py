@@ -21,8 +21,8 @@ from scinoephile.common.cli.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.operations.review_audit.project import ReviewAuditProject
 from scinoephile.web.audit_review.app import serve_audit
-from scinoephile.workflows.review_audit.project import ReviewAuditProject
 
 __all__ = ["AuditReviewServeCli"]
 

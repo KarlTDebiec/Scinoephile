@@ -9,10 +9,10 @@ from typing import TYPE_CHECKING
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask
+from scinoephile.operations.review_audit.filters import AuditFilters
+from scinoephile.operations.review_audit.project import ReviewAuditProject
 from scinoephile.web.audit_review.rerun_confirmation import confirm_rerun
 from scinoephile.web.audit_review.workspace import get_view_context
-from scinoephile.workflows.review_audit.filters import AuditFilters
-from scinoephile.workflows.review_audit.project import ReviewAuditProject
 
 from .job import ProofreadingJob
 

@@ -23,7 +23,7 @@ from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
 from .clean import clean_series
 from .ocr_fusion import fuse_ocr_series
-from .ocr_validation import OcrValidationEditor, validate_ocr
+from .ocr_validation import validate_ocr
 
 __all__ = ["OcrProcessingResult", "OcrProcessingWorkflow"]
 
@@ -55,13 +55,15 @@ class OcrProcessingWorkflow:
         cache_root_path: Path | None = None,
         clean: bool = False,
         validate: bool = True,
-        validation_editor: OcrValidationEditor | None = None,
+        interactive: bool = False,
         dev: bool = False,
         overwrite: bool = False,
         overwrite_cache: bool = False,
         provider: LLMProvider | None = None,
         additional_context: str | None = None,
         fuser_kw: dict[str, Any] | None = None,
+        host: str = "127.0.0.1",
+        port: int = 5000,
     ):
         """Initialize.
 
@@ -73,13 +75,15 @@ class OcrProcessingWorkflow:
             cache_root_path: cache root directory path
             clean: whether to clean OCR subtitle outputs before fusing
             validate: whether to validate fused OCR subtitles against images
-            validation_editor: optional client editor for interactive validation
+            interactive: whether to launch the OCR validation web UI
             dev: whether validation should write data updates to repo data
             overwrite: whether to overwrite existing workflow outputs
             overwrite_cache: whether to replace matching generated cache files
             provider: provider to use for OCR fusion queries
             additional_context: additional context to include in OCR fusion prompts
             fuser_kw: keyword arguments for OCR fuser construction
+            host: OCR validation web UI host
+            port: OCR validation web UI port
         """
         self.infile_path = infile_path
         self.output_dir_path = output_dir_path
@@ -91,7 +95,7 @@ class OcrProcessingWorkflow:
         )
         self.clean = clean
         self.validate = validate
-        self.validation_editor = validation_editor
+        self.interactive = interactive
         self.dev = dev
         self.overwrite = overwrite
         self.provider = provider
@@ -104,6 +108,8 @@ class OcrProcessingWorkflow:
             "current_test_cases_path",
             self.output_dir_path / "lang" / self.language.language / "ocr_fusion.json",
         )
+        self.host = host
+        self.port = port
         self.output_paths: dict[str, Path] = {}
 
     def __call__(self) -> OcrProcessingResult:
@@ -362,8 +368,10 @@ class OcrProcessingWorkflow:
             image_dir_path,
             validate_path,
             validation_data_dir_path=self._ocr_validation_data_dir_path,
-            validation_editor=self.validation_editor,
+            interactive=self.interactive,
             dev=self.dev,
             overwrite=self.overwrite,
+            host=self.host,
+            port=self.port,
         )
         self.output_paths["fuse_clean_validate"] = validate_path

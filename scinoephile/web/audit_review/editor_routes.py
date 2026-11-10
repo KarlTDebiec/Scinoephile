@@ -11,8 +11,8 @@ from urllib.parse import urlencode
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask
-from scinoephile.workflows.review_audit.filters import AuditFilters
-from scinoephile.workflows.review_audit.project import ReviewAuditProject
+from scinoephile.operations.review_audit.filters import AuditFilters
+from scinoephile.operations.review_audit.project import ReviewAuditProject
 
 from .workspace import get_audit_page, get_view_context
 

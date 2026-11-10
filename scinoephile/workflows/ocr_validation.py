@@ -6,38 +6,17 @@ from __future__ import annotations
 
 from logging import getLogger
 from pathlib import Path
-from typing import Protocol
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.subtitles import ImageSeries
+from scinoephile.web.ocr_validation import OcrValidationSession
+from scinoephile.web.ocr_validation.app import run_app
 
-__all__ = ["OcrValidationEditor", "validate_ocr"]
+__all__ = ["validate_ocr"]
 
 logger = getLogger(__name__)
-
-
-class OcrValidationEditor(Protocol):
-    """Open a client editor that writes validated subtitles before returning."""
-
-    def __call__(
-        self,
-        source_dir_path: Path,
-        outfile_path: Path,
-        *,
-        validation_data_dir_path: Path | str | None,
-        dev: bool,
-    ) -> None:
-        """Validate OCR interactively and write the output subtitles.
-
-        Arguments:
-            source_dir_path: directory containing OCR image subtitles
-            outfile_path: validated subtitle output path
-            validation_data_dir_path: local OCR validation data directory
-            dev: whether to write validation data updates to repo data
-        """
-        ...
 
 
 def validate_ocr(
@@ -45,9 +24,11 @@ def validate_ocr(
     outfile_path: Path,
     *,
     validation_data_dir_path: Path | str | None = None,
-    validation_editor: OcrValidationEditor | None = None,
+    interactive: bool = False,
     dev: bool = False,
     overwrite: bool = False,
+    host: str = "127.0.0.1",
+    port: int = 5000,
 ) -> Series:
     """Validate OCR text from image subtitles.
 
@@ -55,9 +36,11 @@ def validate_ocr(
         source: image subtitle input path or image series
         outfile_path: validated subtitle output path
         validation_data_dir_path: local OCR validation data directory
-        validation_editor: optional client editor for interactive validation
+        interactive: whether to launch the OCR validation web UI
         dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing validation output
+        host: OCR validation web UI host
+        port: OCR validation web UI port
     Returns:
         validated subtitle series
     Raises:
@@ -68,18 +51,19 @@ def validate_ocr(
         return Series.load(outfile_path)
 
     try:
-        if validation_editor is not None:
+        if interactive:
             if not isinstance(source, Path) or not source.is_dir():
                 raise ScinoephileError(
                     f"{source} must be a directory when interactive validation "
                     "is enabled"
                 )
-            validation_editor(
+            session = OcrValidationSession.from_dir_path(
                 source,
-                outfile_path,
+                outfile_path=outfile_path,
                 validation_data_dir_path=validation_data_dir_path,
                 dev=dev,
             )
+            run_app(session, host, port)
             return Series.load(outfile_path)
 
         if isinstance(source, ImageSeries):

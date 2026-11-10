@@ -15,7 +15,6 @@ from unittest.mock import Mock
 from pydantic import ValidationError
 from pytest import MonkeyPatch, mark, raises
 
-from scinoephile.cli.audit.review import audit_review_run_cli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language, ScinoephileError
@@ -24,12 +23,12 @@ from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditQuery
+from scinoephile.operations.review_audit.audit_progress import AuditProgress
+from scinoephile.operations.review_audit.project import ReviewAuditProject
+from scinoephile.operations.review_audit.rows import AuditStatus
 from scinoephile.web.audit_review import job_settings
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.auditing.job import AuditingJob
-from scinoephile.workflows.review_audit.audit_progress import AuditProgress
-from scinoephile.workflows.review_audit.project import ReviewAuditProject
-from scinoephile.workflows.review_audit.rows import AuditStatus
 
 
 class _Provider(LLMProvider):
@@ -267,7 +266,7 @@ def test_cli_audit_resumes_in_the_browser(tmp_path: Path, monkeypatch: MonkeyPat
         monkeypatch: offline provider replacement
     """
     audit, provider, factory = _setup(tmp_path, monkeypatch)
-    monkeypatch.setattr(audit_review_run_cli, "get_provider", factory)
+    monkeypatch.setattr("scinoephile.workflows.review_audit.get_provider", factory)
     context = tmp_path / "context.txt"
     context.write_text("Check names.", encoding="utf-8")
     assert audit.json_path is not None

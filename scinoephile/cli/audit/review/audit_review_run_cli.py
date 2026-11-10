@@ -33,9 +33,8 @@ from scinoephile.common.cli.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.llms.providers.registry import get_provider
-from scinoephile.workflows.review_audit.project import ReviewAuditProject
-from scinoephile.workflows.review_audit.run import run_audit
+from scinoephile.operations.review_audit.project import ReviewAuditProject
+from scinoephile.workflows.review_audit import run_review_audit
 
 __all__ = ["AuditReviewRunCli"]
 
@@ -202,28 +201,21 @@ class AuditReviewRunCli(ScinoephileCliBase):
             start_at_idx, stop_at_idx = get_block_range_indexes(
                 parser, first_block, last_block, audit.block_count
             )
-            blocks = audit.begin_auditing(
-                rerun=rerun, start_at_idx=start_at_idx, stop_at_idx=stop_at_idx
+            audited_blocks = run_review_audit(
+                audit,
+                provider_name=llm_args.provider_name,
+                provider_kwargs=llm_args.provider_kwargs,
+                start_at_idx=start_at_idx,
+                stop_at_idx=stop_at_idx,
+                rerun=rerun,
+                additional_context=additional_context,
+                cache_root_path=cache_args.root_path,
+                overwrite_cache=cache_args.overwrite,
             )
-            try:
-                provider = get_provider(
-                    llm_args.provider_name, **llm_args.provider_kwargs
-                )
-                run_audit(
-                    audit,
-                    blocks,
-                    provider,
-                    rerun=rerun,
-                    additional_context=additional_context,
-                    cache_root_path=cache_args.root_path,
-                    overwrite_cache=cache_args.overwrite,
-                )
-            finally:
-                audit.end_auditing()
         except (OSError, ScinoephileError, ValueError) as exc:
             parser.error(str(exc))
         logger.info(
-            f"Audited {len(blocks)} blocks. Saved findings to {audit.state_path}"
+            f"Audited {audited_blocks} blocks. Saved findings to {audit.state_path}"
         )
 
 

@@ -10,9 +10,9 @@ Package hierarchy (modules may import from any above):
 * media
 * audio
 * lang
-* dictionaries
+* operations
+* dictionaries / web
 * optimization
 * workflows
-* web
 * cli
 """

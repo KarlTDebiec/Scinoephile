@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from functools import partial
 from pathlib import Path
 from typing import Any
 from unittest.mock import patch
@@ -15,9 +14,7 @@ from scinoephile.cli.ocr.ocr_cli import OcrCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.web.ocr_validation.app import open_validation_editor
 from scinoephile.workflows.ocr_processing import OcrProcessingResult
-from scinoephile.workflows.ocr_validation import OcrValidationEditor
 
 
 def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
@@ -72,7 +69,9 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         stream_index: int | None,
         cache_root_path: Path,
         clean: bool,
-        validation_editor: OcrValidationEditor | None,
+        interactive: bool,
+        host: str,
+        port: int,
         dev: bool,
         overwrite: bool,
         overwrite_cache: bool,
@@ -89,7 +88,9 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
             stream_index: stream index
             cache_root_path: cache root path
             clean: clean value
-            validation_editor: editor callback
+            interactive: interactive value
+            host: host value
+            port: port value
             dev: dev value
             overwrite: overwrite value
             overwrite_cache: overwrite cache
@@ -105,9 +106,9 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         assert stream_index == 3
         assert cache_root_path == (tmp_path / "cache").resolve()
         assert clean is True
-        assert isinstance(validation_editor, partial)
-        assert validation_editor.func is open_validation_editor
-        assert validation_editor.keywords == {"host": "0.0.0.0", "port": 5051}
+        assert interactive is True
+        assert host == "0.0.0.0"
+        assert port == 5051
         assert dev is True
         assert overwrite is True
         assert overwrite_cache is True

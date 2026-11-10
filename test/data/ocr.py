@@ -4,14 +4,12 @@
 
 from __future__ import annotations
 
-from functools import partial
 from pathlib import Path
 from typing import Any
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.web.ocr_validation.app import open_validation_editor
 from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
 
 from .helpers import (
@@ -163,18 +161,16 @@ def _ocr(
         output_dir_path / "lang" / language.language / "ocr_fusion.json",
     )
     fuser_kw.setdefault("auto_verify", True)
-
     # Run workflow
-    validation_editor = None
-    if interactive:
-        validation_editor = partial(open_validation_editor, host=host, port=port)
     OcrProcessingWorkflow(
         infile_path,
         output_dir_path,
         language=language,
         clean=True,
         dev=True,
-        validation_editor=validation_editor,
+        interactive=interactive,
+        host=host,
+        port=port,
         overwrite=overwrite,
         fuser_kw=fuser_kw,
     )()
