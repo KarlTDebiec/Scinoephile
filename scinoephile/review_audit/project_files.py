@@ -1,16 +1,14 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""File I/O for the subtitle audit editor."""
+"""File I/O, locking, and coordinated writes for a review audit project."""
 
 from __future__ import annotations
 
-import re
 import sys
 from collections.abc import Generator
 from contextlib import ExitStack, contextmanager
 from copy import deepcopy
 from hashlib import sha256
-from html import unescape
 from os import fsync
 from pathlib import Path
 from shutil import copy2
@@ -20,9 +18,9 @@ from scinoephile.common.file import create_temp_directory, open_atomic_text_file
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 
-from .decisions import ReviewDecisions
 from .exceptions import InvalidReviewSubtitleError
-from .models import AuditRow
+from .proofreading_decisions import ProofreadingDecisions
+from .rows import AuditRow
 
 if sys.platform == "win32":
     import msvcrt
@@ -32,8 +30,6 @@ else:
 __all__ = [
     "backup_review_files",
     "get_file_hashes",
-    "load_report_notes",
-    "load_review_output",
     "lock_review_files",
     "parse_source_srt",
     "render_review_files",
@@ -83,72 +79,6 @@ def get_file_hashes(*file_paths: Path | None) -> tuple[bytes | None, ...]:
     return tuple(hashes)
 
 
-def load_report_notes(file_path: Path, count: int) -> dict[int, str]:
-    """Import only Notes from a generated audit table, never its rendered text.
-
-    Arguments:
-        file_path: existing Markdown audit report
-        count: number of source subtitles
-    Returns:
-        independent notes keyed by one-based subtitle number
-    Raises:
-        ValueError: if the table is malformed, duplicated, or out of range
-    """
-    columns = []
-    notes = {}
-    for line in file_path.read_text(encoding="utf-8").splitlines():
-        if not line.startswith("|"):
-            continue
-        cells = [cell.strip() for cell in re.split(r"(?<!\\)\|", line)[1:-1]]
-        if cells and cells[0] == "Subtitle":
-            columns = cells
-            continue
-        if not cells or not cells[0].isdigit():
-            continue
-        if len(cells) != len(columns) or "Notes" not in columns:
-            raise ValueError("Audit report has no valid Notes column")
-        index = int(cells[0])
-        if not 1 <= index <= count or index in notes:
-            raise ValueError("Audit report has duplicate or out-of-range row indexes")
-        notes[index] = unescape(
-            cells[columns.index("Notes")].replace("\\|", "|").replace("<br>", "\n")
-        )
-    if not notes:
-        raise ValueError("Audit report contains no subtitle rows")
-    return notes
-
-
-def load_review_output(
-    source: Series, decisions: ReviewDecisions | None, outfile_path: Path | None
-) -> tuple[list[str], list[str]]:
-    """Load output or native proposals and validate their correspondence.
-
-    Arguments:
-        source: original subtitle series
-        decisions: native proofreading decisions, if configured
-        outfile_path: optional proofread SRT to load
-    Returns:
-        editable output text and native revision explanations
-    Raises:
-        ValueError: if output timings or JSON answers disagree
-    """
-    texts = [s.text_with_newline for s in source]
-    revision_notes = [""] * len(texts)
-    if decisions is not None:
-        texts, revision_notes = decisions.render()
-    if outfile_path is not None and outfile_path.exists():
-        output = Series.load(outfile_path)
-        if [(s.start, s.end) for s in output] != [(s.start, s.end) for s in source]:
-            raise ValueError("Original and output subtitle timings must match")
-        output_texts = [s.text_with_newline for s in output]
-        if decisions is not None and decisions.cases:
-            if output_texts != texts:
-                raise ValueError("Output subtitles disagree with the review JSON")
-        else:
-            texts = output_texts
-    return texts, revision_notes
-
-
 @contextmanager
 def lock_review_files(lock_path: Path) -> Generator[None]:
     """Lock a review project across processes while loading or committing files.
@@ -195,7 +125,7 @@ def render_review_files(
     rows: list[AuditRow],
     outfile_path: Path,
     *,
-    decisions: ReviewDecisions | None,
+    decisions: ProofreadingDecisions | None,
     json_path: Path | None,
 ) -> dict[Path, str]:
     """Serialize subtitle output and native decisions before replacing files.

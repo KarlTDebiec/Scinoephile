@@ -21,8 +21,8 @@ from scinoephile.common.cli.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.review_audit.project import ReviewAuditProject
 from scinoephile.web.audit_review.app import serve_audit
-from scinoephile.web.audit_review.session import AuditSession
 
 __all__ = ["AuditReviewServeCli"]
 
@@ -200,14 +200,14 @@ class AuditReviewServeCli(ScinoephileCliBase):
             parser.error("audit web UI must use a loopback host")
         try:
             serve_audit(
-                AuditSession(
+                ReviewAuditProject(
                     infile_path,
                     outfile_path,
                     json_path=json_path,
-                    title=title,
                     language=language,
                     report_path=report_path,
                 ),
+                title=title,
                 host=web_args.host,
                 port=web_args.port,
             )

@@ -16,10 +16,10 @@ from scinoephile.llms.review import ReviewManager, ReviewTestCase
 
 from . import exceptions
 
-__all__ = ["ReviewDecisions"]
+__all__ = ["ProofreadingDecisions"]
 
 
-class ReviewDecisions:
+class ProofreadingDecisions:
     """Native sparse review answers matched to immutable subtitle query blocks."""
 
     def __init__(self, original: Series, language: Language, json_path: Path):

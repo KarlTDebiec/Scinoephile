@@ -9,11 +9,11 @@ from dataclasses import dataclass
 from scinoephile.llms.providers.registry import DEFAULT_PROVIDER_NAME
 from scinoephile.web.jobs import BackgroundJobState
 
-__all__ = ["ProofreadingState"]
+__all__ = ["ProofreadingJobState"]
 
 
 @dataclass(frozen=True)
-class ProofreadingState(BackgroundJobState):
+class ProofreadingJobState(BackgroundJobState):
     """Snapshot of configuration and progress for one local run."""
 
     available: bool = True

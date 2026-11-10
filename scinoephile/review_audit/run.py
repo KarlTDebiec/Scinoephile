@@ -10,14 +10,15 @@ from pathlib import Path
 from scinoephile.core.llms import LLMProvider, Queryer
 from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditSubtitle
-from scinoephile.web.audit_review.models import AuditRow
-from scinoephile.web.audit_review.session import AuditSession
+
+from .project import ReviewAuditProject
+from .rows import AuditRow
 
 __all__ = ["run_audit"]
 
 
 def run_audit(
-    audit: AuditSession,
+    audit: ReviewAuditProject,
     blocks: tuple[tuple[AuditRow, ...], ...],
     provider: LLMProvider,
     *,

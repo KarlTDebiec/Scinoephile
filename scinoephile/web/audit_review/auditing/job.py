@@ -7,21 +7,21 @@ from __future__ import annotations
 from dataclasses import replace
 from functools import partial
 
+from scinoephile.review_audit.project import ReviewAuditProject
+from scinoephile.review_audit.rows import AuditStatus
+from scinoephile.review_audit.run import run_audit
 from scinoephile.web.audit_review.job_settings import get_job_provider
-from scinoephile.web.audit_review.models import AuditStatus
-from scinoephile.web.audit_review.session import AuditSession
 from scinoephile.web.jobs import BackgroundJob
 
 from . import state
-from .run import run_audit
 
 __all__ = ["AuditingJob"]
 
 
-class AuditingJob(BackgroundJob[state.AuditingState]):
+class AuditingJob(BackgroundJob[state.AuditingJobState]):
     """Run independent audits without modifying subtitle text or verification."""
 
-    def __init__(self, audit: AuditSession):
+    def __init__(self, audit: ReviewAuditProject):
         """Initialize without contacting a provider.
 
         Arguments:
@@ -29,9 +29,9 @@ class AuditingJob(BackgroundJob[state.AuditingState]):
         """
         self.audit = audit
         """Source-backed session owning independent audit state."""
-        super().__init__(state.AuditingState(), thread_name="proofreading-audit")
+        super().__init__(state.AuditingJobState(), thread_name="proofreading-audit")
 
-    def snapshot(self) -> state.AuditingState:
+    def snapshot(self) -> state.AuditingJobState:
         """Read progress and whether unaudited subtitles remain.
 
         Returns:
@@ -63,7 +63,7 @@ class AuditingJob(BackgroundJob[state.AuditingState]):
         with self._lock:
             blocks = self.audit.begin_auditing(rerun=rerun)
             self._start_worker(
-                state.AuditingState(
+                state.AuditingJobState(
                     total=len(blocks),
                     provider=provider_name,
                     model=model_name,

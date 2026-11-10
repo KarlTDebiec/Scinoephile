@@ -1,12 +1,12 @@
 {% from '_icons.html' import icon %}
-<form id="verify-visible"
+<form id="verify-matching-rows"
       method="post"
-      action="{{ url_for('verify_visible') }}?{{ query }}"
-      hx-post="{{ url_for('verify_visible') }}?{{ query }}"
+      action="{{ url_for('verify_matching_rows') }}?{{ query }}"
+      hx-post="{{ url_for('verify_matching_rows') }}?{{ query }}"
       hx-target="this"
       hx-swap="outerHTML"
       hx-sync="#workspace:queue all"
-      data-verify-visible{% if oob|default(false) %}
+      data-verify-matching-rows{% if oob|default(false) %}
       hx-swap-oob="outerHTML"{% endif %}>
   <input type="hidden" name="csrf" value="{{ csrf }}">
   <input id="verification-selection"

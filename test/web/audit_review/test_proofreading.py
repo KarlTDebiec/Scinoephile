@@ -18,12 +18,12 @@ from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import get_reviewer
+from scinoephile.review_audit.project import ReviewAuditProject
 from scinoephile.web import jobs
 from scinoephile.web.audit_review import job_settings
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.proofreading import job as proofreading_job
 from scinoephile.web.audit_review.proofreading.job import ProofreadingJob
-from scinoephile.web.audit_review.session import AuditSession
 
 
 class _Provider(LLMProvider):
@@ -84,7 +84,7 @@ class _Provider(LLMProvider):
 
 def _setup(
     tmp_path: Path, monkeypatch: MonkeyPatch, *, with_json: bool = True
-) -> tuple[AuditSession, _Provider, Mock]:
+) -> tuple[ReviewAuditProject, _Provider, Mock]:
     """Create fresh subtitles and an offline provider for a real background run.
 
     Arguments:
@@ -103,7 +103,7 @@ def _setup(
     json_path = None
     if with_json:
         json_path = tmp_path / "review.json"
-    audit = AuditSession(
+    audit = ReviewAuditProject(
         infile_path,
         tmp_path / "reviewed.srt",
         json_path=json_path,
@@ -166,7 +166,7 @@ def test_background_run_publishes_output_and_resumes_notes(
         "Same.",
     ]
     assert audit.infile_path.read_bytes() == original
-    resumed = AuditSession(
+    resumed = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -207,7 +207,7 @@ def test_proofreading_normalizes_revisions_before_publication(
     job.start("openai", "", "")
     _join(job)
     assert job.snapshot().status == "complete", job.snapshot().error
-    restored = AuditSession(
+    restored = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -263,7 +263,7 @@ def test_unwritable_imported_decisions_are_reported_before_querying(
         ]
     )
     audit.json_path.write_text(native_decisions, encoding="utf-8")
-    audit = AuditSession(
+    audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -326,7 +326,7 @@ def test_failure_and_retry_keep_absent_output(tmp_path: Path, monkeypatch: Monke
     audit, provider, _ = _setup(tmp_path, monkeypatch)
     assert audit.json_path is not None
     audit.json_path.write_text("[]\n", encoding="utf-8")
-    audit = AuditSession(
+    audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -503,7 +503,7 @@ def test_reproofread_reloads_one_block_and_preserves_progress(
     progress = json.loads((backups[0] / "audit.json").read_text(encoding="utf-8"))
     assert sum(row["verified"] for row in progress["rows"].values()) == 2
     assert "Corrected OCR." not in "".join(progress["source"])
-    reopened = AuditSession(
+    reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -535,7 +535,7 @@ def test_reproofread_restart_keeps_previous_baseline_until_publication(
     audit.infile_path.write_text(
         audit.infile_path.read_text().replace("Same.", "New OCR.")
     )
-    reopened = AuditSession(
+    reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,

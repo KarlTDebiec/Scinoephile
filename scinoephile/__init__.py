@@ -10,6 +10,7 @@ Package hierarchy (modules may import from any above):
 * media
 * audio
 * lang
+* review_audit
 * dictionaries / web
 * optimization
 * workflows

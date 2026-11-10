@@ -11,10 +11,10 @@ from urllib.parse import urlencode
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask
+from scinoephile.review_audit.filters import AuditFilters
+from scinoephile.review_audit.project import ReviewAuditProject
 
-from .models import AuditFilters
-from .route_helpers import get_view_context
-from .session import AuditSession
+from .workspace import get_audit_page, get_view_context
 
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.web import FlaskApp
@@ -22,12 +22,13 @@ if TYPE_CHECKING:
 __all__ = ["register_editor_routes"]
 
 
-def register_editor_routes(app: FlaskApp, audit: AuditSession):
+def register_editor_routes(app: FlaskApp, audit: ReviewAuditProject, *, title: str):
     """Register routes for browsing, editing, verifying, and exporting audit rows.
 
     Arguments:
         app: local audit application
-        audit: source-backed review session
+        audit: source-backed audit project
+        title: editor title to include in exported progress
     """
     flask = import_flask()
     _register_verification_routes(app, audit)
@@ -74,7 +75,7 @@ def register_editor_routes(app: FlaskApp, audit: AuditSession):
             through = None
             if through_value is not None:
                 through = max(0, int(through_value))
-            before = audit.page(filters, through=through)
+            before = get_audit_page(audit.rows(), filters, through=through)
             version = int(flask.request.form["version"])
             affected = audit.save(
                 key,
@@ -85,7 +86,7 @@ def register_editor_routes(app: FlaskApp, audit: AuditSession):
                 verified=flask.request.form.get("verified") == "on",
                 version=version,
             )
-            page = audit.page(filters, through=through)
+            page = get_audit_page(audit.rows(), filters, through=through)
             current = next((row for row in page.all_rows if row.key == key), None)
             if current is None or current.version != version + 1:
                 raise ValueError("This subtitle changed. Reload before editing.")
@@ -136,7 +137,7 @@ def register_editor_routes(app: FlaskApp, audit: AuditSession):
             UTF-8 audit progress download
         """
         body = app.json.dumps(
-            {"title": audit.title, "rows": [asdict(row) for row in audit.rows()]},
+            {"title": title, "rows": [asdict(row) for row in audit.rows()]},
             ensure_ascii=False,
         )
         response = flask.Response(body, mimetype="application/json")
@@ -162,7 +163,7 @@ def _parse_filters(values: Mapping[str, str]) -> AuditFilters:
     )
 
 
-def _register_preview_routes(app: FlaskApp, audit: AuditSession):
+def _register_preview_routes(app: FlaskApp, audit: ReviewAuditProject):
     """Render unsaved text differences independently of note validation.
 
     Arguments:
@@ -191,7 +192,7 @@ def _register_preview_routes(app: FlaskApp, audit: AuditSession):
         )
 
 
-def _register_verification_routes(app: FlaskApp, audit: AuditSession):
+def _register_verification_routes(app: FlaskApp, audit: ReviewAuditProject):
     """Register filtered bulk verification with the ordinary form fallback.
 
     Arguments:
@@ -200,8 +201,8 @@ def _register_verification_routes(app: FlaskApp, audit: AuditSession):
     """
     flask = import_flask()
 
-    @app.post("/verify-visible")
-    def verify_visible():
+    @app.post("/verify-matching-rows")
+    def verify_matching_rows():
         """Prepare bulk verification, then apply it on the confirmation click.
 
         Returns:
@@ -224,7 +225,7 @@ def _register_verification_routes(app: FlaskApp, audit: AuditSession):
                 return flask.render_template(
                     template, **view, verification_pending=True
                 )
-            audit.verify_visible(filters, selection)
+            audit.verify_matching_rows(filters, selection)
         except (ValueError, ScinoephileError) as exc:
             if flask.request.headers.get("HX-Request") == "true":
                 return (

@@ -24,12 +24,12 @@ from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditQuery
+from scinoephile.review_audit.audit_progress import AuditProgress
+from scinoephile.review_audit.project import ReviewAuditProject
+from scinoephile.review_audit.rows import AuditStatus
 from scinoephile.web.audit_review import job_settings
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.auditing.job import AuditingJob
-from scinoephile.web.audit_review.models import AuditStatus
-from scinoephile.web.audit_review.session import AuditSession
-from scinoephile.web.audit_review.store import AuditProgress
 
 
 class _Provider(LLMProvider):
@@ -93,7 +93,7 @@ class _Provider(LLMProvider):
 
 def _setup(
     tmp_path: Path, monkeypatch: MonkeyPatch
-) -> tuple[AuditSession, _Provider, Mock]:
+) -> tuple[ReviewAuditProject, _Provider, Mock]:
     """Create two completed subtitle blocks and an isolated provider.
 
     Arguments:
@@ -113,7 +113,7 @@ def _setup(
     outfile_path.write_text(source, encoding="utf-8")
     json_path = tmp_path / "review.json"
     json_path.write_text("[]\n", encoding="utf-8")
-    audit = AuditSession(
+    audit = ReviewAuditProject(
         infile_path, outfile_path, json_path=json_path, language=Language.eng
     )
     provider = _Provider()
@@ -163,7 +163,7 @@ def test_audit_commit_serializes_editor_save(tmp_path: Path, monkeypatch: Monkey
         monkeypatch: gate for the first session's write
     """
     audit, _, _ = _setup(tmp_path, monkeypatch)
-    editor = AuditSession(
+    editor = ReviewAuditProject(
         audit.infile_path, audit.outfile_path, json_path=audit.json_path
     )
     block = audit.begin_auditing()[0]
@@ -212,7 +212,7 @@ def test_audit_commit_serializes_editor_save(tmp_path: Path, monkeypatch: Monkey
         with raises(ValueError, match="outside this session"):
             save.result(timeout=5)
     audit.end_auditing()
-    reopened = AuditSession(
+    reopened = ReviewAuditProject(
         audit.infile_path, audit.outfile_path, json_path=audit.json_path
     )
     assert all(item.finding == AuditStatus.ok for item in reopened.rows()[: len(block)])
@@ -243,7 +243,7 @@ def test_audit_progress_is_bound_to_its_language(
     assert progress.pop("language") == "eng"
     audit.state_path.write_text(json.dumps(progress), encoding="utf-8")
 
-    reopened = AuditSession(
+    reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -253,7 +253,9 @@ def test_audit_progress_is_bound_to_its_language(
     assert json.loads(audit.state_path.read_bytes())["language"] == "eng"
     before = audit.state_path.read_bytes()
     with raises(ScinoephileError, match="Audit progress uses language eng"):
-        AuditSession(audit.infile_path, audit.outfile_path, language=Language.yue_hant)
+        ReviewAuditProject(
+            audit.infile_path, audit.outfile_path, language=Language.yue_hant
+        )
     assert audit.state_path.read_bytes() == before
 
 
@@ -292,7 +294,7 @@ def test_cli_audit_resumes_in_the_browser(tmp_path: Path, monkeypatch: MonkeyPat
     ]
     assert [path.read_bytes() for path in files] == before
 
-    reopened = AuditSession(
+    reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -347,7 +349,7 @@ def test_audit_persists_findings_preserving_text_and_human_state(
     assert audit.rows()[1].verified and audit.rows()[1].notes == "Human finding"
     assert not audit.rows()[0].verified and not audit.rows()[2].verified
     assert before == [p.read_bytes() for p in paths if p is not None]
-    restored = AuditSession(
+    restored = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -582,7 +584,7 @@ def test_reaudit_reuses_cache_and_invalidates_changed_inputs(
     assert job.snapshot().status == "complete", job.snapshot().error
     assert len(provider.queries) == 2
     provider.queries.clear()
-    audit = AuditSession(
+    audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -715,7 +717,7 @@ def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(
             data["confirmation"] = confirmation["token"]
     ready_at = confirmation["ready_at"]
     monkeypatch.setattr(
-        "scinoephile.web.audit_review.route_helpers.time", lambda: ready_at + 1
+        "scinoephile.web.audit_review.rerun_confirmation.time", lambda: ready_at + 1
     )
     provider.release.clear()
     provider.fail_at = 2
@@ -767,7 +769,7 @@ def test_rerun_confirmation(
     monkeypatch.setattr(app.extensions[extension], "start", start)
     now = [1000.0]
     monkeypatch.setattr(
-        "scinoephile.web.audit_review.route_helpers.time", lambda: now[0]
+        "scinoephile.web.audit_review.rerun_confirmation.time", lambda: now[0]
     )
     client = app.test_client()
     client.get("/")

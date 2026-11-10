@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 
 from scinoephile.core import Language
 
-from .models import AuditRow, AuditStatus
+from .rows import AuditRow, AuditStatus
 
 __all__ = ["AuditProgress", "SavedAuditRow"]
 

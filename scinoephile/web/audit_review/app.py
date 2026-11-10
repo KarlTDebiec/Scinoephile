@@ -12,12 +12,13 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
 from scinoephile.core.llms import ReasoningEffort
 from scinoephile.llms.providers.registry import get_provider_names
+from scinoephile.review_audit.project import ReviewAuditProject
 from scinoephile.web.security import create_local_app
 
 from .auditing.routes import register_auditing_routes
+from .editor_routes import register_editor_routes
 from .proofreading.routes import register_proofreading_routes
-from .routes import register_editor_routes
-from .session import AuditSession
+from .workspace import get_row_differences, get_row_time_label
 
 if TYPE_CHECKING:
     from scinoephile.core.dependencies.web import FlaskApp
@@ -27,11 +28,12 @@ __all__ = ["create_app", "serve_audit"]
 logger = getLogger(__name__)
 
 
-def create_app(audit: AuditSession) -> FlaskApp:
+def create_app(audit: ReviewAuditProject, *, title: str | None = None) -> FlaskApp:
     """Create the proofreading editor; the original SRT remains read-only.
 
     Arguments:
         audit: loaded project and independent audit state
+        title: display title, defaulting to the input filename stem
     Returns:
         local Flask application
     """
@@ -46,30 +48,41 @@ def create_app(audit: AuditSession) -> FlaskApp:
         )
     )
     app.config["MAX_CONTENT_LENGTH"] = 100_000
+    title = title or audit.infile_path.stem
+    app.add_template_filter(get_row_differences, "audit_differences")
+    app.add_template_filter(get_row_time_label, "audit_time_label")
 
     @app.context_processor
-    def llm_choices() -> dict[str, object]:
-        """Expose the choices shared by the auditing and proofreading cards.
+    def editor_context() -> dict[str, object]:
+        """Expose the editor title and shared LLM choices.
 
         Returns:
-            available providers and reasoning levels
+            editor title, available providers, and reasoning levels
         """
         return {
+            "title": title,
             "provider_names": get_provider_names(),
             "reasoning_levels": tuple(ReasoningEffort),
         }
 
-    register_editor_routes(app, audit)
+    register_editor_routes(app, audit, title=title)
     register_auditing_routes(app, audit)
     register_proofreading_routes(app, audit)
     return app
 
 
-def serve_audit(audit: AuditSession, *, host: str = "127.0.0.1", port: int = 5020):
+def serve_audit(
+    audit: ReviewAuditProject,
+    *,
+    title: str | None = None,
+    host: str = "127.0.0.1",
+    port: int = 5020,
+):
     """Serve the local audit app using the existing optional web stack.
 
     Arguments:
         audit: loaded audit project
+        title: display title override
         host: loopback host address
         port: local TCP port
     Raises:
@@ -77,7 +90,9 @@ def serve_audit(audit: AuditSession, *, host: str = "127.0.0.1", port: int = 502
     """
     serving = import_werkzeug_serving()
     try:
-        server = serving.make_server(host, port, create_app(audit), threaded=True)
+        server = serving.make_server(
+            host, port, create_app(audit, title=title), threaded=True
+        )
         try:
             logger.info(f"Subtitle audit: http://{host}:{port}/")
             server.serve_forever()

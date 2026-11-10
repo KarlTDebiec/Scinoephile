@@ -129,7 +129,7 @@ nav[aria-label="Operations"] {
     min-height: 2.5rem;
     &[hidden] { display: none; }
   }
-  & > form[data-verify-visible] button.is-confirming {
+  & > form[data-verify-matching-rows] button.is-confirming {
     color: var(--warning-text);
     background: var(--warning-background);
     border-color: var(--warning-border);

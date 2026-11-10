@@ -24,18 +24,21 @@ from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 from scinoephile.llms.review import ReviewManager
+from scinoephile.review_audit.filters import AuditFilters
+from scinoephile.review_audit.project import ReviewAuditProject
+from scinoephile.review_audit.rows import AuditStatus
 from scinoephile.web.audit_review.app import create_app, serve_audit
-from scinoephile.web.audit_review.models import AuditFilters, AuditStatus
-from scinoephile.web.audit_review.session import AuditSession
+from scinoephile.web.audit_review.workspace import get_audit_page
 
 
-def test_dependent_filter_counts(tmp_path: Path):
+def test_dependent_filter_counts(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Count all options against other filters and search, before pagination.
 
     Arguments:
         tmp_path: temporary project directory
+        monkeypatch: configure a single block per page
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     rows = audit.rows()
     rows = [rows[0], replace(rows[1], verified=True)]
     counts = AuditFilters(changes="unchanged").counts(rows)
@@ -50,8 +53,8 @@ def test_dependent_filter_counts(tmp_path: Path):
     assert counts["changes"]["all"] == 1
     assert counts["finding"]["review"] == 1
     assert AuditFilters(q="no matching subtitles").counts(rows)["finding"]["all"] == 0
-    audit.page_size = 1
-    page = audit.page(AuditFilters(), after=1)
+    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    page = get_audit_page(audit.rows(), AuditFilters(), after=1)
     assert page.filter_counts["changes"]["all"] == 2
 
 
@@ -61,7 +64,7 @@ def test_edit_updates_native_answers_and_survives_restart(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     source_bytes = audit.infile_path.read_bytes()
     assert audit.json_path is not None
     original_json = json.loads(audit.json_path.read_text())
@@ -75,7 +78,7 @@ def test_edit_updates_native_answers_and_survives_restart(tmp_path: Path):
         verified=True,
         version=0,
     )
-    restored = AuditSession(
+    restored = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -84,7 +87,12 @@ def test_edit_updates_native_answers_and_survives_restart(tmp_path: Path):
     assert restored.rows()[0].reviewed == "Hello there."
     assert restored.rows()[0].review_note == "Human correction"
     assert restored.rows()[0].verified and restored.rows()[0].version == 1
-    assert restored.page(AuditFilters(verification="unverified")).matching == 1
+    assert (
+        get_audit_page(
+            restored.rows(), AuditFilters(verification="unverified")
+        ).matching
+        == 1
+    )
     saved_json = json.loads(audit.json_path.read_text())
     assert [c["query"] for c in saved_json] == [c["query"] for c in original_json]
     assert saved_json[0]["answer"]["revisions"][0]["text"] == "Hello there."
@@ -118,7 +126,7 @@ def test_revert_removes_sparse_revision(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     row = audit.rows()[0]
     audit.save(
         row.key,
@@ -140,7 +148,7 @@ def test_start_without_json_and_create_optional_json_on_save(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path, with_json=False)
+    audit = _make_project(tmp_path, with_json=False)
     row = audit.rows()[0]
     assert row.reviewed == row.original
     audit.save(
@@ -152,14 +160,14 @@ def test_start_without_json_and_create_optional_json_on_save(tmp_path: Path):
         verified=True,
         version=0,
     )
-    restored = AuditSession(
+    restored = ReviewAuditProject(
         audit.infile_path, audit.outfile_path, language=Language.eng
     )
     assert restored.rows()[0].reviewed == "Edited manually."
     assert restored.rows()[0].review_note == "Manual"
     assert restored.rows()[0].verified
     new_json_path = tmp_path / "new-review.json"
-    resumed = AuditSession(
+    resumed = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=new_json_path,
@@ -176,7 +184,7 @@ def test_start_without_json_and_create_optional_json_on_save(tmp_path: Path):
         verified=True,
         version=row.version,
     )
-    loaded = AuditSession(
+    loaded = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=new_json_path,
@@ -208,7 +216,7 @@ def test_saving_an_audit_verdict_preserves_distinct_existing_corrections(
         encoding="utf-8",
     )
     before = outfile_path.read_bytes()
-    audit = AuditSession(
+    audit = ReviewAuditProject(
         infile_path, outfile_path, json_path=json_path, language=Language.eng
     )
     row = audit.rows()[2]
@@ -248,11 +256,11 @@ def test_rejects_aliases_bad_output_and_external_edits(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     with raises(ScinoephileError, match="differ"):
-        AuditSession(audit.infile_path, audit.infile_path)
+        ReviewAuditProject(audit.infile_path, audit.infile_path)
     with raises(ScinoephileError, match="SRT"):
-        AuditSession(audit.infile_path, tmp_path / "output.txt")
+        ReviewAuditProject(audit.infile_path, tmp_path / "output.txt")
     assert audit.json_path is not None
     audit.json_path.write_text(audit.json_path.read_text() + " ")
     row = audit.rows()[0]
@@ -276,7 +284,7 @@ def test_shared_json_decisions_are_explicit_and_update_linked_rows(tmp_path: Pat
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     original = audit.infile_path.read_text().replace("Same.", "Hello.")
     audit.infile_path.write_text(original)
     assert audit.json_path is not None
@@ -292,7 +300,7 @@ def test_shared_json_decisions_are_explicit_and_update_linked_rows(tmp_path: Pat
             ]
         )
     )
-    audit = AuditSession(
+    audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -327,12 +335,12 @@ def test_failed_file_save_does_not_commit_text_or_progress(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     assert audit.json_path is not None
     before = audit.json_path.read_bytes()
     row = audit.rows()[0]
     with patch(
-        "scinoephile.web.audit_review.files.open_atomic_text_file",
+        "scinoephile.review_audit.project_files.open_atomic_text_file",
         side_effect=OSError("disk failure"),
     ):
         with raises(ScinoephileError, match="disk failure"):
@@ -356,7 +364,7 @@ def test_web_edits_escape_content_and_require_csrf(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     audit = _materialize_output(audit)
     client = create_app(audit).test_client()
     row = audit.rows()[0]
@@ -406,7 +414,7 @@ def test_htmx_updates_one_row_without_replacing_other_forms(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     client = create_app(audit).test_client()
     client.get("/?verification=unverified")
     with client.session_transaction() as session:
@@ -442,7 +450,7 @@ def test_review_session_wraps_path_resolution_errors(tmp_path: Path):
         patch.object(Path, "resolve", side_effect=error),
         raises(ScinoephileError, match="Unable to open review editor") as exc,
     ):
-        AuditSession(tmp_path / "source.srt", tmp_path / "edited.srt")
+        ReviewAuditProject(tmp_path / "source.srt", tmp_path / "edited.srt")
 
     assert exc.value.__cause__ is error
 
@@ -453,7 +461,7 @@ def test_review_serve_wraps_server_io_errors(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     error = OSError("Socket unavailable")
     with (
         patch.object(import_werkzeug_serving(), "make_server", side_effect=error),
@@ -473,14 +481,17 @@ def test_review_serve_cli_accepts_subtitles_and_optional_json(
         tmp_path: temporary project directory
         monkeypatch: test patch fixture
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     calls = []
 
-    def fake_serve(loaded: AuditSession, *, host: str, port: int):
+    def fake_serve(
+        loaded: ReviewAuditProject, *, title: str | None, host: str, port: int
+    ):
         """Capture the CLI session configuration.
 
         Arguments:
-            loaded: editable review session
+            loaded: editable review audit project
+            title: optional editor title
             host: loopback interface
             port: requested port
         """
@@ -489,7 +500,7 @@ def test_review_serve_cli_accepts_subtitles_and_optional_json(
                 loaded.infile_path,
                 loaded.outfile_path,
                 loaded.json_path,
-                loaded.title,
+                title,
                 host,
                 port,
             )
@@ -527,7 +538,7 @@ def test_partial_write_failure_restores_existing_files(
         tmp_path: temporary project directory
         failed_path: session attribute for the JSON whose replacement fails
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     row = audit.rows()[0]
     audit.save(
         row.key,
@@ -559,7 +570,9 @@ def test_partial_write_failure_restores_existing_files(
         with open_atomic_text_file(file_path) as handle:
             yield handle
 
-    with patch("scinoephile.web.audit_review.files.open_atomic_text_file", fail_json):
+    with patch(
+        "scinoephile.review_audit.project_files.open_atomic_text_file", fail_json
+    ):
         with raises(ScinoephileError, match="JSON write failed"):
             audit.save(
                 row.key,
@@ -583,7 +596,7 @@ def test_historical_queries_and_multiline_edits_round_trip(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     assert audit.json_path is not None
     latest = json.loads(audit.json_path.read_text())[0]
     historical = dict(
@@ -593,7 +606,7 @@ def test_historical_queries_and_multiline_edits_round_trip(tmp_path: Path):
         },
     )
     audit.json_path.write_text(json.dumps([historical, latest]))
-    audit = AuditSession(
+    audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -614,7 +627,7 @@ def test_historical_queries_and_multiline_edits_round_trip(tmp_path: Path):
     assert data[0]["query"] == historical["query"]
     assert data[0]["answer"] == historical["answer"]
     assert data[1]["query"] == latest["query"]
-    restored = AuditSession(
+    restored = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -632,7 +645,7 @@ def test_rejects_edits_that_cannot_round_trip_in_srt(tmp_path: Path, reviewed: s
         tmp_path: temporary project directory
         reviewed: text that the SRT serializer would change
     """
-    audit = _materialize_output(_make_session(tmp_path))
+    audit = _materialize_output(_make_project(tmp_path))
     assert audit.json_path is not None
     paths = [audit.outfile_path, audit.json_path]
     before = [path.read_bytes() for path in paths]
@@ -648,7 +661,7 @@ def test_rejects_edits_that_cannot_round_trip_in_srt(tmp_path: Path, reviewed: s
             version=row.version,
         )
     assert [path.read_bytes() for path in paths] == before
-    restored = AuditSession(
+    restored = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -664,10 +677,10 @@ def test_blocks_follow_json_requests_and_keep_filtered_context(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     assert len(audit.original.blocks) == 1
-    assert len(audit.page(AuditFilters()).blocks) == 2
-    assert audit.page(AuditFilters()).blocks[0].first_index == 1
+    assert len(get_audit_page(audit.rows(), AuditFilters()).blocks) == 2
+    assert get_audit_page(audit.rows(), AuditFilters()).blocks[0].first_index == 1
     assert audit.json_path is not None
     audit.json_path.write_text(
         json.dumps(
@@ -686,36 +699,42 @@ def test_blocks_follow_json_requests_and_keep_filtered_context(tmp_path: Path):
             ]
         )
     )
-    audit = AuditSession(
+    audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
         language=Language.eng,
     )
-    page = audit.page(AuditFilters())
+    page = get_audit_page(audit.rows(), AuditFilters())
     assert len(page.rows) == 2 and len(page.blocks) == 1
-    filtered = audit.page(AuditFilters(changes="changed"))
+    filtered = get_audit_page(audit.rows(), AuditFilters(changes="changed"))
     block = filtered.blocks[0]
     assert block.count == 2 and len(block.rows) == 1
     assert block.first_index == 1 and block.last_index == 2
 
 
-def test_search_by_exact_block_number(tmp_path: Path):
+def test_search_by_exact_block_number(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Find unloaded blocks while retaining status filters and ordinary search.
 
     Arguments:
         tmp_path: isolated project directory
+        monkeypatch: configure a single block per page
     """
-    audit = _make_session(tmp_path)
-    audit.page_size = 1
+    audit = _make_project(tmp_path)
+    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
     for query in ("block 2", "block:2", "BLOCK #2", " block 2 "):
-        page = audit.page(AuditFilters(q=query))
+        page = get_audit_page(audit.rows(), AuditFilters(q=query))
         assert [block.number for block in page.blocks] == [2]
         assert [row.index for row in page.rows] == [2]
-    assert audit.page(AuditFilters(q="block 20")).matching == 0
-    assert audit.page(AuditFilters(q="block 2", changes="changed")).matching == 0
-    assert audit.page(AuditFilters(q="Same")).matching == 1
-    assert audit.page(AuditFilters(q="1")).rows[0].index == 1
+    assert get_audit_page(audit.rows(), AuditFilters(q="block 20")).matching == 0
+    assert (
+        get_audit_page(
+            audit.rows(), AuditFilters(q="block 2", changes="changed")
+        ).matching
+        == 0
+    )
+    assert get_audit_page(audit.rows(), AuditFilters(q="Same")).matching == 1
+    assert get_audit_page(audit.rows(), AuditFilters(q="1")).rows[0].index == 1
     client = create_app(audit).test_client()
     response = client.get("/?q=block+2", headers={"HX-Request": "true"})
     assert response.status_code == 200
@@ -724,7 +743,7 @@ def test_search_by_exact_block_number(tmp_path: Path):
     assert 'value="block 2"' in text
 
 
-def _make_session(dir_path: Path, *, with_json: bool = True) -> AuditSession:
+def _make_project(dir_path: Path, *, with_json: bool = True) -> ReviewAuditProject:
     """Write original subtitles, optional native decisions and old audit notes.
 
     Arguments:
@@ -774,7 +793,7 @@ def _make_session(dir_path: Path, *, with_json: bool = True) -> AuditSession:
         "| 2 | unused | OK | |\n",
         encoding="utf-8",
     )
-    return AuditSession(
+    return ReviewAuditProject(
         source_path,
         dir_path / "edited.srt",
         json_path=json_path,
@@ -789,7 +808,7 @@ def test_history_restore_returns_full_document(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    client = create_app(_make_session(tmp_path)).test_client()
+    client = create_app(_make_project(tmp_path)).test_client()
     document = client.get(
         "/?finding=review",
         headers={"HX-Request": "true", "HX-History-Restore-Request": "true"},
@@ -817,8 +836,8 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
         ),
         encoding="utf-8",
     )
-    audit = AuditSession(source, tmp_path / "edited.srt", language=Language.eng)
-    page = audit.page(AuditFilters())
+    audit = ReviewAuditProject(source, tmp_path / "edited.srt", language=Language.eng)
+    page = get_audit_page(audit.rows(), AuditFilters())
     assert len(page.rows) == 5 and len(page.blocks) == 5
     assert page.matching == 8 and page.last_block == 5 and page.has_more
     text = create_app(audit).test_client().get("/").get_data(as_text=True)
@@ -838,7 +857,7 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
         is not None
     )
     assert 'hx-trigger="intersect once"' not in batch
-    prefix = audit.page(AuditFilters(), through=8)
+    prefix = get_audit_page(audit.rows(), AuditFilters(), through=8)
     assert len(prefix.blocks) == 8 and not prefix.has_more
 
 
@@ -851,7 +870,7 @@ def test_changed_proofreading_requires_note_before_any_write(tmp_path: Path):
     for with_json in (False, True):
         directory = tmp_path / str(with_json)
         directory.mkdir()
-        audit = _make_session(directory, with_json=with_json)
+        audit = _make_project(directory, with_json=with_json)
         row = audit.rows()[0]
         before_json = None
         if audit.json_path is not None:
@@ -879,7 +898,7 @@ def test_autosave_acknowledges_without_replacing_editable_fields(tmp_path: Path)
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     audit = _materialize_output(audit)
     client = create_app(audit).test_client()
     client.get("/")
@@ -934,7 +953,7 @@ def test_autosave_clears_old_approval_after_text_edit(
         notes: unchanged or deliberately changed audit notes
         expected_finding: verdict saved with the new subtitle text
     """
-    audit = _materialize_output(_make_session(tmp_path))
+    audit = _materialize_output(_make_project(tmp_path))
     row = audit.rows()[0]
     audit.save(
         row.key,
@@ -976,14 +995,17 @@ def test_autosave_clears_old_approval_after_text_edit(
     assert 'data-verified="false"' in html
 
 
-def test_autosave_retains_incrementally_loaded_scope(tmp_path: Path):
+def test_autosave_retains_incrementally_loaded_scope(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
     """Acknowledge a late-block save without deleting earlier blocks or drafts.
 
     Arguments:
         tmp_path: temporary project directory
+        monkeypatch: configure a single block per page
     """
-    audit = _make_session(tmp_path)
-    audit.page_size = 1
+    audit = _make_project(tmp_path)
+    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
     client = create_app(audit).test_client()
     first = client.get("/").get_data(as_text=True)
     assert 'id="block-1"' in first and 'id="block-2"' not in first
@@ -1030,28 +1052,36 @@ def test_autosave_retains_incrementally_loaded_scope(tmp_path: Path):
     assert ordinary.status_code == 303 and "through=2" in ordinary.location
 
 
-def test_bulk_verification_covers_unloaded_matches(tmp_path: Path):
+def test_bulk_verification_covers_unloaded_matches(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
     """Verify the complete filter selection without rewriting subtitle artifacts.
 
     Arguments:
         tmp_path: isolated project directory
+        monkeypatch: configure a single block per page
     """
-    audit = _materialize_output(_make_session(tmp_path))
-    audit.page_size = 1
+    audit = _materialize_output(_make_project(tmp_path))
+    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
     filters = AuditFilters(verification="unverified")
-    assert len(audit.page(filters).rows) == 1
+    assert len(get_audit_page(audit.rows(), filters).rows) == 1
     before = audit.rows()
     assert audit.json_path is not None
     artifacts = {
         p: p.read_bytes()
         for p in (audit.infile_path, audit.outfile_path, audit.json_path)
     }
-    assert audit.verify_visible(filters, audit.page(filters).verification_token) == 2
-    assert audit.page(filters).matching == 0
+    assert (
+        audit.verify_matching_rows(
+            filters, get_audit_page(audit.rows(), filters).verification_token
+        )
+        == 2
+    )
+    assert get_audit_page(audit.rows(), filters).matching == 0
     for old, current in zip(before, audit.rows(), strict=True):
         assert current == replace(old, verified=True, version=old.version + 1)
     assert all(p.read_bytes() == content for p, content in artifacts.items())
-    reopened = AuditSession(
+    reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -1066,42 +1096,45 @@ def test_bulk_verification_filters_and_stale_selection(tmp_path: Path):
     Arguments:
         tmp_path: isolated project directory
     """
-    audit = _make_session(tmp_path)
+    audit = _make_project(tmp_path)
     filters = AuditFilters(
         changes="unchanged", finding="ok", verification="unverified", q="Same"
     )
-    token = audit.page(filters).verification_token
+    token = get_audit_page(audit.rows(), filters).verification_token
     with raises(ValueError, match="Run proofreading"):
-        audit.verify_visible(filters, token)
+        audit.verify_matching_rows(filters, token)
     audit = _materialize_output(audit)
-    token = audit.page(filters).verification_token
+    token = get_audit_page(audit.rows(), filters).verification_token
     with patch.object(audit, "_auditing_running", True):
         with raises(ValueError, match="Wait for proofreading"):
-            audit.verify_visible(filters, token)
-    assert audit.verify_visible(filters, token) == 1
+            audit.verify_matching_rows(filters, token)
+    assert audit.verify_matching_rows(filters, token) == 1
     assert not audit.rows()[0].verified and audit.rows()[1].verified
     with raises(ValueError, match="matching subtitles changed"):
-        audit.verify_visible(filters, token)
+        audit.verify_matching_rows(filters, token)
     assert audit.rows()[0].version == 0
     assert audit.rows()[1].version == 1
 
 
-def test_bulk_verification_http_and_native_form(tmp_path: Path):
+def test_bulk_verification_http_and_native_form(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
     """Protect bulk writes and support HTMX and ordinary redirects.
 
     Arguments:
         tmp_path: isolated project directory
+        monkeypatch: configure a single block per page
     """
-    audit = _materialize_output(_make_session(tmp_path))
-    audit.page_size = 1
+    audit = _materialize_output(_make_project(tmp_path))
+    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
     client = create_app(audit).test_client()
     client.get("/")
-    assert client.post("/verify-visible").status_code == 403
+    assert client.post("/verify-matching-rows").status_code == 403
     with client.session_transaction() as session:
         csrf = session["csrf"]
     filters = AuditFilters(changes="unchanged", finding="ok", verification="unverified")
-    url = "/verify-visible?changes=unchanged&finding=ok&verification=unverified"
-    token = audit.page(filters).verification_token
+    url = "/verify-matching-rows?changes=unchanged&finding=ok&verification=unverified"
+    token = get_audit_page(audit.rows(), filters).verification_token
     stale = client.post(
         url, data=dict(csrf=csrf, selection="stale"), headers={"HX-Request": "true"}
     )
@@ -1126,8 +1159,11 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
     assert "No rows match" in result.get_data(as_text=True)
     assert not audit.rows()[0].verified and audit.rows()[1].verified
     native = client.post(
-        "/verify-visible",
-        data=dict(csrf=csrf, selection=audit.page(AuditFilters()).verification_token),
+        "/verify-matching-rows",
+        data=dict(
+            csrf=csrf,
+            selection=get_audit_page(audit.rows(), AuditFilters()).verification_token,
+        ),
     )
     assert native.status_code == 200
     native_confirmation = native.get_data(as_text=True)
@@ -1135,10 +1171,10 @@ def test_bulk_verification_http_and_native_form(tmp_path: Path):
     assert "Verify 2 matching subtitles" in native_confirmation
     assert not audit.rows()[0].verified
     native = client.post(
-        "/verify-visible",
+        "/verify-matching-rows",
         data=dict(
             csrf=csrf,
-            selection=audit.page(AuditFilters()).verification_token,
+            selection=get_audit_page(audit.rows(), AuditFilters()).verification_token,
             confirm="on",
         ),
     )
@@ -1155,7 +1191,7 @@ def test_bulk_verification_confirmation_resets_and_rejects_stale_selection(
     Arguments:
         tmp_path: isolated project directory
     """
-    audit = _materialize_output(_make_session(tmp_path))
+    audit = _materialize_output(_make_project(tmp_path))
     client = create_app(audit).test_client()
     client.get("/")
     with client.session_transaction() as session:
@@ -1166,8 +1202,10 @@ def test_bulk_verification_confirmation_resets_and_rejects_stale_selection(
         path: path.read_bytes()
         for path in (audit.infile_path, audit.outfile_path, audit.json_path)
     }
-    token = audit.page(AuditFilters()).verification_token
-    prepared = client.post("/verify-visible", data=dict(csrf=csrf, selection=token))
+    token = get_audit_page(audit.rows(), AuditFilters()).verification_token
+    prepared = client.post(
+        "/verify-matching-rows", data=dict(csrf=csrf, selection=token)
+    )
     assert 'name="confirm" value="on"' in prepared.get_data(as_text=True)
     assert audit.rows() == before
     assert all(path.read_bytes() == value for path, value in artifacts.items())
@@ -1188,11 +1226,14 @@ def test_bulk_verification_confirmation_resets_and_rejects_stale_selection(
     )
     assert saved.status_code == 200
     saved_html = saved.get_data(as_text=True)
-    assert 'id="verify-visible"' in saved_html
+    assert 'id="verify-matching-rows"' in saved_html
     assert 'name="confirm"' not in saved_html
-    assert f'value="{audit.page(AuditFilters()).verification_token}"' in saved_html
+    assert (
+        f'value="{get_audit_page(audit.rows(), AuditFilters()).verification_token}"'
+        in saved_html
+    )
     stale = client.post(
-        "/verify-visible",
+        "/verify-matching-rows",
         data=dict(csrf=csrf, selection=token, confirm="on"),
         headers={"HX-Request": "true"},
     )
@@ -1218,7 +1259,7 @@ def test_invalid_audit_note_does_not_save(
         notes: invalid audit explanation
         error: expected validation message
     """
-    audit = _materialize_output(_make_session(tmp_path))
+    audit = _materialize_output(_make_project(tmp_path))
     row = audit.rows()[0]
     paths = [audit.infile_path, audit.outfile_path, audit.json_path]
     before = [p.read_bytes() for p in paths if p is not None]
@@ -1263,7 +1304,7 @@ def test_bulk_verification_rejects_invalid_audit_notes(
         notes: invalid stored explanation
         error: expected validation message
     """
-    audit = _materialize_output(_make_session(tmp_path))
+    audit = _materialize_output(_make_project(tmp_path))
     row = audit.rows()[0]
     progress = json.loads(audit.state_path.read_text(encoding="utf-8"))
     progress["rows"][str(row.index)] = dict(
@@ -1275,7 +1316,7 @@ def test_bulk_verification_rejects_invalid_audit_notes(
         version=1,
     )
     audit.state_path.write_text(json.dumps(progress), encoding="utf-8")
-    audit = AuditSession(
+    audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -1283,12 +1324,14 @@ def test_bulk_verification_rejects_invalid_audit_notes(
     )
     filters = AuditFilters()
     with raises(ValueError, match=error):
-        audit.verify_visible(filters, audit.page(filters).verification_token)
+        audit.verify_matching_rows(
+            filters, get_audit_page(audit.rows(), filters).verification_token
+        )
     assert not any(row.verified for row in audit.rows())
     assert audit.rows()[0].notes == notes
 
 
-def _materialize_output(audit: AuditSession) -> AuditSession:
+def _materialize_output(audit: ReviewAuditProject) -> ReviewAuditProject:
     """Give editor UI tests an actual completed proofreading output.
 
     Arguments:
@@ -1301,7 +1344,7 @@ def _materialize_output(audit: AuditSession) -> AuditSession:
         subtitle.text = row.reviewed.replace("\n", "\\N")
     audit.outfile_path.write_text(output.to_string("srt"), encoding="utf-8")
     report_path = audit.infile_path.parent / "audit.md"
-    return AuditSession(
+    return ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
@@ -1316,7 +1359,7 @@ def test_draft_diff_preview_does_not_require_notes_or_persist(tmp_path: Path):
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _materialize_output(_make_session(tmp_path))
+    audit = _materialize_output(_make_project(tmp_path))
     client = create_app(audit).test_client()
     client.get("/")
     row = audit.rows()[1]

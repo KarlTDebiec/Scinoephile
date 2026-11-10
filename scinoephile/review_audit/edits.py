@@ -7,8 +7,8 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import replace
 
-from .decisions import ReviewDecisions
-from .models import AuditRow, AuditStatus
+from .proofreading_decisions import ProofreadingDecisions
+from .rows import AuditRow, AuditStatus
 
 __all__ = ["build_review_edit", "prepare_review_edit"]
 
@@ -63,10 +63,10 @@ def build_review_edit(
 def prepare_review_edit(
     rows: list[AuditRow],
     draft: AuditRow,
-    decisions: ReviewDecisions | None,
+    decisions: ProofreadingDecisions | None,
     *,
     proofreading_changed: bool,
-) -> tuple[list[AuditRow], ReviewDecisions | None, list[AuditRow]]:
+) -> tuple[list[AuditRow], ProofreadingDecisions | None, list[AuditRow]]:
     """Apply one edit and reset stale findings on changed subtitles.
 
     Arguments:
@@ -110,8 +110,8 @@ def _apply_proofreading_edit(
     rows: list[AuditRow],
     current: AuditRow,
     draft: AuditRow,
-    decisions: ReviewDecisions | None,
-) -> tuple[list[AuditRow], ReviewDecisions | None]:
+    decisions: ProofreadingDecisions | None,
+) -> tuple[list[AuditRow], ProofreadingDecisions | None]:
     """Apply edited text to the subtitle output and any native decisions.
 
     Arguments:

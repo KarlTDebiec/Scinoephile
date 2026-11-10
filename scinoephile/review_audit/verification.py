@@ -8,7 +8,8 @@ from collections.abc import Iterable
 from dataclasses import replace
 from hashlib import sha256
 
-from .models import AuditFilters, AuditRow
+from .filters import AuditFilters
+from .rows import AuditRow
 
 __all__ = ["get_verification_token", "prepare_bulk_verification"]
 

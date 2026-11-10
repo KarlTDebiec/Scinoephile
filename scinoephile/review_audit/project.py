@@ -14,9 +14,10 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 
-from .decisions import ReviewDecisions
+from .audit_progress import AuditProgress
 from .edits import build_review_edit, prepare_review_edit
-from .files import (
+from .filters import AuditFilters
+from .project_files import (
     backup_review_files,
     get_file_hashes,
     lock_review_files,
@@ -25,20 +26,21 @@ from .files import (
     validate_project_paths,
     write_files,
 )
-from .models import AuditFilters, AuditPage, AuditRow, AuditStatus
-from .pagination import get_audit_page
-from .rows import apply_audit_findings, build_audit_rows, carry_audit_progress
-from .store import AuditProgress
+from .proofreading_decisions import ProofreadingDecisions
+from .rows import (
+    AuditRow,
+    AuditStatus,
+    apply_audit_findings,
+    build_audit_rows,
+    carry_audit_progress,
+)
 from .verification import prepare_bulk_verification
 
-__all__ = ["AuditSession"]
+__all__ = ["ReviewAuditProject"]
 
 
-class AuditSession:
+class ReviewAuditProject:
     """Edit one subtitle language while preserving the original transcription."""
-
-    page_size = 5
-    """Number of complete matching blocks per incremental batch."""
 
     def __init__(
         self,
@@ -46,7 +48,6 @@ class AuditSession:
         outfile_path: Path,
         *,
         json_path: Path | None = None,
-        title: str | None = None,
         language: Language | None = None,
         report_path: Path | None = None,
     ):
@@ -56,7 +57,6 @@ class AuditSession:
             infile_path: immutable original subtitles
             outfile_path: edited subtitles, loaded if already present
             json_path: optional native review JSON to read and update or create
-            title: display title, defaulting to the input filename stem
             language: language override, otherwise detected from the input
             report_path: optional old Markdown report used only to seed audit notes
         Raises:
@@ -80,7 +80,6 @@ class AuditSession:
                 report_path = val_input_path(report_path)
             self.state_path = self.outfile_path.with_suffix(".audit.json")
             self._lock_path = self.state_path.with_name(f".{self.state_path.stem}.lock")
-            self.title = title or self.infile_path.stem
             validate_project_paths(
                 self.infile_path,
                 self.outfile_path,
@@ -215,31 +214,6 @@ class AuditSession:
             self._proofreading_content = None
             self._proofreading_file_hashes = None
 
-    def page(
-        self, filters: AuditFilters, *, after: int = 0, through: int | None = None
-    ) -> AuditPage:
-        """Select a block batch or the complete prefix already loaded by the browser.
-
-        Arguments:
-            filters: requested filters
-            after: stable source block cursor before a new batch
-            through: inclusive loaded cursor when acknowledging edits
-        Returns:
-            loaded blocks and complete filtered progress counts
-        """
-        filters.validate()
-        with self._lock:
-            rows = self.rows()
-            block_ranges = self._block_ranges
-        return get_audit_page(
-            rows,
-            block_ranges,
-            filters,
-            page_size=self.page_size,
-            after=after,
-            through=through,
-        )
-
     def publish_audit(
         self,
         block: tuple[AuditRow, ...],
@@ -298,7 +272,7 @@ class AuditSession:
             source = self._proofreading_source
             content = self._proofreading_content
             assert source is not None and content is not None
-            decisions = ReviewDecisions(source, self.language, decisions_path)
+            decisions = ProofreadingDecisions(source, self.language, decisions_path)
             decisions.normalize_srt_revisions()
             updated, ranges = build_audit_rows(
                 source, content, self.language, decisions
@@ -426,12 +400,12 @@ class AuditSession:
             self._rows = updated
             return {row.key for row in affected}
 
-    def verify_visible(self, filters: AuditFilters, token: str) -> int:
+    def verify_matching_rows(self, filters: AuditFilters, token: str) -> int:
         """Verify every matching subtitle atomically without changing its text.
 
         Arguments:
-            filters: current browser filters, independent of the loaded cursor
-            token: selection digest rendered with the operations form
+            filters: filters applied to the full project
+            token: digest of the selected row identities and versions
         Returns:
             number of newly verified subtitles
         Raises:
@@ -521,7 +495,7 @@ class AuditSession:
         self._progress = progress
         self.decisions = None
         if self.json_path is not None:
-            self.decisions = ReviewDecisions(
+            self.decisions = ProofreadingDecisions(
                 self.original, self.language, self.json_path
             )
         self._rows, self._block_ranges = build_audit_rows(

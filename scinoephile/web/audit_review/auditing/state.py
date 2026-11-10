@@ -9,11 +9,11 @@ from dataclasses import dataclass
 from scinoephile.llms.providers.registry import DEFAULT_PROVIDER_NAME
 from scinoephile.web.jobs import BackgroundJobState
 
-__all__ = ["AuditingState"]
+__all__ = ["AuditingJobState"]
 
 
 @dataclass(frozen=True)
-class AuditingState(BackgroundJobState):
+class AuditingJobState(BackgroundJobState):
     """Immutable configuration and progress for the independent audit card."""
 
     available: bool = False

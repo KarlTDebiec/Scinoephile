@@ -9,9 +9,10 @@ from typing import TYPE_CHECKING
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask
-from scinoephile.web.audit_review.models import AuditFilters
-from scinoephile.web.audit_review.route_helpers import confirm_rerun, get_view_context
-from scinoephile.web.audit_review.session import AuditSession
+from scinoephile.review_audit.filters import AuditFilters
+from scinoephile.review_audit.project import ReviewAuditProject
+from scinoephile.web.audit_review.rerun_confirmation import confirm_rerun
+from scinoephile.web.audit_review.workspace import get_view_context
 
 from .job import ProofreadingJob
 
@@ -21,7 +22,7 @@ if TYPE_CHECKING:
 __all__ = ["register_proofreading_routes"]
 
 
-def register_proofreading_routes(app: FlaskApp, audit: AuditSession):
+def register_proofreading_routes(app: FlaskApp, audit: ReviewAuditProject):
     """Register the proofreading card and background worker.
 
     Arguments:

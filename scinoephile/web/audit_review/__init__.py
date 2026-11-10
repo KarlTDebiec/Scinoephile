@@ -3,12 +3,7 @@
 """Interactive subtitle review audits.
 
 Package hierarchy (modules may import from any above):
-* exceptions
-* decisions / job_settings / models
-* edits / files / store / verification
-* pagination / rows
-* session
-* route_helpers
-* auditing / proofreading / routes
+* job_settings / rerun_confirmation / workspace
+* auditing / editor_routes / proofreading
 * app
 """

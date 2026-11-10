@@ -1,22 +1,17 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Page context and rerun confirmation shared by audit editor routes."""
+"""Confirm when an editor job can replace previously saved results."""
 
 from __future__ import annotations
 
-from dataclasses import asdict
 from secrets import compare_digest, token_urlsafe
 from time import time
-from urllib.parse import urlencode
 
 from scinoephile.core.dependencies.web import import_flask
 from scinoephile.core.llms import ReasoningEffort
 from scinoephile.llms.providers.registry import get_provider_names
 
-from .models import AuditFilters, AuditPage
-from .session import AuditSession
-
-__all__ = ["confirm_rerun", "get_view_context"]
+__all__ = ["confirm_rerun"]
 
 
 def confirm_rerun(operation: str, *, rerun: bool) -> bool:
@@ -72,37 +67,3 @@ def confirm_rerun(operation: str, *, rerun: bool) -> bool:
     }
     flask.session["rerun_confirmations"] = pending
     return False
-
-
-def get_view_context(
-    audit: AuditSession, filters: AuditFilters, *, page: AuditPage | None = None
-) -> dict[str, object]:
-    """Build a bounded view, stable next cursor, and native save context.
-
-    Arguments:
-        audit: active editable review session
-        filters: requested filter state
-        page: existing page snapshot when rendering a save response
-    Returns:
-        template context
-    """
-    flask = import_flask()
-    if page is None:
-        through = None
-        if flask.request.args.get("through"):
-            through = max(0, int(flask.request.args["through"]))
-        after = max(0, int(flask.request.args.get("after", "0")))
-        page = audit.page(filters, after=after, through=through)
-    values = asdict(page.filters)
-    has_output = audit.outfile_path.exists()
-    return {
-        "verification_token": page.verification_token,
-        "title": audit.title,
-        "has_output": has_output,
-        "editing_blocked": not has_output or audit.job_running,
-        "input_changed": audit.input_changed,
-        "page": page,
-        "filters": page.filters,
-        "query": urlencode(dict(values, through=page.last_block)),
-        "next_url": f"/?{urlencode(dict(values, after=page.last_block))}",
-    }

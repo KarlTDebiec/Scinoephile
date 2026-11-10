@@ -2,9 +2,9 @@
 <fieldset id="row-{{ row.key }}"
           class="audit-row"{% if editing_blocked %} disabled{% endif %}
           aria-label="Subtitle {{ row.index }}">
-  <legend><span>Subtitle {{ row.index }}</span><span class="block-time">{{ row.time_label }}</span></legend>
+  <legend><span>Subtitle {{ row.index }}</span><span class="block-time">{{ row|audit_time_label }}</span></legend>
   {% if has_output %}
-    {% set differences = row.differences %}
+    {% set differences = row|audit_differences %}
     <form id="form-{{ row.key }}"
           method="post"
           action="{{ url_for('save_row', key=row.key) }}?{{ query }}"

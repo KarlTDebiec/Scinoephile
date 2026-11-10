@@ -16,10 +16,10 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.standard import get_reviewer
 from scinoephile.llms.providers.registry import DEFAULT_PROVIDER_NAME
 from scinoephile.llms.review import ReviewProcessor
-from scinoephile.web.audit_review.decisions import ReviewDecisions
-from scinoephile.web.audit_review.exceptions import InvalidReviewSubtitleError
+from scinoephile.review_audit.exceptions import InvalidReviewSubtitleError
+from scinoephile.review_audit.project import ReviewAuditProject
+from scinoephile.review_audit.proofreading_decisions import ProofreadingDecisions
 from scinoephile.web.audit_review.job_settings import get_job_provider
-from scinoephile.web.audit_review.session import AuditSession
 from scinoephile.web.jobs import BackgroundJob
 
 from . import state
@@ -27,10 +27,10 @@ from . import state
 __all__ = ["ProofreadingJob"]
 
 
-class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
+class ProofreadingJob(BackgroundJob[state.ProofreadingJobState]):
     """Serialize proofreading starts and expose immutable progress snapshots."""
 
-    def __init__(self, audit: AuditSession):
+    def __init__(self, audit: ReviewAuditProject):
         """Initialize a worker owner without starting requests.
 
         Arguments:
@@ -40,7 +40,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
         """Source-backed review session."""
         saved = audit.proofreading_settings
         super().__init__(
-            state.ProofreadingState(
+            state.ProofreadingJobState(
                 provider=saved.get("provider", DEFAULT_PROVIDER_NAME),
                 model=saved.get("model", ""),
                 effort=saved.get("effort", ""),
@@ -49,7 +49,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
         )
         self._refresh_cache = False
 
-    def snapshot(self) -> state.ProofreadingState:
+    def snapshot(self) -> state.ProofreadingJobState:
         """Read progress and the actual output-file availability.
 
         Returns:
@@ -75,7 +75,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
         with self._lock:
             source = self.audit.begin_proofreading(rerun=rerun)
             self._start_worker(
-                state.ProofreadingState(
+                state.ProofreadingJobState(
                     total=len(source.blocks),
                     provider=provider_name,
                     model=model_name,
@@ -111,7 +111,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
                 self.audit.decisions.serialize(), encoding="utf-8"
             )
         elif self.audit.outfile_path.exists():
-            existing = ReviewDecisions(
+            existing = ProofreadingDecisions(
                 self.audit.original, self.audit.language, decisions_path
             )
             for row in self.audit.rows():
@@ -146,7 +146,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingState]):
                 reviewer, provider, settings
             )
         settings["request_identity"] = identity
-        existing = ReviewDecisions(source, self.audit.language, decisions_path)
+        existing = ProofreadingDecisions(source, self.audit.language, decisions_path)
         try:
             existing.normalize_srt_revisions()
         except InvalidReviewSubtitleError as exc:

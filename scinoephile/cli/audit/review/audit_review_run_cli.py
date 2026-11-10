@@ -34,8 +34,8 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.web.audit_review.auditing.run import run_audit
-from scinoephile.web.audit_review.session import AuditSession
+from scinoephile.review_audit.project import ReviewAuditProject
+from scinoephile.review_audit.run import run_audit
 
 __all__ = ["AuditReviewRunCli"]
 
@@ -196,7 +196,7 @@ class AuditReviewRunCli(ScinoephileCliBase):
             parser, llm_args.additional_context_file_path
         )
         try:
-            audit = AuditSession(
+            audit = ReviewAuditProject(
                 original_path, reviewed_path, json_path=json_path, language=language
             )
             start_at_idx, stop_at_idx = get_block_range_indexes(

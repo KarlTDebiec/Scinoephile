@@ -4,18 +4,94 @@
 
 from __future__ import annotations
 
-from dataclasses import replace
+import re
+from dataclasses import dataclass, replace
+from enum import StrEnum
 from hashlib import sha256
+from html import unescape
 from pathlib import Path
 
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
 
-from .decisions import ReviewDecisions
-from .files import load_report_notes, load_review_output
-from .models import AuditRow, AuditStatus
+from .proofreading_decisions import ProofreadingDecisions
 
-__all__ = ["apply_audit_findings", "build_audit_rows", "carry_audit_progress"]
+__all__ = [
+    "AuditRow",
+    "AuditStatus",
+    "apply_audit_findings",
+    "build_audit_rows",
+    "carry_audit_progress",
+]
+
+
+class AuditStatus(StrEnum):
+    """Explicit verdict for an independent proofreading audit."""
+
+    unaudited = "unaudited"
+    """No audit verdict has been recorded."""
+    review = "review"
+    """The subtitle needs human review."""
+    ok = "ok"
+    """The audit found no issue."""
+
+    def validate_notes(self, notes: str):
+        """Require an explanation for a Review verdict and empty notes for OK.
+
+        Arguments:
+            notes: independent audit explanation
+        Raises:
+            ValueError: if the notes contradict the verdict
+        """
+        if self is AuditStatus.review and not notes.strip():
+            raise ValueError("Audit notes are required when audit status is Review")
+        if self is AuditStatus.ok and notes:
+            raise ValueError("Clear audit notes when audit status is OK")
+
+
+@dataclass(frozen=True)
+class AuditRow:
+    """A subtitle pair, provenance, and its independent human audit state."""
+
+    key: str
+    """Content identity; changed inputs get fresh audit progress."""
+    track_id: str
+    """Track identifier."""
+    label: str
+    """Track display label."""
+    language: str
+    """Subtitle language tag."""
+    index: int
+    """One-based subtitle number."""
+    start: int
+    """Start time in milliseconds."""
+    end: int
+    """End time in milliseconds."""
+    original: str
+    """Validated source text."""
+    reviewed: str
+    """Proposed proofread text."""
+    review_note: str
+    """Read-only model explanation."""
+    notes: str
+    """Independent audit notes."""
+    finding: AuditStatus = AuditStatus.unaudited
+    """Independent audit verdict."""
+    verified: bool = False
+    """Human audit progress, independent of proofreading JSON verification."""
+    version: int = 0
+    """Optimistic concurrency version."""
+
+    shared_indexes: tuple[int, ...] = ()
+    """One-based subtitle indexes sharing this JSON decision."""
+
+    block_number: int = 0
+    """Stable one-based proofreading block number."""
+
+    @property
+    def changed(self) -> bool:
+        """Whether proofreading changed this subtitle."""
+        return self.original != self.reviewed
 
 
 def apply_audit_findings(
@@ -64,7 +140,7 @@ def build_audit_rows(
     source: Series,
     source_content: bytes,
     language: Language,
-    decisions: ReviewDecisions | None,
+    decisions: ProofreadingDecisions | None,
     *,
     outfile_path: Path | None = None,
     report_path: Path | None = None,
@@ -81,7 +157,7 @@ def build_audit_rows(
     Returns:
         baseline rows and their nonoverlapping subtitle block ranges
     """
-    texts, revision_notes = load_review_output(source, decisions, outfile_path)
+    texts, revision_notes = _load_review_output(source, decisions, outfile_path)
     block_ranges = _get_block_ranges(source, decisions)
     block_numbers = {
         index: number
@@ -90,7 +166,7 @@ def build_audit_rows(
     }
     imported_notes = {}
     if report_path is not None:
-        imported_notes = load_report_notes(report_path, len(source))
+        imported_notes = _load_report_notes(report_path, len(source))
     label = language.code
     if language == Language.eng:
         label = "English"
@@ -157,7 +233,7 @@ def carry_audit_progress(
 
 
 def _get_block_ranges(
-    source: Series, decisions: ReviewDecisions | None
+    source: Series, decisions: ProofreadingDecisions | None
 ) -> list[tuple[int, int]]:
     """Use logged query boundaries or group the remaining subtitles by pauses.
 
@@ -187,3 +263,69 @@ def _get_block_ranges(
     boundaries.extend(index + 1 for index, value in enumerate(joined) if not value)
     boundaries.append(count)
     return list(zip(boundaries[:-1], boundaries[1:], strict=True))
+
+
+def _load_report_notes(file_path: Path, count: int) -> dict[int, str]:
+    """Import only Notes from a generated audit table, never its rendered text.
+
+    Arguments:
+        file_path: existing Markdown audit report
+        count: number of source subtitles
+    Returns:
+        independent notes keyed by one-based subtitle number
+    Raises:
+        ValueError: if the table is malformed, duplicated, or out of range
+    """
+    columns = []
+    notes = {}
+    for line in file_path.read_text(encoding="utf-8").splitlines():
+        if not line.startswith("|"):
+            continue
+        cells = [cell.strip() for cell in re.split(r"(?<!\\)\|", line)[1:-1]]
+        if cells and cells[0] == "Subtitle":
+            columns = cells
+            continue
+        if not cells or not cells[0].isdigit():
+            continue
+        if len(cells) != len(columns) or "Notes" not in columns:
+            raise ValueError("Audit report has no valid Notes column")
+        index = int(cells[0])
+        if not 1 <= index <= count or index in notes:
+            raise ValueError("Audit report has duplicate or out-of-range row indexes")
+        notes[index] = unescape(
+            cells[columns.index("Notes")].replace("\\|", "|").replace("<br>", "\n")
+        )
+    if not notes:
+        raise ValueError("Audit report contains no subtitle rows")
+    return notes
+
+
+def _load_review_output(
+    source: Series, decisions: ProofreadingDecisions | None, outfile_path: Path | None
+) -> tuple[list[str], list[str]]:
+    """Load output or native proposals and validate their correspondence.
+
+    Arguments:
+        source: original subtitle series
+        decisions: native proofreading decisions, if configured
+        outfile_path: optional proofread SRT to load
+    Returns:
+        editable output text and native revision explanations
+    Raises:
+        ValueError: if output timings or JSON answers disagree
+    """
+    texts = [s.text_with_newline for s in source]
+    revision_notes = [""] * len(texts)
+    if decisions is not None:
+        texts, revision_notes = decisions.render()
+    if outfile_path is not None and outfile_path.exists():
+        output = Series.load(outfile_path)
+        if [(s.start, s.end) for s in output] != [(s.start, s.end) for s in source]:
+            raise ValueError("Original and output subtitle timings must match")
+        output_texts = [s.text_with_newline for s in output]
+        if decisions is not None and decisions.cases:
+            if output_texts != texts:
+                raise ValueError("Output subtitles disagree with the review JSON")
+        else:
+            texts = output_texts
+    return texts, revision_notes

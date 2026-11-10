@@ -7,6 +7,6 @@
        data-audit-note="{{ row.notes|tojson|forceescape }}"
        data-verified="{{ 'true' if row.verified else 'false' }}"
        hx-swap-oob="outerHTML">
-{% set differences = row.differences %}
+{% set differences = row|audit_differences %}
 <pre id="original-diff-{{ row.key }}" hx-swap-oob="outerHTML">{% for text, kind in differences[0] %}<span class="diff-{{ kind }}">{{ text }}</span>{% endfor %}</pre>
 <pre id="proofread-diff-{{ row.key }}" aria-hidden="true" hx-swap-oob="outerHTML">{% for text, kind in differences[1] %}<span class="diff-{{ kind }}">{{ text }}</span>{% endfor %}</pre>

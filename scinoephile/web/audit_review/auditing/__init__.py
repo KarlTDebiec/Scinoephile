@@ -3,7 +3,7 @@
 """Independent subtitle audit workflow.
 
 Package hierarchy (modules may import from any above):
-* run / state
+* state
 * job
 * routes
 """
