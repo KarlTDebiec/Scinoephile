@@ -9,6 +9,7 @@ import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import cast
+from unittest.mock import Mock
 
 from pytest import LogCaptureFixture, MonkeyPatch, raises
 
@@ -189,8 +190,10 @@ def test_run_app_uses_available_port_when_requested_port_is_in_use(
     )
     monkeypatch.setattr("werkzeug.serving.make_server", fake_make_server)
 
-    run_app(cast(OcrValidationSession, object()), "127.0.0.1", 5000)
+    session = Mock(spec=OcrValidationSession)
+    run_app(session, "127.0.0.1", 5000)
 
+    session.prepare.assert_called_once_with()
     assert captured["port"] == 0
     assert "OCR validation web UI port 5000 is already in use" in caplog.text
     assert "OCR validation web UI: http://127.0.0.1:54321/" in caplog.text

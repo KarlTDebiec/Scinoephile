@@ -1,3 +1,4 @@
+{% from 'shared/_controls.html' import save_status %}
 {% from '_icons.html' import icon, status_select, audit_options %}
 <fieldset id="row-{{ row.key }}"
           class="audit-row"{% if editing_blocked %} disabled{% endif %}
@@ -80,7 +81,7 @@
           <span>{{ icon("checkbox-blank-outline") }}Verify auditing</span>
           <span>{{ icon("checkbox-marked") }}Auditing verified</span>
         </label>
-        {% include "_save_status.html" %}
+        {{ save_status("sync-" ~ row.key) }}
         <button type="submit">Save</button>
       </footer>
     </form>

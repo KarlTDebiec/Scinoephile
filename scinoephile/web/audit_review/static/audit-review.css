@@ -383,42 +383,8 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 1rem/1.5 ui-monospac
 .shared { font-size: .85rem; color: var(--link); }
 
 
-/* Autosave feedback and the optional saving animation */
-.save-status {
-  display: none;
-  margin-left: auto;
-  & svg { display: none; }
-  .is-enhanced & {
-    display: inline-grid;
-    grid-template-columns: 20px minmax(0, 1fr);
-    align-items: center;
-    gap: .4rem;
-    width: calc(20px + 7ch + .4rem);
-    flex: none;
-    white-space: nowrap;
-    text-align: left;
-    &[data-save-state="saved"] { color: #18752a; & .saved { display: block; } }
-    &[data-save-state="saving"] { color: var(--muted); & .saving { display: block; } }
-    &[data-save-state="unsaved"] { color: var(--muted); & .unsaved { display: block; } }
-    &:is([data-save-state="invalid"], [data-save-state="error"]) { color: var(--error); & .error { display: block; } }
-    @media (prefers-color-scheme: dark) {
-      &[data-save-state="saved"] { color: #83d891; }
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      &[data-save-state="saving"] .saving { animation: saving-spin 1s linear infinite; }
-    }
-  }
-}
-@keyframes saving-spin { to { transform: rotate(360deg); } }
-
-/* Load the next block batch unless loading is paused */
-#load-more {
-  padding: .75rem 0;
-  text-align: right;
-  & button { display: inline-grid; place-items: center; width: 2.5rem; height: 2.5rem; padding: .25rem; }
-  &:empty { display: none; }
-  #workspace[data-loading-paused] & { display: none; }
-}
+/* Hide automatic pagination while the workspace is collapsed */
+#workspace[data-loading-paused] #load-more { display: none; }
 
 /* Background job cards for settings, confirmation, and progress */
 #proofreading, #auditing {

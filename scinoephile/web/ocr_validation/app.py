@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
-from scinoephile.core.dependencies.web import import_werkzeug_serving
+from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
 from scinoephile.web.security import create_local_app
 
 from .session import OcrValidationSession
@@ -38,9 +38,18 @@ def create_app(session: OcrValidationSession, *, host: str = "127.0.0.1") -> Fla
 
     static_dir_path = package_root / "web/static"
     app = create_local_app(__name__, static_dir_path, host=host)
-    app.config["OCR_VALIDATION_SESSION"] = session
+    flask = import_flask()
+    app.register_blueprint(
+        flask.Blueprint(
+            "ocr_validation_assets",
+            __name__,
+            static_folder=str(package_root / "web/ocr_validation/static"),
+            static_url_path="/ocr-validation-assets",
+        )
+    )
+    app.config["MAX_CONTENT_LENGTH"] = 100_000
     app.config["OCR_VALIDATION_SERVER"] = None
-    register_routes(app)
+    register_routes(app, session)
     return app
 
 
@@ -68,6 +77,8 @@ def run_app(session: OcrValidationSession, host: str, port: int):
             server_port = 0
         server = werkzeug_serving.make_server(host, server_port, app)
         app.config["OCR_VALIDATION_SERVER"] = server
+        logger.info("Checking subtitle boxes, characters, and spacing")
+        session.prepare()
         url_host = _url_host(host)
         url_port = getattr(server, "server_port", server_port)
         logger.info(f"OCR validation web UI: http://{url_host}:{url_port}/")

@@ -37,18 +37,15 @@ def test_session_loads_rows_from_html_index(tmp_path: Path):
     """
     html_dir_path = make_ocr_html_dir(tmp_path, text="recognized")
 
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path, include_done_subtitles=True, dev=False
-    )
+    session = OcrValidationSession.from_dir_path(html_dir_path)
 
-    rows = session.subtitle_rows()
-    assert len(rows) == 1
-    assert rows[0].number == 1
-    assert rows[0].start == "1,000"
-    assert rows[0].end == "2,000"
-    assert rows[0].image_width == 2
-    assert rows[0].image_height == 2
-    assert rows[0].text == "recognized"
+    row = session.subtitle_row(0)
+    assert row.number == 1
+    assert row.start == "1,000"
+    assert row.end == "2,000"
+    assert row.image_width == 2
+    assert row.image_height == 2
+    assert row.text == "recognized"
 
 
 def test_session_requires_index_html_file(tmp_path: Path):
@@ -131,18 +128,16 @@ def test_session_uses_one_font_size_for_series(
         "scinoephile.image.subtitles.series.get_bboxes", mock_get_bboxes
     )
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        include_done_subtitles=True,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
 
-    rows = session.subtitle_rows()
+    rows = [session.subtitle_row(0), session.subtitle_row(1)]
 
-    assert rows[0].text_font_size_css == "60px"
-    assert rows[1].text_font_size_css == "60px"
-    assert rows[0].text_letter_spacing_css == "0px"
-    assert rows[1].text_letter_spacing_css == "0px"
+    assert rows[0].text_font_size_px == 60
+    assert rows[1].text_font_size_px == 60
+    assert rows[0].text_letter_spacing_px == 0
+    assert rows[1].text_letter_spacing_px == 0
 
 
 def test_session_uses_cjk_letter_spacing(tmp_path: Path):
@@ -153,15 +148,13 @@ def test_session_uses_cjk_letter_spacing(tmp_path: Path):
     """
     html_dir_path = make_ocr_html_dir(tmp_path, text="姐")
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        include_done_subtitles=True,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
 
     row = session.subtitle_row(0)
 
-    assert row.text_letter_spacing_css == "10px"
+    assert row.text_letter_spacing_px == 10
 
 
 def test_session_rebuilds_raw_bboxes_for_validation_state(
@@ -177,9 +170,7 @@ def test_session_rebuilds_raw_bboxes_for_validation_state(
     raw_bboxes = [Bbox(0, 23, 0, 61), Bbox(35, 40, 1, 61), Bbox(43, 58, 18, 38)]
     patch_ocr_validation_bboxes(monkeypatch, raw_bboxes)
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        include_done_subtitles=True,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     session.series.events[0].bboxes = [Bbox(0, 58, 0, 61)]
@@ -189,54 +180,6 @@ def test_session_rebuilds_raw_bboxes_for_validation_state(
     assert isinstance(row.concern, CharDimsConcern)
     assert row.concern.dims == (23, 61)
     assert row.concern.max_n_bboxes == 3
-
-
-def test_session_omits_done_rows_from_list_by_default(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test session row lists omit subtitles with no concerns by default.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="A")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path, validation_data_dir_path=tmp_path / "cache"
-    )
-    clear_validation_data(session)
-    session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
-
-    rows = session.subtitle_rows()
-
-    assert rows == []
-
-
-def test_session_includes_done_rows_in_list_when_enabled(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test the internal toggle can include subtitles with no concerns.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="A")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        include_done_subtitles=True,
-        validation_data_dir_path=tmp_path / "cache",
-    )
-    clear_validation_data(session)
-    session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
-
-    rows = session.subtitle_rows()
-
-    assert len(rows) == 1
-    assert rows[0].status == ValidationStatus.DONE
-    assert rows[0].concern is None
 
 
 def test_session_update_text_rewrites_index(tmp_path: Path):

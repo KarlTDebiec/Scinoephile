@@ -1,0 +1,35 @@
+{% macro editor_icon(name, size=20, css_class=none, endpoint='static') -%}
+  <svg{% if css_class %} class="{{ css_class }}"{% endif %}
+       width="{{ size }}"
+       height="{{ size }}"
+       aria-hidden="true">
+    <use href="{{ url_for(endpoint, filename='icons/' ~ name ~ '.svg') }}#icon" />
+  </svg>
+{%- endmacro %}
+{% macro page_form(action, fields, label, target, hx_url=none, reverse=false, push_url=false) -%}
+  <form method="get"
+        action="{{ action }}"
+        hx-get="{{ hx_url or action }}"
+        hx-target="{{ target }}"
+        hx-swap="outerHTML"
+        hx-sync="#workspace:queue all"{% if push_url %} hx-push-url="true"{% endif %}>
+    {% for name, value in fields.items() %}
+      <input type="hidden" name="{{ name }}" value="{{ value }}">
+    {% endfor %}
+    <button type="submit" aria-label="{{ label }}" title="{{ label }}">{{ editor_icon("page-next-outline", css_class="previous-page" if reverse else none) }}</button>
+  </form>
+{%- endmacro %}
+{% macro save_status(element_id) -%}
+  <output id="{{ element_id }}"
+          class="save-status"
+          data-save-state="saved"
+          title="Saved"
+          aria-label="Saved"
+          aria-live="polite">
+    {{ editor_icon("checkbox-marked", css_class="saved") }}
+    {{ editor_icon("sync", css_class="saving") }}
+    {{ editor_icon("content-save-outline", css_class="unsaved") }}
+    {{ editor_icon("alert-circle-outline", css_class="error") }}
+    <span>Saved</span>
+  </output>
+{%- endmacro %}

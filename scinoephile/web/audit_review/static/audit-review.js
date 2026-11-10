@@ -196,17 +196,7 @@ function syncSaveStatus(form) {
         status = "unsaved";
         message = "Unsaved changes — leave the field to save.";
     }
-    indicator.dataset.saveState = status;
-    indicator.querySelector("span").textContent = {
-        saved: "Saved",
-        saving: "Saving…",
-        unsaved: "Unsaved",
-        invalid: "Invalid",
-        error: "Error"
-    } [status];
-    indicator.title = message;
-    indicator.setAttribute("aria-label", message);
-    indicator.setAttribute("aria-busy", String(state.inFlight));
+    showEditorSaveStatus(indicator, status, message, state.inFlight);
 }
 
 /**
@@ -238,13 +228,10 @@ document.addEventListener("change", event => {
         requestReviewSave(form);
 });
 
-// Run before HTMX synchronization: a filter request must not abort an active save.
-document.addEventListener("htmx:confirm", event => {
-    if (event.detail.target?.id !== "workspace" || !hasReviewDrafts()) return;
-    event.preventDefault();
-    document.querySelector("#messages").textContent =
-        "Save subtitle drafts before changing filters or opening another block.";
-});
+guardEditorNavigation(
+    hasReviewDrafts,
+    "Save subtitle drafts before changing filters or opening another block."
+);
 
 document.addEventListener("htmx:beforeRequest", event => {
     const form = event.detail.elt;
@@ -255,14 +242,7 @@ document.addEventListener("htmx:beforeRequest", event => {
     syncSaveStatus(form);
 });
 
-// Navigation may finish after a user starts editing; retain that newer draft too.
 document.addEventListener("htmx:beforeSwap", event => {
-    if (event.detail.target?.id === "workspace" && hasReviewDrafts()) {
-        event.detail.shouldSwap = false;
-        document.querySelector("#messages").textContent =
-            "Save subtitle drafts before changing filters or opening another block.";
-        return;
-    }
     // A superseded preview must not overwrite either side of a newer draft's diff.
     const input = event.detail.requestConfig.elt;
     if (!input.matches("textarea[data-original]")) return;

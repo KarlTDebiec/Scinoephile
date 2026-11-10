@@ -6,7 +6,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import StrEnum
+from hashlib import sha256
 
+from scinoephile.image.bbox import Bbox
 from scinoephile.lang.cmn.romanization import get_cmn_char_romanized
 from scinoephile.lang.yue.romanization import get_yue_char_romanized
 
@@ -217,6 +219,8 @@ class SubtitleRowView:
     """Editable subtitle OCR text."""
     concern: OcrConcern | None
     """Current validation concern for this subtitle."""
+    boxes: tuple[Bbox, ...] = ()
+    """Boxes to overlay on the source subtitle image."""
     text_color_css: str = "rgb(255, 255, 255)"
     """Detected subtitle fill color as a CSS color."""
     text_shadow_color_css: str = "rgb(0, 0, 0)"
@@ -227,24 +231,9 @@ class SubtitleRowView:
     """Detected subtitle letter spacing in pixels."""
 
     @property
-    def image_cache_key(self) -> str:
-        """Cache key for dynamic validation images."""
-        if isinstance(self.concern, CharDimsConcern):
-            return (
-                f"{self.concern.kind}-{self.concern.char_idx}-"
-                f"{self.concern.bbox_idx}-{self.concern.n_bboxes}"
-            )
-        if isinstance(self.concern, GapConcern):
-            return (
-                f"{self.concern.kind}-{self.concern.char_1_idx}-"
-                f"{self.concern.char_2_idx}-{self.concern.gap}"
-            )
-        return str(self.status)
-
-    @property
-    def has_concern_image(self) -> bool:
-        """Whether this row should render the focused concern image."""
-        return isinstance(self.concern, CharDimsConcern | GapConcern)
+    def editable_text(self) -> str:
+        """Subtitle text with literal line breaks for a textarea."""
+        return self.text.replace("\\N", "\n")
 
     @property
     def status(self) -> ValidationStatus:
@@ -268,19 +257,14 @@ class SubtitleRowView:
         return _px_to_cqw_css(self.text_font_size_px, self.image_width)
 
     @property
-    def text_font_size_css(self) -> str:
-        """Detected series subtitle font size as a CSS length."""
-        return f"{self.text_font_size_px}px"
-
-    @property
-    def text_letter_spacing_css(self) -> str:
-        """Subtitle letter spacing as a CSS length."""
-        return f"{self.text_letter_spacing_px}px"
-
-    @property
     def text_letter_spacing_cqw_css(self) -> str:
         """Subtitle letter spacing as a container query length."""
         return _px_to_cqw_css(self.text_letter_spacing_px, self.image_width)
+
+    @property
+    def version(self) -> str:
+        """Identify the text and specific concern a form was rendered for."""
+        return sha256(f"{self.text!r}:{self.concern!r}".encode()).hexdigest()
 
 
 OcrConcern = CharDimsConcern | ErrorConcern | GapConcern

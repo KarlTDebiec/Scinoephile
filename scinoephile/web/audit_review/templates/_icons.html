@@ -1,9 +1,8 @@
 {% set proofreading_options = [('unchanged', 'Unchanged', 'text-box-check-outline'), ('changed', 'Changed', 'text-box-edit-outline')] %}
 {% set audit_options = [('unaudited', 'Unaudited', 'clipboard-outline'), ('review', 'Review', 'clipboard-alert-outline'), ('ok', 'OK', 'clipboard-check-outline')] %}
+{% from 'shared/_controls.html' import editor_icon %}
 {% macro icon(name, size=20) -%}
-  <svg width="{{ size }}" height="{{ size }}" aria-hidden="true">
-    <use href="{{ url_for('audit_review_assets.static', filename='icons/' ~ name ~ '.svg') }}#icon" />
-  </svg>
+  {{ editor_icon(name, size, endpoint="static" if name == "checkbox-marked" else "audit_review_assets.static") }}
 {%- endmacro %}
 {% macro status_select(name, label, choices, selected, include_all=false, all_label='All statuses', counts=none, oob=false) -%}
   <select{% if counts is not none %} id="filter-{{ name }}"{% if oob %} hx-swap-oob="outerHTML"{% endif %}{% endif %} name="{{ name }}" aria-label="{{ label }}" title="{{ label }}">

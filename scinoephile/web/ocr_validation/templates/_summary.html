@@ -1,0 +1,4 @@
+<p id="summary"
+   role="status"{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}>
+  {{ validated }} of {{ total }} validated · {{ matched }} matching
+</p>

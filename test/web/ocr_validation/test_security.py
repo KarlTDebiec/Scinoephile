@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Request protection in the actual HTMX OCR application."""
+"""Request protection for the OCR validation editor."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ from test.helpers.ocr_validation import (
 
 
 @fixture
-def app(tmp_path: Path, monkeypatch: MonkeyPatch) -> Flask:
+def ocr_session(tmp_path: Path, monkeypatch: MonkeyPatch) -> OcrValidationSession:
     """Provide the real OCR app with isolated authored and validation data.
 
     Arguments:
@@ -35,10 +35,19 @@ def app(tmp_path: Path, monkeypatch: MonkeyPatch) -> Flask:
         image_dir_path,
         validation_data_dir_path=tmp_path / "validation",
         outfile_path=tmp_path / "output.srt",
-        include_done_subtitles=True,
     )
     clear_validation_data(session)
-    return create_app(session)
+    return session
+
+
+@fixture
+def app(ocr_session: OcrValidationSession) -> Flask:
+    """Provide an OCR editor using the isolated session.
+
+    Arguments:
+        ocr_session: validation session for the test subtitle
+    """
+    return create_app(ocr_session)
 
 
 @parametrize(
@@ -47,12 +56,11 @@ def app(tmp_path: Path, monkeypatch: MonkeyPatch) -> Flask:
         "/subtitles/0/text",
         "/subtitles/0/concern/char",
         "/subtitles/0/concern/gap",
-        "/filters/done",
         "/exit",
     ],
 )
-def test_mutations_require_the_htmx_header(app: Flask, tmp_path: Path, endpoint: str):
-    """Reject ordinary forms before editing, saving, or shutdown.
+def test_mutations_require_a_csrf_token(app: Flask, tmp_path: Path, endpoint: str):
+    """Reject both native and HTMX forms without a session token.
 
     Arguments:
         app: real OCR validation app
@@ -61,8 +69,9 @@ def test_mutations_require_the_htmx_header(app: Flask, tmp_path: Path, endpoint:
     """
     original = (tmp_path / "image/index.html").read_bytes()
     client = app.test_client()
-    for headers in ({}, {"HX-Request": "false"}):
-        response = client.post(endpoint, data={"HX-Request": "true"}, headers=headers)
+    client.get("/")
+    for headers in ({}, {"HX-Request": "true"}):
+        response = client.post(endpoint, data={"csrf": "invalid"}, headers=headers)
         assert response.status_code == 403
     assert (tmp_path / "image/index.html").read_bytes() == original
     assert not (tmp_path / "output.srt").exists()
@@ -79,20 +88,31 @@ def test_mutations_require_the_htmx_header(app: Flask, tmp_path: Path, endpoint:
         {"Sec-Fetch-Site": "same-site"},
     ],
 )
-def test_foreign_mutations_are_rejected_with_the_htmx_header(
-    app: Flask, tmp_path: Path, headers: dict[str, str]
+def test_foreign_mutations_are_rejected_with_a_valid_token(
+    app: Flask,
+    ocr_session: OcrValidationSession,
+    tmp_path: Path,
+    headers: dict[str, str],
 ):
-    """Reject foreign requests even when they claim to come from HTMX.
+    """Reject foreign requests even when they have a valid CSRF token.
 
     Arguments:
         app: real OCR validation app
+        ocr_session: current subtitle state
         tmp_path: directory containing authored files
         headers: foreign origin or browser fetch context
     """
     client = app.test_client()
+    client.get("/")
+    with client.session_transaction() as cookie:
+        csrf = cookie["csrf"]
     response = client.post(
         "/subtitles/0/text",
-        data={"text-0": "unauthorized"},
+        data={
+            "text": "unauthorized",
+            "csrf": csrf,
+            "version": ocr_session.subtitle_row(0).version,
+        },
         headers={"HX-Request": "true", **headers},
     )
     assert response.status_code == 403
@@ -105,22 +125,22 @@ def test_foreign_mutations_are_rejected_with_the_htmx_header(
 @parametrize(
     "host", ["attacker.example", "localhost.attacker.example", "[::2]", "[2001:db8::1]"]
 )
-def test_untrusted_hosts_are_rejected(app: Flask, bind_host: str, host: str):
+def test_untrusted_hosts_are_rejected(
+    ocr_session: OcrValidationSession, bind_host: str, host: str
+):
     """Reject DNS rebinding hosts for documents and bundled scripts.
 
     Arguments:
-        app: real OCR validation app
+        ocr_session: current subtitle state
         bind_host: explicitly configured bind host or wildcard address
         host: foreign Host header
     """
-    client = create_app(
-        app.config["OCR_VALIDATION_SESSION"], host=bind_host
-    ).test_client()
+    client = create_app(ocr_session, host=bind_host).test_client()
     for route in ("/", "/static/htmx.min.js"):
         assert client.get(route, base_url=f"http://{host}").status_code == 400
 
 
-@parametrize("endpoint", ["/", "/subtitles/0/validation.png"])
+@parametrize("endpoint", ["/", "/subtitles/0/image.png"])
 @parametrize(
     "headers",
     [
@@ -159,8 +179,11 @@ def test_foreign_gets_cannot_persist_validation_results(
         headers={"Origin": "http://localhost", "Sec-Fetch-Site": "same-origin"},
     )
     assert allowed.status_code == 200
-    assert index_path.read_bytes() != original
-    assert " " in session.series.events[0].text
+    if endpoint == "/":
+        assert index_path.read_bytes() != original
+        assert " " in session.series.events[0].text
+    else:
+        assert index_path.read_bytes() == original
 
 
 @parametrize(
@@ -180,26 +203,32 @@ def test_foreign_gets_cannot_persist_validation_results(
     ],
 )
 def test_configured_hosts_accept_same_origin_edits(
-    app: Flask, host: str, base_url: str
+    ocr_session: OcrValidationSession, host: str, base_url: str
 ):
     """Preserve configured hosts for normal HTMX edits.
 
     Arguments:
-        app: real app supplying the OCR session
+        ocr_session: current subtitle state
         host: configured bind host
         base_url: browser address for that server
     """
-    client = create_app(app.config["OCR_VALIDATION_SESSION"], host=host).test_client()
+    client = create_app(ocr_session, host=host).test_client()
     assert client.get("/", base_url=base_url).status_code == 200
+    with client.session_transaction(base_url=base_url) as cookie:
+        csrf = cookie["csrf"]
     response = client.post(
         "/subtitles/0/text",
-        data={"text-0": "B"},
+        data={
+            "text": "B",
+            "csrf": csrf,
+            "version": ocr_session.subtitle_row(0).version,
+        },
         base_url=base_url,
         headers={"HX-Request": "true", "Origin": base_url},
     )
     assert response.status_code == 200
-    assert b'id="subtitle-0"' in response.data
-    assert app.config["OCR_VALIDATION_SESSION"].series.events[0].text == "B"
+    assert b'id="validation-0"' in response.data
+    assert ocr_session.series.events[0].text == "B"
 
 
 @parametrize("host", ["", "bad host", "user@localhost", "localhost:65536", "[::::]"])
@@ -232,44 +261,6 @@ def test_foreign_custom_header_preflight_is_not_authorized(app: Flask):
     assert response.status_code == 403
     assert "Access-Control-Allow-Origin" not in response.headers
     assert "Access-Control-Allow-Headers" not in response.headers
-
-
-def test_htmx_keeps_box_selection_until_approval(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Keep a selected two-box character across protected HTMX updates.
-
-    Arguments:
-        tmp_path: directory for authored and validation data
-        monkeypatch: fixture selecting two parts of one character
-    """
-    image_dir_path = make_ocr_html_dir(tmp_path, text="A")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 5, 0, 20), Bbox(5, 10, 0, 20)])
-    session = OcrValidationSession.from_dir_path(
-        image_dir_path, validation_data_dir_path=tmp_path / "validation"
-    )
-    clear_validation_data(session)
-    client = create_app(session).test_client()
-    client.get("/")
-    headers = {"HX-Request": "true"}
-
-    expanded = client.post(
-        "/subtitles/0/concern/char",
-        data={"action": "expand", "n_bboxes": "1"},
-        headers=headers,
-    )
-    assert expanded.status_code == 200
-    assert b'name="n_bboxes" value="2"' in expanded.data
-
-    approved = client.post(
-        "/subtitles/0/concern/char",
-        data={"action": "accept", "n_bboxes": "2"},
-        headers=headers,
-    )
-    assert approved.status_code == 200
-    assert (tmp_path / "validation/char_dims_2.csv").read_text(encoding="utf-8") == (
-        "A,5,20,0,5,20\n"
-    )
 
 
 def test_security_headers_cover_documents_assets_and_rejections(app: Flask):

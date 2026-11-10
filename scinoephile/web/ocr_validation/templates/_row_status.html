@@ -1,0 +1,3 @@
+<p id="row-status-{{ row.sub_idx }}"
+   class="ocr-row-status"
+   data-status="{{ row.status }}"{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}>{{ row.status_label }}</p>

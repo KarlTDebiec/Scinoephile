@@ -1,0 +1,9 @@
+<div id="validation-{{ row.sub_idx }}"
+     class="ocr-validation"
+     data-version="{{ row.version }}"
+     data-text="{{ row.editable_text }}"
+     data-visible="{{ visible|default(true)|lower }}">
+  {% if row.concern %}
+    {% include "_concern.html" %}
+  {% endif %}
+</div>

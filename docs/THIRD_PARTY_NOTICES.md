@@ -342,11 +342,11 @@ Scinoephile can build from local Kaikki JSONL snapshots under
 `scinoephile/data/dictionaries/wiktionary/`, or from an explicit
 `--source-jsonl-path` during `dictionary build wiktionary`.
 
-## Material Design Icons (audit review interface)
+## Material Design Icons (local web editors)
 
-The audit editor bundles [Pictogrammers Material Design Icons v7.4.47](https://github.com/Templarian/MaterialDesign-SVG/tree/v7.4.47).
+The web editors bundle [Pictogrammers Material Design Icons v7.4.47](https://github.com/Templarian/MaterialDesign-SVG/tree/v7.4.47).
 The upstream notice and Apache 2.0 license are in
-`scinoephile/web/audit_review/static/mdi.LICENSE` and `apache-2.0.LICENSE`.
+`scinoephile/web/static/mdi.LICENSE` and `apache-2.0.LICENSE`.
 The SVGs use a common ID and inherit text color. Individual files identify
 adapted artwork, including composite controls and the filter icon alignment
 from aXYom32.

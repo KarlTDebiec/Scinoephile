@@ -1,31 +1,19 @@
 /* Light and dark editor palettes */
 :root {
   color-scheme: light dark;
-  --background: #fff;
-  --text: #222;
-  --surface: #f5f5f5;
-  --border: #bbb;
-  --link: #164bb8;
-  --error: #a00;
-  --warning-background: #fff3cd;
-  --warning-text: #664d03;
-  --warning-border: #c99500;
+  --background: light-dark(#fff, #191b1e);
+  --text: light-dark(#222, #e4e6e8);
+  --surface: light-dark(#f5f5f5, #23262a);
+  --border: light-dark(#bbb, #555);
+  --link: light-dark(#164bb8, #9ecbff);
+  --error: light-dark(#a00, #ff9b9b);
+  --warning-background: light-dark(#fff3cd, #4b3c0a);
+  --warning-text: light-dark(#664d03, #ffe08a);
+  --warning-border: light-dark(#c99500, #b58a16);
   --muted: color-mix(in srgb, var(--text) 60%, var(--background));
   background: var(--background);
   color: var(--text);
   scrollbar-gutter: stable;
-
-  @media (prefers-color-scheme: dark) {
-    --background: #191b1e;
-    --text: #e4e6e8;
-    --surface: #23262a;
-    --border: #555;
-    --link: #9ecbff;
-    --error: #ff9b9b;
-    --warning-background: #4b3c0a;
-    --warning-text: #ffe08a;
-    --warning-border: #b58a16;
-  }
 }
 
 /* Page width, typography, and focus indicators */
@@ -72,3 +60,40 @@ textarea { field-sizing: content; }
 .error { color: var(--error); }
 .empty { padding: 2rem; text-align: center; }
 .htmx-request button { cursor: progress; }
+
+/* Autosave feedback and the optional saving animation */
+.save-status {
+  display: none;
+  margin-left: auto;
+  & svg { display: none; }
+  .is-enhanced & {
+    display: inline-grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    align-items: center;
+    gap: .4rem;
+    width: calc(20px + 7ch + .4rem);
+    flex: none;
+    white-space: nowrap;
+    text-align: left;
+    &[data-save-state="saved"] { color: light-dark(#18752a, #83d891); & .saved { display: block; } }
+    &[data-save-state="saving"] { color: var(--muted); & .saving { display: block; } }
+    &[data-save-state="unsaved"] { color: var(--muted); & .unsaved { display: block; } }
+    &:is([data-save-state="invalid"], [data-save-state="error"]) { color: var(--error); & .error { display: block; } }
+    @media (prefers-reduced-motion: no-preference) {
+      &[data-save-state="saving"] .saving { animation: saving-spin 1s linear infinite; }
+    }
+  }
+}
+@keyframes saving-spin { to { transform: rotate(360deg); } }
+
+/* Pagination controls used by the local editors */
+.editor-pager {
+  display: flex;
+  justify-content: end;
+  gap: .5rem;
+  padding: .75rem 0;
+  & button { display: inline-grid; place-items: center; min-height: 2.5rem; }
+  &:empty { display: none; }
+}
+.editor-pager button:has(> svg) { width: 2.5rem; padding: .25rem; }
+.editor-pager .previous-page { transform: rotate(180deg); }

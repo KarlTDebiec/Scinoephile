@@ -14,7 +14,6 @@ from PIL import Image
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import WHITESPACE_CHARS
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
-from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.ocr.validation.char_cursor import CharCursor
 from scinoephile.image.ocr.validation.char_dims import get_dims_tuple
@@ -65,7 +64,6 @@ class OcrValidationSession:
         entries: list[HtmlSubtitleEntry],
         series: ImageSeries,
         manager: ValidationManager,
-        include_done_subtitles: bool = False,
         outfile_path: Path | None = None,
     ):
         """Initialize.
@@ -75,14 +73,12 @@ class OcrValidationSession:
             entries: HTML subtitle entries
             series: image subtitle series
             manager: OCR validation manager
-            include_done_subtitles: whether to include subtitles with no concerns
             outfile_path: optional subtitle output file path
         """
         self.dir_path = dir_path
         self.entries = entries
         self.series = series
         self.manager = manager
-        self.include_done_subtitles = include_done_subtitles
         self.outfile_path = outfile_path
         self.text_color_css = (
             f"rgb({self.series.fill_color}, {self.series.fill_color}, "
@@ -99,13 +95,13 @@ class OcrValidationSession:
         else:
             self.text_letter_spacing_px = 0
         self._states: dict[int, _SubtitleValidationState] = {}
+        self._recheck_pending = False
 
     @classmethod
     def from_dir_path(
         cls,
         dir_path: Path,
         *,
-        include_done_subtitles: bool = False,
         outfile_path: Path | None = None,
         validation_data_dir_path: Path | str | None = None,
         dev: bool = False,
@@ -114,7 +110,6 @@ class OcrValidationSession:
 
         Arguments:
             dir_path: OCR image HTML directory path
-            include_done_subtitles: whether to include subtitles with no concerns
             outfile_path: optional subtitle output file path
             validation_data_dir_path: local OCR validation data directory
             dev: whether validation data updates should write to repo data
@@ -140,7 +135,6 @@ class OcrValidationSession:
                 entries=entries,
                 series=series,
                 manager=manager,
-                include_done_subtitles=include_done_subtitles,
                 outfile_path=outfile_path,
             )
             return session
@@ -149,114 +143,33 @@ class OcrValidationSession:
                 f"Unable to initialize OCR validation session from {dir_path}: {exc}"
             ) from exc
 
-    def all_subtitle_rows(self) -> list[SubtitleRowView]:
-        """Return row view models for all subtitles regardless of filtering.
-
-        Returns:
-            subtitle row view models
-        """
-        return [self.subtitle_row(sub_idx) for sub_idx in range(len(self.entries))]
-
     def finish(self):
         """Persist current validation output before closing the web UI."""
         self._save_outfile()
 
-    def subtitle_row(self, sub_idx: int) -> SubtitleRowView:
-        """Return one subtitle row view model.
+    def prepare(self):
+        """Scan subtitles before serving the first editor page."""
+        for sub_idx in range(len(self.entries)):
+            self._state(sub_idx)
 
-        Arguments:
-            sub_idx: zero-based subtitle index
-        Returns:
-            subtitle row view model
-        """
-        self._validate_sub_idx(sub_idx)
-        state = self._state(sub_idx)
-        entry = self.entries[sub_idx]
-        image_width = self.series.events[sub_idx].img.width
-        image_height = self.series.events[sub_idx].img.height
-        return SubtitleRowView(
-            sub_idx=sub_idx,
-            number=entry.index,
-            start=ImageSeries._format_html_time(entry.start),
-            end=ImageSeries._format_html_time(entry.end),
-            image_width=image_width,
-            image_height=image_height,
-            text=entry.text,
-            concern=state.concern,
-            text_color_css=self.text_color_css,
-            text_shadow_color_css=self.text_shadow_color_css,
-            text_font_size_px=self.text_font_size_px,
-            text_letter_spacing_px=self.text_letter_spacing_px,
-        )
-
-    def subtitle_rows(self) -> list[SubtitleRowView]:
-        """Return row view models for all in-scope subtitles.
-
-        Returns:
-            subtitle row view models
-        """
-        return [
-            row for row in self.all_subtitle_rows() if self.subtitle_row_is_visible(row)
-        ]
-
-    def subtitle_row_is_visible(self, row: SubtitleRowView) -> bool:
-        """Return whether a subtitle row should be rendered in the list.
-
-        Arguments:
-            row: subtitle row view model
-        Returns:
-            whether the row should be shown
-        """
-        if self.include_done_subtitles:
-            return True
-        return row.concern is not None
-
-    def concern_image(self, sub_idx: int) -> Image.Image:
-        """Return an annotated image for the current concern.
-
-        Arguments:
-            sub_idx: zero-based subtitle index
-        Returns:
-            annotated concern image
-        """
-        self._validate_sub_idx(sub_idx)
-        state = self._state(sub_idx)
-        sub = self.series.events[sub_idx]
-        if isinstance(state.concern, CharDimsConcern):
-            cursor = self._char_cursor(state)
-            return get_img_with_bboxes(sub.img, cursor.bbox_grp(state.concern.n_bboxes))
-        if isinstance(state.concern, GapConcern):
-            cursor = self._gap_cursor(state)
-            return cursor.annotated_img(2)
-        return sub.img
-
-    def update_text(self, sub_idx: int, text: str) -> SubtitleRowView:
-        """Persist corrected OCR text and rebuild the subtitle state.
-
-        Arguments:
-            sub_idx: zero-based subtitle index
-            text: replacement subtitle text using ASS newline escapes
-        Returns:
-            updated subtitle row view model
-        """
-        self._validate_sub_idx(sub_idx)
-        self._set_text(sub_idx, text, reset_state=True)
-        return self.subtitle_row(sub_idx)
-
-    def validation_image(self, sub_idx: int) -> Image.Image:
-        """Return a row image annotated with all current bboxes.
-
-        Arguments:
-            sub_idx: zero-based subtitle index
-        Returns:
-            annotated validation image
-        """
-        self._validate_sub_idx(sub_idx)
-        self._state(sub_idx)
-        sub = self.series.events[sub_idx]
-        if sub.bboxes is None:
-            return sub.img
-        return get_img_with_bboxes(sub.img, sub.bboxes)
+    def refresh_concerns(self):
+        """Apply newly learned data while retaining unchanged box selections."""
+        if not self._recheck_pending:
+            return
+        for state in self._states.values():
+            previous = state.concern
+            if isinstance(previous, CharDimsConcern | GapConcern):
+                self._scan_state(state)
+            current = state.concern
+            if (
+                isinstance(previous, CharDimsConcern)
+                and isinstance(current, CharDimsConcern)
+                and previous.char_idx == current.char_idx
+                and previous.bbox_idx == current.bbox_idx
+            ):
+                state.char_n_bboxes = previous.n_bboxes
+                state.concern = self._char_dims_concern(state)
+        self._recheck_pending = False
 
     def resolve_char_concern(
         self, sub_idx: int, *, action: str, n_bboxes: int
@@ -286,12 +199,9 @@ class OcrValidationSession:
             return self.subtitle_row(sub_idx)
         if action == "accept":
             self._accept_char_dims(state, n_bboxes)
+            self._recheck_pending = True
             return self.subtitle_row(sub_idx)
         raise ValueError(f"Unrecognized character concern action: {action}")
-
-    def reset_states(self):
-        """Clear cached per-subtitle validation states."""
-        self._states.clear()
 
     def resolve_gap_concern(self, sub_idx: int, *, action: str) -> SubtitleRowView:
         """Resolve the current spacing concern for one subtitle.
@@ -316,6 +226,74 @@ class OcrValidationSession:
             expected_gap_chars = self._resolve_tab_gap_action(cursor, cutoffs, action)
 
         self._replace_gap_text(cursor, expected_gap_chars, reset_state=True)
+        self._recheck_pending = True
+        return self.subtitle_row(sub_idx)
+
+    def source_image(self, sub_idx: int) -> Image.Image:
+        """Get the original subtitle image for an editor preview.
+
+        Arguments:
+            sub_idx: zero-based subtitle index
+        Returns:
+            original subtitle image
+        """
+        self._validate_sub_idx(sub_idx)
+        return self.series.events[sub_idx].img
+
+    def subtitle_concerns(self) -> list[OcrConcern | None]:
+        """Return concerns in subtitle order for filtering and counts.
+
+        Returns:
+            current concern for each subtitle
+        """
+        return [self._state(sub_idx).concern for sub_idx in range(len(self.entries))]
+
+    def subtitle_row(self, sub_idx: int) -> SubtitleRowView:
+        """Return one subtitle row view model.
+
+        Arguments:
+            sub_idx: zero-based subtitle index
+        Returns:
+            subtitle row view model
+        """
+        self._validate_sub_idx(sub_idx)
+        state = self._state(sub_idx)
+        entry = self.entries[sub_idx]
+        subtitle = self.series.events[sub_idx]
+        boxes = subtitle.bboxes or []
+        if isinstance(state.concern, CharDimsConcern):
+            boxes = self._char_cursor(state).bbox_grp(state.concern.n_bboxes)
+        elif isinstance(state.concern, GapConcern):
+            boxes = self._gap_cursor(state).bbox_grp(2)
+        return SubtitleRowView(
+            sub_idx=sub_idx,
+            number=entry.index,
+            start=ImageSeries._format_html_time(entry.start),
+            end=ImageSeries._format_html_time(entry.end),
+            image_width=subtitle.img.width,
+            image_height=subtitle.img.height,
+            text=entry.text,
+            concern=state.concern,
+            boxes=tuple(boxes),
+            text_color_css=self.text_color_css,
+            text_shadow_color_css=self.text_shadow_color_css,
+            text_font_size_px=self.text_font_size_px,
+            text_letter_spacing_px=self.text_letter_spacing_px,
+        )
+
+    def update_text(self, sub_idx: int, text: str) -> SubtitleRowView:
+        """Persist corrected OCR text and rebuild the subtitle state.
+
+        Arguments:
+            sub_idx: zero-based subtitle index
+            text: replacement subtitle text using ASS newline escapes
+        Returns:
+            updated subtitle row view model
+        """
+        self._validate_sub_idx(sub_idx)
+        if text != self.entries[sub_idx].text:
+            self._set_text(sub_idx, text, reset_state=True)
+            self._recheck_pending = True
         return self.subtitle_row(sub_idx)
 
     def _accept_char_dims(self, state: _SubtitleValidationState, n_bboxes: int):
