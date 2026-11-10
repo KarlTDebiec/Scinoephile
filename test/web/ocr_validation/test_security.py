@@ -52,12 +52,7 @@ def app(ocr_session: OcrValidationSession) -> Flask:
 
 @parametrize(
     "endpoint",
-    [
-        "/subtitles/0/text",
-        "/subtitles/0/concern/char",
-        "/subtitles/0/concern/gap",
-        "/exit",
-    ],
+    ["/subtitles/0/text", "/subtitles/0/concern/char", "/subtitles/0/concern/gap"],
 )
 def test_mutations_require_a_csrf_token(app: Flask, tmp_path: Path, endpoint: str):
     """Reject both native and HTMX forms without a session token.
@@ -274,7 +269,7 @@ def test_security_headers_cover_documents_assets_and_rejections(app: Flask):
     assert page.status_code == 200
     asset = client.get("/static/htmx.min.js", headers={"Sec-Fetch-Site": "same-origin"})
     assert asset.status_code == 200
-    for response in (page, asset, client.post("/exit")):
+    for response in (page, asset, client.post("/subtitles/0/text")):
         assert response.headers["Cache-Control"] == "no-store"
         assert response.headers["X-Content-Type-Options"] == "nosniff"
         assert "frame-ancestors 'none'" in response.headers["Content-Security-Policy"]

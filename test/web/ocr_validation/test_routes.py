@@ -103,37 +103,19 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
     )
 
 
-def test_exit_saves_output(tmp_path: Path):
-    """Verify the native exit form writes the SRT and shuts down the server.
+def test_opening_editor_saves_output_without_edits(tmp_path: Path):
+    """Verify startup exports the SRT before serving the editor.
 
     Arguments:
         tmp_path: isolated image and validation data
     """
-
-    class FakeServer:
-        """Record shutdown of the server registered on the app."""
-
-        stopped = False
-
-        def shutdown(self):
-            """Record the requested shutdown."""
-            self.stopped = True
-
     images_path = make_ocr_html_dir(tmp_path, text="A")
     session = _session(images_path, tmp_path)
-    app = create_app(session)
-    app.testing = True
-    server = FakeServer()
-    app.config["OCR_VALIDATION_SERVER"] = server
-    client = app.test_client()
-
-    page = client.get("/")
-    assert not (tmp_path / "validated.srt").exists()
-    result = client.post("/exit", data=_form_values(page.data))
-    assert result.status_code == 200
-    assert b"Validation exited." in result.data
-    assert server.stopped
+    session.prepare()
     assert "A" in (tmp_path / "validated.srt").read_text(encoding="utf-8")
+    page = create_app(session).test_client().get("/")
+    assert page.status_code == 200
+    assert b"Exit Validation" not in page.data
 
 
 def test_filters_and_pages_include_automatically_validated_rows(

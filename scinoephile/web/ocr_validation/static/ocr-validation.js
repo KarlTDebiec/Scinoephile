@@ -150,13 +150,9 @@ if (window.htmx) {
         document.querySelector("#messages").textContent =
             "Wait for subtitle text to save, then check the concern before approving it.";
     });
-    document.addEventListener("submit", event => {
-        if (!event.target.matches("[data-exit-validation]") || !hasOcrDrafts())
-            return;
-        event.preventDefault();
-        document.querySelector("#messages").textContent =
-            "Wait for subtitle text to save before exiting.";
-    }, true);
+    window.addEventListener("beforeunload", event => {
+        if (hasOcrDrafts()) event.preventDefault();
+    });
     document.addEventListener("htmx:beforeRequest", event => {
         const requestForm = event.detail.elt;
         const action = requestForm.matches("[data-ocr-action]");

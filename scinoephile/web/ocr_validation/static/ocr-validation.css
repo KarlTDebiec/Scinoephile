@@ -1,5 +1,6 @@
 /* Validation status and empty results */
 #messages:empty { display: none; }
+#workspace:not(:has(.subtitle-block)) .ocr-operations { display: none; }
 .ocr-rows:has(.subtitle-block, #load-more:not(:empty)) > .empty { display: none; }
 
 .ocr-row-status {

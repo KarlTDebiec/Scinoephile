@@ -11,15 +11,7 @@
         {% include "_summary.html" %}
       {% endif %}
     {% endcall %}
-    <nav class="editor-toolbar" aria-label="Operations">
-      <div class="operation-group">
-        <form method="post"
-              action="{{ url_for('exit_validation') }}"
-              data-exit-validation>
-          <input type="hidden" name="csrf" value="{{ csrf }}">
-          <button type="submit">Exit Validation</button>
-        </form>
-      </div>
+    <nav class="editor-toolbar ocr-operations" aria-label="Operations">
       {{ toggle_blocks() }}
     </nav>
   </header>

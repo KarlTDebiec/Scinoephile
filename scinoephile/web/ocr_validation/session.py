@@ -11,6 +11,8 @@ from typing import Self
 
 from PIL import Image
 
+from scinoephile.common.file import open_atomic_text_file
+from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import WHITESPACE_CHARS
@@ -145,14 +147,11 @@ class OcrValidationSession:
                 f"Unable to initialize OCR validation session from {dir_path}: {exc}"
             ) from exc
 
-    def finish(self):
-        """Persist current validation output before closing the web UI."""
-        self._save_outfile()
-
     def prepare(self):
-        """Scan subtitles before serving the first editor page."""
+        """Scan subtitles and save the initial output before serving the editor."""
         for sub_idx in range(len(self.entries)):
             self._state(sub_idx)
+        self._save_outfile()
 
     def refresh_concerns(self):
         """Apply newly learned data while retaining unchanged box selections."""
@@ -555,8 +554,9 @@ class OcrValidationSession:
         """Persist the session's current subtitle text to the output file."""
         if self.outfile_path is None:
             return
-        self.outfile_path.parent.mkdir(parents=True, exist_ok=True)
-        self.series.save(self.outfile_path, format_="srt", exist_ok=True)
+        outfile_path = val_output_path(self.outfile_path, exist_ok=True)
+        with open_atomic_text_file(outfile_path) as outfile:
+            self.series.to_file(outfile, format_="srt")
 
     def _set_text(self, sub_idx: int, text: str, *, reset_state: bool):
         """Persist OCR text for one subtitle.

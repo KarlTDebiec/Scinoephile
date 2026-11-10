@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from io import BytesIO
-from threading import Thread
 from typing import TYPE_CHECKING
 
 from scinoephile.core.dependencies.web import import_flask
@@ -126,22 +125,6 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
             row = session.resolve_gap_concern(sub_idx, action=request.form["action"])
 
         return _render_update(session, row)
-
-    @app.post("/exit")
-    def exit_validation() -> str:
-        """Save the subtitle output and stop the web server.
-
-        Returns:
-            exit confirmation
-        """
-        session.finish()
-        server = app.config.get("OCR_VALIDATION_SERVER")
-        if server is not None:
-            if app.testing:
-                server.shutdown()
-            else:
-                Thread(target=server.shutdown, daemon=True).start()
-        return "Validation exited. You can close this tab."
 
 
 def _filters() -> tuple[str, str, int, int | None]:

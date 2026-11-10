@@ -50,7 +50,6 @@ def create_app(session: OcrValidationSession, *, host: str = "127.0.0.1") -> Fla
     )
     app.add_template_filter(format_time_ms)
     app.config["MAX_CONTENT_LENGTH"] = 100_000
-    app.config["OCR_VALIDATION_SERVER"] = None
     register_routes(app, session)
     return app
 
@@ -77,14 +76,14 @@ def run_app(session: OcrValidationSession, host: str, port: int):
                 "using an available port instead"
             )
             server_port = 0
-        server = werkzeug_serving.make_server(host, server_port, app)
-        app.config["OCR_VALIDATION_SERVER"] = server
-        logger.info("Checking subtitle boxes, characters, and spacing")
-        session.prepare()
-        url_host = _url_host(host)
-        url_port = getattr(server, "server_port", server_port)
-        logger.info(f"OCR validation web UI: http://{url_host}:{url_port}/")
-        server.serve_forever()
+        with werkzeug_serving.make_server(host, server_port, app) as server:
+            logger.info("Checking subtitle boxes, characters, and spacing")
+            session.prepare()
+            url_host = _url_host(host)
+            url_port = getattr(server, "server_port", server_port)
+            logger.info(f"OCR validation web UI: http://{url_host}:{url_port}/")
+            logger.info("Press Ctrl+C to stop the server.")
+            server.serve_forever()
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to run OCR validation web app on {host}:{port}: {exc}"
