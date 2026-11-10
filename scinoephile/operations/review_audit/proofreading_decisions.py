@@ -4,11 +4,10 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 from scinoephile.core import Language
-from scinoephile.core.llms.utils import load_test_cases_from_json
+from scinoephile.core.llms.utils import load_test_cases_from_json, serialize_test_cases
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.text import replace_control_characters
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
@@ -162,14 +161,7 @@ class ProofreadingDecisions:
         Returns:
             validated native review JSON text
         """
-        base_cls = ReviewManager.get_test_case_cls(ReviewManager.base_prompt)
-        data = [
-            base_cls.model_validate(case.model_dump(mode="json")).model_dump(
-                mode="json", by_alias=True, exclude_defaults=True
-            )
-            for case in self.cases
-        ]
-        return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+        return serialize_test_cases(self.cases, ReviewManager) + "\n"
 
     def shared_indexes(self, index: int) -> tuple[int, ...]:
         """Find all row positions linked through reused native query decisions.
@@ -207,6 +199,39 @@ class ProofreadingDecisions:
                         affected.update(linked)
         return tuple(sorted(value + 1 for value in affected))
 
+    def verified_indexes(self) -> set[int]:
+        """Find which subtitles have verified proofreading cases.
+
+        Returns:
+            zero-based indexes covered by verified cases only
+        """
+        verified = set()
+        pending = set()
+        for case_index, starts in self.locations.items():
+            case = self.cases[case_index]
+            indexes = verified if case.verified else pending
+            for start in starts:
+                indexes.update(range(start, start + len(case.query.subtitles)))
+        return verified - pending
+
+    def verify(self, index: int, *, verified: bool):
+        """Set verification on the proofreading cases covering a subtitle.
+
+        Arguments:
+            index: zero-based source subtitle index
+            verified: whether a human approves the complete proofreading answer
+        """
+        if verified and not self._get_case_indexes(index):
+            self._add_case(index)
+        for case_index in self._get_case_indexes(index):
+            data = self.cases[case_index].model_dump(mode="json")
+            data["verified"] = verified
+            if verified and data["answer"] is None:
+                data["answer"] = {"revisions": []}
+            if not verified:
+                data["few_shot"] = False
+            self.cases[case_index] = self.case_cls.model_validate(data)
+
     def _add_case(self, index: int):
         """Create a native query for the source pause block containing a row.
 
@@ -235,6 +260,23 @@ class ProofreadingDecisions:
                 self._index_cases()
                 return
             first += len(block)
+
+    def _get_case_indexes(self, index: int) -> list[int]:
+        """Find active cases covering a source subtitle.
+
+        Arguments:
+            index: zero-based source subtitle index
+        Returns:
+            indexes into the case list
+        """
+        return [
+            case_index
+            for case_index, starts in self.locations.items()
+            if any(
+                start <= index < start + len(self.cases[case_index].query.subtitles)
+                for start in starts
+            )
+        ]
 
     def _index_cases(self):
         """Match only the latest decision for each immutable query key."""

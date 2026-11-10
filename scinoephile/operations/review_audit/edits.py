@@ -10,7 +10,7 @@ from dataclasses import replace
 from .proofreading_decisions import ProofreadingDecisions
 from .rows import AuditRow, AuditStatus
 
-__all__ = ["build_review_edit", "prepare_review_edit"]
+__all__ = ["build_review_edit", "prepare_proofreading_edit"]
 
 
 def build_review_edit(
@@ -50,6 +50,8 @@ def build_review_edit(
     except ValueError as exc:
         raise ValueError("Unknown audit verdict") from exc
     status.validate_notes(notes)
+    if status == AuditStatus.unaudited and notes.strip():
+        raise ValueError("Choose an audit verdict before saving an audit note")
     return replace(
         current,
         reviewed=reviewed,
@@ -60,88 +62,19 @@ def build_review_edit(
     )
 
 
-def prepare_review_edit(
-    rows: list[AuditRow],
-    draft: AuditRow,
-    decisions: ProofreadingDecisions | None,
-    *,
-    proofreading_changed: bool,
-) -> tuple[list[AuditRow], ProofreadingDecisions | None, list[AuditRow]]:
-    """Apply one edit and reset stale findings on changed subtitles.
+def prepare_proofreading_edit(
+    rows: list[AuditRow], draft: AuditRow, decisions: ProofreadingDecisions
+) -> tuple[list[AuditRow], ProofreadingDecisions]:
+    """Apply the edited text to a copy of the native proofreading decisions.
 
     Arguments:
         rows: current editor rows in source order
         draft: validated edited row
-        decisions: current native decision log, if configured
-        proofreading_changed: whether the proofread output needs to be written
+        decisions: current native decision log
     Returns:
-        candidate subtitle rows, native decisions, and affected audit rows
+        candidate subtitle rows and proofreading decisions
     """
-    current = rows[draft.index - 1]
-    updated = rows
-    if proofreading_changed:
-        updated, decisions = _apply_proofreading_edit(rows, current, draft, decisions)
-    affected = {
-        row.key: replace(row, verified=False, finding=AuditStatus.unaudited, notes="")
-        for row in updated
-        if row != rows[row.index - 1]
-    }
-    # Keep the reset unless the form also changed its audit decision
-    if draft.key not in affected or (draft.notes, draft.finding, draft.verified) != (
-        current.notes,
-        current.finding,
-        current.verified,
-    ):
-        affected[draft.key] = replace(
-            updated[draft.index - 1],
-            notes=draft.notes,
-            finding=draft.finding,
-            verified=draft.verified
-            and (draft.key not in affected or not current.verified),
-        )
-    return (
-        updated,
-        decisions,
-        [replace(row, version=row.version + 1) for row in affected.values()],
-    )
-
-
-def _apply_proofreading_edit(
-    rows: list[AuditRow],
-    current: AuditRow,
-    draft: AuditRow,
-    decisions: ProofreadingDecisions | None,
-) -> tuple[list[AuditRow], ProofreadingDecisions | None]:
-    """Apply edited text to the subtitle output and any native decisions.
-
-    Arguments:
-        rows: current text and audit progress
-        current: row being saved
-        draft: validated row with new subtitle text and explanation
-        decisions: current native decision log, if configured
-    Returns:
-        candidate subtitle rows and optional native decision log
-    Raises:
-        ValueError: if starting a decision log would change existing subtitles
-    """
-    if decisions is None:
-        updated = list(rows)
-        updated[current.index - 1] = replace(
-            current, reviewed=draft.reviewed, review_note=draft.review_note
-        )
-        return updated, None
     decisions = deepcopy(decisions)
-    # Seed any existing output edits when starting a new JSON log
-    if not decisions.cases:
-        for row in rows:
-            if row.changed:
-                decisions.edit(row.index - 1, row.reviewed, row.review_note)
-        seeded_texts, _ = decisions.render()
-        if seeded_texts != [row.reviewed for row in rows]:
-            raise ValueError(
-                "Existing corrections differ across linked subtitles. "
-                "Open the editor without --json to keep those corrections."
-            )
     decisions.edit(draft.index - 1, draft.reviewed, draft.review_note)
     texts, revision_notes = decisions.render()
     return [

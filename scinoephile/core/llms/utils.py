@@ -17,7 +17,11 @@ from .manager import Manager
 from .prompt import Prompt
 from .test_case import TestCase
 
-__all__ = ["load_test_cases_from_json", "save_test_cases_to_json"]
+__all__ = [
+    "load_test_cases_from_json",
+    "save_test_cases_to_json",
+    "serialize_test_cases",
+]
 
 logger = getLogger(__name__)
 
@@ -82,10 +86,44 @@ def save_test_cases_to_json[TTestCase: TestCase](
         test_cases: test cases to save
         manager_cls: manager class defining persisted test-case field names
     """
-    # Serialize existing models using the base prompt's schema and field aliases
+    test_case_jsons = _get_test_case_jsons(test_cases, manager_cls)
+    if not output_path.parent.exists():
+        output_path.parent.mkdir(parents=True)
+        logger.info(f"Created directory {output_path.parent}")
+    with open_atomic_text_file(output_path) as temp_file:
+        json.dump(test_case_jsons, temp_file, ensure_ascii=False, indent=2)
+    logger.info(f"Saved test cases to {output_path}")
+
+
+def serialize_test_cases[TTestCase: TestCase](
+    test_cases: Iterable[TTestCase], manager_cls: type[Manager[TTestCase]]
+) -> str:
+    """Serialize cases with the base prompt's schema and field aliases.
+
+    Arguments:
+        test_cases: validated test cases to serialize
+        manager_cls: manager defining persisted test-case field names
+    Returns:
+        native test-case JSON
+    """
+    test_case_jsons = _get_test_case_jsons(test_cases, manager_cls)
+    return json.dumps(test_case_jsons, ensure_ascii=False, indent=2)
+
+
+def _get_test_case_jsons[TTestCase: TestCase](
+    test_cases: Iterable[TTestCase], manager_cls: type[Manager[TTestCase]]
+) -> list[JsonValue]:
+    """Convert cases to JSON values using the base prompt's aliases.
+
+    Arguments:
+        test_cases: validated test cases to serialize
+        manager_cls: manager defining persisted test-case field names
+    Returns:
+        JSON values ready to write
+    """
     base_test_case_cls = manager_cls.get_test_case_cls(prompt=manager_cls.base_prompt)
     serializer = TypeAdapter(base_test_case_cls)
-    test_case_jsons = [
+    return [
         serializer.dump_python(
             test_case,
             mode="json",
@@ -95,11 +133,3 @@ def save_test_cases_to_json[TTestCase: TestCase](
         )
         for test_case in test_cases
     ]
-
-    # Write output file
-    if not output_path.parent.exists():
-        output_path.parent.mkdir(parents=True)
-        logger.info(f"Created directory {output_path.parent}")
-    with open_atomic_text_file(output_path) as temp_file:
-        json.dump(test_case_jsons, temp_file, ensure_ascii=False, indent=2)
-    logger.info(f"Saved test cases to {output_path}")

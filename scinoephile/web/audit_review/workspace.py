@@ -15,7 +15,10 @@ from scinoephile.core.timing import format_time_ms
 from scinoephile.operations.review_audit.filters import AuditFilters
 from scinoephile.operations.review_audit.project import ReviewAuditProject
 from scinoephile.operations.review_audit.rows import AuditRow
-from scinoephile.operations.review_audit.verification import get_verification_token
+from scinoephile.operations.review_audit.verification import (
+    get_verification_rows,
+    get_verification_token,
+)
 
 __all__ = [
     "AuditBlock",
@@ -78,6 +81,8 @@ class AuditPage:
     """Verified current source rows."""
     matching: int
     """Rows matching all filters, including unloaded blocks."""
+    verifiable_blocks: int
+    """Complete unverified blocks eligible for bulk verification."""
     verification_token: str
     """Digest of the full filtered selection and its row versions."""
     filter_counts: dict[str, dict[str, int]]
@@ -131,6 +136,7 @@ def get_audit_page(
         last_block = through
     elif visible_blocks:
         last_block = visible_blocks[-1].number
+    verification_rows = get_verification_rows(rows, filters)
     return AuditPage(
         all_rows=rows,
         rows=[row for block in visible_blocks for row in block.rows],
@@ -139,7 +145,8 @@ def get_audit_page(
         total=len(rows),
         verified=sum(row.verified for row in rows),
         matching=len(matching),
-        verification_token=get_verification_token(matching),
+        verifiable_blocks=len({row.block_number for row in verification_rows}),
+        verification_token=get_verification_token(verification_rows),
         filter_counts=filters.counts(rows),
         last_block=last_block,
         has_more=any(block.number > last_block for block in blocks),

@@ -5,6 +5,7 @@
        value="{{ row.version }}"
        data-finding="{{ row.finding }}"
        data-audit-note="{{ row.notes|tojson|forceescape }}"
+       data-proofreading-verified="{{ 'true' if row.proofreading_verified else 'false' }}"
        data-verified="{{ 'true' if row.verified else 'false' }}"
        hx-swap-oob="outerHTML">
 {% set differences = row|audit_differences %}

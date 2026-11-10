@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import replace
 from pathlib import Path
 from threading import Event
 from typing import Any, Unpack
@@ -12,7 +13,7 @@ from unittest.mock import Mock
 
 from pytest import MonkeyPatch, mark, raises
 
-from scinoephile.core import Language
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
@@ -263,18 +264,15 @@ def test_unwritable_imported_decisions_are_reported_before_querying(
         ]
     )
     audit.json_path.write_text(native_decisions, encoding="utf-8")
-    audit = ReviewAuditProject(
-        audit.infile_path,
-        audit.outfile_path,
-        json_path=audit.json_path,
-        language=Language.eng,
-    )
-    job = ProofreadingJob(audit)
-    job.start("openai", "", "")
-    _join(job)
-    assert job.snapshot().status == "error"
-    assert "Subtitle 1 text cannot be saved unchanged in SRT" in job.snapshot().error
-    assert "Correct the existing proofreading decisions" in job.snapshot().error
+    with raises(
+        ScinoephileError, match="Subtitle 1 text cannot be saved unchanged in SRT"
+    ):
+        ReviewAuditProject(
+            audit.infile_path,
+            audit.outfile_path,
+            json_path=audit.json_path,
+            language=Language.eng,
+        )
     assert provider.calls == 0
     assert not audit.outfile_path.exists()
     assert (
@@ -388,7 +386,7 @@ def test_external_output_is_never_replaced(tmp_path: Path, monkeypatch: MonkeyPa
     _join(job)
     assert job.snapshot().status == "error"
     assert audit.outfile_path.read_text() == "External work"
-    assert audit.json_path is not None and not audit.json_path.exists()
+    assert json.loads(audit.json_path.read_bytes()) == []
 
 
 def test_card_http_csrf_progress_completion_and_validation(
@@ -441,12 +439,12 @@ def test_card_http_csrf_progress_completion_and_validation(
 def test_reproofread_reloads_one_block_and_preserves_progress(
     tmp_path: Path, monkeypatch: MonkeyPatch, with_json: bool
 ):
-    """Reload OCR, reuse unchanged authored blocks, and migrate verified progress.
+    """Reload OCR, reuse verified proofreading, and retain matching audit cases.
 
     Arguments:
         tmp_path: temporary project directory
         monkeypatch: offline dependency patches
-        with_json: whether native decisions have a configured destination
+        with_json: whether to override the default proofreading JSON path
     """
     audit, provider, _ = _setup(tmp_path, monkeypatch, with_json=with_json)
     job = ProofreadingJob(audit)
@@ -465,6 +463,7 @@ def test_reproofread_reloads_one_block_and_preserves_progress(
             finding="ok",
             verified=True,
             version=row.version,
+            proofreading_verified=True,
         )
     old_rows = audit.rows()
     audit.infile_path.write_text(
@@ -493,7 +492,8 @@ def test_reproofread_reloads_one_block_and_preserves_progress(
     rows = audit.rows()
     assert rows[0].reviewed == "Human edited text."
     assert rows[0].review_note == "Human explanation."
-    assert rows[0].verified and rows[0].finding == "ok"
+    assert rows[0].verified and rows[0].proofreading_verified
+    assert rows[0].finding == "ok"
     assert rows[1].original == rows[1].reviewed == "Corrected OCR."
     assert rows[1].finding == "unaudited" and not rows[1].verified
     assert not audit.input_changed
@@ -501,16 +501,19 @@ def test_reproofread_reloads_one_block_and_preserves_progress(
     assert len(backups) == 1
     assert (backups[0] / "proofread.srt").read_bytes() == before[audit.outfile_path]
     progress = json.loads((backups[0] / "audit.json").read_text(encoding="utf-8"))
-    assert sum(row["verified"] for row in progress["rows"].values()) == 2
-    assert "Corrected OCR." not in "".join(progress["source"])
+    assert sum(case["verified"] for case in progress) == 2
+    assert all(
+        sub["original"] != "Corrected OCR."
+        for case in progress
+        for sub in case["query"]["subtitles"]
+    )
     reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
         language=Language.eng,
     )
-    assert reopened.rows() == rows
-    assert reopened.proofreading_settings["effort"] == "xhigh"
+    assert reopened.rows() == [replace(row, version=0) for row in rows]
     again = ProofreadingJob(reopened)
     again.start("openai", "gpt-6-luna", "xhigh", rerun=True)
     _join(again)
@@ -519,10 +522,10 @@ def test_reproofread_reloads_one_block_and_preserves_progress(
     assert reopened.rows()[0].reviewed == "Human edited text."
 
 
-def test_reproofread_restart_keeps_previous_baseline_until_publication(
+def test_reproofread_restart_reloads_source_and_detects_later_changes(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Resume progress after OCR changes, then reject further edits during the run.
+    """Derive output from the current source, then reject edits made during a run.
 
     Arguments:
         tmp_path: temporary project directory
@@ -535,14 +538,24 @@ def test_reproofread_restart_keeps_previous_baseline_until_publication(
     audit.infile_path.write_text(
         audit.infile_path.read_text().replace("Same.", "New OCR.")
     )
+    previous_output = audit.outfile_path.read_bytes()
+    with raises(ScinoephileError, match="disagree with the proofreading JSON"):
+        ReviewAuditProject(
+            audit.infile_path,
+            audit.outfile_path,
+            json_path=audit.json_path,
+            language=Language.eng,
+        )
+    assert audit.outfile_path.read_bytes() == previous_output
+    audit.outfile_path.unlink()
     reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
         json_path=audit.json_path,
         language=Language.eng,
     )
-    assert reopened.input_changed
-    assert reopened.rows()[1].original == "Same."
+    assert not reopened.input_changed
+    assert reopened.rows()[1].original == "New OCR."
     old_output = reopened.outfile_path.read_bytes()
     provider.release.clear()
     provider.entered.clear()
@@ -556,7 +569,7 @@ def test_reproofread_restart_keeps_previous_baseline_until_publication(
     _join(job)
     assert job.snapshot().status == "error"
     assert reopened.outfile_path.read_bytes() == old_output
-    assert reopened.rows()[1].original == "Same."
+    assert reopened.rows()[1].original == "New OCR."
 
 
 def test_reproofread_changed_configuration_does_not_reuse_native_answers(

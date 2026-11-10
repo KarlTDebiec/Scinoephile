@@ -29,6 +29,7 @@ from scinoephile.common.cli.argument_parsing import (
     enum_metavar,
     get_arg_groups_by_name,
     input_file_arg,
+    output_file_arg,
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
@@ -46,10 +47,12 @@ AUDIT_REVIEW_RUN_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "audit subtitle proofreading with an LLM": "使用大语言模型审核字幕校对",
         "original subtitle SRT file before review": "校对前的原始字幕 SRT 文件",
         (
-            "proofread SRT file; findings are saved beside it as "
+            "proofread SRT output; audit cases are saved beside it as "
             "<reviewed-stem>.audit.json"
-        ): ("校对后的 SRT 文件；审核结果保存在同一目录的 <reviewed-stem>.audit.json"),
-        "optional proofreading decision JSON": "可选的校对决策 JSON 文件",
+        ): ("校对后的 SRT 输出；审核案例保存在同一目录的 <reviewed-stem>.audit.json"),
+        "proofreading test-case JSON (default: <reviewed-stem>.review.json)": (
+            "校对测试案例 JSON（默认：<reviewed-stem>.review.json）"
+        ),
         "subtitle language (default: detected automatically)": (
             "字幕语言（默认：自动检测）"
         ),
@@ -61,10 +64,12 @@ AUDIT_REVIEW_RUN_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "audit subtitle proofreading with an LLM": "使用大型語言模型稽核字幕校對",
         "original subtitle SRT file before review": "校對前的原始字幕 SRT 檔",
         (
-            "proofread SRT file; findings are saved beside it as "
+            "proofread SRT output; audit cases are saved beside it as "
             "<reviewed-stem>.audit.json"
-        ): ("校對後的 SRT 檔；稽核結果儲存在同一目錄的 <reviewed-stem>.audit.json"),
-        "optional proofreading decision JSON": "選用的校對決策 JSON 檔",
+        ): ("校對後的 SRT 輸出；稽核案例儲存在同一目錄的 <reviewed-stem>.audit.json"),
+        "proofreading test-case JSON (default: <reviewed-stem>.review.json)": (
+            "校對測試案例 JSON（預設：<reviewed-stem>.review.json）"
+        ),
         "subtitle language (default: detected automatically)": (
             "字幕語言（預設：自動偵測）"
         ),
@@ -117,17 +122,17 @@ class AuditReviewRunCli(ScinoephileCliBase):
             "--reviewed",
             dest="reviewed_path",
             required=True,
-            type=input_file_arg(),
+            type=output_file_arg(exist_ok=True, create=False),
             help=(
-                "proofread SRT file; findings are saved beside it as "
+                "proofread SRT output; audit cases are saved beside it as "
                 "<reviewed-stem>.audit.json"
             ),
         )
         groups["input arguments"].add_argument(
             "--json",
             dest="json_path",
-            type=input_file_arg(),
-            help="optional proofreading decision JSON",
+            type=output_file_arg(exist_ok=True, create=False),
+            help="proofreading test-case JSON (default: <reviewed-stem>.review.json)",
         )
 
         # Operation arguments
@@ -182,7 +187,7 @@ class AuditReviewRunCli(ScinoephileCliBase):
         Arguments:
             original_path: original SRT file
             reviewed_path: proofread SRT file
-            json_path: optional native proofreading decisions
+            json_path: optional override for the native proofreading JSON
             language: optional explicit subtitle language
             first_block: first source block to audit
             last_block: last source block to audit
@@ -216,7 +221,8 @@ class AuditReviewRunCli(ScinoephileCliBase):
         except (OSError, ScinoephileError, ValueError) as exc:
             parser.error(str(exc))
         logger.info(
-            f"Audited {audited_blocks} blocks. Saved findings to {audit.state_path}"
+            f"Audited {audited_blocks} blocks. "
+            f"Saved findings to {audit.audit_json_path}"
         )
 
 

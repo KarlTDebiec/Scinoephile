@@ -9,8 +9,9 @@ from pathlib import Path
 
 from scinoephile.core.llms import LLMProvider, Queryer
 from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
-from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditSubtitle
+from scinoephile.llms.review_audit import ReviewAuditManager
 
+from .audit_cases import get_audit_query
 from .project import ReviewAuditProject
 from .rows import AuditRow
 
@@ -34,7 +35,7 @@ def run_audit(
         audit: session with an active audit reservation
         blocks: immutable blocks reserved for this run
         provider: configured LLM provider
-        rerun: replace previous verdicts while retaining human verification
+        rerun: replace previous audit answers
         additional_context: extra instructions to include with each request
         cache_root_path: optional root directory for LLM responses
         overwrite_cache: request new answers even when cached responses exist
@@ -49,25 +50,11 @@ def run_audit(
         overwrite_cache=overwrite_cache,
     )
     for block in blocks:
-        query = test_case_cls.query_cls(
-            language=audit.language.code,
-            subtitles=[
-                ReviewAuditSubtitle(
-                    index=row.index,
-                    original=row.original,
-                    proofread=row.reviewed,
-                    note=row.review_note,
-                )
-                for row in block
-            ],
+        query = test_case_cls.query_cls.model_validate(
+            get_audit_query(block).model_dump()
         )
         result = queryer(test_case_cls(query=query))
-        assert result.answer is not None
-        audit.publish_audit(
-            block,
-            {item.index: (item.status, item.note) for item in result.answer.findings},
-            rerun=rerun,
-        )
+        audit.publish_audit(block, result, rerun=rerun)
         if on_block is not None:
             on_block()
 

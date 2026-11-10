@@ -66,11 +66,19 @@
           <span>{{ icon("text-box-edit-outline") }}Changed</span>
         </span>
         {{ status_select('finding', 'Audit status', audit_options, row.finding) }}
-        <label class="verification-toggle">
+        <label class="verification-toggle"
+               title="Approve the proofreading case for this subtitle">
+          <input type="checkbox"
+                 name="proofreading_verified"{% if row.proofreading_verified %} checked{% endif %}>
+          <span>{{ icon("checkbox-blank-outline") }}Verify proofreading</span>
+          <span>{{ icon("checkbox-marked") }}Proofreading verified</span>
+        </label>
+        <label class="verification-toggle"
+               title="Approve all audit findings in this block">
           <input type="checkbox"
                  name="verified"{% if row.verified %} checked{% endif %}>
-          <span>{{ icon("checkbox-blank-outline") }}Unverified</span>
-          <span>{{ icon("checkbox-marked") }}Verified</span>
+          <span>{{ icon("checkbox-blank-outline") }}Verify audit block</span>
+          <span>{{ icon("checkbox-marked") }}Audit block verified</span>
         </label>
         {% include "_save_status.html" %}
         <button type="submit">Save</button>

@@ -65,7 +65,7 @@ def create_app(audit: ReviewAuditProject, *, title: str | None = None) -> FlaskA
             "reasoning_levels": tuple(ReasoningEffort),
         }
 
-    register_editor_routes(app, audit, title=title)
+    register_editor_routes(app, audit)
     register_auditing_routes(app, audit)
     register_proofreading_routes(app, audit)
     return app

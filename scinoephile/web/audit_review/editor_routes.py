@@ -22,13 +22,12 @@ if TYPE_CHECKING:
 __all__ = ["register_editor_routes"]
 
 
-def register_editor_routes(app: FlaskApp, audit: ReviewAuditProject, *, title: str):
+def register_editor_routes(app: FlaskApp, audit: ReviewAuditProject):
     """Register routes for browsing, editing, verifying, and exporting audit rows.
 
     Arguments:
         app: local audit application
         audit: source-backed audit project
-        title: editor title to include in exported progress
     """
     flask = import_flask()
     _register_verification_routes(app, audit)
@@ -85,6 +84,8 @@ def register_editor_routes(app: FlaskApp, audit: ReviewAuditProject, *, title: s
                 finding=flask.request.form.get("finding", "unaudited"),
                 verified=flask.request.form.get("verified") == "on",
                 version=version,
+                proofreading_verified=flask.request.form.get("proofreading_verified")
+                == "on",
             )
             page = get_audit_page(audit.rows(), filters, through=through)
             current = next((row for row in page.all_rows if row.key == key), None)
@@ -131,20 +132,12 @@ def register_editor_routes(app: FlaskApp, audit: ReviewAuditProject, *, title: s
 
     @app.get("/export")
     def export():
-        """Download the independent audit decisions as portable JSON.
+        """Download the native audit test-case JSON.
 
         Returns:
-            UTF-8 audit progress download
+            audit test-case download
         """
-        body = app.json.dumps(
-            {"title": title, "rows": [asdict(row) for row in audit.rows()]},
-            ensure_ascii=False,
-        )
-        response = flask.Response(body, mimetype="application/json")
-        response.headers["Content-Disposition"] = (
-            'attachment; filename="audit-progress.json"'
-        )
-        return response
+        return flask.send_file(audit.audit_json_path, as_attachment=True)
 
 
 def _parse_filters(values: Mapping[str, str]) -> AuditFilters:
@@ -217,7 +210,7 @@ def _register_verification_routes(app: FlaskApp, audit: ReviewAuditProject):
                 view = get_view_context(audit, filters)
                 if selection != view["verification_token"]:
                     raise ValueError(
-                        "The matching subtitles changed. Reload before verifying."
+                        "The matching blocks changed. Reload before verifying."
                     )
                 template = "index.html"
                 if flask.request.headers.get("HX-Request") == "true":

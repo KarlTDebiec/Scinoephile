@@ -113,18 +113,27 @@ class ReviewAuditTestCase(TestCase[ReviewAuditQuery, ReviewAuditAnswer]):
     """Context block to assess."""
     answer: ReviewAuditAnswer | None = None
     """Validated audit findings when available."""
+    draft: bool = False
+    """Whether a human has entered findings for only part of this block."""
 
     @model_validator(mode="after")
     def validate_findings(self) -> Self:
-        """Reject missing, duplicate, extra or reordered findings.
+        """Require full coverage unless the case is a partial human draft.
 
         Returns:
             matched test case
         Raises:
-            ValueError: if answer indexes differ from the query
+            ValueError: if indexes are invalid or a draft is marked verified
         """
+        if self.draft and (self.answer is None or self.verified):
+            raise ValueError("Audit drafts require findings and cannot be verified")
         if self.answer is not None:
             expected = [subtitle.index for subtitle in self.query.subtitles]
-            if [finding.index for finding in self.answer.findings] != expected:
+            actual = [finding.index for finding in self.answer.findings]
+            if self.draft:
+                if not 0 < len(actual) < len(expected):
+                    raise ValueError("Audit drafts must have some findings missing")
+                expected = [index for index in expected if index in actual]
+            if actual != expected:
                 raise ValueError(self.prompt.finding_indices_err)
         return self

@@ -19,7 +19,7 @@ __all__ = ["AuditingJob"]
 
 
 class AuditingJob(BackgroundJob[state.AuditingJobState]):
-    """Run independent audits without modifying subtitle text or verification."""
+    """Run independent audits without modifying subtitle text."""
 
     def __init__(self, audit: ReviewAuditProject):
         """Initialize without contacting a provider.
@@ -55,7 +55,7 @@ class AuditingJob(BackgroundJob[state.AuditingJobState]):
             provider_name: registered provider identifier
             model_name: model override or blank
             effort: shared reasoning level or blank
-            rerun: re-audit every subtitle, retaining verification marks
+            rerun: re-audit every block and clear approval if its findings change
         Raises:
             ValueError: if configuration or session state is invalid
         """

@@ -39,16 +39,11 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "original subtitle SRT file (read-only)": "原始字幕 SRT 文件（只读）",
         (
-            "edited SRT file; resume if present; audit progress is kept in "
-            "<output-stem>.audit.json"
-        ): "编辑后 SRT；存在则继续；审核进度：<output-stem>.audit.json",
+            "proofread SRT output; audit cases are saved in <output-stem>.audit.json"
+        ): "校对后的 SRT 输出；审核案例保存在 <output-stem>.audit.json",
         (
-            "optional proofreading decision JSON; created or updated by "
-            "proofreading edits"
-        ): "可选校对决策 JSON；编辑校对内容时创建或更新",
-        "optional read-only Markdown audit notes to import": (
-            "可选导入的只读 Markdown 审核备注"
-        ),
+            "proofreading test-case JSON (default: <output-stem>.review.json)"
+        ): "校对测试案例 JSON（默认：<output-stem>.review.json）",
         "subtitle language (default: auto-detect)": "字幕语言（默认：从输入检测）",
         "display title (default: input filename stem)": "显示标题（默认：输入文件名）",
         "audit web UI must use a loopback host": "审核网页界面必须使用本机回环地址",
@@ -65,16 +60,11 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "original subtitle SRT file (read-only)": "原始字幕 SRT 檔（唯讀）",
         (
-            "edited SRT file; resume if present; audit progress is kept in "
-            "<output-stem>.audit.json"
-        ): "編輯後 SRT；存在時繼續；稽核進度：<output-stem>.audit.json",
+            "proofread SRT output; audit cases are saved in <output-stem>.audit.json"
+        ): "校對後的 SRT 輸出；稽核案例儲存在 <output-stem>.audit.json",
         (
-            "optional proofreading decision JSON; created or updated by "
-            "proofreading edits"
-        ): "可選校對決策 JSON；編輯校對內容時建立或更新",
-        "optional read-only Markdown audit notes to import": (
-            "可選匯入的唯讀 Markdown 稽核備註"
-        ),
+            "proofreading test-case JSON (default: <output-stem>.review.json)"
+        ): "校對測試案例 JSON（預設：<output-stem>.review.json）",
         "subtitle language (default: auto-detect)": "字幕語言（預設：從輸入偵測）",
         "display title (default: input filename stem)": "顯示標題（預設：輸入檔名）",
         "audit web UI must use a loopback host": "稽核網頁介面必須使用本機回環位址",
@@ -124,16 +114,7 @@ class AuditReviewServeCli(ScinoephileCliBase):
             "--json",
             dest="json_path",
             type=output_file_arg(exist_ok=True),
-            help=(
-                "optional proofreading decision JSON; created or updated by "
-                "proofreading edits"
-            ),
-        )
-        groups["input arguments"].add_argument(
-            "--audit-notes",
-            dest="report_path",
-            type=input_file_arg(),
-            help="optional read-only Markdown audit notes to import",
+            help=("proofreading test-case JSON (default: <output-stem>.review.json)"),
         )
         groups["input arguments"].add_argument(
             "--language",
@@ -156,7 +137,7 @@ class AuditReviewServeCli(ScinoephileCliBase):
             required=True,
             type=output_file_arg(exist_ok=True),
             help=(
-                "edited SRT file; resume if present; audit progress is kept in "
+                "proofread SRT output; audit cases are saved in "
                 "<output-stem>.audit.json"
             ),
         )
@@ -180,7 +161,6 @@ class AuditReviewServeCli(ScinoephileCliBase):
         title: str | None = None,
         json_path: Path | None = None,
         language: Language | None = None,
-        report_path: Path | None = None,
         _parser: ArgumentParser | None = None,
     ):
         """Open a source-backed audit project and serve its local UI.
@@ -190,9 +170,8 @@ class AuditReviewServeCli(ScinoephileCliBase):
             outfile_path: edited subtitle output
             web_args: loopback server address and port
             title: display title override
-            json_path: optional read/write native proofreading decisions
+            json_path: optional override for the native proofreading JSON
             language: optional explicit subtitle language
-            report_path: optional report used only to seed audit notes
             _parser: parser for user-facing error messages
         """
         parser = _parser or cls.argparser()
@@ -201,11 +180,7 @@ class AuditReviewServeCli(ScinoephileCliBase):
         try:
             serve_audit(
                 ReviewAuditProject(
-                    infile_path,
-                    outfile_path,
-                    json_path=json_path,
-                    language=language,
-                    report_path=report_path,
+                    infile_path, outfile_path, json_path=json_path, language=language
                 ),
                 title=title,
                 host=web_args.host,

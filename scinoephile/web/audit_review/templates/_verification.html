@@ -16,13 +16,13 @@
   {% if verification_pending|default(false) %}
     <input type="hidden" name="confirm" value="on">
   {% endif %}
-  <button type="submit"{% if verification_pending|default(false) %} class="is-confirming" title="Confirm verification"{% else %} title="Verify every subtitle matching the current filters, including unloaded blocks"{% endif %}
-          {% if not page.matching or editing_blocked %} disabled{% endif %}>
+  <button type="submit"{% if verification_pending|default(false) %} class="is-confirming" title="Confirm verification"{% else %} title="Verify completed audit blocks whose subtitles all match the current filters"{% endif %}
+          {% if not page.verifiable_blocks or editing_blocked %} disabled{% endif %}>
     {{ icon("checkbox-multiple-marked-outline") }}
     {% if verification_pending|default(false) %}
-      Verify {{ '{:,}'.format(page.matching) }} matching subtitle{% if page.matching != 1 %}s{% endif %}
+      Verify {{ '{:,}'.format(page.verifiable_blocks) }} audit block{% if page.verifiable_blocks != 1 %}s{% endif %}
     {% else %}
-      Verify all matching
+      Verify matching audit blocks
     {% endif %}
   </button>
 </form>

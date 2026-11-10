@@ -4,18 +4,27 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
+from dataclasses import replace
 from hashlib import sha256
 from pathlib import Path
 from threading import RLock
 
 from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.llms.utils import serialize_test_cases
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
 from scinoephile.lang.review.standard import DEFAULT_PROMPTS
+from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditTestCase
 
-from .audit_progress import AuditProgress
-from .edits import build_review_edit, prepare_review_edit
+from .audit_cases import (
+    apply_audit_case,
+    build_audit_case,
+    get_audit_query,
+    load_audit_cases,
+)
+from .edits import build_review_edit, prepare_proofreading_edit
 from .filters import AuditFilters
 from .project_files import (
     backup_review_files,
@@ -27,14 +36,8 @@ from .project_files import (
     write_files,
 )
 from .proofreading_decisions import ProofreadingDecisions
-from .rows import (
-    AuditRow,
-    AuditStatus,
-    apply_audit_findings,
-    build_audit_rows,
-    carry_audit_progress,
-)
-from .verification import prepare_bulk_verification
+from .rows import AuditRow, AuditStatus, build_audit_rows
+from .verification import get_verification_rows, get_verification_token
 
 __all__ = ["ReviewAuditProject"]
 
@@ -49,16 +52,14 @@ class ReviewAuditProject:
         *,
         json_path: Path | None = None,
         language: Language | None = None,
-        report_path: Path | None = None,
     ):
-        """Open subtitles and optionally resume native proofreading decisions.
+        """Open subtitles with native proofreading and audit test-case files.
 
         Arguments:
             infile_path: immutable original subtitles
-            outfile_path: edited subtitles, loaded if already present
-            json_path: optional native review JSON to read and update or create
+            outfile_path: generated proofread subtitles
+            json_path: proofreading JSON override, defaults to a sibling .review.json
             language: language override, otherwise detected from the input
-            report_path: optional old Markdown report used only to seed audit notes
         Raises:
             ScinoephileError: if files, paths, or review decisions are invalid
         """
@@ -73,23 +74,22 @@ class ReviewAuditProject:
             self.outfile_path = val_output_path(
                 outfile_path, exist_ok=True, create=False
             )
-            self.json_path = None
-            if json_path is not None:
-                self.json_path = val_output_path(json_path, exist_ok=True, create=False)
-            if report_path is not None:
-                report_path = val_input_path(report_path)
-            self.state_path = self.outfile_path.with_suffix(".audit.json")
-            self._lock_path = self.state_path.with_name(f".{self.state_path.stem}.lock")
+            if json_path is None:
+                json_path = self.outfile_path.with_suffix(".review.json")
+            self.json_path = val_output_path(json_path, exist_ok=True, create=False)
+            self.audit_json_path = self.outfile_path.with_suffix(".audit.json")
+            self._lock_path = self.audit_json_path.with_name(
+                f".{self.audit_json_path.stem}.lock"
+            )
             validate_project_paths(
                 self.infile_path,
                 self.outfile_path,
-                self.state_path,
+                self.audit_json_path,
                 lock_path=self._lock_path,
                 json_path=self.json_path,
-                report_path=report_path,
             )
             with lock_review_files(self._lock_path):
-                self._load_project(language, report_path)
+                self._load_project(language)
         except (OSError, ValueError) as exc:
             raise ScinoephileError(f"Unable to open review editor: {exc}") from exc
 
@@ -122,12 +122,6 @@ class ReviewAuditProject:
         with self._lock:
             return self._proofreading_running
 
-    @property
-    def proofreading_settings(self) -> dict[str, str]:
-        """Last successful proofreading settings and authored-decision provenance."""
-        with self._lock:
-            return self._progress.proofreading.copy()
-
     def begin_auditing(
         self,
         *,
@@ -138,7 +132,7 @@ class ReviewAuditProject:
         """Reserve saved proofreading for an initial audit or whole-file re-audit.
 
         Arguments:
-            rerun: replace existing findings for all subtitles, retaining verification
+            rerun: audit blocks even if they already have saved findings
             start_at_idx: first source block to include, zero-based
             stop_at_idx: exclusive source block boundary, or None for the end
         Returns:
@@ -157,10 +151,7 @@ class ReviewAuditProject:
                 tuple(rows[first:last])
                 for first, last in self._block_ranges[start_at_idx:stop_at_idx]
                 if rerun
-                or any(
-                    not row.verified and row.finding == AuditStatus.unaudited
-                    for row in rows[first:last]
-                )
+                or any(row.finding == AuditStatus.unaudited for row in rows[first:last])
             )
             if not blocks:
                 raise ValueError("No unaudited subtitles remain")
@@ -217,47 +208,72 @@ class ReviewAuditProject:
     def publish_audit(
         self,
         block: tuple[AuditRow, ...],
-        findings: dict[int, tuple[str, str]],
+        case: ReviewAuditTestCase,
         *,
         rerun: bool = False,
     ):
-        """Persist one complete audit block without changing proofreading files.
+        """Save one complete audit test case and retain manual draft findings on resume.
 
         Arguments:
             block: reserved source rows supplying the queried context
-            findings: one status and note for each one-based subtitle index
-            rerun: replace all findings while retaining human verification marks
+            case: completed LLM test case for those rows
+            rerun: replace previous findings for the block
         Raises:
-            ValueError: if reservation, files or source row versions changed
-            ScinoephileError: if audit progress cannot be persisted
+            ValueError: if the case or reservation does not match the current block
+            ScinoephileError: if the case cannot be persisted
         """
         with self._lock, lock_review_files(self._lock_path):
             if not self._auditing_running:
                 raise ValueError("No audit run is active")
             self._check_file_hashes()
-            updated = apply_audit_findings(self.rows(), block, findings, rerun=rerun)
+            first, last = self._block_ranges[block[0].block_number - 1]
+            if (
+                tuple(self._rows[first:last]) != block
+                or case.query.key != get_audit_query(block).key
+                or case.answer is None
+                or case.draft
+            ):
+                raise ValueError("Audit case does not match the reserved block")
+
+            previous = self._audit_cases.get(block[0].index)
+            if previous is not None and previous.query.key != case.query.key:
+                previous = None
+            updated = apply_audit_case(list(block), case)
+            if not rerun and previous is not None and previous.draft:
+                updated = [
+                    before if before.finding != AuditStatus.unaudited else after
+                    for before, after in zip(block, updated, strict=True)
+                ]
+                case = build_audit_case(updated)
+            elif (
+                previous is not None
+                and previous.verified
+                and previous.answer == case.answer
+            ):
+                case = case.model_copy(
+                    update={"verified": True, "few_shot": previous.few_shot}
+                )
+                updated = [replace(row, verified=True) for row in updated]
+
+            rows = self._rows.copy()
+            rows[first:last] = [
+                replace(row, version=row.version + 1) for row in updated
+            ]
+            cases = self._audit_cases | {block[0].index: case}
             try:
-                self._write_progress(self._progress.with_rows(updated))
+                self._save_audit_cases(cases, rows)
             except OSError as exc:
                 raise ScinoephileError(f"Unable to save audit findings: {exc}") from exc
 
-    def publish_proofreading(
-        self,
-        decisions_path: Path,
-        *,
-        rerun: bool = False,
-        settings: dict[str, str] | None = None,
-    ):
-        """Publish validated decisions and subtitles as one recoverable operation.
+    def publish_proofreading(self, decisions_path: Path, *, rerun: bool = False):
+        """Publish validated proofreading and regenerate its subtitle output.
 
         Arguments:
             decisions_path: completed temporary native proofreading decisions
             rerun: back up and replace existing proofreading from current OCR
-            settings: effective run settings and decision-reuse provenance
         Raises:
-            ValueError: if the run lost its reservation, files changed, or the
-                new output cannot be saved as SRT
-            ScinoephileError: if publishing files or progress fails
+            ValueError: if the reservation is stale or revisions cannot be saved as SRT
+            ScinoephileError: if publishing the output fails
         """
         with self._lock, lock_review_files(self._lock_path):
             if not self._proofreading_running:
@@ -274,30 +290,31 @@ class ReviewAuditProject:
             assert source is not None and content is not None
             decisions = ProofreadingDecisions(source, self.language, decisions_path)
             decisions.normalize_srt_revisions()
-            updated, ranges = build_audit_rows(
-                source, content, self.language, decisions
-            )
-            updated = carry_audit_progress(self.rows(), updated)
-            progress = AuditProgress(
-                language=self.language,
-                source=content.decode("utf-8").splitlines(keepends=True),
-                proofreading=self._progress.proofreading
-                if settings is None
-                else settings,
-            ).with_rows(updated)
+            rows, ranges = build_audit_rows(source, content, self.language, decisions)
+            cases = {}
+            for first, last in ranges:
+                block = rows[first:last]
+                case = self._audit_cases.get(block[0].index)
+                if case is not None and case.query.key == get_audit_query(block).key:
+                    cases[block[0].index] = case
+                    rows[first:last] = apply_audit_case(block, case)
+            rows = [
+                replace(row, version=old.version + 1)
+                for row, old in zip(rows, self._rows, strict=True)
+            ]
             try:
                 if rerun:
                     backup_review_files(
-                        self.outfile_path, self.json_path, self.state_path
+                        self.outfile_path, self.json_path, self.audit_json_path
                     )
                 writes = render_review_files(
                     source,
-                    updated,
+                    rows,
                     self.outfile_path,
                     decisions=decisions,
                     json_path=self.json_path,
                 )
-                self._write_progress(progress, writes)
+                self._save_audit_cases(cases, rows, writes)
             except OSError as exc:
                 raise ScinoephileError(
                     f"Unable to publish proofreading: {exc}"
@@ -306,20 +323,15 @@ class ReviewAuditProject:
             self._source_content = content
             self.decisions = decisions
             self._block_ranges = ranges
-            self._rows = updated
 
     def rows(self) -> list[AuditRow]:
-        """Read current text and independent progress without stale form caching.
+        """Read the current project rows.
 
         Returns:
-            current editable rows and their audit progress
+            snapshot of the subtitle rows and audit findings
         """
         with self._lock:
-            return self._progress.apply(
-                self._rows,
-                match_review_note=self.decisions is not None
-                and bool(self.decisions.cases),
-            )
+            return self._rows.copy()
 
     def save(
         self,
@@ -331,8 +343,9 @@ class ReviewAuditProject:
         finding: str,
         verified: bool,
         version: int,
+        proofreading_verified: bool | None = None,
     ) -> set[str]:
-        """Save proofreading and audit progress with stale-write checks.
+        """Save proofreading and audit edits with independent case verification.
 
         Arguments:
             key: immutable source-row identity
@@ -340,28 +353,20 @@ class ReviewAuditProject:
             review_note: native revision explanation
             notes: independent audit notes
             finding: independent audit verdict
-            verified: whether this audit finding was checked
+            verified: whether the complete audit answer was checked
             version: rendered row version, rejecting stale forms
+            proofreading_verified: optional approval of the proofreading answer
         Returns:
             source keys whose forms need updating
         Raises:
             KeyError: if the row is unknown
-            ValueError: if text, verdict, or a stale save is invalid
+            ValueError: if an edit or verification is invalid or stale
             ScinoephileError: if saving files fails
         """
         with self._lock, lock_review_files(self._lock_path):
-            rows = self.rows()
-            current = next((row for row in rows if row.key == key), None)
+            current = next((row for row in self._rows if row.key == key), None)
             if current is None:
                 raise KeyError(key)
-            draft = build_review_edit(
-                current,
-                reviewed=reviewed,
-                review_note=review_note,
-                notes=notes,
-                finding=finding,
-                verified=verified,
-            )
             if self._proofreading_running or self._auditing_running:
                 raise ValueError(
                     "Wait for proofreading or auditing to finish before editing"
@@ -370,44 +375,39 @@ class ReviewAuditProject:
                 raise ValueError(
                     "This row changed in another tab. Reload before saving."
                 )
+            draft = build_review_edit(
+                current,
+                reviewed=reviewed,
+                review_note=review_note,
+                notes=notes,
+                finding=finding,
+                verified=verified,
+            )
+            self._check_file_hashes()
+            rows, decisions, writes = self._prepare_save(
+                current, draft, proofreading_verified
+            )
+            cases = self._update_edited_blocks(rows, current, draft)
+            changed = set()
+            for index, (old, row) in enumerate(zip(self._rows, rows, strict=True)):
+                if old != row or row.key == key:
+                    changed.add(row.key)
+                    rows[index] = replace(row, version=old.version + 1)
             try:
-                self._check_file_hashes()
-                proofreading_changed = (
-                    not self.outfile_path.exists()
-                    or draft.reviewed != current.reviewed
-                    or draft.review_note != current.review_note
-                )
-                updated, decisions, affected = prepare_review_edit(
-                    rows,
-                    draft,
-                    self.decisions,
-                    proofreading_changed=proofreading_changed,
-                )
-                progress = self._progress.with_rows(affected)
-                writes = {}
-                if proofreading_changed:
-                    writes = render_review_files(
-                        self.original,
-                        updated,
-                        self.outfile_path,
-                        decisions=decisions,
-                        json_path=self.json_path,
-                    )
-                self._write_progress(progress, writes)
+                self._save_audit_cases(cases, rows, writes)
             except OSError as exc:
                 raise ScinoephileError(f"Unable to save review edits: {exc}") from exc
             self.decisions = decisions
-            self._rows = updated
-            return {row.key for row in affected}
+            return changed
 
     def verify_matching_rows(self, filters: AuditFilters, token: str) -> int:
-        """Verify every matching subtitle atomically without changing its text.
+        """Verify complete audit blocks whose rows all match the current filters.
 
         Arguments:
             filters: filters applied to the full project
             token: digest of the selected row identities and versions
         Returns:
-            number of newly verified subtitles
+            number of newly verified blocks
         Raises:
             ValueError: if output is absent, work is active, or the selection changed
             ScinoephileError: if verification cannot be persisted
@@ -418,13 +418,29 @@ class ReviewAuditProject:
             if self._proofreading_running or self._auditing_running:
                 raise ValueError("Wait for proofreading or auditing to finish")
             self._check_file_hashes()
+            matching = get_verification_rows(self._rows, filters)
+            if token != get_verification_token(matching):
+                raise ValueError(
+                    "The matching blocks changed. Reload before verifying."
+                )
+            if not matching:
+                return 0
+
+            rows = self._rows.copy()
+            cases = self._audit_cases.copy()
+            blocks = {row.block_number for row in matching}
+            for number in blocks:
+                first, last = self._block_ranges[number - 1]
+                rows[first:last] = [
+                    replace(row, verified=True, version=row.version + 1)
+                    for row in rows[first:last]
+                ]
+                cases[first + 1] = build_audit_case(rows[first:last])
             try:
-                rows = prepare_bulk_verification(self.rows(), filters, token)
-                if rows:
-                    self._write_progress(self._progress.with_rows(rows))
+                self._save_audit_cases(cases, rows)
             except OSError as exc:
-                raise ScinoephileError(f"Unable to verify subtitles: {exc}") from exc
-            return len(rows)
+                raise ScinoephileError(f"Unable to save verification: {exc}") from exc
+            return len(blocks)
 
     def _check_file_hashes(self):
         """Reject changes made outside the active editor's write transaction.
@@ -449,82 +465,196 @@ class ReviewAuditProject:
             hashes for the input, output, proofreading JSON, and audit JSON
         """
         return get_file_hashes(
-            self.infile_path, self.outfile_path, self.json_path, self.state_path
+            self.infile_path, self.outfile_path, self.json_path, self.audit_json_path
         )
 
-    def _load_project(self, language: Language | None, report_path: Path | None):
-        """Load the project baseline and bind its saved findings to one language.
+    def _load_project(self, language: Language | None):
+        """Open both native case files and project them onto the original SRT.
 
         Arguments:
-            language: explicit language, or None to use the saved or detected language
-            report_path: optional old Markdown report used to seed audit notes
+            language: explicit language, or None to detect it from the original SRT
         Raises:
-            ValueError: if the baseline or language is incompatible with the project
+            ValueError: if the language or saved case files are invalid
         """
-        content = self.infile_path.read_bytes()
-        write_progress = not self.state_path.exists()
-        if write_progress:
-            if self.outfile_path.with_suffix(".review.sqlite3").exists():
-                raise ValueError("Migrate the existing audit database to JSON first")
-            progress = AuditProgress(
-                source=content.decode("utf-8").splitlines(keepends=True)
-            )
-        else:
-            progress = AuditProgress.model_validate_json(self.state_path.read_bytes())
-        self._source_content = "".join(progress.source).encode("utf-8")
-        if not self.outfile_path.exists() and self._source_content != content:
-            self._source_content = content
-            progress = AuditProgress(
-                language=progress.language,
-                source=content.decode("utf-8").splitlines(keepends=True),
-            )
-            write_progress = True
+        self._source_content = self.infile_path.read_bytes()
         self.original = parse_source_srt(self._source_content)
-        resolved = language or progress.language or get_series_language(self.original)
+        cases, saved_language = load_audit_cases(self.audit_json_path)
+        if (
+            language is not None
+            and saved_language is not None
+            and language != saved_language
+        ):
+            raise ValueError(f"Audit cases use language {saved_language.code}")
+        resolved = language or saved_language or get_series_language(self.original)
         if resolved is None or resolved not in DEFAULT_PROMPTS:
             raise ValueError("Specify a supported proofreading language")
-        if progress.language is not None and progress.language != resolved:
-            raise ValueError(
-                f"Audit progress uses language {progress.language.code}. "
-                f"Open it with --language {progress.language.code}."
-            )
         self.language = resolved
-        if progress.language is None:
-            progress = progress.model_copy(update={"language": resolved})
-            write_progress = True
-        self._progress = progress
-        self.decisions = None
-        if self.json_path is not None:
-            self.decisions = ProofreadingDecisions(
-                self.original, self.language, self.json_path
-            )
-        self._rows, self._block_ranges = build_audit_rows(
-            self.original,
-            self._source_content,
-            self.language,
-            self.decisions,
-            outfile_path=self.outfile_path,
-            report_path=report_path,
-        )
-        if write_progress:
-            self._write_progress(progress)
-        else:
-            self._saved_file_hashes = self._file_hashes()
 
-    def _write_progress(
-        self, progress: AuditProgress, writes: dict[Path, str] | None = None
-    ):
-        """Commit audit JSON and any proofreading files under the project lock.
+        self.decisions = ProofreadingDecisions(
+            self.original, self.language, self.json_path
+        )
+        self.decisions.normalize_srt_revisions()
+        rows, self._block_ranges = build_audit_rows(
+            self.original, self._source_content, self.language, self.decisions
+        )
+        for first, last in self._block_ranges:
+            rows[first:last] = apply_audit_case(rows[first:last], cases.get(first + 1))
+
+        writes = {}
+        if not self.audit_json_path.exists():
+            writes[self.audit_json_path] = "[]\n"
+        if not self.json_path.exists():
+            writes[self.json_path] = "[]\n"
+        has_decisions = any(case.answer is not None for case in self.decisions.cases)
+        if self.outfile_path.exists():
+            output = Series.load(self.outfile_path)
+            if [(s.start, s.end) for s in output] != [
+                (row.start, row.end) for row in rows
+            ]:
+                raise ValueError("Original and output subtitle timings must match")
+            if [s.text_with_newline for s in output] != [row.reviewed for row in rows]:
+                raise ValueError("Output subtitles disagree with the proofreading JSON")
+        elif has_decisions:
+            generated = render_review_files(
+                self.original,
+                rows,
+                self.outfile_path,
+                decisions=self.decisions,
+                json_path=self.json_path,
+            )
+            writes[self.outfile_path] = generated[self.outfile_path]
+        write_files(writes)
+        self._rows = rows
+        self._audit_cases = cases
+        self._saved_file_hashes = self._file_hashes()
+
+    def _prepare_save(
+        self, current: AuditRow, draft: AuditRow, proofreading_verified: bool | None
+    ) -> tuple[list[AuditRow], ProofreadingDecisions, dict[Path, str]]:
+        """Prepare proofreading changes and the files they affect.
 
         Arguments:
-            progress: candidate audit state
-            writes: candidate proofread SRT and native decisions, when changed
+            current: saved subtitle row
+            draft: validated edit from the editor
+            proofreading_verified: optional approval of the proofreading answer
+        Returns:
+            candidate rows, decisions, and file writes
         """
-        write_files(
-            {
-                **(writes or {}),
-                self.state_path: progress.model_dump_json(indent=2) + "\n",
-            }
+        text_changed = (draft.reviewed, draft.review_note) != (
+            current.reviewed,
+            current.review_note,
         )
-        self._progress = progress
+        verification_changed = (
+            proofreading_verified is not None
+            and proofreading_verified != current.proofreading_verified
+        )
+        rows = self._rows.copy()
+        decisions = self.decisions
+        writes = {}
+        if text_changed:
+            rows, decisions = prepare_proofreading_edit(rows, draft, decisions)
+        if verification_changed:
+            assert proofreading_verified is not None
+            if not text_changed:
+                decisions = deepcopy(decisions)
+            decisions.verify(current.index - 1, verified=proofreading_verified)
+        if text_changed or verification_changed:
+            verified_indexes = decisions.verified_indexes()
+            rows = [
+                replace(row, proofreading_verified=index in verified_indexes)
+                for index, row in enumerate(rows)
+            ]
+            if text_changed:
+                writes = render_review_files(
+                    self.original,
+                    rows,
+                    self.outfile_path,
+                    decisions=decisions,
+                    json_path=self.json_path,
+                )
+            else:
+                writes[self.json_path] = decisions.serialize()
+        return rows, decisions, writes
+
+    def _save_audit_cases(
+        self,
+        cases: dict[int, ReviewAuditTestCase],
+        rows: list[AuditRow],
+        writes: dict[Path, str] | None = None,
+    ):
+        """Commit candidate cases and any generated proofreading files.
+
+        Arguments:
+            cases: current audit cases keyed by first subtitle index
+            rows: candidate editor snapshot
+            writes: other candidate project files to commit together
+        """
+        if writes is None:
+            writes = {}
+        if cases != self._audit_cases:
+            writes[self.audit_json_path] = (
+                serialize_test_cases(
+                    (cases[index] for index in sorted(cases)), ReviewAuditManager
+                )
+                + "\n"
+            )
+        write_files(writes)
+        self._rows = rows
+        self._audit_cases = cases
         self._saved_file_hashes = self._file_hashes()
+
+    def _update_edited_blocks(
+        self, rows: list[AuditRow], current: AuditRow, draft: AuditRow
+    ) -> dict[int, ReviewAuditTestCase]:
+        """Apply an audit edit and discard findings whose query changed.
+
+        Arguments:
+            rows: candidate rows, updated in place with their audit findings
+            current: saved row before the edit
+            draft: validated edit from the editor
+        Returns:
+            candidate audit cases
+        Raises:
+            ValueError: if verification was requested for an incomplete answer
+        """
+        cases = self._audit_cases.copy()
+        changed_blocks = {
+            row.block_number
+            for old, row in zip(self._rows, rows, strict=True)
+            if (old.reviewed, old.review_note) != (row.reviewed, row.review_note)
+        }
+        for number in changed_blocks:
+            first, last = self._block_ranges[number - 1]
+            rows[first:last] = apply_audit_case(rows[first:last], None)
+            cases.pop(first + 1, None)
+
+        first, last = self._block_ranges[current.block_number - 1]
+        block_changed = current.block_number in changed_blocks
+        audit_changed = (draft.finding, draft.notes) != (current.finding, current.notes)
+        if block_changed and not audit_changed:
+            return cases
+        if (
+            not block_changed
+            and not audit_changed
+            and draft.verified == current.verified
+        ):
+            return cases
+
+        index = current.index - 1
+        rows[index] = replace(
+            rows[index], finding=draft.finding, notes=draft.notes.strip()
+        )
+        verify = draft.verified and (not block_changed or not current.verified)
+        if verify and any(
+            row.finding == AuditStatus.unaudited for row in rows[first:last]
+        ):
+            if not current.verified:
+                raise ValueError("Complete the audit block before verifying it")
+            verify = False
+        rows[first:last] = [replace(row, verified=verify) for row in rows[first:last]]
+        case = build_audit_case(rows[first:last])
+        if case.answer is None:
+            cases.pop(first + 1, None)
+        else:
+            cases[first + 1] = case
+        return cases

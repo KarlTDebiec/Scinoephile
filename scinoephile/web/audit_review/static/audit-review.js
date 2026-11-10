@@ -99,6 +99,8 @@ function reviewValues(form) {
     for (const name of ["reviewed", "review_note", "notes", "finding"]) {
         values[name] = form.elements.namedItem(name).value.replace(/\r\n?/g, "\n");
     }
+    values.proofreading_verified = form.elements.namedItem("proofreading_verified")
+        .checked;
     values.verified = form.elements.namedItem("verified").checked;
     return values;
 }
@@ -293,6 +295,8 @@ document.addEventListener("htmx:afterRequest", event => {
             const current = reviewValues(form);
             saved.finding = dataset.finding;
             saved.notes = JSON.parse(dataset.auditNote).replace(/\r\n?/g, "\n");
+            saved.proofreading_verified = dataset.proofreadingVerified ===
+                "true";
             saved.verified = dataset.verified === "true";
             // Accept server-side resets while keeping fields edited since submission.
             for (const name of ["finding", "notes"]) {
@@ -300,8 +304,10 @@ document.addEventListener("htmx:afterRequest", event => {
                     form.elements.namedItem(name).value = saved[name];
                 }
             }
-            if (current.verified === state.sent.verified) {
-                form.elements.namedItem("verified").checked = saved.verified;
+            for (const name of ["proofreading_verified", "verified"]) {
+                if (current[name] === state.sent[name]) {
+                    form.elements.namedItem(name).checked = saved[name];
+                }
             }
         }
         state.saved = JSON.stringify(saved);

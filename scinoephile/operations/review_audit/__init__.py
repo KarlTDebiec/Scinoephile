@@ -6,7 +6,7 @@ Package hierarchy (modules may import from any above):
 * exceptions
 * proofreading_decisions
 * rows
-* audit_progress / edits / filters / project_files
+* audit_cases / edits / filters / project_files
 * verification
 * project
 * run

@@ -22,10 +22,14 @@ from scinoephile.core.cache.identity import CacheIdentity
 from scinoephile.core.llms import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
-from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditQuery
-from scinoephile.operations.review_audit.audit_progress import AuditProgress
+from scinoephile.llms.review_audit import (
+    ReviewAuditManager,
+    ReviewAuditQuery,
+    ReviewAuditTestCase,
+)
+from scinoephile.operations.review_audit.audit_cases import build_audit_case
 from scinoephile.operations.review_audit.project import ReviewAuditProject
-from scinoephile.operations.review_audit.rows import AuditStatus
+from scinoephile.operations.review_audit.rows import AuditRow, AuditStatus
 from scinoephile.web.audit_review import job_settings
 from scinoephile.web.audit_review.app import create_app
 from scinoephile.web.audit_review.auditing.job import AuditingJob
@@ -163,23 +167,31 @@ def test_audit_commit_serializes_editor_save(tmp_path: Path, monkeypatch: Monkey
     """
     audit, _, _ = _setup(tmp_path, monkeypatch)
     editor = ReviewAuditProject(
-        audit.infile_path, audit.outfile_path, json_path=audit.json_path
+        audit.infile_path,
+        audit.outfile_path,
+        json_path=audit.json_path,
+        language=Language.eng,
     )
     block = audit.begin_auditing()[0]
     row = editor.rows()[-1]
     writing, release, saving = Event(), Event(), Event()
-    write_progress = audit._write_progress
+    save_cases = audit._save_audit_cases
 
-    def hold_commit(progress: AuditProgress, writes: dict[Path, str] | None = None):
+    def hold_commit(
+        cases: dict[int, ReviewAuditTestCase],
+        rows: list[AuditRow],
+        writes: dict[Path, str] | None = None,
+    ):
         """Pause the audit after its stale-file check.
 
         Arguments:
-            progress: pending audit progress
+            cases: pending native audit cases
+            rows: pending editor snapshot
             writes: optional other files in the commit
         """
         writing.set()
         assert release.wait(5)
-        write_progress(progress, writes)
+        save_cases(cases, rows, writes)
 
     def save_edit():
         """Attempt to save an independent row from the other session."""
@@ -194,11 +206,12 @@ def test_audit_commit_serializes_editor_save(tmp_path: Path, monkeypatch: Monkey
             version=row.version,
         )
 
-    monkeypatch.setattr(audit, "_write_progress", hold_commit)
+    monkeypatch.setattr(audit, "_save_audit_cases", hold_commit)
     with ThreadPoolExecutor(max_workers=2) as executor:
-        commit = executor.submit(
-            audit.publish_audit, block, {item.index: ("ok", "") for item in block}
+        case = build_audit_case(
+            [replace(item, finding=AuditStatus.ok) for item in block]
         )
+        commit = executor.submit(audit.publish_audit, block, case)
         try:
             assert writing.wait(5)
             save = executor.submit(save_edit)
@@ -218,17 +231,17 @@ def test_audit_commit_serializes_editor_save(tmp_path: Path, monkeypatch: Monkey
     assert reopened.rows()[-1] == row
 
 
-def test_audit_progress_is_bound_to_its_language(
+def test_audit_cases_are_bound_to_their_language(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Label older JSON on open, preserving findings for the correct language.
+    """Keep the language in the native audit query and reject another language.
 
     Arguments:
         tmp_path: temporary project directory
         monkeypatch: offline provider replacement
     """
     audit, _, _ = _setup(tmp_path, monkeypatch)
-    row = audit.rows()[0]
+    row = audit.rows()[-1]
     audit.save(
         row.key,
         reviewed=row.reviewed,
@@ -238,24 +251,17 @@ def test_audit_progress_is_bound_to_its_language(
         verified=True,
         version=row.version,
     )
-    progress = json.loads(audit.state_path.read_bytes())
-    assert progress.pop("language") == "eng"
-    audit.state_path.write_text(json.dumps(progress), encoding="utf-8")
-
+    before = audit.audit_json_path.read_bytes()
+    assert json.loads(before)[0]["query"]["language"] == "eng"
     reopened = ReviewAuditProject(
-        audit.infile_path,
-        audit.outfile_path,
-        json_path=audit.json_path,
-        language=Language.eng,
+        audit.infile_path, audit.outfile_path, json_path=audit.json_path
     )
-    assert reopened.rows() == audit.rows()
-    assert json.loads(audit.state_path.read_bytes())["language"] == "eng"
-    before = audit.state_path.read_bytes()
-    with raises(ScinoephileError, match="Audit progress uses language eng"):
+    assert reopened.language == Language.eng and reopened.rows()[-1].verified
+    with raises(ScinoephileError, match="Audit cases use language eng"):
         ReviewAuditProject(
             audit.infile_path, audit.outfile_path, language=Language.yue_hant
         )
-    assert audit.state_path.read_bytes() == before
+    assert audit.audit_json_path.read_bytes() == before
 
 
 def test_cli_audit_resumes_in_the_browser(tmp_path: Path, monkeypatch: MonkeyPatch):
@@ -327,9 +333,11 @@ def test_audit_persists_findings_preserving_text_and_human_state(
         review_note="",
         notes="Human finding",
         finding="review",
-        verified=True,
+        verified=False,
         version=human.version,
     )
+    draft = json.loads(audit.audit_json_path.read_bytes())[0]
+    assert draft["draft"] and draft["answer"]["findings"][0]["index"] == human.index
     paths = [audit.infile_path, audit.outfile_path, audit.json_path]
     before = [p.read_bytes() for p in paths if p is not None]
     job = AuditingJob(audit)
@@ -347,7 +355,7 @@ def test_audit_persists_findings_preserving_text_and_human_state(
         AuditStatus.review,
         AuditStatus.ok,
     ]
-    assert audit.rows()[1].verified and audit.rows()[1].notes == "Human finding"
+    assert audit.rows()[1].notes == "Human finding"
     assert not audit.rows()[0].verified and not audit.rows()[2].verified
     assert before == [p.read_bytes() for p in paths if p is not None]
     restored = ReviewAuditProject(
@@ -356,8 +364,39 @@ def test_audit_persists_findings_preserving_text_and_human_state(
         json_path=audit.json_path,
         language=Language.eng,
     )
-    assert restored.rows() == audit.rows()
+    assert restored.rows() == [replace(row, version=0) for row in audit.rows()]
+    assert all(
+        "draft" not in case for case in json.loads(audit.audit_json_path.read_bytes())
+    )
     assert not AuditingJob(restored).snapshot().available
+
+    client = create_app(restored).test_client()
+    page = client.get("/").get_data(as_text=True)
+    assert "Verify proofreading" in page and "Verify audit block" in page
+    with client.session_transaction() as session:
+        csrf = session["csrf"]
+    audit_content = restored.audit_json_path.read_bytes()
+    row = restored.rows()[0]
+    form = dict(
+        csrf=csrf,
+        version=row.version,
+        reviewed=row.reviewed,
+        review_note=row.review_note,
+        notes=row.notes,
+        finding=row.finding,
+        proofreading_verified="on",
+    )
+    assert client.post(f"/rows/{row.key}", data=form).status_code == 303
+    assert all(item.proofreading_verified for item in restored.rows()[:2])
+    assert not any(item.verified for item in restored.rows())
+    assert restored.audit_json_path.read_bytes() == audit_content
+
+    proofread_content = restored.json_path.read_bytes()
+    form.update(version=restored.rows()[0].version, verified="on")
+    assert client.post(f"/rows/{row.key}", data=form).status_code == 303
+    assert [item.verified for item in restored.rows()] == [True, True, False]
+    assert restored.json_path.read_bytes() == proofread_content
+    assert json.loads(restored.audit_json_path.read_bytes())[0]["verified"]
 
 
 def test_audit_partial_failure_resumes_only_remaining_blocks(
@@ -628,10 +667,10 @@ def test_reaudit_reuses_cache_and_invalidates_changed_inputs(
         assert [item["index"] for item in provider.queries[0]["subtitles"]] == [1, 2]
 
 
-def test_reaudit_uses_saved_edits_and_preserves_verified_rows(
+def test_reaudit_uses_saved_edits_and_invalidates_changed_verification(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Replace all verdicts using current text while retaining verification marks.
+    """Replace audit answers using current text and clear changed approvals.
 
     Arguments:
         tmp_path: temporary project directory
@@ -641,17 +680,32 @@ def test_reaudit_uses_saved_edits_and_preserves_verified_rows(
     job = AuditingJob(audit)
     job.start("openai", "gpt-6-luna", "xhigh")
     _join(job)
-    for row in audit.rows():
+    for index in range(3):
+        row = audit.rows()[index]
         audit.save(
             row.key,
             reviewed=f"Edited {row.index}.",
             review_note="Human proofreading",
             notes="Previous audit concern",
             finding="review",
-            verified=row.index == 2,
+            verified=False,
+            version=row.version,
+        )
+        if index == 0:
+            assert audit.rows()[1].finding == AuditStatus.unaudited
+    for index in range(2):
+        row = audit.rows()[index]
+        audit.save(
+            row.key,
+            reviewed=row.reviewed,
+            review_note=row.review_note,
+            notes="Previous audit concern",
+            finding="review",
+            verified=index == 1,
             version=row.version,
         )
     verified = audit.rows()[1]
+    assert verified.verified and audit.rows()[0].verified
     paths = [audit.infile_path, audit.outfile_path, audit.json_path]
     before = [p.read_bytes() for p in paths if p is not None]
     provider.queries.clear()
@@ -667,7 +721,7 @@ def test_reaudit_uses_saved_edits_and_preserves_verified_rows(
     assert provider.queries[0]["subtitles"][0]["original"] == "Hello."
     assert provider.queries[1]["subtitles"][0]["proofread"] == "Edited 3."
     rows = audit.rows()
-    assert rows[1].verified == verified.verified
+    assert not rows[0].verified and not rows[1].verified
     assert rows[1].reviewed == verified.reviewed
     assert rows[1].review_note == verified.review_note
     assert rows[1].finding == AuditStatus.ok and rows[1].notes == ""
@@ -782,7 +836,7 @@ def test_rerun_confirmation(
     url = f"/{operation}"
     before = [
         p.read_bytes()
-        for p in (audit.infile_path, audit.outfile_path, audit.state_path)
+        for p in (audit.infile_path, audit.outfile_path, audit.audit_json_path)
     ]
     assert client.post(url, data=data).status_code == 200
     with client.session_transaction() as state:
@@ -794,7 +848,7 @@ def test_rerun_confirmation(
     start.assert_not_called()
     assert before == [
         p.read_bytes()
-        for p in (audit.infile_path, audit.outfile_path, audit.state_path)
+        for p in (audit.infile_path, audit.outfile_path, audit.audit_json_path)
     ]
     now[0] = 1004.0
     data["model"] = "model-two"

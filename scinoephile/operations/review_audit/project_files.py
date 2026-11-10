@@ -39,14 +39,14 @@ __all__ = [
 
 
 def backup_review_files(
-    outfile_path: Path, json_path: Path | None, state_path: Path
+    outfile_path: Path, json_path: Path, audit_json_path: Path
 ) -> Path:
     """Copy the existing proofreading output before a rerun.
 
     Arguments:
         outfile_path: current proofread SRT
-        json_path: optional native proofreading decisions
-        state_path: audit progress file
+        json_path: native proofreading decisions
+        audit_json_path: audit test-case file
     Returns:
         backup directory containing the previous project files
     """
@@ -55,10 +55,9 @@ def backup_review_files(
         prefix=f"{outfile_path.stem}.before-reproofread-",
     )
     copy2(outfile_path, backup_dir_path / "proofread.srt")
-    if json_path is not None and json_path.exists():
+    if json_path.exists():
         copy2(json_path, backup_dir_path / "review.json")
-    if state_path.exists():
-        copy2(state_path, backup_dir_path / "audit.json")
+    copy2(audit_json_path, backup_dir_path / "audit.json")
     return backup_dir_path
 
 
@@ -86,7 +85,7 @@ def lock_review_files(lock_path: Path) -> Generator[None]:
     The lock file stays in place so waiting sessions share the same file.
 
     Arguments:
-        lock_path: lock file beside the audit progress JSON
+        lock_path: lock file beside the audit test-case JSON
     Yields:
         control while holding the exclusive project lock
     Raises:
@@ -125,8 +124,8 @@ def render_review_files(
     rows: list[AuditRow],
     outfile_path: Path,
     *,
-    decisions: ProofreadingDecisions | None,
-    json_path: Path | None,
+    decisions: ProofreadingDecisions,
+    json_path: Path,
 ) -> dict[Path, str]:
     """Serialize subtitle output and native decisions before replacing files.
 
@@ -135,7 +134,7 @@ def render_review_files(
         rows: validated final subtitle rows
         outfile_path: proofread subtitle output
         decisions: candidate native JSON decisions
-        json_path: optional destination for the native decisions
+        json_path: destination for the native decisions
     Returns:
         candidate contents keyed by output path
     Raises:
@@ -153,42 +152,31 @@ def render_review_files(
             "Subtitle text cannot be saved unchanged in SRT. "
             "Remove leading or trailing whitespace and SRT control sequences."
         )
-    writes = {outfile_path: content}
-    if decisions is not None and json_path is not None:
-        writes[json_path] = decisions.serialize()
-    return writes
+    return {outfile_path: content, json_path: decisions.serialize()}
 
 
 def validate_project_paths(
     infile_path: Path,
     outfile_path: Path,
-    state_path: Path,
+    audit_json_path: Path,
     *,
     lock_path: Path,
-    json_path: Path | None,
-    report_path: Path | None,
+    json_path: Path,
 ):
-    """Require distinct subtitle, JSON, progress and optional report files.
+    """Require distinct subtitle, test-case JSON, and lock files.
 
     Arguments:
         infile_path: original subtitle path
         outfile_path: proofread subtitle path
-        state_path: audit progress JSON path
+        audit_json_path: audit test-case JSON path
         lock_path: project lock file path
-        json_path: optional native proofreading decisions path
-        report_path: optional read-only report path
+        json_path: native proofreading decisions path
     Raises:
         ValueError: if paths collide or the output is not an SRT
     """
-    paths = [infile_path, outfile_path, state_path, lock_path]
-    if json_path is not None:
-        paths.append(json_path)
-    if report_path is not None:
-        paths.append(report_path)
+    paths = [infile_path, outfile_path, json_path, audit_json_path, lock_path]
     if len(set(paths)) != len(paths):
-        raise ValueError(
-            "Input, output, JSON, progress, lock, and report paths must differ"
-        )
+        raise ValueError("Input, output, test-case JSON, and lock paths must differ")
     for index, left_path in enumerate(paths):
         for right_path in paths[index + 1 :]:
             if (
