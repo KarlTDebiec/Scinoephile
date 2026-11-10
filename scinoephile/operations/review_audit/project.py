@@ -7,7 +7,6 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import replace
 from hashlib import sha256
-from io import StringIO
 from pathlib import Path
 from threading import RLock
 
@@ -190,9 +189,8 @@ class ReviewAuditProject:
             file_hashes = self._file_hashes()
             if file_hashes[1:] != self._saved_file_hashes[1:]:
                 raise ValueError("Output or JSON changed outside this session")
+            source = Series.load(self.infile_path, encoding="utf-8-sig", format_="srt")
             content = self.infile_path.read_bytes()
-            text = StringIO(content.decode("utf-8-sig"), newline=None).getvalue()
-            source = Series.from_string(text, format_="srt")
             if [(s.start, s.end) for s in source] != [
                 (s.start, s.end) for s in self.original
             ]:
@@ -487,10 +485,11 @@ class ReviewAuditProject:
             ValueError: if the language or saved case files are invalid
         """
         self._source_content = self.infile_path.read_bytes()
-        text = StringIO(
-            self._source_content.decode("utf-8-sig"), newline=None
-        ).getvalue()
-        self.original = Series.from_string(text, format_="srt")
+        self.original = Series.load(
+            self.infile_path, encoding="utf-8-sig", format_="srt"
+        )
+        if self.input_changed:
+            raise ValueError("OCR input changed while it was being loaded")
         cases, saved_language = load_audit_cases(self.audit_json_path)
         if (
             language is not None
