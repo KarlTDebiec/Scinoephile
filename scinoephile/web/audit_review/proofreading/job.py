@@ -93,7 +93,7 @@ class ProofreadingJob(BackgroundJob[state.ProofreadingJobState]):
             with TemporaryDirectory(prefix="scinoephile-review-") as directory:
                 decisions_path = Path(directory) / "review.json"
                 existing = ProofreadingDecisions(
-                    source, self.audit.language, self.audit.json_path
+                    source, self.audit.language, self.audit.proofreading_json_path
                 )
                 try:
                     existing.normalize_srt_revisions()

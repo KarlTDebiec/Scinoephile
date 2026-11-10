@@ -84,14 +84,13 @@ class _Provider(LLMProvider):
 
 
 def _setup(
-    tmp_path: Path, monkeypatch: MonkeyPatch, *, with_json: bool = True
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ) -> tuple[ReviewAuditProject, _Provider, Mock]:
     """Create fresh subtitles and an offline provider for a real background run.
 
     Arguments:
         tmp_path: temporary project directory
         monkeypatch: patched provider factory and shared example loading
-        with_json: whether a destination JSON is supplied
     Returns:
         session, offline provider, and recorded provider factory
     """
@@ -101,13 +100,11 @@ def _setup(
         "2\n00:00:10,000 --> 00:00:11,000\nSame.\n",
         encoding="utf-8",
     )
-    json_path = None
-    if with_json:
-        json_path = tmp_path / "review.json"
     audit = ReviewAuditProject(
         infile_path,
         tmp_path / "reviewed.srt",
-        json_path=json_path,
+        proofreading_json_path=tmp_path / "proofreading.json",
+        audit_json_path=tmp_path / "audit.json",
         language=Language.eng,
     )
     provider = _Provider()
@@ -140,18 +137,16 @@ def _join(job: ProofreadingJob):
     assert not job._thread.is_alive()
 
 
-@mark.parametrize("with_json", [False, True])
 def test_background_run_publishes_output_and_resumes_notes(
-    tmp_path: Path, monkeypatch: MonkeyPatch, with_json: bool
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Publish complete SRT/native decisions, including notes without a JSON path.
+    """Publish the complete SRT and persist proofreading decisions with notes.
 
     Arguments:
         tmp_path: temporary project directory
         monkeypatch: offline dependency patches
-        with_json: whether native JSON output is configured
     """
-    audit, provider, factory = _setup(tmp_path, monkeypatch, with_json=with_json)
+    audit, provider, factory = _setup(tmp_path, monkeypatch)
     original = audit.infile_path.read_bytes()
     job = ProofreadingJob(audit)
     job.start("openai", "gpt-6-luna", "xhigh")
@@ -170,7 +165,8 @@ def test_background_run_publishes_output_and_resumes_notes(
     resumed = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     assert resumed.rows()[0].review_note == "Corrected wording."
@@ -211,7 +207,8 @@ def test_proofreading_normalizes_revisions_before_publication(
     restored = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     assert restored.rows()[0].reviewed == expected
@@ -250,7 +247,6 @@ def test_unwritable_imported_decisions_are_reported_before_querying(
         monkeypatch: offline dependency patches
     """
     audit, provider, _ = _setup(tmp_path, monkeypatch)
-    assert audit.json_path is not None
     native_decisions = json.dumps(
         [
             {
@@ -263,21 +259,20 @@ def test_unwritable_imported_decisions_are_reported_before_querying(
             }
         ]
     )
-    audit.json_path.write_text(native_decisions, encoding="utf-8")
+    audit.proofreading_json_path.write_text(native_decisions, encoding="utf-8")
     with raises(
         ScinoephileError, match="Subtitle 1 text cannot be saved unchanged in SRT"
     ):
         ReviewAuditProject(
             audit.infile_path,
             audit.outfile_path,
-            json_path=audit.json_path,
+            proofreading_json_path=audit.proofreading_json_path,
+            audit_json_path=audit.audit_json_path,
             language=Language.eng,
         )
     assert provider.calls == 0
     assert not audit.outfile_path.exists()
-    assert (
-        audit.json_path is not None and audit.json_path.read_text() == native_decisions
-    )
+    assert audit.proofreading_json_path.read_text() == native_decisions
 
 
 def test_running_job_rejects_duplicates_and_edits(
@@ -322,12 +317,12 @@ def test_failure_and_retry_keep_absent_output(tmp_path: Path, monkeypatch: Monke
         monkeypatch: offline dependency patches
     """
     audit, provider, _ = _setup(tmp_path, monkeypatch)
-    assert audit.json_path is not None
-    audit.json_path.write_text("[]\n", encoding="utf-8")
+    audit.proofreading_json_path.write_text("[]\n", encoding="utf-8")
     audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     provider.fail = True
@@ -336,7 +331,7 @@ def test_failure_and_retry_keep_absent_output(tmp_path: Path, monkeypatch: Monke
     _join(job)
     assert job.snapshot().status == "error"
     assert not audit.outfile_path.exists()
-    assert audit.json_path is not None and audit.json_path.read_text() == "[]\n"
+    assert audit.proofreading_json_path.read_text() == "[]\n"
     provider.fail = False
     job.start("openai", "", "")
     _join(job)
@@ -386,7 +381,7 @@ def test_external_output_is_never_replaced(tmp_path: Path, monkeypatch: MonkeyPa
     _join(job)
     assert job.snapshot().status == "error"
     assert audit.outfile_path.read_text() == "External work"
-    assert json.loads(audit.json_path.read_bytes()) == []
+    assert json.loads(audit.proofreading_json_path.read_bytes()) == []
 
 
 def test_card_http_csrf_progress_completion_and_validation(
@@ -435,18 +430,16 @@ def test_card_http_csrf_progress_completion_and_validation(
     )
 
 
-@mark.parametrize("with_json", [False, True])
 def test_reproofread_reloads_one_block_and_preserves_progress(
-    tmp_path: Path, monkeypatch: MonkeyPatch, with_json: bool
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Reload OCR, reuse verified proofreading, and retain matching audit cases.
 
     Arguments:
         tmp_path: temporary project directory
         monkeypatch: offline dependency patches
-        with_json: whether to override the default proofreading JSON path
     """
-    audit, provider, _ = _setup(tmp_path, monkeypatch, with_json=with_json)
+    audit, provider, _ = _setup(tmp_path, monkeypatch)
     job = ProofreadingJob(audit)
     job.start("openai", "gpt-6-luna", "xhigh")
     _join(job)
@@ -472,9 +465,7 @@ def test_reproofread_reloads_one_block_and_preserves_progress(
     )
     assert audit.input_changed
     before = {
-        p: p.read_bytes()
-        for p in [audit.outfile_path, audit.json_path]
-        if p is not None
+        p: p.read_bytes() for p in [audit.outfile_path, audit.proofreading_json_path]
     }
     provider.fail = True
     job.start("openai", "gpt-6-luna", "xhigh", rerun=True)
@@ -510,7 +501,8 @@ def test_reproofread_reloads_one_block_and_preserves_progress(
     reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     assert reopened.rows() == [replace(row, version=0) for row in rows]
@@ -543,7 +535,8 @@ def test_reproofread_restart_reloads_source_and_detects_later_changes(
         ReviewAuditProject(
             audit.infile_path,
             audit.outfile_path,
-            json_path=audit.json_path,
+            proofreading_json_path=audit.proofreading_json_path,
+            audit_json_path=audit.audit_json_path,
             language=Language.eng,
         )
     assert audit.outfile_path.read_bytes() == previous_output
@@ -551,7 +544,8 @@ def test_reproofread_restart_reloads_source_and_detects_later_changes(
     reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     assert not reopened.input_changed

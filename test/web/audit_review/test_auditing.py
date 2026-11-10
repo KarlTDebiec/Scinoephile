@@ -114,10 +114,14 @@ def _setup(
     outfile_path = tmp_path / "output.srt"
     infile_path.write_text(source, encoding="utf-8")
     outfile_path.write_text(source, encoding="utf-8")
-    json_path = tmp_path / "review.json"
-    json_path.write_text("[]\n", encoding="utf-8")
+    proofreading_json_path = tmp_path / "review.json"
+    proofreading_json_path.write_text("[]\n", encoding="utf-8")
     audit = ReviewAuditProject(
-        infile_path, outfile_path, json_path=json_path, language=Language.eng
+        infile_path,
+        outfile_path,
+        proofreading_json_path=proofreading_json_path,
+        audit_json_path=tmp_path / "audit.json",
+        language=Language.eng,
     )
     provider = _Provider()
 
@@ -169,7 +173,8 @@ def test_audit_commit_serializes_editor_save(tmp_path: Path, monkeypatch: Monkey
     editor = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     block = audit.begin_auditing()[0]
@@ -225,7 +230,10 @@ def test_audit_commit_serializes_editor_save(tmp_path: Path, monkeypatch: Monkey
             save.result(timeout=5)
     audit.end_auditing()
     reopened = ReviewAuditProject(
-        audit.infile_path, audit.outfile_path, json_path=audit.json_path
+        audit.infile_path,
+        audit.outfile_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
     )
     assert all(item.finding == AuditStatus.ok for item in reopened.rows()[: len(block)])
     assert reopened.rows()[-1] == row
@@ -254,12 +262,19 @@ def test_audit_cases_are_bound_to_their_language(
     before = audit.audit_json_path.read_bytes()
     assert json.loads(before)[0]["query"]["language"] == "eng"
     reopened = ReviewAuditProject(
-        audit.infile_path, audit.outfile_path, json_path=audit.json_path
+        audit.infile_path,
+        audit.outfile_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
     )
     assert reopened.language == Language.eng and reopened.rows()[-1].verified
     with raises(ScinoephileError, match="Audit cases use language eng"):
         ReviewAuditProject(
-            audit.infile_path, audit.outfile_path, language=Language.yue_hant
+            audit.infile_path,
+            audit.outfile_path,
+            proofreading_json_path=audit.proofreading_json_path,
+            audit_json_path=audit.audit_json_path,
+            language=Language.yue_hant,
         )
     assert audit.audit_json_path.read_bytes() == before
 
@@ -277,15 +292,16 @@ def test_cli_audit_resumes_in_the_browser(tmp_path: Path, monkeypatch: MonkeyPat
     )
     context = tmp_path / "context.txt"
     context.write_text("Check names.", encoding="utf-8")
-    assert audit.json_path is not None
     arguments = (
         f'audit review run --original "{audit.infile_path}" '
-        f'--reviewed "{audit.outfile_path}" --json "{audit.json_path}" '
+        f'--reviewed "{audit.outfile_path}" '
+        f'--proofreading-json "{audit.proofreading_json_path}" '
+        f'--audit-json "{audit.audit_json_path}" '
         f'--cache-dir "{tmp_path / "cache"}" '
         f'--llm-additional-context-file "{context}" --llm-provider openai '
         "--language eng --llm-model gpt-6-luna --llm-reasoning-effort xhigh"
     )
-    files = (audit.infile_path, audit.outfile_path, audit.json_path)
+    files = (audit.infile_path, audit.outfile_path, audit.proofreading_json_path)
     before = [path.read_bytes() for path in files]
     run_cli_with_args(ScinoephileCli, f"{arguments} --first-block 2 --last-block 2")
     assert [subtitle["index"] for subtitle in provider.queries[0]["subtitles"]] == [3]
@@ -304,7 +320,8 @@ def test_cli_audit_resumes_in_the_browser(tmp_path: Path, monkeypatch: MonkeyPat
     reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     assert [row.finding for row in reopened.rows()] == [
@@ -338,8 +355,8 @@ def test_audit_persists_findings_preserving_text_and_human_state(
     )
     draft = json.loads(audit.audit_json_path.read_bytes())[0]
     assert draft["draft"] and draft["answer"]["findings"][0]["index"] == human.index
-    paths = [audit.infile_path, audit.outfile_path, audit.json_path]
-    before = [p.read_bytes() for p in paths if p is not None]
+    paths = [audit.infile_path, audit.outfile_path, audit.proofreading_json_path]
+    before = [p.read_bytes() for p in paths]
     job = AuditingJob(audit)
     job.start("openai", "gpt-6-luna", "xhigh")
     _join(job)
@@ -357,11 +374,12 @@ def test_audit_persists_findings_preserving_text_and_human_state(
     ]
     assert audit.rows()[1].notes == "Human finding"
     assert not audit.rows()[0].verified and not audit.rows()[2].verified
-    assert before == [p.read_bytes() for p in paths if p is not None]
+    assert before == [p.read_bytes() for p in paths]
     restored = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     assert restored.rows() == [replace(row, version=0) for row in audit.rows()]
@@ -391,11 +409,11 @@ def test_audit_persists_findings_preserving_text_and_human_state(
     assert not any(item.verified for item in restored.rows())
     assert restored.audit_json_path.read_bytes() == audit_content
 
-    proofread_content = restored.json_path.read_bytes()
+    proofread_content = restored.proofreading_json_path.read_bytes()
     form.update(version=restored.rows()[0].version, verified="on")
     assert client.post(f"/rows/{row.key}", data=form).status_code == 303
     assert [item.verified for item in restored.rows()] == [True, True, False]
-    assert restored.json_path.read_bytes() == proofread_content
+    assert restored.proofreading_json_path.read_bytes() == proofread_content
     assert json.loads(restored.audit_json_path.read_bytes())[0]["verified"]
 
 
@@ -627,7 +645,8 @@ def test_reaudit_reuses_cache_and_invalidates_changed_inputs(
     audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     job = AuditingJob(audit)
@@ -706,8 +725,8 @@ def test_reaudit_uses_saved_edits_and_invalidates_changed_verification(
         )
     verified = audit.rows()[1]
     assert verified.verified and audit.rows()[0].verified
-    paths = [audit.infile_path, audit.outfile_path, audit.json_path]
-    before = [p.read_bytes() for p in paths if p is not None]
+    paths = [audit.infile_path, audit.outfile_path, audit.proofreading_json_path]
+    before = [p.read_bytes() for p in paths]
     provider.queries.clear()
     job.start("openai", "gpt-6-luna", "xhigh", rerun=True)
     _join(job)
@@ -729,7 +748,7 @@ def test_reaudit_uses_saved_edits_and_invalidates_changed_verification(
     assert rows[0].notes == "Check this correction against context."
     assert rows[2].finding == AuditStatus.ok and rows[2].notes == ""
     assert rows[2].review_note == "Human proofreading"
-    assert before == [p.read_bytes() for p in paths if p is not None]
+    assert before == [p.read_bytes() for p in paths]
 
 
 def test_reaudit_http_is_whole_file_and_keeps_failed_blocks(

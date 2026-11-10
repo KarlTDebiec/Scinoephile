@@ -38,12 +38,9 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "只有在浏览器中启动校对或审核时才会请求语言模型。"
         ),
         "original subtitle SRT file (read-only)": "原始字幕 SRT 文件（只读）",
-        (
-            "proofread SRT output; audit cases are saved in <output-stem>.audit.json"
-        ): "校对后的 SRT 输出；审核案例保存在 <output-stem>.audit.json",
-        (
-            "proofreading test-case JSON (default: <output-stem>.review.json)"
-        ): "校对测试案例 JSON（默认：<output-stem>.review.json）",
+        "proofread SRT output": "校对后的 SRT 输出",
+        "proofreading JSON file (created if missing)": "校对 JSON 文件（不存在时创建）",
+        "audit JSON file (created if missing)": "审核 JSON 文件（不存在时创建）",
         "subtitle language (default: auto-detect)": "字幕语言（默认：从输入检测）",
         "display title (default: input filename stem)": "显示标题（默认：输入文件名）",
         "audit web UI must use a loopback host": "审核网页界面必须使用本机回环地址",
@@ -59,12 +56,9 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "只有在瀏覽器中啟動校對或稽核時才會請求語言模型。"
         ),
         "original subtitle SRT file (read-only)": "原始字幕 SRT 檔（唯讀）",
-        (
-            "proofread SRT output; audit cases are saved in <output-stem>.audit.json"
-        ): "校對後的 SRT 輸出；稽核案例儲存在 <output-stem>.audit.json",
-        (
-            "proofreading test-case JSON (default: <output-stem>.review.json)"
-        ): "校對測試案例 JSON（預設：<output-stem>.review.json）",
+        "proofread SRT output": "校對後的 SRT 輸出",
+        "proofreading JSON file (created if missing)": "校對 JSON 檔（不存在時建立）",
+        "audit JSON file (created if missing)": "稽核 JSON 檔（不存在時建立）",
         "subtitle language (default: auto-detect)": "字幕語言（預設：從輸入偵測）",
         "display title (default: input filename stem)": "顯示標題（預設：輸入檔名）",
         "audit web UI must use a loopback host": "稽核網頁介面必須使用本機回環位址",
@@ -111,10 +105,18 @@ class AuditReviewServeCli(ScinoephileCliBase):
             help="original subtitle SRT file (read-only)",
         )
         groups["input arguments"].add_argument(
-            "--json",
-            dest="json_path",
-            type=output_file_arg(exist_ok=True),
-            help=("proofreading test-case JSON (default: <output-stem>.review.json)"),
+            "--proofreading-json",
+            dest="proofreading_json_path",
+            required=True,
+            type=output_file_arg(exist_ok=True, create=False),
+            help="proofreading JSON file (created if missing)",
+        )
+        groups["input arguments"].add_argument(
+            "--audit-json",
+            dest="audit_json_path",
+            required=True,
+            type=output_file_arg(exist_ok=True, create=False),
+            help="audit JSON file (created if missing)",
         )
         groups["input arguments"].add_argument(
             "--language",
@@ -135,11 +137,8 @@ class AuditReviewServeCli(ScinoephileCliBase):
             "--outfile",
             dest="outfile_path",
             required=True,
-            type=output_file_arg(exist_ok=True),
-            help=(
-                "proofread SRT output; audit cases are saved in "
-                "<output-stem>.audit.json"
-            ),
+            type=output_file_arg(exist_ok=True, create=False),
+            help="proofread SRT output",
         )
 
     @classmethod
@@ -157,9 +156,10 @@ class AuditReviewServeCli(ScinoephileCliBase):
         *,
         infile_path: Path,
         outfile_path: Path,
+        proofreading_json_path: Path,
+        audit_json_path: Path,
         web_args: WebServerArguments,
         title: str | None = None,
-        json_path: Path | None = None,
         language: Language | None = None,
         _parser: ArgumentParser | None = None,
     ):
@@ -168,9 +168,10 @@ class AuditReviewServeCli(ScinoephileCliBase):
         Arguments:
             infile_path: immutable source subtitles
             outfile_path: edited subtitle output
+            proofreading_json_path: proofreading test-case file
+            audit_json_path: audit test-case file
             web_args: loopback server address and port
             title: display title override
-            json_path: optional override for the native proofreading JSON
             language: optional explicit subtitle language
             _parser: parser for user-facing error messages
         """
@@ -180,7 +181,11 @@ class AuditReviewServeCli(ScinoephileCliBase):
         try:
             serve_audit(
                 ReviewAuditProject(
-                    infile_path, outfile_path, json_path=json_path, language=language
+                    infile_path,
+                    outfile_path,
+                    proofreading_json_path=proofreading_json_path,
+                    audit_json_path=audit_json_path,
+                    language=language,
                 ),
                 title=title,
                 host=web_args.host,

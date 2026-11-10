@@ -46,13 +46,9 @@ AUDIT_REVIEW_RUN_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "audit subtitle proofreading with an LLM": "使用大语言模型审核字幕校对",
         "original subtitle SRT file before review": "校对前的原始字幕 SRT 文件",
-        (
-            "proofread SRT output; audit cases are saved beside it as "
-            "<reviewed-stem>.audit.json"
-        ): ("校对后的 SRT 输出；审核案例保存在同一目录的 <reviewed-stem>.audit.json"),
-        "proofreading test-case JSON (default: <reviewed-stem>.review.json)": (
-            "校对测试案例 JSON（默认：<reviewed-stem>.review.json）"
-        ),
+        "proofread SRT output": "校对后的 SRT 输出",
+        "proofreading JSON file (created if missing)": "校对 JSON 文件（不存在时创建）",
+        "audit JSON file (created if missing)": "审核 JSON 文件（不存在时创建）",
         "subtitle language (default: detected automatically)": (
             "字幕语言（默认：自动检测）"
         ),
@@ -63,13 +59,9 @@ AUDIT_REVIEW_RUN_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hant": {
         "audit subtitle proofreading with an LLM": "使用大型語言模型稽核字幕校對",
         "original subtitle SRT file before review": "校對前的原始字幕 SRT 檔",
-        (
-            "proofread SRT output; audit cases are saved beside it as "
-            "<reviewed-stem>.audit.json"
-        ): ("校對後的 SRT 輸出；稽核案例儲存在同一目錄的 <reviewed-stem>.audit.json"),
-        "proofreading test-case JSON (default: <reviewed-stem>.review.json)": (
-            "校對測試案例 JSON（預設：<reviewed-stem>.review.json）"
-        ),
+        "proofread SRT output": "校對後的 SRT 輸出",
+        "proofreading JSON file (created if missing)": "校對 JSON 檔（不存在時建立）",
+        "audit JSON file (created if missing)": "稽核 JSON 檔（不存在時建立）",
         "subtitle language (default: detected automatically)": (
             "字幕語言（預設：自動偵測）"
         ),
@@ -123,16 +115,21 @@ class AuditReviewRunCli(ScinoephileCliBase):
             dest="reviewed_path",
             required=True,
             type=output_file_arg(exist_ok=True, create=False),
-            help=(
-                "proofread SRT output; audit cases are saved beside it as "
-                "<reviewed-stem>.audit.json"
-            ),
+            help="proofread SRT output",
         )
         groups["input arguments"].add_argument(
-            "--json",
-            dest="json_path",
+            "--proofreading-json",
+            dest="proofreading_json_path",
+            required=True,
             type=output_file_arg(exist_ok=True, create=False),
-            help="proofreading test-case JSON (default: <reviewed-stem>.review.json)",
+            help="proofreading JSON file (created if missing)",
+        )
+        groups["input arguments"].add_argument(
+            "--audit-json",
+            dest="audit_json_path",
+            required=True,
+            type=output_file_arg(exist_ok=True, create=False),
+            help="audit JSON file (created if missing)",
         )
 
         # Operation arguments
@@ -173,7 +170,8 @@ class AuditReviewRunCli(ScinoephileCliBase):
         *,
         original_path: Path,
         reviewed_path: Path,
-        json_path: Path | None,
+        proofreading_json_path: Path,
+        audit_json_path: Path,
         language: Language | None,
         first_block: int | None,
         last_block: int | None,
@@ -187,7 +185,8 @@ class AuditReviewRunCli(ScinoephileCliBase):
         Arguments:
             original_path: original SRT file
             reviewed_path: proofread SRT file
-            json_path: optional override for the native proofreading JSON
+            proofreading_json_path: proofreading test-case file
+            audit_json_path: audit test-case file
             language: optional explicit subtitle language
             first_block: first source block to audit
             last_block: last source block to audit
@@ -202,7 +201,11 @@ class AuditReviewRunCli(ScinoephileCliBase):
         )
         try:
             audit = ReviewAuditProject(
-                original_path, reviewed_path, json_path=json_path, language=language
+                original_path,
+                reviewed_path,
+                proofreading_json_path=proofreading_json_path,
+                audit_json_path=audit_json_path,
+                language=language,
             )
             start_at_idx, stop_at_idx = get_block_range_indexes(
                 parser, first_block, last_block, audit.block_count

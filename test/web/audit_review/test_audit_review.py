@@ -99,8 +99,7 @@ def test_edit_updates_native_answers_and_survives_restart(tmp_path: Path):
     """
     audit = _make_project(tmp_path)
     source_bytes = audit.infile_path.read_bytes()
-    assert audit.json_path is not None
-    original_json = json.loads(audit.json_path.read_text())
+    original_json = json.loads(audit.proofreading_json_path.read_text())
     row = audit.rows()[0]
     audit.save(
         row.key,
@@ -114,7 +113,8 @@ def test_edit_updates_native_answers_and_survives_restart(tmp_path: Path):
     restored = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     assert restored.rows()[0].reviewed == "Hello there."
@@ -125,7 +125,7 @@ def test_edit_updates_native_answers_and_survives_restart(tmp_path: Path):
         get_audit_page(restored.rows(), AuditFilters(audit="ok-unverified")).matching
         == 1
     )
-    saved_json = json.loads(audit.json_path.read_text())
+    saved_json = json.loads(audit.proofreading_json_path.read_text())
     assert [c["query"] for c in saved_json] == [c["query"] for c in original_json]
     assert saved_json[0]["answer"]["revisions"][0]["text"] == "Hello there."
     assert not saved_json[0].get("verified", False)
@@ -146,7 +146,7 @@ def test_edit_updates_native_answers_and_survives_restart(tmp_path: Path):
             version=0,
         )
     cases = load_test_cases_from_json(
-        audit.json_path, ReviewManager, DEFAULT_PROMPTS[Language.eng]
+        audit.proofreading_json_path, ReviewManager, DEFAULT_PROMPTS[Language.eng]
     )
     assert cases[0].answer is not None
     assert cases[0].answer.revisions[0].text == "Hello there."
@@ -169,8 +169,9 @@ def test_revert_removes_sparse_revision(tmp_path: Path):
         verified=True,
         version=0,
     )
-    assert audit.json_path is not None
-    assert json.loads(audit.json_path.read_text())[0]["answer"] == {"revisions": []}
+    assert json.loads(audit.proofreading_json_path.read_text())[0]["answer"] == {
+        "revisions": []
+    }
     assert audit.rows()[0].verified and not audit.rows()[0].changed
 
 
@@ -181,8 +182,9 @@ def test_empty_case_files_and_rebuildable_srt(tmp_path: Path):
         tmp_path: temporary project directory
     """
     audit = _make_project(tmp_path, with_json=False)
-    assert audit.json_path == audit.outfile_path.with_suffix(".review.json")
-    assert json.loads(audit.json_path.read_bytes()) == []
+    assert audit.proofreading_json_path == tmp_path / "proofreading.json"
+    assert audit.audit_json_path == tmp_path / "audit.json"
+    assert json.loads(audit.proofreading_json_path.read_bytes()) == []
     assert json.loads(audit.audit_json_path.read_bytes()) == []
     assert not audit.outfile_path.exists()
 
@@ -200,13 +202,17 @@ def test_empty_case_files_and_rebuildable_srt(tmp_path: Path):
     output = audit.outfile_path.read_bytes()
     audit.outfile_path.unlink()
     reopened = ReviewAuditProject(
-        audit.infile_path, audit.outfile_path, language=Language.eng
+        audit.infile_path,
+        audit.outfile_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
+        language=Language.eng,
     )
     assert reopened.outfile_path.read_bytes() == output
     assert reopened.rows()[0].reviewed == "Edited manually."
     assert all(row.proofreading_verified for row in reopened.rows())
     assert not any(row.verified for row in reopened.rows())
-    assert json.loads(audit.json_path.read_bytes())[0]["verified"]
+    assert json.loads(audit.proofreading_json_path.read_bytes())[0]["verified"]
     assert json.loads(audit.audit_json_path.read_bytes()) == []
 
 
@@ -220,9 +226,15 @@ def test_rejects_conflicting_srt_without_proofreading_cases(tmp_path: Path):
     output = audit.infile_path.read_text().replace("Hello.", "Existing edit.")
     audit.outfile_path.write_text(output, encoding="utf-8")
     with raises(ScinoephileError, match="disagree with the proofreading JSON"):
-        ReviewAuditProject(audit.infile_path, audit.outfile_path, language=Language.eng)
+        ReviewAuditProject(
+            audit.infile_path,
+            audit.outfile_path,
+            proofreading_json_path=audit.proofreading_json_path,
+            audit_json_path=audit.audit_json_path,
+            language=Language.eng,
+        )
     assert audit.outfile_path.read_text(encoding="utf-8") == output
-    assert json.loads(audit.json_path.read_bytes()) == []
+    assert json.loads(audit.proofreading_json_path.read_bytes()) == []
 
 
 def test_rejects_aliases_bad_output_and_external_edits(tmp_path: Path):
@@ -233,11 +245,29 @@ def test_rejects_aliases_bad_output_and_external_edits(tmp_path: Path):
     """
     audit = _make_project(tmp_path)
     with raises(ScinoephileError, match="differ"):
-        ReviewAuditProject(audit.infile_path, audit.infile_path)
+        ReviewAuditProject(
+            audit.infile_path,
+            audit.infile_path,
+            proofreading_json_path=audit.proofreading_json_path,
+            audit_json_path=audit.audit_json_path,
+        )
+    with raises(ScinoephileError, match="differ"):
+        ReviewAuditProject(
+            audit.infile_path,
+            audit.outfile_path,
+            proofreading_json_path=audit.proofreading_json_path,
+            audit_json_path=audit.proofreading_json_path,
+        )
     with raises(ScinoephileError, match="SRT"):
-        ReviewAuditProject(audit.infile_path, tmp_path / "output.txt")
-    assert audit.json_path is not None
-    audit.json_path.write_text(audit.json_path.read_text() + " ")
+        ReviewAuditProject(
+            audit.infile_path,
+            tmp_path / "output.txt",
+            proofreading_json_path=audit.proofreading_json_path,
+            audit_json_path=audit.audit_json_path,
+        )
+    audit.proofreading_json_path.write_text(
+        audit.proofreading_json_path.read_text() + " "
+    )
     row = audit.rows()[0]
     with raises(ValueError, match="outside this session"):
         audit.save(
@@ -263,8 +293,7 @@ def test_shared_json_decisions_are_explicit_and_update_linked_rows(tmp_path: Pat
     original = audit.infile_path.read_text().replace("Same.", "Hello.")
     audit.infile_path.write_text(original)
     audit.outfile_path.unlink()
-    assert audit.json_path is not None
-    audit.json_path.write_text(
+    audit.proofreading_json_path.write_text(
         json.dumps(
             [
                 {
@@ -279,7 +308,8 @@ def test_shared_json_decisions_are_explicit_and_update_linked_rows(tmp_path: Pat
     audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     audit = _materialize_output(audit)
@@ -312,8 +342,7 @@ def test_failed_file_save_does_not_commit_text_or_progress(tmp_path: Path):
         tmp_path: temporary project directory
     """
     audit = _make_project(tmp_path)
-    assert audit.json_path is not None
-    before = audit.json_path.read_bytes()
+    before = audit.proofreading_json_path.read_bytes()
     before_output = audit.outfile_path.read_bytes()
     row = audit.rows()[0]
     with patch(
@@ -330,7 +359,7 @@ def test_failed_file_save_does_not_commit_text_or_progress(tmp_path: Path):
                 verified=True,
                 version=0,
             )
-    assert audit.json_path.read_bytes() == before
+    assert audit.proofreading_json_path.read_bytes() == before
     assert audit.outfile_path.read_bytes() == before_output
     assert audit.rows()[0] == row
 
@@ -428,7 +457,12 @@ def test_review_session_wraps_path_resolution_errors(tmp_path: Path):
         patch.object(Path, "resolve", side_effect=error),
         raises(ScinoephileError, match="Unable to open review editor") as exc,
     ):
-        ReviewAuditProject(tmp_path / "source.srt", tmp_path / "edited.srt")
+        ReviewAuditProject(
+            tmp_path / "source.srt",
+            tmp_path / "edited.srt",
+            proofreading_json_path=tmp_path / "proofreading.json",
+            audit_json_path=tmp_path / "audit.json",
+        )
 
     assert exc.value.__cause__ is error
 
@@ -450,10 +484,10 @@ def test_review_serve_wraps_server_io_errors(tmp_path: Path):
     assert exc.value.__cause__ is error
 
 
-def test_review_serve_cli_accepts_subtitles_and_optional_json(
+def test_review_serve_cli_requires_both_case_files(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Dispatch direct subtitle paths through the nested command tree.
+    """Open the two specified case files through the nested command tree.
 
     Arguments:
         tmp_path: temporary project directory
@@ -477,7 +511,8 @@ def test_review_serve_cli_accepts_subtitles_and_optional_json(
             (
                 loaded.infile_path,
                 loaded.outfile_path,
-                loaded.json_path,
+                loaded.proofreading_json_path,
+                loaded.audit_json_path,
                 title,
                 host,
                 port,
@@ -491,22 +526,29 @@ def test_review_serve_cli_accepts_subtitles_and_optional_json(
         f'audit review -v serve --infile "{audit.infile_path}" '
         f'--outfile "{audit.outfile_path}" --language eng --port 5038'
     )
-    run_cli_with_args(ScinoephileCli, arguments)
-    assert calls[-1][2] == audit.json_path
+    proofreading_arg = f'--proofreading-json "{audit.proofreading_json_path}"'
+    audit_arg = f'--audit-json "{audit.audit_json_path}"'
+    for json_arg in (proofreading_arg, audit_arg):
+        with raises(SystemExit) as exc:
+            run_cli_with_args(ScinoephileCli, f"{arguments} {json_arg}")
+        assert exc.value.code == 2
+    assert not calls
     run_cli_with_args(
-        ScinoephileCli, f'{arguments} --json "{audit.json_path}" --title "CLI movie"'
+        ScinoephileCli,
+        f'{arguments} {proofreading_arg} {audit_arg} --title "CLI movie"',
     )
     assert calls[-1] == (
         audit.infile_path,
         audit.outfile_path,
-        audit.json_path,
+        audit.proofreading_json_path,
+        audit.audit_json_path,
         "CLI movie",
         "127.0.0.1",
         5038,
     )
 
 
-@mark.parametrize("failed_path", ["json_path", "audit_json_path"])
+@mark.parametrize("failed_path", ["proofreading_json_path", "audit_json_path"])
 def test_partial_write_failure_restores_existing_files(
     tmp_path: Path, failed_path: str
 ):
@@ -527,9 +569,8 @@ def test_partial_write_failure_restores_existing_files(
         verified=True,
         version=0,
     )
-    assert audit.json_path is not None
     before_output = audit.outfile_path.read_bytes()
-    before_json = audit.json_path.read_bytes()
+    before_json = audit.proofreading_json_path.read_bytes()
     before_progress = audit.audit_json_path.read_bytes()
 
     @contextmanager
@@ -563,7 +604,7 @@ def test_partial_write_failure_restores_existing_files(
                 version=1,
             )
     assert audit.outfile_path.read_bytes() == before_output
-    assert audit.json_path.read_bytes() == before_json
+    assert audit.proofreading_json_path.read_bytes() == before_json
     assert audit.audit_json_path.read_bytes() == before_progress
     assert audit.rows()[0].reviewed == "First saved text."
     assert audit.rows()[0].version == 1
@@ -576,19 +617,19 @@ def test_historical_queries_and_multiline_edits_round_trip(tmp_path: Path):
         tmp_path: temporary project directory
     """
     audit = _make_project(tmp_path)
-    assert audit.json_path is not None
-    latest = json.loads(audit.json_path.read_text())[0]
+    latest = json.loads(audit.proofreading_json_path.read_text())[0]
     historical = dict(
         latest,
         answer={
             "revisions": [{"index": 1, "text": "Historical.", "note": "Old answer"}]
         },
     )
-    audit.json_path.write_text(json.dumps([historical, latest]))
+    audit.proofreading_json_path.write_text(json.dumps([historical, latest]))
     audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     row = audit.rows()[0]
@@ -601,15 +642,15 @@ def test_historical_queries_and_multiline_edits_round_trip(tmp_path: Path):
         verified=True,
         version=0,
     )
-    assert audit.json_path is not None
-    data = json.loads(audit.json_path.read_text())
+    data = json.loads(audit.proofreading_json_path.read_text())
     assert data[0]["query"] == historical["query"]
     assert data[0]["answer"] == historical["answer"]
     assert data[1]["query"] == latest["query"]
     restored = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     assert restored.rows()[0].reviewed == "第一行。\nSecond line."
@@ -625,8 +666,7 @@ def test_rejects_edits_that_cannot_round_trip_in_srt(tmp_path: Path, reviewed: s
         reviewed: text that the SRT serializer would change
     """
     audit = _materialize_output(_make_project(tmp_path))
-    assert audit.json_path is not None
-    paths = [audit.outfile_path, audit.json_path]
+    paths = [audit.outfile_path, audit.proofreading_json_path]
     before = [path.read_bytes() for path in paths]
     row = audit.rows()[0]
     with raises(ValueError, match="cannot be saved unchanged in SRT"):
@@ -643,7 +683,8 @@ def test_rejects_edits_that_cannot_round_trip_in_srt(tmp_path: Path, reviewed: s
     restored = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=audit.language,
     )
     assert restored.rows()[0].reviewed == row.reviewed
@@ -658,7 +699,7 @@ def test_saved_cases_use_source_blocks_and_keep_filtered_context(tmp_path: Path)
     """
     audit = _make_project(tmp_path, with_json=False)
     assert len(audit.original.blocks) == 1
-    audit.json_path.write_text(
+    audit.proofreading_json_path.write_text(
         json.dumps(
             [
                 {
@@ -684,7 +725,8 @@ def test_saved_cases_use_source_blocks_and_keep_filtered_context(tmp_path: Path)
     audit = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     page = get_audit_page(audit.rows(), AuditFilters())
@@ -745,10 +787,10 @@ def _make_project(dir_path: Path, *, with_json: bool = True) -> ReviewAuditProje
         f"00:00:{second_start + 1:02d},000\nSame.\n",
         encoding="utf-8",
     )
-    json_path = None
+    proofreading_json_path = dir_path / "proofreading.json"
+    audit_json_path = dir_path / "audit.json"
     if with_json:
-        json_path = dir_path / "edited.review.json"
-        json_path.write_text(
+        proofreading_json_path.write_text(
             json.dumps(
                 [
                     {
@@ -784,7 +826,7 @@ def _make_project(dir_path: Path, *, with_json: bool = True) -> ReviewAuditProje
             ),
             (2, "Same.", "Same.", "", "ok", ""),
         ]
-        (dir_path / "edited.audit.json").write_text(
+        audit_json_path.write_text(
             json.dumps(
                 [
                     {
@@ -811,7 +853,11 @@ def _make_project(dir_path: Path, *, with_json: bool = True) -> ReviewAuditProje
             encoding="utf-8",
         )
     return ReviewAuditProject(
-        source_path, dir_path / "edited.srt", json_path=json_path, language=Language.eng
+        source_path,
+        dir_path / "edited.srt",
+        proofreading_json_path=proofreading_json_path,
+        audit_json_path=audit_json_path,
+        language=Language.eng,
     )
 
 
@@ -849,7 +895,13 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
         ),
         encoding="utf-8",
     )
-    audit = ReviewAuditProject(source, tmp_path / "edited.srt", language=Language.eng)
+    audit = ReviewAuditProject(
+        source,
+        tmp_path / "edited.srt",
+        proofreading_json_path=tmp_path / "proofreading.json",
+        audit_json_path=tmp_path / "audit.json",
+        language=Language.eng,
+    )
     page = get_audit_page(audit.rows(), AuditFilters())
     assert len(page.rows) == 5 and len(page.blocks) == 5
     assert page.matching == 8 and page.last_block == 5 and page.has_more
@@ -892,9 +944,7 @@ def test_changed_proofreading_requires_note_before_any_write(tmp_path: Path):
         directory.mkdir()
         audit = _make_project(directory, with_json=with_json)
         row = audit.rows()[0]
-        before_json = None
-        if audit.json_path is not None:
-            before_json = audit.json_path.read_bytes()
+        before_json = audit.proofreading_json_path.read_bytes()
         for note in ("", "   "):
             with raises(ValueError, match="A note is required"):
                 audit.save(
@@ -911,8 +961,7 @@ def test_changed_proofreading_requires_note_before_any_write(tmp_path: Path):
         else:
             assert not audit.outfile_path.exists()
         assert audit.rows()[0] == row
-        if audit.json_path is not None:
-            assert audit.json_path.read_bytes() == before_json
+        assert audit.proofreading_json_path.read_bytes() == before_json
 
 
 def test_autosave_acknowledges_without_replacing_editable_fields(tmp_path: Path):
@@ -1092,7 +1141,7 @@ def test_bulk_verification_only_covers_loaded_blocks(
     before = audit.rows()
     artifacts = {
         p: p.read_bytes()
-        for p in (audit.infile_path, audit.outfile_path, audit.json_path)
+        for p in (audit.infile_path, audit.outfile_path, audit.proofreading_json_path)
     }
     assert (
         audit.verify_visible(
@@ -1108,7 +1157,8 @@ def test_bulk_verification_only_covers_loaded_blocks(
     reopened = ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
     assert [row.verified for row in reopened.rows()] == [True, False]
@@ -1129,7 +1179,11 @@ def test_bulk_proofreading_creates_cases_only_for_complete_visible_blocks(
     audit.infile_path.write_text(source, encoding="utf-8")
     audit.outfile_path.write_text(source, encoding="utf-8")
     audit = ReviewAuditProject(
-        audit.infile_path, audit.outfile_path, language=Language.eng
+        audit.infile_path,
+        audit.outfile_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
+        language=Language.eng,
     )
     monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
     client = create_app(audit).test_client()
@@ -1159,7 +1213,7 @@ def test_bulk_proofreading_creates_cases_only_for_complete_visible_blocks(
     assert [row.proofreading_verified for row in audit.rows()] == [True, True, False]
     assert audit.audit_json_path.read_bytes() == audit_before
     assert audit.outfile_path.read_bytes() == output_before
-    cases = json.loads(audit.json_path.read_bytes())
+    cases = json.loads(audit.proofreading_json_path.read_bytes())
     assert len(cases) == 1 and cases[0]["verified"]
     assert cases[0]["answer"] == {"revisions": []}
 
@@ -1203,7 +1257,11 @@ def test_proofreading_approval_preserves_separate_audit_blocks(
     audit.infile_path.write_text(source, encoding="utf-8")
     audit.outfile_path.write_text(source, encoding="utf-8")
     audit = ReviewAuditProject(
-        audit.infile_path, audit.outfile_path, language=Language.eng
+        audit.infile_path,
+        audit.outfile_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
+        language=Language.eng,
     )
     for row in audit.rows()[2:]:
         audit.save(
@@ -1249,7 +1307,11 @@ def test_proofreading_approval_preserves_separate_audit_blocks(
         False,
     ]
     reopened = ReviewAuditProject(
-        audit.infile_path, audit.outfile_path, language=Language.eng
+        audit.infile_path,
+        audit.outfile_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
+        language=Language.eng,
     )
     assert reopened.rows() == [replace(row, version=0) for row in audit.rows()]
     assert [row.block_number for row in reopened.rows()] == [1, 1, 2, 3]
@@ -1342,10 +1404,13 @@ def test_bulk_verification_confirmation_resets_and_rejects_stale_selection(
     with client.session_transaction() as session:
         csrf = session["csrf"]
     before = audit.rows()
-    assert audit.json_path is not None
     artifacts = {
         path: path.read_bytes()
-        for path in (audit.infile_path, audit.outfile_path, audit.json_path)
+        for path in (
+            audit.infile_path,
+            audit.outfile_path,
+            audit.proofreading_json_path,
+        )
     }
     token = get_audit_page(audit.rows(), AuditFilters()).verification["audit"].token
     prepared = client.post(
@@ -1404,8 +1469,8 @@ def test_invalid_audit_note_does_not_save(
     """
     audit = _materialize_output(_make_project(tmp_path))
     row = audit.rows()[0]
-    paths = [audit.infile_path, audit.outfile_path, audit.json_path]
-    before = [p.read_bytes() for p in paths if p is not None]
+    paths = [audit.infile_path, audit.outfile_path, audit.proofreading_json_path]
+    before = [p.read_bytes() for p in paths]
     client = create_app(audit).test_client()
     client.get("/")
     with client.session_transaction() as session:
@@ -1426,7 +1491,7 @@ def test_invalid_audit_note_does_not_save(
     assert response.status_code == 409
     assert error in response.get_data(as_text=True)
     assert audit.rows()[0] == row
-    assert before == [p.read_bytes() for p in paths if p is not None]
+    assert before == [p.read_bytes() for p in paths]
 
 
 @mark.parametrize(("status", "note"), [("review", " "), ("ok", "Old concern")])
@@ -1444,7 +1509,13 @@ def test_open_rejects_invalid_native_findings(tmp_path: Path, status: str, note:
     content = json.dumps(cases)
     audit.audit_json_path.write_text(content, encoding="utf-8")
     with raises(ScinoephileError, match="Unable to open review editor"):
-        ReviewAuditProject(audit.infile_path, audit.outfile_path, language=Language.eng)
+        ReviewAuditProject(
+            audit.infile_path,
+            audit.outfile_path,
+            proofreading_json_path=audit.proofreading_json_path,
+            audit_json_path=audit.audit_json_path,
+            language=Language.eng,
+        )
     assert audit.audit_json_path.read_text(encoding="utf-8") == content
 
 
@@ -1463,7 +1534,8 @@ def _materialize_output(audit: ReviewAuditProject) -> ReviewAuditProject:
     return ReviewAuditProject(
         audit.infile_path,
         audit.outfile_path,
-        json_path=audit.json_path,
+        proofreading_json_path=audit.proofreading_json_path,
+        audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
 
@@ -1481,10 +1553,10 @@ def test_draft_diff_preview_does_not_require_notes_or_persist(tmp_path: Path):
     paths = [
         audit.infile_path,
         audit.outfile_path,
-        audit.json_path,
+        audit.proofreading_json_path,
         audit.audit_json_path,
     ]
-    before = [p.read_bytes() for p in paths if p is not None]
+    before = [p.read_bytes() for p in paths]
     assert client.post(f"/rows/{row.key}/preview", data={}).status_code == 403
     with client.session_transaction() as session:
         csrf = session["csrf"]
@@ -1503,7 +1575,7 @@ def test_draft_diff_preview_does_not_require_notes_or_persist(tmp_path: Path):
     assert f'id="proofread-diff-{row.key}"' in html
     assert "diff-insert" in html and "&lt;script&gt;" in html
     assert "<script>" not in html and "<textarea" not in html
-    assert before == [p.read_bytes() for p in paths if p is not None]
+    assert before == [p.read_bytes() for p in paths]
     assert audit.rows()[1] == row
     reverted = client.post(
         f"/rows/{row.key}/preview", data={"csrf": csrf, "reviewed": row.original}

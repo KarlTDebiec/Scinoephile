@@ -50,15 +50,19 @@ class ReviewAuditProject:
         infile_path: Path,
         outfile_path: Path,
         *,
-        json_path: Path | None = None,
+        proofreading_json_path: Path,
+        audit_json_path: Path,
         language: Language | None = None,
     ):
         """Open subtitles with native proofreading and audit test-case files.
 
+        Initialize either missing case file as an empty JSON array.
+
         Arguments:
             infile_path: immutable original subtitles
             outfile_path: generated proofread subtitles
-            json_path: proofreading JSON override, defaults to a sibling .review.json
+            proofreading_json_path: proofreading test-case file
+            audit_json_path: audit test-case file
             language: language override, otherwise detected from the input
         Raises:
             ScinoephileError: if files, paths, or review decisions are invalid
@@ -74,19 +78,21 @@ class ReviewAuditProject:
             self.outfile_path = val_output_path(
                 outfile_path, exist_ok=True, create=False
             )
-            if json_path is None:
-                json_path = self.outfile_path.with_suffix(".review.json")
-            self.json_path = val_output_path(json_path, exist_ok=True, create=False)
-            self.audit_json_path = self.outfile_path.with_suffix(".audit.json")
-            self._lock_path = self.audit_json_path.with_name(
-                f".{self.audit_json_path.stem}.lock"
+            self.proofreading_json_path = val_output_path(
+                proofreading_json_path, exist_ok=True, create=False
+            )
+            self.audit_json_path = val_output_path(
+                audit_json_path, exist_ok=True, create=False
+            )
+            self._lock_path = self.outfile_path.with_name(
+                f".{self.outfile_path.stem}.audit.lock"
             )
             validate_project_paths(
                 self.infile_path,
                 self.outfile_path,
-                self.audit_json_path,
+                proofreading_json_path=self.proofreading_json_path,
+                audit_json_path=self.audit_json_path,
                 lock_path=self._lock_path,
-                json_path=self.json_path,
             )
             with lock_review_files(self._lock_path):
                 self._load_project(language)
@@ -305,14 +311,16 @@ class ReviewAuditProject:
             try:
                 if rerun:
                     backup_review_files(
-                        self.outfile_path, self.json_path, self.audit_json_path
+                        self.outfile_path,
+                        self.proofreading_json_path,
+                        self.audit_json_path,
                     )
                 writes = render_review_files(
                     source,
                     rows,
                     self.outfile_path,
                     decisions=decisions,
-                    json_path=self.json_path,
+                    proofreading_json_path=self.proofreading_json_path,
                 )
                 self._save_audit_cases(cases, rows, writes)
             except OSError as exc:
@@ -475,7 +483,10 @@ class ReviewAuditProject:
             hashes for the input, output, proofreading JSON, and audit JSON
         """
         return get_file_hashes(
-            self.infile_path, self.outfile_path, self.json_path, self.audit_json_path
+            self.infile_path,
+            self.outfile_path,
+            self.proofreading_json_path,
+            self.audit_json_path,
         )
 
     def _load_project(self, language: Language | None):
@@ -501,7 +512,7 @@ class ReviewAuditProject:
         self.language = resolved
 
         self.decisions = ProofreadingDecisions(
-            self.original, self.language, self.json_path
+            self.original, self.language, self.proofreading_json_path
         )
         self.decisions.normalize_srt_revisions()
         rows, self._block_ranges = build_audit_rows(
@@ -513,8 +524,8 @@ class ReviewAuditProject:
         writes = {}
         if not self.audit_json_path.exists():
             writes[self.audit_json_path] = "[]\n"
-        if not self.json_path.exists():
-            writes[self.json_path] = "[]\n"
+        if not self.proofreading_json_path.exists():
+            writes[self.proofreading_json_path] = "[]\n"
         has_decisions = any(case.answer is not None for case in self.decisions.cases)
         if self.outfile_path.exists():
             output = Series.load(self.outfile_path)
@@ -530,7 +541,7 @@ class ReviewAuditProject:
                 rows,
                 self.outfile_path,
                 decisions=self.decisions,
-                json_path=self.json_path,
+                proofreading_json_path=self.proofreading_json_path,
             )
             writes[self.outfile_path] = generated[self.outfile_path]
         write_files(writes)
@@ -580,10 +591,10 @@ class ReviewAuditProject:
                     rows,
                     self.outfile_path,
                     decisions=decisions,
-                    json_path=self.json_path,
+                    proofreading_json_path=self.proofreading_json_path,
                 )
             else:
-                writes[self.json_path] = decisions.serialize()
+                writes[self.proofreading_json_path] = decisions.serialize()
         return rows, decisions, writes
 
     def _save_audit_cases(
@@ -695,6 +706,8 @@ class ReviewAuditProject:
                     row, proofreading_verified=approved, version=row.version + 1
                 )
         self._save_audit_cases(
-            self._audit_cases, rows, {self.json_path: decisions.serialize()}
+            self._audit_cases,
+            rows,
+            {self.proofreading_json_path: decisions.serialize()},
         )
         self.decisions = decisions
