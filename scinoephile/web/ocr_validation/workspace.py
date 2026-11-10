@@ -15,7 +15,7 @@ __all__ = ["FILTER_OPTIONS", "get_filtered_blocks"]
 
 FILTER_OPTIONS = {
     "needs-review": ("Needs review", "alert-circle-outline"),
-    "boxes": ("B boxes need review", "alert-circle-outline"),
+    "boxes": ("Bounding boxes need review", "alert-circle-outline"),
     "character": ("Characters need review", "text-box-edit-outline"),
     "done": ("Validated", "checkbox-marked"),
 }
