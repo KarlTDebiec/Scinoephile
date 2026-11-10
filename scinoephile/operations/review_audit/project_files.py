@@ -33,7 +33,6 @@ __all__ = [
     "lock_review_files",
     "parse_source_srt",
     "render_review_files",
-    "validate_project_paths",
     "write_files",
 ]
 
@@ -153,46 +152,6 @@ def render_review_files(
             "Remove leading or trailing whitespace and SRT control sequences."
         )
     return {outfile_path: content, proofreading_json_path: decisions.serialize()}
-
-
-def validate_project_paths(
-    infile_path: Path,
-    outfile_path: Path,
-    *,
-    proofreading_json_path: Path,
-    audit_json_path: Path,
-    lock_path: Path,
-):
-    """Require distinct subtitle, test-case JSON, and lock files.
-
-    Arguments:
-        infile_path: original subtitle path
-        outfile_path: proofread subtitle path
-        proofreading_json_path: native proofreading decisions path
-        audit_json_path: audit test-case JSON path
-        lock_path: project lock file path
-    Raises:
-        ValueError: if paths collide or the output is not an SRT
-    """
-    paths = [
-        infile_path,
-        outfile_path,
-        proofreading_json_path,
-        audit_json_path,
-        lock_path,
-    ]
-    if len(set(paths)) != len(paths):
-        raise ValueError("Input, output, test-case JSON, and lock paths must differ")
-    for index, left_path in enumerate(paths):
-        for right_path in paths[index + 1 :]:
-            if (
-                left_path.exists()
-                and right_path.exists()
-                and left_path.samefile(right_path)
-            ):
-                raise ValueError("Input and writable files must not alias each other")
-    if outfile_path.suffix.lower() != ".srt":
-        raise ValueError("The edited subtitle output must be an SRT file")
 
 
 def write_files(writes: dict[Path, str]):

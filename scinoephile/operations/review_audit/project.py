@@ -32,7 +32,6 @@ from .project_files import (
     lock_review_files,
     parse_source_srt,
     render_review_files,
-    validate_project_paths,
     write_files,
 )
 from .proofreading_decisions import ProofreadingDecisions
@@ -87,13 +86,19 @@ class ReviewAuditProject:
             self._lock_path = self.outfile_path.with_name(
                 f".{self.outfile_path.stem}.audit.lock"
             )
-            validate_project_paths(
+            paths = [
                 self.infile_path,
                 self.outfile_path,
-                proofreading_json_path=self.proofreading_json_path,
-                audit_json_path=self.audit_json_path,
-                lock_path=self._lock_path,
-            )
+                self.proofreading_json_path,
+                self.audit_json_path,
+                self._lock_path,
+            ]
+            if len(set(paths)) != len(paths):
+                raise ValueError(
+                    "Input, output, test-case JSON, and lock paths must differ"
+                )
+            if self.outfile_path.suffix.lower() != ".srt":
+                raise ValueError("The edited subtitle output must be an SRT file")
             with lock_review_files(self._lock_path):
                 self._load_project(language)
         except (OSError, ValueError) as exc:
