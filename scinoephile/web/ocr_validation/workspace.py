@@ -8,16 +8,15 @@ from re import fullmatch
 
 from scinoephile.web.blocks import SubtitleBlock
 
-from .concerns import CharDimsConcern, ErrorConcern, GapConcern
+from .concerns import ErrorConcern
 from .session import OcrValidationSession
 
 __all__ = ["FILTER_OPTIONS", "get_filtered_blocks"]
 
 FILTER_OPTIONS = {
     "needs-review": ("Needs review", "alert-circle-outline"),
-    "character": ("Character boxes", "text-box-edit-outline"),
-    "spacing": ("Spacing", "minus-box-outline"),
-    "blocked": ("Blocked", "alert-circle-outline"),
+    "boxes": ("B boxes need review", "alert-circle-outline"),
+    "character": ("Characters need review", "text-box-edit-outline"),
     "done": ("Validated", "checkbox-marked"),
 }
 
@@ -51,13 +50,12 @@ def get_filtered_blocks(
             ):
                 continue
             concern = concerns[index]
-            kind = "done"
-            if isinstance(concern, CharDimsConcern):
+            if concern is None:
+                kind = "done"
+            elif isinstance(concern, ErrorConcern) and concern.bbox_count_mismatch:
+                kind = "boxes"
+            else:
                 kind = "character"
-            elif isinstance(concern, GapConcern):
-                kind = "spacing"
-            elif isinstance(concern, ErrorConcern):
-                kind = "blocked"
             counts["all"] += 1
             counts[kind] += 1
             if kind != "done":

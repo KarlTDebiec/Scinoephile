@@ -9,7 +9,7 @@ from pathlib import Path
 from re import search
 
 from PIL import Image
-from pytest import MonkeyPatch
+from pytest import MonkeyPatch, mark
 
 from scinoephile.image.bbox import Bbox
 from scinoephile.web.ocr_validation.app import create_app
@@ -58,9 +58,10 @@ def test_character_approval_advances_then_reuses_learned_dimensions(
     filtered = client.get("/?status=character", headers=_HTMX)
     assert b'id="sub-1"' in filtered.data
     assert b'id="sub-2"' not in filtered.data
-    blocked = client.get("/?status=blocked", headers=_HTMX)
-    assert b'id="sub-2"' in blocked.data
-    assert b"leftover bboxes" in blocked.data
+    boxes = client.get("/?status=boxes", headers=_HTMX)
+    assert b'id="sub-2"' in boxes.data
+    assert b"leftover bboxes" in boxes.data
+    assert b'id="sub-1"' not in boxes.data
 
 
 def test_character_selection_survives_paging_and_rejects_stale_approval(
@@ -211,6 +212,40 @@ def test_ocr_page_serves_shared_assets_and_original_preview(tmp_path: Path):
     assert client.get("/subtitles/1/image.png").status_code == 404
 
 
+@mark.parametrize(
+    ("boxes", "status", "other_status", "message"),
+    [
+        ([Bbox(0, 10, 0, 20)], "boxes", "character", b"Ran out of bboxes"),
+        ([Bbox(0, 10, 0, 20), Bbox(0, 10, 24, 44)], "character", "boxes", b"expected"),
+    ],
+)
+def test_review_filters_distinguish_missing_boxes_and_line_breaks(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    boxes: list[Bbox],
+    status: str,
+    other_status: str,
+    message: bytes,
+):
+    """Keep box count and line break errors in their respective review queues.
+
+    Arguments:
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
+        boxes: detected bounding boxes
+        status: filter that includes the concern
+        other_status: filter that excludes the concern
+        message: message shown for the concern
+    """
+    images_path = make_ocr_html_dir(tmp_path, text="AB")
+    patch_ocr_validation_bboxes(monkeypatch, boxes)
+    client = create_app(prepared_gap_session(images_path, tmp_path)).test_client()
+
+    assert message in client.get(f"/?status={status}").data
+    assert b'id="sub-1"' not in client.get(f"/?status={other_status}").data
+    assert b'id="sub-1"' in client.get("/?status=needs-review").data
+
+
 def test_spacing_choice_updates_text_and_hides_resolved_concern(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
@@ -224,13 +259,13 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
     session = prepared_gap_session(images_path, tmp_path)
     client = create_app(session).test_client()
-    page = client.get("/?status=spacing")
+    page = client.get("/?status=character")
     assert b"<caption>Check spacing</caption>" in page.data
     assert b">Adjacent</button>" in page.data
     assert b">Space</button>" in page.data
 
     response = client.post(
-        "/subtitles/0/concern/gap?status=spacing",
+        "/subtitles/0/concern/gap?status=character",
         data={**_form_values(page.data), "action": "space"},
         headers=_HTMX,
     )

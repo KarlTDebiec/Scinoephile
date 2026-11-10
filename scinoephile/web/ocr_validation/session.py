@@ -491,7 +491,10 @@ class OcrValidationSession:
                 continue
 
             if cursor.bbox_idx >= len(cursor.bboxes):
-                return ErrorConcern(message=f"Ran out of bboxes at '{cursor.char}'.")
+                return ErrorConcern(
+                    message=f"Ran out of bboxes at '{cursor.char}'.",
+                    bbox_count_mismatch=True,
+                )
 
             if self.manager.match_grouped_chars(cursor):
                 continue
@@ -503,7 +506,9 @@ class OcrValidationSession:
 
         if cursor.bbox_idx != len(cursor.bboxes):
             leftover = len(cursor.bboxes) - cursor.bbox_idx
-            return ErrorConcern(message=f"{leftover} leftover bboxes.")
+            return ErrorConcern(
+                message=f"{leftover} leftover bboxes.", bbox_count_mismatch=True
+            )
         return None
 
     def _scan_gaps(self, state: _SubtitleValidationState) -> OcrConcern | None:

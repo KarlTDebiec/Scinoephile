@@ -85,10 +85,12 @@ class CharDimsConcern:
 
 @dataclass(frozen=True)
 class ErrorConcern:
-    """Validation concern representing an unrecoverable state."""
+    """Validation concern requiring a manual correction before scanning can continue."""
 
     message: str
     """Error message."""
+    bbox_count_mismatch: bool = False
+    """Whether the scan ran out of boxes or found boxes left over."""
     kind: ConcernKind = field(default=ConcernKind.ERROR, init=False)
     """Concern kind."""
 
