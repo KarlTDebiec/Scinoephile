@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from PIL import Image
-from pytest import MonkeyPatch, raises
+from pytest import MonkeyPatch, mark, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox import Bbox
@@ -101,16 +101,29 @@ def test_concern_kind_excludes_done_state():
     assert "DONE" not in ConcernKind.__members__
 
 
+@mark.parametrize(
+    ("text_1", "text_2", "font_size", "letter_spacing"),
+    [("A", "B", 90, 0), ("字", "姐", 60, 10)],
+)
 def test_session_uses_one_font_size_for_series(
-    tmp_path: Path, monkeypatch: MonkeyPatch
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    text_1: str,
+    text_2: str,
+    font_size: int,
+    letter_spacing: int,
 ):
-    """Test editable font size is detected once for the whole series.
+    """Test the editable font size uses the same script-aware estimate for each row.
 
     Arguments:
         tmp_path: temporary directory path
         monkeypatch: pytest monkeypatch fixture
+        text_1: text of the first subtitle
+        text_2: text of the second subtitle
+        font_size: expected font size in pixels
+        letter_spacing: expected letter spacing in pixels
     """
-    html_dir_path = make_two_image_ocr_html_dir(tmp_path, text_1="A", text_2="B")
+    html_dir_path = make_two_image_ocr_html_dir(tmp_path, text_1=text_1, text_2=text_2)
 
     def mock_get_bboxes(img: Image.Image) -> list[Bbox]:
         """Return bboxes that vary by image width.
@@ -134,10 +147,11 @@ def test_session_uses_one_font_size_for_series(
 
     rows = [session.subtitle_row(0), session.subtitle_row(1)]
 
-    assert rows[0].text_font_size_px == 60
-    assert rows[1].text_font_size_px == 60
-    assert rows[0].text_letter_spacing_px == 0
-    assert rows[1].text_letter_spacing_px == 0
+    assert [row.text_font_size_px for row in rows] == [font_size, font_size]
+    assert [row.text_letter_spacing_px for row in rows] == [
+        letter_spacing,
+        letter_spacing,
+    ]
 
 
 def test_session_uses_cjk_letter_spacing(tmp_path: Path):

@@ -10,7 +10,7 @@ function syncOcrAppearance() {
         let value = style.getPropertyValue(property);
         if (!value) {
             try {
-                value = localStorage.getItem(`ocr-appearance:${property}`);
+                value = localStorage.getItem(input.dataset.ocrAppearanceKey);
             } catch {
                 // The current page can still keep preferences without browser storage.
             }
@@ -34,7 +34,7 @@ return;
     const property = input.dataset.ocrAppearance;
     document.documentElement.style.setProperty(property, input.value);
     try {
-        localStorage.setItem(`ocr-appearance:${property}`, input.value);
+        localStorage.setItem(input.dataset.ocrAppearanceKey, input.value);
     } catch {
         // The live preview also works without browser storage.
     }

@@ -55,11 +55,13 @@
 
   & textarea {
     --outline: var(--glyph-edge);
-    --font-scale: calc(var(--ocr-font-size, 100) / 100);
+    --font-size: var(--ocr-font-size-px, var(--glyph-native-size));
+    --font-scale: calc(var(--font-size) / var(--glyph-native-size));
     display: block;
     min-height: 1.4em;
     font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
-    font-size: calc(max(1rem, var(--glyph-size)) * var(--font-scale));
+    font-size: max(min(1rem, calc(var(--font-size) * 1px)),
+      calc(var(--glyph-size) * var(--font-scale)));
     letter-spacing: calc(var(--glyph-spacing) * var(--font-scale));
     line-height: 1.2;
     padding: .1em 0;

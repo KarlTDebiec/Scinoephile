@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from hashlib import sha256
 from io import BytesIO
 from typing import TYPE_CHECKING
 
@@ -59,6 +60,8 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
             blocks=blocks,
             counts=counts,
             filter_options=_FILTER_CHOICES,
+            font_size_px=session.text_font_size_px,
+            font_size_key=sha256(str(session.dir_path).encode()).hexdigest(),
             has_more=has_more,
             matched=counts[status],
             query=query,

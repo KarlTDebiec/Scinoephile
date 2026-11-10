@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Self
@@ -15,7 +14,7 @@ from scinoephile.common.file import open_atomic_text_file
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import WHITESPACE_CHARS
+from scinoephile.core.text import RE_HANZI, RE_LATIN_WORD, WHITESPACE_CHARS
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.ocr.validation.char_cursor import CharCursor
@@ -37,6 +36,9 @@ from .concerns import (
 from .html_index import HtmlSubtitleEntry, load_html_entries, update_html_entry_text
 
 __all__ = ["OcrValidationSession"]
+
+_LATIN_FONT_SIZE_MULTIPLIER = 1.5
+"""Convert representative Latin glyph height to the editor font size."""
 
 
 @dataclass
@@ -94,10 +96,14 @@ class OcrValidationSession:
         )
         self.text_font_size_px = self.series.text_font_size
         text = "".join(entry.text for entry in self.entries)
-        if re.search(r"[\u3400-\u9fff]", text):
+        if RE_HANZI.search(text):
             self.text_letter_spacing_px = 10
         else:
             self.text_letter_spacing_px = 0
+            if RE_LATIN_WORD.search(text):
+                self.text_font_size_px = round(
+                    self.text_font_size_px * _LATIN_FONT_SIZE_MULTIPLIER
+                )
         self._states: dict[int, _SubtitleValidationState] = {}
         self._recheck_pending = False
 
