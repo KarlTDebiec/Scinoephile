@@ -309,10 +309,8 @@ def test_save_replaces_existing_file_atomically(tmp_path: Path):
     original_contents = output_path.read_bytes()
 
     with (
-        patch(
-            "scinoephile.core.llms.utils.json.dump", side_effect=OSError("write failed")
-        ),
-        raises(OSError, match="write failed"),
+        patch("scinoephile.common.file.fsync", side_effect=OSError("sync failed")),
+        raises(OSError, match="sync failed"),
     ):
         save_test_cases_to_json(
             output_path,

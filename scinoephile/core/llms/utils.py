@@ -76,29 +76,26 @@ def save_test_cases_to_json[TTestCase: TestCase](
     test_cases: Iterable[TTestCase],
     manager_cls: type[Manager[TTestCase]],
 ):
-    """Serialize in-memory test cases to JSON without revalidating them.
-
-    Use the base prompt's field aliases without constructing new model instances.
-    Callers are responsible for validating test cases before saving them.
+    """Write in-memory test cases to a JSON file atomically.
 
     Arguments:
         output_path: path to JSON file to which to save
         test_cases: test cases to save
         manager_cls: manager class defining persisted test-case field names
     """
-    test_case_jsons = _get_test_case_jsons(test_cases, manager_cls)
+    contents = serialize_test_cases(test_cases, manager_cls)
     if not output_path.parent.exists():
         output_path.parent.mkdir(parents=True)
         logger.info(f"Created directory {output_path.parent}")
     with open_atomic_text_file(output_path) as temp_file:
-        json.dump(test_case_jsons, temp_file, ensure_ascii=False, indent=2)
+        temp_file.write(contents)
     logger.info(f"Saved test cases to {output_path}")
 
 
 def serialize_test_cases[TTestCase: TestCase](
     test_cases: Iterable[TTestCase], manager_cls: type[Manager[TTestCase]]
 ) -> str:
-    """Serialize cases with the base prompt's schema and field aliases.
+    """Serialize cases with the base prompt's field aliases without revalidation.
 
     Arguments:
         test_cases: validated test cases to serialize
@@ -106,24 +103,9 @@ def serialize_test_cases[TTestCase: TestCase](
     Returns:
         native test-case JSON
     """
-    test_case_jsons = _get_test_case_jsons(test_cases, manager_cls)
-    return json.dumps(test_case_jsons, ensure_ascii=False, indent=2)
-
-
-def _get_test_case_jsons[TTestCase: TestCase](
-    test_cases: Iterable[TTestCase], manager_cls: type[Manager[TTestCase]]
-) -> list[JsonValue]:
-    """Convert cases to JSON values using the base prompt's aliases.
-
-    Arguments:
-        test_cases: validated test cases to serialize
-        manager_cls: manager defining persisted test-case field names
-    Returns:
-        JSON values ready to write
-    """
     base_test_case_cls = manager_cls.get_test_case_cls(prompt=manager_cls.base_prompt)
     serializer = TypeAdapter(base_test_case_cls)
-    return [
+    test_case_jsons = [
         serializer.dump_python(
             test_case,
             mode="json",
@@ -133,3 +115,4 @@ def _get_test_case_jsons[TTestCase: TestCase](
         )
         for test_case in test_cases
     ]
+    return json.dumps(test_case_jsons, ensure_ascii=False, indent=2)
