@@ -31,7 +31,6 @@ __all__ = [
     "backup_review_files",
     "get_file_hashes",
     "lock_review_files",
-    "parse_source_srt",
     "render_review_files",
     "write_files",
 ]
@@ -104,18 +103,6 @@ def lock_review_files(lock_path: Path) -> Generator[None]:
                 f"Unable to lock review project {lock_path}: {exc}"
             ) from exc
         yield
-
-
-def parse_source_srt(content: bytes) -> Series:
-    """Read source subtitles from the captured SRT bytes.
-
-    Arguments:
-        content: original SRT encoded in UTF-8, optionally with a BOM
-    Returns:
-        parsed subtitle series
-    """
-    text = content.decode("utf-8-sig").replace("\r\n", "\n").replace("\r", "\n")
-    return Series.from_string(text, format_="srt")
 
 
 def render_review_files(
