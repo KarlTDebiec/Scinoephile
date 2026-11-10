@@ -23,6 +23,7 @@ from .audit_cases import (
     build_audit_case,
     get_audit_query,
     load_audit_cases,
+    merge_audit_case,
 )
 from .edits import build_review_edit, prepare_proofreading_edit
 from .filters import AuditFilters
@@ -247,25 +248,7 @@ class ReviewAuditProject:
                 raise ValueError("Audit case does not match the reserved block")
 
             previous = self._audit_cases.get(block[0].index)
-            if previous is not None and previous.query.key != case.query.key:
-                previous = None
-            updated = apply_audit_case(list(block), case)
-            if not rerun and previous is not None and previous.draft:
-                updated = [
-                    before if before.finding != AuditStatus.unaudited else after
-                    for before, after in zip(block, updated, strict=True)
-                ]
-                case = build_audit_case(updated)
-            elif (
-                previous is not None
-                and previous.verified
-                and previous.answer == case.answer
-            ):
-                case = case.model_copy(
-                    update={"verified": True, "few_shot": previous.few_shot}
-                )
-                updated = [replace(row, verified=True) for row in updated]
-
+            updated, case = merge_audit_case(block, case, previous, rerun=rerun)
             rows = self._rows.copy()
             rows[first:last] = [
                 replace(row, version=row.version + 1) for row in updated

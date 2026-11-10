@@ -25,6 +25,7 @@ __all__ = [
     "build_audit_case",
     "get_audit_query",
     "load_audit_cases",
+    "merge_audit_case",
 ]
 
 
@@ -134,3 +135,35 @@ def load_audit_cases(
     if languages:
         language = Language(languages.pop())
     return {case.query.subtitles[0].index: case for case in cases}, language
+
+
+def merge_audit_case(
+    block: tuple[AuditRow, ...],
+    case: ReviewAuditTestCase,
+    previous: ReviewAuditTestCase | None,
+    *,
+    rerun: bool,
+) -> tuple[list[AuditRow], ReviewAuditTestCase]:
+    """Apply new findings while retaining applicable manual findings and verification.
+
+    Arguments:
+        block: reserved subtitle rows in source order
+        case: completed audit case matching the block
+        previous: saved audit case for the block, if any
+        rerun: whether to replace manual draft findings
+    Returns:
+        updated rows and the audit case to save
+    """
+    if previous is not None and previous.query.key != case.query.key:
+        previous = None
+    updated = apply_audit_case(list(block), case)
+    if not rerun and previous is not None and previous.draft:
+        updated = [
+            before if before.finding != AuditStatus.unaudited else after
+            for before, after in zip(block, updated, strict=True)
+        ]
+        case = build_audit_case(updated)
+    elif previous is not None and previous.verified and previous.answer == case.answer:
+        case = case.model_copy(update={"verified": True, "few_shot": previous.few_shot})
+        updated = [replace(row, verified=True) for row in updated]
+    return updated, case
