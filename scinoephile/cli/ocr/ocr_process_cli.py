@@ -242,6 +242,7 @@ class OcrProcessCli(ScinoephileCliBase):
                 interactive=interactive,
                 host=web_args.host,
                 port=web_args.port,
+                title=web_args.title,
                 dev=dev,
                 overwrite=overwrite,
                 overwrite_cache=cache_args.overwrite,

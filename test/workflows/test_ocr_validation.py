@@ -132,15 +132,16 @@ def test_validate_ocr_runs_interactive_validation(monkeypatch, tmp_path: Path):
         )
         return session
 
-    def fake_run_app(value: object, host: str, port: int):
+    def fake_run_app(value: object, host: str, port: int, *, title: str | None):
         """Capture web app run arguments and write validation output.
 
         Arguments:
             value: value
             host: host value
             port: port value
+            title: editor title
         """
-        run_calls.append(("run_app", value, host, port))
+        run_calls.append(("run_app", value, host, port, title))
         get_ocr_text_series("interactive validated").save(outfile_path)
 
     monkeypatch.setattr(
@@ -158,10 +159,11 @@ def test_validate_ocr_runs_interactive_validation(monkeypatch, tmp_path: Path):
         overwrite=False,
         host="0.0.0.0",
         port=5050,
+        title="Film - English",
     )
 
     assert run_calls == [
         ("from_dir_path", infile_path, outfile_path, validation_data_dir_path, True),
-        ("run_app", session, "0.0.0.0", 5050),
+        ("run_app", session, "0.0.0.0", 5050, "Film - English"),
     ]
     assert [subtitle.text for subtitle in validated] == ["interactive validated"]

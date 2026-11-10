@@ -80,7 +80,7 @@ def test_run_app_wraps_server_errors(monkeypatch: MonkeyPatch):
     )
     monkeypatch.setattr(
         "scinoephile.web.ocr_validation.app.create_app",
-        lambda session, *, host: object(),
+        lambda session, *, host, title: object(),
     )
     monkeypatch.setattr(
         "werkzeug.serving.make_server",
@@ -180,7 +180,7 @@ def test_run_app_uses_available_port_when_requested_port_is_in_use(
     )
     monkeypatch.setattr(
         "scinoephile.web.ocr_validation.app.create_app",
-        lambda session, *, host: object(),
+        lambda session, *, host, title: object(),
     )
     monkeypatch.setattr("werkzeug.serving.make_server", fake_make_server)
 

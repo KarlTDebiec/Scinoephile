@@ -37,6 +37,7 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
         overwrite: bool = False,
         host: str = "127.0.0.1",
         port: int = 5000,
+        title: str | None = None,
     ):
         """Capture OCR validation workflow arguments.
 
@@ -49,6 +50,7 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
             overwrite: overwrite value
             host: host value
             port: port value
+            title: editor title
         """
         validate_calls.append(
             {
@@ -60,6 +62,7 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
                 "overwrite": overwrite,
                 "host": host,
                 "port": port,
+                "title": title,
             }
         )
         outfile_path_arg.write_text("validated", encoding="utf-8")
@@ -86,6 +89,7 @@ def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
             "overwrite": False,
             "host": "127.0.0.1",
             "port": 5000,
+            "title": None,
         }
     ]
     assert outfile_path.read_text(encoding="utf-8") == "validated"
@@ -113,6 +117,7 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
         overwrite: bool = False,
         host: str = "127.0.0.1",
         port: int = 5000,
+        title: str | None = None,
     ):
         """Capture OCR validation workflow arguments.
 
@@ -125,6 +130,7 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
             overwrite: overwrite value
             host: host value
             port: port value
+            title: editor title
         """
         validate_calls.append(
             {
@@ -136,6 +142,7 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
                 "overwrite": overwrite,
                 "host": host,
                 "port": port,
+                "title": title,
             }
         )
 
@@ -149,6 +156,7 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
         OcrValidateCli,
         f"--infile {infile_path} --dev --interactive --host 0.0.0.0 --port 5050 "
         f"--validation-data-dir {validation_data_dir_path} "
+        '--title "Film - English" '
         f"--outfile {outfile_path}",
     )
 
@@ -162,6 +170,7 @@ def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
             "overwrite": False,
             "host": "0.0.0.0",
             "port": 5050,
+            "title": "Film - English",
         }
     ]
 

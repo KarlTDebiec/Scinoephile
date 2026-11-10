@@ -15,11 +15,13 @@ __all__ = ["WEB_LOCALIZATIONS", "WebServerArguments", "add_web_server_args"]
 
 WEB_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
+        "display title for the web editor": "网页编辑器的显示标题",
         "host for the local web server": "本地网页服务器的主机",
         "port for the local web server": "本地网页服务器的端口",
         "web arguments": "网页参数",
     },
     "zh-hant": {
+        "display title for the web editor": "網頁編輯器的顯示標題",
         "host for the local web server": "本機網頁伺服器的主機",
         "port for the local web server": "本機網頁伺服器的連接埠",
         "web arguments": "網頁參數",
@@ -36,6 +38,8 @@ class WebServerArguments:
     """Host for the local web server."""
     port: int = 5000
     """Port for the local web server."""
+    title: str | None = None
+    """Display title for the web editor."""
 
 
 def add_web_server_args(web_arg_group: _ArgumentGroup):
@@ -44,6 +48,16 @@ def add_web_server_args(web_arg_group: _ArgumentGroup):
     Arguments:
         web_arg_group: group to which web server arguments are added
     """
+    web_arg_group.add_argument(
+        "--title",
+        action=ArgumentBundleFieldAction,
+        bundle_type=WebServerArguments,
+        dest="web_args",
+        field_name="title",
+        metavar="TITLE",
+        type=str,
+        help="display title for the web editor",
+    )
     web_arg_group.add_argument(
         "--host",
         action=ArgumentBundleFieldAction,

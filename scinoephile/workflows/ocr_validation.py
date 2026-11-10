@@ -29,6 +29,7 @@ def validate_ocr(
     overwrite: bool = False,
     host: str = "127.0.0.1",
     port: int = 5000,
+    title: str | None = None,
 ) -> Series:
     """Validate OCR text from image subtitles.
 
@@ -41,6 +42,7 @@ def validate_ocr(
         overwrite: whether to overwrite existing validation output
         host: OCR validation web UI host
         port: OCR validation web UI port
+        title: display title for the OCR validation editor
     Returns:
         validated subtitle series
     Raises:
@@ -63,7 +65,7 @@ def validate_ocr(
                 validation_data_dir_path=validation_data_dir_path,
                 dev=dev,
             )
-            run_app(session, host, port)
+            run_app(session, host, port, title=title)
             return Series.load(outfile_path)
 
         if isinstance(source, ImageSeries):

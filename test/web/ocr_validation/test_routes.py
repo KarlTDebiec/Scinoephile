@@ -181,8 +181,13 @@ def test_ocr_page_serves_shared_assets_and_original_preview(tmp_path: Path):
         tmp_path: isolated image and validation data
     """
     images_path = make_ocr_html_dir(tmp_path, text="A")
-    client = create_app(_session(images_path, tmp_path)).test_client()
+    client = create_app(
+        _session(images_path, tmp_path), title="Film & Track"
+    ).test_client()
     page = client.get("/?status=all")
+    assert search(rb"<title>\s*Film &amp; Track\s*</title>", page.data)
+    assert b"<h1>Film &amp; Track</h1>" in page.data
+    assert b"<h1>Film &amp; Track</h1>" in client.get("/", headers=_HTMX).data
     assert b"/static/editor.css" in page.data
     assert b"/static/editor.js" in page.data
     assert b"/static/htmx.min.js" in page.data

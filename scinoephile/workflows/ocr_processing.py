@@ -64,6 +64,7 @@ class OcrProcessingWorkflow:
         fuser_kw: dict[str, Any] | None = None,
         host: str = "127.0.0.1",
         port: int = 5000,
+        title: str | None = None,
     ):
         """Initialize.
 
@@ -84,6 +85,7 @@ class OcrProcessingWorkflow:
             fuser_kw: keyword arguments for OCR fuser construction
             host: OCR validation web UI host
             port: OCR validation web UI port
+            title: display title for the OCR validation editor
         """
         self.infile_path = infile_path
         self.output_dir_path = output_dir_path
@@ -110,6 +112,7 @@ class OcrProcessingWorkflow:
         )
         self.host = host
         self.port = port
+        self.title = title
         self.output_paths: dict[str, Path] = {}
 
     def __call__(self) -> OcrProcessingResult:
@@ -373,5 +376,6 @@ class OcrProcessingWorkflow:
             overwrite=self.overwrite,
             host=self.host,
             port=self.port,
+            title=self.title,
         )
         self.output_paths["fuse_clean_validate"] = validate_path

@@ -193,6 +193,7 @@ class OcrValidateCli(ScinoephileCliBase):
                 overwrite=overwrite,
                 host=web_args.host,
                 port=web_args.port,
+                title=web_args.title,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

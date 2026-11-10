@@ -24,12 +24,15 @@ __all__ = ["create_app", "run_app"]
 logger = getLogger(__name__)
 
 
-def create_app(session: OcrValidationSession, *, host: str = "127.0.0.1") -> FlaskApp:
+def create_app(
+    session: OcrValidationSession, *, host: str = "127.0.0.1", title: str | None = None
+) -> FlaskApp:
     """Create the OCR validation Flask app.
 
     Arguments:
         session: OCR validation session
         host: explicitly configured bind host trusted by request validation
+        title: display title for the page heading and browser tab
     Returns:
         Flask app
     Raises:
@@ -50,24 +53,37 @@ def create_app(session: OcrValidationSession, *, host: str = "127.0.0.1") -> Fla
     )
     app.add_template_filter(format_time_ms)
     app.config["MAX_CONTENT_LENGTH"] = 100_000
+
+    @app.context_processor
+    def editor_context() -> dict[str, str]:
+        """Expose the editor title to the document and workspace fragment.
+
+        Returns:
+            editor title for the template context
+        """
+        return {"title": title or "OCR validation"}
+
     register_routes(app, session)
     return app
 
 
-def run_app(session: OcrValidationSession, host: str, port: int):
+def run_app(
+    session: OcrValidationSession, host: str, port: int, *, title: str | None = None
+):
     """Run the OCR validation Flask app.
 
     Arguments:
         session: OCR validation session
         host: host address to bind
         port: port to bind
+        title: display title for the OCR validation editor
     Raises:
         DependencyError: if optional web dependencies are not installed
         ScinoephileError: if server startup fails
     """
     werkzeug_serving = import_werkzeug_serving()
 
-    app = create_app(session, host=host)
+    app = create_app(session, host=host, title=title)
     try:
         server_port = port
         if _port_is_in_use(_connection_host(host), port):

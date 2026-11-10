@@ -44,7 +44,6 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "subtitle language (default: saved audit language or auto-detect)": (
             "字幕语言（默认：使用已保存的审核语言，否则自动检测）"
         ),
-        "display title (default: input filename stem)": "显示标题（默认：输入文件名）",
         "audit web UI must use a loopback host": "审核网页界面必须使用本机回环地址",
     },
     "zh-hant": {
@@ -64,7 +63,6 @@ AUDIT_REVIEW_SERVE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "subtitle language (default: saved audit language or auto-detect)": (
             "字幕語言（預設：使用已儲存的稽核語言，否則自動偵測）"
         ),
-        "display title (default: input filename stem)": "顯示標題（預設：輸入檔名）",
         "audit web UI must use a loopback host": "稽核網頁介面必須使用本機回環位址",
     },
 }
@@ -129,9 +127,6 @@ class AuditReviewServeCli(ScinoephileCliBase):
         )
 
         # Web arguments
-        groups["web arguments"].add_argument(
-            "--title", help="display title (default: input filename stem)"
-        )
         add_web_server_args(groups["web arguments"])
         parser.set_defaults(web_args=WebServerArguments(port=5020))
 
@@ -163,7 +158,6 @@ class AuditReviewServeCli(ScinoephileCliBase):
         proofreading_json_path: Path,
         audit_json_path: Path,
         web_args: WebServerArguments,
-        title: str | None = None,
         language: Language | None = None,
         _parser: ArgumentParser | None = None,
     ):
@@ -175,7 +169,6 @@ class AuditReviewServeCli(ScinoephileCliBase):
             proofreading_json_path: proofreading test-case file
             audit_json_path: audit test-case file
             web_args: loopback server address and port
-            title: display title override
             language: optional explicit subtitle language
             _parser: parser for user-facing error messages
         """
@@ -191,7 +184,7 @@ class AuditReviewServeCli(ScinoephileCliBase):
                     audit_json_path=audit_json_path,
                     language=language,
                 ),
-                title=title,
+                title=web_args.title,
                 host=web_args.host,
                 port=web_args.port,
             )

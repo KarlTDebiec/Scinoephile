@@ -1,5 +1,5 @@
 {% extends "shared/base.html" %}
-{% block title %}OCR validation{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 {% block styles %}
   <link rel="stylesheet"
         href="{{ url_for('ocr_validation_assets.static', filename='ocr-validation.css') }}">

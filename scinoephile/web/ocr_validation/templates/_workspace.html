@@ -2,7 +2,7 @@
 {% from 'shared/_filters.html' import filter_toolbar %}
 <main id="workspace" hx-history-elt hx-history="false">
   <header>
-    <h1>OCR validation</h1>
+    <h1>{{ title }}</h1>
     <div id="messages" class="error" role="status"></div>
     {% call(slot) filter_toolbar("ocr-search", query, status != "all" or query, "Text, subtitle number, or block number", {"status": "all"}) %}
       {% if slot == "options" %}
