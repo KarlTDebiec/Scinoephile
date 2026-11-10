@@ -11,7 +11,7 @@ from scinoephile.core.llms import LLMProvider, Queryer
 from scinoephile.lang.eng.review_audit import ReviewAuditPromptEng
 from scinoephile.llms.review_audit import ReviewAuditManager
 
-from .audit_cases import get_audit_query
+from .audit_cases import build_audit_query
 from .project import ReviewAuditProject
 from .rows import AuditRow
 
@@ -51,7 +51,7 @@ def run_audit(
     )
     for block in blocks:
         query = test_case_cls.query_cls.model_validate(
-            get_audit_query(block).model_dump()
+            build_audit_query(block).model_dump()
         )
         result = queryer(test_case_cls(query=query))
         audit.publish_audit(block, result, rerun=rerun)

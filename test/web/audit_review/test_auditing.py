@@ -27,7 +27,7 @@ from scinoephile.llms.review_audit import (
     ReviewAuditQuery,
     ReviewAuditTestCase,
 )
-from scinoephile.operations.review_audit.audit_cases import build_audit_case
+from scinoephile.operations.review_audit.audit_cases import build_audit_test_case
 from scinoephile.operations.review_audit.project import ReviewAuditProject
 from scinoephile.operations.review_audit.rows import AuditRow, AuditStatus
 from scinoephile.web.audit_review import job_settings
@@ -213,7 +213,7 @@ def test_audit_commit_serializes_editor_save(tmp_path: Path, monkeypatch: Monkey
 
     monkeypatch.setattr(audit, "_save_audit_cases", hold_commit)
     with ThreadPoolExecutor(max_workers=2) as executor:
-        case = build_audit_case(
+        case = build_audit_test_case(
             [replace(item, finding=AuditStatus.ok) for item in block]
         )
         commit = executor.submit(audit.publish_audit, block, case)

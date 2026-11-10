@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Map audit test cases to the subtitle blocks they describe."""
+"""Build and load audit test cases and copy their findings onto subtitle rows."""
 
 from __future__ import annotations
 
@@ -21,33 +21,33 @@ from scinoephile.llms.review_audit import (
 from .rows import AuditRow, AuditStatus
 
 __all__ = [
-    "apply_audit_case",
-    "build_audit_case",
-    "get_audit_query",
-    "load_audit_cases",
-    "merge_audit_case",
+    "apply_audit_findings_to_rows",
+    "build_audit_query",
+    "build_audit_test_case",
+    "load_audit_test_cases",
+    "merge_audit_findings",
 ]
 
 
-def apply_audit_case(
+def apply_audit_findings_to_rows(
     block: list[AuditRow], case: ReviewAuditTestCase | None
 ) -> list[AuditRow]:
-    """Copy audit findings onto the subtitle rows they were based on.
+    """Copy matching audit findings onto the rows for one subtitle block.
 
     The language, subtitle numbers, original text, proofread text, and
-    proofreading notes must match across the entire block. Rows without a
-    matching finding are marked unaudited.
+    proofreading notes must match across the whole block. For any row without
+    a matching finding, mark it unaudited and clear its audit note and verification.
 
     Arguments:
-        block: current subtitle rows, in source order
-        case: audit results and the subtitles they describe, if available
+        block: all rows in the subtitle block, in source order
+        case: audit test case, or None to clear the findings for the whole block
     Returns:
-        copies of the rows with audit findings, notes, and verification updated
+        copies of the subtitle rows with updated audit fields
     """
     findings: dict[int, ReviewAuditFinding] = {}
     verified = False
     if case is not None and case.answer is not None:
-        if case.query.key == get_audit_query(block).key:
+        if case.query.key == build_audit_query(block).key:
             findings = {finding.index: finding for finding in case.answer.findings}
             verified = case.verified
     updated = []
@@ -69,34 +69,10 @@ def apply_audit_case(
     return updated
 
 
-def build_audit_case(block: list[AuditRow]) -> ReviewAuditTestCase:
-    """Turn the findings entered for a subtitle block into an audit test case.
+def build_audit_query(block: list[AuditRow] | tuple[AuditRow, ...]) -> ReviewAuditQuery:
+    """Build the input for auditing one subtitle block.
 
-    Arguments:
-        block: current subtitle rows and their findings in source order
-    Returns:
-        audit case, with a draft answer if findings are incomplete
-    """
-    findings = [
-        {"index": row.index, "status": row.finding.value, "note": row.notes.strip()}
-        for row in block
-        if row.finding != AuditStatus.unaudited
-    ]
-    data = {
-        "query": get_audit_query(block).model_dump(),
-        "verified": all(row.verified for row in block),
-    }
-    if findings:
-        data["answer"] = {"findings": findings}
-        data["draft"] = len(findings) < len(block)
-    case_cls = ReviewAuditManager.get_test_case_cls(ReviewAuditPromptEng)
-    return case_cls.model_validate(data)
-
-
-def get_audit_query(block: list[AuditRow] | tuple[AuditRow, ...]) -> ReviewAuditQuery:
-    """Collect the subtitle text and proofreading notes for an audit.
-
-    The same fields identify saved findings for the block.
+    The same input is used to check whether saved findings still apply.
 
     Arguments:
         block: all subtitle rows in the block, in source order
@@ -118,15 +94,44 @@ def get_audit_query(block: list[AuditRow] | tuple[AuditRow, ...]) -> ReviewAudit
     )
 
 
-def load_audit_cases(
-    json_path: Path,
-) -> tuple[dict[int, ReviewAuditTestCase], Language | None]:
-    """Read saved audit results and their subtitle language from JSON.
+def build_audit_test_case(block: list[AuditRow]) -> ReviewAuditTestCase:
+    """Build a test case from a subtitle block and its current audit findings.
+
+    The test case has a draft answer when only some rows have findings.
+    A block without findings has no answer.
 
     Arguments:
-        json_path: project audit test-case file
+        block: all rows in the subtitle block, in source order
     Returns:
-        cases keyed by first subtitle index and the language, if known
+        test case containing the audit query, any findings, and verification
+    """
+    findings = [
+        {"index": row.index, "status": row.finding.value, "note": row.notes.strip()}
+        for row in block
+        if row.finding != AuditStatus.unaudited
+    ]
+    data = {
+        "query": build_audit_query(block).model_dump(),
+        "verified": all(row.verified for row in block),
+    }
+    if findings:
+        data["answer"] = {"findings": findings}
+        data["draft"] = len(findings) < len(block)
+    case_cls = ReviewAuditManager.get_test_case_cls(ReviewAuditPromptEng)
+    return case_cls.model_validate(data)
+
+
+def load_audit_test_cases(
+    json_path: Path,
+) -> tuple[dict[int, ReviewAuditTestCase], Language | None]:
+    """Read audit test cases and their subtitle language from JSON.
+
+    Arguments:
+        json_path: path to the audit JSON file
+    Returns:
+        test cases keyed by the first subtitle number in each block, and their
+        language. A missing file or an empty JSON array gives an empty dictionary
+        and None
     Raises:
         ValueError: if the cases use different or unsupported languages
     """
@@ -144,35 +149,36 @@ def load_audit_cases(
     return {case.query.subtitles[0].index: case for case in cases}, language
 
 
-def merge_audit_case(
+def merge_audit_findings(
     block: tuple[AuditRow, ...],
     case: ReviewAuditTestCase,
     previous: ReviewAuditTestCase | None,
     *,
     rerun: bool,
 ) -> tuple[list[AuditRow], ReviewAuditTestCase]:
-    """Apply a new audit answer to a subtitle block.
+    """Combine new audit findings with any findings already saved for the block.
 
-    When resuming an audit, keep manual findings from a matching draft.
-    If the new answer matches a previously verified answer, keep its verification.
+    When resuming, keep findings from a matching manual draft and fill in the
+    missing ones. Carry over verification and few-shot status when the audit
+    input and answer match a previously verified case.
 
     Arguments:
-        block: reserved subtitle rows in source order
-        case: completed audit case matching the block
-        previous: saved audit case for the block, if any
-        rerun: whether to replace manual draft findings
+        block: all rows in the subtitle block, in source order
+        case: new test case with a complete answer for the block
+        previous: previously saved test case for the block, if any
+        rerun: whether to replace manual draft findings with the new findings
     Returns:
-        updated rows and the audit case to save
+        updated subtitle rows and the test case to save
     """
     if previous is not None and previous.query.key != case.query.key:
         previous = None
-    updated = apply_audit_case(list(block), case)
+    updated = apply_audit_findings_to_rows(list(block), case)
     if not rerun and previous is not None and previous.draft:
         updated = [
             before if before.finding != AuditStatus.unaudited else after
             for before, after in zip(block, updated, strict=True)
         ]
-        case = build_audit_case(updated)
+        case = build_audit_test_case(updated)
     elif previous is not None and previous.verified and previous.answer == case.answer:
         case = case.model_copy(update={"verified": True, "few_shot": previous.few_shot})
         updated = [replace(row, verified=True) for row in updated]

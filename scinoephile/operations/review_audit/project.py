@@ -20,11 +20,11 @@ from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.review_audit import ReviewAuditManager, ReviewAuditTestCase
 
 from .audit_cases import (
-    apply_audit_case,
-    build_audit_case,
-    get_audit_query,
-    load_audit_cases,
-    merge_audit_case,
+    apply_audit_findings_to_rows,
+    build_audit_query,
+    build_audit_test_case,
+    load_audit_test_cases,
+    merge_audit_findings,
 )
 from .edits import build_review_edit, prepare_proofreading_edit
 from .filters import AuditFilters
@@ -219,14 +219,14 @@ class ReviewAuditProject:
             first, last = self._block_ranges[block[0].block_number - 1]
             if (
                 tuple(self._rows[first:last]) != block
-                or case.query.key != get_audit_query(block).key
+                or case.query.key != build_audit_query(block).key
                 or case.answer is None
                 or case.draft
             ):
                 raise ValueError("Audit case does not match the reserved block")
 
             previous = self._audit_cases.get(block[0].index)
-            updated, case = merge_audit_case(block, case, previous, rerun=rerun)
+            updated, case = merge_audit_findings(block, case, previous, rerun=rerun)
             rows = self._rows.copy()
             rows[first:last] = [
                 replace(row, version=row.version + 1) for row in updated
@@ -264,9 +264,9 @@ class ReviewAuditProject:
             for first, last in self._block_ranges:
                 block = rows[first:last]
                 case = self._audit_cases.get(block[0].index)
-                if case is not None and case.query.key == get_audit_query(block).key:
+                if case is not None and case.query.key == build_audit_query(block).key:
                     cases[block[0].index] = case
-                    rows[first:last] = apply_audit_case(block, case)
+                    rows[first:last] = apply_audit_findings_to_rows(block, case)
             rows = [
                 replace(row, version=old.version + 1)
                 for row, old in zip(rows, self._rows, strict=True)
@@ -449,7 +449,7 @@ class ReviewAuditProject:
         )
         if get_file_hashes(self.infile_path) != (self._source_hash,):
             raise ValueError("Original subtitles changed while they were being loaded")
-        cases, saved_language = load_audit_cases(self.audit_json_path)
+        cases, saved_language = load_audit_test_cases(self.audit_json_path)
         if (
             language is not None
             and saved_language is not None
@@ -469,7 +469,9 @@ class ReviewAuditProject:
             self.original, self._source_hash, self.language, self.decisions
         )
         for first, last in self._block_ranges:
-            rows[first:last] = apply_audit_case(rows[first:last], cases.get(first + 1))
+            rows[first:last] = apply_audit_findings_to_rows(
+                rows[first:last], cases.get(first + 1)
+            )
 
         writes = {}
         if not self.audit_json_path.exists():
@@ -594,7 +596,7 @@ class ReviewAuditProject:
         }
         for number in changed_blocks:
             first, last = self._block_ranges[number - 1]
-            rows[first:last] = apply_audit_case(rows[first:last], None)
+            rows[first:last] = apply_audit_findings_to_rows(rows[first:last], None)
             cases.pop(first + 1, None)
 
         first, last = self._block_ranges[current.block_number - 1]
@@ -621,7 +623,7 @@ class ReviewAuditProject:
                 raise ValueError("Complete the audit block before verifying it")
             verify = False
         rows[first:last] = [replace(row, verified=verify) for row in rows[first:last]]
-        case = build_audit_case(rows[first:last])
+        case = build_audit_test_case(rows[first:last])
         if case.answer is None:
             cases.pop(first + 1, None)
         else:
