@@ -12,6 +12,28 @@
       {% endif %}
     {% endcall %}
     <nav class="editor-toolbar ocr-operations" aria-label="Operations">
+      <div class="ocr-appearance" data-ocr-appearance-controls hidden>
+        <label>
+          Font size (%)
+          <input type="number"
+                 data-ocr-appearance="--ocr-font-size"
+                 min="50"
+                 max="200"
+                 step="5"
+                 value="100"
+                 required>
+        </label>
+        <label>
+          Outline width (px)
+          <input type="number"
+                 data-ocr-appearance="--ocr-outline-width"
+                 min="0"
+                 max="8"
+                 step="0.5"
+                 value="2"
+                 required>
+        </label>
+      </div>
       {{ toggle_blocks() }}
     </nav>
   </header>

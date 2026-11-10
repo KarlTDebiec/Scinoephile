@@ -1,4 +1,50 @@
-/** @file Blur saves and concern actions for the OCR validation editor. */
+/** @file Appearance controls, blur saves, and concern actions for the OCR editor. */
+
+/** Restore display preferences when the toolbar is rendered or replaced. */
+function syncOcrAppearance() {
+    const controls = document.querySelector("[data-ocr-appearance-controls]");
+    if (!controls) return;
+    const style = document.documentElement.style;
+    for (const input of controls.querySelectorAll("[data-ocr-appearance]")) {
+        const property = input.dataset.ocrAppearance;
+        let value = style.getPropertyValue(property);
+        if (!value) {
+            try {
+                value = localStorage.getItem(`ocr-appearance:${property}`);
+            } catch {
+                // The current page can still keep preferences without browser storage.
+            }
+        }
+        input.value = value || input.defaultValue;
+        if (!input.validity.valid) input.value = input.defaultValue;
+        style.setProperty(property, input.value);
+    }
+    controls.hidden = false;
+}
+
+syncOcrAppearance();
+document.addEventListener("htmx:load", event => {
+    if (event.detail.elt.id === "workspace") syncOcrAppearance();
+});
+document.addEventListener("htmx:historyRestore", syncOcrAppearance);
+document.addEventListener("input", event => {
+    const input = event.target;
+    if (!input.matches("[data-ocr-appearance]") || !input.validity.valid)
+return;
+    const property = input.dataset.ocrAppearance;
+    document.documentElement.style.setProperty(property, input.value);
+    try {
+        localStorage.setItem(`ocr-appearance:${property}`, input.value);
+    } catch {
+        // The live preview also works without browser storage.
+    }
+});
+document.addEventListener("focusout", event => {
+    const input = event.target;
+    if (input.matches("[data-ocr-appearance]") && !input.validity.valid) {
+        syncOcrAppearance();
+    }
+});
 
 /** @type {WeakMap<HTMLFormElement, {sent: string|null, pending: boolean, error: string}>} */
 const ocrSaves = new WeakMap();
