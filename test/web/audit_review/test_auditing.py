@@ -372,7 +372,7 @@ def test_audit_persists_findings_preserving_text_and_human_state(
 
     client = create_app(restored).test_client()
     page = client.get("/").get_data(as_text=True)
-    assert "Verify proofreading" in page and "Verify audit block" in page
+    assert "Verify proofreading" in page and "Verify auditing" in page
     with client.session_transaction() as session:
         csrf = session["csrf"]
     audit_content = restored.audit_json_path.read_bytes()

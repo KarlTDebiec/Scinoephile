@@ -351,7 +351,7 @@ document.addEventListener("focusout", event => {
 // Operations replace the workspace; preserve incomplete subtitle drafts.
 document.addEventListener("submit", event => {
     if (!event.target.matches(
-            "#proofreading form, #auditing form, [data-verify-matching-rows], [data-reaudit], [data-reproofread]"
+            "#proofreading form, #auditing form, [data-verify-visible], [data-reaudit], [data-reproofread]"
         )) return;
     if (!hasReviewDrafts()) return;
     event.preventDefault();

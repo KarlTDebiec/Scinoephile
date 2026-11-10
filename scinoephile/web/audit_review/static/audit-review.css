@@ -121,7 +121,12 @@ nav[aria-label="Operations"] {
   align-items: center;
   gap: .5rem;
 
-  & > form > button, & > button {
+  & > .operation-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  & > .operation-group button, & > button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -129,7 +134,7 @@ nav[aria-label="Operations"] {
     min-height: 2.5rem;
     &[hidden] { display: none; }
   }
-  & > form[data-verify-matching-rows] button.is-confirming {
+  & [data-verify-visible] button.is-confirming {
     color: var(--warning-text);
     background: var(--warning-background);
     border-color: var(--warning-border);
@@ -157,13 +162,13 @@ nav[aria-label="Operations"] {
   grid-column: 2;
   grid-row: 1 / 3;
   gap: .5rem;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) 2.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) 2.5rem;
   grid-template-rows: 2.5rem 2.5rem;
 
-  & input[type=search] { grid-column: 1 / 4; grid-row: 2; min-width: 0; }
-  & > button { grid-column: 4; grid-row: 2; }
+  & input[type=search] { grid-column: 1 / 3; grid-row: 2; min-width: 0; }
+  & > button { grid-column: 3; grid-row: 2; }
   .has-live-search & {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     & > button { display: none; }
   }
 }

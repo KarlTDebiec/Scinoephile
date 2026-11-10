@@ -3,7 +3,7 @@
   <header>
     <h1>{{ title }}</h1>
     <div id="messages" role="status" aria-live="polite"></div>
-    {% set active = filters.verification != 'all' or filters.changes != 'all' or filters.finding != 'all' or filters.q %}
+    {% set active = filters.proofreading != 'all' or filters.audit != 'all' or filters.q %}
     <nav class="editor-toolbar" aria-label="Filters">
       <form method="get"
             action="{{ url_for('index') }}"
@@ -49,46 +49,57 @@
       {% include "_summary.html" %}
     </nav>
     <nav class="editor-toolbar" aria-label="Operations">
-      <form method="get"
-            action="{{ url_for('index') }}"
-            hx-get="{{ url_for('index') }}"
-            hx-target="#workspace"
-            hx-swap="outerHTML"
-            hx-push-url="false"
-            hx-sync="#workspace:queue all"
-            data-reproofread>
-        {% for name in ['changes', 'finding', 'verification', 'q'] %}
-          <input type="hidden" name="{{ name }}" value="{{ filters|attr(name) }}">
-        {% endfor %}
-        <input type="hidden"
-               name="reproofread"
-               value="{{ 0 if show_proofreading else 1 }}">
-        <input type="hidden" name="reaudit" value="{{ 1 if show_auditing else 0 }}">
-        <button type="submit"
-                title="Show or hide proofreading"
-                aria-expanded="{{ 'true' if show_proofreading else 'false' }}">{{ icon('text-box-clock-outline' if proofreading.status == 'running' else ('text-box-refresh-outline' if reproofreading else 'text-box-eye-outline')) }}{{ 'Re-proofread' if reproofreading else 'Proofread' }}</button>
-      </form>
-      <form method="get"
-            action="{{ url_for('index') }}"
-            hx-get="{{ url_for('index') }}"
-            hx-target="#workspace"
-            hx-swap="outerHTML"
-            hx-push-url="false"
-            hx-sync="#workspace:queue all"
-            data-reaudit>
-        {% for name in ['changes', 'finding', 'verification', 'q'] %}
-          <input type="hidden" name="{{ name }}" value="{{ filters|attr(name) }}">
-        {% endfor %}
-        <input type="hidden" name="reaudit" value="{{ 0 if show_auditing else 1 }}">
-        <input type="hidden"
-               name="reproofread"
-               value="{{ 1 if show_proofreading else 0 }}">
-        {% set full_audit_only = auditing.has_output and not auditing.available %}
-        <button type="submit"
-                title="Show or hide auditing"
-                aria-expanded="{{ 'true' if show_auditing else 'false' }}"{% if not has_output %} disabled{% endif %}>{{ icon('clipboard-text-clock-outline' if auditing.status == 'running' else ('clipboard-refresh-outline' if full_audit_only else 'clipboard-text-eye-outline')) }}{{ 'Re-audit' if full_audit_only else 'Audit' }}</button>
-      </form>
-      {% include "_verification.html" %}
+      <div class="operation-group">
+        <form method="get"
+              action="{{ url_for('index') }}"
+              hx-get="{{ url_for('index') }}"
+              hx-target="#workspace"
+              hx-swap="outerHTML"
+              hx-push-url="false"
+              hx-include="#loaded-through"
+              hx-sync="#workspace:queue all"
+              data-reproofread>
+          {% for name in ['proofreading', 'audit', 'q'] %}
+            <input type="hidden" name="{{ name }}" value="{{ filters|attr(name) }}">
+          {% endfor %}
+          <input type="hidden"
+                 name="reproofread"
+                 value="{{ 0 if show_proofreading else 1 }}">
+          <input type="hidden" name="reaudit" value="{{ 1 if show_auditing else 0 }}">
+          <button type="submit"
+                  title="Show or hide proofreading"
+                  aria-expanded="{{ 'true' if show_proofreading else 'false' }}">{{ icon('text-box-clock-outline' if proofreading.status == 'running' else ('text-box-refresh-outline' if reproofreading else 'text-box-eye-outline')) }}Proofread</button>
+        </form>
+        {% with operation="proofreading" %}
+          {% include "_verification.html" %}
+        {% endwith %}
+      </div>
+      <div class="operation-group">
+        <form method="get"
+              action="{{ url_for('index') }}"
+              hx-get="{{ url_for('index') }}"
+              hx-target="#workspace"
+              hx-swap="outerHTML"
+              hx-push-url="false"
+              hx-include="#loaded-through"
+              hx-sync="#workspace:queue all"
+              data-reaudit>
+          {% for name in ['proofreading', 'audit', 'q'] %}
+            <input type="hidden" name="{{ name }}" value="{{ filters|attr(name) }}">
+          {% endfor %}
+          <input type="hidden" name="reaudit" value="{{ 0 if show_auditing else 1 }}">
+          <input type="hidden"
+                 name="reproofread"
+                 value="{{ 1 if show_proofreading else 0 }}">
+          {% set full_audit_only = auditing.has_output and not auditing.available %}
+          <button type="submit"
+                  title="Show or hide auditing"
+                  aria-expanded="{{ 'true' if show_auditing else 'false' }}"{% if not has_output %} disabled{% endif %}>{{ icon('clipboard-text-clock-outline' if auditing.status == 'running' else ('clipboard-refresh-outline' if full_audit_only else 'clipboard-text-eye-outline')) }}Audit</button>
+        </form>
+        {% with operation="audit" %}
+          {% include "_verification.html" %}
+        {% endwith %}
+      </div>
       <button id="toggle-blocks"
               type="button"
               data-toggle-blocks

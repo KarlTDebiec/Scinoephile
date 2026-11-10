@@ -16,8 +16,8 @@ from scinoephile.operations.review_audit.filters import AuditFilters
 from scinoephile.operations.review_audit.project import ReviewAuditProject
 from scinoephile.operations.review_audit.rows import AuditRow
 from scinoephile.operations.review_audit.verification import (
-    get_verification_rows,
-    get_verification_token,
+    VerificationSelection,
+    get_verification_selection,
 )
 
 __all__ = [
@@ -81,10 +81,8 @@ class AuditPage:
     """Verified current source rows."""
     matching: int
     """Rows matching all filters, including unloaded blocks."""
-    verifiable_blocks: int
-    """Complete unverified blocks eligible for bulk verification."""
-    verification_token: str
-    """Digest of the full filtered selection and its row versions."""
+    verification: dict[str, VerificationSelection]
+    """Complete visible verification candidates for each operation."""
     filter_counts: dict[str, dict[str, int]]
     """Dependent option counts before pagination."""
     last_block: int
@@ -99,6 +97,7 @@ def get_audit_page(
     *,
     after: int = 0,
     through: int | None = None,
+    append: bool = True,
 ) -> AuditPage:
     """Build a block batch or an already loaded prefix from one row snapshot.
 
@@ -107,6 +106,7 @@ def get_audit_page(
         filters: requested filters
         after: stable source block cursor before a new batch
         through: inclusive cursor for an already loaded prefix, or None for a batch
+        append: whether to return only new blocks after the cursor
     Returns:
         loaded blocks and complete filtered progress counts
     """
@@ -136,7 +136,14 @@ def get_audit_page(
         last_block = through
     elif visible_blocks:
         last_block = visible_blocks[-1].number
-    verification_rows = get_verification_rows(rows, filters)
+    if not append:
+        visible_blocks = [block for block in blocks if block.number <= last_block]
+    verification = {
+        operation: get_verification_selection(
+            rows, filters, through=last_block, proofreading=proofreading
+        )
+        for operation, proofreading in (("proofreading", True), ("audit", False))
+    }
     return AuditPage(
         all_rows=rows,
         rows=[row for block in visible_blocks for row in block.rows],
@@ -145,8 +152,7 @@ def get_audit_page(
         total=len(rows),
         verified=sum(row.verified for row in rows),
         matching=len(matching),
-        verifiable_blocks=len({row.block_number for row in verification_rows}),
-        verification_token=get_verification_token(verification_rows),
+        verification=verification,
         filter_counts=filters.counts(rows),
         last_block=last_block,
         has_more=any(block.number > last_block for block in blocks),
@@ -193,7 +199,11 @@ def get_row_time_label(row: AuditRow) -> str:
 
 
 def get_view_context(
-    audit: ReviewAuditProject, filters: AuditFilters, *, page: AuditPage | None = None
+    audit: ReviewAuditProject,
+    filters: AuditFilters,
+    *,
+    page: AuditPage | None = None,
+    append: bool = False,
 ) -> dict[str, object]:
     """Build a bounded view, stable next cursor, and native save context.
 
@@ -201,6 +211,7 @@ def get_view_context(
         audit: open review audit project
         filters: requested filter state
         page: existing page snapshot when rendering a save response
+        append: whether to render only new blocks for an incremental load
     Returns:
         template context
     """
@@ -210,11 +221,12 @@ def get_view_context(
         if flask.request.args.get("through"):
             through = max(0, int(flask.request.args["through"]))
         after = max(0, int(flask.request.args.get("after", "0")))
-        page = get_audit_page(audit.rows(), filters, after=after, through=through)
+        page = get_audit_page(
+            audit.rows(), filters, after=after, through=through, append=append
+        )
     values = asdict(page.filters)
     has_output = audit.outfile_path.exists()
     return {
-        "verification_token": page.verification_token,
         "has_output": has_output,
         "editing_blocked": not has_output or audit.job_running,
         "input_changed": audit.input_changed,

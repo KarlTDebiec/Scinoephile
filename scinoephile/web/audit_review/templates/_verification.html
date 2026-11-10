@@ -1,28 +1,25 @@
 {% from '_icons.html' import icon %}
-<form id="verify-matching-rows"
+{% set selection = page.verification[operation] %}
+{% set pending = verification_pending|default('') == operation %}
+<form id="verify-visible-{{ operation }}"
       method="post"
-      action="{{ url_for('verify_matching_rows') }}?{{ query }}"
-      hx-post="{{ url_for('verify_matching_rows') }}?{{ query }}"
+      action="{{ url_for('verify_visible', operation=operation) }}?{{ query }}"
+      hx-post="{{ url_for('verify_visible', operation=operation) }}?{{ query }}"
       hx-target="this"
       hx-swap="outerHTML"
       hx-sync="#workspace:queue all"
-      data-verify-matching-rows{% if oob|default(false) %}
+      data-verify-visible{% if oob|default(false) %}
       hx-swap-oob="outerHTML"{% endif %}>
   <input type="hidden" name="csrf" value="{{ csrf }}">
-  <input id="verification-selection"
-         type="hidden"
-         name="selection"
-         value="{{ verification_token }}">
-  {% if verification_pending|default(false) %}
-    <input type="hidden" name="confirm" value="on">
-  {% endif %}
-  <button type="submit"{% if verification_pending|default(false) %} class="is-confirming" title="Confirm verification"{% else %} title="Verify completed audit blocks whose subtitles all match the current filters"{% endif %}
-          {% if not page.verifiable_blocks or editing_blocked %} disabled{% endif %}>
+  <input type="hidden" name="selection" value="{{ selection.token }}">
+  {% if pending %}<input type="hidden" name="confirm" value="on">{% endif %}
+  <button type="submit"{% if pending %} class="is-confirming" title="Confirm verification"{% else %} title="Verify complete visible {{ operation }} blocks"{% endif %}
+          {% if not selection.blocks or editing_blocked %} disabled{% endif %}>
     {{ icon("checkbox-multiple-marked-outline") }}
-    {% if verification_pending|default(false) %}
-      Verify {{ '{:,}'.format(page.verifiable_blocks) }} audit block{% if page.verifiable_blocks != 1 %}s{% endif %}
+    {% if pending %}
+      Verify {{ '{:,}'.format(selection.blocks|length) }} {{ operation }} block{% if selection.blocks|length != 1 %}s{% endif %}
     {% else %}
-      Verify matching audit blocks
+      Verify visible {{ operation }}
     {% endif %}
   </button>
 </form>

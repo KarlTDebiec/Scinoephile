@@ -40,18 +40,22 @@ def register_editor_routes(app: FlaskApp, audit: ReviewAuditProject):
         Returns:
             rendered audit page
         """
+        is_htmx = (
+            flask.request.headers.get("HX-Request") == "true"
+            and flask.request.headers.get("HX-History-Restore-Request") != "true"
+        )
+        append = is_htmx and flask.request.headers.get("HX-Target") == "load-more"
         try:
-            view = get_view_context(audit, _parse_filters(flask.request.args))
+            view = get_view_context(
+                audit, _parse_filters(flask.request.args), append=append
+            )
         except ValueError as exc:
             return flask.render_template("error.html", message=str(exc)), 400
         template = "index.html"
-        if (
-            flask.request.headers.get("HX-Request") == "true"
-            and flask.request.headers.get("HX-History-Restore-Request") != "true"
-        ):
+        if append:
+            template = "_batch.html"
+        elif is_htmx:
             template = "_workspace.html"
-            if flask.request.headers.get("HX-Target") == "load-more":
-                template = "_batch.html"
         return flask.render_template(template, **view)
 
     @app.post("/rows/<key>")
@@ -149,9 +153,8 @@ def _parse_filters(values: Mapping[str, str]) -> AuditFilters:
         requested filters
     """
     return AuditFilters(
-        verification=values.get("verification", "all"),
-        changes=values.get("changes", "all"),
-        finding=values.get("finding", "all"),
+        proofreading=values.get("proofreading", "all"),
+        audit=values.get("audit", "all"),
         q=values.get("q", ""),
     )
 
@@ -194,10 +197,12 @@ def _register_verification_routes(app: FlaskApp, audit: ReviewAuditProject):
     """
     flask = import_flask()
 
-    @app.post("/verify-matching-rows")
-    def verify_matching_rows():
+    @app.post("/verify-visible/<any(proofreading,audit):operation>")
+    def verify_visible(operation: str):
         """Prepare bulk verification, then apply it on the confirmation click.
 
+        Arguments:
+            operation: which case file to verify
         Returns:
             confirmation control, updated workspace, ordinary redirect, or error
         Raises:
@@ -205,20 +210,30 @@ def _register_verification_routes(app: FlaskApp, audit: ReviewAuditProject):
         """
         try:
             filters = _parse_filters(flask.request.args)
-            selection = flask.request.form.get("selection", "")
+            token = flask.request.form.get("selection", "")
+            through = max(0, int(flask.request.args.get("through", "0")))
             if flask.request.form.get("confirm") != "on":
-                view = get_view_context(audit, filters)
-                if selection != view["verification_token"]:
+                page = get_audit_page(audit.rows(), filters, through=through)
+                view = get_view_context(audit, filters, page=page)
+                if token != page.verification[operation].token:
                     raise ValueError(
-                        "The matching blocks changed. Reload before verifying."
+                        "The visible blocks changed. Reload before verifying."
                     )
                 template = "index.html"
                 if flask.request.headers.get("HX-Request") == "true":
                     template = "_verification.html"
                 return flask.render_template(
-                    template, **view, verification_pending=True
+                    template,
+                    **view,
+                    operation=operation,
+                    verification_pending=operation,
                 )
-            audit.verify_matching_rows(filters, selection)
+            audit.verify_visible(
+                filters,
+                token,
+                through=through,
+                proofreading=operation == "proofreading",
+            )
         except (ValueError, ScinoephileError) as exc:
             if flask.request.headers.get("HX-Request") == "true":
                 return (
@@ -235,4 +250,6 @@ def _register_verification_routes(app: FlaskApp, audit: ReviewAuditProject):
                 200,
                 {"HX-Retarget": "#workspace", "HX-Reswap": "outerHTML"},
             )
-        return flask.redirect(f"/?{urlencode(asdict(filters))}", code=303)
+        return flask.redirect(
+            f"/?{urlencode(dict(asdict(filters), through=through))}", code=303
+        )

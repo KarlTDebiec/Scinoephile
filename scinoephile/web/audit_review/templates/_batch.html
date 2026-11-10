@@ -4,3 +4,6 @@
 {% include "_load_more.html" %}
 {% set oob = true %}
 {% include "_stream_state.html" %}
+{% for operation in ["proofreading", "audit"] %}
+  {% include "_verification.html" %}
+{% endfor %}

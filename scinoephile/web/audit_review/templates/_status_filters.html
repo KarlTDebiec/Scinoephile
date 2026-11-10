@@ -1,4 +1,11 @@
-{% from '_icons.html' import status_select, proofreading_options, audit_options, verification_options %}
-{{ status_select('changes', 'Proofreading status', proofreading_options, filters.changes, include_all=true, all_label='All proofreading statuses', counts=page.filter_counts['changes'], oob=oob|default(false)) }}
-{{ status_select('finding', 'Audit status', audit_options, filters.finding, include_all=true, all_label='All audit statuses', counts=page.filter_counts['finding'], oob=oob|default(false)) }}
-{{ status_select('verification', 'Audit verification status', verification_options, filters.verification, include_all=true, all_label='All verification statuses', counts=page.filter_counts['verification'], oob=oob|default(false)) }}
+{% from '_icons.html' import status_select, proofreading_options, audit_options %}
+{% for name, label, statuses in [('proofreading', 'Proofreading', proofreading_options), ('audit', 'Audit', audit_options)] %}
+  {% set options = namespace(values=[]) %}
+  {% for value, text, symbol in statuses %}
+    {% set options.values = options.values + [(value, text, symbol)] %}
+    {% for verification in ['unverified', 'verified'] %}
+      {% set options.values = options.values + [(value ~ '-' ~ verification, text ~ ', ' ~ verification, symbol)] %}
+    {% endfor %}
+  {% endfor %}
+  {{ status_select(name, label ~ ' filter', options.values, filters|attr(name), include_all=true, all_label='All ' ~ label|lower ~ ' statuses', counts=page.filter_counts[name], oob=oob|default(false)) }}
+{% endfor %}

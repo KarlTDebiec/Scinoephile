@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from itertools import groupby
 from pathlib import Path
 
 from scinoephile.core import Language
@@ -224,13 +225,42 @@ class ProofreadingDecisions:
         if verified and not self._get_case_indexes(index):
             self._add_case(index)
         for case_index in self._get_case_indexes(index):
-            data = self.cases[case_index].model_dump(mode="json")
-            data["verified"] = verified
-            if verified and data["answer"] is None:
-                data["answer"] = {"revisions": []}
-            if not verified:
-                data["few_shot"] = False
-            self.cases[case_index] = self.case_cls.model_validate(data)
+            self._set_case_verified(case_index, verified=verified)
+
+    def verify_blocks(self, ranges: list[tuple[int, int]]):
+        """Approve existing cases and record unchanged answers for uncovered subtitles.
+
+        Arguments:
+            ranges: complete visible block bounds, zero-based and end-exclusive
+        """
+        selected = {index for first, last in ranges for index in range(first, last)}
+        uncovered = selected.copy()
+        for case_index, starts in self.locations.items():
+            case = self.cases[case_index]
+            covered = {
+                index
+                for start in starts
+                for index in range(start, start + len(case.query.subtitles))
+            }
+            if covered & selected:
+                uncovered.difference_update(covered)
+                if not case.verified:
+                    self._set_case_verified(case_index, verified=True)
+
+        new_cases = {}
+        for first, last in ranges:
+            for missing, group in groupby(
+                range(first, last), key=uncovered.__contains__
+            ):
+                if missing:
+                    indexes = list(group)
+                    case = self._build_unchanged_case(
+                        indexes[0], indexes[-1] + 1, verified=True
+                    )
+                    new_cases[case.query.key] = case
+        if new_cases:
+            self.cases.extend(new_cases.values())
+            self._index_cases()
 
     def _add_case(self, index: int):
         """Create a native query for the source pause block containing a row.
@@ -238,28 +268,36 @@ class ProofreadingDecisions:
         Arguments:
             index: zero-based source subtitle index
         """
-        first = 0
-        for block in self.original.blocks:
-            if first <= index < first + len(block):
-                self.cases.append(
-                    self.case_cls.model_validate(
-                        {
-                            "query": {
-                                "subtitles": [
-                                    {
-                                        "index": offset,
-                                        "text": subtitle.text_with_newline,
-                                    }
-                                    for offset, subtitle in enumerate(block, 1)
-                                ]
-                            },
-                            "answer": {"revisions": []},
-                        }
-                    )
-                )
+        for first, last in Series.get_block_indexes_by_pause(self.original):
+            if first <= index < last:
+                self.cases.append(self._build_unchanged_case(first, last))
                 self._index_cases()
                 return
-            first += len(block)
+
+    def _build_unchanged_case(
+        self, first: int, last: int, *, verified: bool = False
+    ) -> ReviewTestCase:
+        """Build a native case for subtitles with no proofreading revisions.
+
+        Arguments:
+            first: zero-based first subtitle index
+            last: exclusive subtitle index
+            verified: whether a human has approved the answer
+        Returns:
+            native case for the selected subtitle range
+        """
+        return self.case_cls.model_validate(
+            {
+                "query": {
+                    "subtitles": [
+                        {"index": offset, "text": text}
+                        for offset, text in enumerate(self.texts[first:last], 1)
+                    ]
+                },
+                "answer": {"revisions": []},
+                "verified": verified,
+            }
+        )
 
     def _get_case_indexes(self, index: int) -> list[int]:
         """Find active cases covering a source subtitle.
@@ -291,3 +329,18 @@ class ProofreadingDecisions:
             )
             if starts:
                 self.locations[case_index] = starts
+
+    def _set_case_verified(self, case_index: int, *, verified: bool):
+        """Update one case using the standard test-case verification rules.
+
+        Arguments:
+            case_index: index into the active case list
+            verified: whether a human has approved the answer
+        """
+        data = self.cases[case_index].model_dump(mode="json")
+        data["verified"] = verified
+        if verified and data["answer"] is None:
+            data["answer"] = {"revisions": []}
+        if not verified:
+            data["few_shot"] = False
+        self.cases[case_index] = self.case_cls.model_validate(data)

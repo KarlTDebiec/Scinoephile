@@ -41,21 +41,54 @@ def test_dependent_filter_counts(tmp_path: Path, monkeypatch: MonkeyPatch):
     audit = _make_project(tmp_path)
     rows = audit.rows()
     rows = [rows[0], replace(rows[1], verified=True)]
-    counts = AuditFilters(changes="unchanged").counts(rows)
-    assert counts["changes"] == {"all": 2, "changed": 1, "unchanged": 1}
-    assert counts["finding"] == {"all": 1, "unaudited": 0, "review": 0, "ok": 1}
-    assert counts["verification"] == {"all": 1, "verified": 1, "unverified": 0}
-    counts = AuditFilters(changes="unchanged", finding="review").counts(rows)
-    assert counts["changes"] == {"all": 1, "changed": 1, "unchanged": 0}
-    assert counts["finding"]["ok"] == 1
-    assert counts["verification"]["all"] == 0
+    counts = AuditFilters(proofreading="unchanged").counts(rows)
+    assert counts["proofreading"] == {
+        "all": 2,
+        "unchanged": 1,
+        "unchanged-unverified": 1,
+        "unchanged-verified": 0,
+        "changed": 1,
+        "changed-unverified": 0,
+        "changed-verified": 1,
+    }
+    assert counts["audit"]["ok"] == counts["audit"]["ok-verified"] == 1
+    assert counts["audit"]["ok-unverified"] == counts["audit"]["review"] == 0
+
+    filters = AuditFilters(proofreading="changed-verified", audit="review-unverified")
+    assert [filters.matches(row) for row in rows] == [True, False]
+    counts = filters.counts(rows)
+    assert counts["audit"]["review"] == counts["audit"]["review-unverified"] == 1
+    assert counts["proofreading"]["changed-verified"] == 1
+    assert counts["proofreading"]["unchanged"] == 0
     counts = AuditFilters(q="model explanation").counts(rows)
-    assert counts["changes"]["all"] == 1
-    assert counts["finding"]["review"] == 1
-    assert AuditFilters(q="no matching subtitles").counts(rows)["finding"]["all"] == 0
+    assert counts["proofreading"]["all"] == counts["audit"]["review"] == 1
+    assert AuditFilters(q="no matching subtitles").counts(rows)["audit"]["all"] == 0
     monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
     page = get_audit_page(audit.rows(), AuditFilters(), after=1)
-    assert page.filter_counts["changes"]["all"] == 2
+    assert page.filter_counts["proofreading"]["all"] == 2
+
+    client = create_app(audit).test_client()
+    html = BeautifulSoup(client.get("/").data, "html.parser")
+    selectors = html.select("#filters select")
+    assert [select["name"] for select in selectors] == ["proofreading", "audit"]
+    for select in selectors:
+        assert [option["value"] for option in select.select("option")] == list(
+            page.filter_counts[str(select["name"])]
+        )
+    toolbar = html.select('nav[aria-label="Operations"] .operation-group button')
+    assert [button.get_text(strip=True) for button in toolbar] == [
+        "Proofread",
+        "Verify visible proofreading",
+        "Audit",
+        "Verify visible audit",
+    ]
+    footer = html.select_one(".audit-row footer")
+    assert footer is not None
+    assert [field["name"] for field in footer.select("input, select")] == [
+        "proofreading_verified",
+        "finding",
+        "verified",
+    ]
 
 
 def test_edit_updates_native_answers_and_survives_restart(tmp_path: Path):
@@ -89,9 +122,7 @@ def test_edit_updates_native_answers_and_survives_restart(tmp_path: Path):
     assert restored.rows()[0].verified
     assert not restored.rows()[0].proofreading_verified
     assert (
-        get_audit_page(
-            restored.rows(), AuditFilters(verification="unverified")
-        ).matching
+        get_audit_page(restored.rows(), AuditFilters(audit="ok-unverified")).matching
         == 1
     )
     saved_json = json.loads(audit.json_path.read_text())
@@ -363,11 +394,11 @@ def test_htmx_updates_one_row_without_replacing_other_forms(tmp_path: Path):
     """
     audit = _make_project(tmp_path)
     client = create_app(audit).test_client()
-    client.get("/?verification=unverified")
+    client.get("/?audit=review-unverified")
     with client.session_transaction() as session:
         csrf = session["csrf"]
     response = client.post(
-        f"/rows/{audit.rows()[0].key}?verification=unverified",
+        f"/rows/{audit.rows()[0].key}?audit=review-unverified",
         data=dict(
             csrf=csrf,
             version="0",
@@ -655,7 +686,7 @@ def test_blocks_follow_json_requests_and_keep_filtered_context(tmp_path: Path):
     )
     page = get_audit_page(audit.rows(), AuditFilters())
     assert len(page.rows) == 2 and len(page.blocks) == 1
-    filtered = get_audit_page(audit.rows(), AuditFilters(changes="changed"))
+    filtered = get_audit_page(audit.rows(), AuditFilters(proofreading="changed"))
     block = filtered.blocks[0]
     assert block.count == 2 and len(block.rows) == 1
     assert block.first_index == 1 and block.last_index == 2
@@ -677,7 +708,7 @@ def test_search_by_exact_block_number(tmp_path: Path, monkeypatch: MonkeyPatch):
     assert get_audit_page(audit.rows(), AuditFilters(q="block 20")).matching == 0
     assert (
         get_audit_page(
-            audit.rows(), AuditFilters(q="block 2", changes="changed")
+            audit.rows(), AuditFilters(q="block 2", proofreading="changed")
         ).matching
         == 0
     )
@@ -831,6 +862,13 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
         is not None
     )
     assert 'hx-trigger="intersect once"' not in batch
+    appended = BeautifulSoup(batch, "html.parser")
+    for operation in ("proofreading", "audit"):
+        form = appended.select_one(f"#verify-visible-{operation}")
+        assert form is not None and form["hx-swap-oob"] == "outerHTML"
+        assert "through=8" in str(form["action"])
+    native = client.get("/?after=5").get_data(as_text=True)
+    assert native.count('class="audit-row"') == 8
     prefix = get_audit_page(audit.rows(), AuditFilters(), through=8)
     assert len(prefix.blocks) == 8 and not prefix.has_more
 
@@ -1029,34 +1067,35 @@ def test_autosave_retains_incrementally_loaded_scope(
     assert ordinary.status_code == 303 and "through=2" in ordinary.location
 
 
-def test_bulk_verification_covers_unloaded_matches(
+def test_bulk_verification_only_covers_loaded_blocks(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Verify the complete filter selection without rewriting subtitle artifacts.
+    """Approve the loaded audit blocks without rewriting subtitle artifacts.
 
     Arguments:
         tmp_path: isolated project directory
         monkeypatch: configure a single block per page
     """
-    audit = _materialize_output(_make_project(tmp_path))
+    audit = _make_project(tmp_path)
     monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
-    filters = AuditFilters(verification="unverified")
-    assert len(get_audit_page(audit.rows(), filters).rows) == 1
+    filters = AuditFilters()
+    page = get_audit_page(audit.rows(), filters)
+    assert len(page.rows) == 1
     before = audit.rows()
-    assert audit.json_path is not None
     artifacts = {
         p: p.read_bytes()
         for p in (audit.infile_path, audit.outfile_path, audit.json_path)
     }
     assert (
-        audit.verify_matching_rows(
-            filters, get_audit_page(audit.rows(), filters).verification_token
+        audit.verify_visible(
+            filters,
+            page.verification["audit"].token,
+            through=page.last_block,
+            proofreading=False,
         )
-        == 2
+        == 1
     )
-    assert get_audit_page(audit.rows(), filters).matching == 0
-    for old, current in zip(before, audit.rows(), strict=True):
-        assert current == replace(old, verified=True, version=old.version + 1)
+    assert audit.rows() == [replace(before[0], verified=True, version=1), before[1]]
     assert all(p.read_bytes() == content for p, content in artifacts.items())
     reopened = ReviewAuditProject(
         audit.infile_path,
@@ -1064,7 +1103,57 @@ def test_bulk_verification_covers_unloaded_matches(
         json_path=audit.json_path,
         language=Language.eng,
     )
-    assert all(row.verified for row in reopened.rows())
+    assert [row.verified for row in reopened.rows()] == [True, False]
+
+
+def test_bulk_proofreading_creates_cases_only_for_complete_visible_blocks(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Approve complete visible proofreading and leave the audit JSON untouched.
+
+    Arguments:
+        tmp_path: isolated project directory
+        monkeypatch: configure a single block per page
+    """
+    audit = _make_project(tmp_path, with_json=False)
+    source = audit.infile_path.read_text(encoding="utf-8")
+    source += "\n3\n00:00:10,000 --> 00:00:11,000\nUnloaded.\n"
+    audit.infile_path.write_text(source, encoding="utf-8")
+    audit.outfile_path.write_text(source, encoding="utf-8")
+    audit = ReviewAuditProject(
+        audit.infile_path, audit.outfile_path, language=Language.eng
+    )
+    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    client = create_app(audit).test_client()
+    filtered = BeautifulSoup(client.get("/?q=Hello").data, "html.parser")
+    button = filtered.select_one("#verify-visible-proofreading button")
+    assert button is not None and button.has_attr("disabled")
+
+    page = BeautifulSoup(client.get("/").data, "html.parser")
+    with client.session_transaction() as session:
+        csrf = session["csrf"]
+    form = page.select_one("#verify-visible-proofreading")
+    assert form is not None
+    selection = form.select_one("input[name=selection]")
+    assert selection is not None
+    token = str(selection["value"])
+    url = str(form["action"])
+    headers = {"HX-Request": "true"}
+    audit_before = audit.audit_json_path.read_bytes()
+    output_before = audit.outfile_path.read_bytes()
+    prepared = client.post(url, data=dict(csrf=csrf, selection=token), headers=headers)
+    assert "Verify 1 proofreading block" in prepared.get_data(as_text=True)
+    assert not any(row.proofreading_verified for row in audit.rows())
+    result = client.post(
+        url, data=dict(csrf=csrf, selection=token, confirm="on"), headers=headers
+    )
+    assert result.status_code == 200
+    assert [row.proofreading_verified for row in audit.rows()] == [True, True, False]
+    assert audit.audit_json_path.read_bytes() == audit_before
+    assert audit.outfile_path.read_bytes() == output_before
+    cases = json.loads(audit.json_path.read_bytes())
+    assert len(cases) == 1 and cases[0]["verified"]
+    assert cases[0]["answer"] == {"revisions": []}
 
 
 def test_bulk_verification_filters_and_stale_selection(tmp_path: Path):
@@ -1074,17 +1163,15 @@ def test_bulk_verification_filters_and_stale_selection(tmp_path: Path):
         tmp_path: isolated project directory
     """
     audit = _make_project(tmp_path)
-    filters = AuditFilters(
-        changes="unchanged", finding="ok", verification="unverified", q="Same"
-    )
-    token = get_audit_page(audit.rows(), filters).verification_token
+    filters = AuditFilters(proofreading="unchanged", audit="ok-unverified", q="Same")
+    token = get_audit_page(audit.rows(), filters).verification["audit"].token
     with patch.object(audit, "_auditing_running", True):
         with raises(ValueError, match="Wait for proofreading"):
-            audit.verify_matching_rows(filters, token)
-    assert audit.verify_matching_rows(filters, token) == 1
+            audit.verify_visible(filters, token, through=2, proofreading=False)
+    assert audit.verify_visible(filters, token, through=2, proofreading=False) == 1
     assert not audit.rows()[0].verified and audit.rows()[1].verified
-    with raises(ValueError, match="matching blocks changed"):
-        audit.verify_matching_rows(filters, token)
+    with raises(ValueError, match="visible blocks changed"):
+        audit.verify_visible(filters, token, through=2, proofreading=False)
     assert audit.rows()[0].version == 0
     assert audit.rows()[1].version == 1
 
@@ -1102,12 +1189,12 @@ def test_bulk_verification_http_and_native_form(
     monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
     client = create_app(audit).test_client()
     client.get("/")
-    assert client.post("/verify-matching-rows").status_code == 403
+    assert client.post("/verify-visible/audit?through=2").status_code == 403
     with client.session_transaction() as session:
         csrf = session["csrf"]
-    filters = AuditFilters(changes="unchanged", finding="ok", verification="unverified")
-    url = "/verify-matching-rows?changes=unchanged&finding=ok&verification=unverified"
-    token = get_audit_page(audit.rows(), filters).verification_token
+    filters = AuditFilters(proofreading="unchanged", audit="ok-unverified")
+    url = "/verify-visible/audit?proofreading=unchanged&audit=ok-unverified&through=2"
+    token = get_audit_page(audit.rows(), filters).verification["audit"].token
     stale = client.post(
         url, data=dict(csrf=csrf, selection="stale"), headers={"HX-Request": "true"}
     )
@@ -1132,10 +1219,12 @@ def test_bulk_verification_http_and_native_form(
     assert "No rows match" in result.get_data(as_text=True)
     assert not audit.rows()[0].verified and audit.rows()[1].verified
     native = client.post(
-        "/verify-matching-rows",
+        "/verify-visible/audit?through=1",
         data=dict(
             csrf=csrf,
-            selection=get_audit_page(audit.rows(), AuditFilters()).verification_token,
+            selection=get_audit_page(audit.rows(), AuditFilters())
+            .verification["audit"]
+            .token,
         ),
     )
     assert native.status_code == 200
@@ -1144,15 +1233,17 @@ def test_bulk_verification_http_and_native_form(
     assert "Verify 1 audit block" in native_confirmation
     assert not audit.rows()[0].verified
     native = client.post(
-        "/verify-matching-rows",
+        "/verify-visible/audit?through=1",
         data=dict(
             csrf=csrf,
-            selection=get_audit_page(audit.rows(), AuditFilters()).verification_token,
+            selection=get_audit_page(audit.rows(), AuditFilters())
+            .verification["audit"]
+            .token,
             confirm="on",
         ),
     )
     assert native.status_code == 303
-    assert "changes=all" in native.location
+    assert "proofreading=all" in native.location
     assert all(row.verified for row in audit.rows())
 
 
@@ -1175,14 +1266,14 @@ def test_bulk_verification_confirmation_resets_and_rejects_stale_selection(
         path: path.read_bytes()
         for path in (audit.infile_path, audit.outfile_path, audit.json_path)
     }
-    token = get_audit_page(audit.rows(), AuditFilters()).verification_token
+    token = get_audit_page(audit.rows(), AuditFilters()).verification["audit"].token
     prepared = client.post(
-        "/verify-matching-rows", data=dict(csrf=csrf, selection=token)
+        "/verify-visible/audit?through=2", data=dict(csrf=csrf, selection=token)
     )
     assert 'name="confirm" value="on"' in prepared.get_data(as_text=True)
     assert audit.rows() == before
     assert all(path.read_bytes() == value for path, value in artifacts.items())
-    filtered = client.get("/?finding=ok").get_data(as_text=True)
+    filtered = client.get("/?audit=ok").get_data(as_text=True)
     assert 'name="confirm"' not in filtered
     row = audit.rows()[1]
     saved = client.post(
@@ -1199,14 +1290,12 @@ def test_bulk_verification_confirmation_resets_and_rejects_stale_selection(
     )
     assert saved.status_code == 200
     saved_html = saved.get_data(as_text=True)
-    assert 'id="verify-matching-rows"' in saved_html
+    assert 'id="verify-visible-audit"' in saved_html
     assert 'name="confirm"' not in saved_html
-    assert (
-        f'value="{get_audit_page(audit.rows(), AuditFilters()).verification_token}"'
-        in saved_html
-    )
+    selection = get_audit_page(audit.rows(), AuditFilters()).verification["audit"]
+    assert f'value="{selection.token}"' in saved_html
     stale = client.post(
-        "/verify-matching-rows",
+        "/verify-visible/audit?through=2",
         data=dict(csrf=csrf, selection=token, confirm="on"),
         headers={"HX-Request": "true"},
     )

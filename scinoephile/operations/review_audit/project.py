@@ -37,7 +37,7 @@ from .project_files import (
 )
 from .proofreading_decisions import ProofreadingDecisions
 from .rows import AuditRow, AuditStatus, build_audit_rows
-from .verification import get_verification_rows, get_verification_token
+from .verification import get_verification_selection
 
 __all__ = ["ReviewAuditProject"]
 
@@ -400,14 +400,18 @@ class ReviewAuditProject:
             self.decisions = decisions
             return changed
 
-    def verify_matching_rows(self, filters: AuditFilters, token: str) -> int:
-        """Verify complete audit blocks whose rows all match the current filters.
+    def verify_visible(
+        self, filters: AuditFilters, token: str, *, through: int, proofreading: bool
+    ) -> int:
+        """Verify complete eligible cases among the loaded and filtered subtitles.
 
         Arguments:
-            filters: filters applied to the full project
+            filters: active subtitle filters
             token: digest of the selected row identities and versions
+            through: last loaded block number
+            proofreading: approve proofreading cases instead of audit cases
         Returns:
-            number of newly verified blocks
+            number of verified blocks
         Raises:
             ValueError: if output is absent, work is active, or the selection changed
             ScinoephileError: if verification cannot be persisted
@@ -418,29 +422,35 @@ class ReviewAuditProject:
             if self._proofreading_running or self._auditing_running:
                 raise ValueError("Wait for proofreading or auditing to finish")
             self._check_file_hashes()
-            matching = get_verification_rows(self._rows, filters)
-            if token != get_verification_token(matching):
-                raise ValueError(
-                    "The matching blocks changed. Reload before verifying."
-                )
-            if not matching:
+            selection = get_verification_selection(
+                self._rows, filters, through=through, proofreading=proofreading
+            )
+            if token != selection.token:
+                raise ValueError("The visible blocks changed. Reload before verifying.")
+            if not selection.blocks:
                 return 0
 
-            rows = self._rows.copy()
-            cases = self._audit_cases.copy()
-            blocks = {row.block_number for row in matching}
-            for number in blocks:
-                first, last = self._block_ranges[number - 1]
-                rows[first:last] = [
-                    replace(row, verified=True, version=row.version + 1)
-                    for row in rows[first:last]
-                ]
-                cases[first + 1] = build_audit_case(rows[first:last])
+            ranges = [
+                (block[0].index - 1, block[-1].index) for block in selection.blocks
+            ]
             try:
-                self._save_audit_cases(cases, rows)
+                if proofreading:
+                    self._verify_proofreading_blocks(ranges)
+                else:
+                    rows = self._rows.copy()
+                    cases = self._audit_cases.copy()
+                    for first, last in ranges:
+                        rows[first:last] = [
+                            replace(row, verified=True, version=row.version + 1)
+                            for row in rows[first:last]
+                        ]
+                        cases[first + 1] = cases[first + 1].model_copy(
+                            update={"verified": True}
+                        )
+                    self._save_audit_cases(cases, rows)
             except OSError as exc:
                 raise ScinoephileError(f"Unable to save verification: {exc}") from exc
-            return len(blocks)
+            return len(ranges)
 
     def _check_file_hashes(self):
         """Reject changes made outside the active editor's write transaction.
@@ -658,3 +668,33 @@ class ReviewAuditProject:
         else:
             cases[first + 1] = case
         return cases
+
+    def _verify_proofreading_blocks(self, ranges: list[tuple[int, int]]):
+        """Approve native proofreading answers without changing subtitle output.
+
+        Arguments:
+            ranges: complete visible block bounds, zero-based and end-exclusive
+        Raises:
+            ValueError: if a new approval would affect existing corrections
+        """
+        decisions = deepcopy(self.decisions)
+        decisions.verify_blocks(ranges)
+        texts, notes = decisions.render()
+        if list(zip(texts, notes, strict=True)) != [
+            (row.reviewed, row.review_note) for row in self._rows
+        ]:
+            raise ValueError(
+                "Proofreading verification would change existing corrections"
+            )
+        verified = decisions.verified_indexes()
+        rows = self._rows.copy()
+        for index, row in enumerate(rows):
+            approved = index in verified
+            if row.proofreading_verified != approved:
+                rows[index] = replace(
+                    row, proofreading_verified=approved, version=row.version + 1
+                )
+        self._save_audit_cases(
+            self._audit_cases, rows, {self.json_path: decisions.serialize()}
+        )
+        self.decisions = decisions

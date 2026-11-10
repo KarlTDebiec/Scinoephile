@@ -5,51 +5,54 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Iterable
 from dataclasses import dataclass, replace
 
 from .rows import AuditRow, AuditStatus
 
 __all__ = ["AuditFilters"]
 
+_VERIFICATION_STATES = ("unverified", "verified")
+"""Suffixes shared by proofreading and audit filter values."""
+
+_PROOFREADING_STATES = ("unchanged", "changed")
+"""Proofreading states in boolean change order."""
+
 
 @dataclass(frozen=True)
 class AuditFilters:
-    """Bookmarkable audit filters."""
+    """Bookmarkable proofreading, audit, and search filters."""
 
-    verification: str = "all"
-    """all, verified, or unverified audit progress."""
-    changes: str = "all"
-    """all, changed, or unchanged subtitle text."""
-    finding: str = "all"
-    """all, unaudited, review, or ok audit statuses."""
+    proofreading: str = "all"
+    """Proofreading change and verification status, or all."""
+    audit: str = "all"
+    """Audit finding and verification status, or all."""
     q: str = ""
     """Unicode text search or an exact block selector such as block 160."""
 
     def counts(self, rows: list[AuditRow]) -> dict[str, dict[str, int]]:
-        """Count each option with search and the other status filters applied.
+        """Count options with the other filter and search still applied.
 
         Arguments:
             rows: complete current subtitle snapshot, before pagination
         Returns:
-            option counts keyed by filter name and option value
+            counts keyed by filter name and option value
         """
         self.validate()
-        counts: dict[str, dict[str, int]] = {}
-        for name in ("changes", "finding", "verification"):
+        counts = {}
+        for name, statuses, get_status in (
+            ("proofreading", _PROOFREADING_STATES, _get_proofreading_status),
+            ("audit", AuditStatus, _get_audit_status),
+        ):
             other_filters = replace(self, **{name: "all"})
-            matching = [row for row in rows if other_filters.matches(row)]
-            if name == "changes":
-                changed = sum(row.changed for row in matching)
-                options = {"changed": changed, "unchanged": len(matching) - changed}
-            elif name == "verification":
-                verified = sum(row.verified for row in matching)
-                options = {"verified": verified, "unverified": len(matching) - verified}
-            else:
-                options = {
-                    status: sum(row.finding == status for row in matching)
-                    for status in AuditStatus
-                }
-            counts[name] = {"all": len(matching), **options}
+            options = dict.fromkeys(_get_options(statuses), 0)
+            for row in rows:
+                if other_filters.matches(row):
+                    status, state = get_status(row)
+                    options["all"] += 1
+                    options[status] += 1
+                    options[f"{status}-{state}"] += 1
+            counts[name] = options
         return counts
 
     def matches(self, row: AuditRow) -> bool:
@@ -60,17 +63,11 @@ class AuditFilters:
         Returns:
             whether the row matches
         """
-        if not {
-            "all": True,
-            "verified": row.verified,
-            "unverified": not row.verified,
-        }.get(self.verification, False):
+        status, state = _get_proofreading_status(row)
+        if self.proofreading not in ("all", status, f"{status}-{state}"):
             return False
-        if not {"all": True, "changed": row.changed, "unchanged": not row.changed}.get(
-            self.changes, False
-        ):
-            return False
-        if self.finding not in {"all", row.finding}:
+        status, state = _get_audit_status(row)
+        if self.audit not in ("all", status, f"{status}-{state}"):
             return False
         block = re.fullmatch(r"block\s*[:#]?\s*(\d+)", self.q.strip(), re.IGNORECASE)
         if block is not None:
@@ -86,10 +83,47 @@ class AuditFilters:
         Raises:
             ValueError: if a filter is unsupported
         """
-        for value, choices in (
-            (self.verification, {"all", "verified", "unverified"}),
-            (self.changes, {"all", "changed", "unchanged"}),
-            (self.finding, {"all", *AuditStatus}),
+        for value, statuses in (
+            (self.proofreading, _PROOFREADING_STATES),
+            (self.audit, AuditStatus),
         ):
-            if value not in choices:
+            if value not in _get_options(statuses):
                 raise ValueError(f"Unknown audit filter: {value}")
+
+
+def _get_audit_status(row: AuditRow) -> tuple[str, str]:
+    """Get the row's audit finding and verification.
+
+    Arguments:
+        row: current audit row
+    Returns:
+        audit status and verification state
+    """
+    return row.finding.value, _VERIFICATION_STATES[row.verified]
+
+
+def _get_options(statuses: Iterable[str]) -> tuple[str, ...]:
+    """Get selectable status and verification combinations.
+
+    Arguments:
+        statuses: operation-specific status values
+    Returns:
+        all, each status, and its two verification options
+    """
+    options = ["all"]
+    for status in statuses:
+        options.append(status)
+        options.extend(f"{status}-{state}" for state in _VERIFICATION_STATES)
+    return tuple(options)
+
+
+def _get_proofreading_status(row: AuditRow) -> tuple[str, str]:
+    """Get the row's proofreading change status and verification.
+
+    Arguments:
+        row: current audit row
+    Returns:
+        proofreading status and verification state
+    """
+    status = _PROOFREADING_STATES[row.changed]
+    return status, _VERIFICATION_STATES[row.proofreading_verified]
