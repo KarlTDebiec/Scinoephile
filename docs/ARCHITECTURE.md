@@ -44,6 +44,7 @@ authoritative hierarchy declaration above for ordering.
 | `lang` | Language-specific, cross-language, and language-pair subtitle operations |
 | `llms` | Concrete prompt workflows, providers, and model-facing processing |
 | `media` | Media probing, subtitle extraction, cache analysis, and visual offset estimation |
+| `operations` | Subtitle operations and project state shared by workflows and editors |
 | `optimization` | Prompt optimization contracts, operation registry, and persistence |
 | `web` | Web interfaces for interactive operations |
 | `workflows` | Reusable end-to-end orchestration and application composition |

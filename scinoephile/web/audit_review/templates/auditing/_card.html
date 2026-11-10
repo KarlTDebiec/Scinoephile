@@ -1,0 +1,57 @@
+{% from '_icons.html' import icon %}
+<section id="auditing"
+         aria-label="Auditing"{% if not show_auditing %} hidden{% endif %}{% if auditing.status == 'running' %} hx-get="{{ url_for('auditing_status', reaudit=1 if show_auditing else 0) }}" hx-trigger="every 5s" hx-swap="outerHTML"{% endif %}>
+  {{ icon('clipboard-text-clock-outline' if auditing.status == 'running' else 'clipboard-text-eye-outline', 24) }}
+  <div>
+    {% if auditing_message %}<p class="error"
+                                role="alert">{{ auditing_message }}</p>{% endif %}
+    {% if auditing.status == "running" %}
+      <p role="status">Auditing {{ auditing.completed }} of {{ auditing.total }} blocks using {{ {'openai': 'OpenAI', 'deepseek': 'DeepSeek'}.get(auditing.provider, auditing.provider) }} {{ auditing.model or 'provider default model' }} · {{ auditing.effort or 'default reasoning' }}</p>
+      <progress value="{{ auditing.completed }}"
+                max="{{ auditing.total }}"
+                aria-label="Auditing progress"></progress>
+    {% elif auditing.available or auditing.has_output %}
+      {% if auditing.error %}<p class="error"
+                                role="alert">{{ auditing.error }}</p>{% endif %}
+      {% if confirming_rerun %}<p role="status">Re-auditing may replace saved audit findings.</p>{% endif %}
+      <form method="post"
+            action="{{ url_for('start_auditing') }}"
+            hx-post="{{ url_for('start_auditing') }}"
+            hx-target="#auditing"
+            hx-swap="outerHTML"
+            hx-sync="this:drop">
+        <input type="hidden" name="csrf" value="{{ csrf }}">
+        <select name="provider" aria-label="Audit provider" title="Provider">{% for name in provider_names %}<option value="{{ name }}"{% if name == auditing.provider %} selected{% endif %}>{{ name }}</option>{% endfor %}</select>
+        <input aria-label="Audit model"
+               title="Model"
+               name="model"
+               value="{{ auditing.model }}"
+               maxlength="200"
+               placeholder="Provider default">
+        <select name="effort" aria-label="Audit reasoning" title="Reasoning"><option value="">Provider default</option>{% for level in reasoning_levels %}<option value="{{ level.value }}"{% if level.value == auditing.effort %} selected{% endif %}>{{ level.value }}</option>{% endfor %}</select>
+        {% if auditing.available %}
+          {% set audit_label = 'Resume audit' if auditing.has_output else 'Run audit' %}
+          <button type="submit"{% if auditing_blocked %} disabled{% endif %}
+                  aria-label="{{ audit_label }}"
+                  title="{{ audit_label }}">
+            {{ icon('clipboard-text-play-outline', 24) }}
+            {% if auditing.has_output %}<span>{{ audit_label }}</span>{% endif %}
+          </button>
+        {% endif %}
+        {% if auditing.has_output %}
+          {% set rerun_label = 'Confirm re-audit' if confirming_rerun else 'Run full re-audit' %}
+          <button type="submit"
+                  name="rerun"
+                  value="{{ 'confirm' if confirming_rerun else 'on' }}"{% if auditing_blocked %} disabled{% endif %}
+                  {% if confirming_rerun %}class="is-confirming"{% endif %}
+                  aria-label="{{ rerun_label }}"
+                  title="{{ rerun_label }}">
+            {{ icon('clipboard-text-play-outline', 24) }}
+            {% if auditing.available or confirming_rerun %}<span>{{ rerun_label }}</span>{% endif %}
+          </button>
+        {% endif %}
+      </form>
+      <p class="error" role="alert" data-auditing-message></p>
+    {% endif %}
+  </div>
+</section>

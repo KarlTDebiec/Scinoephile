@@ -12,10 +12,9 @@ from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.audit.aligned_diff import AlignedDiffAuditFilter
 from scinoephile.analysis.audit.delineation import DelineationAuditFilter
-from scinoephile.analysis.audit.dual_review import DualReviewAuditFilter
 from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
 from scinoephile.analysis.audit.punctuation import PunctuationAuditFilter
-from scinoephile.analysis.audit.review import ReviewAuditFilter
+from scinoephile.analysis.audit.review_filters import ReviewAuditFilter
 from scinoephile.analysis.audit.translation import TranslationAuditFilter
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
@@ -23,11 +22,14 @@ from scinoephile.cli.audit.audit_cli_base import AuditCliBase
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
 from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
-from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
 from scinoephile.cli.audit.audit_transcription_cli import AuditTranscriptionCli
 from scinoephile.cli.audit.audit_translation_cli import AuditTranslationCli
+from scinoephile.cli.audit.review import AuditReviewCli
+from scinoephile.cli.audit.review.audit_review_report_cli import AuditReviewReportCli
+from scinoephile.cli.audit.review.audit_review_run_cli import AuditReviewRunCli
+from scinoephile.cli.audit.review.audit_review_serve_cli import AuditReviewServeCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.cli.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
@@ -38,7 +40,12 @@ def test_audit_cli_subcommands():
     assert issubclass(AuditAlignedDiffCli, AuditCliBase)
     assert issubclass(AuditDelineationCli, AuditCliBase)
     assert issubclass(AuditPunctuationCli, AuditCliBase)
-    assert issubclass(AuditReviewCli, AuditCliBase)
+    assert issubclass(AuditReviewReportCli, AuditCliBase)
+    assert AuditReviewCli.subcommands() == {
+        "report": AuditReviewReportCli,
+        "run": AuditReviewRunCli,
+        "serve": AuditReviewServeCli,
+    }
     assert issubclass(AuditReviewDualCli, AuditCliBase)
     assert issubclass(AuditReviewTradCli, AuditCliBase)
     assert issubclass(AuditTranscriptionCli, AuditCliBase)
@@ -64,8 +71,8 @@ def test_audit_cli_filter_enums():
         AuditDelineationCli: DelineationAuditFilter,
         AuditOcrFusionCli: OcrFusionAuditFilter,
         AuditPunctuationCli: PunctuationAuditFilter,
-        AuditReviewCli: ReviewAuditFilter,
-        AuditReviewDualCli: DualReviewAuditFilter,
+        AuditReviewReportCli: ReviewAuditFilter,
+        AuditReviewDualCli: ReviewAuditFilter,
         AuditReviewTradCli: ReviewAuditFilter,
         AuditTranslationCli: TranslationAuditFilter,
     }
@@ -84,7 +91,7 @@ def test_audit_cli_single_json_help_is_concise():
         AuditDelineationCli,
         AuditOcrFusionCli,
         AuditPunctuationCli,
-        AuditReviewCli,
+        AuditReviewReportCli,
         AuditTranslationCli,
     )
 
@@ -144,7 +151,7 @@ def test_audit_review_cli_detects_chinese_language_and_script(
     _write_srt(reviewed_path, (f"{texts[0]}！", *texts[1:]))
 
     run_cli_with_args(
-        AuditReviewCli, f"--original {original_path} --reviewed {reviewed_path}"
+        AuditReviewReportCli, f"--original {original_path} --reviewed {reviewed_path}"
     )
 
     stdout = capsys.readouterr().out
@@ -175,7 +182,7 @@ def test_audit_review_cli_detects_language(tmp_path: Path, capsys: CaptureFixtur
     )
 
     run_cli_with_args(
-        AuditReviewCli, f"--original {original_path} --reviewed {reviewed_path}"
+        AuditReviewReportCli, f"--original {original_path} --reviewed {reviewed_path}"
     )
 
     stdout = capsys.readouterr().out
@@ -185,7 +192,7 @@ def test_audit_review_cli_detects_language(tmp_path: Path, capsys: CaptureFixtur
 
     with raises(SystemExit):
         run_cli_with_args(
-            AuditReviewCli,
+            AuditReviewReportCli,
             (
                 f"--original {original_path} --reviewed {reviewed_path} "
                 "--filter unverified"
@@ -220,7 +227,7 @@ def test_audit_review_cli_detects_language(tmp_path: Path, capsys: CaptureFixtur
         encoding="utf-8",
     )
     run_cli_with_args(
-        AuditReviewCli,
+        AuditReviewReportCli,
         (
             f"--original {original_path} --reviewed {reviewed_path} "
             f"--json {json_path} --filter unverified"
@@ -267,7 +274,8 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     arguments = f"--original {target_path} --guide {guide_path} --json {json_path}"
 
     run_cli_with_args(
-        AuditReviewCli, f"{arguments} --first-index 1 --last-index 1 --filter changes"
+        AuditReviewReportCli,
+        f"{arguments} --first-index 1 --last-index 1 --filter changes",
     )
     stdout = capsys.readouterr().out
     assert stdout.startswith("# Guided Subtitle Review Audit\n")
@@ -276,32 +284,49 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     assert "- subtitles: 1" in stdout
     assert "| 1 | 1 | 參考 | 原文<br>修訂 | correction |  |" in stdout
 
+    run_cli_with_args(AuditReviewReportCli, f"{arguments} --characters 订")
+    stdout = capsys.readouterr().out
+    assert "- character filter: 訂, 订" in stdout
+    assert "- table rows: 1" in stdout
+
+    run_cli_with_args(AuditReviewReportCli, f"{arguments} --characters 原")
+    assert "- table rows: 1" in capsys.readouterr().out
+
+    run_cli_with_args(AuditReviewReportCli, f"{arguments} --characters 參")
+    assert "- table rows: 0" in capsys.readouterr().out
+
     outfile_path = tmp_path / "audit.md"
-    run_cli_with_args(AuditReviewCli, f"{arguments} --outfile {outfile_path}")
+    run_cli_with_args(AuditReviewReportCli, f"{arguments} --outfile {outfile_path}")
     assert capsys.readouterr().out == ""
     assert outfile_path.read_text(encoding="utf-8").startswith(
         "# Guided Subtitle Review Audit\n"
     )
 
     with raises(SystemExit):
-        run_cli_with_args(AuditReviewCli, f"{arguments} --first-index 2 --last-index 1")
+        run_cli_with_args(
+            AuditReviewReportCli, f"{arguments} --first-index 2 --last-index 1"
+        )
     assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
     )
 
     with raises(SystemExit):
         run_cli_with_args(
-            AuditReviewCli, f"{arguments} --first-index 1 --first-block 1"
+            AuditReviewReportCli, f"{arguments} --first-index 1 --first-block 1"
         )
     assert "mutually exclusive" in capsys.readouterr().err
 
     with raises(SystemExit):
-        run_cli_with_args(AuditReviewCli, f"{arguments} --reviewed {target_path}")
+        run_cli_with_args(AuditReviewReportCli, f"{arguments} --reviewed {target_path}")
     assert "not allowed with argument --guide" in capsys.readouterr().err
 
     with raises(SystemExit):
+        run_cli_with_args(AuditReviewReportCli, f"{arguments} --filter discrepancies")
+    assert "supported values: all, changes, unverified" in capsys.readouterr().err
+
+    with raises(SystemExit):
         run_cli_with_args(
-            AuditReviewCli,
+            AuditReviewReportCli,
             (f"--original {target_path} --guide {guide_path} --filter unverified"),
         )
     assert "--filter unverified requires --json" in capsys.readouterr().err
@@ -309,35 +334,35 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
 
 def test_audit_review_cli_help_is_consistent():
     """Test review audit help documents JSON inputs and option defaults."""
-    filter_types = {
-        AuditReviewCli: ReviewAuditFilter,
-        AuditReviewDualCli: DualReviewAuditFilter,
-        AuditReviewTradCli: ReviewAuditFilter,
-    }
-    for cli_class in (AuditReviewCli, AuditReviewDualCli, AuditReviewTradCli):
+    for cli_class in (AuditReviewReportCli, AuditReviewDualCli, AuditReviewTradCli):
         actions = {
             action.dest: action
             for action in cli_class.argparser()._actions  # noqa: SLF001
         }
-        if cli_class is AuditReviewCli:
+        if cli_class is AuditReviewReportCli:
             assert "mode" not in actions
             assert actions["original_path"].option_strings == ["--original"]
-        filter_type = filter_types[cli_class]
+        options = (ReviewAuditFilter.all, ReviewAuditFilter.changes)
+        if cli_class is AuditReviewDualCli:
+            options += (ReviewAuditFilter.discrepancies,)
+        options += (ReviewAuditFilter.unverified,)
         filter_action = actions["row_filter"]
         assert filter_action.choices is None
-        assert filter_action.metavar == enum_metavar(filter_type)
+        assert filter_action.metavar == enum_metavar(ReviewAuditFilter, choices=options)
         assert isinstance(filter_action.help, str)
-        assert enum_options_list_str(filter_type) in filter_action.help
+        assert enum_options_list_str(ReviewAuditFilter, choices=options) in (
+            filter_action.help
+        )
         assert "all includes every subtitle" in filter_action.help
         assert "changes includes" in filter_action.help
         assert "unverified includes" in filter_action.help
-        character_help = actions["characters"].help
+        character_help = actions["character_filter"].help
         assert isinstance(character_help, str)
         assert "(default: no character filter)" in character_help
         for destination, action in actions.items():
             if destination.endswith("json_path"):
                 assert isinstance(action.help, str)
-                if cli_class is AuditReviewCli:
+                if cli_class is AuditReviewReportCli:
                     assert action.help == "JSON file containing test cases"
                 else:
                     assert "JSON file containing" in action.help
@@ -372,8 +397,13 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     assert "- subtitle range: 1 through 1" in stdout
     assert "- table rows: 1" in stdout
 
-    run_cli_with_args(AuditReviewDualCli, f"{arguments} --first-block 1 --last-block 1")
-    assert "- block range: 1 through 1" in capsys.readouterr().out
+    run_cli_with_args(
+        AuditReviewDualCli,
+        f"{arguments} --first-block 1 --last-block 1 --filter discrepancies",
+    )
+    assert "- row filter: discrepancies\n- block range: 1 through 1" in (
+        capsys.readouterr().out
+    )
 
     run_cli_with_args(AuditReviewDualCli, f"{arguments} --characters 错这")
     stdout = capsys.readouterr().out
@@ -513,6 +543,10 @@ def test_audit_review_trad_cli(tmp_path: Path, capsys: CaptureFixture):
     assert "- traditional review edits: 1" in stdout
     assert "- traditional simplification review edits: 1" in stdout
     assert "| Subtitle | Traditional | Traditional simplification | Notes |" in stdout
+
+    with raises(SystemExit):
+        run_cli_with_args(AuditReviewTradCli, f"{arguments} --filter discrepancies")
+    assert "supported values: all, changes, unverified" in capsys.readouterr().err
 
     traditional_json_path = tmp_path / "traditional.json"
     traditional_json_path.write_text(
@@ -690,3 +724,20 @@ def _write_srt(file_path: Path, texts: tuple[str, ...]):
         for index, text in enumerate(texts, 1)
     ]
     file_path.write_text(f"{'\n\n'.join(blocks)}\n", encoding="utf-8")
+
+
+def test_review_report_dispatches_from_the_command_tree(tmp_path: Path):
+    """Dispatch the explicit report command through the installed CLI.
+
+    Arguments:
+        tmp_path: temporary directory for report inputs
+    """
+    original_path = tmp_path / "original.srt"
+    reviewed_path = tmp_path / "reviewed.srt"
+    original_path.write_text("1\n00:00:01,000 --> 00:00:02,000\nHello.\n")
+    reviewed_path.write_text(original_path.read_text())
+    arguments = f'--original "{original_path}" --reviewed "{reviewed_path}"'
+    with patch.object(AuditReviewReportCli, "_main") as report:
+        run_cli_with_args(ScinoephileCli, f"audit review report {arguments}")
+        assert report.call_args.kwargs["original_path"] == original_path
+        assert report.call_args.kwargs["reviewed_path"] == reviewed_path

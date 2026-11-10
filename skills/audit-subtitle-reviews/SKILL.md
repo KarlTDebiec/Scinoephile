@@ -37,8 +37,8 @@ and write each independent judgment in its `Notes` cell.
 
 | Available inputs | Command |
 |---|---|
-| One original/reviewed pair | `audit review --reviewed` |
-| Target, guide, and guided-review JSON | `audit review --guide` |
+| One original/reviewed pair | `audit review report --reviewed` |
+| Target, guide, and guided-review JSON | `audit review report --guide` |
 | Hant review plus review of its simplified form | `audit review-trad` |
 | Parallel Hans and Hant-to-Hans paths | `audit review-dual` |
 
@@ -74,7 +74,7 @@ Always set `UV_CACHE_DIR=/tmp/uv-cache`.
 Regular review:
 
 ```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
+UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review report \
   --original <original.srt> \
   --reviewed <reviewed.srt> \
   --json <review.json> \
@@ -87,7 +87,7 @@ The JSON is optional for regular review unless using `--filter unverified`.
 Guided review:
 
 ```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
+UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review report \
   --original <target.srt> \
   --guide <guide.srt> \
   --json <guided-review.json> \
@@ -135,8 +135,8 @@ Regular, guided, and traditional review support `all`, `changes`, and
 can be checked for missed corrections. Use `changes` only for an applied-edit
 audit. The `unverified` filter requires the corresponding JSON for every review
 path. Use inclusive `--first-index` and `--last-index`. `--characters` is
-available for regular, traditional, and dual review, with script variants added
-automatically; use it only for a requested or suspected conversion issue.
+available for regular, guided, traditional, and dual review. It adds script
+variants automatically. Use it only for a requested or suspected conversion issue.
 
 Use `--first-block` and `--last-block` for an inclusive, one-based workflow
 block range. In guided review these are paired target/guide blocks; in regular,

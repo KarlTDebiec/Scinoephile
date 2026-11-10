@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from secrets import compare_digest, token_urlsafe
 from typing import TYPE_CHECKING
 from urllib.parse import urlsplit
 
@@ -17,18 +18,24 @@ __all__ = ["create_local_app"]
 
 
 def create_local_app(
-    name: str, static_dir_path: Path, *, host: str = "127.0.0.1"
+    name: str,
+    static_dir_path: Path,
+    *,
+    host: str = "127.0.0.1",
+    require_htmx: bool = True,
 ) -> FlaskApp:
-    """Create a local app with trusted hosts and HTMX-only editing requests.
+    """Create a local app with trusted hosts and protected editing requests.
 
     Loopback names and the explicit bind host are trusted. Wildcard binds retain
     loopback access without trusting arbitrary Host headers. Requiring HTMX's custom
     header prevents foreign forms from editing data while CORS remains disabled.
+    Native forms and their HTMX enhancements use the same session CSRF token.
 
     Arguments:
         name: Flask application import name used to locate domain templates
         static_dir_path: existing shared browser asset directory
         host: explicitly configured bind host, or a wildcard bind address
+        require_htmx: require the HTMX header on edits, otherwise require a CSRF token
     Returns:
         Flask app with local request checks and defensive response headers
     Raises:
@@ -40,10 +47,28 @@ def create_local_app(
         trusted_host = host.removeprefix("[").removesuffix("]")
         trusted_hosts.add(trusted_host.encode("idna").decode("ascii").lower())
     app = flask.Flask(name, static_folder=str(static_dir_path))
+    app.register_blueprint(
+        flask.Blueprint("web_templates", __name__, template_folder="templates")
+    )
+    if not require_htmx:
+        app.config.update(
+            SECRET_KEY=token_urlsafe(32), SESSION_COOKIE_SAMESITE="Strict"
+        )
+
+        @app.context_processor
+        def csrf_context() -> dict[str, str]:
+            """Supply the session token to templates that render editing forms.
+
+            Returns:
+                template context containing the CSRF token
+            """
+            if "csrf" not in flask.session:
+                flask.session["csrf"] = token_urlsafe(32)
+            return {"csrf": flask.session["csrf"]}
 
     @app.before_request
     def protect_local_requests():
-        """Reject foreign browser requests and require HTMX for mutations."""
+        """Check the request host, origin, and credentials for edits."""
         request = flask.request
         # Match complete hostnames without treating IPv6 colons as port separators
         try:
@@ -57,9 +82,18 @@ def create_local_app(
             flask.abort(403)
         if request.headers.get("Sec-Fetch-Site") in {"cross-site", "same-site"}:
             flask.abort(403)
+        if request.method in {"GET", "HEAD", "OPTIONS"}:
+            return
+        if require_htmx:
+            if request.headers.get("HX-Request") != "true":
+                flask.abort(403)
+            return
+        expected = flask.session.get("csrf", "")
+        received = request.form.get("csrf", "")
         if (
-            request.method not in {"GET", "HEAD", "OPTIONS"}
-            and request.headers.get("HX-Request") != "true"
+            not expected
+            or not received.isascii()
+            or not compare_digest(expected, received)
         ):
             flask.abort(403)
 

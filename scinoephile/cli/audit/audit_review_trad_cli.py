@@ -8,11 +8,13 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.audit.review import (
+from scinoephile.analysis.audit.review import audit_review
+from scinoephile.analysis.audit.review_filters import (
+    STANDARD_REVIEW_AUDIT_FILTERS,
     ReviewAuditFilter,
-    ReviewAuditPair,
-    audit_review,
+    ReviewAuditFilterGroup,
 )
+from scinoephile.analysis.audit.review_inputs import ReviewAuditResultPair
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.cli.argument_parsing import (
@@ -194,6 +196,7 @@ class AuditReviewTradCli(AuditCliBase):
             parser,
             ReviewAuditFilter,
             ReviewAuditFilter.changes,
+            choices=STANDARD_REVIEW_AUDIT_FILTERS,
             description=(
                 "all includes every subtitle; changes includes review edits; "
                 "unverified includes subtitles in cases not marked verified"
@@ -201,6 +204,7 @@ class AuditReviewTradCli(AuditCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--characters",
+            dest="character_filter",
             default=(),
             metavar="CHARACTER",
             nargs="+",
@@ -234,7 +238,7 @@ class AuditReviewTradCli(AuditCliBase):
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
         row_filter: ReviewAuditFilter,
-        characters: Sequence[str],
+        character_filter: Sequence[str],
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -255,7 +259,7 @@ class AuditReviewTradCli(AuditCliBase):
             traditional_simplified_json_path: optional traditional-simplification
                 review test-case JSON path
             row_filter: rows to include in the report
-            characters: characters used to further limit included rows
+            character_filter: characters used to further limit included rows
             first_index: first subtitle number to include
             last_index: last subtitle number to include
             first_block: first workflow block number to include
@@ -287,27 +291,30 @@ class AuditReviewTradCli(AuditCliBase):
 
         # Perform operation
         try:
+            filters = ReviewAuditFilterGroup(
+                row_filter=row_filter,
+                character_filter=get_zho_character_variants(character_filter),
+                first_index=first_index,
+                last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
+            )
             report = audit_review(
                 reviews=(
-                    ReviewAuditPair(
+                    ReviewAuditResultPair(
                         label="Traditional",
                         original=traditional,
                         reviewed=traditional_reviewed,
                         review_cases=traditional_review_cases,
                     ),
-                    ReviewAuditPair(
+                    ReviewAuditResultPair(
                         label="Traditional simplification",
                         original=traditional_simplified,
                         reviewed=traditional_simplified_reviewed,
                         review_cases=traditional_simplified_review_cases,
                     ),
                 ),
-                row_filter=row_filter,
-                characters=get_zho_character_variants(characters),
-                first_index=first_index,
-                last_index=last_index,
-                first_block=first_block,
-                last_block=last_block,
+                filters=filters,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

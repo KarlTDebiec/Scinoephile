@@ -14,11 +14,11 @@ from .audit_aligned_diff_cli import AuditAlignedDiffCli
 from .audit_delineation_cli import AuditDelineationCli
 from .audit_ocr_fusion_cli import AuditOcrFusionCli
 from .audit_punctuation_cli import AuditPunctuationCli
-from .audit_review_cli import AuditReviewCli
 from .audit_review_dual_cli import AuditReviewDualCli
 from .audit_review_trad_cli import AuditReviewTradCli
 from .audit_transcription_cli import AuditTranscriptionCli
 from .audit_translation_cli import AuditTranslationCli
+from .review import AuditReviewCli
 
 __all__ = ["AuditCli"]
 

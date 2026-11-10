@@ -1,0 +1,25 @@
+{% from '_icons.html' import icon %}
+{% set selection = page.verification[operation] %}
+{% set pending = verification_pending|default('') == operation %}
+<form id="verify-visible-{{ operation }}"
+      method="post"
+      action="{{ url_for('verify_visible', operation=operation) }}?{{ query }}"
+      hx-post="{{ url_for('verify_visible', operation=operation) }}?{{ query }}"
+      hx-target="this"
+      hx-swap="outerHTML"
+      hx-sync="#workspace:queue all"
+      data-verify-visible{% if oob|default(false) %}
+      hx-swap-oob="outerHTML"{% endif %}>
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <input type="hidden" name="selection" value="{{ selection.token }}">
+  {% if pending %}<input type="hidden" name="confirm" value="on">{% endif %}
+  <button type="submit"{% if pending %} class="is-confirming" title="Confirm verification"{% else %} title="Verify complete visible {{ operation }} blocks"{% endif %}
+          {% if not selection.blocks or editing_blocked %} disabled{% endif %}>
+    {{ icon("checkbox-multiple-marked-outline") }}
+    {% if pending %}
+      Verify {{ '{:,}'.format(selection.blocks|length) }} {{ operation }} block{% if selection.blocks|length != 1 %}s{% endif %}
+    {% else %}
+      Verify visible {{ operation }}
+    {% endif %}
+  </button>
+</form>

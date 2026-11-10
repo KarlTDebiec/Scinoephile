@@ -9,31 +9,33 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from scinoephile.analysis.audit.guided_review import audit_guided_review
-from scinoephile.analysis.audit.review import (
+from scinoephile.analysis.audit.review import audit_review
+from scinoephile.analysis.audit.review_filters import (
+    STANDARD_REVIEW_AUDIT_FILTERS,
     ReviewAuditFilter,
-    ReviewAuditPair,
-    audit_review,
+    ReviewAuditFilterGroup,
 )
+from scinoephile.analysis.audit.review_inputs import ReviewAuditResultPair
+from scinoephile.cli.audit.audit_cli_base import AuditCliBase
+from scinoephile.cli.audit.utils import load_review_test_cases
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.cli.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
-from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.id import get_series_language
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 from scinoephile.llms.guided_review import GuidedReviewManager
 
-from .audit_cli_base import AuditCliBase
-from .utils import load_review_test_cases
+__all__ = ["AuditReviewReportCli"]
 
-__all__ = ["AuditReviewCli"]
-
-AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
+AUDIT_REVIEW_REPORT_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "audit regular or guided subtitle reviews": "审核常规或引导式字幕校对",
+        "generate a Markdown report for regular or guided subtitle proofreading": (
+            "为常规或引导式字幕校对生成 Markdown 报告"
+        ),
         "original subtitle SRT file before review": "校对前的原始字幕 SRT 文件",
         "subtitle SRT file after regular review": "常规校对后的字幕 SRT 文件",
         "guide subtitle SRT file used for guided review": (
@@ -48,16 +50,18 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "表示未标记为已验证的案例中的字幕（默认：%(default)s）"
         ),
         (
-            "characters to match in regular-review input; values may be separated "
-            "or combined, and simplified and traditional variants are included "
-            "automatically (default: no character filter)"
+            "characters to match in original or revised subtitles. Values may be "
+            "separated or combined, and simplified and traditional variants "
+            "are included automatically (default: no character filter)"
         ): (
-            "要在常规校对输入中匹配的字符；字符可分开或合并输入，并自动包含"
+            "要在原始或修订后的字幕中匹配的字符。字符可分开或合并输入，并自动包含"
             "简繁体变体（默认：无字符筛选）"
         ),
     },
     "zh-hant": {
-        "audit regular or guided subtitle reviews": "稽核常規或引導式字幕校對",
+        "generate a Markdown report for regular or guided subtitle proofreading": (
+            "為常規或引導式字幕校對產生 Markdown 報告"
+        ),
         "original subtitle SRT file before review": "校對前的原始字幕 SRT 檔",
         "subtitle SRT file after regular review": "常規校對後的字幕 SRT 檔",
         "guide subtitle SRT file used for guided review": (
@@ -72,39 +76,30 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "表示未標記為已驗證的案例中的字幕（預設：%(default)s）"
         ),
         (
-            "characters to match in regular-review input; values may be separated "
-            "or combined, and simplified and traditional variants are included "
-            "automatically (default: no character filter)"
+            "characters to match in original or revised subtitles. Values may be "
+            "separated or combined, and simplified and traditional variants "
+            "are included automatically (default: no character filter)"
         ): (
-            "要在常規校對輸入中搜尋的字元；字元可分開或合併輸入，並自動包含"
+            "要在原始或修訂後的字幕中搜尋的字元。字元可分開或合併輸入，並自動包含"
             "簡繁體變體（預設：無字元篩選）"
         ),
     },
 }
 """Localized help text keyed by locale and English source text."""
 
-_LANGUAGE_LABELS = {
-    Language.eng: "English",
-    Language.yue_hans: "Simplified Cantonese",
-    Language.yue_hant: "Traditional Cantonese",
-    Language.zho_hans: "Simplified Chinese",
-    Language.zho_hant: "Traditional Chinese",
-}
-"""Report labels keyed by automatically detected language."""
 
+class AuditReviewReportCli(AuditCliBase):
+    """Generate a Markdown report for regular or guided subtitle proofreading."""
 
-class AuditReviewCli(AuditCliBase):
-    """Audit regular or guided subtitle reviews."""
-
-    localizations = AUDIT_REVIEW_LOCALIZATIONS
+    localizations = AUDIT_REVIEW_REPORT_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
-        """Add arguments to a nascent argument parser.
+        """Add input, filter, and output options for the report.
 
         Arguments:
-            parser: nascent argument parser
+            parser: parser to configure
         """
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
@@ -149,6 +144,7 @@ class AuditReviewCli(AuditCliBase):
             parser,
             ReviewAuditFilter,
             ReviewAuditFilter.changes,
+            choices=STANDARD_REVIEW_AUDIT_FILTERS,
             description=(
                 "all includes every subtitle; changes includes review edits; "
                 "unverified includes subtitles in cases not marked verified"
@@ -156,11 +152,12 @@ class AuditReviewCli(AuditCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--characters",
+            dest="character_filter",
             default=(),
             metavar="CHARACTER",
             nargs="+",
             help=(
-                "characters to match in regular-review input; values may be "
+                "characters to match in original or revised subtitles. Values may be "
                 "separated or combined, and simplified and traditional variants "
                 "are included automatically (default: no character filter)"
             ),
@@ -174,7 +171,7 @@ class AuditReviewCli(AuditCliBase):
         Returns:
             subcommand name
         """
-        return "review"
+        return "report"
 
     @classmethod
     def _audit_guided(
@@ -184,11 +181,7 @@ class AuditReviewCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: ReviewAuditFilter,
-        first_index: int | None,
-        last_index: int | None,
-        first_block: int | None,
-        last_block: int | None,
+        filters: ReviewAuditFilterGroup,
     ) -> str:
         """Load and audit one guided-review workflow.
 
@@ -197,11 +190,7 @@ class AuditReviewCli(AuditCliBase):
             target_path: target subtitle SRT path
             guide_path: guide subtitle SRT path
             json_path: guided-review test-case JSON path
-            row_filter: rows to include in the report
-            first_index: first target subtitle number to include
-            last_index: last target subtitle number to include
-            first_block: first paired block number to include
-            last_block: last paired block number to include
+            filters: row, character, and range filters
         Returns:
             Markdown audit report
         """
@@ -213,16 +202,7 @@ class AuditReviewCli(AuditCliBase):
         )
 
         # Perform operation
-        return audit_guided_review(
-            target,
-            guide,
-            test_cases,
-            row_filter=row_filter,
-            first_index=first_index,
-            last_index=last_index,
-            first_block=first_block,
-            last_block=last_block,
-        )
+        return audit_guided_review(target, guide, test_cases, filters=filters)
 
     @classmethod
     def _audit_regular(
@@ -232,12 +212,7 @@ class AuditReviewCli(AuditCliBase):
         reviewed_path: Path,
         json_path: Path | None,
         *,
-        row_filter: ReviewAuditFilter,
-        characters: Sequence[str],
-        first_index: int | None,
-        last_index: int | None,
-        first_block: int | None,
-        last_block: int | None,
+        filters: ReviewAuditFilterGroup,
     ) -> str:
         """Load and audit one regular-review workflow.
 
@@ -246,12 +221,7 @@ class AuditReviewCli(AuditCliBase):
             original_path: original subtitle SRT path
             reviewed_path: reviewed subtitle SRT path
             json_path: optional regular-review test-case JSON path
-            row_filter: rows to include in the report
-            characters: characters used to further limit included rows
-            first_index: first subtitle number to include
-            last_index: last subtitle number to include
-            first_block: first workflow block number to include
-            last_block: last workflow block number to include
+            filters: row, character, and range filters
         Returns:
             Markdown audit report
         """
@@ -276,22 +246,15 @@ class AuditReviewCli(AuditCliBase):
         language = detected_languages.pop()
 
         # Perform operation
-        return audit_review(
-            reviews=(
-                ReviewAuditPair(
-                    label=_LANGUAGE_LABELS[language],
-                    original=original,
-                    reviewed=reviewed,
-                    review_cases=review_cases,
-                ),
+        reviews = (
+            ReviewAuditResultPair(
+                label=language.description,
+                original=original,
+                reviewed=reviewed,
+                review_cases=review_cases,
             ),
-            row_filter=row_filter,
-            characters=get_zho_character_variants(characters),
-            first_index=first_index,
-            last_index=last_index,
-            first_block=first_block,
-            last_block=last_block,
         )
+        return audit_review(reviews=reviews, filters=filters)
 
     @classmethod
     def _main(
@@ -303,7 +266,7 @@ class AuditReviewCli(AuditCliBase):
         guide_path: Path | None,
         json_path: Path | None,
         row_filter: ReviewAuditFilter,
-        characters: Sequence[str],
+        character_filter: Sequence[str],
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -311,7 +274,7 @@ class AuditReviewCli(AuditCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments.
+        """Build the report and write it to a file or stdout.
 
         Arguments:
             _parser: parser used to report user-facing errors
@@ -320,7 +283,7 @@ class AuditReviewCli(AuditCliBase):
             guide_path: optional guide subtitle SRT path
             json_path: optional review test-case JSON path
             row_filter: rows to include in the report
-            characters: characters used to further limit included regular rows
+            character_filter: characters used to further limit included rows
             first_index: first subtitle number to include
             last_index: last subtitle number to include
             first_block: first workflow block number to include
@@ -332,40 +295,28 @@ class AuditReviewCli(AuditCliBase):
         parser = _parser or cls.argparser()
         if row_filter is ReviewAuditFilter.unverified and json_path is None:
             parser.error("--filter unverified requires --json")
-        if guide_path is not None:
-            if json_path is None:
-                parser.error("--json is required with --guide")
-            if characters:
-                parser.error("--characters may only be used with --reviewed")
+        if guide_path is not None and json_path is None:
+            parser.error("--json is required with --guide")
 
         # Perform operation
         try:
+            filters = ReviewAuditFilterGroup(
+                row_filter=row_filter,
+                character_filter=get_zho_character_variants(character_filter),
+                first_index=first_index,
+                last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
+            )
             if guide_path is not None:
                 assert json_path is not None
                 report = cls._audit_guided(
-                    parser,
-                    original_path,
-                    guide_path,
-                    json_path,
-                    row_filter=row_filter,
-                    first_index=first_index,
-                    last_index=last_index,
-                    first_block=first_block,
-                    last_block=last_block,
+                    parser, original_path, guide_path, json_path, filters=filters
                 )
             else:
                 assert reviewed_path is not None
                 report = cls._audit_regular(
-                    parser,
-                    original_path,
-                    reviewed_path,
-                    json_path,
-                    row_filter=row_filter,
-                    characters=characters,
-                    first_index=first_index,
-                    last_index=last_index,
-                    first_block=first_block,
-                    last_block=last_block,
+                    parser, original_path, reviewed_path, json_path, filters=filters
                 )
         except ScinoephileError as exc:
             parser.error(str(exc))
@@ -375,4 +326,4 @@ class AuditReviewCli(AuditCliBase):
 
 
 if __name__ == "__main__":
-    AuditReviewCli.main()
+    AuditReviewReportCli.main()

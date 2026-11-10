@@ -180,8 +180,8 @@ scinoephile = [
     "data/dictionaries/kaifangcidian/*.csv",
     "data/dictionaries/unihan/*.txt",
     "data/ocr/*.csv",
-    "web/static/*.js",
-    "web/ocr_validation/templates/*.html",
+    "web/**/templates/**/*",
+    "web/**/static/**/*",
 ]
 
 [tool.uv]

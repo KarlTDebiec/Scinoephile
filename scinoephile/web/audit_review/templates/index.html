@@ -1,0 +1,14 @@
+{% extends "shared/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block styles %}
+  <link rel="stylesheet"
+        href="{{ url_for('audit_review_assets.static', filename='audit-review.css') }}">
+{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <script defer
+          src="{{ url_for('audit_review_assets.static', filename='audit-review.js') }}"></script>
+{% endblock %}
+{% block body %}
+  {% include "_workspace.html" %}
+{% endblock %}

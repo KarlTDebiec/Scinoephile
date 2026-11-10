@@ -15,13 +15,17 @@ from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.guided_review import GuidedReviewTestCase
 
-from .review import ReviewAuditFilter
+from .review_filters import (
+    STANDARD_REVIEW_AUDIT_FILTERS,
+    ReviewAuditFilter,
+    ReviewAuditFilterGroup,
+)
 from .utils import (
     AuditResult,
     format_audit_report,
     format_verification_marker,
     is_block_in_range,
-    validate_audit_range,
+    validate_audit_block_count,
 )
 
 __all__ = ["audit_guided_review"]
@@ -57,6 +61,8 @@ class _GuidedReviewRow:
     """Result of the logged answer for this subtitle."""
     verified: bool
     """Whether the source test case is verified."""
+    matches_character_filter: bool
+    """Whether the target or revision passes the character filter."""
 
 
 def audit_guided_review(
@@ -64,11 +70,7 @@ def audit_guided_review(
     guide: Series,
     test_cases: Sequence[GuidedReviewTestCase],
     *,
-    row_filter: ReviewAuditFilter = ReviewAuditFilter.changes,
-    first_index: int | None = None,
-    last_index: int | None = None,
-    first_block: int | None = None,
-    last_block: int | None = None,
+    filters: ReviewAuditFilterGroup = ReviewAuditFilterGroup(),
 ) -> str:
     """Audit logged guided-review decisions by target subtitle.
 
@@ -76,33 +78,27 @@ def audit_guided_review(
         target: target subtitle series provided for guided review
         guide: guide subtitle series provided for guided review
         test_cases: logged guided-review test cases
-        row_filter: row status filter
-        first_index: first 1-indexed target subtitle number to include
-        last_index: last 1-indexed target subtitle number to include
-        first_block: first 1-indexed paired block number to include
-        last_block: last 1-indexed paired block number to include
+        filters: row, character, and range filters
     Returns:
         Markdown audit report
     Raises:
-        ScinoephileError: if a logged case cannot be matched uniquely to source data
+        ScinoephileError: if filters are unsupported or a logged case cannot be
+            matched uniquely to source data
     """
+    if filters.row_filter not in STANDARD_REVIEW_AUDIT_FILTERS:
+        raise ScinoephileError(
+            "Unable to audit guided review: "
+            f"unsupported row filter {filters.row_filter.value!r}"
+        )
     block_pairs = get_block_pairs_by_pause(target, guide)
-    validate_audit_range(
-        first_index, last_index, first_block, last_block, block_count=len(block_pairs)
+    validate_audit_block_count(
+        filters.first_block, filters.last_block, len(block_pairs)
     )
     blocks_by_key = _get_blocks_by_key(block_pairs)
     rows_by_subtitle_index: dict[int, _GuidedReviewRow] = {}
 
     for test_case_index, test_case, block in _get_active_test_case_blocks(
-        target,
-        guide,
-        test_cases,
-        blocks_by_key,
-        block_pairs,
-        first_index=first_index,
-        last_index=last_index,
-        first_block=first_block,
-        last_block=last_block,
+        target, guide, test_cases, blocks_by_key, block_pairs, filters=filters
     ):
         answer = test_case.answer
         revisions_by_index = {}
@@ -120,8 +116,10 @@ def audit_guided_review(
             ),
             1,
         ):
-            if (first_index is not None and subtitle_index < first_index) or (
-                last_index is not None and subtitle_index > last_index
+            if (
+                filters.first_index is not None and subtitle_index < filters.first_index
+            ) or (
+                filters.last_index is not None and subtitle_index > filters.last_index
             ):
                 continue
 
@@ -139,6 +137,9 @@ def audit_guided_review(
             else:
                 result = AuditResult.unchanged
 
+            target_texts = [block.target_texts[local_index - 1]]
+            if revision is not None:
+                target_texts.append(revision.text)
             guide_text = "\n".join(guide_texts)
             if not guide_texts:
                 guide_text = "—"
@@ -157,6 +158,7 @@ def audit_guided_review(
                 test_case_index=test_case_index,
                 result=result,
                 verified=test_case.verified,
+                matches_character_filter=filters.matches_characters(target_texts),
             )
 
     all_rows = sorted(
@@ -169,26 +171,29 @@ def audit_guided_review(
     rows = [
         row
         for row in all_rows
-        if not (
-            row_filter is ReviewAuditFilter.changes
+        if row.matches_character_filter
+        and not (
+            filters.row_filter == ReviewAuditFilter.changes
             and row.result is not AuditResult.changed
         )
-        and not (row_filter is ReviewAuditFilter.unverified and row.verified)
+        and not (filters.row_filter == ReviewAuditFilter.unverified and row.verified)
     ]
     subtitles = len(all_rows)
     unchanged_subtitles = subtitles - revised_subtitles - unanswered_subtitles
     unverified_subtitles = subtitles - verified_subtitles
+    summary_items = [
+        f"subtitles: {subtitles}",
+        f"revised subtitles: {revised_subtitles}",
+        f"unchanged subtitles: {unchanged_subtitles}",
+        f"unanswered subtitles: {unanswered_subtitles}",
+        f"verified subtitles: {verified_subtitles}",
+        f"unverified subtitles: {unverified_subtitles}",
+        *filters.get_summary_items(index_track_name="target"),
+    ]
+
     return format_audit_report(
         title="Guided Subtitle Review Audit",
-        summary_items=(
-            f"subtitles: {subtitles}",
-            f"revised subtitles: {revised_subtitles}",
-            f"unchanged subtitles: {unchanged_subtitles}",
-            f"unanswered subtitles: {unanswered_subtitles}",
-            f"verified subtitles: {verified_subtitles}",
-            f"unverified subtitles: {unverified_subtitles}",
-            f"row filter: {row_filter.value}",
-        ),
+        summary_items=summary_items,
         columns=(
             ("Index", "right"),
             ("Block", "right"),
@@ -198,36 +203,29 @@ def audit_guided_review(
             ("Verified", "center"),
         ),
         rows=[row.cells for row in rows],
-        first_index=first_index,
-        last_index=last_index,
-        index_track_name="target",
-        first_block=first_block,
-        last_block=last_block,
     )
 
 
 def _block_intersects_range(
-    block: _GuidedReviewBlock,
-    first_index: int | None,
-    last_index: int | None,
-    first_block: int | None,
-    last_block: int | None,
+    block: _GuidedReviewBlock, filters: ReviewAuditFilterGroup
 ) -> bool:
     """Check whether a guided-review block intersects an audit range.
 
     Arguments:
         block: guided-review block to check
-        first_index: first included target subtitle number
-        last_index: last included target subtitle number
-        first_block: first included paired block number
-        last_block: last included paired block number
+        filters: requested review audit filters
     Returns:
         whether any target subtitle in the block is selected
     """
     return (
-        is_block_in_range(block.block_number, first_block, last_block)
-        and (first_index is None or block.target_indexes[-1] >= first_index)
-        and (last_index is None or block.target_indexes[0] <= last_index)
+        is_block_in_range(block.block_number, filters.first_block, filters.last_block)
+        and (
+            filters.first_index is None
+            or block.target_indexes[-1] >= filters.first_index
+        )
+        and (
+            filters.last_index is None or block.target_indexes[0] <= filters.last_index
+        )
     )
 
 
@@ -240,10 +238,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
     ],
     block_pairs: Sequence[tuple[Series, Series]],
     *,
-    first_index: int | None,
-    last_index: int | None,
-    first_block: int | None,
-    last_block: int | None,
+    filters: ReviewAuditFilterGroup,
 ) -> list[tuple[int, GuidedReviewTestCase, _GuidedReviewBlock]]:
     """Get current cases while ignoring superseded historical cases.
 
@@ -259,10 +254,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         test_cases: logged guided-review test cases
         blocks_by_key: current guided-review blocks keyed by text
         block_pairs: paired target and guide workflow blocks
-        first_index: first included target subtitle number
-        last_index: last included target subtitle number
-        first_block: first included paired block number
-        last_block: last included paired block number
+        filters: requested review audit filters
     Returns:
         active test cases paired with their current subtitle blocks
     Raises:
@@ -289,11 +281,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         )
         matches = blocks_by_key.get(key, [])
         selected_matches = [
-            block
-            for block in matches
-            if _block_intersects_range(
-                block, first_index, last_index, first_block, last_block
-            )
+            block for block in matches if _block_intersects_range(block, filters)
         ]
         if selected_matches:
             # Reuse one deduplicated logged query for every exact current match
@@ -326,14 +314,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         ):
             continue
         elif not _is_test_case_outside_range(
-            test_case,
-            target,
-            guide,
-            guide_block_numbers,
-            first_index=first_index,
-            last_index=last_index,
-            first_block=first_block,
-            last_block=last_block,
+            test_case, target, guide, guide_block_numbers, filters=filters
         ):
             raise ScinoephileError(
                 "Unable to audit guided review: "
@@ -343,11 +324,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
 
     for test_case_index, test_case, matches in stale_cases:
         selected_matches = [
-            block
-            for block in matches
-            if _block_intersects_range(
-                block, first_index, last_index, first_block, last_block
-            )
+            block for block in matches if _block_intersects_range(block, filters)
         ]
         if not selected_matches or all(
             block.block_number in active_block_numbers for block in selected_matches
@@ -365,8 +342,8 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         _validate_selected_targets(
             test_case,
             selected_matches[0],
-            first_index=first_index,
-            last_index=last_index,
+            first_index=filters.first_index,
+            last_index=filters.last_index,
             test_case_index=test_case_index,
         )
         active_cases.append((test_case_index, test_case, selected_matches[0]))
@@ -376,9 +353,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         block.block_number
         for blocks in blocks_by_key.values()
         for block in blocks
-        if _block_intersects_range(
-            block, first_index, last_index, first_block, last_block
-        )
+        if _block_intersects_range(block, filters)
     }
     active_block_numbers = {block.block_number for _, _, block in active_cases}
     missing_block_numbers = sorted(selected_block_numbers - active_block_numbers)
@@ -444,10 +419,7 @@ def _is_test_case_outside_range(
     guide: Series,
     guide_block_numbers: Sequence[int],
     *,
-    first_index: int | None,
-    last_index: int | None,
-    first_block: int | None,
-    last_block: int | None,
+    filters: ReviewAuditFilterGroup,
 ) -> bool:
     """Check whether an unmatched case is provably outside a bounded range.
 
@@ -460,25 +432,27 @@ def _is_test_case_outside_range(
         target: current target subtitle series
         guide: current guide subtitle series
         guide_block_numbers: paired block number for every guide subtitle
-        first_index: first included target subtitle number
-        last_index: last included target subtitle number
-        first_block: first included paired block number
-        last_block: last included paired block number
+        filters: requested review audit filters
     Returns:
         whether every matching guide sequence lies outside the target time range
     """
     if all(
         boundary is None
-        for boundary in (first_index, last_index, first_block, last_block)
+        for boundary in (
+            filters.first_index,
+            filters.last_index,
+            filters.first_block,
+            filters.last_block,
+        )
     ):
         return False
 
     first_target_index = 0
-    if first_index is not None:
-        first_target_index = first_index - 1
+    if filters.first_index is not None:
+        first_target_index = filters.first_index - 1
     last_target_index = len(target) - 1
-    if last_index is not None:
-        last_target_index = min(last_index, len(target)) - 1
+    if filters.last_index is not None:
+        last_target_index = min(filters.last_index, len(target)) - 1
     if (
         not target
         or first_target_index >= len(target)
@@ -506,7 +480,7 @@ def _is_test_case_outside_range(
             guide[stop - 1].end < selected_start or guide[start].start > selected_end
         )
         outside_block_range = all(
-            not is_block_in_range(block_number, first_block, last_block)
+            not is_block_in_range(block_number, filters.first_block, filters.last_block)
             for block_number in guide_block_numbers[start:stop]
         )
         outside_selected_ranges.append(outside_index_range or outside_block_range)

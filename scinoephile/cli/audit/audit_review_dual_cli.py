@@ -8,9 +8,10 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.audit.dual_review import (
-    DualReviewAuditFilter,
-    audit_dual_review,
+from scinoephile.analysis.audit.dual_review import audit_dual_review
+from scinoephile.analysis.audit.review_filters import (
+    ReviewAuditFilter,
+    ReviewAuditFilterGroup,
 )
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.cli.helpers.io import read_series
@@ -266,8 +267,8 @@ class AuditReviewDualCli(AuditCliBase):
         # Operation arguments
         cls.add_row_filter_argument(
             parser,
-            DualReviewAuditFilter,
-            DualReviewAuditFilter.changes,
+            ReviewAuditFilter,
+            ReviewAuditFilter.changes,
             description=(
                 "all includes every subtitle; changes includes any review edit or "
                 "final discrepancy; discrepancies includes final discrepancies only; "
@@ -276,6 +277,7 @@ class AuditReviewDualCli(AuditCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--characters",
+            dest="character_filter",
             default=(),
             metavar="CHARACTER",
             nargs="+",
@@ -312,8 +314,8 @@ class AuditReviewDualCli(AuditCliBase):
         simplified_json_path: Path | None,
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
-        row_filter: DualReviewAuditFilter,
-        characters: Sequence[str],
+        row_filter: ReviewAuditFilter,
+        character_filter: Sequence[str],
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -337,7 +339,7 @@ class AuditReviewDualCli(AuditCliBase):
             traditional_simplified_json_path: optional traditional-simplification
                 review test-case JSON path
             row_filter: rows to include in the report
-            characters: characters used to further limit included rows
+            character_filter: characters used to further limit included rows
             first_index: first subtitle number to include
             last_index: last subtitle number to include
             first_block: first workflow block number to include
@@ -347,7 +349,7 @@ class AuditReviewDualCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is DualReviewAuditFilter.unverified and any(
+        if row_filter is ReviewAuditFilter.unverified and any(
             json_path is None
             for json_path in (
                 simplified_json_path,
@@ -359,7 +361,6 @@ class AuditReviewDualCli(AuditCliBase):
                 "--filter unverified requires --simplified-json, "
                 "--traditional-json, and --traditional-simplified-json"
             )
-        characters = get_zho_character_variants(characters)
 
         # Read inputs
         simplified = read_series(parser, simplified_path)
@@ -388,6 +389,14 @@ class AuditReviewDualCli(AuditCliBase):
 
         # Perform operation
         try:
+            filters = ReviewAuditFilterGroup(
+                row_filter=row_filter,
+                character_filter=get_zho_character_variants(character_filter),
+                first_index=first_index,
+                last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
+            )
             report = audit_dual_review(
                 simplified=simplified,
                 simplified_reviewed=simplified_reviewed,
@@ -398,12 +407,7 @@ class AuditReviewDualCli(AuditCliBase):
                 simplified_review_cases=simplified_review_cases,
                 traditional_review_cases=traditional_review_cases,
                 traditional_simplified_review_cases=traditional_simplified_review_cases,
-                row_filter=row_filter,
-                characters=characters,
-                first_index=first_index,
-                last_index=last_index,
-                first_block=first_block,
-                last_block=last_block,
+                filters=filters,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

@@ -5,30 +5,15 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from enum import StrEnum
 
-from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
+from scinoephile.llms.review import ReviewTestCase
 
-from .review import ReviewAuditComparison, ReviewAuditPair, audit_review
+from .review import audit_review
+from .review_filters import ReviewAuditFilterGroup
+from .review_inputs import ReviewAuditResultPair, ReviewAuditSeriesPair
 
-__all__ = ["DualReviewAuditFilter", "audit_dual_review"]
-
-
-class DualReviewAuditFilter(StrEnum):
-    """Row filters supported by a dual-review audit."""
-
-    all = "all"
-    """Include every eligible row."""
-
-    changes = "changes"
-    """Include rows with a review edit or final discrepancy."""
-
-    discrepancies = "discrepancies"
-    """Include only final discrepancies between review paths."""
-
-    unverified = "unverified"
-    """Include only rows from cases not marked as verified."""
+__all__ = ["audit_dual_review"]
 
 
 def audit_dual_review(
@@ -39,15 +24,10 @@ def audit_dual_review(
     traditional_simplified_reviewed: Series,
     simplified: Series,
     simplified_reviewed: Series,
-    traditional_review_cases: Sequence[TestCase] = (),
-    traditional_simplified_review_cases: Sequence[TestCase] = (),
-    simplified_review_cases: Sequence[TestCase] = (),
-    row_filter: DualReviewAuditFilter = DualReviewAuditFilter.changes,
-    characters: Sequence[str] = (),
-    first_index: int | None = None,
-    last_index: int | None = None,
-    first_block: int | None = None,
-    last_block: int | None = None,
+    traditional_review_cases: Sequence[ReviewTestCase] = (),
+    traditional_simplified_review_cases: Sequence[ReviewTestCase] = (),
+    simplified_review_cases: Sequence[ReviewTestCase] = (),
+    filters: ReviewAuditFilterGroup = ReviewAuditFilterGroup(),
 ) -> str:
     """Audit parallel simplified and traditional-to-simplified review paths.
 
@@ -63,12 +43,7 @@ def audit_dual_review(
         traditional_simplified_review_cases: traditional simplification review test
             cases
         simplified_review_cases: simplified review test cases
-        row_filter: row status filter
-        characters: individual characters whose occurrence limits included rows
-        first_index: first 1-indexed subtitle number to include, inclusive
-        last_index: last 1-indexed subtitle number to include, inclusive
-        first_block: first 1-indexed workflow block number to include, inclusive
-        last_block: last 1-indexed workflow block number to include, inclusive
+        filters: row, character, and range filters
     Returns:
         Markdown audit report
     Raises:
@@ -76,19 +51,19 @@ def audit_dual_review(
     """
     return audit_review(
         reviews=(
-            ReviewAuditPair(
+            ReviewAuditResultPair(
                 label="Simplified",
                 original=simplified,
                 reviewed=simplified_reviewed,
                 review_cases=simplified_review_cases,
             ),
-            ReviewAuditPair(
+            ReviewAuditResultPair(
                 label="Traditional",
                 original=traditional,
                 reviewed=traditional_reviewed,
                 review_cases=traditional_review_cases,
             ),
-            ReviewAuditPair(
+            ReviewAuditResultPair(
                 label="Traditional simplification",
                 original=traditional_simplified,
                 reviewed=traditional_simplified_reviewed,
@@ -96,17 +71,12 @@ def audit_dual_review(
             ),
         ),
         comparisons=(
-            ReviewAuditComparison(
+            ReviewAuditSeriesPair(
                 column_label="Simplified vs Traditional->Simplified",
                 summary_label="Final text",
-                left=simplified_reviewed,
-                right=traditional_simplified_reviewed,
+                one=simplified_reviewed,
+                two=traditional_simplified_reviewed,
             ),
         ),
-        row_filter=row_filter,
-        characters=characters,
-        first_index=first_index,
-        last_index=last_index,
-        first_block=first_block,
-        last_block=last_block,
+        filters=filters,
     )

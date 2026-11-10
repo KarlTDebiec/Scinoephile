@@ -1,0 +1,11 @@
+{% from '_icons.html' import status_select, proofreading_options, audit_options %}
+{% for name, label, statuses in [('proofreading', 'Proofreading', proofreading_options), ('audit', 'Audit', audit_options)] %}
+  {% set options = namespace(values=[]) %}
+  {% for value, text, symbol in statuses %}
+    {% set options.values = options.values + [(value, text, symbol)] %}
+    {% for verification in ['unverified', 'verified'] %}
+      {% set options.values = options.values + [(value ~ '-' ~ verification, text ~ ', ' ~ verification, symbol)] %}
+    {% endfor %}
+  {% endfor %}
+  {{ status_select(name, label ~ ' filter', options.values, filters|attr(name), include_all=true, all_label='All ' ~ label|lower ~ ' statuses', counts=page.filter_counts[name], oob=oob|default(false)) }}
+{% endfor %}
