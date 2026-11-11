@@ -103,7 +103,7 @@ def test_concern_kind_excludes_done_state():
 
 @mark.parametrize(
     ("text_1", "text_2", "font_size", "letter_spacing"),
-    [("A", "B", 90, 0), ("字", "姐", 60, 10)],
+    [("A", "B", 82, 0), ("字", "姐", 60, 10)],
 )
 def test_session_uses_one_font_size_for_series(
     tmp_path: Path,

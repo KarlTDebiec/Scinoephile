@@ -37,7 +37,7 @@ from .html_index import HtmlSubtitleEntry, load_html_entries, update_html_entry_
 
 __all__ = ["OcrValidationSession"]
 
-_LATIN_FONT_SIZE_MULTIPLIER = 1.5
+_LATIN_FONT_SIZE_MULTIPLIER = 1.36
 """Convert representative Latin glyph height to the editor font size."""
 
 
