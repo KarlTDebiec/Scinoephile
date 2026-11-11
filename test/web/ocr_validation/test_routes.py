@@ -94,23 +94,26 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
     gap_label = b'aria-label="Gap between boxes 1 and 2: 0 pixels"'
     assert expanded.data.index(b"Box 1 size map") < expanded.data.index(gap_label)
     assert expanded.data.index(gap_label) < expanded.data.index(b"Box 2 size map")
-    assert search(rb'--band-start: 15\.0%;\s+--band-end: 65\.0%"', expanded.data)
+    gap_bands = findall(
+        rb'class="number-line-band"\s+data-band="auto-approved"', expanded.data
+    )
+    assert len(gap_bands) == 3
     maps = findall(rb'src="data:image/png;base64,([^"]+)"', expanded.data)
     assert len(maps) == 2
     with (
         Image.open(BytesIO(b64decode(maps[0]))) as first,
         Image.open(BytesIO(b64decode(maps[1]))) as second,
     ):
-        # The two square crops start at (3, 15) and (3, 18) in measurement space.
-        assert first.size == (20, 20)
-        assert second.size == (8, 8)
-        assert first.getpixel((7, 5)) == (0, 128, 255)
-        assert first.getpixel((9, 7)) == (0, 255, 0)
-        assert first.getpixel((10, 7)) == (0, 0, 0)
-        assert first.getpixel((17, 15)) == (0, 128, 255)
-        assert first.getpixel((16, 14)) == (0, 0, 0)
-        assert second.getpixel((3, 1)) == (0, 0, 0)
-        assert first.getpixel((2, 5)) == second.getpixel((2, 2)) == (255, 0, 0)
+        # The two square crops start at (1, 14) and (1, 16) in measurement space.
+        assert first.size == (24, 24)
+        assert second.size == (12, 12)
+        assert first.getpixel((9, 6)) == (0, 128, 255)
+        assert first.getpixel((11, 8)) == (0, 255, 0)
+        assert first.getpixel((12, 8)) == (0, 0, 0)
+        assert first.getpixel((19, 16)) == (0, 128, 255)
+        assert first.getpixel((18, 15)) == (0, 255, 0)
+        assert second.getpixel((5, 3)) == (0, 255, 0)
+        assert first.getpixel((4, 6)) == second.getpixel((4, 4)) == (255, 0, 0)
 
     filtered = client.get("/?status=character&q=1", headers=_HTMX)
     assert gap_label in filtered.data
