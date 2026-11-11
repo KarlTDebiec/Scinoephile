@@ -41,8 +41,7 @@ def test_character_approval_advances_then_reuses_learned_dimensions(
     session = _session(images_path, tmp_path)
     client = create_app(session).test_client()
     page = client.get("/?status=character")
-    assert b"1. Check the box selection" in page.data
-    assert b"2. Confirm the character" in page.data
+    assert b"<legend>Confirm the character</legend>" in page.data
     assert b">Characters need review</p>" in page.data
     assert b'id="sub-2"' in page.data
 
@@ -79,7 +78,11 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
     images_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 5, 0, 20), Bbox(5, 10, 0, 20)])
     session = _session(images_path, tmp_path)
-    session.manager.char_dims_by_n[2]["A"] = {(10, 20, 0, 5, 20), (20, 30, 6, 8, 22)}
+    session.manager.char_dims_by_n[2]["A"] = {
+        (10, 20, 0, 5, 20),
+        (20, 30, 6, 8, 22),
+        (5, 20, 4, 5, 20),
+    }
     client = create_app(session).test_client()
     first_page = client.get("/")
     initial = _form_values(first_page.data)
@@ -88,25 +91,29 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
         endpoint, data={**initial, "action": "expand"}, headers=_HTMX
     )
     assert expanded.status_code == 200
-    assert b"2 selected" in expanded.data
-    assert b'title="Gap between boxes">0 px</span>' in expanded.data
+    gap_label = b'aria-label="Gap between boxes 1 and 2: 0 pixels"'
+    assert expanded.data.index(b"Box 1 size map") < expanded.data.index(gap_label)
+    assert expanded.data.index(gap_label) < expanded.data.index(b"Box 2 size map")
+    assert search(rb'--band-start: 15\.0%;\s+--band-end: 65\.0%"', expanded.data)
     maps = findall(rb'src="data:image/png;base64,([^"]+)"', expanded.data)
     assert len(maps) == 2
     with (
         Image.open(BytesIO(b64decode(maps[0]))) as first,
         Image.open(BytesIO(b64decode(maps[1]))) as second,
     ):
-        assert first.size == second.size == (100, 100)
-        assert first.getpixel((10, 20)) == (33, 84, 198)
-        assert first.getpixel((12, 22)) == (71, 168, 115)
-        assert first.getpixel((13, 22)) == (185, 112, 117)
-        assert first.getpixel((20, 30)) == (33, 84, 198)
-        assert first.getpixel((19, 29)) == (185, 112, 117)
-        assert second.getpixel((6, 19)) == (185, 112, 117)
-        assert first.getpixel((5, 20)) == second.getpixel((5, 20)) == (0, 0, 0)
+        # The two square crops start at (3, 15) and (3, 18) in measurement space.
+        assert first.size == (20, 20)
+        assert second.size == (8, 8)
+        assert first.getpixel((7, 5)) == (33, 84, 198)
+        assert first.getpixel((9, 7)) == (71, 168, 115)
+        assert first.getpixel((10, 7)) == (185, 112, 117)
+        assert first.getpixel((17, 15)) == (33, 84, 198)
+        assert first.getpixel((16, 14)) == (185, 112, 117)
+        assert second.getpixel((3, 1)) == (185, 112, 117)
+        assert first.getpixel((2, 5)) == second.getpixel((2, 2)) == (0, 0, 0)
 
     filtered = client.get("/?status=character&q=1", headers=_HTMX)
-    assert b"2 selected" in filtered.data
+    assert gap_label in filtered.data
     assert not (tmp_path / "validation/char_dims_2.csv").exists()
 
     stale = client.post(endpoint, data={**initial, "action": "accept"}, headers=_HTMX)
@@ -301,7 +308,7 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     page_text = page.get_data(as_text=True)
     assert f'aria-label="Gap of {gap} pixels between “A” and “B”"' in page_text
     assert b'aria-describedby="spacing-key-0"' in page.data
-    assert f"--gap-position: {gap / 2}%;" in page_text
+    assert f'--gap-position: {gap / 2}%"' in page_text
     assert search(rb'--band-start: 1\.25%;\s+--band-end: 2\.75%"', page.data)
     legend = page_text.split('id="spacing-key-0">', 1)[1]
     after_legend = legend.split("</ul>", 1)[1]

@@ -11,27 +11,27 @@
         data-ocr-action>
     <input type="hidden" name="csrf" value="{{ csrf }}">
     <input type="hidden" name="version" value="{{ row.version }}">
-    <fieldset>
-      <legend>1. Check the box selection</legend>
-      <p>{{ row.concern.n_bboxes }} selected · {{ row.concern.dims }}</p>
-      <button type="submit"
-              name="action"
-              value="contract"
-              {% if not row.concern.can_contract %}disabled{% endif %}>Contract</button>
-      <button type="submit"
-              name="action"
-              value="expand"
-              {% if not row.concern.can_expand %}disabled{% endif %}>Expand</button>
-    </fieldset>
     <fieldset class="character-confirm">
-      <legend>2. Confirm the character</legend>
+      <legend>Confirm the character</legend>
       <p class="ocr-character">
         <strong>{{ row.concern.char }}</strong>
         {% if row.concern.char_pinyin %}<small>{{ row.concern.char_pinyin }}</small>{% endif %}
         {% if row.concern.char_yale %}<small>{{ row.concern.char_yale }}</small>{% endif %}
       </p>
       {% include "_character_size_maps.html" %}
-      <button type="submit" name="action" value="accept">Accept</button>
+      <div class="character-actions">
+        <div>
+          <button type="submit"
+                  name="action"
+                  value="contract"
+                  {% if not row.concern.can_contract %}disabled{% endif %}>Contract</button>
+          <button type="submit"
+                  name="action"
+                  value="expand"
+                  {% if not row.concern.can_expand %}disabled{% endif %}>Expand</button>
+        </div>
+        <button type="submit" name="action" value="accept">Accept</button>
+      </div>
     </fieldset>
   </form>
 {% elif row.concern.kind == "space-gap" or row.concern.kind == "tab-gap" %}

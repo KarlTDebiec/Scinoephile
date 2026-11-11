@@ -96,25 +96,43 @@
     border-radius: .25rem;
     & p { margin: .1rem 0 .5rem; }
   }
-  & .character-check { display: flex; flex-wrap: wrap; gap: .75rem; }
+  & .ocr-character { text-align: center; }
   & .ocr-character strong { margin-inline-end: .25rem; }
 }
 
 /* Character dimensions at one physical pixel per measurement step */
-.character-confirm { flex: 1 1 16rem; }
+.character-check { container-type: inline-size; }
+.character-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: .4rem;
+
+  & > div { grid-column: 2; display: flex; gap: .4rem; }
+  & > button { grid-column: 3; justify-self: end; }
+  @container (width < 20rem) {
+    & > button { grid-column: 2 / 4; grid-row: 2; }
+  }
+}
+.character-measurements {
+  & [data-band="stored"] { --band-color: var(--measurement-stored); }
+  & [data-band="auto-approved"] { --band-color: var(--measurement-auto-approved); }
+  & [data-band="needs-review"] { --band-color: var(--measurement-needs-review); }
+  & [data-band="proposed"] { --band-color: var(--measurement-proposed); }
+}
+.character-gap-scale { flex: 1 0 6rem; max-width: 10rem; padding-inline: .25rem; }
 .character-size-maps {
   display: flex;
   align-items: center;
+  justify-content: safe center;
   gap: .65rem;
   overflow-x: auto;
   padding: .15rem .1rem;
 }
-.character-size-gap, .character-size-map {
+.character-size-map {
   flex: none;
   font-size: .8rem;
   color: var(--muted);
-}
-.character-size-map {
   margin: 0;
   text-align: center;
 
@@ -130,6 +148,7 @@
 .character-size-key {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: .15rem .75rem;
   margin: .3rem 0 .5rem;
   padding: 0;
@@ -142,20 +161,13 @@
     width: .55rem;
     height: .55rem;
     outline: 1px solid var(--border);
-    background: var(--size-map-color);
+    background: var(--band-color);
   }
 }
 
-/* Measured gap and the spacing rules on either side of it */
-.spacing-check {
-  & [data-band="adjacent"] { --band-color: light-dark(#758395, #9aaabc); }
-  & [data-band="space-prompt"] { --band-color: light-dark(#ad7000, #e3b252); }
-  & [data-band="space"] { --band-color: light-dark(#356ac3, #75a8f5); }
-  & [data-band="tab-prompt"] { --band-color: light-dark(#af5041, #ed9689); }
-  & [data-band="tab"] { --band-color: light-dark(#267763, #67c6ae); }
-
-  & .spacing-scale { margin-inline: 2rem; }
-  & .spacing-ticks {
+/* Ticks, range bands, and a caret shared by both gap displays */
+.number-line {
+  & .number-line-ticks {
     position: relative;
     height: 1.4rem;
     font-size: .8rem;
@@ -176,25 +188,17 @@
       background: currentColor;
     }
   }
-  & .spacing-track {
+  & .number-line-track {
     position: relative;
     height: .5rem;
     background: var(--border);
   }
-  & .spacing-band {
+  & .number-line-band {
     position: absolute;
     inset: 0 calc(100% - var(--band-end)) 0 var(--band-start);
     background: var(--band-color);
-
-    & + .spacing-band::before {
-      content: "";
-      position: absolute;
-      inset: -.18rem auto -.18rem 0;
-      width: 1px;
-      background: var(--text);
-    }
   }
-  & .spacing-char {
+  & :is(.number-line-start, .number-line-end) {
     position: absolute;
     top: 50%;
     width: 1.75rem;
@@ -203,9 +207,9 @@
     font-weight: 600;
     text-align: center;
   }
-  & .spacing-char-start { right: calc(100% + .25rem); }
-  & .spacing-char-end { left: calc(100% + .25rem); }
-  & .spacing-reading {
+  & .number-line-start { right: calc(100% + .25rem); }
+  & .number-line-end { left: calc(100% + .25rem); }
+  & .number-line-reading {
     position: relative;
     height: 1.9rem;
 
@@ -227,6 +231,24 @@
       background: currentColor;
       clip-path: polygon(50% 0, 100% 100%, 0 100%);
     }
+  }
+}
+
+/* Measured gap and the spacing rules on either side of it */
+.spacing-check {
+  & [data-band="adjacent"] { --band-color: light-dark(#758395, #9aaabc); }
+  & [data-band="space-prompt"] { --band-color: light-dark(#ad7000, #e3b252); }
+  & [data-band="space"] { --band-color: light-dark(#356ac3, #75a8f5); }
+  & [data-band="tab-prompt"] { --band-color: light-dark(#af5041, #ed9689); }
+  & [data-band="tab"] { --band-color: light-dark(#267763, #67c6ae); }
+
+  & .spacing-scale { margin-inline: 2rem; }
+  & .number-line-band + .number-line-band::before {
+    content: "";
+    position: absolute;
+    inset: -.18rem auto -.18rem 0;
+    width: 1px;
+    background: var(--text);
   }
   & .spacing-key {
     display: flex;
