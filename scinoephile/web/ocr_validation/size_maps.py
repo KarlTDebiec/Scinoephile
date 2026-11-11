@@ -19,6 +19,7 @@ from scinoephile.image.ocr.validation.char_dims import (
 __all__ = ["CharacterGapScale", "CharacterSizeMap", "get_character_size_maps"]
 
 _STORED = "#2154c6"
+_STORED_LABEL = "Previously approved"
 _AUTO_APPROVED = "#47a873"
 _NEEDS_REVIEW = "#b97075"
 _PROPOSED = "#000000"
@@ -43,7 +44,7 @@ class CharacterSizeMap:
     """Map and proposed measurements for one box in a character."""
 
     legend: ClassVar[tuple[tuple[str, str, str], ...]] = (
-        ("stored", "Stored", _STORED),
+        ("stored", _STORED_LABEL, _STORED),
         ("auto-approved", "Auto-approved", _AUTO_APPROVED),
         ("needs-review", "Needs review", _NEEDS_REVIEW),
         ("proposed", "Proposed", _PROPOSED),
@@ -195,5 +196,5 @@ def _get_gap_scale(
         ("auto-approved", "Auto-approved", value - tolerance, value + tolerance)
         for value in sorted(compatible)
     )
-    bands.extend(("stored", "Stored", value, value) for value in sorted(stored))
+    bands.extend(("stored", _STORED_LABEL, value, value) for value in sorted(stored))
     return CharacterGapScale(gap, ticks, tuple(bands))

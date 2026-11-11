@@ -1,7 +1,7 @@
 {% macro position(value, ticks) -%}
   {{ (value - ticks[0]) / (ticks[-1] - ticks[0]) * 100 }}%
 {%- endmacro %}
-{% macro number_line(ticks, bands, value, label, description_id=none, left=none, right=none) -%}
+{% macro number_line(ticks, bands, value, label, description_id=none, left=none, right=none, point=false) -%}
   {# djlint:off H021 #}
   <div class="number-line"
        role="img"
@@ -25,8 +25,9 @@
                      --band-end: {{ position(end, ticks) }}"></span>
       {% endfor %}
       {% if right is not none %}<span class="number-line-end">{{ right }}</span>{% endif %}
+      {% if point %}<span class="number-line-proposal"></span>{% endif %}
     </div>
-    <div class="number-line-reading"><span>{{ value }} px</span></div>
+    {% if not point %}<div class="number-line-reading"><span>{{ value }} px</span></div>{% endif %}
   </div>
   {# djlint:on #}
 {%- endmacro %}

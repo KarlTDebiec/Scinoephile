@@ -96,22 +96,30 @@
     border-radius: .25rem;
     & p { margin: .1rem 0 .5rem; }
   }
-  & .ocr-character { text-align: center; }
-  & .ocr-character strong { margin-inline-end: .25rem; }
 }
 
 /* Character dimensions at one physical pixel per measurement step */
 .character-check { container-type: inline-size; }
 .character-actions {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: minmax(4.5rem, 1fr) minmax(0, max-content) minmax(4.5rem, 1fr);
   align-items: center;
   gap: .4rem;
 
-  & > div { grid-column: 2; display: flex; gap: .4rem; }
+  & .ocr-character { grid-column: 1; margin: 0; overflow-wrap: anywhere; }
+  & .ocr-character strong { margin-inline-end: .25rem; }
+  & > div {
+    grid-column: 2;
+    display: flex;
+    justify-content: center;
+    gap: .4rem;
+    & button { min-width: 0; }
+  }
   & > button { grid-column: 3; justify-self: end; }
-  @container (width < 20rem) {
-    & > button { grid-column: 2 / 4; grid-row: 2; }
+  @container (width < 25rem) {
+    & > div { grid-column: 1 / -1; grid-row: 1; }
+    & .ocr-character { grid-column: 1 / 3; grid-row: 2; }
+    & > button { grid-row: 2; }
   }
 }
 .character-measurements {
@@ -123,18 +131,23 @@
 .character-gap-scale { flex: 1 0 6rem; max-width: 10rem; padding-inline: .25rem; }
 .character-size-maps {
   display: flex;
-  align-items: center;
   justify-content: safe center;
   gap: .65rem;
   overflow-x: auto;
   padding: .15rem .1rem;
+
+  & figure {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    align-items: center;
+    margin: 0;
+    font-size: .8rem;
+    color: var(--muted);
+    text-align: center;
+  }
 }
 .character-size-map {
   flex: none;
-  font-size: .8rem;
-  color: var(--muted);
-  margin: 0;
-  text-align: center;
 
   & img {
     display: block;
@@ -197,6 +210,15 @@
     position: absolute;
     inset: 0 calc(100% - var(--band-end)) 0 var(--band-start);
     background: var(--band-color);
+  }
+  & .number-line-proposal {
+    position: absolute;
+    top: 50%;
+    left: var(--gap-position);
+    width: .4rem;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    background: var(--measurement-proposed);
   }
   & :is(.number-line-start, .number-line-end) {
     position: absolute;

@@ -13,22 +13,22 @@
     <input type="hidden" name="version" value="{{ row.version }}">
     <fieldset class="character-confirm">
       <legend>Confirm the character</legend>
-      <p class="ocr-character">
-        <strong>{{ row.concern.char }}</strong>
-        {% if row.concern.char_pinyin %}<small>{{ row.concern.char_pinyin }}</small>{% endif %}
-        {% if row.concern.char_yale %}<small>{{ row.concern.char_yale }}</small>{% endif %}
-      </p>
       {% include "_character_size_maps.html" %}
       <div class="character-actions">
+        <p class="ocr-character">
+          <strong>{{ row.concern.char }}</strong>
+          {% if row.concern.char_pinyin %}<small>{{ row.concern.char_pinyin }}</small>{% endif %}
+          {% if row.concern.char_yale %}<small>{{ row.concern.char_yale }}</small>{% endif %}
+        </p>
         <div>
           <button type="submit"
                   name="action"
                   value="contract"
-                  {% if not row.concern.can_contract %}disabled{% endif %}>Contract</button>
+                  {% if not row.concern.can_contract %}disabled{% endif %}>Subtract bounding box</button>
           <button type="submit"
                   name="action"
                   value="expand"
-                  {% if not row.concern.can_expand %}disabled{% endif %}>Expand</button>
+                  {% if not row.concern.can_expand %}disabled{% endif %}>Add bounding box</button>
         </div>
         <button type="submit" name="action" value="accept">Accept</button>
       </div>

@@ -10,9 +10,10 @@
       {% for size_map in maps %}
         {% if size_map.gap_before is not none %}
           {% set gap = size_map.gap_before %}
-          <div class="character-gap-scale">
-            {{ number_line(gap.ticks, gap.bands, gap.value, "Gap between boxes " ~ loop.index0 ~ " and " ~ loop.index ~ ": " ~ gap.value ~ " pixels", legend_id) }}
-          </div>
+          <figure class="character-gap-scale">
+            {{ number_line(gap.ticks, gap.bands, gap.value, "Gap between boxes " ~ loop.index0 ~ " and " ~ loop.index ~ ": " ~ gap.value ~ " pixels", legend_id, point=true) }}
+            <figcaption>{{ gap.value }} px</figcaption>
+          </figure>
         {% endif %}
         <figure class="character-size-map">
           <img src="{{ size_map.image_url }}"
@@ -21,7 +22,7 @@
                height="{{ size_map.image_size }}"
                style="--size-map-width: {{ size_map.display_size }}"
                loading="lazy">
-          <figcaption>Box {{ loop.index }} · {{ size_map.width }} × {{ size_map.height }} px</figcaption>
+          <figcaption>{{ size_map.width }} × {{ size_map.height }} px</figcaption>
         </figure>
       {% endfor %}
     </div>
