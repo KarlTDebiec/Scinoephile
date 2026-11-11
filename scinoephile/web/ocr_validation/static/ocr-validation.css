@@ -98,9 +98,18 @@
   }
   & .character-check { display: flex; flex-wrap: wrap; gap: .75rem; }
   & .ocr-character strong { margin-inline-end: .25rem; }
-  & .spacing-check { overflow-x: auto; }
-  & table { border-collapse: collapse; }
-  & :is(th, td) { border-bottom: 1px solid var(--border); padding: .3rem .5rem; }
-  & td[data-char] small { display: block; color: var(--muted); }
-  & code { white-space: pre; }
+  & .spacing-table {
+    overflow-x: auto;
+
+    & table { width: 100%; border-collapse: collapse; }
+    & :is(th, td) { border-bottom: 1px solid var(--border); padding: .3rem .5rem; }
+    & td[data-char] small { display: block; color: var(--muted); }
+    & code { white-space: pre; }
+  }
+  & .spacing-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .5rem;
+    margin-top: .5rem;
+  }
 }

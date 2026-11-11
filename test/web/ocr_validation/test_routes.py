@@ -265,8 +265,10 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     assert b"Check spacing" not in page.data
     assert b">Spacing needs review</p>" in page.data
     assert b'id="sub-1"' not in client.get("/?status=character").data
-    assert b">Adjacent</button>" in page.data
-    assert b">Space</button>" in page.data
+    assert b"<th>Actions</th>" not in page.data
+    actions = page.get_data(as_text=True).split("</table>", 1)[1]
+    assert 'value="adjacent">Gap of 4 between “A” and “B” should be adjacent' in actions
+    assert 'value="space">Gap of 4 between “A” and “B” should be space' in actions
 
     response = client.post(
         "/subtitles/0/concern/gap?status=spacing",
