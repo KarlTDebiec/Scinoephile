@@ -12,6 +12,8 @@ from scinoephile.image.bbox import Bbox
 from scinoephile.lang.cmn.romanization import get_cmn_char_romanized
 from scinoephile.lang.yue.romanization import get_yue_char_romanized
 
+from .size_maps import CharacterSizeMap, get_character_size_maps
+
 __all__ = [
     "FILTER_OPTIONS",
     "CharDimsConcern",
@@ -217,6 +219,15 @@ class SubtitleRowView:
     """Detected series subtitle font size in pixels."""
     text_letter_spacing_px: int = 10
     """Detected subtitle letter spacing in pixels."""
+    known_char_dims: tuple[tuple[int, ...], ...] = ()
+    """Stored configurations for the current character and box count."""
+
+    @property
+    def character_size_maps(self) -> tuple[CharacterSizeMap, ...]:
+        """Size maps for the current character concern, rendered on demand."""
+        if isinstance(self.concern, CharDimsConcern):
+            return get_character_size_maps(self.concern.dims, self.known_char_dims)
+        return ()
 
     @property
     def editable_text(self) -> str:

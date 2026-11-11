@@ -17,7 +17,12 @@ from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .char_cursor import CharCursor
-from .char_dims import get_dims_tuple, load_char_dims, save_char_dims
+from .char_dims import (
+    char_dims_within_tolerance,
+    get_dims_tuple,
+    load_char_dims,
+    save_char_dims,
+)
 from .char_grp_dims import load_char_grp_dims, save_char_grp_dims
 from .char_pair_gaps import (
     get_default_char_pair_cutoffs,
@@ -274,9 +279,7 @@ class ValidationManager:
 
             # Fuzzy match
             for ok_dim in ok_dims:
-                diffs = [abs(dims[i] - ok_dim[i]) for i in range(len(dims))]
-                max_diff = max(diffs)
-                if max_diff <= 2:
+                if char_dims_within_tolerance(dims, ok_dim):
                     self._update_char_grp_dims(char_grp, dims)
                     cursor.advance(n_chars=n_chars, n_bboxes=1)
                     return True

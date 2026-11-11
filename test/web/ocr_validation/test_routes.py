@@ -4,9 +4,10 @@
 
 from __future__ import annotations
 
+from base64 import b64decode
 from io import BytesIO
 from pathlib import Path
-from re import search
+from re import findall, search
 
 from PIL import Image
 from pytest import MonkeyPatch, mark
@@ -78,6 +79,7 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
     images_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 5, 0, 20), Bbox(5, 10, 0, 20)])
     session = _session(images_path, tmp_path)
+    session.manager.char_dims_by_n[2]["A"] = {(10, 20, 0, 5, 20), (20, 30, 6, 8, 22)}
     client = create_app(session).test_client()
     first_page = client.get("/")
     initial = _form_values(first_page.data)
@@ -87,6 +89,21 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
     )
     assert expanded.status_code == 200
     assert b"2 selected" in expanded.data
+    assert b'title="Gap between boxes">0 px</span>' in expanded.data
+    maps = findall(rb'src="data:image/png;base64,([^"]+)"', expanded.data)
+    assert len(maps) == 2
+    with (
+        Image.open(BytesIO(b64decode(maps[0]))) as first,
+        Image.open(BytesIO(b64decode(maps[1]))) as second,
+    ):
+        assert first.size == second.size == (100, 100)
+        assert first.getpixel((10, 20)) == (33, 84, 198)
+        assert first.getpixel((12, 22)) == (71, 168, 115)
+        assert first.getpixel((13, 22)) == (185, 112, 117)
+        assert first.getpixel((20, 30)) == (33, 84, 198)
+        assert first.getpixel((19, 29)) == (185, 112, 117)
+        assert second.getpixel((6, 19)) == (185, 112, 117)
+        assert first.getpixel((5, 20)) == second.getpixel((5, 20)) == (0, 0, 0)
 
     filtered = client.get("/?status=character&q=1", headers=_HTMX)
     assert b"2 selected" in filtered.data

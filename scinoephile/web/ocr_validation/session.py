@@ -268,9 +268,16 @@ class OcrValidationSession:
         entry = self.entries[sub_idx]
         subtitle = self.series.events[sub_idx]
         boxes = subtitle.bboxes or []
-        if isinstance(state.concern, CharDimsConcern):
-            boxes = self._char_cursor(state).bbox_grp(state.concern.n_bboxes)
-        elif isinstance(state.concern, GapConcern):
+        concern = state.concern
+        known_char_dims = ()
+        if isinstance(concern, CharDimsConcern):
+            boxes = self._char_cursor(state).bbox_grp(concern.n_bboxes)
+            known_char_dims = tuple(
+                self.manager.char_dims_by_n.get(concern.n_bboxes, {}).get(
+                    concern.char, ()
+                )
+            )
+        elif isinstance(concern, GapConcern):
             boxes = self._gap_cursor(state).bbox_grp(2)
         return SubtitleRowView(
             sub_idx=sub_idx,
@@ -280,12 +287,13 @@ class OcrValidationSession:
             image_width=subtitle.img.width,
             image_height=subtitle.img.height,
             text=entry.text,
-            concern=state.concern,
+            concern=concern,
             boxes=tuple(boxes),
             text_color_css=self.text_color_css,
             text_shadow_color_css=self.text_shadow_color_css,
             text_font_size_px=self.text_font_size_px,
             text_letter_spacing_px=self.text_letter_spacing_px,
+            known_char_dims=known_char_dims,
         )
 
     def update_text(self, sub_idx: int, text: str) -> SubtitleRowView:

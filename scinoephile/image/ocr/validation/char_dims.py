@@ -12,10 +12,36 @@ from scinoephile.image.bbox import Bbox
 
 from .csv import save_csv_rows
 
-__all__ = ["get_dims_tuple", "load_char_dims", "save_char_dims"]
+__all__ = [
+    "CHAR_DIM_TOLERANCE",
+    "char_dims_within_tolerance",
+    "get_dims_tuple",
+    "load_char_dims",
+    "save_char_dims",
+]
 
 
 logger = getLogger(__name__)
+
+CHAR_DIM_TOLERANCE = 2
+"""Maximum pixel difference allowed for each box dimension and gap."""
+
+
+def char_dims_within_tolerance(
+    dims: tuple[int, ...], known_dims: tuple[int, ...]
+) -> bool:
+    """Compare all selected dimensions or gaps with their stored values.
+
+    Arguments:
+        dims: proposed measurements
+        known_dims: corresponding measurements from one stored configuration
+    Returns:
+        whether every corresponding measurement is within tolerance
+    """
+    return len(dims) == len(known_dims) and all(
+        abs(proposed - known) <= CHAR_DIM_TOLERANCE
+        for proposed, known in zip(dims, known_dims, strict=True)
+    )
 
 
 def get_dims_tuple(bboxes: Bbox | list[Bbox]) -> tuple[int, ...]:

@@ -1,5 +1,17 @@
 /** @file Appearance controls, blur saves, and concern actions for the OCR editor. */
 
+/** Keep size-map pixels at the display's physical pixel size as zoom or DPI changes. */
+function syncOcrDevicePixels() {
+    const ratio = window.devicePixelRatio;
+    document.documentElement.style.setProperty("--ocr-device-pixel-ratio", ratio);
+    window.matchMedia(`(resolution: ${ratio}dppx)`).addEventListener("change",
+        syncOcrDevicePixels, {
+            once: true
+        });
+}
+
+syncOcrDevicePixels();
+
 /** Restore display preferences when the toolbar is rendered or replaced. */
 function syncOcrAppearance() {
     const controls = document.querySelector("[data-ocr-appearance-controls]");
@@ -30,7 +42,7 @@ document.addEventListener("htmx:historyRestore", syncOcrAppearance);
 document.addEventListener("input", event => {
     const input = event.target;
     if (!input.matches("[data-ocr-appearance]") || !input.validity.valid)
-return;
+        return;
     const property = input.dataset.ocrAppearance;
     document.documentElement.style.setProperty(property, input.value);
     try {

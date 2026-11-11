@@ -23,13 +23,14 @@
               value="expand"
               {% if not row.concern.can_expand %}disabled{% endif %}>Expand</button>
     </fieldset>
-    <fieldset>
+    <fieldset class="character-confirm">
       <legend>2. Confirm the character</legend>
       <p class="ocr-character">
         <strong>{{ row.concern.char }}</strong>
         {% if row.concern.char_pinyin %}<small>{{ row.concern.char_pinyin }}</small>{% endif %}
         {% if row.concern.char_yale %}<small>{{ row.concern.char_yale }}</small>{% endif %}
       </p>
+      {% include "_character_size_maps.html" %}
       <button type="submit" name="action" value="accept">Accept</button>
     </fieldset>
   </form>

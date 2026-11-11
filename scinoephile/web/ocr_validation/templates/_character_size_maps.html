@@ -1,0 +1,29 @@
+{% set maps = row.character_size_maps %}
+{% if maps %}
+  <div class="character-size-maps">
+    {% for size_map in maps %}
+      {% if size_map.gap_before is not none %}
+        <span class="character-size-gap"
+              title="Gap between boxes">{{ size_map.gap_before }} px</span>
+      {% endif %}
+      <figure class="character-size-map">
+        {# djlint:off H021 #}
+        <img src="{{ size_map.image_url }}"
+             alt="Box {{ loop.index }} size map. Width increases to the right and height downwards."
+             width="{{ size_map.image_width }}"
+             height="{{ size_map.image_height }}"
+             style="--size-map-width: {{ size_map.image_width }}"
+             loading="lazy">
+        {# djlint:on #}
+        <figcaption>Box {{ loop.index }} · {{ size_map.width }} × {{ size_map.height }} px</figcaption>
+      </figure>
+    {% endfor %}
+  </div>
+  <ul class="character-size-key" aria-label="Box size map legend">
+    {% for label, color in maps[0].legend %}
+      {# djlint:off H021 #}
+      <li style="--size-map-color: {{ color }}">{{ label }}</li>
+      {# djlint:on #}
+    {% endfor %}
+  </ul>
+{% endif %}

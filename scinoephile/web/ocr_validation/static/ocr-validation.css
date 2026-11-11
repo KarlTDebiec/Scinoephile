@@ -100,6 +100,52 @@
   & .ocr-character strong { margin-inline-end: .25rem; }
 }
 
+/* Character dimensions at one physical pixel per measurement step */
+.character-confirm { flex: 1 1 16rem; }
+.character-size-maps {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  overflow-x: auto;
+  padding: .15rem .1rem;
+}
+.character-size-gap, .character-size-map {
+  flex: none;
+  font-size: .8rem;
+  color: var(--muted);
+}
+.character-size-map {
+  margin: 0;
+  text-align: center;
+
+  & img {
+    display: block;
+    width: calc(var(--size-map-width) * 1px / var(--ocr-device-pixel-ratio, 1));
+    height: auto;
+    margin: 0 auto .2rem;
+    outline: 1px solid var(--border);
+    image-rendering: pixelated;
+  }
+}
+.character-size-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .15rem .75rem;
+  margin: .3rem 0 .5rem;
+  padding: 0;
+  list-style: none;
+  font-size: .8rem;
+
+  & li { display: inline-flex; align-items: center; gap: .3rem; }
+  & li::before {
+    content: "";
+    width: .55rem;
+    height: .55rem;
+    outline: 1px solid var(--border);
+    background: var(--size-map-color);
+  }
+}
+
 /* Measured gap and the spacing rules on either side of it */
 .spacing-check {
   & [data-band="adjacent"] { --band-color: light-dark(#758395, #9aaabc); }
