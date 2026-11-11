@@ -261,14 +261,18 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     session = prepared_gap_session(images_path, tmp_path)
     client = create_app(session).test_client()
     page = client.get("/?status=spacing")
-    assert b'<table aria-labelledby="row-status-0">' in page.data
+    assert b"<table" not in page.data
     assert b"Check spacing" not in page.data
     assert b">Spacing needs review</p>" in page.data
     assert b'id="sub-1"' not in client.get("/?status=character").data
-    assert b"<th>Actions</th>" not in page.data
-    actions = page.get_data(as_text=True).split("</table>", 1)[1]
-    assert 'value="adjacent">Gap of 4 between “A” and “B” should be adjacent' in actions
-    assert 'value="space">Gap of 4 between “A” and “B” should be space' in actions
+    assert 'aria-label="Gap of 4 pixels between “A” and “B”"' in page.get_data(
+        as_text=True
+    )
+    assert b'aria-describedby="spacing-key-0"' in page.data
+    assert b"--gap-position: 2.0%;" in page.data
+    assert search(rb'--band-start: 1\.25%;\s+--band-end: 2\.75%"', page.data)
+    assert b'value="adjacent">Adjacent</button>' in page.data
+    assert b'value="space">Space</button>' in page.data
 
     response = client.post(
         "/subtitles/0/concern/gap?status=spacing",

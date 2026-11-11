@@ -1,0 +1,58 @@
+{% set concern = row.concern %}
+{% set ticks = concern.scale_ticks %}
+{% set bands = concern.scale_bands %}
+{% macro position(value) -%}
+  {{ (value - ticks[0]) / (ticks[-1] - ticks[0]) * 100 }}%
+{%- endmacro %}
+{# djlint:off H021 #}
+<div class="spacing-scale" style="--gap-position: {{ position(concern.gap) }};">
+  <div role="img"
+       aria-label="Gap of {{ concern.gap }} pixels between “{{ concern.char_1 }}” and “{{ concern.char_2 }}”"
+       aria-describedby="spacing-key-{{ row.sub_idx }}">
+    <div class="spacing-ticks">
+      {% for tick in ticks %}
+        <span style="--tick-position: {{ position(tick) }};">{{ tick }}</span>
+      {% endfor %}
+    </div>
+    <div class="spacing-track">
+      <span class="spacing-char spacing-char-start">{{ concern.char_1 }}</span>
+      {% for kind, label, lower, upper in bands %}
+        {# Put each boundary halfway between the two consecutive integer gaps. #}
+        {% set start = ticks[0] if lower is none else lower - 0.5 %}
+        {% set end = ticks[-1] if upper is none else upper + 0.5 %}
+        <span class="spacing-band"
+              data-band="{{ kind }}"
+              style="--band-start: {{ position(start) }};
+                     --band-end: {{ position(end) }}"></span>
+      {% endfor %}
+      <span class="spacing-char spacing-char-end">{{ concern.char_2 }}</span>
+    </div>
+    <div class="spacing-reading"><span>{{ concern.gap }} px</span></div>
+  </div>
+  <div class="spacing-actions">
+    {% for action_value, action_label in concern.action_options %}
+      <button type="submit"
+              name="action"
+              value="{{ action_value }}">{{ action_label }}</button>
+    {% endfor %}
+  </div>
+</div>
+{# djlint:on #}
+<ul class="spacing-key" id="spacing-key-{{ row.sub_idx }}">
+  {% for kind, label, lower, upper in bands %}
+    <li data-band="{{ kind }}">
+      {{ label }}
+      <small>
+        {% if lower is none %}
+          ≤{{ upper }}
+        {% elif upper is none %}
+          ≥{{ lower }}
+        {% elif lower == upper %}
+          {{ lower }}
+        {% else %}
+          {{ lower }}–{{ upper }}
+        {% endif %}
+      </small>
+    </li>
+  {% endfor %}
+</ul>

@@ -1,18 +1,3 @@
-{% macro char_cell(char, pinyin, yale) -%}
-  {% if pinyin or yale %}
-    <td data-char>
-      <span>{{ char }}</span>
-      {% if pinyin %}
-        <small>{{ pinyin }}</small>
-      {% endif %}
-      {% if yale %}
-        <small>{{ yale }}</small>
-      {% endif %}
-    </td>
-  {% else %}
-    <td>{{ char }}</td>
-  {% endif %}
-{%- endmacro %}
 {% if row.concern.kind == "char-dims" %}
   {% set action_url = url_for('update_subtitle', sub_idx=row.sub_idx, operation='char', status=status, q=query, through=through) %}
   <form method="post"
@@ -61,37 +46,7 @@
         data-ocr-action>
     <input type="hidden" name="csrf" value="{{ csrf }}">
     <input type="hidden" name="version" value="{{ row.version }}">
-    <div class="spacing-table">
-      <table aria-labelledby="row-status-{{ row.sub_idx }}">
-        <thead>
-          <tr>
-            <th>Char 1</th>
-            <th>Char 2</th>
-            <th>Prompt for Space</th>
-            <th>Prompt for Tab</th>
-            <th>Gap</th>
-            <th>Observed</th>
-            <th>Expected</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {{ char_cell(row.concern.char_1, row.concern.char_1_pinyin, row.concern.char_1_yale) }}
-            {{ char_cell(row.concern.char_2, row.concern.char_2_pinyin, row.concern.char_2_yale) }}
-            <td>{{ row.concern.space_prompt_display }}</td>
-            <td>{{ row.concern.tab_prompt_display }}</td>
-            <td>{{ row.concern.gap }}</td>
-            <td><code>{{ row.concern.observed_display }}</code></td>
-            <td><code>{{ row.concern.expected_display }}</code></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="spacing-actions">
-      {% for action_value, action_label in row.concern.action_options %}
-        <button type="submit" name="action" value="{{ action_value }}">Gap of {{ row.concern.gap }} between “{{ row.concern.char_1 }}” and “{{ row.concern.char_2 }}” should be {{ action_label | lower }}</button>
-      {% endfor %}
-    </div>
+    {% include "_spacing_scale.html" %}
   </form>
 {% elif row.concern.kind == "error" %}
   <p class="error">{{ row.concern.message }}</p>

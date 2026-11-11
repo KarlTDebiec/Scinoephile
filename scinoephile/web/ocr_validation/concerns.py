@@ -142,46 +142,31 @@ class GapConcern:
         raise ValueError(f"Invalid gap concern kind: {self.kind}")
 
     @property
-    def char_1_pinyin(self) -> str:
-        """Pinyin for the first character."""
-        return get_cmn_char_romanized(self.char_1)
+    def scale_bands(self) -> tuple[tuple[str, str, int | None, int | None], ...]:
+        """Number line bands with inclusive pixel bounds and None for open ends."""
+        adjacent, space_start = self.space_prompt
+        space_end, tab = self.tab_prompt
+        bands: tuple[tuple[str, str, int | None, int | None], ...] = (
+            ("adjacent", "Auto adjacent", None, adjacent),
+            ("space-prompt", "Prompt for space", adjacent + 1, space_start - 1),
+            ("space", "Auto space", max(adjacent + 1, space_start), space_end),
+            ("tab-prompt", "Prompt for tab", space_end + 1, tab - 1),
+            ("tab", "Auto tab", max(space_end + 1, tab), None),
+        )
+        return tuple(
+            band
+            for band in bands
+            if band[2] is None or band[3] is None or band[2] <= band[3]
+        )
 
     @property
-    def char_1_yale(self) -> str:
-        """Cantonese Yale for the first character."""
-        return get_yue_char_romanized(self.char_1)
-
-    @property
-    def char_2_pinyin(self) -> str:
-        """Pinyin for the second character."""
-        return get_cmn_char_romanized(self.char_2)
-
-    @property
-    def char_2_yale(self) -> str:
-        """Cantonese Yale for the second character."""
-        return get_yue_char_romanized(self.char_2)
-
-    @property
-    def expected_display(self) -> str:
-        """Proposed replacement gap text for display."""
-        escaped = self.expected.replace("\n", "\\n")
-        return f"'{escaped}'"
-
-    @property
-    def observed_display(self) -> str:
-        """Observed gap text for display."""
-        escaped = self.observed.replace("\n", "\\n")
-        return f"'{escaped}'"
-
-    @property
-    def space_prompt_display(self) -> str:
-        """Gap range prompting for a normal space, formatted for display."""
-        return f"{self.space_prompt[0]}-{self.space_prompt[1]}"
-
-    @property
-    def tab_prompt_display(self) -> str:
-        """Gap range prompting for a tab or wide space, formatted for display."""
-        return f"{self.tab_prompt[0]}-{self.tab_prompt[1]}"
+    def scale_ticks(self) -> range:
+        """Number line ticks covering zero, the gap, and both prompt ranges."""
+        lower = min(0, self.gap, self.space_prompt[0])
+        # Show at least 200 px and leave room for the automatic tab band
+        upper = max(199, self.gap, self.tab_prompt[1])
+        step = max(50, (upper - lower + 249) // 250 * 50)
+        return range(lower // step * step, (upper // step + 2) * step, step)
 
 
 class ValidationStatus(StrEnum):

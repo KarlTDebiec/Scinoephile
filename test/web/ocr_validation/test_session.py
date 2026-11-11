@@ -392,8 +392,8 @@ def test_session_reports_space_gap_concern(tmp_path: Path, monkeypatch: MonkeyPa
     assert row.concern.char_1 == "A"
     assert row.concern.char_2 == "B"
     assert row.concern.gap == 4
-    assert row.concern.space_prompt_display == "2-6"
-    assert row.concern.tab_prompt_display == "12-20"
+    assert row.concern.space_prompt == (2, 6)
+    assert row.concern.tab_prompt == (12, 20)
 
 
 def test_space_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: MonkeyPatch):
