@@ -182,15 +182,6 @@
       clip-path: polygon(50% 0, 100% 100%, 0 100%);
     }
   }
-  & .spacing-actions {
-    --actions-width: min(11rem, 100%);
-    display: flex;
-    justify-content: center;
-    gap: .4rem;
-    width: var(--actions-width);
-    margin-inline-start: clamp(0px, calc(var(--gap-position) - var(--actions-width) / 2),
-      calc(100% - var(--actions-width)));
-  }
   & .spacing-key {
     display: flex;
     flex-wrap: wrap;
@@ -209,5 +200,12 @@
       background: var(--band-color);
     }
     & small { font: inherit; color: var(--muted); }
+  }
+  & .spacing-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .4rem;
+    width: min(15rem, 100%);
+    margin: .65rem auto 0;
   }
 }

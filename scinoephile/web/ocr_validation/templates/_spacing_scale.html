@@ -29,13 +29,6 @@
     </div>
     <div class="spacing-reading"><span>{{ concern.gap }} px</span></div>
   </div>
-  <div class="spacing-actions">
-    {% for action_value, action_label in concern.action_options %}
-      <button type="submit"
-              name="action"
-              value="{{ action_value }}">{{ action_label }}</button>
-    {% endfor %}
-  </div>
 </div>
 {# djlint:on #}
 <ul class="spacing-key" id="spacing-key-{{ row.sub_idx }}">
@@ -56,3 +49,10 @@
     </li>
   {% endfor %}
 </ul>
+<div class="spacing-actions">
+  {% for action_value, action_label in concern.action_options %}
+    <button type="submit"
+            name="action"
+            value="{{ action_value }}">{{ action_label }}</button>
+  {% endfor %}
+</div>

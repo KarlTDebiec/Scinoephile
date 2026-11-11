@@ -271,8 +271,10 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     assert b'aria-describedby="spacing-key-0"' in page.data
     assert b"--gap-position: 2.0%;" in page.data
     assert search(rb'--band-start: 1\.25%;\s+--band-end: 2\.75%"', page.data)
-    assert b'value="adjacent">Adjacent</button>' in page.data
-    assert b'value="space">Space</button>' in page.data
+    legend = page.data.split(b'id="spacing-key-0">', 1)[1]
+    after_legend = legend.split(b"</ul>", 1)[1]
+    assert b'value="adjacent">Auto adjacent</button>' in after_legend
+    assert b'value="space">Auto space</button>' in after_legend
 
     response = client.post(
         "/subtitles/0/concern/gap?status=spacing",

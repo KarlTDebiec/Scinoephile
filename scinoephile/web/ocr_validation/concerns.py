@@ -136,9 +136,9 @@ class GapConcern:
             ValueError: if a value is invalid
         """
         if self.kind == ConcernKind.SPACE_GAP:
-            return (("adjacent", "Adjacent"), ("space", "Space"))
+            return (("adjacent", "Auto adjacent"), ("space", "Auto space"))
         if self.kind == ConcernKind.TAB_GAP:
-            return (("space", "Space"), ("tab", "Tab"))
+            return (("space", "Auto space"), ("tab", "Auto tab"))
         raise ValueError(f"Invalid gap concern kind: {self.kind}")
 
     @property
