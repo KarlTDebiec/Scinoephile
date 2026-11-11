@@ -27,6 +27,39 @@ from test.helpers.ocr_validation import (
 _HTMX = {"HX-Request": "true"}
 
 
+def test_editors_on_separate_ports_keep_both_sessions(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Save in both editors after opening them with one browser cookie jar.
+
+    Arguments:
+        tmp_path: isolated track data for both editors
+        monkeypatch: deterministic bbox detection
+    """
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
+    editors = []
+    for port in (5131, 5132):
+        track_path = tmp_path / str(port)
+        track_path.mkdir()
+        images_path = make_ocr_html_dir(track_path, text="A")
+        editors.append((create_app(_session(images_path, track_path)), images_path))
+
+    client = editors[0][0].test_client()
+    forms = []
+    for port, (app, _) in zip((5131, 5132), editors, strict=True):
+        client.application = app
+        url = f"http://127.0.0.1:{port}"
+        forms.append((url, _form_values(client.get("/", base_url=url).data)))
+
+    for (app, images_path), (url, form) in zip(editors, forms, strict=True):
+        client.application = app
+        response = client.post(
+            "/subtitles/0/text", base_url=url, data={**form, "text": "B"}
+        )
+        assert response.status_code == 303
+        assert load_html_entries(images_path)[0].text == "B"
+
+
 def test_character_approval_advances_then_reuses_learned_dimensions(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
@@ -146,6 +179,30 @@ def test_opening_editor_saves_output_without_edits(tmp_path: Path):
     page = create_app(session).test_client().get("/")
     assert page.status_code == 200
     assert b"Exit Validation" not in page.data
+
+
+def test_startup_rechecks_earlier_rows_with_newly_learned_dimensions(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Resolve a row made eligible by a later row in the startup scan.
+
+    Arguments:
+        tmp_path: isolated images and validation output
+        monkeypatch: deterministic bbox detection
+    """
+    images_path = make_two_image_ocr_html_dir(tmp_path, text_1="A", text_2="A")
+    monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.session.get_bboxes",
+        lambda image: [Bbox(0, 18 - 2 * image.width, 0, 20)],
+    )
+    session = _session(images_path, tmp_path)
+    session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
+    session.prepare()
+    client = create_app(session).test_client()
+
+    assert session.manager.char_dims_by_n[1]["A"] == {(10, 20), (12, 20), (14, 20)}
+    assert b"2 of 2 validated" in client.get("/?status=character").data
+    assert b'id="subtitle-0"' not in client.get("/?status=character").data
 
 
 def test_filters_and_pages_include_automatically_validated_rows(
@@ -329,6 +386,77 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     assert b">Validated</p>" in response.data
     assert load_html_entries(images_path)[0].text == "A B"
     assert session.manager.char_pair_gaps[("A", "B")] == cutoffs
+
+
+def test_spacing_rejects_stale_approval_after_learning_on_another_row(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Reject a spacing choice when another subtitle already decided its range.
+
+    Arguments:
+        tmp_path: isolated images and validation output
+        monkeypatch: deterministic bbox detection
+    """
+    images_path = make_two_image_ocr_html_dir(tmp_path, text_1="AB", text_2="AB")
+
+    def gap_boxes(image: Image.Image) -> list[Bbox]:
+        """Return a pair with a 4 px or 5 px gap according to the fixture image width.
+
+        Arguments:
+            image: first or second subtitle image
+        Returns:
+            pair of bounding boxes
+        """
+        offset = image.width + 12
+        return [Bbox(0, 10, 0, 20), Bbox(offset, offset + 10, 0, 20)]
+
+    monkeypatch.setattr("scinoephile.web.ocr_validation.session.get_bboxes", gap_boxes)
+    session = prepared_gap_session(images_path, tmp_path, cutoffs=(2, 8, 12, 20))
+    client = create_app(session).test_client()
+    page = client.get("/?status=spacing").data
+    first = _form_values(page.split(b'id="subtitle-0"', 1)[1])
+    second = _form_values(page.split(b'id="subtitle-1"', 1)[1])
+    learned = client.post(
+        "/subtitles/1/concern/gap?status=spacing",
+        data={**second, "action": "adjacent"},
+        headers=_HTMX,
+    )
+    stale = client.post(
+        "/subtitles/0/concern/gap?status=spacing",
+        data={**first, "action": "space"},
+        headers=_HTMX,
+    )
+    assert learned.status_code == 200
+    assert stale.status_code == 409
+    assert stale.headers["HX-Retarget"] == "#messages"
+    assert session.manager.char_pair_gaps[("A", "B")] == (5, 8, 12, 20)
+    assert [entry.text for entry in load_html_entries(images_path)] == ["AB", "AB"]
+
+
+def test_native_text_save_keeps_editable_subtitle_after_it_passes_the_filter(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Redirect to an editable view of a subtitle removed from the review queue.
+
+    Arguments:
+        tmp_path: isolated images and validation output
+        monkeypatch: deterministic bbox detection
+    """
+    images_path = make_ocr_html_dir(tmp_path, text="A")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
+    session = _session(images_path, tmp_path)
+    session.manager.char_dims_by_n[1]["B"] = {(10, 20)}
+    client = create_app(session).test_client()
+    page = client.get("/?status=character")
+    saved = client.post(
+        "/subtitles/0/text?status=character",
+        data={**_form_values(page.data), "text": "B"},
+    )
+    assert saved.status_code == 303
+    assert saved.location is not None
+    assert saved.location.endswith("#sub-1")
+    assert b'id="subtitle-text-0"' in client.get(saved.location).data
+    assert b'id="subtitle-text-0"' not in client.get("/?status=character").data
 
 
 def test_text_edit_persists_newline_and_rejects_old_concern(

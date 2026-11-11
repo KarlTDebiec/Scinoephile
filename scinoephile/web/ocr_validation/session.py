@@ -105,7 +105,7 @@ class OcrValidationSession:
                     self.text_font_size_px * _LATIN_FONT_SIZE_MULTIPLIER
                 )
         self._states: dict[int, _SubtitleValidationState] = {}
-        self._recheck_pending = False
+        self._checked_training_revision = self.manager.training_revision
 
     @classmethod
     def from_dir_path(
@@ -155,28 +155,30 @@ class OcrValidationSession:
 
     def prepare(self):
         """Scan subtitles and save the initial output before serving the editor."""
-        for sub_idx in range(len(self.entries)):
-            self._state(sub_idx)
+        self.refresh_concerns()
         self._save_outfile()
 
     def refresh_concerns(self):
         """Apply newly learned data while retaining unchanged box selections."""
-        if not self._recheck_pending:
-            return
-        for state in self._states.values():
-            previous = state.concern
-            if isinstance(previous, CharDimsConcern | GapConcern):
+        for sub_idx in range(len(self.entries)):
+            self._state(sub_idx)
+        # Later rows can teach rules that resolve a concern already visited in this pass
+        while self._checked_training_revision != self.manager.training_revision:
+            self._checked_training_revision = self.manager.training_revision
+            for state in self._states.values():
+                previous = state.concern
+                if not isinstance(previous, CharDimsConcern | GapConcern):
+                    continue
                 self._scan_state(state)
-            current = state.concern
-            if (
-                isinstance(previous, CharDimsConcern)
-                and isinstance(current, CharDimsConcern)
-                and previous.char_idx == current.char_idx
-                and previous.bbox_idx == current.bbox_idx
-            ):
-                state.char_n_bboxes = previous.n_bboxes
-                state.concern = self._char_dims_concern(state)
-        self._recheck_pending = False
+                current = state.concern
+                if (
+                    isinstance(previous, CharDimsConcern)
+                    and isinstance(current, CharDimsConcern)
+                    and previous.char_idx == current.char_idx
+                    and previous.bbox_idx == current.bbox_idx
+                ):
+                    state.char_n_bboxes = previous.n_bboxes
+                    state.concern = self._char_dims_concern(state)
 
     def resolve_char_concern(
         self, sub_idx: int, *, action: str, n_bboxes: int
@@ -206,7 +208,6 @@ class OcrValidationSession:
             return self.subtitle_row(sub_idx)
         if action == "accept":
             self._accept_char_dims(state, n_bboxes)
-            self._recheck_pending = True
             return self.subtitle_row(sub_idx)
         raise ValueError(f"Unrecognized character concern action: {action}")
 
@@ -233,7 +234,6 @@ class OcrValidationSession:
             expected_gap_chars = self._resolve_tab_gap_action(cursor, cutoffs, action)
 
         self._replace_gap_text(cursor, expected_gap_chars, reset_state=True)
-        self._recheck_pending = True
         return self.subtitle_row(sub_idx)
 
     def source_image(self, sub_idx: int) -> Image.Image:
@@ -308,7 +308,6 @@ class OcrValidationSession:
         self._validate_sub_idx(sub_idx)
         if text != self.entries[sub_idx].text:
             self._set_text(sub_idx, text, reset_state=True)
-            self._recheck_pending = True
         return self.subtitle_row(sub_idx)
 
     def _accept_char_dims(self, state: _SubtitleValidationState, n_bboxes: int):

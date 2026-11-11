@@ -21,10 +21,8 @@
 }
 
 /* Source image and box outlines at the same scale */
-.subtitle-frame {
-  container-type: inline-size;
-  margin-top: .75rem;
-}
+.ocr-row { container-type: inline-size; }
+.subtitle-frame { margin-top: .75rem; }
 .ocr-preview {
   position: relative;
   width: min(100%, var(--image-width));

@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from hashlib import sha256
 from pathlib import Path
 from secrets import compare_digest, token_urlsafe
 from typing import TYPE_CHECKING
@@ -36,6 +37,23 @@ def create_local_app(
         DependencyError: if optional web dependencies are unavailable
     """
     flask = import_flask()
+    from flask.sessions import SecureCookieSessionInterface  # noqa: PLC0415
+
+    class LocalEditorSessionInterface(SecureCookieSessionInterface):
+        """Scope session cookies to the editor's origin and mount path."""
+
+        def get_cookie_name(self, app: FlaskApp) -> str:
+            """Get a stable cookie name for this editor and listener.
+
+            Arguments:
+                app: Flask app that owns the session
+            Returns:
+                cookie name unique to the app at this origin and mount path
+            """
+            request = flask.request
+            scope = f"{app.name}:{request.scheme}://{request.host.lower()}{request.script_root}"
+            return f"scinoephile_{sha256(scope.encode()).hexdigest()[:24]}"
+
     trusted_hosts = {"127.0.0.1", "localhost", "::1"}
     if host not in {"", "0.0.0.0", "::"}:
         trusted_host = host.removeprefix("[").removesuffix("]")
@@ -45,6 +63,7 @@ def create_local_app(
         flask.Blueprint("web_templates", __name__, template_folder="templates")
     )
     app.config.update(SECRET_KEY=token_urlsafe(32), SESSION_COOKIE_SAMESITE="Strict")
+    app.session_interface = LocalEditorSessionInterface()
 
     @app.context_processor
     def csrf_context() -> dict[str, str]:

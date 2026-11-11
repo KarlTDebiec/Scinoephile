@@ -87,6 +87,12 @@ class ValidationManager:
             raise ScinoephileError(
                 f"Unable to initialize OCR validation data: {exc}"
             ) from exc
+        self._training_revision = 0
+
+    @property
+    def training_revision(self) -> int:
+        """Revision of the learned character and spacing rules in memory."""
+        return self._training_revision
 
     def validate(self, series: ImageSeries) -> ImageSeries:
         """Validate all subtitles in an image series.
@@ -565,6 +571,7 @@ class ValidationManager:
         if dims in dims_set:
             return
         dims_set.add(dims)
+        self._training_revision += 1
         logger.info(f"Added ({char}, {dims})")
         if self.dev:
             output_char_dims = self.char_dims_by_n[n]
@@ -585,6 +592,7 @@ class ValidationManager:
         if dims in dims_set:
             return
         dims_set.add(dims)
+        self._training_revision += 1
         logger.info(f"Added ({group}, {dims})")
         if self.dev:
             output_char_grp_dims = self.char_grp_dims_by_n
@@ -609,6 +617,7 @@ class ValidationManager:
             self.char_pair_gaps[char_pair] = cutoffs
             if previous_cutoffs is None:
                 return
+            self._training_revision += 1
             if self.dev:
                 output_char_pair_gaps = self.char_pair_gaps
             elif char_pair in self.user_char_pair_gaps:
@@ -619,6 +628,7 @@ class ValidationManager:
             save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
             return
         self.char_pair_gaps[char_pair] = cutoffs
+        self._training_revision += 1
         logger.info(f"Added ({char_pair}, {cutoffs})")
         if self.dev:
             output_char_pair_gaps = self.char_pair_gaps

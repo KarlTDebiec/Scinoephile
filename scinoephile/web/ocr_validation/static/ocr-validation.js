@@ -173,7 +173,8 @@ function finishOcrRequest(form, xhr, action) {
     state.sent = null;
     state.pending = false;
     syncOcrSave(form);
-    if (success && !hasOcrDraft(form) && result.dataset.visible === "false") {
+    // A text save must leave the editor available for another edit.
+    if (action && success && !hasOcrDraft(form) && result.dataset.visible === "false") {
         const block = row.closest(".subtitle-block");
         row.remove();
         if (block && !block.querySelector(".ocr-row")) {
@@ -185,9 +186,44 @@ function finishOcrRequest(form, xhr, action) {
     }
 }
 
+/**
+ * Protect drafts when Back or Forward would leave a filter or block view.
+ * @param {string} message - Guidance to show when a draft blocks traversal.
+ */
+function guardOcrHistory(message) {
+    let position = history.state?.ocrPosition ?? 0;
+    const markPosition = () => history.replaceState({
+        ...history.state,
+        ocrPosition: position
+    }, "");
+    markPosition();
+    // HTMX overwrites the old entry's state before writing the new entry.
+    document.addEventListener("htmx:beforeHistoryUpdate", markPosition);
+    document.addEventListener("htmx:pushedIntoHistory", () => {
+        position++;
+        markPosition();
+    });
+    document.addEventListener("htmx:replacedInHistory", markPosition);
+    window.addEventListener("popstate", event => {
+        const destination = event.state?.ocrPosition;
+        if (!Number.isInteger(destination)) return;
+        event.stopImmediatePropagation();
+        if (destination === position) return;
+        if (hasOcrDrafts()) {
+            history.go(position - destination);
+            document.querySelector("#messages").textContent = message;
+        } else {
+            window.location.reload();
+        }
+    }, {
+        capture: true
+    });
+}
+
 if (window.htmx) {
-    guardEditorNavigation(hasOcrDrafts,
-        "Wait for subtitle text to save, then try again.");
+    const draftMessage = "Wait for subtitle text to save, then try again.";
+    guardEditorNavigation(hasOcrDrafts, draftMessage);
+    guardOcrHistory(draftMessage);
     enhanceOcrForms(document);
     document.addEventListener("htmx:load", event => enhanceOcrForms(event.detail.elt));
     document.addEventListener("input", event => {
