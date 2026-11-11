@@ -104,13 +104,13 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
         # The two square crops start at (3, 15) and (3, 18) in measurement space.
         assert first.size == (20, 20)
         assert second.size == (8, 8)
-        assert first.getpixel((7, 5)) == (33, 84, 198)
-        assert first.getpixel((9, 7)) == (71, 168, 115)
-        assert first.getpixel((10, 7)) == (185, 112, 117)
-        assert first.getpixel((17, 15)) == (33, 84, 198)
-        assert first.getpixel((16, 14)) == (185, 112, 117)
-        assert second.getpixel((3, 1)) == (185, 112, 117)
-        assert first.getpixel((2, 5)) == second.getpixel((2, 2)) == (0, 0, 0)
+        assert first.getpixel((7, 5)) == (0, 128, 255)
+        assert first.getpixel((9, 7)) == (0, 255, 0)
+        assert first.getpixel((10, 7)) == (0, 0, 0)
+        assert first.getpixel((17, 15)) == (0, 128, 255)
+        assert first.getpixel((16, 14)) == (0, 0, 0)
+        assert second.getpixel((3, 1)) == (0, 0, 0)
+        assert first.getpixel((2, 5)) == second.getpixel((2, 2)) == (255, 0, 0)
 
     filtered = client.get("/?status=character&q=1", headers=_HTMX)
     assert gap_label in filtered.data

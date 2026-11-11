@@ -133,7 +133,12 @@
   & [data-band="needs-review"] { --band-color: var(--measurement-needs-review); }
   & [data-band="proposed"] { --band-color: var(--measurement-proposed); }
 }
-.character-gap-scale { flex: 1 0 6rem; max-width: 10rem; padding-inline: .25rem; }
+.character-gap-scale {
+  flex: 1 0 6rem;
+  max-width: 10rem;
+  padding-inline: .25rem;
+  & .number-line-track { outline: 1px solid var(--border); }
+}
 .character-size-maps {
   display: flex;
   justify-content: safe center;

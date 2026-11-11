@@ -18,11 +18,11 @@ from scinoephile.image.ocr.validation.char_dims import (
 
 __all__ = ["CharacterGapScale", "CharacterSizeMap", "get_character_size_maps"]
 
-_STORED = "#2154c6"
+_STORED = "#0080ff"
 _STORED_LABEL = "Previously approved"
-_AUTO_APPROVED = "#47a873"
-_NEEDS_REVIEW = "#b97075"
-_PROPOSED = "#000000"
+_AUTO_APPROVED = "#00ff00"
+_NEEDS_REVIEW = "#000000"
+_PROPOSED = "#ff0000"
 _MAP_TARGET_SIZE = 80
 _MAP_PADDING = 2
 
