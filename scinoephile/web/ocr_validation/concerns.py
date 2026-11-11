@@ -129,16 +129,23 @@ class GapConcern:
     """Concern kind."""
 
     @property
-    def action_options(self) -> tuple[tuple[str, str], ...]:
-        """Form actions available for this gap prompt.
+    def action_options(self) -> tuple[tuple[str, str, int], ...]:
+        """Form actions with labels and the displayed boundary each changes.
 
         Raises:
             ValueError: if a value is invalid
         """
+        # Show the final pixel in the prompt range for actions that lower a cutoff
         if self.kind == ConcernKind.SPACE_GAP:
-            return (("adjacent", "Auto adjacent"), ("space", "Auto space"))
+            return (
+                ("adjacent", "Auto adjacent", self.space_prompt[0]),
+                ("space", "Auto space", self.space_prompt[1] - 1),
+            )
         if self.kind == ConcernKind.TAB_GAP:
-            return (("space", "Auto space"), ("tab", "Auto tab"))
+            return (
+                ("space", "Auto space", self.tab_prompt[0]),
+                ("tab", "Auto tab", self.tab_prompt[1] - 1),
+            )
         raise ValueError(f"Invalid gap concern kind: {self.kind}")
 
     @property

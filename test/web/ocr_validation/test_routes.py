@@ -247,17 +247,33 @@ def test_review_filters_distinguish_missing_boxes_and_line_breaks(
     assert b'id="sub-1"' in client.get("/?status=needs-review").data
 
 
+@mark.parametrize(
+    ("gap", "labels", "cutoffs"),
+    [
+        (4, ("Auto adjacent <span>2 → 4", "Auto space <span>5 → 4"), (2, 4, 12, 20)),
+        (15, ("Auto space <span>12 → 15", "Auto tab <span>19 → 15"), (2, 6, 15, 20)),
+    ],
+)
 def test_spacing_choice_updates_text_and_hides_resolved_concern(
-    tmp_path: Path, monkeypatch: MonkeyPatch
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    gap: int,
+    labels: tuple[str, str],
+    cutoffs: tuple[int, int, int, int],
 ):
-    """Resolve a spacing question through the same row update path as a box decision.
+    """Preview the boundary changes and expand automatic spacing to the selected gap.
 
     Arguments:
         tmp_path: isolated image and validation data
         monkeypatch: deterministic bbox detection
+        gap: measured gap in pixels
+        labels: expected labels for the two gap choices
+        cutoffs: expected cutoffs after choosing automatic space
     """
     images_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
+    patch_ocr_validation_bboxes(
+        monkeypatch, [Bbox(0, 10, 0, 20), Bbox(10 + gap, 20 + gap, 0, 20)]
+    )
     session = prepared_gap_session(images_path, tmp_path)
     client = create_app(session).test_client()
     page = client.get("/?status=spacing")
@@ -265,16 +281,15 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     assert b"Check spacing" not in page.data
     assert b">Spacing needs review</p>" in page.data
     assert b'id="sub-1"' not in client.get("/?status=character").data
-    assert 'aria-label="Gap of 4 pixels between “A” and “B”"' in page.get_data(
-        as_text=True
-    )
+    page_text = page.get_data(as_text=True)
+    assert f'aria-label="Gap of {gap} pixels between “A” and “B”"' in page_text
     assert b'aria-describedby="spacing-key-0"' in page.data
-    assert b"--gap-position: 2.0%;" in page.data
+    assert f"--gap-position: {gap / 2}%;" in page_text
     assert search(rb'--band-start: 1\.25%;\s+--band-end: 2\.75%"', page.data)
-    legend = page.data.split(b'id="spacing-key-0">', 1)[1]
-    after_legend = legend.split(b"</ul>", 1)[1]
-    assert b'value="adjacent">Auto adjacent</button>' in after_legend
-    assert b'value="space">Auto space</button>' in after_legend
+    legend = page_text.split('id="spacing-key-0">', 1)[1]
+    after_legend = legend.split("</ul>", 1)[1]
+    for label in labels:
+        assert label in after_legend
 
     response = client.post(
         "/subtitles/0/concern/gap?status=spacing",
@@ -286,6 +301,7 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     assert b"1 of 1 validated" in response.data
     assert b">Validated</p>" in response.data
     assert load_html_entries(images_path)[0].text == "A B"
+    assert session.manager.char_pair_gaps[("A", "B")] == cutoffs
 
 
 def test_text_edit_persists_newline_and_rejects_old_concern(

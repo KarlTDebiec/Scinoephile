@@ -50,9 +50,9 @@
   {% endfor %}
 </ul>
 <div class="spacing-actions">
-  {% for action_value, action_label in concern.action_options %}
-    <button type="submit"
-            name="action"
-            value="{{ action_value }}">{{ action_label }}</button>
+  {% for action_value, action_label, current_bound in concern.action_options %}
+    <button type="submit" name="action" value="{{ action_value }}">
+      {{ action_label }} <span>{{ current_bound }} → {{ concern.gap }}</span>
+    </button>
   {% endfor %}
 </div>

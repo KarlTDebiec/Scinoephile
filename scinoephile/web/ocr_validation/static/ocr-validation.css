@@ -205,7 +205,9 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: .4rem;
-    width: min(15rem, 100%);
+    width: min(24rem, 100%);
     margin: .65rem auto 0;
+
+    & span { white-space: nowrap; font-variant-numeric: tabular-nums; }
   }
 }
