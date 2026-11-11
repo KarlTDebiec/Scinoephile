@@ -42,6 +42,7 @@ def test_character_approval_advances_then_reuses_learned_dimensions(
     page = client.get("/?status=character")
     assert b"1. Check the box selection" in page.data
     assert b"2. Confirm the character" in page.data
+    assert b">Characters need review</p>" in page.data
     assert b'id="sub-2"' in page.data
 
     approved = client.post(
@@ -61,6 +62,7 @@ def test_character_approval_advances_then_reuses_learned_dimensions(
     boxes = client.get("/?status=boxes", headers=_HTMX)
     assert b'id="sub-2"' in boxes.data
     assert b"leftover bboxes" in boxes.data
+    assert b">Bounding boxes need review</p>" in boxes.data
     assert b'id="sub-1"' not in boxes.data
 
 
@@ -259,7 +261,9 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     session = prepared_gap_session(images_path, tmp_path)
     client = create_app(session).test_client()
     page = client.get("/?status=spacing")
-    assert b"<caption>Check spacing</caption>" in page.data
+    assert b'<table aria-labelledby="row-status-0">' in page.data
+    assert b"Check spacing" not in page.data
+    assert b">Spacing needs review</p>" in page.data
     assert b'id="sub-1"' not in client.get("/?status=character").data
     assert b">Adjacent</button>" in page.data
     assert b">Space</button>" in page.data
@@ -272,6 +276,7 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     assert response.status_code == 200
     assert b'data-visible="false"' in response.data
     assert b"1 of 1 validated" in response.data
+    assert b">Validated</p>" in response.data
     assert load_html_entries(images_path)[0].text == "A B"
 
 

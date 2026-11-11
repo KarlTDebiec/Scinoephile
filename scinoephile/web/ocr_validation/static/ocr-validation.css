@@ -100,7 +100,6 @@
   & .ocr-character strong { margin-inline-end: .25rem; }
   & .spacing-check { overflow-x: auto; }
   & table { border-collapse: collapse; }
-  & caption { font-weight: bold; text-align: left; }
   & :is(th, td) { border-bottom: 1px solid var(--border); padding: .3rem .5rem; }
   & td[data-char] small { display: block; color: var(--muted); }
   & code { white-space: pre; }

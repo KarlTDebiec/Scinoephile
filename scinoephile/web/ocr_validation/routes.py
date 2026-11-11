@@ -11,9 +11,9 @@ from typing import TYPE_CHECKING
 from scinoephile.core.dependencies.web import import_flask
 from scinoephile.web.blocks import get_block_page
 
-from .concerns import CharDimsConcern, SubtitleRowView
+from .concerns import FILTER_OPTIONS, CharDimsConcern, SubtitleRowView
 from .session import OcrValidationSession
-from .workspace import FILTER_OPTIONS, get_filtered_blocks
+from .workspace import get_filtered_blocks
 
 __all__ = ["register_routes"]
 

@@ -13,6 +13,7 @@ from scinoephile.lang.cmn.romanization import get_cmn_char_romanized
 from scinoephile.lang.yue.romanization import get_yue_char_romanized
 
 __all__ = [
+    "FILTER_OPTIONS",
     "CharDimsConcern",
     "ConcernKind",
     "ErrorConcern",
@@ -20,7 +21,17 @@ __all__ = [
     "OcrConcern",
     "SubtitleRowView",
     "ValidationStatus",
+    "get_review_status",
 ]
+
+FILTER_OPTIONS = {
+    "needs-review": ("Needs review", "alert-circle-outline"),
+    "boxes": ("Bounding boxes need review", "alert-circle-outline"),
+    "character": ("Characters need review", "text-box-edit-outline"),
+    "spacing": ("Spacing needs review", "minus-box-outline"),
+    "done": ("Validated", "checkbox-marked"),
+}
+"""Labels and icons for the OCR review filters."""
 
 
 class ConcernKind(StrEnum):
@@ -77,11 +88,6 @@ class CharDimsConcern:
         """Cantonese Yale for the character being validated."""
         return get_yue_char_romanized(self.char)
 
-    @property
-    def status_label(self) -> str:
-        """Short status label for templates."""
-        return "Check character box"
-
 
 @dataclass(frozen=True)
 class ErrorConcern:
@@ -93,11 +99,6 @@ class ErrorConcern:
     """Whether the scan ran out of boxes or found boxes left over."""
     kind: ConcernKind = field(default=ConcernKind.ERROR, init=False)
     """Concern kind."""
-
-    @property
-    def status_label(self) -> str:
-        """Short status label for templates."""
-        return "Needs review"
 
 
 @dataclass(frozen=True)
@@ -178,13 +179,6 @@ class GapConcern:
         return f"{self.space_prompt[0]}-{self.space_prompt[1]}"
 
     @property
-    def status_label(self) -> str:
-        """Short status label for templates."""
-        if self.kind == ConcernKind.TAB_GAP:
-            return "Check wide spacing"
-        return "Check spacing"
-
-    @property
     def tab_prompt_display(self) -> str:
         """Gap range prompting for a tab or wide space, formatted for display."""
         return f"{self.tab_prompt[0]}-{self.tab_prompt[1]}"
@@ -248,10 +242,8 @@ class SubtitleRowView:
 
     @property
     def status_label(self) -> str:
-        """Short validation status label."""
-        if self.concern is not None:
-            return self.concern.status_label
-        return "OK"
+        """Validation status label shared with the review filter."""
+        return FILTER_OPTIONS[get_review_status(self.concern)][0]
 
     @property
     def text_font_size_cqw_css(self) -> str:
@@ -271,6 +263,23 @@ class SubtitleRowView:
 
 OcrConcern = CharDimsConcern | ErrorConcern | GapConcern
 """Validation concern shown by the OCR validation web UI."""
+
+
+def get_review_status(concern: OcrConcern | None) -> str:
+    """Get the review filter key for a subtitle's current concern.
+
+    Arguments:
+        concern: current unresolved concern, if any
+    Returns:
+        matching review status key
+    """
+    if concern is None:
+        return "done"
+    if isinstance(concern, ErrorConcern) and concern.bbox_count_mismatch:
+        return "boxes"
+    if isinstance(concern, CharDimsConcern):
+        return "character"
+    return "spacing"
 
 
 def _px_to_cqw_css(value: int, container_width: int) -> str:
