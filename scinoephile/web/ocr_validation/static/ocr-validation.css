@@ -106,8 +106,13 @@
   align-items: center;
   gap: .4rem;
 
-  & .ocr-character { grid-column: 1; margin: 0; overflow-wrap: anywhere; }
-  & .ocr-character strong { margin-inline-end: .25rem; }
+  & .ocr-character {
+    grid-column: 1;
+    margin: 0;
+    overflow-wrap: anywhere;
+    & strong { margin-inline-end: .25rem; }
+    & small { font-size: inherit; }
+  }
   & > div {
     grid-column: 2;
     display: flex;
