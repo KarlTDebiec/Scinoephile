@@ -222,10 +222,10 @@ def test_filters_and_pages_include_automatically_validated_rows(
     assert b"2 matching" in found.data
 
 
-def test_native_text_save_keeps_editable_subtitle_after_it_passes_the_filter(
+def test_native_text_save_preserves_the_filter_after_validation(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Redirect to an editable view of a subtitle removed from the review queue.
+    """Keep the active filter when a saved subtitle leaves the review queue.
 
     Arguments:
         tmp_path: isolated images and validation output
@@ -242,10 +242,11 @@ def test_native_text_save_keeps_editable_subtitle_after_it_passes_the_filter(
         data={**_form_values(page.data), "text": "B"},
     )
     assert saved.status_code == 303
-    assert saved.location is not None
-    assert saved.location.endswith("#sub-1")
-    assert b'id="subtitle-text-0"' in client.get(saved.location).data
-    assert b'id="subtitle-text-0"' not in client.get("/?status=character").data
+    assert saved.location == "/?status=character&q="
+    assert b"No subtitles match these filters." in client.get(saved.location).data
+    all_subtitles = client.get("/?status=all").data
+    assert b"\nB</textarea>" in all_subtitles
+    assert b">Validated</p>" in all_subtitles
 
 
 def test_ocr_page_serves_shared_assets_and_original_preview(tmp_path: Path):

@@ -173,8 +173,7 @@ function finishOcrRequest(form, xhr, action) {
     state.sent = null;
     state.pending = false;
     syncOcrSave(form);
-    // A text save must leave the editor available for another edit.
-    if (action && success && !hasOcrDraft(form) && result.dataset.visible === "false") {
+    if (success && !hasOcrDraft(form) && result.dataset.visible === "false") {
         const block = row.closest(".subtitle-block");
         row.remove();
         if (block && !block.querySelector(".ocr-row")) {

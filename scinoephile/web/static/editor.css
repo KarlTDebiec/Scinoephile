@@ -327,6 +327,9 @@ nav[aria-label="Operations"] {
                     content-visibility 120ms allow-discrete;
       }
       &[open]::details-content { height: auto; }
+
+      /* Keep the last card's border inside the clip at fractional zoom. */
+      & > div { padding-bottom: 1px; }
     }
   }
 

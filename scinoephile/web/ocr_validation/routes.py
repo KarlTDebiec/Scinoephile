@@ -129,7 +129,7 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
         else:
             row = session.resolve_gap_concern(sub_idx, action=request.form["action"])
 
-        return _render_update(session, row, editing_text=operation == "text")
+        return _render_update(session, row)
 
 
 def _filters() -> tuple[str, str, int, int | None]:
@@ -190,14 +190,13 @@ def _is_htmx() -> bool:
 
 
 def _render_update(
-    session: OcrValidationSession, row: SubtitleRowView, *, editing_text: bool
+    session: OcrValidationSession, row: SubtitleRowView
 ) -> str | FlaskResponse:
     """Update only the affected row and counts, or redirect a native submission.
 
     Arguments:
         session: current validation state
         row: updated subtitle
-        editing_text: whether to keep the edited subtitle accessible after a native save
     Returns:
         fragments or a redirect back to the current page
     """
@@ -214,15 +213,8 @@ def _render_update(
     visible = block is not None and row.sub_idx in block.rows
     if not _is_htmx():
         anchor = None
-        if visible or editing_text:
+        if visible:
             anchor = f"sub-{row.number}"
-        if editing_text and not visible:
-            number = next(
-                number
-                for number, (first, last) in enumerate(session.block_ranges, 1)
-                if first <= row.sub_idx < last
-            )
-            status, query, through = "all", f"block {number}", None
         return flask.redirect(
             flask.url_for(
                 "index", status=status, q=query, through=through, _anchor=anchor
