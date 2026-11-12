@@ -7,33 +7,24 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.web import (
-    WEB_LOCALIZATIONS,
-    WebServerArguments,
-    add_web_server_args,
-)
 from scinoephile.common.cli.argument_parsing import (
     get_arg_groups_by_name,
-    output_dir_arg,
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.core.paths import get_runtime_data_root_path
 from scinoephile.workflows.ocr_validation import validate_ocr
+
+from .validation_args import OCR_VALIDATION_LOCALIZATIONS, add_ocr_validation_args
 
 __all__ = ["OcrValidateCli"]
 
 OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "local OCR validation data directory path (default: %(default)s)": (
-            "本地 OCR 校验数据目录路径（默认：%(default)s）"
-        ),
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕校验命令行界面"
         ),
-        "launch the local OCR validation web UI": "启动本地 OCR 校验网页界面",
         "OCR image subtitle infile path (directory containing index.html and png "
         "files, or a .sup file)": (
             "OCR 图像字幕输入路径（包含 index.html 和 png 文件的目录，或 .sup 文件）"
@@ -41,18 +32,11 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "overwrite outfile if it exists": "若输出文件已存在则覆盖",
         "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
         "validated subtitle outfile path": "已校验字幕输出文件路径",
-        "maintainer option: write validation data updates to repo data": (
-            "维护者选项：将校验数据更新写入仓库数据"
-        ),
     },
     "zh-hant": {
-        "local OCR validation data directory path (default: %(default)s)": (
-            "本機 OCR 驗證資料目錄路徑（預設：%(default)s）"
-        ),
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕驗證命令列介面"
         ),
-        "launch the local OCR validation web UI": "啟動本機 OCR 驗證網頁介面",
         "OCR image subtitle infile path (directory containing index.html and png "
         "files, or a .sup file)": (
             "OCR 影像字幕輸入路徑（包含 index.html 和 png 檔案的目錄，或 .sup 檔）"
@@ -60,9 +44,6 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "overwrite outfile if it exists": "若輸出檔已存在則覆寫",
         "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
         "validated subtitle outfile path": "已驗證字幕輸出檔路徑",
-        "maintainer option: write validation data updates to repo data": (
-            "維護者選項：將驗證資料更新寫入儲存庫資料"
-        ),
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -71,7 +52,9 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class OcrValidateCli(ScinoephileCliBase):
     """Validate OCR text against subtitle images."""
 
-    localizations = merge_localizations(WEB_LOCALIZATIONS, OCR_VALIDATE_LOCALIZATIONS)
+    localizations = merge_localizations(
+        OCR_VALIDATION_LOCALIZATIONS, OCR_VALIDATE_LOCALIZATIONS
+    )
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -86,7 +69,6 @@ class OcrValidateCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
-            "web arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
@@ -105,27 +87,7 @@ class OcrValidateCli(ScinoephileCliBase):
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--dev",
-            action="store_true",
-            help="maintainer option: write validation data updates to repo data",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--validation-data-dir",
-            default=get_runtime_data_root_path(create=False) / "ocr_validation",
-            dest="validation_data_dir_path",
-            metavar="VALIDATION_DATA_DIR",
-            type=output_dir_arg(create=False),
-            help="local OCR validation data directory path (default: %(default)s)",
-        )
-
-        # Web arguments
-        arg_groups["web arguments"].add_argument(
-            "--interactive",
-            action="store_true",
-            help="launch the local OCR validation web UI",
-        )
-        add_web_server_args(arg_groups["web arguments"])
+        add_ocr_validation_args(arg_groups["operation arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -156,10 +118,8 @@ class OcrValidateCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         infile_path: Path,
-        interactive: bool,
         dev: bool,
         validation_data_dir_path: Path,
-        web_args: WebServerArguments,
         outfile_path: Path,
         overwrite: bool,
     ):
@@ -168,10 +128,8 @@ class OcrValidateCli(ScinoephileCliBase):
         Arguments:
             _parser: optional preconfigured argument parser
             infile_path: OCR subtitle input file
-            interactive: whether to launch interactive validation
             dev: whether to enable development mode
             validation_data_dir_path: validation data directory
-            web_args: web server configuration
             outfile_path: output subtitle file
             overwrite: whether to overwrite the output file
         """
@@ -179,8 +137,6 @@ class OcrValidateCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
-        if interactive and not infile_path.is_dir():
-            parser.error(f"{infile_path} must be a directory when --interactive is set")
 
         # Perform operations
         try:
@@ -188,12 +144,8 @@ class OcrValidateCli(ScinoephileCliBase):
                 infile_path,
                 outfile_path,
                 validation_data_dir_path=validation_data_dir_path,
-                interactive=interactive,
                 dev=dev,
                 overwrite=overwrite,
-                host=web_args.host,
-                port=web_args.port,
-                title=web_args.title,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

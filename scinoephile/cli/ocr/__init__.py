@@ -3,8 +3,9 @@
 """Command-line interfaces for OCR operations.
 
 Package hierarchy (modules may import from any above):
+* validation_args
 * ocr_fuse_cli / ocr_lens_cli / ocr_paddle_cli / ocr_process_cli
-  / ocr_tesseract_cli / ocr_validate_cli
+  / ocr_serve_cli / ocr_tesseract_cli / ocr_validate_cli
 * ocr_cli
 """
 
@@ -15,6 +16,7 @@ from .ocr_fuse_cli import OcrFuseCli
 from .ocr_lens_cli import OcrLensCli
 from .ocr_paddle_cli import OcrPaddleCli
 from .ocr_process_cli import OcrProcessCli
+from .ocr_serve_cli import OcrServeCli
 from .ocr_tesseract_cli import OcrTesseractCli
 from .ocr_validate_cli import OcrValidateCli
 
@@ -24,6 +26,7 @@ __all__ = [
     "OcrLensCli",
     "OcrPaddleCli",
     "OcrProcessCli",
+    "OcrServeCli",
     "OcrTesseractCli",
     "OcrValidateCli",
 ]

@@ -23,7 +23,7 @@ from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
 from .clean import clean_series
 from .ocr_fusion import fuse_ocr_series
-from .ocr_validation import validate_ocr
+from .ocr_validation import serve_ocr_validation, validate_ocr
 
 __all__ = ["OcrProcessingResult", "OcrProcessingWorkflow"]
 
@@ -343,39 +343,50 @@ class OcrProcessingWorkflow:
             series: cleaned fused OCR output
         """
         validate_path = self.output_dir_path / "fuse_clean_validate.srt"
+        image_dir_path = self.output_dir_path / "image"
+        reuse_output = validate_path.exists() and not self.overwrite
 
-        # Load and return pre-existing output
-        if validate_path.exists() and not self.overwrite:
+        if reuse_output and not self.interactive:
             logger.info(f"Validated OCR output exists: {validate_path}")
             Series.load(validate_path)
             self.output_paths["fuse_clean_validate"] = validate_path
             return
 
-        # Copy text from input series to pre-existing image series
-        image_dir_path = self.output_dir_path / "image"
-        image_series = ImageSeries.load(image_dir_path)
-        image_texts = [subtitle.text for subtitle in image_series]
-        series_texts = [subtitle.text for subtitle in series]
-        index_path = image_dir_path / "index.html"
-        source_path = self.output_dir_path / "fuse_clean.srt"
-        source_is_newer = not index_path.exists()
-        if index_path.exists() and source_path.exists():
-            source_is_newer = source_path.stat().st_mtime > index_path.stat().st_mtime
-        image_texts_are_blank = all(not text.strip() for text in image_texts)
-        if image_texts != series_texts and (source_is_newer or image_texts_are_blank):
-            image_series.copy_text_from(series)
-            image_series.save_html_index(image_dir_path)
+        # Keep the saved image index when resuming review
+        if not reuse_output:
+            image_series = ImageSeries.load(image_dir_path)
+            image_texts = [subtitle.text for subtitle in image_series]
+            series_texts = [subtitle.text for subtitle in series]
+            index_path = image_dir_path / "index.html"
+            source_path = self.output_dir_path / "fuse_clean.srt"
+            source_is_newer = not index_path.exists()
+            if index_path.exists() and source_path.exists():
+                source_is_newer = (
+                    source_path.stat().st_mtime > index_path.stat().st_mtime
+                )
+            image_texts_are_blank = all(not text.strip() for text in image_texts)
+            if image_texts != series_texts and (
+                source_is_newer or image_texts_are_blank
+            ):
+                image_series.copy_text_from(series)
+                image_series.save_html_index(image_dir_path)
 
-        # Validate and save output
-        validate_ocr(
-            image_dir_path,
-            validate_path,
-            validation_data_dir_path=self._ocr_validation_data_dir_path,
-            interactive=self.interactive,
-            dev=self.dev,
-            overwrite=self.overwrite,
-            host=self.host,
-            port=self.port,
-            title=self.title,
-        )
+        if self.interactive:
+            serve_ocr_validation(
+                image_dir_path,
+                validate_path,
+                validation_data_dir_path=self._ocr_validation_data_dir_path,
+                dev=self.dev,
+                host=self.host,
+                port=self.port,
+                title=self.title,
+            )
+        else:
+            validate_ocr(
+                image_dir_path,
+                validate_path,
+                validation_data_dir_path=self._ocr_validation_data_dir_path,
+                dev=self.dev,
+                overwrite=self.overwrite,
+            )
         self.output_paths["fuse_clean_validate"] = validate_path
