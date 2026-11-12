@@ -247,6 +247,17 @@ if (window.htmx) {
     guardOcrHistory(draftMessage);
     enhanceOcrForms(document);
     document.addEventListener("htmx:load", event => enhanceOcrForms(event.detail.elt));
+    document.addEventListener("htmx:configRequest", event => {
+        if (!event.detail.elt.matches("[data-ocr-text], [data-ocr-action]"))
+            return;
+        event.detail.parameters.loaded_rows = Array.from(
+            document.querySelectorAll(".ocr-row"),
+            row => row.id.slice("subtitle-".length)
+        ).join(",");
+        event.detail.parameters.pager_has_more = String(
+            document.querySelector("#load-more").hasAttribute("hx-get")
+        );
+    });
     document.addEventListener("htmx:afterSwap", () => {
         for (const result of document.querySelectorAll("[data-ocr-related]")) {
             result.removeAttribute("data-ocr-related");

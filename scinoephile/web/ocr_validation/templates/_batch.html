@@ -1,12 +1,6 @@
-{% from 'shared/_blocks.html' import subtitle_block %}
 {% from 'shared/_controls.html' import load_more_blocks, loaded_through %}
 {% for block in blocks %}
-  {% call subtitle_block(block, url_for('index', status='all', q='block ' ~ block.number)) %}
-    {% for sub_idx in block.rows %}
-      {% set row = subtitle_row(sub_idx) %}
-      {% include "_subtitle.html" %}
-    {% endfor %}
-  {% endcall %}
+  {% include "_block.html" %}
 {% endfor %}
 {{ load_more_blocks(url_for('index', status=status, q=query, after=through), {"status": status, "q": query, "after": through}, has_more) }}
 {{ loaded_through(through, request.headers.get('HX-Target') == 'load-more') }}

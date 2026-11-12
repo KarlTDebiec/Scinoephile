@@ -27,6 +27,100 @@ from test.helpers.ocr_validation import (
 _HTMX = {"HX-Request": "true"}
 
 
+@mark.parametrize(
+    ("new_index", "separate_block", "swap"),
+    [
+        (0, False, b"beforebegin:#subtitle-1"),
+        (1, False, b"beforeend:#block-rows-1"),
+        (0, True, b"beforebegin:#block-2"),
+        (1, True, None),
+    ],
+    ids=["earlier-card", "later-card", "earlier-block", "later-page"],
+)
+def test_autosave_reconciles_newly_matching_subtitles(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    new_index: int,
+    separate_block: bool,
+    swap: bytes | None,
+):
+    """Show a subtitle that enters the spacing filter after autosave learns a shape.
+
+    Arguments:
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
+        new_index: subtitle that will start matching
+        separate_block: whether the subtitles are in separate blocks
+        swap: insertion directive when the subtitle is within the loaded page
+    """
+    edited_index = 1 - new_index
+    texts = ["BD", "BD"]
+    texts[new_index] = "AD"
+    images_path = make_two_image_ocr_html_dir(
+        tmp_path, text_1=texts[0], text_2=texts[1]
+    )
+    if separate_block:
+        index_path = images_path / "index.html"
+        html = index_path.read_text(encoding="utf-8")
+        index_path.write_text(
+            html.replace("#2:3,000->4,000", "#2:10,000->11,000"), encoding="utf-8"
+        )
+
+    def boxes(image: Image.Image) -> list[Bbox]:
+        """Give the edited subtitle a closer match to the known A dimensions.
+
+        Arguments:
+            image: fixture image identifying the subtitle by width
+        Returns:
+            measured boxes with a 4 px gap
+        """
+        width = 10 + 2 * (image.width - 2 == new_index)
+        return [Bbox(0, width, 0, 20), Bbox(width + 4, width + 14, 0, 20)]
+
+    monkeypatch.setattr("scinoephile.web.ocr_validation.session.get_bboxes", boxes)
+    session = _session(images_path, tmp_path)
+    session.manager.char_dims_by_n[1].update(
+        {"A": {(8, 20)}, "B": {(10, 20)}, "D": {(10, 20)}}
+    )
+    session.manager.char_pair_gaps.update(
+        {("B", "D"): (2, 6, 12, 20), ("A", "D"): (2, 6, 12, 20)}
+    )
+    client = create_app(session).test_client()
+    page = client.get("/?status=spacing").data
+    new_card = f'id="subtitle-{new_index}"'.encode()
+    assert new_card not in page
+    assert b"1 matching subtitles" in page
+    assert b'aria-label="Load more blocks"' not in page
+
+    through = 1 + separate_block * edited_index
+    saved = client.post(
+        f"/subtitles/{edited_index}/text?status=spacing",
+        data={
+            **_form_values(page),
+            "text": "AD",
+            "through": through,
+            "loaded_rows": str(edited_index),
+            "pager_has_more": "false",
+        },
+        headers=_HTMX,
+    )
+    assert saved.status_code == 200
+    assert b"2 matching subtitles" in saved.data
+    assert f'id="subtitle-{edited_index}"'.encode() not in saved.data
+    if swap is None:
+        assert new_card not in saved.data
+        assert b'aria-label="Load more blocks"' in saved.data
+        next_page = client.get(
+            f"/?status=spacing&after={through}",
+            headers={**_HTMX, "HX-Target": "load-more"},
+        )
+        assert new_card in next_page.data
+    else:
+        assert new_card in saved.data
+        assert b'hx-swap-oob="' + swap + b'"' in saved.data
+        assert b'id="load-more"' not in saved.data
+
+
 @mark.parametrize("other_width", [10, 12], ids=["exact", "within-tolerance"])
 def test_character_approval_advances_then_reuses_learned_dimensions(
     tmp_path: Path, monkeypatch: MonkeyPatch, other_width: int
@@ -497,6 +591,68 @@ def test_startup_rechecks_earlier_rows_with_newly_learned_dimensions(
     assert session.manager.char_dims_by_n[1]["A"] == {(10, 20), (12, 20), (14, 20)}
     assert b"2 of 2 validated" in client.get("/?status=character").data
     assert b'id="subtitle-0"' not in client.get("/?status=character").data
+
+
+@mark.parametrize("initially_validated", [False, True], ids=["blocked", "validated"])
+def test_new_box_shape_rechecks_an_earlier_box_assignment(
+    tmp_path: Path, monkeypatch: MonkeyPatch, initially_validated: bool
+):
+    """Recheck an earlier subtitle when a learned shape changes its grouping.
+
+    Arguments:
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
+        initially_validated: whether the first subtitle is valid before learning
+    """
+    text = "A"
+    if not initially_validated:
+        text = "AB"
+    images_path = make_two_image_ocr_html_dir(tmp_path, text_1=text, text_2="A")
+    detected = []
+
+    def boxes(image: Image.Image) -> list[Bbox]:
+        """Return two boxes for the earlier subtitle and one for the later one.
+
+        Arguments:
+            image: fixture image identifying the subtitle by width
+        Returns:
+            measured boxes before grouping
+        """
+        detected.append(image.width)
+        first = Bbox(0, 10, 0, 20)
+        if image.width == 2:
+            return [first, Bbox(20, 30, 0, 20)]
+        return [first]
+
+    monkeypatch.setattr("scinoephile.web.ocr_validation.session.get_bboxes", boxes)
+    session = _session(images_path, tmp_path)
+    session.manager.char_dims_by_n[2]["A"] = {(10, 20, 10, 10, 20)}
+    session.manager.char_dims_by_n[1]["B"] = {(10, 20)}
+    session.manager.char_pair_gaps[("A", "B")] = (2, 8, 90, 200)
+    client = create_app(session).test_client()
+    page = client.get("/?status=all").data
+    before = b"1 of 2 validated"
+    after = b"1 leftover bboxes"
+    if not initially_validated:
+        before = b"Ran out of bboxes"
+        after = b"2 of 2 validated"
+    assert before in page
+
+    approved = client.post(
+        "/subtitles/1/concern/char?status=all",
+        data={
+            **_form_values(page.split(b'id="subtitle-1"', 1)[1]),
+            "action": "accept",
+            "loaded_rows": "0,1",
+            "through": 1,
+        },
+        headers=_HTMX,
+    )
+    assert approved.status_code == 200
+    assert b'id="validation-0"' in approved.data
+    assert after in approved.data
+    assert after in client.get("/?status=all").data
+    assert detected == [2, 3]
 
 
 def test_text_edit_persists_newline_and_rejects_old_concern(

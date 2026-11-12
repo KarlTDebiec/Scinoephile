@@ -1,0 +1,7 @@
+{% from 'shared/_blocks.html' import subtitle_block %}
+{% call subtitle_block(block, url_for('index', status='all', q='block ' ~ block.number)) %}
+  {% for sub_idx in block.rows %}
+    {% set row = subtitle_row(sub_idx) %}
+    {% include "_subtitle.html" %}
+  {% endfor %}
+{% endcall %}

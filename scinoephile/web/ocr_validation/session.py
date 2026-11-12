@@ -15,6 +15,7 @@ from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import RE_HANZI, RE_LATIN_WORD, WHITESPACE_CHARS
+from scinoephile.image.bbox import Bbox
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.ocr.validation.char_cursor import CharCursor
@@ -104,6 +105,7 @@ class OcrValidationSession:
                 self.text_font_size_px = round(
                     self.text_font_size_px * _LATIN_FONT_SIZE_MULTIPLIER
                 )
+        self._detected_bboxes: dict[int, list[Bbox]] = {}
         self._states: dict[int, _SubtitleValidationState] = {}
         self._checked_training_revision = self.manager.training_revision
 
@@ -113,7 +115,7 @@ class OcrValidationSession:
         self._save_outfile()
 
     def refresh_concerns(self) -> set[int]:
-        """Resume concerns affected by training while retaining unchanged selections.
+        """Recheck rows affected by training while retaining unchanged selections.
 
         Returns:
             subtitle indexes whose review information may have changed
@@ -128,27 +130,44 @@ class OcrValidationSession:
                 self._checked_training_revision
             )
             self._checked_training_revision = self.manager.training_revision
-            for state in self._states.values():
+            for sub_idx, sub in enumerate(self.series.events):
+                state = self._states[sub_idx]
                 previous = state.concern
-                if isinstance(previous, CharDimsConcern):
-                    if previous.char not in characters:
-                        continue
-                elif isinstance(previous, GapConcern):
-                    if (previous.char_1, previous.char_2) not in pairs:
-                        continue
+                previous_text = sub.text
+                previous_boxes = sub.bboxes
+                if not characters.isdisjoint(sub.text_with_newline):
+                    # A new shape can change how earlier boxes are grouped
+                    del self._states[sub_idx]
+                    state = self._state(sub_idx)
+                elif (
+                    isinstance(previous, GapConcern)
+                    and (previous.char_1, previous.char_2) in pairs
+                ):
+                    self._scan_state(state)
                 else:
                     continue
-                affected.add(state.sub_idx)
-                self._scan_state(state)
                 current = state.concern
                 if (
                     isinstance(previous, CharDimsConcern)
                     and isinstance(current, CharDimsConcern)
+                    and previous.char == current.char
                     and previous.char_idx == current.char_idx
                     and previous.bbox_idx == current.bbox_idx
                 ):
                     state.char_n_bboxes = previous.n_bboxes
-                    state.concern = self._char_dims_concern(state)
+                    selection = self._char_dims_concern(state)
+                    if selection.dims == previous.dims:
+                        state.concern = selection
+                    else:
+                        state.char_n_bboxes = current.n_bboxes
+                if (
+                    previous != state.concern
+                    or previous_text != sub.text
+                    or previous_boxes != sub.bboxes
+                    or isinstance(previous, CharDimsConcern)
+                    and previous.char in characters
+                ):
+                    affected.add(sub_idx)
         return affected
 
     def resolve_char_concern(
@@ -462,7 +481,9 @@ class OcrValidationSession:
         state = self._states.get(sub_idx)
         if state is None:
             sub = self.series.events[sub_idx]
-            sub.bboxes = get_bboxes(sub.img)
+            if sub_idx not in self._detected_bboxes:
+                self._detected_bboxes[sub_idx] = get_bboxes(sub.img)
+            sub.bboxes = self._detected_bboxes[sub_idx].copy()
             state = _SubtitleValidationState(
                 sub_idx=sub_idx, char_cursor=CharCursor(sub=sub, sub_idx=sub_idx)
             )

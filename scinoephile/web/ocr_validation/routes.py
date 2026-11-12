@@ -104,12 +104,7 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
         """
         loaded_rows: dict[int, int] = {}
         if _is_htmx():
-            status, query, _, through = _filters()
-            matching, _, _ = get_filtered_blocks(session, status, query)
-            loaded, _, _ = get_block_page(matching, through=through)
-            loaded_rows = {
-                index: block.number for block in loaded for index in block.rows
-            }
+            loaded_rows = _loaded_rows(session)
         affected: set[int] = set()
         if operation != "text":
             affected = session.refresh_concerns()
@@ -205,6 +200,29 @@ def _is_htmx() -> bool:
     )
 
 
+def _loaded_rows(session: OcrValidationSession) -> dict[int, int]:
+    """Find the cards already in the editor, including retained drafts.
+
+    Arguments:
+        session: current validation state
+    Returns:
+        loaded subtitle indexes and their block numbers
+    """
+    loaded = request.form.get("loaded_rows")
+    if loaded is not None:
+        indexes = {int(index) for index in loaded.split(",") if index}
+        return {
+            index: number
+            for number, (first, last) in enumerate(session.block_ranges, 1)
+            for index in range(first, last)
+            if index in indexes
+        }
+    status, query, _, through = _filters()
+    matching, _, _ = get_filtered_blocks(session, status, query)
+    blocks, _, _ = get_block_page(matching, through=through)
+    return {index: block.number for block in blocks for index in block.rows}
+
+
 def _render_update(
     session: OcrValidationSession,
     row: SubtitleRowView,
@@ -246,10 +264,35 @@ def _render_update(
             code=303,
         )
     matching_rows = {index for item in blocks for index in item.rows}
-    related_indexes = sorted((affected & loaded_rows.keys()) - {row.sub_idx})
+    related_indexes = sorted(
+        ((affected & loaded_rows.keys()) | (loaded_rows.keys() - matching_rows))
+        - {row.sub_idx}
+    )
     affected_blocks = {loaded_rows[index] for index in related_indexes}
     if block is not None:
         affected_blocks.add(block.number)
+    if through is None:
+        through = max(loaded_rows.values(), default=0)
+    visible_blocks, _, has_more = get_block_page(blocks, through=through)
+    pager_has_more = request.form.get("pager_has_more")
+    update_pager = pager_has_more is None or (pager_has_more == "true") != has_more
+    added_blocks = []
+    added_rows = []
+    loaded_numbers = set(loaded_rows.values())
+    next_block = "#load-more"
+    # Insert before the next already loaded element so open blocks and drafts stay put
+    for item in reversed(visible_blocks):
+        if item.number not in loaded_numbers:
+            added_blocks.append((item, next_block))
+            continue
+        next_block = f"#block-{item.number}"
+        row_swap = f"beforeend:#block-rows-{item.number}"
+        for index in reversed(item.rows):
+            if index in loaded_rows or index == row.sub_idx:
+                row_swap = f"beforebegin:#subtitle-{index}"
+            else:
+                affected_blocks.add(item.number)
+                added_rows.append((session.subtitle_row(index), row_swap))
     message = ""
     if stale and visible and row.concern is not None:
         message = "The concern changed. Review the updated subtitle."
@@ -261,6 +304,11 @@ def _render_update(
             (session.subtitle_row(index), index in matching_rows)
             for index in related_indexes
         ],
+        added_blocks=list(reversed(added_blocks)),
+        added_rows=list(reversed(added_rows)),
+        subtitle_row=session.subtitle_row,
+        has_more=has_more,
+        update_pager=update_pager,
         through=through,
         query=query,
         status=status,
