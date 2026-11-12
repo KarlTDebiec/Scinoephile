@@ -5,5 +5,12 @@
 {% include "_row_status.html" %}
 {% include "_summary.html" %}
 {% include "_status_filter.html" %}
-{% if block %}{{ block_summary(block, oob=true) }}{% endif %}
-<div id="messages" hx-swap-oob="innerHTML"></div>
+{% for block in blocks %}{{ block_summary(block, oob=true) }}{% endfor %}
+{% for row, visible in related_rows %}
+  {% with related=true %}
+    {% include "_validation.html" %}
+  {% endwith %}
+  {% include "_preview.html" %}
+  {% include "_row_status.html" %}
+{% endfor %}
+<div id="messages" hx-swap-oob="innerHTML">{{ message }}</div>

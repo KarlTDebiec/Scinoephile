@@ -102,10 +102,23 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
         Returns:
             updated fragments or a redirect to the current view
         """
+        loaded_rows: dict[int, int] = {}
+        if _is_htmx():
+            status, query, _, through = _filters()
+            matching, _, _ = get_filtered_blocks(session, status, query)
+            loaded, _, _ = get_block_page(matching, through=through)
+            loaded_rows = {
+                index: block.number for block in loaded for index in block.rows
+            }
+        affected: set[int] = set()
         if operation != "text":
-            session.refresh_concerns()
+            affected = session.refresh_concerns()
         current = session.subtitle_row(sub_idx)
         if request.form.get("version") != current.version:
+            if operation != "text":
+                return _render_update(
+                    session, current, loaded_rows, affected, stale=True
+                )
             message = "This subtitle changed. Reload it before submitting again."
             if _is_htmx():
                 return (
@@ -129,7 +142,10 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
         else:
             row = session.resolve_gap_concern(sub_idx, action=request.form["action"])
 
-        return _render_update(session, row)
+        affected.update(session.refresh_concerns())
+        if sub_idx in affected:
+            row = session.subtitle_row(sub_idx)
+        return _render_update(session, row, loaded_rows, affected)
 
 
 def _filters() -> tuple[str, str, int, int | None]:
@@ -190,13 +206,21 @@ def _is_htmx() -> bool:
 
 
 def _render_update(
-    session: OcrValidationSession, row: SubtitleRowView
+    session: OcrValidationSession,
+    row: SubtitleRowView,
+    loaded_rows: dict[int, int],
+    affected: set[int],
+    *,
+    stale: bool = False,
 ) -> str | FlaskResponse:
-    """Update only the affected row and counts, or redirect a native submission.
+    """Update affected cards and counts, or redirect a native submission.
 
     Arguments:
         session: current validation state
         row: updated subtitle
+        loaded_rows: subtitle indexes and block numbers in the submitted view
+        affected: subtitle indexes rechecked after learning new rules
+        stale: whether the submitted concern was superseded
     Returns:
         fragments or a redirect back to the current page
     """
@@ -221,10 +245,22 @@ def _render_update(
             ),
             code=303,
         )
-    return flask.render_template(
+    matching_rows = {index for item in blocks for index in item.rows}
+    related_indexes = sorted((affected & loaded_rows.keys()) - {row.sub_idx})
+    affected_blocks = {loaded_rows[index] for index in related_indexes}
+    if block is not None:
+        affected_blocks.add(block.number)
+    message = ""
+    if stale and visible and row.concern is not None:
+        message = "The concern changed. Review the updated subtitle."
+    fragments = flask.render_template(
         "_updated.html",
         row=row,
-        block=block,
+        blocks=[item for item in blocks if item.number in affected_blocks],
+        related_rows=[
+            (session.subtitle_row(index), index in matching_rows)
+            for index in related_indexes
+        ],
         through=through,
         query=query,
         status=status,
@@ -234,4 +270,8 @@ def _render_update(
         matched=counts[status],
         total=len(session.entries),
         validated=validated,
+        message=message,
     )
+    if stale:
+        return flask.make_response(fragments, 409)
+    return fragments

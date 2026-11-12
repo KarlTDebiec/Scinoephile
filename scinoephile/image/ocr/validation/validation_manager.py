@@ -89,11 +89,36 @@ class ValidationManager:
                 f"Unable to initialize OCR validation data: {exc}"
             ) from exc
         self._training_revision = 0
+        self._character_revisions: dict[str, int] = {}
+        self._gap_revisions: dict[tuple[str, str], int] = {}
 
     @property
     def training_revision(self) -> int:
         """Revision of the learned character and spacing rules in memory."""
         return self._training_revision
+
+    def training_changes_since(
+        self, revision: int
+    ) -> tuple[set[str], set[tuple[str, str]]]:
+        """Find characters and gaps affected by newly learned rules.
+
+        Arguments:
+            revision: last training revision already applied
+        Returns:
+            characters and character pairs that need rechecking
+        """
+        return (
+            {
+                char
+                for char, changed in self._character_revisions.items()
+                if changed > revision
+            },
+            {
+                pair
+                for pair, changed in self._gap_revisions.items()
+                if changed > revision
+            },
+        )
 
     def validate(self, series: ImageSeries) -> ImageSeries:
         """Validate all subtitles in an image series.
@@ -561,6 +586,7 @@ class ValidationManager:
             return
         dims_set.add(dims)
         self._training_revision += 1
+        self._character_revisions[char] = self._training_revision
         logger.info(f"Added ({char}, {dims})")
         if self.dev:
             output_char_dims = self.char_dims_by_n[n]
@@ -582,6 +608,9 @@ class ValidationManager:
             return
         dims_set.add(dims)
         self._training_revision += 1
+        self._character_revisions[group[0]] = self._training_revision
+        if n == 2:
+            self._gap_revisions[(group[0], group[1])] = self._training_revision
         logger.info(f"Added ({group}, {dims})")
         if self.dev:
             output_char_grp_dims = self.char_grp_dims_by_n
@@ -607,6 +636,7 @@ class ValidationManager:
             if previous_cutoffs is None:
                 return
             self._training_revision += 1
+            self._gap_revisions[char_pair] = self._training_revision
             if self.dev:
                 output_char_pair_gaps = self.char_pair_gaps
             elif char_pair in self.user_char_pair_gaps:
@@ -618,6 +648,7 @@ class ValidationManager:
             return
         self.char_pair_gaps[char_pair] = cutoffs
         self._training_revision += 1
+        self._gap_revisions[char_pair] = self._training_revision
         logger.info(f"Added ({char_pair}, {cutoffs})")
         if self.dev:
             output_char_pair_gaps = self.char_pair_gaps

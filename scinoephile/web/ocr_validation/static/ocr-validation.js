@@ -142,6 +142,37 @@ function enhanceOcrForms(root) {
 }
 
 /**
+ * Apply a fresh row version if it preserves the text the user is editing.
+ * @param {HTMLFormElement} form - OCR text form.
+ * @param {HTMLElement} result - Updated validation fragment for the row.
+ * @param {boolean} replaceText - Whether the saved text can replace the input value.
+ */
+function applyOcrResult(form, result, replaceText) {
+    const input = form.elements.namedItem("text");
+    const saved = result.dataset.text;
+    if (replaceText) input.value = saved;
+    input.defaultValue = saved;
+    form.elements.namedItem("version").value = result.dataset.version;
+}
+
+/**
+ * Remove a card outside the active filter when its text is safe to leave.
+ * @param {HTMLFormElement} form - OCR text form.
+ */
+function removeHiddenOcrRow(form) {
+    const row = form.closest(".ocr-row");
+    const result = row.querySelector(".ocr-validation");
+    if (result.dataset.visible !== "false" || hasOcrDraft(form) ||
+        form.elements.namedItem("text").matches(":focus")) return;
+    const block = row.closest(".subtitle-block");
+    row.remove();
+    if (block && !block.querySelector(".ocr-row")) {
+        block.remove();
+        syncBlockToggle();
+    }
+}
+
+/**
  * Apply the saved version without discarding edits made during a request.
  * @param {HTMLFormElement} form - OCR text form.
  * @param {XMLHttpRequest} xhr - Completed HTMX request.
@@ -150,9 +181,8 @@ function enhanceOcrForms(root) {
 function finishOcrRequest(form, xhr, action) {
     const input = form.elements.namedItem("text");
     const state = ocrSaveState(form);
-    const row = form.closest(".ocr-row");
-    const result = row.querySelector(".ocr-validation");
     const success = xhr.status >= 200 && xhr.status < 300;
+    const refreshed = success || (action && xhr.status === 409);
 
     if (action) {
         input.readOnly = false;
@@ -161,11 +191,9 @@ function finishOcrRequest(form, xhr, action) {
                 "The validation action failed. Check the row and try again.";
         }
     }
-    if (success) {
-        const saved = result.dataset.text;
-        if (action || input.value === state.sent) input.value = saved;
-        input.defaultValue = saved;
-        form.elements.namedItem("version").value = result.dataset.version;
+    if (refreshed) {
+        const result = form.closest(".ocr-row").querySelector(".ocr-validation");
+        applyOcrResult(form, result, action || input.value === state.sent);
     } else if (!action) {
         state.error = "Text could not be saved. Retry or reload the subtitle.";
     }
@@ -173,15 +201,9 @@ function finishOcrRequest(form, xhr, action) {
     state.sent = null;
     state.pending = false;
     syncOcrSave(form);
-    if (success && !hasOcrDraft(form) && result.dataset.visible === "false") {
-        const block = row.closest(".subtitle-block");
-        row.remove();
-        if (block && !block.querySelector(".ocr-row")) {
-            block.remove();
-            syncBlockToggle();
-        }
-    } else if (success && retry) {
-        requestOcrSave(form);
+    if (refreshed) {
+        removeHiddenOcrRow(form);
+        if (retry && form.isConnected) requestOcrSave(form);
     }
 }
 
@@ -225,6 +247,19 @@ if (window.htmx) {
     guardOcrHistory(draftMessage);
     enhanceOcrForms(document);
     document.addEventListener("htmx:load", event => enhanceOcrForms(event.detail.elt));
+    document.addEventListener("htmx:afterSwap", () => {
+        for (const result of document.querySelectorAll("[data-ocr-related]")) {
+            result.removeAttribute("data-ocr-related");
+            const form = result.closest(".ocr-row").querySelector(
+                "[data-ocr-text]");
+            const draft = hasOcrDraft(form);
+            const input = form.elements.namedItem("text");
+            if (!draft || result.dataset.text === input.defaultValue) {
+                applyOcrResult(form, result, !draft);
+            }
+            removeHiddenOcrRow(form);
+        }
+    });
     document.addEventListener("input", event => {
         const form = event.target.closest("[data-ocr-text]");
         if (!form) return;
@@ -233,7 +268,15 @@ if (window.htmx) {
     });
     document.addEventListener("focusout", event => {
         const form = event.target.closest("[data-ocr-text]");
-        if (form && event.target.matches("textarea")) requestOcrSave(form);
+        if (!form || !event.target.matches("textarea")) return;
+        if (hasOcrDraft(form)) {
+            requestOcrSave(form);
+        } else {
+            const result = form.closest(".ocr-row").querySelector(
+                ".ocr-validation");
+            applyOcrResult(form, result, true);
+            removeHiddenOcrRow(form);
+        }
     });
     document.addEventListener("htmx:confirm", event => {
         const action = event.detail.elt.closest("[data-ocr-action]");

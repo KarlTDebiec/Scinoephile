@@ -27,17 +27,34 @@ from test.helpers.ocr_validation import (
 _HTMX = {"HX-Request": "true"}
 
 
+@mark.parametrize("other_width", [10, 12], ids=["exact", "within-tolerance"])
 def test_character_approval_advances_then_reuses_learned_dimensions(
-    tmp_path: Path, monkeypatch: MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch, other_width: int
 ):
     """Verify a box approval advances one row and can resolve related rows.
 
     Arguments:
         tmp_path: isolated image and validation data
         monkeypatch: deterministic bbox detection
+        other_width: width of the same character in the second subtitle
     """
     images_path = make_two_image_ocr_html_dir(tmp_path, text_1="AB", text_2="A")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(20, 30, 0, 20)])
+
+    def character_boxes(image: Image.Image) -> list[Bbox]:
+        """Return two boxes for AB and one matching box for A.
+
+        Arguments:
+            image: fixture image identifying its subtitle by width
+        Returns:
+            detected bounding boxes for that subtitle
+        """
+        if image.width == 2:
+            return [Bbox(0, 10, 0, 20), Bbox(20, 30, 0, 20)]
+        return [Bbox(0, other_width, 0, 20)]
+
+    monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.session.get_bboxes", character_boxes
+    )
     session = _session(images_path, tmp_path)
     client = create_app(session).test_client()
     page = client.get("/?status=character")
@@ -55,15 +72,26 @@ def test_character_approval_advances_then_reuses_learned_dimensions(
     assert b'x="20"' in approved.data
     assert b'id="preview-0"' in approved.data
     assert b'hx-swap-oob="outerHTML"' in approved.data
+    assert b"data-ocr-related" in approved.data
+    related = approved.data.split(b'id="validation-1"', 1)[1].split(b"</div>", 1)[0]
+    assert b'data-visible="false"' in related
+    assert b"1 of 2 validated" in approved.data
+
+    stale = client.post(
+        "/subtitles/1/concern/char?status=character",
+        data={
+            **_form_values(page.data.split(b'id="subtitle-1"', 1)[1]),
+            "action": "accept",
+        },
+        headers=_HTMX,
+    )
+    assert stale.status_code == 409
+    assert b'id="validation-1"' in stale.data
+    assert b'data-visible="false"' in stale.data
 
     filtered = client.get("/?status=character", headers=_HTMX)
     assert b'id="sub-1"' in filtered.data
     assert b'id="sub-2"' not in filtered.data
-    boxes = client.get("/?status=boxes", headers=_HTMX)
-    assert b'id="sub-2"' in boxes.data
-    assert b"leftover bboxes" in boxes.data
-    assert b">Bounding boxes need review</p>" in boxes.data
-    assert b'id="sub-1"' not in boxes.data
 
 
 def test_character_selection_survives_paging_and_rejects_stale_approval(
@@ -121,7 +149,7 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
 
     stale = client.post(endpoint, data={**initial, "action": "accept"}, headers=_HTMX)
     assert stale.status_code == 409
-    assert stale.headers["HX-Retarget"] == "#messages"
+    assert b"The concern changed. Review the updated subtitle." in stale.data
 
     approved = client.post(
         endpoint, data={**_form_values(filtered.data), "action": "accept"}
@@ -431,7 +459,8 @@ def test_spacing_rejects_stale_approval_after_learning_on_another_row(
     )
     assert learned.status_code == 200
     assert stale.status_code == 409
-    assert stale.headers["HX-Retarget"] == "#messages"
+    assert b'id="validation-0"' in stale.data
+    assert b'data-visible="false"' in stale.data
     assert session.manager.char_pair_gaps[("A", "B")] == (5, 8, 12, 20)
     assert [entry.text for entry in load_html_entries(images_path)] == ["AB", "AB"]
 

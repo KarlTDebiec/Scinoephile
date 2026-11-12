@@ -112,18 +112,33 @@ class OcrValidationSession:
         self.refresh_concerns()
         self._save_outfile()
 
-    def refresh_concerns(self):
-        """Apply newly learned data while retaining unchanged box selections."""
+    def refresh_concerns(self) -> set[int]:
+        """Resume concerns affected by training while retaining unchanged selections.
+
+        Returns:
+            subtitle indexes whose review information may have changed
+        """
         if len(self._states) < len(self.entries):
             for sub_idx in range(len(self.entries)):
                 self._state(sub_idx)
+        affected = set()
         # Later rows can teach rules that resolve a concern already visited in this pass
         while self._checked_training_revision != self.manager.training_revision:
+            characters, pairs = self.manager.training_changes_since(
+                self._checked_training_revision
+            )
             self._checked_training_revision = self.manager.training_revision
             for state in self._states.values():
                 previous = state.concern
-                if not isinstance(previous, CharDimsConcern | GapConcern):
+                if isinstance(previous, CharDimsConcern):
+                    if previous.char not in characters:
+                        continue
+                elif isinstance(previous, GapConcern):
+                    if (previous.char_1, previous.char_2) not in pairs:
+                        continue
+                else:
                     continue
+                affected.add(state.sub_idx)
                 self._scan_state(state)
                 current = state.concern
                 if (
@@ -134,6 +149,7 @@ class OcrValidationSession:
                 ):
                     state.char_n_bboxes = previous.n_bboxes
                     state.concern = self._char_dims_concern(state)
+        return affected
 
     def resolve_char_concern(
         self, sub_idx: int, *, action: str, n_bboxes: int
