@@ -8,7 +8,7 @@ from pathlib import Path
 
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.workflows.ocr_validation import validate_ocr
+from scinoephile.workflows.ocr_validation import serve_ocr_validation, validate_ocr
 from test.helpers.series_files import get_ocr_text_series
 
 
@@ -82,11 +82,8 @@ def test_validate_ocr_runs_noninteractive_validation(
         infile_path,
         outfile_path,
         validation_data_dir_path=validation_data_dir_path,
-        interactive=False,
         dev=True,
         overwrite=False,
-        host="127.0.0.1",
-        port=5000,
     )
 
     assert load_calls == [infile_path]
@@ -96,8 +93,8 @@ def test_validate_ocr_runs_noninteractive_validation(
     assert "validated" in outfile_path.read_text(encoding="utf-8")
 
 
-def test_validate_ocr_runs_interactive_validation(monkeypatch, tmp_path: Path):
-    """Test path-based OCR validation launches interactive validation.
+def test_serve_ocr_validation_launches_the_editor(monkeypatch, tmp_path: Path):
+    """Pass the OCR source, persistent data, and server settings to the editor.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -132,16 +129,16 @@ def test_validate_ocr_runs_interactive_validation(monkeypatch, tmp_path: Path):
         )
         return session
 
-    def fake_run_app(value: object, host: str, port: int):
-        """Capture web app run arguments and write validation output.
+    def fake_run_app(value: object, host: str, port: int, *, title: str | None):
+        """Capture web app run arguments.
 
         Arguments:
             value: value
             host: host value
             port: port value
+            title: editor title
         """
-        run_calls.append(("run_app", value, host, port))
-        get_ocr_text_series("interactive validated").save(outfile_path)
+        run_calls.append(("run_app", value, host, port, title))
 
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_validation.OcrValidationSession.from_dir_path",
@@ -149,19 +146,17 @@ def test_validate_ocr_runs_interactive_validation(monkeypatch, tmp_path: Path):
     )
     monkeypatch.setattr("scinoephile.workflows.ocr_validation.run_app", fake_run_app)
 
-    validated = validate_ocr(
+    serve_ocr_validation(
         infile_path,
         outfile_path,
         validation_data_dir_path=validation_data_dir_path,
-        interactive=True,
         dev=True,
-        overwrite=False,
         host="0.0.0.0",
         port=5050,
+        title="Film - English",
     )
 
     assert run_calls == [
         ("from_dir_path", infile_path, outfile_path, validation_data_dir_path, True),
-        ("run_app", session, "0.0.0.0", 5050),
+        ("run_app", session, "0.0.0.0", 5050, "Film - English"),
     ]
-    assert [subtitle.text for subtitle in validated] == ["interactive validated"]

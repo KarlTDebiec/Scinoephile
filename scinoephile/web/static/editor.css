@@ -1,31 +1,19 @@
 /* Light and dark editor palettes */
 :root {
   color-scheme: light dark;
-  --background: #fff;
-  --text: #222;
-  --surface: #f5f5f5;
-  --border: #bbb;
-  --link: #164bb8;
-  --error: #a00;
-  --warning-background: #fff3cd;
-  --warning-text: #664d03;
-  --warning-border: #c99500;
+  --background: light-dark(#fff, #191b1e);
+  --text: light-dark(#222, #e4e6e8);
+  --surface: light-dark(#f5f5f5, #23262a);
+  --border: light-dark(#bbb, #555);
+  --link: light-dark(#164bb8, #9ecbff);
+  --error: light-dark(#a00, #ff9b9b);
+  --warning-background: light-dark(#fff3cd, #4b3c0a);
+  --warning-text: light-dark(#664d03, #ffe08a);
+  --warning-border: light-dark(#c99500, #b58a16);
   --muted: color-mix(in srgb, var(--text) 60%, var(--background));
   background: var(--background);
   color: var(--text);
   scrollbar-gutter: stable;
-
-  @media (prefers-color-scheme: dark) {
-    --background: #191b1e;
-    --text: #e4e6e8;
-    --surface: #23262a;
-    --border: #555;
-    --link: #9ecbff;
-    --error: #ff9b9b;
-    --warning-background: #4b3c0a;
-    --warning-text: #ffe08a;
-    --warning-border: #b58a16;
-  }
 }
 
 /* Page width, typography, and focus indicators */
@@ -72,3 +60,332 @@ textarea { field-sizing: content; }
 .error { color: var(--error); }
 .empty { padding: 2rem; text-align: center; }
 .htmx-request button { cursor: progress; }
+
+/* Autosave feedback and the optional saving animation */
+.save-status {
+  display: none;
+  margin-left: auto;
+  & svg { display: none; }
+  .is-enhanced & {
+    display: inline-grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    align-items: center;
+    gap: .4rem;
+    width: calc(20px + 7ch + .4rem);
+    flex: none;
+    white-space: nowrap;
+    text-align: left;
+    &[data-save-state="saved"] { color: light-dark(#18752a, #83d891); & .saved { display: block; } }
+    &[data-save-state="saving"] { color: var(--muted); & .saving { display: block; } }
+    &[data-save-state="unsaved"] { color: var(--muted); & .unsaved { display: block; } }
+    &:is([data-save-state="invalid"], [data-save-state="error"]) { color: var(--error); & .error { display: block; } }
+    @media (prefers-reduced-motion: no-preference) {
+      &[data-save-state="saving"] .saving { animation: saving-spin 1s linear infinite; }
+    }
+  }
+}
+@keyframes saving-spin { to { transform: rotate(360deg); } }
+
+/* Pagination controls used by the local editors */
+.editor-pager {
+  display: flex;
+  justify-content: end;
+  gap: .5rem;
+  padding: .75rem 0;
+  & button { display: inline-grid; place-items: center; min-height: 2.5rem; }
+  &:empty { display: none; }
+}
+.editor-pager button:has(> svg) { width: 2.5rem; padding: .25rem; }
+
+/* Sticky workspace header */
+#workspace > header {
+  position: sticky;
+  top: 1rem;
+  z-index: 3;
+  display: flow-root;
+  padding-bottom: .5rem;
+  background: var(--background);
+  box-shadow: 0 -1rem var(--background);
+
+  & > :last-child { margin-bottom: 0; }
+}
+
+/* Selects with icons in the picker and selected value */
+select {
+  &, &::picker(select) { appearance: base-select; }
+  &::picker(select) {
+    color: var(--text);
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: .25rem;
+  }
+  & > button {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: left;
+  }
+  & :is(selectedcontent, option) {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    white-space: nowrap;
+  }
+  & selectedcontent { min-width: 0; overflow: hidden; }
+  & option {
+    padding: .35rem .5rem;
+    &:checked { background: var(--surface); }
+    &::checkmark { order: 1; margin-left: auto; }
+  }
+  &::picker-icon { color: var(--muted); }
+}
+
+
+/* Filter toolbar with a clear button and matching subtitle count */
+nav[aria-label="Filters"] {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  grid-template-rows: 2.5rem 2.5rem;
+  align-items: start;
+  gap: .5rem;
+
+  & > form:first-child {
+    grid-column: 1;
+    grid-row: 1;
+    & button {
+      & > svg:last-child { display: none; }
+      &:not(:disabled) {
+        & > svg:first-child { display: none; }
+        & > svg:last-child { display: block; }
+      }
+    }
+  }
+  & :is(input, select) { height: 2.5rem; }
+  & select { min-width: 0; }
+  & select > button:hover { background: transparent; }
+  & > form > button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: .25rem;
+
+    &[hidden] { display: none; }
+    &:disabled {
+      opacity: 1;
+      border-color: transparent;
+      background: transparent;
+      cursor: default;
+    }
+  }
+  & > output {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    font-size: .85rem;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+}
+/* Operation controls, confirmation states, and bulk block disclosure */
+nav[aria-label="Operations"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+
+  & > .operation-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  & > .operation-group button, & > button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    min-height: 2.5rem;
+    &[hidden] { display: none; }
+  }
+  & > button[data-toggle-blocks] {
+    display: none;
+    flex: none;
+    margin-left: auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: .25rem;
+
+    .has-block-controls #workspace:has(details.subtitle-block) & { display: inline-flex; }
+    & svg:first-child { display: none; }
+    #workspace:has(details.subtitle-block[open]) & {
+      & svg:first-child { display: block; }
+      & svg:last-child { display: none; }
+    }
+  }
+  & > p { flex-basis: 100%; margin: 0; color: var(--error); }
+}
+/* Search and status filters with a native submit fallback */
+#filters {
+  display: grid;
+  grid-column: 2;
+  grid-row: 1 / 3;
+  gap: .5rem;
+  --status-columns: 2;
+  grid-template-columns: repeat(var(--status-columns), minmax(0, 1fr)) 2.5rem;
+  grid-template-rows: 2.5rem 2.5rem;
+
+  &:has(> select:only-of-type) { --status-columns: 1; }
+  & input[type=search] { grid-column: 1 / -2; grid-row: 2; min-width: 0; }
+  & > button { grid-column: -2; grid-row: 2; }
+  .has-live-search & {
+    grid-template-columns: repeat(var(--status-columns), minmax(0, 1fr));
+    & input[type=search] { grid-column: 1 / -1; }
+    & > button { display: none; }
+  }
+}
+
+
+/* Timestamps in block summaries and subtitle legends */
+.block-time {
+  font-size: .85rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Collapsible subtitle blocks and their disclosure animation */
+.subtitle-block {
+  border: 1px solid var(--border);
+  border-radius: .5rem;
+  padding: 0 1rem 1rem;
+  margin: 1.75rem 0 1.25rem;
+
+  & > summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: .5rem;
+    height: 1.75rem;
+    margin-top: -.875rem;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+
+    &::-webkit-details-marker { display: none; }
+    &::marker { content: ""; }
+    & > :is(a, span) {
+      padding: 0 .25rem;
+      background: var(--background);
+    }
+    & > a { justify-self: start; margin-left: -.25rem; white-space: nowrap; }
+    & > span:nth-child(2) {
+      justify-self: center;
+      font-size: .85rem;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    & > .block-disclosure {
+      justify-self: end;
+      margin-right: -.25rem;
+      display: grid;
+      place-items: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      & svg { grid-area: 1 / 1; }
+      & svg:first-child { visibility: hidden; }
+    }
+  }
+  &[open] > summary .block-disclosure {
+    & svg:first-child { visibility: visible; }
+    & svg:last-child { visibility: hidden; }
+  }
+  &:not([open]) { padding-bottom: .5rem; }
+  & > div > .subtitle-row {
+    &:first-child { margin-top: .25rem; }
+    &:last-child { margin-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (interpolate-size: allow-keywords) and
+              (transition-behavior: allow-discrete) and
+              selector(::details-content) {
+      interpolate-size: allow-keywords;
+      transition: padding-bottom 120ms ease-out;
+
+      &::details-content {
+        height: 0;
+        overflow-y: clip;
+        transition: height 120ms ease-out,
+                    content-visibility 120ms allow-discrete;
+      }
+      &[open]::details-content { height: auto; }
+
+      /* Keep the last card's border inside the clip at fractional zoom. */
+      & > div { padding-bottom: 1px; }
+    }
+  }
+
+  @media (width < 38rem) { padding: 0 .5rem .5rem; }
+}
+
+/* Shared subtitle fields and their timed legends */
+.subtitle-row {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 14rem;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: .5rem;
+  padding: .25rem 1rem 1rem;
+  margin: 1rem 0;
+
+  & > legend {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    font-weight: 600;
+
+    &::before {
+      content: "";
+      grid-area: 1 / 1 / 2 / -1;
+      border-top: 1px solid var(--border);
+    }
+    & > span {
+      grid-row: 1;
+      position: relative;
+      background: var(--background);
+    }
+    & > span:first-child {
+      grid-column: 1;
+      justify-self: start;
+      padding-right: .5rem;
+    }
+    & > .block-time { grid-column: 2; padding: 0 .5rem; }
+  }
+}
+
+/* Shared action bar at the bottom of a subtitle card */
+.subtitle-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem 1rem;
+  margin-top: .75rem;
+  padding-top: .75rem;
+  border-top: 1px solid var(--border);
+  font-size: .85rem;
+
+  & > button { margin-inline-start: auto; }
+}
+
+/* Hide automatic pagination while the workspace is collapsed */
+#workspace[data-loading-paused] #load-more { display: none; }

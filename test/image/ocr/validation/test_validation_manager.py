@@ -16,6 +16,35 @@ from scinoephile.image.ocr.validation.char_cursor import CharCursor
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
+@mark.parametrize(
+    ("left_size", "gap", "matches"),
+    [((16, 59), 5, True), ((16, 59), 3, False), ((13, 62), 5, False)],
+    ids=["different-examples", "unknown-gap", "unmatched-box-shape"],
+)
+def test_match_character_uses_approved_boxes_and_gaps_independently(
+    tmp_path: Path, left_size: tuple[int, int], gap: int, matches: bool
+):
+    """Match box shapes as pairs and allow the gap to match a different example.
+
+    Arguments:
+        tmp_path: temporary directory path
+        left_size: measured left box width and height
+        gap: measured gap between the boxes
+        matches: whether the proposed configuration should be accepted
+    """
+    manager = _prepared_manager(tmp_path)
+    manager.char_dims_by_n[2]["泪"] = {(15, 59, 8, 32, 57), (17, 61, 6, 36, 60)}
+    width, height = left_size
+    right_start = width + gap
+    sub = _series("泪").events[0]
+    sub.bboxes = [Bbox(0, width, 0, height), Bbox(right_start, right_start + 33, 0, 57)]
+    cursor = CharCursor(sub=sub, sub_idx=0)
+
+    assert manager.match_char_dims(cursor) is matches
+    if matches:
+        assert cursor.char_idx == cursor.bbox_idx == len(cursor.bboxes) == 1
+
+
 def test_validate_confident_space_gap_updates_text(
     tmp_path: Path, monkeypatch: MonkeyPatch, caplog: LogCaptureFixture
 ):

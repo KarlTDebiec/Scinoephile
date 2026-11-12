@@ -1,0 +1,44 @@
+{% from 'shared/_controls.html' import toggle_blocks %}
+{% from 'shared/_filters.html' import filter_toolbar %}
+<main id="workspace" hx-history-elt hx-history="false">
+  <header>
+    <h1>{{ title }}</h1>
+    <div id="messages" class="error" role="status"></div>
+    {% call(slot) filter_toolbar("ocr-search", query, status != "all" or query, "Text, subtitle number, or block number", {"status": "all"}) %}
+      {% if slot == "options" %}
+        {% include "_status_filter.html" %}
+      {% else %}
+        {% include "_summary.html" %}
+      {% endif %}
+    {% endcall %}
+    <nav class="editor-toolbar ocr-operations" aria-label="Operations">
+      <div class="ocr-appearance" data-ocr-appearance-controls hidden>
+        <label>
+          Font size (px)
+          <input type="number"
+                 data-ocr-appearance="--ocr-font-size-px"
+                 data-ocr-appearance-key="ocr-appearance:font-size-px:{{ font_size_key }}"
+                 min="1"
+                 value="{{ font_size_px }}"
+                 required>
+        </label>
+        <label>
+          Outline width (px)
+          <input type="number"
+                 data-ocr-appearance="--ocr-outline-width"
+                 data-ocr-appearance-key="ocr-appearance:--ocr-outline-width"
+                 min="0"
+                 max="8"
+                 step="0.5"
+                 value="2"
+                 required>
+        </label>
+      </div>
+      {{ toggle_blocks() }}
+    </nav>
+  </header>
+  <section class="ocr-rows" aria-label="Subtitles">
+    {% include "_batch.html" %}
+    <p class="empty">No subtitles match these filters.</p>
+  </section>
+</main>

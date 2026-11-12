@@ -1,652 +1,729 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of OCR validation web routes."""
+"""Browser-facing OCR validation routes and edit semantics."""
 
 from __future__ import annotations
 
+from base64 import b64decode
 from io import BytesIO
 from pathlib import Path
+from re import findall, search
 
-from flask import Flask
 from PIL import Image
-from pytest import MonkeyPatch
+from pytest import MonkeyPatch, mark
 
 from scinoephile.image.bbox import Bbox
 from scinoephile.web.ocr_validation.app import create_app
+from scinoephile.web.ocr_validation.html_index import load_html_entries
 from scinoephile.web.ocr_validation.session import OcrValidationSession
 from test.helpers.ocr_validation import (
     clear_validation_data,
     make_ocr_html_dir,
+    make_two_image_ocr_html_dir,
     patch_ocr_validation_bboxes,
     prepared_gap_session,
 )
 
-
-def test_index_renders_subtitle_list(tmp_path: Path):
-    """Test the index route renders the subtitle list UI.
-
-    Arguments:
-        tmp_path: temporary directory path
-    """
-    app = create_app(_session(tmp_path, text="recognized", include_done_subtitles=True))
-
-    response = app.test_client().get("/")
-
-    assert response.status_code == 200
-    assert b'<html lang="en">' in response.data
-    assert b"https://unpkg.com/htmx.org" not in response.data
-    assert b'src="/static/htmx.min.js"' in response.data
-    assert b'class="subtitle"' in response.data
-    assert b'id="sub-1"' in response.data
-    assert b'href="#sub-1"' in response.data
-    assert b"subtitle-number-1" not in response.data
-    assert b"<figure" in response.data
-    assert b" style=" not in response.data
-    assert b"image-rendering: pixelated;" in response.data
-    assert b"image-rendering: crisp-edges;" not in response.data
-    assert b"#1</a>:" in response.data
-    _assert_index_filter_toggle(response.data)
-    _assert_index_subtitle_figure(response.data)
-    _assert_index_textarea(response.data)
-    assert b"<hr" in response.data
+_HTMX = {"HX-Request": "true"}
 
 
-def test_static_htmx_asset_is_served(tmp_path: Path):
-    """Test the web UI serves its vendored HTMX asset locally.
-
-    Arguments:
-        tmp_path: temporary directory path
-    """
-    app = create_app(_session(tmp_path, text="recognized", include_done_subtitles=True))
-
-    response = app.test_client().get("/static/htmx.min.js")
-
-    assert response.status_code == 200
-    assert b"htmx" in response.data.lower()
-
-
-def test_index_renders_single_char_concern_image(
-    tmp_path: Path, monkeypatch: MonkeyPatch
+@mark.parametrize(
+    ("new_index", "separate_block", "swap"),
+    [
+        (0, False, b"beforebegin:#subtitle-1"),
+        (1, False, b"beforeend:#block-rows-1"),
+        (0, True, b"beforebegin:#block-2"),
+        (1, True, None),
+    ],
+    ids=["earlier-card", "later-card", "earlier-block", "later-page"],
+)
+def test_autosave_reconciles_newly_matching_subtitles(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    new_index: int,
+    separate_block: bool,
+    swap: bytes | None,
 ):
-    """Test character concerns render one focused image and table.
+    """Show a subtitle that enters the spacing filter after autosave learns a shape.
 
     Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
+        new_index: subtitle that will start matching
+        separate_block: whether the subtitles are in separate blocks
+        swap: insertion directive when the subtitle is within the loaded page
     """
-    app = _char_concern_app(tmp_path, monkeypatch)
-
-    response = app.test_client().get("/")
-
-    assert response.status_code == 200
-    assert response.data.count(b'src="/subtitles/0/concern.png?v=char-dims-0-0-1"') == 1
-    assert b'src="/subtitles/0/validation.png?v=' not in response.data
-    assert b"<td>A</td>" in response.data
-    assert b"<td>1</td>" in response.data
-    assert b"<td>(10, 20)</td>" in response.data
-    assert b'value="contract"' in response.data
-    assert b'value="expand"' in response.data
-    assert b'value="accept"' in response.data
-
-
-def test_index_renders_char_concern_romanizations(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test character concern tables render romanizations below Hanzi.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="霆")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path, validation_data_dir_path=tmp_path / "cache"
+    edited_index = 1 - new_index
+    texts = ["BD", "BD"]
+    texts[new_index] = "AD"
+    images_path = make_two_image_ocr_html_dir(
+        tmp_path, text_1=texts[0], text_2=texts[1]
     )
-    clear_validation_data(session)
-    app = create_app(session)
+    if separate_block:
+        index_path = images_path / "index.html"
+        html = index_path.read_text(encoding="utf-8")
+        index_path.write_text(
+            html.replace("#2:3,000->4,000", "#2:10,000->11,000"), encoding="utf-8"
+        )
 
-    response = app.test_client().get("/")
+    def boxes(image: Image.Image) -> list[Bbox]:
+        """Give the edited subtitle a closer match to the known A dimensions.
 
-    assert response.status_code == 200
-    assert b"<th>Char</th>" in response.data
-    assert b"data-char" in response.data
-    assert "霆".encode() in response.data
-    assert "tíng".encode() in response.data
-    assert "tìhng".encode() in response.data
+        Arguments:
+            image: fixture image identifying the subtitle by width
+        Returns:
+            measured boxes with a 4 px gap
+        """
+        width = 10 + 2 * (image.width - 2 == new_index)
+        return [Bbox(0, width, 0, 20), Bbox(width + 4, width + 14, 0, 20)]
+
+    monkeypatch.setattr("scinoephile.web.ocr_validation.session.get_bboxes", boxes)
+    session = _session(images_path, tmp_path)
+    session.manager.char_dims_by_n[1].update(
+        {"A": {(8, 20)}, "B": {(10, 20)}, "D": {(10, 20)}}
+    )
+    session.manager.char_pair_gaps.update(
+        {("B", "D"): (2, 6, 12, 20), ("A", "D"): (2, 6, 12, 20)}
+    )
+    client = create_app(session).test_client()
+    page = client.get("/?status=spacing").data
+    new_card = f'id="subtitle-{new_index}"'.encode()
+    assert new_card not in page
+    assert b"1 matching subtitles" in page
+    assert b'aria-label="Load more blocks"' not in page
+
+    through = 1 + separate_block * edited_index
+    saved = client.post(
+        f"/subtitles/{edited_index}/text?status=spacing",
+        data={
+            **_form_values(page),
+            "text": "AD",
+            "through": through,
+            "loaded_rows": str(edited_index),
+            "pager_has_more": "false",
+        },
+        headers=_HTMX,
+    )
+    assert saved.status_code == 200
+    assert b"2 matching subtitles" in saved.data
+    assert f'id="subtitle-{edited_index}"'.encode() not in saved.data
+    if swap is None:
+        assert new_card not in saved.data
+        assert b'aria-label="Load more blocks"' in saved.data
+        next_page = client.get(
+            f"/?status=spacing&after={through}",
+            headers={**_HTMX, "HX-Target": "load-more"},
+        )
+        assert new_card in next_page.data
+    else:
+        assert new_card in saved.data
+        assert b'hx-swap-oob="' + swap + b'"' in saved.data
+        assert b'id="load-more"' not in saved.data
 
 
-def test_index_omits_romanizations_for_unrecognized_symbol(
-    tmp_path: Path, monkeypatch: MonkeyPatch
+@mark.parametrize("other_width", [10, 12], ids=["exact", "within-tolerance"])
+def test_character_approval_advances_then_reuses_learned_dimensions(
+    tmp_path: Path, monkeypatch: MonkeyPatch, other_width: int
 ):
-    """Test character concern tables skip romanization for non-Hanzi symbols.
+    """Verify a box approval advances one row and can resolve related rows.
 
     Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
+        other_width: width of the same character in the second subtitle
     """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="▼")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path, validation_data_dir_path=tmp_path / "cache"
+    images_path = make_two_image_ocr_html_dir(tmp_path, text_1="AB", text_2="A")
+
+    def character_boxes(image: Image.Image) -> list[Bbox]:
+        """Return two boxes for AB and one matching box for A.
+
+        Arguments:
+            image: fixture image identifying its subtitle by width
+        Returns:
+            detected bounding boxes for that subtitle
+        """
+        if image.width == 2:
+            return [Bbox(0, 10, 0, 20), Bbox(20, 30, 0, 20)]
+        return [Bbox(0, other_width, 0, 20)]
+
+    monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.session.get_bboxes", character_boxes
     )
-    clear_validation_data(session)
-    app = create_app(session)
+    session = _session(images_path, tmp_path)
+    client = create_app(session).test_client()
+    page = client.get("/?status=character")
+    assert b'aria-label="Character review"' in page.data
+    assert b">Characters need review</p>" in page.data
+    assert b'id="sub-2"' in page.data
 
-    response = app.test_client().get("/")
+    approved = client.post(
+        "/subtitles/0/concern/char?status=character",
+        data={**_form_values(page.data), "action": "accept"},
+        headers=_HTMX,
+    )
+    assert approved.status_code == 200
+    assert b"<strong>B</strong>" in approved.data
+    assert b'x="20"' in approved.data
+    assert b'id="preview-0"' in approved.data
+    assert b'hx-swap-oob="outerHTML"' in approved.data
+    assert b"data-ocr-related" in approved.data
+    related = approved.data.split(b'id="validation-1"', 1)[1].split(b"</div>", 1)[0]
+    assert b'data-visible="false"' in related
+    assert b"1 of 2 validated" in approved.data
 
-    assert response.status_code == 200
-    assert "▼".encode() in response.data
-    assert b"<td data-char>" not in response.data
-    assert b"<small>" not in response.data
+    stale = client.post(
+        "/subtitles/1/concern/char?status=character",
+        data={
+            **_form_values(page.data.split(b'id="subtitle-1"', 1)[1]),
+            "action": "accept",
+        },
+        headers=_HTMX,
+    )
+    assert stale.status_code == 409
+    assert b'id="validation-1"' in stale.data
+    assert b'data-visible="false"' in stale.data
+
+    filtered = client.get("/?status=character", headers=_HTMX)
+    assert b'id="sub-1"' in filtered.data
+    assert b'id="sub-2"' not in filtered.data
 
 
-def test_index_reload_reassesses_cached_subtitles(
+def test_character_selection_survives_paging_and_rejects_stale_approval(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test index reloads rebuild cached validation states.
+    """Preserve selection while filtering and reject a decision for an older selection.
 
     Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
     """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="A")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path, validation_data_dir_path=tmp_path / "cache"
+    images_path = make_ocr_html_dir(tmp_path, text="A")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 5, 0, 20), Bbox(5, 10, 0, 20)])
+    session = _session(images_path, tmp_path)
+    session.manager.char_dims_by_n[2]["A"] = {
+        (10, 20, 3, 5, 20),
+        (20, 30, 6, 8, 22),
+        (5, 20, 4, 5, 20),
+    }
+    client = create_app(session).test_client()
+    first_page = client.get("/")
+    initial = _form_values(first_page.data)
+    endpoint = "/subtitles/0/concern/char"
+    expanded = client.post(
+        endpoint, data={**initial, "action": "expand"}, headers=_HTMX
     )
-    clear_validation_data(session)
-    app = create_app(session)
+    assert expanded.status_code == 200
+    gap_label = b'alt="Gap between boxes 1 and 2: 0 pixels"'
+    assert expanded.data.index(b"Box 1 size map") < expanded.data.index(gap_label)
+    assert expanded.data.index(gap_label) < expanded.data.index(b"Box 2 size map")
+    assert b'<source media="(prefers-color-scheme: dark)"' in expanded.data
+    maps = findall(rb'src="data:image/png;base64,([^"]+)"', expanded.data)
+    assert len(maps) == 3
+    with (
+        Image.open(BytesIO(b64decode(maps[0]))) as first,
+        Image.open(BytesIO(b64decode(maps[1]))) as gap_image,
+        Image.open(BytesIO(b64decode(maps[2]))) as second,
+    ):
+        assert gap_image.size == (10, 1)
+        assert gap_image.getpixel((0, 0)) == (255, 0, 0)
+        assert gap_image.getpixel((1, 0)) == (0, 255, 0)
+        assert gap_image.getpixel((3, 0)) == (0, 128, 255)
+        assert gap_image.getpixel((9, 0)) == (0, 0, 0)
+        # The two square crops start at (1, 14) and (1, 16) in measurement space.
+        assert first.size == (24, 24)
+        assert second.size == (12, 12)
+        assert first.getpixel((9, 6)) == (0, 128, 255)
+        assert first.getpixel((11, 8)) == (0, 255, 0)
+        assert first.getpixel((12, 8)) == (0, 0, 0)
+        assert first.getpixel((19, 16)) == (0, 128, 255)
+        assert first.getpixel((18, 15)) == (0, 255, 0)
+        assert second.getpixel((5, 3)) == (0, 255, 0)
+        assert first.getpixel((4, 6)) == second.getpixel((4, 4)) == (255, 0, 0)
 
-    response = app.test_client().get("/")
+    filtered = client.get("/?status=character&q=1", headers=_HTMX)
+    assert gap_label in filtered.data
+    assert not (tmp_path / "validation/char_dims_2.csv").exists()
 
-    assert response.status_code == 200
-    assert b'id="sub-1"' in response.data
+    stale = client.post(endpoint, data={**initial, "action": "accept"}, headers=_HTMX)
+    assert stale.status_code == 409
+    assert b"The concern changed. Review the updated subtitle." in stale.data
 
+    approved = client.post(
+        endpoint, data={**_form_values(filtered.data), "action": "accept"}
+    )
+    assert approved.status_code == 303
+    assert client.get(approved.location).status_code == 200
+    assert (tmp_path / "validation/char_dims_2.csv").read_text(encoding="utf-8") == (
+        "A,5,20,0,5,20\n"
+    )
+
+
+def test_editors_on_separate_ports_keep_both_sessions(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Save in both editors after opening them with one browser cookie jar.
+
+    Arguments:
+        tmp_path: isolated track data for both editors
+        monkeypatch: deterministic bbox detection
+    """
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
+    editors = []
+    for port in (5131, 5132):
+        track_path = tmp_path / str(port)
+        track_path.mkdir()
+        images_path = make_ocr_html_dir(track_path, text="A")
+        editors.append((create_app(_session(images_path, track_path)), images_path))
+
+    client = editors[0][0].test_client()
+    forms = []
+    for port, (app, _) in zip((5131, 5132), editors, strict=True):
+        client.application = app
+        url = f"http://127.0.0.1:{port}"
+        forms.append((url, _form_values(client.get("/", base_url=url).data)))
+
+    for (app, images_path), (url, form) in zip(editors, forms, strict=True):
+        client.application = app
+        response = client.post(
+            "/subtitles/0/text", base_url=url, data={**form, "text": "B"}
+        )
+        assert response.status_code == 303
+        assert load_html_entries(images_path)[0].text == "B"
+
+
+def test_filters_and_pages_include_automatically_validated_rows(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Verify the default queue, All subtitles, text search, and page cursors.
+
+    Arguments:
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
+    """
+    images_path = make_ocr_html_dir(tmp_path, text="A")
+    index_path = images_path / "index.html"
+    original = index_path.read_text(encoding="utf-8")
+    line = next(line for line in original.splitlines() if line.startswith("#1:"))
+    rows = []
+    for number in range(1, 13):
+        start = 1 + 7 * ((number - 1) // 2) + (number - 1) % 2
+        rows.append(
+            line.replace("#1:1,000->2,000", f"#{number}:{start},000->{start + 1},000")
+        )
+    index_path.write_text(original.replace(line, "\n".join(rows)), encoding="utf-8")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
+    session = _session(images_path, tmp_path)
     session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
+    client = create_app(session).test_client()
 
-    response = app.test_client().get("/")
+    review = client.get("/")
+    assert b"No subtitles match these filters." in review.data
+    assert b"12 of 12 validated" in review.data
+    assert b'id="sub-1"' not in review.data
+    first = client.get("/?status=all")
+    assert b'id="block-1" class="subtitle-block"' in first.data
+    assert b'id="sub-1"' in first.data
+    assert b'id="sub-10"' in first.data
+    assert b'id="sub-11"' not in first.data
+    assert b'aria-label="Load more blocks"' in first.data
+    next_page = client.get(
+        "/?status=all&after=5", headers={**_HTMX, "HX-Target": "load-more"}
+    )
+    assert b'id="sub-10"' not in next_page.data
+    assert b'id="sub-11"' in next_page.data
+    assert b'id="sub-12"' in next_page.data
+    assert b'aria-label="Load more blocks"' not in next_page.data
+    assert b"<!DOCTYPE html>" not in next_page.data
+    history = client.get(
+        "/?status=all&after=5", headers={**_HTMX, "HX-History-Restore-Request": "true"}
+    )
+    assert b"<!DOCTYPE html>" in history.data
+    assert b'id="sub-1"' in history.data
+    assert b'id="sub-12"' in history.data
+    found = client.get("/", query_string={"status": "all", "q": " BLOCK #6 "})
+    assert b'id="sub-11"' in found.data
+    assert b'id="sub-12"' in found.data
+    assert b'id="sub-10"' not in found.data
+    assert b"2 matching" in found.data
 
-    assert response.status_code == 200
-    assert b'id="sub-1"' not in response.data
 
-
-def test_done_filter_route_toggles_ok_subtitles(
+def test_native_text_save_preserves_the_filter_after_validation(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test the OK subtitle filter toggle updates the rendered list.
+    """Keep the active filter when a saved subtitle leaves the review queue.
 
     Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
+        tmp_path: isolated images and validation output
+        monkeypatch: deterministic bbox detection
     """
-    app = _done_app(tmp_path, monkeypatch)
-    client = app.test_client()
-
-    response = client.get("/")
-
-    assert response.status_code == 200
-    assert b'id="sub-1"' not in response.data
-    assert b'name="include_done_subtitles" value="1"' in response.data
-    assert b'aria-pressed="false"' in response.data
-    assert b"Show Validated</button>" in response.data
-
-    response = client.post(
-        "/filters/done",
-        data={"include_done_subtitles": "1"},
-        headers={"HX-Request": "true"},
+    images_path = make_ocr_html_dir(tmp_path, text="A")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
+    session = _session(images_path, tmp_path)
+    session.manager.char_dims_by_n[1]["B"] = {(10, 20)}
+    client = create_app(session).test_client()
+    page = client.get("/?status=character")
+    saved = client.post(
+        "/subtitles/0/text?status=character",
+        data={**_form_values(page.data), "text": "B"},
     )
-
-    assert response.status_code == 200
-    assert b"<!DOCTYPE html>" not in response.data
-    assert b'id="sub-1"' in response.data
-    assert b'name="include_done_subtitles" value="0"' in response.data
-    assert b'aria-pressed="true"' in response.data
-    assert b"Hide Validated</button>" in response.data
-
-    response = client.post(
-        "/filters/done",
-        data={"include_done_subtitles": "0"},
-        headers={"HX-Request": "true"},
-    )
-
-    assert response.status_code == 200
-    assert b'id="sub-1"' not in response.data
-    assert b'name="include_done_subtitles" value="1"' in response.data
-    assert b'aria-pressed="false"' in response.data
-    assert b"Show Validated</button>" in response.data
+    assert saved.status_code == 303
+    assert saved.location == "/?status=character&q="
+    assert b"No subtitles match these filters." in client.get(saved.location).data
+    all_subtitles = client.get("/?status=all").data
+    assert b"\nB</textarea>" in all_subtitles
+    assert b">Validated</p>" in all_subtitles
 
 
-def test_exit_route_saves_output_and_shuts_down_server(tmp_path: Path):
-    """Test exit route persists validation output and shuts down the server.
+def test_ocr_page_serves_shared_assets_and_original_preview(tmp_path: Path):
+    """Serve the shared shell and keep source pixels separate from SVG boxes.
 
     Arguments:
-        tmp_path: temporary directory path
+        tmp_path: isolated image and validation data
     """
+    images_path = make_ocr_html_dir(tmp_path, text="A")
+    client = create_app(
+        _session(images_path, tmp_path), title="Film & Track"
+    ).test_client()
+    page = client.get("/?status=all")
+    assert search(rb"<title>\s*Film &amp; Track\s*</title>", page.data)
+    assert b"<h1>Film &amp; Track</h1>" in page.data
+    assert b"<h1>Film &amp; Track</h1>" in client.get("/", headers=_HTMX).data
+    assert b"/static/editor.css" in page.data
+    assert b"/static/editor.js" in page.data
+    assert b"/static/htmx.min.js" in page.data
+    assert b"/ocr-validation-assets/ocr-validation.css" in page.data
+    assert b"/ocr-validation-assets/ocr-validation.js" in page.data
+    for asset in (
+        "/static/editor.css",
+        "/static/editor.js",
+        "/static/icons/sync.svg",
+        "/static/htmx.min.js",
+        "/ocr-validation-assets/ocr-validation.css",
+        "/ocr-validation-assets/ocr-validation.js",
+    ):
+        assert client.get(asset).status_code == 200
 
-    class FakeServer:
-        """Fake server registered on the Flask app."""
+    preview = client.get("/subtitles/0/image.png")
+    assert preview.mimetype == "image/png"
+    with Image.open(BytesIO(preview.data)) as rendered:
+        with Image.open(images_path / "0001.png") as source:
+            assert rendered.tobytes() == source.tobytes()
+    assert client.get("/subtitles/1/image.png").status_code == 404
 
-        def __init__(self):
-            """Initialize."""
-            self.shutdown_called = False
 
-        def shutdown(self):
-            """Record shutdown."""
-            self.shutdown_called = True
+def test_opening_editor_saves_output_without_edits(tmp_path: Path):
+    """Verify startup exports the SRT before serving the editor.
 
-    html_dir_path = make_ocr_html_dir(tmp_path, text="recognized")
-    outfile_path = tmp_path / "validated.srt"
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path, outfile_path=outfile_path
+    Arguments:
+        tmp_path: isolated image and validation data
+    """
+    images_path = make_ocr_html_dir(tmp_path, text="A")
+    session = _session(images_path, tmp_path)
+    session.prepare()
+    assert "A" in (tmp_path / "validated.srt").read_text(encoding="utf-8")
+    page = create_app(session).test_client().get("/")
+    assert page.status_code == 200
+    assert b"Exit Validation" not in page.data
+
+
+@mark.parametrize(
+    ("boxes", "status", "message"),
+    [
+        ([Bbox(0, 10, 0, 20)], "boxes", b"Ran out of bboxes"),
+        ([Bbox(0, 10, 0, 20), Bbox(0, 10, 24, 44)], "spacing", b"expected"),
+    ],
+)
+def test_review_filters_distinguish_missing_boxes_and_line_breaks(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    boxes: list[Bbox],
+    status: str,
+    message: bytes,
+):
+    """Keep box count and line break errors in their respective review queues.
+
+    Arguments:
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
+        boxes: detected bounding boxes
+        status: filter that includes the concern
+        message: message shown for the concern
+    """
+    images_path = make_ocr_html_dir(tmp_path, text="AB")
+    patch_ocr_validation_bboxes(monkeypatch, boxes)
+    client = create_app(prepared_gap_session(images_path, tmp_path)).test_client()
+
+    assert message in client.get(f"/?status={status}").data
+    for other_status in {"boxes", "character", "spacing"} - {status}:
+        assert b'id="sub-1"' not in client.get(f"/?status={other_status}").data
+    assert b'id="sub-1"' in client.get("/?status=needs-review").data
+
+
+@mark.parametrize(
+    ("gap", "labels", "cutoffs"),
+    [
+        (4, ("Auto adjacent <span>2 → 4", "Auto space <span>5 → 4"), (2, 4, 12, 20)),
+        (15, ("Auto space <span>12 → 15", "Auto tab <span>19 → 15"), (2, 6, 15, 20)),
+    ],
+)
+def test_spacing_choice_updates_text_and_hides_resolved_concern(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    gap: int,
+    labels: tuple[str, str],
+    cutoffs: tuple[int, int, int, int],
+):
+    """Preview the boundary changes and expand automatic spacing to the selected gap.
+
+    Arguments:
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
+        gap: measured gap in pixels
+        labels: expected labels for the two gap choices
+        cutoffs: expected cutoffs after choosing automatic space
+    """
+    images_path = make_ocr_html_dir(tmp_path, text="AB")
+    patch_ocr_validation_bboxes(
+        monkeypatch, [Bbox(0, 10, 0, 20), Bbox(10 + gap, 20 + gap, 0, 20)]
     )
-    app = create_app(session)
-    app.testing = True
-    server = FakeServer()
-    app.config["OCR_VALIDATION_SERVER"] = server
+    session = prepared_gap_session(images_path, tmp_path)
+    client = create_app(session).test_client()
+    page = client.get("/?status=spacing")
+    assert b"<table" not in page.data
+    assert b"Check spacing" not in page.data
+    assert b">Spacing needs review</p>" in page.data
+    assert b'id="sub-1"' not in client.get("/?status=character").data
+    page_text = page.get_data(as_text=True)
+    assert f'alt="Gap of {gap} pixels between “A” and “B”"' in page_text
+    assert b'aria-describedby="spacing-key-0"' in page.data
+    assert f'style="--column: {gap + 0.5}">{gap} px' in page_text
+    (scale,) = findall(rb'src="data:image/png;base64,([^"]+)"', page.data)
+    with Image.open(BytesIO(b64decode(scale))) as image:
+        assert image.size == (200, 1)
+        assert image.getpixel((2, 0)) == (117, 131, 149)
+        assert image.getpixel((3, 0)) == image.getpixel((5, 0)) == (173, 112, 0)
+        assert image.getpixel((6, 0)) == (53, 106, 195)
+        assert image.getpixel((13, 0)) == (175, 80, 65)
+        assert image.getpixel((20, 0)) == (38, 119, 99)
+    legend = page_text.split('id="spacing-key-0">', 1)[1]
+    after_legend = legend.split("</ul>", 1)[1]
+    for label in labels:
+        assert label in after_legend
 
-    response = app.test_client().post("/exit", headers={"HX-Request": "true"})
-
+    response = client.post(
+        "/subtitles/0/concern/gap?status=spacing",
+        data={**_form_values(page.data), "action": "space"},
+        headers=_HTMX,
+    )
     assert response.status_code == 200
-    assert b"Validation exited. You can close this tab." in response.data
-    assert outfile_path.exists()
-    assert server.shutdown_called
+    assert b'data-visible="false"' in response.data
+    assert b"1 of 1 validated" in response.data
+    assert b">Validated</p>" in response.data
+    assert load_html_entries(images_path)[0].text == "A B"
+    assert session.manager.char_pair_gaps[("A", "B")] == cutoffs
 
 
-def test_char_concern_image_url_changes_after_accept(
+def test_spacing_rejects_stale_approval_after_learning_on_another_row(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
-    """Test accepting one character returns a fresh next concern image URL.
+    """Reject a spacing choice when another subtitle already decided its range.
 
     Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
+        tmp_path: isolated images and validation output
+        monkeypatch: deterministic bbox detection
     """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(20, 30, 0, 20)])
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path, validation_data_dir_path=tmp_path / "cache"
+    images_path = make_two_image_ocr_html_dir(tmp_path, text_1="AB", text_2="AB")
+
+    def gap_boxes(image: Image.Image) -> list[Bbox]:
+        """Return a pair with a 4 px or 5 px gap according to the fixture image width.
+
+        Arguments:
+            image: first or second subtitle image
+        Returns:
+            pair of bounding boxes
+        """
+        offset = image.width + 12
+        return [Bbox(0, 10, 0, 20), Bbox(offset, offset + 10, 0, 20)]
+
+    monkeypatch.setattr("scinoephile.web.ocr_validation.session.get_bboxes", gap_boxes)
+    session = prepared_gap_session(images_path, tmp_path, cutoffs=(2, 8, 12, 20))
+    client = create_app(session).test_client()
+    page = client.get("/?status=spacing").data
+    first = _form_values(page.split(b'id="subtitle-0"', 1)[1])
+    second = _form_values(page.split(b'id="subtitle-1"', 1)[1])
+    learned = client.post(
+        "/subtitles/1/concern/gap?status=spacing",
+        data={**second, "action": "adjacent"},
+        headers=_HTMX,
     )
-    clear_validation_data(session)
-    app = create_app(session)
+    stale = client.post(
+        "/subtitles/0/concern/gap?status=spacing",
+        data={**first, "action": "space"},
+        headers=_HTMX,
+    )
+    assert learned.status_code == 200
+    assert stale.status_code == 409
+    assert b'id="validation-0"' in stale.data
+    assert b'data-visible="false"' in stale.data
+    assert session.manager.char_pair_gaps[("A", "B")] == (5, 8, 12, 20)
+    assert [entry.text for entry in load_html_entries(images_path)] == ["AB", "AB"]
 
-    response = app.test_client().get("/")
 
-    assert response.status_code == 200
-    assert b'src="/subtitles/0/concern.png?v=char-dims-0-0-1"' in response.data
+def test_startup_rechecks_earlier_rows_with_newly_learned_dimensions(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Resolve a row made eligible by a later row in the startup scan.
 
-    response = app.test_client().post(
+    Arguments:
+        tmp_path: isolated images and validation output
+        monkeypatch: deterministic bbox detection
+    """
+    images_path = make_two_image_ocr_html_dir(tmp_path, text_1="A", text_2="A")
+    monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.session.get_bboxes",
+        lambda image: [Bbox(0, 18 - 2 * image.width, 0, 20)],
+    )
+    session = _session(images_path, tmp_path)
+    session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
+    session.prepare()
+    client = create_app(session).test_client()
+
+    assert session.manager.char_dims_by_n[1]["A"] == {(10, 20), (12, 20), (14, 20)}
+    assert b"2 of 2 validated" in client.get("/?status=character").data
+    assert b'id="subtitle-0"' not in client.get("/?status=character").data
+
+
+@mark.parametrize("initially_validated", [False, True], ids=["blocked", "validated"])
+def test_new_box_shape_rechecks_an_earlier_box_assignment(
+    tmp_path: Path, monkeypatch: MonkeyPatch, initially_validated: bool
+):
+    """Recheck an earlier subtitle when a learned shape changes its grouping.
+
+    Arguments:
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
+        initially_validated: whether the first subtitle is valid before learning
+    """
+    text = "A"
+    if not initially_validated:
+        text = "AB"
+    images_path = make_two_image_ocr_html_dir(tmp_path, text_1=text, text_2="A")
+    detected = []
+
+    def boxes(image: Image.Image) -> list[Bbox]:
+        """Return two boxes for the earlier subtitle and one for the later one.
+
+        Arguments:
+            image: fixture image identifying the subtitle by width
+        Returns:
+            measured boxes before grouping
+        """
+        detected.append(image.width)
+        first = Bbox(0, 10, 0, 20)
+        if image.width == 2:
+            return [first, Bbox(20, 30, 0, 20)]
+        return [first]
+
+    monkeypatch.setattr("scinoephile.web.ocr_validation.session.get_bboxes", boxes)
+    session = _session(images_path, tmp_path)
+    session.manager.char_dims_by_n[2]["A"] = {(10, 20, 10, 10, 20)}
+    session.manager.char_dims_by_n[1]["B"] = {(10, 20)}
+    session.manager.char_pair_gaps[("A", "B")] = (2, 8, 90, 200)
+    client = create_app(session).test_client()
+    page = client.get("/?status=all").data
+    before = b"1 of 2 validated"
+    after = b"1 leftover bboxes"
+    if not initially_validated:
+        before = b"Ran out of bboxes"
+        after = b"2 of 2 validated"
+    assert before in page
+
+    approved = client.post(
+        "/subtitles/1/concern/char?status=all",
+        data={
+            **_form_values(page.split(b'id="subtitle-1"', 1)[1]),
+            "action": "accept",
+            "loaded_rows": "0,1",
+            "through": 1,
+        },
+        headers=_HTMX,
+    )
+    assert approved.status_code == 200
+    assert b'id="validation-0"' in approved.data
+    assert after in approved.data
+    assert after in client.get("/?status=all").data
+    assert detected == [2, 3]
+
+
+def test_text_edit_persists_newline_and_rejects_old_concern(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+):
+    """Persist a multiline edit and prevent approval of the concern it replaced.
+
+    Arguments:
+        tmp_path: isolated image and validation data
+        monkeypatch: deterministic bbox detection
+    """
+    images_path = make_ocr_html_dir(tmp_path, text="AB")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(0, 10, 24, 44)])
+    session = _session(images_path, tmp_path)
+    client = create_app(session).test_client()
+    page = client.get("/")
+    original = _form_values(page.data)
+    saved = client.post(
+        "/subtitles/0/text", data={**original, "text": "C\r\nB"}, headers=_HTMX
+    )
+    assert saved.status_code == 200
+    assert b"<strong>C</strong>" in saved.data
+    assert load_html_entries(images_path)[0].text == "C\\NB"
+    assert "C\nB" in (tmp_path / "validated.srt").read_text(encoding="utf-8")
+
+    stale = client.post(
         "/subtitles/0/concern/char",
-        data={"action": "accept", "n_bboxes": "1"},
-        headers={"HX-Request": "true"},
+        data={**original, "action": "accept"},
+        headers=_HTMX,
     )
+    assert stale.status_code == 409
+    assert not (tmp_path / "validation/char_dims_1.csv").exists()
 
-    assert response.status_code == 200
-    assert b'src="/subtitles/0/concern.png?v=char-dims-1-1-1"' in response.data
-    assert b'src="/subtitles/0/concern.png?v=char-dims-0-0-1"' not in response.data
-
-
-def test_index_renders_space_gap_choice_table(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test adjacent-or-space concerns render both choice actions.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="霆所")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(50, 60, 0, 20)])
-    session = prepared_gap_session(
-        html_dir_path, tmp_path, char_1="霆", char_2="所", cutoffs=(22, 89, 90, 200)
-    )
-    app = create_app(session)
-
-    response = app.test_client().get("/")
-
-    assert response.status_code == 200
     assert (
-        response.data.count(b'src="/subtitles/0/concern.png?v=space-gap-0-1-40"') == 1
+        client.post(
+            "/subtitles/0/text", data={**original, "text": "stale"}, headers=_HTMX
+        ).status_code
+        == 409
     )
-    assert b'src="/subtitles/0/validation.png?v=' not in response.data
-    assert "霆".encode() in response.data
-    assert "所".encode() in response.data
-    assert b"<td>40</td>" in response.data
-    assert b'value="adjacent"' in response.data
-    assert b'value="space"' in response.data
-    assert b"Adjacent</button>" in response.data
-    assert b"Space</button>" in response.data
+    assert load_html_entries(images_path)[0].text == "C\\NB"
 
 
-def test_validation_image_route_serves_bbox_png(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test validation row images are rendered with bbox overlays.
+def _form_values(html: bytes) -> dict[str, str]:
+    """Read the first rendered mutation form's security and revision fields.
 
     Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    app = _done_app(tmp_path, monkeypatch)
-
-    response = app.test_client().get("/subtitles/0/validation.png")
-
-    assert response.status_code == 200
-    assert response.mimetype == "image/png"
-    image = Image.open(BytesIO(response.data))
-    assert image.size == (4, 4)
-    assert image.getpixel((0, 0)) == (255, 0, 0, 255)
-
-
-def test_validation_image_route_rejects_missing_subtitle(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test validation image route rejects an out-of-range subtitle index.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    app = _done_app(tmp_path, monkeypatch)
-
-    response = app.test_client().get("/subtitles/1/validation.png")
-
-    assert response.status_code == 404
-
-
-def test_text_update_route_rewrites_row(tmp_path: Path):
-    """Test text update route rewrites index.html and returns the row.
-
-    Arguments:
-        tmp_path: temporary directory path
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="old")
-    app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
-
-    response = app.test_client().post(
-        "/subtitles/0/text", data={"text-0": "new"}, headers={"HX-Request": "true"}
-    )
-
-    assert response.status_code == 200
-    assert b"new" in response.data
-    assert "new" in (html_dir_path / "index.html").read_text(encoding="utf-8")
-
-
-def test_text_update_route_rejects_missing_subtitle(tmp_path: Path):
-    """Test text update route rejects an out-of-range subtitle index.
-
-    Arguments:
-        tmp_path: temporary directory path
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="old")
-    app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
-
-    response = app.test_client().post(
-        "/subtitles/1/text", data={"text": "new"}, headers={"HX-Request": "true"}
-    )
-
-    assert response.status_code == 404
-
-
-def test_concern_image_route_serves_png(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test current concern images are rendered as PNG responses.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    app = _char_concern_app(tmp_path, monkeypatch)
-
-    response = app.test_client().get("/subtitles/0/concern.png")
-
-    assert response.status_code == 200
-    assert response.mimetype == "image/png"
-
-
-def test_concern_image_route_rejects_missing_subtitle(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test concern image route rejects an out-of-range subtitle index.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    app = _char_concern_app(tmp_path, monkeypatch)
-
-    response = app.test_client().get("/subtitles/1/concern.png")
-
-    assert response.status_code == 404
-
-
-def test_char_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test resolving the final character concern omits the completed row.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    app = _char_concern_app(tmp_path, monkeypatch)
-
-    response = app.test_client().post(
-        "/subtitles/0/concern/char",
-        data={"action": "accept", "n_bboxes": "1"},
-        headers={"HX-Request": "true"},
-    )
-
-    assert response.status_code == 200
-    assert response.data == b""
-
-
-def test_char_concern_route_rejects_invalid_action(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test character concern route rejects invalid actions.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    app = _char_concern_app(tmp_path, monkeypatch)
-
-    response = app.test_client().post(
-        "/subtitles/0/concern/char",
-        data={"action": "bogus", "n_bboxes": "1"},
-        headers={"HX-Request": "true"},
-    )
-
-    assert response.status_code == 400
-
-
-def test_char_concern_route_rejects_missing_subtitle(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test character concern route rejects an out-of-range subtitle index.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    app = _char_concern_app(tmp_path, monkeypatch)
-
-    response = app.test_client().post(
-        "/subtitles/1/concern/char",
-        data={"action": "accept", "n_bboxes": "1"},
-        headers={"HX-Request": "true"},
-    )
-
-    assert response.status_code == 404
-
-
-def test_gap_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatch):
-    """Test resolving the final gap concern persists text and omits the row.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
-    session = prepared_gap_session(html_dir_path, tmp_path)
-    app = create_app(session)
-
-    response = app.test_client().post(
-        "/subtitles/0/concern/gap",
-        data={"action": "space"},
-        headers={"HX-Request": "true"},
-    )
-
-    assert response.status_code == 200
-    assert response.data == b""
-    assert "A B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
-
-
-def test_gap_concern_route_rejects_invalid_action(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test gap concern route rejects invalid actions.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)])
-    session = prepared_gap_session(html_dir_path, tmp_path)
-    app = create_app(session)
-
-    response = app.test_client().post(
-        "/subtitles/0/concern/gap",
-        data={"action": "bogus"},
-        headers={"HX-Request": "true"},
-    )
-
-    assert response.status_code == 400
-
-
-def test_gap_concern_route_rejects_missing_subtitle(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test gap concern route rejects an out-of-range subtitle index.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    app = _char_concern_app(tmp_path, monkeypatch)
-
-    response = app.test_client().post(
-        "/subtitles/1/concern/gap",
-        data={"action": "space"},
-        headers={"HX-Request": "true"},
-    )
-
-    assert response.status_code == 404
-
-
-def _char_concern_app(tmp_path: Path, monkeypatch: MonkeyPatch) -> Flask:
-    """Create an app with one character dimension concern.
-
-    Arguments:
-        tmp_path: pytest temporary directory path
-        monkeypatch: pytest monkeypatch fixture
+        html: OCR document or concern fragment
     Returns:
-        Flask app
+        CSRF token and subtitle version
     """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="A")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
+    values = {}
+    for name in ("csrf", "version"):
+        match = search(rf'name="{name}"\s+value="([^"]+)"', html.decode())
+        assert match is not None, name
+        values[name] = match[1]
+    return values
+
+
+def _session(images_path: Path, tmp_path: Path) -> OcrValidationSession:
+    """Load an OCR session with isolated output and no preapproved dimensions.
+
+    Arguments:
+        images_path: subtitle image directory
+        tmp_path: directory for new validation data and output
+    Returns:
+        isolated validation session
+    """
     session = OcrValidationSession.from_dir_path(
-        html_dir_path, validation_data_dir_path=tmp_path / "cache"
+        images_path,
+        validation_data_dir_path=tmp_path / "validation",
+        outfile_path=tmp_path / "validated.srt",
     )
     clear_validation_data(session)
-    return create_app(session)
-
-
-def _assert_index_filter_toggle(html: bytes):
-    """Assert that the index renders the HTMX OK-subtitle filter toggle.
-
-    Arguments:
-        html: rendered response HTML
-    """
-    assert b'class="filter-toggle"' in html
-    assert b'hx-post="/filters/done"' in html
-    assert b'hx-post="/exit"' in html
-    assert b'hx-target="body"' in html
-    assert b'hx-swap="innerHTML"' in html
-    assert b'name="include_done_subtitles" value="0"' in html
-    assert b'aria-pressed="true"' in html
-    assert b"Hide Validated</button>" in html
-    assert b"Exit Validation</button>" in html
-
-
-def _assert_index_subtitle_figure(html: bytes):
-    """Assert that the index renders responsive subtitle images.
-
-    Arguments:
-        html: rendered response HTML
-    """
-    assert b"--subtitle-image-width: 2px" in html
-    assert b'src="/subtitles/0/' in html
-    assert b".png?v=" in html
-    assert b'width="2"' in html
-    assert b'height="2"' in html
-    assert b'loading="eager"' in html
-
-
-def _assert_index_textarea(html: bytes):
-    """Assert that the index renders the subtitle edit textarea styling.
-
-    Arguments:
-        html: rendered response HTML
-    """
-    assert b'id="subtitle-text-0"' in html
-    assert b'name="text-0"' in html
-    assert b'autocomplete="off"' in html
-    assert b'rows="1"' in html
-    assert b'hx-post="/subtitles/0/text"' in html
-    assert b'hx-trigger="blur changed"' in html
-    assert b"--subtitle-text-color: rgb(255, 255, 255)" in html
-    assert b"--subtitle-shadow-color: rgb(0, 0, 0)" in html
-    assert b"--subtitle-font-size:" in html
-    assert b"overflow: hidden" in html
-    assert b'wrap="off"' in html
-
-
-def _done_app(
-    tmp_path: Path, monkeypatch: MonkeyPatch, *, include_done_subtitles: bool = False
-) -> Flask:
-    """Create an app with one subtitle that has no concerns.
-
-    Arguments:
-        tmp_path: pytest temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-        include_done_subtitles: whether to include subtitles with no concerns
-    Returns:
-        Flask app
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="A")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        include_done_subtitles=include_done_subtitles,
-        validation_data_dir_path=tmp_path / "cache",
-    )
-    clear_validation_data(session)
-    session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
-    return create_app(session)
-
-
-def _session(
-    tmp_path: Path, *, text: str, include_done_subtitles: bool = False
-) -> OcrValidationSession:
-    """Create a basic OCR validation session.
-
-    Arguments:
-        tmp_path: pytest temporary directory path
-        text: HTML subtitle text content
-        include_done_subtitles: whether to include subtitles with no concerns
-    Returns:
-        OCR validation session
-    """
-    return OcrValidationSession.from_dir_path(
-        make_ocr_html_dir(tmp_path, text=text),
-        include_done_subtitles=include_done_subtitles,
-    )
+    return session

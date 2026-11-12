@@ -1,4 +1,5 @@
-{% include "_save_status.html" %}
+{% from 'shared/_controls.html' import save_status %}
+{{ save_status("sync-" ~ row.key) }}
 <input id="version-{{ row.key }}"
        type="hidden"
        name="version"

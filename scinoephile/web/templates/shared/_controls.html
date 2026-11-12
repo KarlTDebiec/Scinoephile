@@ -1,0 +1,66 @@
+{% macro editor_icon(name, size=20, css_class=none, endpoint='static') -%}
+  <svg{% if css_class %} class="{{ css_class }}"{% endif %}
+       width="{{ size }}"
+       height="{{ size }}"
+       aria-hidden="true">
+    <use href="{{ url_for(endpoint, filename='icons/' ~ name ~ '.svg') }}#icon" />
+  </svg>
+{%- endmacro %}
+{% macro editor_summary(matching, title, oob=false) -%}
+  <output id="summary"
+          role="status"
+          title="{{ title }}"
+          aria-label="{{ matching }} matching subtitles"{% if oob %} hx-swap-oob="outerHTML"{% endif %}>{{ "{:,}".format(matching) }}</output>
+{%- endmacro %}
+{% macro load_more_blocks(next_url, fields, has_more, oob=false) -%}
+  <div id="load-more"
+       class="editor-pager"{% if oob %} hx-swap-oob="outerHTML"{% endif %}{% if has_more %} hx-get="{{ next_url }}" hx-trigger="intersect once" hx-target="this" hx-swap="outerHTML" hx-sync="#workspace:queue all"{% endif %}>
+    {% if has_more %}
+      <form method="get"
+            action="{{ url_for('index') }}"
+            hx-get="{{ url_for('index') }}"
+            hx-target="#load-more"
+            hx-swap="outerHTML"
+            hx-sync="#workspace:queue all">
+        {% for name, value in fields.items() %}
+          <input type="hidden" name="{{ name }}" value="{{ value }}">
+        {% endfor %}
+        <button type="submit"
+                aria-label="Load more blocks"
+                title="Load more blocks">{{ editor_icon("page-next-outline") }}</button>
+      </form>
+    {% endif %}
+  </div>
+{%- endmacro %}
+{% macro toggle_blocks() -%}
+  <button id="toggle-blocks"
+          type="button"
+          data-toggle-blocks
+          hx-preserve
+          aria-label="Expand all blocks"
+          title="Expand all blocks"
+          aria-expanded="false">
+    {{ editor_icon('collapse-all-outline', 24) }}
+    {{ editor_icon('expand-all-outline', 24) }}
+  </button>
+{%- endmacro %}
+{% macro save_status(element_id) -%}
+  <output id="{{ element_id }}"
+          class="save-status"
+          data-save-state="saved"
+          title="Saved"
+          aria-label="Saved"
+          aria-live="polite">
+    {{ editor_icon("checkbox-marked", css_class="saved") }}
+    {{ editor_icon("sync", css_class="saving") }}
+    {{ editor_icon("content-save-outline", css_class="unsaved") }}
+    {{ editor_icon("alert-circle-outline", css_class="error") }}
+    <span>Saved</span>
+  </output>
+{%- endmacro %}
+{% macro loaded_through(cursor, oob=false) -%}
+  <input type="hidden"
+         id="loaded-through"
+         name="through"
+         value="{{ cursor }}"{% if oob %} hx-swap-oob="outerHTML"{% endif %}>
+{%- endmacro %}

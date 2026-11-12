@@ -3,6 +3,6 @@
 """Web applications for Scinoephile.
 
 Package hierarchy (modules may import from any above):
-* jobs / security
+* blocks / htmx / jobs / security
 * audit_review / ocr_validation
 """

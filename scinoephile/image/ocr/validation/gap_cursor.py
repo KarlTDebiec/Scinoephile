@@ -6,11 +6,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from PIL import Image
-
 from scinoephile.core.text import WHITESPACE_CHARS
 from scinoephile.image.bbox import Bbox
-from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.subtitles import ImageSubtitle
 
 from .char_pair_gaps import get_expected_space, get_expected_tab
@@ -130,16 +127,6 @@ class GapCursor:
         """Advance to the next gap."""
         self.char_1_idx = self.char_2_idx
         self.bbox_1_idx = self.bbox_2_idx
-
-    def annotated_img(self, n_bboxes: int) -> Image.Image:
-        """Annotated image for current bbox group.
-
-        Arguments:
-            n_bboxes: number of bboxes to include
-        Returns:
-            annotated image
-        """
-        return get_img_with_bboxes(self.sub.img, self.bbox_grp(n_bboxes))
 
     def bbox_grp(self, n_bboxes: int) -> list[Bbox]:
         """Current bbox group.

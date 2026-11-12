@@ -1,0 +1,34 @@
+{% from "_number_line.html" import number_line %}
+{% set maps = row.character_size_maps %}
+{% if maps %}
+  {% set legend_id = "character-measurement-key-" ~ row.sub_idx %}
+  {# djlint:off H021 #}
+  <div>
+    <div class="character-size-maps">
+      {% for size_map in maps %}
+        {% if size_map.gap_before is not none %}
+          {% set gap = size_map.gap_before %}
+          <figure class="character-gap-scale">
+            {{ number_line(gap.image, "Gap between boxes " ~ loop.index0 ~ " and " ~ loop.index ~ ": " ~ gap.value ~ " pixels", legend_id) }}
+            <figcaption>{{ gap.value }} px</figcaption>
+          </figure>
+        {% endif %}
+        <figure class="character-size-map">
+          <img src="{{ size_map.image_url }}"
+               alt="Box {{ loop.index }} size map. Width {{ size_map.min_width }}–{{ size_map.min_width + size_map.image_size - 1 }} px, height {{ size_map.min_height }}–{{ size_map.min_height + size_map.image_size - 1 }} px."
+               width="{{ size_map.image_size }}"
+               height="{{ size_map.image_size }}"
+               style="--size-map-width: {{ size_map.display_size }}"
+               loading="lazy">
+          <figcaption>{{ size_map.width }} × {{ size_map.height }} px</figcaption>
+        </figure>
+      {% endfor %}
+    </div>
+    <ul class="character-size-key"
+        id="{{ legend_id }}"
+        aria-label="Character measurement legend">
+      {% for _, label, color in maps[0].legend %}<li style="--band-color: {{ color }}">{{ label }}</li>{% endfor %}
+    </ul>
+  </div>
+  {# djlint:on #}
+{% endif %}

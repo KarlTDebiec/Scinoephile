@@ -1,92 +1,42 @@
-{% macro char_cell(char, pinyin, yale) -%}
-  {% if pinyin or yale %}
-    <td data-char>
-      <span>{{ char }}</span>
-      {% if pinyin %}
-        <small>{{ pinyin }}</small>
-      {% endif %}
-      {% if yale %}
-        <small>{{ yale }}</small>
-      {% endif %}
-    </td>
-  {% else %}
-    <td>{{ char }}</td>
-  {% endif %}
-{%- endmacro %}
-{% if row.concern is none %}
-{% elif row.concern.kind == "char-dims" %}
-  <form hx-post="/subtitles/{{ row.sub_idx }}/concern/char"
-        hx-target="#subtitle-{{ row.sub_idx }}"
-        hx-swap="outerHTML">
-    <input type="hidden" name="n_bboxes" value="{{ row.concern.n_bboxes }}" />
-    <table>
-      <thead>
-        <tr>
-          <th>Char</th>
-          <th>BBoxes</th>
-          <th>Dims</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          {{ char_cell(row.concern.char, row.concern.char_pinyin, row.concern.char_yale) }}
-          <td>{{ row.concern.n_bboxes }}</td>
-          <td>{{ row.concern.dims }}</td>
-          <td>
-            <button type="submit"
-                    name="action"
-                    value="contract"
-                    {% if not row.concern.can_contract %}disabled{% endif %}>-</button>
-            <button type="submit"
-                    name="action"
-                    value="expand"
-                    {% if not row.concern.can_expand %}disabled{% endif %}>+</button>
-            <button type="submit" name="action" value="accept">Accept</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </form>
-{% elif row.concern.kind == "space-gap" or row.concern.kind == "tab-gap" %}
-  <form hx-post="/subtitles/{{ row.sub_idx }}/concern/gap"
-        hx-target="#subtitle-{{ row.sub_idx }}"
-        hx-swap="outerHTML">
-    <table>
-      <thead>
-        <tr>
-          <th>Char 1</th>
-          <th>Char 2</th>
-          <th>Prompt for Space</th>
-          <th>Prompt for Tab</th>
-          <th>Gap</th>
-          <th>Observed</th>
-          <th>Expected</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          {{ char_cell(row.concern.char_1, row.concern.char_1_pinyin, row.concern.char_1_yale) }}
-          {{ char_cell(row.concern.char_2, row.concern.char_2_pinyin, row.concern.char_2_yale) }}
-          <td>{{ row.concern.space_prompt_display }}</td>
-          <td>{{ row.concern.tab_prompt_display }}</td>
-          <td>{{ row.concern.gap }}</td>
-          <td><code>{{ row.concern.observed_display }}</code></td>
-          <td><code>{{ row.concern.expected_display }}</code></td>
-          <td>
-            {% for action_value, action_label in row.concern.action_options %}
-              <button type="submit"
-                      name="action"
-                      value="{{ action_value }}">{{ action_label }}</button>
-            {% endfor %}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </form>
-{% elif row.concern.kind == "error" %}
-  <div>{{ row.concern.message }}</div>
+{% if row.concern.kind == "error" %}
+  <p class="error">{{ row.concern.message }}</p>
 {% else %}
-  <div>{{ row.status_label }}</div>
+  {% set character_review = row.concern.kind == "char-dims" %}
+  {% set operation = 'char' if character_review else 'gap' %}
+  {% set action_url = url_for('update_subtitle', sub_idx=row.sub_idx, operation=operation, status=status, q=query, through=through) %}
+  <form method="post"
+        action="{{ action_url }}"
+        hx-post="{{ action_url }}"
+        hx-target="#validation-{{ row.sub_idx }}"
+        hx-swap="outerHTML"
+        hx-include="#loaded-through"
+        hx-sync="#workspace:queue all"
+        {% if character_review %}aria-label="Character review"{% else %}class="spacing-check"{% endif %}
+        data-ocr-action>
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <input type="hidden" name="version" value="{{ row.version }}">
+    {% if character_review %}
+      {% include "_character_size_maps.html" %}
+      <div class="character-actions">
+        <p class="ocr-character">
+          <strong>{{ row.concern.char }}</strong>
+          {% if row.concern.char_pinyin %}<small>{{ row.concern.char_pinyin }}</small>{% endif %}
+          {% if row.concern.char_yale %}<small>{{ row.concern.char_yale }}</small>{% endif %}
+        </p>
+        <div>
+          <button type="submit"
+                  name="action"
+                  value="contract"
+                  {% if not row.concern.can_contract %}disabled{% endif %}>Subtract bounding box</button>
+          <button type="submit"
+                  name="action"
+                  value="expand"
+                  {% if not row.concern.can_expand %}disabled{% endif %}>Add bounding box</button>
+        </div>
+        <button type="submit" name="action" value="accept">Accept</button>
+      </div>
+    {% else %}
+      {% include "_spacing_scale.html" %}
+    {% endif %}
+  </form>
 {% endif %}

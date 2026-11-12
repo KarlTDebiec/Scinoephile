@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import csv
+from collections.abc import Iterable
 from logging import getLogger
 from pathlib import Path
 
@@ -12,10 +13,67 @@ from scinoephile.image.bbox import Bbox
 
 from .csv import save_csv_rows
 
-__all__ = ["get_dims_tuple", "load_char_dims", "save_char_dims"]
+__all__ = [
+    "CHAR_DIM_TOLERANCE",
+    "are_dims_within_tolerance",
+    "can_auto_approve_char_dims",
+    "get_dims_tuple",
+    "load_char_dims",
+    "save_char_dims",
+]
 
 
 logger = getLogger(__name__)
+
+CHAR_DIM_TOLERANCE = 2
+"""Maximum pixel difference allowed for each box dimension and gap."""
+
+
+def are_dims_within_tolerance(
+    dims: tuple[int, ...], known_dims: tuple[int, ...]
+) -> bool:
+    """Compare all selected dimensions or gaps with their stored values.
+
+    Arguments:
+        dims: proposed measurements
+        known_dims: corresponding measurements from one stored configuration
+    Returns:
+        whether every corresponding measurement is within tolerance
+    """
+    return len(dims) == len(known_dims) and all(
+        abs(proposed - known) <= CHAR_DIM_TOLERANCE
+        for proposed, known in zip(dims, known_dims, strict=True)
+    )
+
+
+def can_auto_approve_char_dims(
+    dims: tuple[int, ...], approved_dims: Iterable[tuple[int, ...]]
+) -> bool:
+    """Match each box and internal gap to the same position in an approved example.
+
+    Arguments:
+        dims: proposed widths, heights, and gaps in box order
+        approved_dims: previously approved measurements for the character
+    Returns:
+        whether every box and gap has a match within tolerance
+    """
+    examples = [example for example in approved_dims if len(example) == len(dims)]
+    if not examples:
+        return False
+    for start in range(0, len(dims), 3):
+        gap_index = start + 2
+        box = dims[start:gap_index]
+        if not any(
+            are_dims_within_tolerance(box, example[start:gap_index])
+            for example in examples
+        ):
+            return False
+        if gap_index < len(dims) and not any(
+            abs(dims[gap_index] - example[gap_index]) <= CHAR_DIM_TOLERANCE
+            for example in examples
+        ):
+            return False
+    return True
 
 
 def get_dims_tuple(bboxes: Bbox | list[Bbox]) -> tuple[int, ...]:

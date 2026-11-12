@@ -1,0 +1,17 @@
+<figure id="preview-{{ row.sub_idx }}"
+        class="ocr-preview"{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}>
+  <img src="{{ url_for('source_image', sub_idx=row.sub_idx) }}"
+       alt="Source image for subtitle {{ row.number }}"
+       width="{{ row.image_width }}"
+       height="{{ row.image_height }}"
+       loading="lazy">
+  {% if row.boxes %}
+    <svg class="ocr-boxes"
+         viewBox="0 0 {{ row.image_width }} {{ row.image_height }}"
+         aria-hidden="true">
+      {% for box in row.boxes %}
+        <rect x="{{ box.x1 }}" y="{{ box.y1 }}" width="{{ box.width }}" height="{{ box.height }}" stroke="hsl({{ 360 * loop.index0 / loop.length }}, 100%, 50%)" vector-effect="non-scaling-stroke" />
+      {% endfor %}
+    </svg>
+  {% endif %}
+</figure>

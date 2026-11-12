@@ -1,0 +1,32 @@
+{% macro number_line(image, label, description_id, reading=none, characters=none) -%}
+  {% set first = image.ticks[0] %}
+  {# djlint:off H021 #}
+  <div class="number-line-scroll">
+    <div class="number-line" style="--columns: {{ image.width }}">
+      <div class="number-line-ticks" aria-hidden="true">
+        {% for tick in image.ticks %}<span style="--column: {{ tick - first }}">{{ tick }}</span>{% endfor %}
+      </div>
+      <div class="number-line-track">
+        {% if characters %}
+          <span class="number-line-start" aria-hidden="true">{{ characters[0] }}</span>
+          <span class="number-line-end" aria-hidden="true">{{ characters[1] }}</span>
+        {% endif %}
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="{{ image.dark_url }}">
+          <img src="{{ image.light_url }}"
+               alt="{{ label }}"
+               aria-describedby="{{ description_id }}"
+               width="{{ image.width }}"
+               height="1"
+               loading="lazy">
+        </picture>
+      </div>
+      {% if reading is not none %}
+        <div class="number-line-reading" aria-hidden="true">
+          <span style="--column: {{ reading - first + 0.5 }}">{{ reading }} px</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  {# djlint:on #}
+{%- endmacro %}

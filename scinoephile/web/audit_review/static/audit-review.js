@@ -31,7 +31,6 @@ function syncProofread(input) {
  * @param {Document|Element} root - Container owning the inserted subtitle rows.
  */
 function syncReviewFields(root) {
-    syncBlockToggle();
     for (const input of root.querySelectorAll("textarea[data-original]")) {
         syncProofread(input);
     }
@@ -47,47 +46,11 @@ document.addEventListener("input", event => {
         .target);
     else syncSaveStatus(form);
 });
-// Keep the ordinary search submit available until HTMX has initialized.
 document.addEventListener("htmx:load", event => {
-    document.documentElement.classList.add("has-live-search");
     syncReviewFields(event.detail.elt);
 });
 document.addEventListener("htmx:historyRestore", () => syncReviewFields(document));
 syncReviewFields(document);
-
-/** Reflect loaded native disclosure states in the optional bulk control. */
-function syncBlockToggle() {
-    const button = document.querySelector("[data-toggle-blocks]");
-    if (!button) return;
-    const blocks = document.querySelectorAll("details.audit-block");
-    const expanded = Array.from(blocks).some(block => block.open);
-    let label = "Expand all blocks";
-    if (expanded) {
-        label = "Collapse all blocks";
-        document.querySelector("#workspace").removeAttribute("data-loading-paused");
-    }
-    button.setAttribute("aria-expanded", String(expanded));
-    button.setAttribute("aria-label", label);
-    button.title = label;
-}
-
-document.addEventListener("click", event => {
-    if (!event.target.closest("[data-toggle-blocks]")) return;
-    const expand = !document.querySelector("details.audit-block[open]");
-    document.querySelector("#workspace").toggleAttribute("data-loading-paused",
-        !expand);
-    for (const block of document.querySelectorAll("details.audit-block")) {
-        block.open = expand;
-    }
-    syncBlockToggle();
-});
-// Native toggle does not bubble; capture also handles individual summary clicks.
-document.addEventListener("toggle", event => {
-    if (event.target.matches("details.audit-block")) syncBlockToggle();
-}, true);
-
-// Enable the bulk control once per document; CSS follows the native disclosure states.
-document.documentElement.classList.add("has-block-controls");
 
 /**
  * Read only persisted editable fields; ignore the CSRF token and version.
@@ -181,32 +144,13 @@ function syncSaveStatus(form) {
     if (!indicator) return;
     const state = getSaveState(form);
     const invalid = validateReviewForm(form);
-    let status = "saved";
-    let message = "Saved";
-    if (state.error) {
-        status = "error";
-        message = state.error;
-    } else if (invalid) {
-        status = "invalid";
-        message = invalid;
-    } else if (state.inFlight) {
-        status = "saving";
-        message = "Saving…";
-    } else if (JSON.stringify(reviewValues(form)) !== state.saved) {
-        status = "unsaved";
-        message = "Unsaved changes — leave the field to save.";
-    }
-    indicator.dataset.saveState = status;
-    indicator.querySelector("span").textContent = {
-        saved: "Saved",
-        saving: "Saving…",
-        unsaved: "Unsaved",
-        invalid: "Invalid",
-        error: "Error"
-    } [status];
-    indicator.title = message;
-    indicator.setAttribute("aria-label", message);
-    indicator.setAttribute("aria-busy", String(state.inFlight));
+    showEditorSaveStatus(indicator, {
+        error: state.error,
+        invalid,
+        busy: state.inFlight,
+        unsaved: JSON.stringify(reviewValues(form)) !== state.saved ?
+            "Unsaved changes — leave the field to save." : ""
+    });
 }
 
 /**
@@ -238,13 +182,10 @@ document.addEventListener("change", event => {
         requestReviewSave(form);
 });
 
-// Run before HTMX synchronization: a filter request must not abort an active save.
-document.addEventListener("htmx:confirm", event => {
-    if (event.detail.target?.id !== "workspace" || !hasReviewDrafts()) return;
-    event.preventDefault();
-    document.querySelector("#messages").textContent =
-        "Save subtitle drafts before changing filters or opening another block.";
-});
+guardEditorNavigation(
+    hasReviewDrafts,
+    "Save subtitle drafts before changing filters or opening another block."
+);
 
 document.addEventListener("htmx:beforeRequest", event => {
     const form = event.detail.elt;
@@ -255,14 +196,7 @@ document.addEventListener("htmx:beforeRequest", event => {
     syncSaveStatus(form);
 });
 
-// Navigation may finish after a user starts editing; retain that newer draft too.
 document.addEventListener("htmx:beforeSwap", event => {
-    if (event.detail.target?.id === "workspace" && hasReviewDrafts()) {
-        event.detail.shouldSwap = false;
-        document.querySelector("#messages").textContent =
-            "Save subtitle drafts before changing filters or opening another block.";
-        return;
-    }
     // A superseded preview must not overwrite either side of a newer draft's diff.
     const input = event.detail.requestConfig.elt;
     if (!input.matches("textarea[data-original]")) return;
@@ -329,7 +263,10 @@ document.addEventListener("htmx:afterRequest", event => {
 // Row replacements and filtered block removals must retain newer subtitle drafts.
 document.addEventListener("htmx:oobBeforeSwap", event => {
     const target = event.detail.target;
-    if (!target.matches(".audit-row, .audit-block")) return;
+    if (!target.matches(".audit-row, .subtitle-block")) return;
+    // Sibling insertions have a different ID from their anchor.
+    const incoming = event.detail.fragment.firstElementChild;
+    if (incoming && incoming.id !== target.id) return;
     for (const form of target.querySelectorAll("form")) {
         const state = getSaveState(form);
         const signature = JSON.stringify(reviewValues(form));

@@ -4,17 +4,19 @@
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Self
 
 from PIL import Image
 
+from scinoephile.common.file import open_atomic_text_file
+from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.text import WHITESPACE_CHARS
+from scinoephile.core.subtitles import Series
+from scinoephile.core.text import RE_HANZI, RE_LATIN_WORD, WHITESPACE_CHARS
+from scinoephile.image.bbox import Bbox
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
-from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.ocr.validation.char_cursor import CharCursor
 from scinoephile.image.ocr.validation.char_dims import get_dims_tuple
@@ -35,6 +37,9 @@ from .concerns import (
 from .html_index import HtmlSubtitleEntry, load_html_entries, update_html_entry_text
 
 __all__ = ["OcrValidationSession"]
+
+_LATIN_FONT_SIZE_MULTIPLIER = 1.36
+"""Convert representative Latin glyph height to the editor font size."""
 
 
 @dataclass
@@ -65,7 +70,6 @@ class OcrValidationSession:
         entries: list[HtmlSubtitleEntry],
         series: ImageSeries,
         manager: ValidationManager,
-        include_done_subtitles: bool = False,
         outfile_path: Path | None = None,
     ):
         """Initialize.
@@ -75,14 +79,13 @@ class OcrValidationSession:
             entries: HTML subtitle entries
             series: image subtitle series
             manager: OCR validation manager
-            include_done_subtitles: whether to include subtitles with no concerns
             outfile_path: optional subtitle output file path
         """
         self.dir_path = dir_path
         self.entries = entries
         self.series = series
+        self.block_ranges = Series.get_block_indexes_by_pause(series)
         self.manager = manager
-        self.include_done_subtitles = include_done_subtitles
         self.outfile_path = outfile_path
         self.text_color_css = (
             f"rgb({self.series.fill_color}, {self.series.fill_color}, "
@@ -94,169 +97,78 @@ class OcrValidationSession:
         )
         self.text_font_size_px = self.series.text_font_size
         text = "".join(entry.text for entry in self.entries)
-        if re.search(r"[\u3400-\u9fff]", text):
+        if RE_HANZI.search(text):
             self.text_letter_spacing_px = 10
         else:
             self.text_letter_spacing_px = 0
+            if RE_LATIN_WORD.search(text):
+                self.text_font_size_px = round(
+                    self.text_font_size_px * _LATIN_FONT_SIZE_MULTIPLIER
+                )
+        self._detected_bboxes: dict[int, list[Bbox]] = {}
         self._states: dict[int, _SubtitleValidationState] = {}
+        self._checked_training_revision = self.manager.training_revision
 
-    @classmethod
-    def from_dir_path(
-        cls,
-        dir_path: Path,
-        *,
-        include_done_subtitles: bool = False,
-        outfile_path: Path | None = None,
-        validation_data_dir_path: Path | str | None = None,
-        dev: bool = False,
-    ) -> Self:
-        """Create a session from an OCR image directory.
-
-        Arguments:
-            dir_path: OCR image HTML directory path
-            include_done_subtitles: whether to include subtitles with no concerns
-            outfile_path: optional subtitle output file path
-            validation_data_dir_path: local OCR validation data directory
-            dev: whether validation data updates should write to repo data
-        Returns:
-            OCR validation session
-        Raises:
-            ScinoephileError: if the operation fails
-        """
-        dir_path = Path(dir_path).resolve()
-        if not dir_path.is_dir():
-            raise ScinoephileError(f"Expected {dir_path} to be a directory.")
-        if not (dir_path / "index.html").is_file():
-            raise ScinoephileError(f"Expected {dir_path / 'index.html'} to be a file.")
-
-        try:
-            entries = load_html_entries(dir_path)
-            series = ImageSeries.load(dir_path)
-            manager = ValidationManager(
-                validation_data_dir_path=validation_data_dir_path, dev=dev
-            )
-            session = cls(
-                dir_path=dir_path,
-                entries=entries,
-                series=series,
-                manager=manager,
-                include_done_subtitles=include_done_subtitles,
-                outfile_path=outfile_path,
-            )
-            return session
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to initialize OCR validation session from {dir_path}: {exc}"
-            ) from exc
-
-    def all_subtitle_rows(self) -> list[SubtitleRowView]:
-        """Return row view models for all subtitles regardless of filtering.
-
-        Returns:
-            subtitle row view models
-        """
-        return [self.subtitle_row(sub_idx) for sub_idx in range(len(self.entries))]
-
-    def finish(self):
-        """Persist current validation output before closing the web UI."""
+    def prepare(self):
+        """Scan subtitles and save the initial output before serving the editor."""
+        self.refresh_concerns()
         self._save_outfile()
 
-    def subtitle_row(self, sub_idx: int) -> SubtitleRowView:
-        """Return one subtitle row view model.
-
-        Arguments:
-            sub_idx: zero-based subtitle index
-        Returns:
-            subtitle row view model
-        """
-        self._validate_sub_idx(sub_idx)
-        state = self._state(sub_idx)
-        entry = self.entries[sub_idx]
-        image_width = self.series.events[sub_idx].img.width
-        image_height = self.series.events[sub_idx].img.height
-        return SubtitleRowView(
-            sub_idx=sub_idx,
-            number=entry.index,
-            start=ImageSeries._format_html_time(entry.start),
-            end=ImageSeries._format_html_time(entry.end),
-            image_width=image_width,
-            image_height=image_height,
-            text=entry.text,
-            concern=state.concern,
-            text_color_css=self.text_color_css,
-            text_shadow_color_css=self.text_shadow_color_css,
-            text_font_size_px=self.text_font_size_px,
-            text_letter_spacing_px=self.text_letter_spacing_px,
-        )
-
-    def subtitle_rows(self) -> list[SubtitleRowView]:
-        """Return row view models for all in-scope subtitles.
+    def refresh_concerns(self) -> set[int]:
+        """Recheck rows affected by training while retaining unchanged selections.
 
         Returns:
-            subtitle row view models
+            subtitle indexes whose review information may have changed
         """
-        return [
-            row for row in self.all_subtitle_rows() if self.subtitle_row_is_visible(row)
-        ]
-
-    def subtitle_row_is_visible(self, row: SubtitleRowView) -> bool:
-        """Return whether a subtitle row should be rendered in the list.
-
-        Arguments:
-            row: subtitle row view model
-        Returns:
-            whether the row should be shown
-        """
-        if self.include_done_subtitles:
-            return True
-        return row.concern is not None
-
-    def concern_image(self, sub_idx: int) -> Image.Image:
-        """Return an annotated image for the current concern.
-
-        Arguments:
-            sub_idx: zero-based subtitle index
-        Returns:
-            annotated concern image
-        """
-        self._validate_sub_idx(sub_idx)
-        state = self._state(sub_idx)
-        sub = self.series.events[sub_idx]
-        if isinstance(state.concern, CharDimsConcern):
-            cursor = self._char_cursor(state)
-            return get_img_with_bboxes(sub.img, cursor.bbox_grp(state.concern.n_bboxes))
-        if isinstance(state.concern, GapConcern):
-            cursor = self._gap_cursor(state)
-            return cursor.annotated_img(2)
-        return sub.img
-
-    def update_text(self, sub_idx: int, text: str) -> SubtitleRowView:
-        """Persist corrected OCR text and rebuild the subtitle state.
-
-        Arguments:
-            sub_idx: zero-based subtitle index
-            text: replacement subtitle text using ASS newline escapes
-        Returns:
-            updated subtitle row view model
-        """
-        self._validate_sub_idx(sub_idx)
-        self._set_text(sub_idx, text, reset_state=True)
-        return self.subtitle_row(sub_idx)
-
-    def validation_image(self, sub_idx: int) -> Image.Image:
-        """Return a row image annotated with all current bboxes.
-
-        Arguments:
-            sub_idx: zero-based subtitle index
-        Returns:
-            annotated validation image
-        """
-        self._validate_sub_idx(sub_idx)
-        self._state(sub_idx)
-        sub = self.series.events[sub_idx]
-        if sub.bboxes is None:
-            return sub.img
-        return get_img_with_bboxes(sub.img, sub.bboxes)
+        if len(self._states) < len(self.entries):
+            for sub_idx in range(len(self.entries)):
+                self._state(sub_idx)
+        affected = set()
+        # Later rows can teach rules that resolve a concern already visited in this pass
+        while self._checked_training_revision != self.manager.training_revision:
+            characters, pairs = self.manager.training_changes_since(
+                self._checked_training_revision
+            )
+            self._checked_training_revision = self.manager.training_revision
+            for sub_idx, sub in enumerate(self.series.events):
+                state = self._states[sub_idx]
+                previous = state.concern
+                previous_text = sub.text
+                previous_boxes = sub.bboxes
+                if not characters.isdisjoint(sub.text_with_newline):
+                    # A new shape can change how earlier boxes are grouped
+                    del self._states[sub_idx]
+                    state = self._state(sub_idx)
+                elif (
+                    isinstance(previous, GapConcern)
+                    and (previous.char_1, previous.char_2) in pairs
+                ):
+                    self._scan_state(state)
+                else:
+                    continue
+                current = state.concern
+                if (
+                    isinstance(previous, CharDimsConcern)
+                    and isinstance(current, CharDimsConcern)
+                    and previous.char == current.char
+                    and previous.char_idx == current.char_idx
+                    and previous.bbox_idx == current.bbox_idx
+                ):
+                    state.char_n_bboxes = previous.n_bboxes
+                    selection = self._char_dims_concern(state)
+                    if selection.dims == previous.dims:
+                        state.concern = selection
+                    else:
+                        state.char_n_bboxes = current.n_bboxes
+                if (
+                    previous != state.concern
+                    or previous_text != sub.text
+                    or previous_boxes != sub.bboxes
+                    or isinstance(previous, CharDimsConcern)
+                    and previous.char in characters
+                ):
+                    affected.add(sub_idx)
+        return affected
 
     def resolve_char_concern(
         self, sub_idx: int, *, action: str, n_bboxes: int
@@ -289,10 +201,6 @@ class OcrValidationSession:
             return self.subtitle_row(sub_idx)
         raise ValueError(f"Unrecognized character concern action: {action}")
 
-    def reset_states(self):
-        """Clear cached per-subtitle validation states."""
-        self._states.clear()
-
     def resolve_gap_concern(self, sub_idx: int, *, action: str) -> SubtitleRowView:
         """Resolve the current spacing concern for one subtitle.
 
@@ -317,6 +225,126 @@ class OcrValidationSession:
 
         self._replace_gap_text(cursor, expected_gap_chars, reset_state=True)
         return self.subtitle_row(sub_idx)
+
+    def source_image(self, sub_idx: int) -> Image.Image:
+        """Get the original subtitle image for an editor preview.
+
+        Arguments:
+            sub_idx: zero-based subtitle index
+        Returns:
+            original subtitle image
+        """
+        self._validate_sub_idx(sub_idx)
+        return self.series.events[sub_idx].img
+
+    def subtitle_concerns(self) -> list[OcrConcern | None]:
+        """Return concerns in subtitle order for filtering and counts.
+
+        Returns:
+            current concern for each subtitle
+        """
+        return [self._state(sub_idx).concern for sub_idx in range(len(self.entries))]
+
+    def subtitle_row(self, sub_idx: int) -> SubtitleRowView:
+        """Return one subtitle row view model.
+
+        Arguments:
+            sub_idx: zero-based subtitle index
+        Returns:
+            subtitle row view model
+        """
+        self._validate_sub_idx(sub_idx)
+        state = self._state(sub_idx)
+        entry = self.entries[sub_idx]
+        subtitle = self.series.events[sub_idx]
+        boxes = subtitle.bboxes or []
+        concern = state.concern
+        known_char_dims = ()
+        if isinstance(concern, CharDimsConcern):
+            boxes = self._char_cursor(state).bbox_grp(concern.n_bboxes)
+            known_char_dims = tuple(
+                self.manager.char_dims_by_n.get(concern.n_bboxes, {}).get(
+                    concern.char, ()
+                )
+            )
+        elif isinstance(concern, GapConcern):
+            boxes = self._gap_cursor(state).bbox_grp(2)
+        return SubtitleRowView(
+            sub_idx=sub_idx,
+            number=entry.index,
+            start=entry.start,
+            end=entry.end,
+            image_width=subtitle.img.width,
+            image_height=subtitle.img.height,
+            text=entry.text,
+            concern=concern,
+            boxes=tuple(boxes),
+            text_color_css=self.text_color_css,
+            text_shadow_color_css=self.text_shadow_color_css,
+            text_font_size_px=self.text_font_size_px,
+            text_letter_spacing_px=self.text_letter_spacing_px,
+            known_char_dims=known_char_dims,
+        )
+
+    def update_text(self, sub_idx: int, text: str) -> SubtitleRowView:
+        """Persist corrected OCR text and rebuild the subtitle state.
+
+        Arguments:
+            sub_idx: zero-based subtitle index
+            text: replacement subtitle text using ASS newline escapes
+        Returns:
+            updated subtitle row view model
+        """
+        self._validate_sub_idx(sub_idx)
+        if text != self.entries[sub_idx].text:
+            self._set_text(sub_idx, text, reset_state=True)
+        return self.subtitle_row(sub_idx)
+
+    @classmethod
+    def from_dir_path(
+        cls,
+        dir_path: Path,
+        *,
+        outfile_path: Path | None = None,
+        validation_data_dir_path: Path | str | None = None,
+        dev: bool = False,
+    ) -> Self:
+        """Create a session from an OCR image directory.
+
+        Arguments:
+            dir_path: OCR image HTML directory path
+            outfile_path: optional subtitle output file path
+            validation_data_dir_path: local OCR validation data directory
+            dev: whether validation data updates should write to repo data
+        Returns:
+            OCR validation session
+        Raises:
+            ScinoephileError: if the operation fails
+        """
+        dir_path = Path(dir_path).resolve()
+        if not dir_path.is_dir():
+            raise ScinoephileError(f"Expected {dir_path} to be a directory.")
+        if not (dir_path / "index.html").is_file():
+            raise ScinoephileError(f"Expected {dir_path / 'index.html'} to be a file.")
+
+        try:
+            entries = load_html_entries(dir_path)
+            series = ImageSeries.load(dir_path)
+            manager = ValidationManager(
+                validation_data_dir_path=validation_data_dir_path, dev=dev
+            )
+            session = cls(
+                dir_path=dir_path,
+                entries=entries,
+                series=series,
+                manager=manager,
+                outfile_path=outfile_path,
+            )
+            return session
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to initialize OCR validation session from {dir_path}: {exc}"
+            ) from exc
 
     def _accept_char_dims(self, state: _SubtitleValidationState, n_bboxes: int):
         """Accept selected bbox dimensions for the current character.
@@ -453,7 +481,9 @@ class OcrValidationSession:
         state = self._states.get(sub_idx)
         if state is None:
             sub = self.series.events[sub_idx]
-            sub.bboxes = get_bboxes(sub.img)
+            if sub_idx not in self._detected_bboxes:
+                self._detected_bboxes[sub_idx] = get_bboxes(sub.img)
+            sub.bboxes = self._detected_bboxes[sub_idx].copy()
             state = _SubtitleValidationState(
                 sub_idx=sub_idx, char_cursor=CharCursor(sub=sub, sub_idx=sub_idx)
             )
@@ -512,7 +542,10 @@ class OcrValidationSession:
                 continue
 
             if cursor.bbox_idx >= len(cursor.bboxes):
-                return ErrorConcern(message=f"Ran out of bboxes at '{cursor.char}'.")
+                return ErrorConcern(
+                    message=f"Ran out of bboxes at '{cursor.char}'.",
+                    bbox_count_mismatch=True,
+                )
 
             if self.manager.match_grouped_chars(cursor):
                 continue
@@ -524,7 +557,9 @@ class OcrValidationSession:
 
         if cursor.bbox_idx != len(cursor.bboxes):
             leftover = len(cursor.bboxes) - cursor.bbox_idx
-            return ErrorConcern(message=f"{leftover} leftover bboxes.")
+            return ErrorConcern(
+                message=f"{leftover} leftover bboxes.", bbox_count_mismatch=True
+            )
         return None
 
     def _scan_gaps(self, state: _SubtitleValidationState) -> OcrConcern | None:
@@ -575,8 +610,9 @@ class OcrValidationSession:
         """Persist the session's current subtitle text to the output file."""
         if self.outfile_path is None:
             return
-        self.outfile_path.parent.mkdir(parents=True, exist_ok=True)
-        self.series.save(self.outfile_path, format_="srt", exist_ok=True)
+        outfile_path = val_output_path(self.outfile_path, exist_ok=True)
+        with open_atomic_text_file(outfile_path) as outfile:
+            self.series.to_file(outfile, format_="srt")
 
     def _set_text(self, sub_idx: int, text: str, *, reset_state: bool):
         """Persist OCR text for one subtitle.

@@ -39,7 +39,7 @@ def create_app(audit: ReviewAuditProject, *, title: str | None = None) -> FlaskA
         local Flask application
     """
     flask = import_flask()
-    app = create_local_app(__name__, package_root / "web/static", require_htmx=False)
+    app = create_local_app(__name__, package_root / "web/static")
     app.register_blueprint(
         flask.Blueprint(
             "audit_review_assets",

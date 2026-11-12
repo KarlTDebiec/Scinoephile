@@ -72,6 +72,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         interactive: bool,
         host: str,
         port: int,
+        title: str | None,
         dev: bool,
         overwrite: bool,
         overwrite_cache: bool,
@@ -91,6 +92,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
             interactive: interactive value
             host: host value
             port: port value
+            title: editor title
             dev: dev value
             overwrite: overwrite value
             overwrite_cache: overwrite cache
@@ -109,6 +111,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         assert interactive is True
         assert host == "0.0.0.0"
         assert port == 5051
+        assert title == "Film - English"
         assert dev is True
         assert overwrite is True
         assert overwrite_cache is True
@@ -130,7 +133,8 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
             OcrProcessCli,
             f"--infile {infile_path} --stream-index 3 --language eng "
             f"-o {output_dir_path} --cache-dir {cache_root_path} "
-            "--clean --interactive --host 0.0.0.0 --port 5051 --dev "
+            "--clean --serve --host 0.0.0.0 --port 5051 --dev "
+            '--title "Film - English" '
             "--overwrite --cache-overwrite --llm-no-op",
         )
 

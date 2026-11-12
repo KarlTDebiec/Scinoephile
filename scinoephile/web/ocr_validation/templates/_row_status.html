@@ -1,0 +1,3 @@
+<p id="row-status-{{ row.sub_idx }}"
+   class="ocr-row-status{% if row.status != 'done' %} needs-review{% endif %}{% if row.concern and row.concern.kind == 'error' %} error{% endif %}"
+   {% if oob|default(false) %}hx-swap-oob="outerHTML"{% endif %}>{{ row.status_label }}</p>

@@ -1,53 +1,18 @@
+{% from 'shared/_controls.html' import toggle_blocks %}
+{% from 'shared/_filters.html' import filter_toolbar %}
 {% from '_icons.html' import icon %}
 <main id="workspace" hx-history-elt>
   <header>
     <h1>{{ title }}</h1>
     <div id="messages" role="status" aria-live="polite"></div>
     {% set active = filters.proofreading != 'all' or filters.audit != 'all' or filters.q %}
-    <nav class="editor-toolbar" aria-label="Filters">
-      <form method="get"
-            action="{{ url_for('index') }}"
-            hx-get="{{ url_for('index') }}"
-            hx-target="#workspace"
-            hx-swap="outerHTML"
-            hx-push-url="true"
-            hx-sync="#workspace:replace">
-        <button type="submit"
-                aria-label="Clear filters"
-                title="Clear filters"{% if not active %} disabled{% endif %}>
-          <svg width="28" height="28" aria-hidden="true">
-            <use href="{{ url_for('audit_review_assets.static', filename='icons/filter-outline.svg') }}#icon" />
-          </svg>
-          <svg width="28" height="28" aria-hidden="true">
-            <use href="{{ url_for('audit_review_assets.static', filename='icons/filter-remove-outline.svg') }}#icon" />
-          </svg>
-        </button>
-      </form>
-      <form id="filters"
-            role="search"
-            method="get"
-            action="{{ url_for('index') }}"
-            hx-get="{{ url_for('index') }}"
-            hx-trigger="submit, change target:select, input changed delay:750ms from:#audit-search"
-            hx-target="#workspace"
-            hx-swap="outerHTML"
-            hx-push-url="true"
-            hx-sync="#workspace:replace">
+    {% call(slot) filter_toolbar("audit-search", filters.q, active, "Text, notes, subtitle number, or block number") %}
+      {% if slot == "options" %}
         {% include "_status_filters.html" %}
-        <input id="audit-search"
-               type="search"
-               name="q"
-               value="{{ filters.q }}"
-               placeholder="Text, notes, subtitle number, or block number"
-               aria-label="Search">
-        <button type="submit" aria-label="Search" title="Search">
-          <svg width="28" height="28" aria-hidden="true">
-            <use href="{{ url_for('audit_review_assets.static', filename='icons/magnify.svg') }}#icon" />
-          </svg>
-        </button>
-      </form>
-      {% include "_summary.html" %}
-    </nav>
+      {% else %}
+        {% include "_summary.html" %}
+      {% endif %}
+    {% endcall %}
     <nav class="editor-toolbar" aria-label="Operations">
       <div class="operation-group">
         <form method="get"
@@ -100,20 +65,7 @@
           {% include "_verification.html" %}
         {% endwith %}
       </div>
-      <button id="toggle-blocks"
-              type="button"
-              data-toggle-blocks
-              hx-preserve
-              aria-label="Expand all blocks"
-              title="Expand all blocks"
-              aria-expanded="false">
-        <svg width="24" height="24" aria-hidden="true">
-          <use href="{{ url_for('audit_review_assets.static', filename='icons/collapse-all-outline.svg') }}#icon" />
-        </svg>
-        <svg width="24" height="24" aria-hidden="true">
-          <use href="{{ url_for('audit_review_assets.static', filename='icons/expand-all-outline.svg') }}#icon" />
-        </svg>
-      </button>
+      {{ toggle_blocks() }}
       <p data-operations-message role="status" hidden></p>
       {% if show_proofreading or proofreading.status == "running" %}
         {% include "proofreading/_card.html" %}

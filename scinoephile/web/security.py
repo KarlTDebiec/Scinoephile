@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from hashlib import sha256
 from pathlib import Path
 from secrets import compare_digest, token_urlsafe
 from typing import TYPE_CHECKING
@@ -18,30 +19,41 @@ __all__ = ["create_local_app"]
 
 
 def create_local_app(
-    name: str,
-    static_dir_path: Path,
-    *,
-    host: str = "127.0.0.1",
-    require_htmx: bool = True,
+    name: str, static_dir_path: Path, *, host: str = "127.0.0.1"
 ) -> FlaskApp:
     """Create a local app with trusted hosts and protected editing requests.
 
     Loopback names and the explicit bind host are trusted. Wildcard binds retain
-    loopback access without trusting arbitrary Host headers. Requiring HTMX's custom
-    header prevents foreign forms from editing data while CORS remains disabled.
-    Native forms and their HTMX enhancements use the same session CSRF token.
+    loopback access without trusting arbitrary Host headers. Native forms and
+    their HTMX enhancements use the same session CSRF token.
 
     Arguments:
         name: Flask application import name used to locate domain templates
         static_dir_path: existing shared browser asset directory
         host: explicitly configured bind host, or a wildcard bind address
-        require_htmx: require the HTMX header on edits, otherwise require a CSRF token
     Returns:
         Flask app with local request checks and defensive response headers
     Raises:
         DependencyError: if optional web dependencies are unavailable
     """
     flask = import_flask()
+    from flask.sessions import SecureCookieSessionInterface  # noqa: PLC0415
+
+    class LocalEditorSessionInterface(SecureCookieSessionInterface):
+        """Scope session cookies to the editor's origin and mount path."""
+
+        def get_cookie_name(self, app: FlaskApp) -> str:
+            """Get a stable cookie name for this editor and listener.
+
+            Arguments:
+                app: Flask app that owns the session
+            Returns:
+                cookie name unique to the app at this origin and mount path
+            """
+            request = flask.request
+            scope = f"{app.name}:{request.scheme}://{request.host.lower()}{request.script_root}"
+            return f"scinoephile_{sha256(scope.encode()).hexdigest()[:24]}"
+
     trusted_hosts = {"127.0.0.1", "localhost", "::1"}
     if host not in {"", "0.0.0.0", "::"}:
         trusted_host = host.removeprefix("[").removesuffix("]")
@@ -50,21 +62,19 @@ def create_local_app(
     app.register_blueprint(
         flask.Blueprint("web_templates", __name__, template_folder="templates")
     )
-    if not require_htmx:
-        app.config.update(
-            SECRET_KEY=token_urlsafe(32), SESSION_COOKIE_SAMESITE="Strict"
-        )
+    app.config.update(SECRET_KEY=token_urlsafe(32), SESSION_COOKIE_SAMESITE="Strict")
+    app.session_interface = LocalEditorSessionInterface()
 
-        @app.context_processor
-        def csrf_context() -> dict[str, str]:
-            """Supply the session token to templates that render editing forms.
+    @app.context_processor
+    def csrf_context() -> dict[str, str]:
+        """Supply the session token to templates that render editing forms.
 
-            Returns:
-                template context containing the CSRF token
-            """
-            if "csrf" not in flask.session:
-                flask.session["csrf"] = token_urlsafe(32)
-            return {"csrf": flask.session["csrf"]}
+        Returns:
+            template context containing the CSRF token
+        """
+        if "csrf" not in flask.session:
+            flask.session["csrf"] = token_urlsafe(32)
+        return {"csrf": flask.session["csrf"]}
 
     @app.before_request
     def protect_local_requests():
@@ -72,10 +82,14 @@ def create_local_app(
         request = flask.request
         # Match complete hostnames without treating IPv6 colons as port separators
         try:
-            request_host = urlsplit(f"//{request.host}").hostname
+            request_host = urlsplit(f"//{request.host}")
+            if (
+                request_host.hostname not in trusted_hosts
+                or request_host.port == 0
+                or request_host.username is not None
+            ):
+                flask.abort(400)
         except ValueError:
-            flask.abort(400)
-        if request_host not in trusted_hosts:
             flask.abort(400)
         origin = request.headers.get("Origin")
         if origin and origin != request.host_url.rstrip("/"):
@@ -83,10 +97,6 @@ def create_local_app(
         if request.headers.get("Sec-Fetch-Site") in {"cross-site", "same-site"}:
             flask.abort(403)
         if request.method in {"GET", "HEAD", "OPTIONS"}:
-            return
-        if require_htmx:
-            if request.headers.get("HX-Request") != "true":
-                flask.abort(403)
             return
         expected = flask.session.get("csrf", "")
         received = request.form.get("csrf", "")

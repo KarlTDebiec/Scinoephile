@@ -10,7 +10,8 @@ from typing import TYPE_CHECKING
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
-from scinoephile.core.dependencies.web import import_werkzeug_serving
+from scinoephile.core.dependencies.web import import_flask, import_werkzeug_serving
+from scinoephile.core.timing import format_time_ms
 from scinoephile.web.security import create_local_app
 
 from .session import OcrValidationSession
@@ -23,12 +24,15 @@ __all__ = ["create_app", "run_app"]
 logger = getLogger(__name__)
 
 
-def create_app(session: OcrValidationSession, *, host: str = "127.0.0.1") -> FlaskApp:
+def create_app(
+    session: OcrValidationSession, *, host: str = "127.0.0.1", title: str | None = None
+) -> FlaskApp:
     """Create the OCR validation Flask app.
 
     Arguments:
         session: OCR validation session
         host: explicitly configured bind host trusted by request validation
+        title: display title for the page heading and browser tab
     Returns:
         Flask app
     Raises:
@@ -38,26 +42,48 @@ def create_app(session: OcrValidationSession, *, host: str = "127.0.0.1") -> Fla
 
     static_dir_path = package_root / "web/static"
     app = create_local_app(__name__, static_dir_path, host=host)
-    app.config["OCR_VALIDATION_SESSION"] = session
-    app.config["OCR_VALIDATION_SERVER"] = None
-    register_routes(app)
+    flask = import_flask()
+    app.register_blueprint(
+        flask.Blueprint(
+            "ocr_validation_assets",
+            __name__,
+            static_folder=str(package_root / "web/ocr_validation/static"),
+            static_url_path="/ocr-validation-assets",
+        )
+    )
+    app.add_template_filter(format_time_ms)
+    app.config["MAX_CONTENT_LENGTH"] = 100_000
+
+    @app.context_processor
+    def editor_context() -> dict[str, str]:
+        """Expose the editor title to the document and workspace fragment.
+
+        Returns:
+            editor title for the template context
+        """
+        return {"title": title or "OCR validation"}
+
+    register_routes(app, session)
     return app
 
 
-def run_app(session: OcrValidationSession, host: str, port: int):
+def run_app(
+    session: OcrValidationSession, host: str, port: int, *, title: str | None = None
+):
     """Run the OCR validation Flask app.
 
     Arguments:
         session: OCR validation session
         host: host address to bind
         port: port to bind
+        title: display title for the OCR validation editor
     Raises:
         DependencyError: if optional web dependencies are not installed
         ScinoephileError: if server startup fails
     """
     werkzeug_serving = import_werkzeug_serving()
 
-    app = create_app(session, host=host)
+    app = create_app(session, host=host, title=title)
     try:
         server_port = port
         if _port_is_in_use(_connection_host(host), port):
@@ -66,12 +92,14 @@ def run_app(session: OcrValidationSession, host: str, port: int):
                 "using an available port instead"
             )
             server_port = 0
-        server = werkzeug_serving.make_server(host, server_port, app)
-        app.config["OCR_VALIDATION_SERVER"] = server
-        url_host = _url_host(host)
-        url_port = getattr(server, "server_port", server_port)
-        logger.info(f"OCR validation web UI: http://{url_host}:{url_port}/")
-        server.serve_forever()
+        with werkzeug_serving.make_server(host, server_port, app) as server:
+            logger.info("Checking subtitle boxes, characters, and spacing")
+            session.prepare()
+            url_host = _url_host(host)
+            url_port = getattr(server, "server_port", server_port)
+            logger.info(f"OCR validation web UI: http://{url_host}:{url_port}/")
+            logger.info("Press Ctrl+C to stop the server.")
+            server.serve_forever()
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to run OCR validation web app on {host}:{port}: {exc}"

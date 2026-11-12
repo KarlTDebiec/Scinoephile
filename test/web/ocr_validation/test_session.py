@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from PIL import Image
-from pytest import MonkeyPatch, raises
+from pytest import MonkeyPatch, mark, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox import Bbox
@@ -17,7 +17,6 @@ from scinoephile.web.ocr_validation.concerns import (
     ConcernKind,
     ErrorConcern,
     GapConcern,
-    ValidationStatus,
 )
 from scinoephile.web.ocr_validation.session import OcrValidationSession
 from test.helpers.ocr_validation import (
@@ -37,18 +36,15 @@ def test_session_loads_rows_from_html_index(tmp_path: Path):
     """
     html_dir_path = make_ocr_html_dir(tmp_path, text="recognized")
 
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path, include_done_subtitles=True, dev=False
-    )
+    session = OcrValidationSession.from_dir_path(html_dir_path)
 
-    rows = session.subtitle_rows()
-    assert len(rows) == 1
-    assert rows[0].number == 1
-    assert rows[0].start == "1,000"
-    assert rows[0].end == "2,000"
-    assert rows[0].image_width == 2
-    assert rows[0].image_height == 2
-    assert rows[0].text == "recognized"
+    row = session.subtitle_row(0)
+    assert row.number == 1
+    assert row.start == 1000
+    assert row.end == 2000
+    assert row.image_width == 2
+    assert row.image_height == 2
+    assert row.text == "recognized"
 
 
 def test_session_requires_index_html_file(tmp_path: Path):
@@ -104,16 +100,29 @@ def test_concern_kind_excludes_done_state():
     assert "DONE" not in ConcernKind.__members__
 
 
+@mark.parametrize(
+    ("text_1", "text_2", "font_size", "letter_spacing"),
+    [("A", "B", 82, 0), ("字", "姐", 60, 10)],
+)
 def test_session_uses_one_font_size_for_series(
-    tmp_path: Path, monkeypatch: MonkeyPatch
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    text_1: str,
+    text_2: str,
+    font_size: int,
+    letter_spacing: int,
 ):
-    """Test editable font size is detected once for the whole series.
+    """Test the editable font size uses the same script-aware estimate for each row.
 
     Arguments:
         tmp_path: temporary directory path
         monkeypatch: pytest monkeypatch fixture
+        text_1: text of the first subtitle
+        text_2: text of the second subtitle
+        font_size: expected font size in pixels
+        letter_spacing: expected letter spacing in pixels
     """
-    html_dir_path = make_two_image_ocr_html_dir(tmp_path, text_1="A", text_2="B")
+    html_dir_path = make_two_image_ocr_html_dir(tmp_path, text_1=text_1, text_2=text_2)
 
     def mock_get_bboxes(img: Image.Image) -> list[Bbox]:
         """Return bboxes that vary by image width.
@@ -131,18 +140,17 @@ def test_session_uses_one_font_size_for_series(
         "scinoephile.image.subtitles.series.get_bboxes", mock_get_bboxes
     )
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        include_done_subtitles=True,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
 
-    rows = session.subtitle_rows()
+    rows = [session.subtitle_row(0), session.subtitle_row(1)]
 
-    assert rows[0].text_font_size_css == "60px"
-    assert rows[1].text_font_size_css == "60px"
-    assert rows[0].text_letter_spacing_css == "0px"
-    assert rows[1].text_letter_spacing_css == "0px"
+    assert [row.text_font_size_px for row in rows] == [font_size, font_size]
+    assert [row.text_letter_spacing_px for row in rows] == [
+        letter_spacing,
+        letter_spacing,
+    ]
 
 
 def test_session_uses_cjk_letter_spacing(tmp_path: Path):
@@ -153,15 +161,13 @@ def test_session_uses_cjk_letter_spacing(tmp_path: Path):
     """
     html_dir_path = make_ocr_html_dir(tmp_path, text="姐")
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        include_done_subtitles=True,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
 
     row = session.subtitle_row(0)
 
-    assert row.text_letter_spacing_css == "10px"
+    assert row.text_letter_spacing_px == 10
 
 
 def test_session_rebuilds_raw_bboxes_for_validation_state(
@@ -177,9 +183,7 @@ def test_session_rebuilds_raw_bboxes_for_validation_state(
     raw_bboxes = [Bbox(0, 23, 0, 61), Bbox(35, 40, 1, 61), Bbox(43, 58, 18, 38)]
     patch_ocr_validation_bboxes(monkeypatch, raw_bboxes)
     session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        include_done_subtitles=True,
-        validation_data_dir_path=tmp_path / "cache",
+        html_dir_path, validation_data_dir_path=tmp_path / "cache"
     )
     clear_validation_data(session)
     session.series.events[0].bboxes = [Bbox(0, 58, 0, 61)]
@@ -189,54 +193,6 @@ def test_session_rebuilds_raw_bboxes_for_validation_state(
     assert isinstance(row.concern, CharDimsConcern)
     assert row.concern.dims == (23, 61)
     assert row.concern.max_n_bboxes == 3
-
-
-def test_session_omits_done_rows_from_list_by_default(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test session row lists omit subtitles with no concerns by default.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="A")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path, validation_data_dir_path=tmp_path / "cache"
-    )
-    clear_validation_data(session)
-    session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
-
-    rows = session.subtitle_rows()
-
-    assert rows == []
-
-
-def test_session_includes_done_rows_in_list_when_enabled(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-):
-    """Test the internal toggle can include subtitles with no concerns.
-
-    Arguments:
-        tmp_path: temporary directory path
-        monkeypatch: pytest monkeypatch fixture
-    """
-    html_dir_path = make_ocr_html_dir(tmp_path, text="A")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        include_done_subtitles=True,
-        validation_data_dir_path=tmp_path / "cache",
-    )
-    clear_validation_data(session)
-    session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
-
-    rows = session.subtitle_rows()
-
-    assert len(rows) == 1
-    assert rows[0].status == ValidationStatus.DONE
-    assert rows[0].concern is None
 
 
 def test_session_update_text_rewrites_index(tmp_path: Path):
@@ -291,7 +247,7 @@ def test_session_reports_char_dims_concern(tmp_path: Path, monkeypatch: MonkeyPa
 
     row = session.subtitle_row(0)
 
-    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert row.status == "character"
     assert isinstance(row.concern, CharDimsConcern)
     assert row.concern.kind == ConcernKind.CHAR_DIMS
     assert row.concern.char == "A"
@@ -316,7 +272,7 @@ def test_session_reports_error_status_when_validation_cannot_continue(
 
     row = session.subtitle_row(0)
 
-    assert row.status == ValidationStatus.ERROR
+    assert row.status == "boxes"
     assert isinstance(row.concern, ErrorConcern)
 
 
@@ -338,7 +294,7 @@ def test_accept_char_dims_marks_single_char_done(
 
     row = session.resolve_char_concern(0, action="accept", n_bboxes=1)
 
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert (tmp_path / "cache" / "char_dims_1.csv").read_text(
         encoding="utf-8"
@@ -429,14 +385,14 @@ def test_session_reports_space_gap_concern(tmp_path: Path, monkeypatch: MonkeyPa
 
     row = session.subtitle_row(0)
 
-    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert row.status == "spacing"
     assert isinstance(row.concern, GapConcern)
     assert row.concern.kind == ConcernKind.SPACE_GAP
     assert row.concern.char_1 == "A"
     assert row.concern.char_2 == "B"
     assert row.concern.gap == 4
-    assert row.concern.space_prompt_display == "2-6"
-    assert row.concern.tab_prompt_display == "12-20"
+    assert row.concern.space_prompt == (2, 6)
+    assert row.concern.tab_prompt == (12, 20)
 
 
 def test_space_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: MonkeyPatch):
@@ -453,7 +409,7 @@ def test_space_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: Monkey
     row = session.resolve_gap_concern(0, action="space")
 
     assert row.text == "A B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 4, 12, 20)
     assert "A B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -474,7 +430,7 @@ def test_existing_space_gap_does_not_update_cutoffs(
 
     row = session.subtitle_row(0)
 
-    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert row.status == "spacing"
     assert isinstance(row.concern, GapConcern)
     assert row.concern.kind == ConcernKind.SPACE_GAP
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
@@ -501,7 +457,7 @@ def test_punctuation_ellipsis_gap_reports_existing_space_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "！ ⋯"
-    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert row.status == "spacing"
     assert isinstance(row.concern, GapConcern)
     assert row.concern.kind == ConcernKind.SPACE_GAP
     assert row.concern.char_1 == "！"
@@ -533,7 +489,7 @@ def test_known_adjacent_gap_mismatch_updates_text_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "臭和"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("臭", "和")] == (22, 41, 90, 200)
     assert "臭和" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -559,7 +515,7 @@ def test_fullwidth_latin_gap_uses_default_cutoffs(
 
     row = session.subtitle_row(0)
 
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("你", "Ｋ")] == (22, 89, 90, 200)
 
@@ -592,7 +548,7 @@ def test_adjacent_gap_choice_updates_cutoff(tmp_path: Path, monkeypatch: MonkeyP
     row = session.resolve_gap_concern(0, action="adjacent")
 
     assert row.text == "白了"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("白", "了")] == (4, 6, 12, 20)
 
@@ -613,7 +569,7 @@ def test_boundary_space_gap_updates_cutoff_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "A B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 5, 12, 20)
     assert "A B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -635,7 +591,7 @@ def test_boundary_tab_gap_updates_cutoff_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "A    B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 19)
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -663,7 +619,7 @@ def test_known_space_gap_mismatch_updates_text_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "呀　你"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("呀", "你")] == (22, 40, 90, 200)
     assert "呀　你" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -685,7 +641,7 @@ def test_known_tab_gap_mismatch_updates_text_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "A    B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -707,7 +663,7 @@ def test_known_tab_gap_replaces_newline_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "A    B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -727,7 +683,7 @@ def test_tab_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: MonkeyPa
     row = session.resolve_gap_concern(0, action="tab")
 
     assert row.text == "A    B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 15)
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")

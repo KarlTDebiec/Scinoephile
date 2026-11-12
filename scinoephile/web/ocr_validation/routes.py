@@ -1,19 +1,20 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Flask routes for OCR validation."""
+"""Flask routes for the OCR validation editor."""
 
 from __future__ import annotations
 
+from hashlib import sha256
 from io import BytesIO
-from threading import Thread
 from typing import TYPE_CHECKING
 
-from PIL import Image
-
 from scinoephile.core.dependencies.web import import_flask
+from scinoephile.web.blocks import get_block_insertions, get_block_page
+from scinoephile.web.htmx import get_editor_page_template, is_htmx_request
 
-from .concerns import SubtitleRowView
+from .concerns import FILTER_OPTIONS, CharDimsConcern, SubtitleRowView
 from .session import OcrValidationSession
+from .workspace import get_filtered_blocks
 
 __all__ = ["register_routes"]
 
@@ -21,281 +22,285 @@ if TYPE_CHECKING:
     from scinoephile.core.dependencies.web import FlaskApp, FlaskResponse
 
 flask = import_flask()
-abort = flask.abort
-current_app = flask.current_app
-render_template = flask.render_template
 request = flask.request
-response_cls = flask.Response
+_FILTER_CHOICES = tuple((key, *option) for key, option in FILTER_OPTIONS.items())
 
 
-def register_routes(app: FlaskApp):
-    """Register OCR validation routes with a Flask app.
+def register_routes(app: FlaskApp, session: OcrValidationSession):
+    """Register the OCR editor and its subtitle actions.
 
     Arguments:
-        app: Flask app
+        app: Flask application
+        session: validation state for this subtitle track
     """
-    _register_error_handlers(app)
-    _register_exit_route(app)
-    _register_filter_routes(app)
+    app.register_error_handler(IndexError, _handle_index_error)
+    app.register_error_handler(ValueError, _handle_value_error)
 
     @app.get("/")
     def index() -> str:
-        """Render the subtitle list.
+        """Render a filtered page of subtitles.
 
         Returns:
-            rendered subtitle list
+            complete document or workspace fragment
         """
-        session = _session()
-        session.reset_states()
-        return _render_index(session)
+        template, append = get_editor_page_template(request.headers)
+        if not append:
+            session.refresh_concerns()
+        status, query, after, through = _filters()
+        matching, counts, validated = get_filtered_blocks(session, status, query)
+        blocks, last_block, has_more = get_block_page(
+            matching, after=after, through=through, append=append
+        )
+        return flask.render_template(
+            template,
+            blocks=blocks,
+            counts=counts,
+            filter_options=_FILTER_CHOICES,
+            font_size_px=session.text_font_size_px,
+            font_size_key=sha256(str(session.dir_path).encode()).hexdigest(),
+            has_more=has_more,
+            matched=counts[status],
+            query=query,
+            status=status,
+            subtitle_row=session.subtitle_row,
+            through=last_block,
+            total=len(session.entries),
+            validated=validated,
+        )
 
-    @app.get("/subtitles/<int:sub_idx>")
-    def subtitle(sub_idx: int) -> str:
-        """Render one subtitle row.
+    @app.get("/subtitles/<int:sub_idx>/image.png")
+    def source_image(sub_idx: int) -> FlaskResponse:
+        """Serve the source subtitle pixels used by the box overlay.
 
         Arguments:
             sub_idx: zero-based subtitle index
         Returns:
-            rendered subtitle row
+            original subtitle image as PNG
         """
-        session = _session()
-        row = session.subtitle_row(sub_idx)
-        return _render_subtitle_row(session, row)
+        image = session.source_image(sub_idx)
+        output = BytesIO()
+        image.save(output, format="PNG")
+        return flask.Response(output.getvalue(), mimetype="image/png")
 
-    @app.get("/subtitles/<int:sub_idx>/concern.png")
-    def concern_image(sub_idx: int) -> FlaskResponse:
-        """Render one current concern image.
+    @app.post("/subtitles/<int:sub_idx>/text", defaults={"operation": "text"})
+    @app.post("/subtitles/<int:sub_idx>/concern/char", defaults={"operation": "char"})
+    @app.post("/subtitles/<int:sub_idx>/concern/gap", defaults={"operation": "gap"})
+    def update_subtitle(
+        sub_idx: int, operation: str
+    ) -> str | FlaskResponse | tuple[str, int] | tuple[str, int, dict[str, str]]:
+        """Save text or apply an action to the concern shown in the submitted row.
 
         Arguments:
             sub_idx: zero-based subtitle index
+            operation: text, character, or spacing action selected by the route
+        Raises:
+            ValueError: if a character action has no active character concern
         Returns:
-            PNG response
+            updated fragments or a redirect to the current view
         """
-        session = _session()
-        image = session.concern_image(sub_idx)
-        return _png_response(image)
+        loaded_rows: dict[int, int] = {}
+        if is_htmx_request(request.headers):
+            loaded_rows = _loaded_rows(session)
+        affected: set[int] = set()
+        if operation != "text":
+            affected = session.refresh_concerns()
+        current = session.subtitle_row(sub_idx)
+        if request.form.get("version") != current.version:
+            if operation != "text":
+                return _render_update(
+                    session, current, loaded_rows, affected, stale=True
+                )
+            message = "This subtitle changed. Reload it before submitting again."
+            if is_htmx_request(request.headers):
+                return (
+                    message,
+                    409,
+                    {"HX-Retarget": "#messages", "HX-Reswap": "innerHTML"},
+                )
+            return message, 409
 
-    @app.get("/subtitles/<int:sub_idx>/validation.png")
-    def validation_image(sub_idx: int) -> FlaskResponse:
-        """Render one subtitle image with validation bboxes.
+        if operation == "text":
+            text = request.form["text"].replace("\r\n", "\n").replace("\r", "\n")
+            row = session.update_text(sub_idx, text.replace("\n", "\\N"))
+        elif operation == "char":
+            if not isinstance(current.concern, CharDimsConcern):
+                raise ValueError("This subtitle has no character box concern.")
+            row = session.resolve_char_concern(
+                sub_idx,
+                action=request.form["action"],
+                n_bboxes=current.concern.n_bboxes,
+            )
+        else:
+            row = session.resolve_gap_concern(sub_idx, action=request.form["action"])
 
-        Arguments:
-            sub_idx: zero-based subtitle index
-        Returns:
-            PNG response
-        """
-        session = _session()
-        image = session.validation_image(sub_idx)
-        return _png_response(image)
+        affected.update(session.refresh_concerns())
+        if sub_idx in affected:
+            row = session.subtitle_row(sub_idx)
+        return _render_update(session, row, loaded_rows, affected)
 
-    @app.post("/subtitles/<int:sub_idx>/text")
-    def update_text(sub_idx: int) -> str:
-        """Update one subtitle's OCR text.
 
-        Arguments:
-            sub_idx: zero-based subtitle index
-        Returns:
-            rendered updated subtitle row
-        """
-        session = _session()
-        text = request.form.get(f"text-{sub_idx}")
-        if text is None:
-            text = request.form.get("text", "")
-        row = session.update_text(sub_idx, text)
-        return _render_subtitle_row(session, row)
+def _filters() -> tuple[str, str, int, int | None]:
+    """Read the status filter, search text, and loaded block cursors.
 
-    @app.post("/subtitles/<int:sub_idx>/concern/char")
-    def resolve_char(sub_idx: int) -> str:
-        """Resolve one character bbox concern.
-
-        Arguments:
-            sub_idx: zero-based subtitle index
-        Returns:
-            rendered updated subtitle row
-        """
-        session = _session()
-        action = request.form.get("action")
-        if action is None:
-            abort(400, "Missing action.")
-        try:
-            n_bboxes = int(request.form["n_bboxes"])
-        except KeyError:
-            abort(400, "Missing n_bboxes.")
-        except ValueError:
-            abort(400, "Invalid integer for n_bboxes.")
-        row = session.resolve_char_concern(sub_idx, action=action, n_bboxes=n_bboxes)
-        return _render_subtitle_row(session, row)
-
-    @app.post("/subtitles/<int:sub_idx>/concern/gap")
-    def resolve_gap(sub_idx: int) -> str:
-        """Resolve one spacing concern.
-
-        Arguments:
-            sub_idx: zero-based subtitle index
-        Returns:
-            rendered updated subtitle row
-        """
-        session = _session()
-        action = request.form.get("action")
-        if action is None:
-            abort(400, "Missing action.")
-        row = session.resolve_gap_concern(sub_idx, action=action)
-        return _render_subtitle_row(session, row)
+    Returns:
+        selected status, trimmed query, and cursors for new and loaded blocks
+    """
+    default = "needs-review"
+    status = request.args.get("status", default)
+    if status != "all" and status not in FILTER_OPTIONS:
+        status = default
+    through = request.form.get("through", type=int)
+    if through is None:
+        through = request.args.get("through", type=int)
+    if through is not None:
+        through = max(0, through)
+    return (
+        status,
+        request.args.get("q", "").strip(),
+        max(0, request.args.get("after", 0, type=int)),
+        through,
+    )
 
 
 def _handle_index_error(exc: IndexError) -> tuple[str, int]:
-    """Handle out-of-range subtitle requests.
+    """Return a 404 for an out-of-range subtitle.
 
     Arguments:
         exc: index error
     Returns:
-        error response body and status
+        error message and HTTP status
     """
     return str(exc), 404
 
 
 def _handle_value_error(exc: ValueError) -> tuple[str, int]:
-    """Handle request-facing validation errors.
+    """Return a 400 for an invalid subtitle action.
 
     Arguments:
         exc: validation error
     Returns:
-        error response body and status
+        error message and HTTP status
     """
     return str(exc), 400
 
 
-def _png_response(image: Image.Image) -> FlaskResponse:
-    """Encode an image as a PNG Flask response.
+def _loaded_rows(session: OcrValidationSession) -> dict[int, int]:
+    """Find the cards already in the editor, including retained drafts.
 
     Arguments:
-        image: image to encode
+        session: current validation state
     Returns:
-        PNG response
+        loaded subtitle indexes and their block numbers
     """
-    output = BytesIO()
-    image.save(output, format="PNG")
-    return response_cls(output.getvalue(), mimetype="image/png")
+    loaded = request.form.get("loaded_rows")
+    if loaded is not None:
+        indexes = {int(index) for index in loaded.split(",") if index}
+        return {
+            index: number
+            for number, (first, last) in enumerate(session.block_ranges, 1)
+            for index in range(first, last)
+            if index in indexes
+        }
+    status, query, _, through = _filters()
+    matching, _, _ = get_filtered_blocks(session, status, query)
+    blocks, _, _ = get_block_page(matching, through=through)
+    return {index: block.number for block in blocks for index in block.rows}
 
 
-def _register_error_handlers(app: FlaskApp):
-    """Register request-facing validation error handlers.
+def _render_update(
+    session: OcrValidationSession,
+    row: SubtitleRowView,
+    loaded_rows: dict[int, int],
+    affected: set[int],
+    *,
+    stale: bool = False,
+) -> str | FlaskResponse:
+    """Update affected cards and counts, or redirect a native submission.
 
     Arguments:
-        app: Flask app
-    """
-    app.register_error_handler(IndexError, _handle_index_error)
-    app.register_error_handler(ValueError, _handle_value_error)
-
-
-def _register_exit_route(app: FlaskApp):
-    """Register the route that finishes validation and stops the web server.
-
-    Arguments:
-        app: Flask app
-    """
-
-    @app.post("/exit")
-    def exit_validation() -> str:
-        """Finish validation and stop the local web server.
-
-        Returns:
-            exit confirmation
-        """
-        session = _session()
-        session.finish()
-        server = current_app.config.get("OCR_VALIDATION_SERVER")
-        if server is not None:
-            if current_app.testing:
-                server.shutdown()
-            else:
-                Thread(target=server.shutdown, daemon=True).start()
-        return "Validation exited. You can close this tab."
-
-
-def _register_filter_routes(app: FlaskApp):
-    """Register filter update routes.
-
-    Arguments:
-        app: Flask app
-    """
-
-    @app.post("/filters/done")
-    def update_done_filter() -> str:
-        """Update whether completed subtitles are shown.
-
-        Returns:
-            rendered subtitle list
-        """
-        session = _session()
-        include_done_subtitles = request.form.get("include_done_subtitles") == "1"
-        session.include_done_subtitles = include_done_subtitles
-        session.reset_states()
-        if request.headers.get("HX-Request") == "true":
-            return _render_index_body(session)
-        return _render_index(session)
-
-
-def _render_subtitle_row(session: OcrValidationSession, row: SubtitleRowView) -> str:
-    """Render one subtitle row if it is visible.
-
-    Arguments:
-        session: OCR validation session
-        row: subtitle row view model
+        session: current validation state
+        row: updated subtitle
+        loaded_rows: subtitle indexes and block numbers in the submitted view
+        affected: subtitle indexes rechecked after learning new rules
+        stale: whether the submitted concern was superseded
     Returns:
-        rendered subtitle row, or an empty response for hidden rows
+        fragments or a redirect back to the current page
     """
-    if not session.subtitle_row_is_visible(row):
-        return ""
-    return render_template("_subtitle.html", row=row)
-
-
-def _render_index(session: OcrValidationSession) -> str:
-    """Render the full subtitle list.
-
-    Arguments:
-        session: OCR validation session
-    Returns:
-        rendered subtitle list
-    """
-    rows = session.all_subtitle_rows()
-    visible_rows = [row for row in rows if session.subtitle_row_is_visible(row)]
-    return render_template(
-        "index.html",
-        index_body=_render_index_body(session, rows=visible_rows),
-        style_rows=rows,
+    status, query, _, through = _filters()
+    blocks, counts, validated = get_filtered_blocks(session, status, query)
+    block = next(
+        (
+            candidate
+            for candidate in blocks
+            if candidate.first_index <= row.sub_idx + 1 <= candidate.last_index
+        ),
+        None,
     )
-
-
-def _render_index_body(
-    session: OcrValidationSession, rows: list[SubtitleRowView] | None = None
-) -> str:
-    """Render the body content of the subtitle list.
-
-    Arguments:
-        session: OCR validation session
-        rows: optional row view models to render
-    Returns:
-        rendered subtitle list body
-    """
-    if rows is None:
-        rows = session.subtitle_rows()
-    return render_template(
-        "_index_body.html",
-        rows=rows,
-        include_done_subtitles=session.include_done_subtitles,
+    visible = block is not None and row.sub_idx in block.rows
+    if not is_htmx_request(request.headers):
+        anchor = None
+        if visible:
+            anchor = f"sub-{row.number}"
+        return flask.redirect(
+            flask.url_for(
+                "index", status=status, q=query, through=through, _anchor=anchor
+            ),
+            code=303,
+        )
+    matching_rows = {index for item in blocks for index in item.rows}
+    related_indexes = sorted(
+        ((affected & loaded_rows.keys()) | (loaded_rows.keys() - matching_rows))
+        - {row.sub_idx}
     )
-
-
-def _session() -> OcrValidationSession:
-    """Get the OCR validation session from Flask app config.
-
-    Returns:
-        OCR validation session
-    Raises:
-        TypeError: if a value has an invalid type
-    """
-    session = current_app.config["OCR_VALIDATION_SESSION"]
-    if not isinstance(session, OcrValidationSession):
-        raise TypeError("OCR validation session is not configured.")
-    return session
+    affected_blocks = {loaded_rows[index] for index in related_indexes}
+    if block is not None:
+        affected_blocks.add(block.number)
+    if through is None:
+        through = max(loaded_rows.values(), default=0)
+    visible_blocks, _, has_more = get_block_page(blocks, through=through)
+    pager_has_more = request.form.get("pager_has_more")
+    update_pager = pager_has_more is None or (pager_has_more == "true") != has_more
+    # The submitted card is already present if its block is loaded
+    if block is not None and block.number in loaded_rows.values():
+        loaded_rows = loaded_rows | {row.sub_idx: block.number}
+    added_blocks, added_rows = get_block_insertions(
+        visible_blocks,
+        loaded_rows,
+        row_key=lambda index: index,
+        row_id_prefix="subtitle-",
+    )
+    affected_blocks.update(added_rows)
+    message = ""
+    if stale and visible and row.concern is not None:
+        message = "The concern changed. Review the updated subtitle."
+    fragments = flask.render_template(
+        "_updated.html",
+        row=row,
+        blocks=[item for item in blocks if item.number in affected_blocks],
+        related_rows=[
+            (session.subtitle_row(index), index in matching_rows)
+            for index in related_indexes
+        ],
+        added_blocks=added_blocks,
+        added_rows=[
+            (session.subtitle_row(index), swap)
+            for additions in added_rows.values()
+            for index, swap in additions
+        ],
+        subtitle_row=session.subtitle_row,
+        has_more=has_more,
+        update_pager=update_pager,
+        through=through,
+        query=query,
+        status=status,
+        visible=visible,
+        counts=counts,
+        filter_options=_FILTER_CHOICES,
+        matched=counts[status],
+        total=len(session.entries),
+        validated=validated,
+        message=message,
+    )
+    if stale:
+        return flask.make_response(fragments, 409)
+    return fragments

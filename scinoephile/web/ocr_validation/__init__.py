@@ -3,8 +3,11 @@
 """Web application for OCR validation.
 
 Package hierarchy (modules may import from any above):
-* concerns / html_index
+* html_index / measurement_images
+* size_maps
+* concerns
 * session
+* workspace
 * routes
 * app
 """
@@ -19,7 +22,6 @@ from .concerns import (
     GapConcern,
     OcrConcern,
     SubtitleRowView,
-    ValidationStatus,
 )
 from .html_index import HtmlSubtitleEntry, load_html_entries, update_html_entry_text
 from .session import OcrValidationSession
@@ -33,7 +35,6 @@ __all__ = [
     "OcrConcern",
     "OcrValidationSession",
     "SubtitleRowView",
-    "ValidationStatus",
     "create_app",
     "load_html_entries",
     "update_html_entry_text",

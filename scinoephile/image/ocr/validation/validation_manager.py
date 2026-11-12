@@ -17,7 +17,13 @@ from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .char_cursor import CharCursor
-from .char_dims import get_dims_tuple, load_char_dims, save_char_dims
+from .char_dims import (
+    are_dims_within_tolerance,
+    can_auto_approve_char_dims,
+    get_dims_tuple,
+    load_char_dims,
+    save_char_dims,
+)
 from .char_grp_dims import load_char_grp_dims, save_char_grp_dims
 from .char_pair_gaps import (
     get_default_char_pair_cutoffs,
@@ -82,6 +88,37 @@ class ValidationManager:
             raise ScinoephileError(
                 f"Unable to initialize OCR validation data: {exc}"
             ) from exc
+        self._training_revision = 0
+        self._character_revisions: dict[str, int] = {}
+        self._gap_revisions: dict[tuple[str, str], int] = {}
+
+    @property
+    def training_revision(self) -> int:
+        """Revision of the learned character and spacing rules in memory."""
+        return self._training_revision
+
+    def training_changes_since(
+        self, revision: int
+    ) -> tuple[set[str], set[tuple[str, str]]]:
+        """Find characters and gaps affected by newly learned rules.
+
+        Arguments:
+            revision: last training revision already applied
+        Returns:
+            characters and character pairs that need rechecking
+        """
+        return (
+            {
+                char
+                for char, changed in self._character_revisions.items()
+                if changed > revision
+            },
+            {
+                pair
+                for pair, changed in self._gap_revisions.items()
+                if changed > revision
+            },
+        )
 
     def validate(self, series: ImageSeries) -> ImageSeries:
         """Validate all subtitles in an image series.
@@ -274,16 +311,14 @@ class ValidationManager:
 
             # Fuzzy match
             for ok_dim in ok_dims:
-                diffs = [abs(dims[i] - ok_dim[i]) for i in range(len(dims))]
-                max_diff = max(diffs)
-                if max_diff <= 2:
+                if are_dims_within_tolerance(dims, ok_dim):
                     self._update_char_grp_dims(char_grp, dims)
                     cursor.advance(n_chars=n_chars, n_bboxes=1)
                     return True
         return False
 
     def match_char_dims(self, cursor: CharCursor) -> bool:
-        """Match character against approved dimensions.
+        """Match each box and internal gap against approved character dimensions.
 
         Arguments:
             cursor: character cursor
@@ -293,32 +328,20 @@ class ValidationManager:
         for n_bboxes in self.char_dims_by_n.keys():
             if cursor.bbox_idx + n_bboxes > len(cursor.bboxes):
                 break
-            dims = get_dims_tuple(cursor.bbox_grp(n_bboxes))
+            bbox_grp = cursor.bbox_grp(n_bboxes)
+            dims = get_dims_tuple(bbox_grp)
             ok_dims = self.char_dims_by_n[n_bboxes].get(cursor.char, set())
 
-            # Exact match
-            if dims in ok_dims:
-                bbox_grp = cursor.bbox_grp(n_bboxes)
-                merged_bbox = get_merged_bbox(bbox_grp)
-                cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
-                    merged_bbox
-                ]
-                cursor.advance(n_chars=1, n_bboxes=1)
-                return True
+            if dims not in ok_dims:
+                if not can_auto_approve_char_dims(dims, ok_dims):
+                    continue
+                self.update_char_dims(cursor.char, dims)
 
-            # Fuzzy match
-            for ok_dim in ok_dims:
-                diffs = [abs(dims[i] - ok_dim[i]) for i in range(len(dims))]
-                max_diff = max(diffs)
-                if max_diff <= 2:
-                    bbox_grp = cursor.bbox_grp(n_bboxes)
-                    merged_bbox = get_merged_bbox(bbox_grp)
-                    cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
-                        merged_bbox
-                    ]
-                    self.update_char_dims(cursor.char, dims)
-                    cursor.advance(n_chars=1, n_bboxes=1)
-                    return True
+            cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
+                get_merged_bbox(bbox_grp)
+            ]
+            cursor.advance(n_chars=1, n_bboxes=1)
+            return True
         return False
 
     def suggest_char_n_bboxes(self, cursor: CharCursor) -> int:
@@ -562,6 +585,8 @@ class ValidationManager:
         if dims in dims_set:
             return
         dims_set.add(dims)
+        self._training_revision += 1
+        self._character_revisions[char] = self._training_revision
         logger.info(f"Added ({char}, {dims})")
         if self.dev:
             output_char_dims = self.char_dims_by_n[n]
@@ -582,6 +607,10 @@ class ValidationManager:
         if dims in dims_set:
             return
         dims_set.add(dims)
+        self._training_revision += 1
+        self._character_revisions[group[0]] = self._training_revision
+        if n == 2:
+            self._gap_revisions[(group[0], group[1])] = self._training_revision
         logger.info(f"Added ({group}, {dims})")
         if self.dev:
             output_char_grp_dims = self.char_grp_dims_by_n
@@ -606,6 +635,8 @@ class ValidationManager:
             self.char_pair_gaps[char_pair] = cutoffs
             if previous_cutoffs is None:
                 return
+            self._training_revision += 1
+            self._gap_revisions[char_pair] = self._training_revision
             if self.dev:
                 output_char_pair_gaps = self.char_pair_gaps
             elif char_pair in self.user_char_pair_gaps:
@@ -616,6 +647,8 @@ class ValidationManager:
             save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
             return
         self.char_pair_gaps[char_pair] = cutoffs
+        self._training_revision += 1
+        self._gap_revisions[char_pair] = self._training_revision
         logger.info(f"Added ({char_pair}, {cutoffs})")
         if self.dev:
             output_char_pair_gaps = self.char_pair_gaps

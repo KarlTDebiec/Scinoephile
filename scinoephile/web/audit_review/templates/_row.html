@@ -1,8 +1,11 @@
-{% from '_icons.html' import icon, status_select, audit_options %}
+{% from 'shared/_blocks.html' import subtitle_legend %}
+{% from 'shared/_filters.html' import status_select %}
+{% from 'shared/_controls.html' import save_status %}
+{% from '_icons.html' import icon, audit_options %}
 <fieldset id="row-{{ row.key }}"
-          class="audit-row"{% if editing_blocked %} disabled{% endif %}
+          class="audit-row subtitle-row"{% if editing_blocked %} disabled{% endif %}
           aria-label="Subtitle {{ row.index }}">
-  <legend><span>Subtitle {{ row.index }}</span><span class="block-time">{{ row.start|format_time_ms(include_milliseconds=true) }} – {{ row.end|format_time_ms(include_milliseconds=true) }}</span></legend>
+  {{ subtitle_legend(row.index, row.start, row.end) }}
   {% if has_output %}
     {% set differences = row|audit_differences %}
     <form id="form-{{ row.key }}"
@@ -60,7 +63,7 @@
         </dd>
       </dl>
       {% if row.shared_indexes|length > 1 %}<p class="shared">Shared JSON decision: saving text or a revision note updates subtitles {{ row.shared_indexes|join(", ") }}.</p>{% endif %}
-      <footer>
+      <footer class="subtitle-footer">
         <span data-proofreading-status="{% if row.changed %}changed{% else %}unchanged{% endif %}">
           <span>{{ icon("text-box-check-outline") }}Unchanged</span>
           <span>{{ icon("text-box-edit-outline") }}Changed</span>
@@ -72,7 +75,7 @@
           <span>{{ icon("checkbox-blank-outline") }}Verify proofreading</span>
           <span>{{ icon("checkbox-marked") }}Proofreading verified</span>
         </label>
-        {{ status_select('finding', 'Audit status', audit_options, row.finding) }}
+        {{ status_select('finding', 'Audit status', audit_options, row.finding, render_icon=icon) }}
         <label class="verification-toggle"
                title="Approve all audit findings in this block">
           <input type="checkbox"
@@ -80,7 +83,7 @@
           <span>{{ icon("checkbox-blank-outline") }}Verify auditing</span>
           <span>{{ icon("checkbox-marked") }}Auditing verified</span>
         </label>
-        {% include "_save_status.html" %}
+        {{ save_status("sync-" ~ row.key) }}
         <button type="submit">Save</button>
       </footer>
     </form>

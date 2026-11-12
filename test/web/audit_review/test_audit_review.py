@@ -63,7 +63,7 @@ def test_dependent_filter_counts(tmp_path: Path, monkeypatch: MonkeyPatch):
     counts = AuditFilters(q="model explanation").counts(rows)
     assert counts["proofreading"]["all"] == counts["audit"]["review"] == 1
     assert AuditFilters(q="no matching subtitles").counts(rows)["audit"]["all"] == 0
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     page = get_audit_page(audit.rows(), AuditFilters(), after=1)
     assert page.filter_counts["proofreading"]["all"] == 2
 
@@ -289,30 +289,7 @@ def test_shared_json_decisions_are_explicit_and_update_linked_rows(tmp_path: Pat
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_project(tmp_path)
-    original = audit.infile_path.read_text().replace("Same.", "Hello.")
-    audit.infile_path.write_text(original)
-    audit.outfile_path.unlink()
-    audit.proofreading_json_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {"subtitles": [{"index": 1, "text": "Hello."}]},
-                    "answer": {
-                        "revisions": [{"index": 1, "text": "Hallo.", "note": "Model"}]
-                    },
-                }
-            ]
-        )
-    )
-    audit = ReviewAuditProject(
-        audit.infile_path,
-        audit.outfile_path,
-        proofreading_json_path=audit.proofreading_json_path,
-        audit_json_path=audit.audit_json_path,
-        language=Language.eng,
-    )
-    audit = _materialize_output(audit)
+    audit = _make_linked_project(tmp_path)
     row = audit.rows()[0]
     assert row.shared_indexes == (1, 2)
     affected = audit.save(
@@ -746,7 +723,7 @@ def test_search_by_exact_block_number(tmp_path: Path, monkeypatch: MonkeyPatch):
         monkeypatch: configure a single block per page
     """
     audit = _make_project(tmp_path)
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     for query in ("block 2", "block:2", "BLOCK #2", " block 2 "):
         page = get_audit_page(audit.rows(), AuditFilters(q=query))
         assert [block.number for block in page.blocks] == [2]
@@ -766,6 +743,42 @@ def test_search_by_exact_block_number(tmp_path: Path, monkeypatch: MonkeyPatch):
     text = response.get_data(as_text=True)
     assert 'id="block-2"' in text and 'id="block-1"' not in text
     assert 'value="block 2"' in text
+
+
+def _make_linked_project(dir_path: Path) -> ReviewAuditProject:
+    """Create two blocks linked by a shared proofreading decision.
+
+    Arguments:
+        dir_path: temporary project directory
+    Returns:
+        editable review session with matching source text in both blocks
+    """
+    audit = _make_project(dir_path)
+    original = audit.infile_path.read_text(encoding="utf-8").replace("Same.", "Hello.")
+    audit.infile_path.write_text(original, encoding="utf-8")
+    audit.outfile_path.unlink()
+    audit.proofreading_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "Hello."}]},
+                    "answer": {
+                        "revisions": [{"index": 1, "text": "Hallo.", "note": "Model"}]
+                    },
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return _materialize_output(
+        ReviewAuditProject(
+            audit.infile_path,
+            audit.outfile_path,
+            proofreading_json_path=audit.proofreading_json_path,
+            audit_json_path=audit.audit_json_path,
+            language=Language.eng,
+        )
+    )
 
 
 def _make_project(dir_path: Path, *, with_json: bool = True) -> ReviewAuditProject:
@@ -906,14 +919,14 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
     assert len(page.rows) == 5 and len(page.blocks) == 5
     assert page.matching == 8 and page.last_block == 5 and page.has_more
     text = create_app(audit).test_client().get("/").get_data(as_text=True)
-    assert text.count('class="audit-row"') == 5
+    assert text.count('class="audit-row subtitle-row"') == 5
     assert '<details id="block-8"' not in text
     assert "loaded-through" in text and 'hx-trigger="intersect once"' in text
     client = create_app(audit).test_client()
     batch = client.get(
         "/?after=5", headers={"HX-Request": "true", "HX-Target": "load-more"}
     ).get_data(as_text=True)
-    assert batch.count('class="audit-row"') == 3
+    assert batch.count('class="audit-row subtitle-row"') == 3
     assert '<details id="block-8"' in batch and 'id="workspace"' not in batch
     assert (
         BeautifulSoup(batch, "html.parser").select_one(
@@ -928,7 +941,7 @@ def test_block_batches_use_stable_cursors(tmp_path: Path):
         assert form is not None and form["hx-swap-oob"] == "outerHTML"
         assert "through=8" in str(form["action"])
     native = client.get("/?after=5").get_data(as_text=True)
-    assert native.count('class="audit-row"') == 8
+    assert native.count('class="audit-row subtitle-row"') == 8
     prefix = get_audit_page(audit.rows(), AuditFilters(), through=8)
     assert len(prefix.blocks) == 8 and not prefix.has_more
 
@@ -1067,6 +1080,47 @@ def test_autosave_clears_old_approval_after_text_edit(
     assert 'data-verified="false"' in html
 
 
+def test_autosave_inserts_newly_matching_block_in_source_order(tmp_path: Path):
+    """Insert a linked block before the existing one when it starts matching.
+
+    Arguments:
+        tmp_path: temporary project directory
+    """
+    audit = _make_linked_project(tmp_path)
+    first, second = audit.rows()
+    audit.save(
+        first.key,
+        reviewed=first.reviewed,
+        review_note=first.review_note,
+        notes="",
+        finding="ok",
+        verified=True,
+        version=first.version,
+    )
+    client = create_app(audit).test_client()
+    page = client.get("/?audit=unaudited").get_data(as_text=True)
+    assert 'id="block-2"' in page and 'id="block-1"' not in page
+    with client.session_transaction() as session:
+        csrf = session["csrf"]
+    response = client.post(
+        f"/rows/{second.key}?audit=unaudited",
+        data=dict(
+            csrf=csrf,
+            through="2",
+            version=second.version,
+            reviewed="Hello again.",
+            review_note="Fixed",
+            notes="",
+            finding="unaudited",
+        ),
+        headers={"HX-Request": "true", "HX-Target": f"sync-{second.key}"},
+    )
+    assert response.status_code == 200
+    result = BeautifulSoup(response.data, "html.parser")
+    assert result.select_one('[hx-swap-oob="beforebegin:#block-2"] > #block-1')
+    assert result.select_one("#block-2") is None
+
+
 def test_autosave_retains_incrementally_loaded_scope(
     tmp_path: Path, monkeypatch: MonkeyPatch
 ):
@@ -1077,7 +1131,7 @@ def test_autosave_retains_incrementally_loaded_scope(
         monkeypatch: configure a single block per page
     """
     audit = _make_project(tmp_path)
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     client = create_app(audit).test_client()
     first = client.get("/").get_data(as_text=True)
     assert 'id="block-1"' in first and 'id="block-2"' not in first
@@ -1134,7 +1188,7 @@ def test_bulk_verification_only_covers_loaded_blocks(
         monkeypatch: configure a single block per page
     """
     audit = _make_project(tmp_path)
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     filters = AuditFilters()
     page = get_audit_page(audit.rows(), filters)
     assert len(page.rows) == 1
@@ -1185,7 +1239,7 @@ def test_bulk_proofreading_creates_cases_only_for_complete_visible_blocks(
         audit_json_path=audit.audit_json_path,
         language=Language.eng,
     )
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     client = create_app(audit).test_client()
     filtered = BeautifulSoup(client.get("/?q=Hello").data, "html.parser")
     button = filtered.select_one("#verify-visible-proofreading button")
@@ -1329,7 +1383,7 @@ def test_bulk_verification_http_and_native_form(
         monkeypatch: configure a single block per page
     """
     audit = _materialize_output(_make_project(tmp_path))
-    monkeypatch.setattr("scinoephile.web.audit_review.workspace._PAGE_SIZE", 1)
+    monkeypatch.setattr("scinoephile.web.blocks._PAGE_SIZE", 1)
     client = create_app(audit).test_client()
     client.get("/")
     assert client.post("/verify-visible/audit?through=2").status_code == 403

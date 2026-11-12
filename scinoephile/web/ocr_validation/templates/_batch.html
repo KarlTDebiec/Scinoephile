@@ -1,0 +1,6 @@
+{% from 'shared/_controls.html' import load_more_blocks, loaded_through %}
+{% for block in blocks %}
+  {% include "_block.html" %}
+{% endfor %}
+{{ load_more_blocks(url_for('index', status=status, q=query, after=through), {"status": status, "q": query, "after": through}, has_more) }}
+{{ loaded_through(through, request.headers.get('HX-Target') == 'load-more') }}

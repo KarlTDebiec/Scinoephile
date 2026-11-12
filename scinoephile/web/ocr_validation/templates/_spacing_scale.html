@@ -1,0 +1,33 @@
+{% from "_number_line.html" import number_line %}
+{% set concern = row.concern %}
+<div class="spacing-scale">
+  {{ number_line(concern.scale_image, "Gap of " ~ concern.gap ~ " pixels between “" ~ concern.char_1 ~ "” and “" ~ concern.char_2 ~ "”", "spacing-key-" ~ row.sub_idx, reading=concern.gap, characters=(concern.char_1, concern.char_2)) }}
+</div>
+<ul class="spacing-key" id="spacing-key-{{ row.sub_idx }}">
+  {% for kind, label, lower, upper in concern.scale_bands %}
+    {% set light, dark = concern.scale_colors[kind] %}
+    {# djlint:off H021 #}
+    <li style="--band-color: light-dark({{ light }}, {{ dark }})">
+      {{ label }}
+      <small>
+        {% if lower is none %}
+          ≤{{ upper }}
+        {% elif upper is none %}
+          ≥{{ lower }}
+        {% elif lower == upper %}
+          {{ lower }}
+        {% else %}
+          {{ lower }}–{{ upper }}
+        {% endif %}
+      </small>
+    </li>
+    {# djlint:on #}
+  {% endfor %}
+</ul>
+<div class="spacing-actions">
+  {% for action_value, action_label, current_bound in concern.action_options %}
+    <button type="submit" name="action" value="{{ action_value }}">
+      {{ action_label }} <span>{{ current_bound }} → {{ concern.gap }}</span>
+    </button>
+  {% endfor %}
+</div>

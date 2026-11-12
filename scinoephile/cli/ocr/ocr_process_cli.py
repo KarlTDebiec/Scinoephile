@@ -159,7 +159,7 @@ class OcrProcessCli(ScinoephileCliBase):
 
         # Web arguments
         arg_groups["web arguments"].add_argument(
-            "--interactive",
+            "--serve",
             action="store_true",
             help="launch the local OCR validation web UI",
         )
@@ -199,7 +199,7 @@ class OcrProcessCli(ScinoephileCliBase):
         stream_index: int | None,
         language: Language,
         clean: bool,
-        interactive: bool,
+        serve: bool,
         web_args: WebServerArguments,
         dev: bool,
         llm_args: LlmArguments,
@@ -215,7 +215,7 @@ class OcrProcessCli(ScinoephileCliBase):
             stream_index: optional subtitle stream index
             language: subtitle language
             clean: whether to clean recognized subtitle text
-            interactive: whether to launch interactive validation
+            serve: whether to open the OCR validation editor after processing
             web_args: web server configuration
             dev: whether to enable development mode
             llm_args: LLM configuration
@@ -239,9 +239,10 @@ class OcrProcessCli(ScinoephileCliBase):
                 stream_index=stream_index,
                 cache_root_path=cache_args.root_path,
                 clean=clean,
-                interactive=interactive,
+                interactive=serve,
                 host=web_args.host,
                 port=web_args.port,
+                title=web_args.title,
                 dev=dev,
                 overwrite=overwrite,
                 overwrite_cache=cache_args.overwrite,

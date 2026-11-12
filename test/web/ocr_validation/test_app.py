@@ -7,8 +7,10 @@ from __future__ import annotations
 import logging
 import sys
 from collections.abc import Mapping, Sequence
+from contextlib import nullcontext
 from pathlib import Path
 from typing import cast
+from unittest.mock import Mock
 
 from pytest import LogCaptureFixture, MonkeyPatch, raises
 
@@ -78,7 +80,7 @@ def test_run_app_wraps_server_errors(monkeypatch: MonkeyPatch):
     )
     monkeypatch.setattr(
         "scinoephile.web.ocr_validation.app.create_app",
-        lambda session, *, host: object(),
+        lambda session, *, host, title: object(),
     )
     monkeypatch.setattr(
         "werkzeug.serving.make_server",
@@ -157,16 +159,9 @@ def test_run_app_uses_available_port_when_requested_port_is_in_use(
         def serve_forever(self):
             """Serve until stopped."""
 
-    class FakeApp:
-        """Fake Flask app."""
-
-        def __init__(self):
-            """Initialize."""
-            self.config: dict[str, object] = {}
-
     captured: dict[str, int] = {}
 
-    def fake_make_server(host: str, port: int, app: object) -> FakeServer:
+    def fake_make_server(host: str, port: int, app: object) -> nullcontext[FakeServer]:
         """Fake Werkzeug server factory.
 
         Arguments:
@@ -174,10 +169,10 @@ def test_run_app_uses_available_port_when_requested_port_is_in_use(
             port: port to bind
             app: WSGI app
         Returns:
-            fake server
+            context manager containing the fake server
         """
         captured["port"] = port
-        return FakeServer()
+        return nullcontext(FakeServer())
 
     caplog.set_level(logging.INFO, logger="scinoephile.web.ocr_validation.app")
     monkeypatch.setattr(
@@ -185,12 +180,14 @@ def test_run_app_uses_available_port_when_requested_port_is_in_use(
     )
     monkeypatch.setattr(
         "scinoephile.web.ocr_validation.app.create_app",
-        lambda session, *, host: FakeApp(),
+        lambda session, *, host, title: object(),
     )
     monkeypatch.setattr("werkzeug.serving.make_server", fake_make_server)
 
-    run_app(cast(OcrValidationSession, object()), "127.0.0.1", 5000)
+    session = Mock(spec=OcrValidationSession)
+    run_app(session, "127.0.0.1", 5000)
 
+    session.prepare.assert_called_once_with()
     assert captured["port"] == 0
     assert "OCR validation web UI port 5000 is already in use" in caplog.text
     assert "OCR validation web UI: http://127.0.0.1:54321/" in caplog.text
