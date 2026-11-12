@@ -133,7 +133,7 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
             OcrProcessCli,
             f"--infile {infile_path} --stream-index 3 --language eng "
             f"-o {output_dir_path} --cache-dir {cache_root_path} "
-            "--clean --interactive --host 0.0.0.0 --port 5051 --dev "
+            "--clean --serve --host 0.0.0.0 --port 5051 --dev "
             '--title "Film - English" '
             "--overwrite --cache-overwrite --llm-no-op",
         )

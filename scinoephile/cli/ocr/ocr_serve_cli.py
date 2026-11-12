@@ -72,6 +72,8 @@ class OcrServeCli(ScinoephileCliBase):
             "output arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         groups["input arguments"].add_argument(
             "-i",
             "--infile",
@@ -80,8 +82,14 @@ class OcrServeCli(ScinoephileCliBase):
             type=input_dir_arg(),
             help="OCR image subtitle directory containing index.html and PNG files",
         )
+
+        # Operation arguments
         add_ocr_validation_args(groups["operation arguments"])
+
+        # Web arguments
         add_web_server_args(groups["web arguments"])
+
+        # Output arguments
         groups["output arguments"].add_argument(
             "-o",
             "--outfile",
@@ -90,6 +98,7 @@ class OcrServeCli(ScinoephileCliBase):
             type=output_file_arg(exist_ok=True, create=False),
             help="SRT output rebuilt from the image index on startup",
         )
+
         parser.set_defaults(_parser=parser)
 
     @classmethod
