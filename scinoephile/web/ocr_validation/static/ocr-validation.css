@@ -63,11 +63,14 @@
     letter-spacing: calc(var(--glyph-spacing) * var(--font-scale));
     line-height: 1.2;
     padding: .1em 0;
+    border-color: transparent;
     text-align: center;
     color: var(--glyph-fill);
     -webkit-text-stroke: calc(var(--ocr-outline-width, 2) * 1px) var(--outline);
     paint-order: stroke fill;
     caret-color: var(--text);
+
+    &:is(:hover, :focus) { border-color: var(--border); }
 
     @media (prefers-color-scheme: dark) {
       color: rgb(from var(--glyph-fill) calc(255 - r) calc(255 - g) calc(255 - b));
@@ -86,18 +89,9 @@
 }
 
 /* Box selection, character confirmation, and spacing actions */
-.ocr-validation {
-  &:not(:empty) { margin-top: .75rem; }
-  & fieldset {
-    min-width: 0;
-    border: 1px solid var(--border);
-    border-radius: .25rem;
-    & p { margin: .1rem 0 .5rem; }
-  }
-}
+.ocr-validation:not(:empty) { margin-top: .75rem; }
 
 /* Character dimensions at one physical pixel per measurement step */
-.character-check { container-type: inline-size; }
 .character-actions {
   display: grid;
   grid-template-columns: minmax(4.5rem, 1fr) minmax(0, max-content) minmax(4.5rem, 1fr);

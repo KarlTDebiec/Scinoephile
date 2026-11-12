@@ -11,33 +11,30 @@
         hx-swap="outerHTML"
         hx-include="#loaded-through"
         hx-sync="#workspace:queue all"
-        class="{{ 'character-check' if character_review else 'spacing-check' }}"
+        {% if character_review %}aria-label="Character review"{% else %}class="spacing-check"{% endif %}
         data-ocr-action>
     <input type="hidden" name="csrf" value="{{ csrf }}">
     <input type="hidden" name="version" value="{{ row.version }}">
     {% if character_review %}
-      <fieldset class="character-confirm">
-        <legend>Confirm the character</legend>
-        {% include "_character_size_maps.html" %}
-        <div class="character-actions">
-          <p class="ocr-character">
-            <strong>{{ row.concern.char }}</strong>
-            {% if row.concern.char_pinyin %}<small>{{ row.concern.char_pinyin }}</small>{% endif %}
-            {% if row.concern.char_yale %}<small>{{ row.concern.char_yale }}</small>{% endif %}
-          </p>
-          <div>
-            <button type="submit"
-                    name="action"
-                    value="contract"
-                    {% if not row.concern.can_contract %}disabled{% endif %}>Subtract bounding box</button>
-            <button type="submit"
-                    name="action"
-                    value="expand"
-                    {% if not row.concern.can_expand %}disabled{% endif %}>Add bounding box</button>
-          </div>
-          <button type="submit" name="action" value="accept">Accept</button>
+      {% include "_character_size_maps.html" %}
+      <div class="character-actions">
+        <p class="ocr-character">
+          <strong>{{ row.concern.char }}</strong>
+          {% if row.concern.char_pinyin %}<small>{{ row.concern.char_pinyin }}</small>{% endif %}
+          {% if row.concern.char_yale %}<small>{{ row.concern.char_yale }}</small>{% endif %}
+        </p>
+        <div>
+          <button type="submit"
+                  name="action"
+                  value="contract"
+                  {% if not row.concern.can_contract %}disabled{% endif %}>Subtract bounding box</button>
+          <button type="submit"
+                  name="action"
+                  value="expand"
+                  {% if not row.concern.can_expand %}disabled{% endif %}>Add bounding box</button>
         </div>
-      </fieldset>
+        <button type="submit" name="action" value="accept">Accept</button>
+      </div>
     {% else %}
       {% include "_spacing_scale.html" %}
     {% endif %}

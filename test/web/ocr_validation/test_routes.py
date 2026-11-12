@@ -41,7 +41,7 @@ def test_character_approval_advances_then_reuses_learned_dimensions(
     session = _session(images_path, tmp_path)
     client = create_app(session).test_client()
     page = client.get("/?status=character")
-    assert b"<legend>Confirm the character</legend>" in page.data
+    assert b'aria-label="Character review"' in page.data
     assert b">Characters need review</p>" in page.data
     assert b'id="sub-2"' in page.data
 
