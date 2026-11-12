@@ -126,6 +126,10 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
         rb'class="number-line-band"\s+data-band="auto-approved"', expanded.data
     )
     assert len(gap_bands) == 3
+    assert search(
+        rb'data-band="proposed"\s+style="--band-start: 0\.0%;\s+--band-end: 10\.0%"',
+        expanded.data,
+    )
     maps = findall(rb'src="data:image/png;base64,([^"]+)"', expanded.data)
     assert len(maps) == 2
     with (
@@ -399,8 +403,8 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     page_text = page.get_data(as_text=True)
     assert f'aria-label="Gap of {gap} pixels between “A” and “B”"' in page_text
     assert b'aria-describedby="spacing-key-0"' in page.data
-    assert f'--gap-position: {gap / 2}%"' in page_text
-    assert search(rb'--band-start: 1\.25%;\s+--band-end: 2\.75%"', page.data)
+    assert f'--gap-position: {(gap + 0.5) / 2}%"' in page_text
+    assert search(rb'--band-start: 1\.5%;\s+--band-end: 3\.0%"', page.data)
     legend = page_text.split('id="spacing-key-0">', 1)[1]
     after_legend = legend.split("</ul>", 1)[1]
     for label in labels:

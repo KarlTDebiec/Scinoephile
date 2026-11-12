@@ -33,7 +33,7 @@ class CharacterGapScale:
     ticks: range
     """Labels spanning the stored, accepted, and measured gaps."""
     bands: tuple[tuple[str, str, int | None, int | None], ...]
-    """Colored ranges from the background through the stored gaps."""
+    """Colored ranges from the background through the proposed gap."""
 
 
 @dataclass(frozen=True)
@@ -160,7 +160,7 @@ def _get_gap_scale(gap: int, stored: set[int]) -> CharacterGapScale:
     """
     tolerance = CHAR_DIM_TOLERANCE
     lower = min(0, gap, min(stored, default=tolerance) - tolerance)
-    upper = max(10, gap, max(stored, default=0) + tolerance)
+    upper = max(10, gap + 1, max(stored, default=0) + tolerance + 1)
     step = ((upper - lower + 19) // 20) * 5
     ticks = range(lower // step * step, ((upper + step - 1) // step + 1) * step, step)
     bands: list[tuple[str, str, int | None, int | None]] = [
@@ -171,4 +171,5 @@ def _get_gap_scale(gap: int, stored: set[int]) -> CharacterGapScale:
         for value in sorted(stored)
     )
     bands.extend(("stored", _STORED_LABEL, value, value) for value in sorted(stored))
+    bands.append(("proposed", "Proposed", gap, gap))
     return CharacterGapScale(gap, ticks, tuple(bands))

@@ -213,15 +213,6 @@
     inset: 0 calc(100% - var(--band-end)) 0 var(--band-start);
     background: var(--band-color);
   }
-  & .number-line-proposal {
-    position: absolute;
-    top: 50%;
-    left: var(--gap-position);
-    width: .4rem;
-    aspect-ratio: 1;
-    transform: translate(-50%, -50%);
-    background: var(--measurement-proposed);
-  }
   & :is(.number-line-start, .number-line-end) {
     position: absolute;
     top: 50%;

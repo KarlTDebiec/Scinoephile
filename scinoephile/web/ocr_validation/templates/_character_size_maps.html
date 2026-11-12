@@ -11,7 +11,7 @@
         {% if size_map.gap_before is not none %}
           {% set gap = size_map.gap_before %}
           <figure class="character-gap-scale">
-            {{ number_line(gap.ticks, gap.bands, gap.value, "Gap between boxes " ~ loop.index0 ~ " and " ~ loop.index ~ ": " ~ gap.value ~ " pixels", legend_id, point=true) }}
+            {{ number_line(gap.ticks, gap.bands, gap.value, "Gap between boxes " ~ loop.index0 ~ " and " ~ loop.index ~ ": " ~ gap.value ~ " pixels", legend_id, show_reading=false) }}
             <figcaption>{{ gap.value }} px</figcaption>
           </figure>
         {% endif %}
