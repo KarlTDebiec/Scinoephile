@@ -144,22 +144,13 @@ function syncSaveStatus(form) {
     if (!indicator) return;
     const state = getSaveState(form);
     const invalid = validateReviewForm(form);
-    let status = "saved";
-    let message = "Saved";
-    if (state.error) {
-        status = "error";
-        message = state.error;
-    } else if (invalid) {
-        status = "invalid";
-        message = invalid;
-    } else if (state.inFlight) {
-        status = "saving";
-        message = "Saving…";
-    } else if (JSON.stringify(reviewValues(form)) !== state.saved) {
-        status = "unsaved";
-        message = "Unsaved changes — leave the field to save.";
-    }
-    showEditorSaveStatus(indicator, status, message, state.inFlight);
+    showEditorSaveStatus(indicator, {
+        error: state.error,
+        invalid,
+        busy: state.inFlight,
+        unsaved: JSON.stringify(reviewValues(form)) !== state.saved ?
+            "Unsaved changes — leave the field to save." : ""
+    });
 }
 
 /**
@@ -273,6 +264,9 @@ document.addEventListener("htmx:afterRequest", event => {
 document.addEventListener("htmx:oobBeforeSwap", event => {
     const target = event.detail.target;
     if (!target.matches(".audit-row, .subtitle-block")) return;
+    // Sibling insertions have a different ID from their anchor.
+    const incoming = event.detail.fragment.firstElementChild;
+    if (incoming && incoming.id !== target.id) return;
     for (const form of target.querySelectorAll("form")) {
         const state = getSaveState(form);
         const signature = JSON.stringify(reviewValues(form));

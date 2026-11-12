@@ -1,4 +1,2 @@
-<output id="summary"
-        role="status"
-        title="{{ validated }} of {{ total }} validated"
-        aria-label="{{ matched }} matching subtitles"{% if oob|default(false) %} hx-swap-oob="outerHTML"{% endif %}>{{ "{:,}".format(matched) }}</output>
+{% from 'shared/_controls.html' import editor_summary %}
+{{ editor_summary(matched, validated ~ ' of ' ~ total ~ ' validated', oob=oob|default(false)) }}

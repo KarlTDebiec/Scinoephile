@@ -13,6 +13,8 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.dependencies.web import import_flask
 from scinoephile.operations.review_audit.filters import AuditFilters
 from scinoephile.operations.review_audit.project import ReviewAuditProject
+from scinoephile.web.blocks import get_block_insertions
+from scinoephile.web.htmx import get_editor_page_template
 
 from .workspace import get_audit_page, get_view_context
 
@@ -40,22 +42,13 @@ def register_editor_routes(app: FlaskApp, audit: ReviewAuditProject):
         Returns:
             rendered audit page
         """
-        is_htmx = (
-            flask.request.headers.get("HX-Request") == "true"
-            and flask.request.headers.get("HX-History-Restore-Request") != "true"
-        )
-        append = is_htmx and flask.request.headers.get("HX-Target") == "load-more"
+        template, append = get_editor_page_template(flask.request.headers)
         try:
             view = get_view_context(
                 audit, _parse_filters(flask.request.args), append=append
             )
         except ValueError as exc:
             return flask.render_template("error.html", message=str(exc)), 400
-        template = "index.html"
-        if append:
-            template = "_batch.html"
-        elif is_htmx:
-            template = "_workspace.html"
         return flask.render_template(template, **view)
 
     @app.post("/rows/<key>")
@@ -109,25 +102,26 @@ def register_editor_routes(app: FlaskApp, audit: ReviewAuditProject):
             destination_values = dict(asdict(page.filters), through=page.last_block)
             destination = f"/?{urlencode(destination_values)}#row-{key}"
             return flask.redirect(destination, code=303)
-        old_keys = {row.key for row in before.rows}
-        old_blocks = {block.number for block in before.blocks}
-        additions = {
-            block.number: [row for row in block.rows if row.key not in old_keys]
-            for block in page.blocks
-            if block.number in old_blocks
+        loaded_rows = {
+            row.key: block.number for block in before.blocks for row in block.rows
         }
+        old_blocks = set(loaded_rows.values())
+        added_blocks, added_rows = get_block_insertions(
+            page.blocks, loaded_rows, row_key=lambda row: row.key, row_id_prefix="row-"
+        )
         visible = {row.key: row for row in page.rows}
         others = {
             changed_key: visible.get(changed_key)
             for changed_key in affected
-            if changed_key != key and changed_key in old_keys
+            if changed_key != key and changed_key in loaded_rows
         }
         return flask.render_template(
             "_saved.html",
             row=visible.get(key),
             current=current,
             autosave=flask.request.headers.get("HX-Target") == f"sync-{key}",
-            additions=additions,
+            added_blocks=added_blocks,
+            added_rows=added_rows,
             others=others,
             old_blocks=old_blocks,
             removed_blocks=old_blocks - {block.number for block in page.blocks},

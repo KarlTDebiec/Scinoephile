@@ -289,30 +289,7 @@ def test_shared_json_decisions_are_explicit_and_update_linked_rows(tmp_path: Pat
     Arguments:
         tmp_path: temporary project directory
     """
-    audit = _make_project(tmp_path)
-    original = audit.infile_path.read_text().replace("Same.", "Hello.")
-    audit.infile_path.write_text(original)
-    audit.outfile_path.unlink()
-    audit.proofreading_json_path.write_text(
-        json.dumps(
-            [
-                {
-                    "query": {"subtitles": [{"index": 1, "text": "Hello."}]},
-                    "answer": {
-                        "revisions": [{"index": 1, "text": "Hallo.", "note": "Model"}]
-                    },
-                }
-            ]
-        )
-    )
-    audit = ReviewAuditProject(
-        audit.infile_path,
-        audit.outfile_path,
-        proofreading_json_path=audit.proofreading_json_path,
-        audit_json_path=audit.audit_json_path,
-        language=Language.eng,
-    )
-    audit = _materialize_output(audit)
+    audit = _make_linked_project(tmp_path)
     row = audit.rows()[0]
     assert row.shared_indexes == (1, 2)
     affected = audit.save(
@@ -768,6 +745,42 @@ def test_search_by_exact_block_number(tmp_path: Path, monkeypatch: MonkeyPatch):
     assert 'value="block 2"' in text
 
 
+def _make_linked_project(dir_path: Path) -> ReviewAuditProject:
+    """Create two blocks linked by a shared proofreading decision.
+
+    Arguments:
+        dir_path: temporary project directory
+    Returns:
+        editable review session with matching source text in both blocks
+    """
+    audit = _make_project(dir_path)
+    original = audit.infile_path.read_text(encoding="utf-8").replace("Same.", "Hello.")
+    audit.infile_path.write_text(original, encoding="utf-8")
+    audit.outfile_path.unlink()
+    audit.proofreading_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "Hello."}]},
+                    "answer": {
+                        "revisions": [{"index": 1, "text": "Hallo.", "note": "Model"}]
+                    },
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return _materialize_output(
+        ReviewAuditProject(
+            audit.infile_path,
+            audit.outfile_path,
+            proofreading_json_path=audit.proofreading_json_path,
+            audit_json_path=audit.audit_json_path,
+            language=Language.eng,
+        )
+    )
+
+
 def _make_project(dir_path: Path, *, with_json: bool = True) -> ReviewAuditProject:
     """Write original subtitles and optional native proofreading and audit cases.
 
@@ -1065,6 +1078,47 @@ def test_autosave_clears_old_approval_after_text_edit(
     html = response.get_data(as_text=True)
     assert f'data-finding="{expected_finding}"' in html
     assert 'data-verified="false"' in html
+
+
+def test_autosave_inserts_newly_matching_block_in_source_order(tmp_path: Path):
+    """Insert a linked block before the existing one when it starts matching.
+
+    Arguments:
+        tmp_path: temporary project directory
+    """
+    audit = _make_linked_project(tmp_path)
+    first, second = audit.rows()
+    audit.save(
+        first.key,
+        reviewed=first.reviewed,
+        review_note=first.review_note,
+        notes="",
+        finding="ok",
+        verified=True,
+        version=first.version,
+    )
+    client = create_app(audit).test_client()
+    page = client.get("/?audit=unaudited").get_data(as_text=True)
+    assert 'id="block-2"' in page and 'id="block-1"' not in page
+    with client.session_transaction() as session:
+        csrf = session["csrf"]
+    response = client.post(
+        f"/rows/{second.key}?audit=unaudited",
+        data=dict(
+            csrf=csrf,
+            through="2",
+            version=second.version,
+            reviewed="Hello again.",
+            review_note="Fixed",
+            notes="",
+            finding="unaudited",
+        ),
+        headers={"HX-Request": "true", "HX-Target": f"sync-{second.key}"},
+    )
+    assert response.status_code == 200
+    result = BeautifulSoup(response.data, "html.parser")
+    assert result.select_one('[hx-swap-oob="beforebegin:#block-2"] > #block-1')
+    assert result.select_one("#block-2") is None
 
 
 def test_autosave_retains_incrementally_loaded_scope(

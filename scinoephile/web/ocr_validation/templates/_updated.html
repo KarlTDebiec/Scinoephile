@@ -15,8 +15,8 @@
   {% include "_row_status.html" %}
 {% endfor %}
 {% with oob=false, visible=true %}
-  {% for block, target in added_blocks %}
-    <div hx-swap-oob="beforebegin:{{ target }}">{% include "_block.html" %}</div>
+  {% for block, swap in added_blocks %}
+    <div hx-swap-oob="{{ swap }}">{% include "_block.html" %}</div>
   {% endfor %}
   {% for row, swap in added_rows %}
     <div hx-swap-oob="{{ swap }}">{% include "_subtitle.html" %}</div>

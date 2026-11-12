@@ -3,19 +3,42 @@
 /**
  * Update the shared accessible save indicator.
  * @param {HTMLOutputElement} indicator - Status element in the edit form.
- * @param {string} status - Saved, saving, unsaved, invalid, or error.
- * @param {string} message - Detailed status message.
- * @param {boolean} busy - Whether a save request is active.
+ * @param {Object} state - Save status inputs.
+ * @param {string} [state.error] - Request error, or empty if none.
+ * @param {string} [state.invalid] - Validation error, or empty if valid.
+ * @param {boolean} state.busy - Whether a save request is active.
+ * @param {string} state.unsaved - Draft guidance, or empty if clean.
  */
-function showEditorSaveStatus(indicator, status, message, busy) {
-    indicator.dataset.saveState = status;
-    indicator.querySelector("span").textContent = {
+function showEditorSaveStatus(indicator, {
+    error,
+    invalid,
+    busy,
+    unsaved
+}) {
+    let status = "saved";
+    let message = "";
+    if (error) {
+        status = "error";
+        message = error;
+    } else if (invalid) {
+        status = "invalid";
+        message = invalid;
+    } else if (busy) {
+        status = "saving";
+    } else if (unsaved) {
+        status = "unsaved";
+        message = unsaved;
+    }
+    const label = {
         saved: "Saved",
         saving: "Saving…",
         unsaved: "Unsaved",
         invalid: "Invalid",
         error: "Error"
     } [status];
+    indicator.dataset.saveState = status;
+    indicator.querySelector("span").textContent = label;
+    message ||= label;
     indicator.title = message;
     indicator.setAttribute("aria-label", message);
     indicator.setAttribute("aria-busy", String(busy));

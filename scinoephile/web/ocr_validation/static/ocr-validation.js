@@ -99,21 +99,12 @@ function hasOcrDrafts() {
  */
 function syncOcrSave(form) {
     const state = ocrSaveState(form);
-    const busy = state.sent !== null;
-    let status = "saved";
-    let message = "Saved";
-    if (state.error) {
-        status = "error";
-        message = state.error;
-    } else if (busy) {
-        status = "saving";
-        message = "Saving…";
-    } else if (hasOcrDraft(form)) {
-        status = "unsaved";
-        message = "Leave the field to save.";
-    }
     const row = form.closest(".ocr-row");
-    showEditorSaveStatus(row.querySelector(".save-status"), status, message, busy);
+    showEditorSaveStatus(row.querySelector(".save-status"), {
+        error: state.error,
+        busy: state.sent !== null,
+        unsaved: hasOcrDraft(form) ? "Leave the field to save." : ""
+    });
 }
 
 /**

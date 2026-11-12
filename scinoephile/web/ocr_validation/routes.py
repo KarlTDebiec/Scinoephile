@@ -9,7 +9,8 @@ from io import BytesIO
 from typing import TYPE_CHECKING
 
 from scinoephile.core.dependencies.web import import_flask
-from scinoephile.web.blocks import get_block_page
+from scinoephile.web.blocks import get_block_insertions, get_block_page
+from scinoephile.web.htmx import get_editor_page_template, is_htmx_request
 
 from .concerns import FILTER_OPTIONS, CharDimsConcern, SubtitleRowView
 from .session import OcrValidationSession
@@ -42,7 +43,7 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
         Returns:
             complete document or workspace fragment
         """
-        append = _is_htmx() and request.headers.get("HX-Target") == "load-more"
+        template, append = get_editor_page_template(request.headers)
         if not append:
             session.refresh_concerns()
         status, query, after, through = _filters()
@@ -50,11 +51,6 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
         blocks, last_block, has_more = get_block_page(
             matching, after=after, through=through, append=append
         )
-        template = "index.html"
-        if append:
-            template = "_batch.html"
-        elif _is_htmx():
-            template = "_workspace.html"
         return flask.render_template(
             template,
             blocks=blocks,
@@ -103,7 +99,7 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
             updated fragments or a redirect to the current view
         """
         loaded_rows: dict[int, int] = {}
-        if _is_htmx():
+        if is_htmx_request(request.headers):
             loaded_rows = _loaded_rows(session)
         affected: set[int] = set()
         if operation != "text":
@@ -115,7 +111,7 @@ def register_routes(app: FlaskApp, session: OcrValidationSession):
                     session, current, loaded_rows, affected, stale=True
                 )
             message = "This subtitle changed. Reload it before submitting again."
-            if _is_htmx():
+            if is_htmx_request(request.headers):
                 return (
                     message,
                     409,
@@ -188,18 +184,6 @@ def _handle_value_error(exc: ValueError) -> tuple[str, int]:
     return str(exc), 400
 
 
-def _is_htmx() -> bool:
-    """Check whether the request expects a fragment.
-
-    Returns:
-        whether HTMX requested a partial update
-    """
-    return (
-        request.headers.get("HX-Request") == "true"
-        and request.headers.get("HX-History-Restore-Request") != "true"
-    )
-
-
 def _loaded_rows(session: OcrValidationSession) -> dict[int, int]:
     """Find the cards already in the editor, including retained drafts.
 
@@ -253,7 +237,7 @@ def _render_update(
         None,
     )
     visible = block is not None and row.sub_idx in block.rows
-    if not _is_htmx():
+    if not is_htmx_request(request.headers):
         anchor = None
         if visible:
             anchor = f"sub-{row.number}"
@@ -276,23 +260,16 @@ def _render_update(
     visible_blocks, _, has_more = get_block_page(blocks, through=through)
     pager_has_more = request.form.get("pager_has_more")
     update_pager = pager_has_more is None or (pager_has_more == "true") != has_more
-    added_blocks = []
-    added_rows = []
-    loaded_numbers = set(loaded_rows.values())
-    next_block = "#load-more"
-    # Insert before the next already loaded element so open blocks and drafts stay put
-    for item in reversed(visible_blocks):
-        if item.number not in loaded_numbers:
-            added_blocks.append((item, next_block))
-            continue
-        next_block = f"#block-{item.number}"
-        row_swap = f"beforeend:#block-rows-{item.number}"
-        for index in reversed(item.rows):
-            if index in loaded_rows or index == row.sub_idx:
-                row_swap = f"beforebegin:#subtitle-{index}"
-            else:
-                affected_blocks.add(item.number)
-                added_rows.append((session.subtitle_row(index), row_swap))
+    # The submitted card is already present if its block is loaded
+    if block is not None and block.number in loaded_rows.values():
+        loaded_rows = loaded_rows | {row.sub_idx: block.number}
+    added_blocks, added_rows = get_block_insertions(
+        visible_blocks,
+        loaded_rows,
+        row_key=lambda index: index,
+        row_id_prefix="subtitle-",
+    )
+    affected_blocks.update(added_rows)
     message = ""
     if stale and visible and row.concern is not None:
         message = "The concern changed. Review the updated subtitle."
@@ -304,8 +281,12 @@ def _render_update(
             (session.subtitle_row(index), index in matching_rows)
             for index in related_indexes
         ],
-        added_blocks=list(reversed(added_blocks)),
-        added_rows=list(reversed(added_rows)),
+        added_blocks=added_blocks,
+        added_rows=[
+            (session.subtitle_row(index), swap)
+            for additions in added_rows.values()
+            for index, swap in additions
+        ],
         subtitle_row=session.subtitle_row,
         has_more=has_more,
         update_pager=update_pager,

@@ -12,22 +12,16 @@
 {% for number in removed_blocks %}
   <div id="block-{{ number }}" hx-swap-oob="delete"></div>
 {% endfor %}
+{% for block, swap in added_blocks %}
+  <div hx-swap-oob="{{ swap }}">{% include "_block.html" %}</div>
+{% endfor %}
+{% for additions in added_rows.values() %}
+  {% for row, swap in additions %}
+    <div hx-swap-oob="{{ swap }}">{% include "_row.html" %}</div>
+  {% endfor %}
+{% endfor %}
 {% for block in page.blocks %}
-  {% if block.number not in old_blocks %}
-    <div hx-swap-oob="beforebegin:#load-more">
-      {% with oob=false %}
-        {% include "_block.html" %}
-      {% endwith %}
-    </div>
-  {% else %}
-    {% if additions[block.number] %}
-      <div hx-swap-oob="beforeend:#block-rows-{{ block.number }}">
-        {% for row in additions[block.number] %}
-          {% include "_row.html" %}
-        {% endfor %}
-      </div>
-    {% endif %}
-    {% set oob = true %}
+  {% if block.number in old_blocks %}
     {{ block_summary(block, oob=true) }}
   {% endif %}
 {% endfor %}

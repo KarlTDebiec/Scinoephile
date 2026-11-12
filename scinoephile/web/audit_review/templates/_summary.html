@@ -1,4 +1,2 @@
-<output id="summary"
-        role="status"
-        title="Matching subtitles"
-        aria-label="{{ page.matching }} matching subtitles"{% if oob %} hx-swap-oob="outerHTML"{% endif %}>{{ "{:,}".format(page.matching) }}</output>
+{% from 'shared/_controls.html' import editor_summary %}
+{{ editor_summary(page.matching, 'Matching subtitles', oob=oob|default(false)) }}
