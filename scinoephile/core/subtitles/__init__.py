@@ -3,7 +3,7 @@
 """Core subtitle data structures and helpers.
 
 Package hierarchy (modules may import from any above):
-* subtitle
+* search / subtitle
 * series
 """
 

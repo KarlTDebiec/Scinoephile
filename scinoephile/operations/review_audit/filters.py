@@ -8,7 +8,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass, replace
 from functools import cached_property
 
-from scinoephile.operations.subtitle_search import parse_block_query
+from scinoephile.core.subtitles.search import parse_block_query
 
 from .rows import AuditRow, AuditStatus
 

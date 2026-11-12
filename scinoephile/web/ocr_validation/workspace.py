@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.operations.subtitle_search import parse_block_query
+from scinoephile.core.subtitles.search import parse_block_query
 from scinoephile.web.blocks import SubtitleBlock
 
 from .concerns import FILTER_OPTIONS, get_review_status
