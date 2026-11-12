@@ -9,7 +9,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from io import BytesIO
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 
 __all__ = [
     "NumberLineBand",
@@ -21,73 +21,43 @@ __all__ = [
 type NumberLineBand = tuple[str, str, int | None, int | None]
 """Band key, legend label, and inclusive lower and upper measurement bounds."""
 
-_SCALE = 2
-_AXIS_PADDING = 40
-_TRACK_TOP = 42
-_TRACK_BOTTOM = 57
-
 
 @dataclass(frozen=True)
 class NumberLineImage:
-    """A number line rendered for both editor color schemes."""
+    """A one-row PNG strip for each editor color scheme."""
 
-    width: int
-    """Display width in CSS pixels."""
-    height: int
-    """Display height in CSS pixels."""
+    ticks: range
+    """Labeled column boundaries, including the right edge of the strip."""
     light_url: str
     """PNG data URL for the light theme."""
     dark_url: str
     """PNG data URL for the dark theme."""
+
+    @property
+    def width(self) -> int:
+        """Native PNG width, with one column per gap value."""
+        return self.ticks[-1] - self.ticks[0]
 
 
 def get_number_line_image(
     ticks: range,
     bands: tuple[NumberLineBand, ...],
     colors: Mapping[str, tuple[str, str]],
-    *,
-    width: int,
-    reading: int | None = None,
 ) -> NumberLineImage:
-    """Render a gap scale with ticks at the left edges of measurement intervals.
+    """Encode each integer gap value as one pixel in a PNG strip.
 
     Arguments:
-        ticks: labeled boundaries including both ends of the scale
+        ticks: labeled boundaries from the first gap through the exclusive end
         bands: colored measurement intervals in drawing order
         colors: light and dark colors for each band key
-        width: display width in CSS pixels
-        reading: optional measured gap to label below the track
     Returns:
-        number line PNGs for both color schemes
+        one-row PNGs for both color schemes
     """
-    height = 33
-    if reading is not None:
-        height = 54
-    image_size = (width * _SCALE, height * _SCALE)
-    track_width = image_size[0] - 2 * _AXIS_PADDING
     first, last = ticks[0], ticks[-1]
-    font = ImageFont.load_default(size=26)
-
-    def position(value: int | float) -> int:
-        """Map a measurement boundary to its column in the PNG.
-
-        Arguments:
-            value: measurement coordinate
-        Returns:
-            raster column
-        """
-        return _AXIS_PADDING + round((value - first) * track_width / (last - first))
-
     urls = []
-    for theme, (ink, border) in enumerate(
-        (("#323b45", "#a3aab3"), ("#e0e5ec", "#87919f"))
-    ):
-        image = Image.new("RGBA", image_size)
+    for theme in range(2):
+        image = Image.new("RGB", (last - first, 1))
         draw = ImageDraw.Draw(image)
-        left, right = position(first), position(last)
-        draw.rectangle(
-            (left - 1, _TRACK_TOP - 1, right, _TRACK_BOTTOM + 1), outline=border
-        )
         for kind, _, lower, upper in bands:
             start, stop = first, last
             if lower is not None:
@@ -95,23 +65,11 @@ def get_number_line_image(
             if upper is not None:
                 stop = min(last, upper + 1)
             if start < stop:
-                x1 = min(right - 1, position(start))
-                x2 = max(x1, position(stop) - 1)
-                draw.rectangle(
-                    (x1, _TRACK_TOP, x2, _TRACK_BOTTOM), fill=colors[kind][theme]
+                draw.line(
+                    (start - first, 0, stop - first - 1, 0), fill=colors[kind][theme]
                 )
-                if reading is not None and start > first:
-                    draw.line((x1, _TRACK_TOP - 3, x1, _TRACK_BOTTOM + 3), fill=ink)
-        for tick in ticks:
-            x = position(tick)
-            draw.text((x, 4), f"{tick}", font=font, fill=ink, anchor="mt")
-            draw.line((x, 34, x, _TRACK_TOP - 1), fill=ink, width=2)
-        if reading is not None:
-            x = position(reading + 0.5)
-            draw.polygon(((x, 63), (x - 9, 75), (x + 9, 75)), fill=ink)
-            draw.text((x, 80), f"{reading} px", font=font, fill=ink, anchor="mt")
         urls.append(get_png_data_url(image))
-    return NumberLineImage(width, height, urls[0], urls[1])
+    return NumberLineImage(ticks, urls[0], urls[1])
 
 
 def get_png_data_url(image: Image.Image) -> str:

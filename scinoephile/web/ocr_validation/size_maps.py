@@ -168,5 +168,5 @@ def _get_gap_scale(gap: int, stored: set[int]) -> CharacterGapScale:
     bands.extend(("stored", _STORED_LABEL, value, value) for value in sorted(stored))
     bands.append(("proposed", "Proposed", gap, gap))
     colors = {kind: (color, color) for kind, _, color in CharacterSizeMap.legend}
-    image = get_number_line_image(ticks, tuple(bands), colors, width=160)
+    image = get_number_line_image(ticks, tuple(bands), colors)
     return CharacterGapScale(gap, image)

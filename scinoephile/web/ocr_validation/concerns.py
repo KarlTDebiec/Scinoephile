@@ -180,13 +180,9 @@ class GapConcern:
 
     @property
     def scale_image(self) -> NumberLineImage:
-        """Rendered spacing scale with the observed gap marked."""
+        """Rendered strip of spacing categories for the gap scale."""
         return get_number_line_image(
-            self.scale_ticks,
-            self.scale_bands,
-            self.scale_colors,
-            width=480,
-            reading=self.gap,
+            self.scale_ticks, self.scale_bands, self.scale_colors
         )
 
     @property

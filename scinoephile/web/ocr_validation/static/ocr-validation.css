@@ -173,26 +173,87 @@
   }
 }
 
-/* Server-rendered gap scales */
+/* Magnify each data column by a whole number of physical pixels */
+.number-line-scroll {
+  overflow-x: auto;
+  padding: .125rem 1rem;
+}
 .number-line {
-  display: block;
-  min-width: 0;
+  --native-width: calc(var(--columns) * 1px / var(--ocr-device-pixel-ratio, 1));
+  width: var(--native-width);
+  width: max(var(--native-width), round(down, 100%, var(--native-width)));
+  margin-inline: auto;
+  font-size: .8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
 
-  & img { display: block; width: 100%; height: auto; }
+  & img {
+    display: block;
+    width: 100%;
+    height: .5rem;
+    outline: 1px solid var(--border);
+    image-rendering: pixelated;
+  }
+  & :is(.number-line-ticks, .number-line-reading, .number-line-track) {
+    position: relative;
+  }
+  & :is(.number-line-ticks, .number-line-reading) > span {
+    position: absolute;
+    left: calc(100% * var(--column) / var(--columns));
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  & .number-line-ticks {
+    height: 1.35rem;
+
+    & span {
+      inset-block: 0;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        height: .25rem;
+        background: currentColor;
+      }
+    }
+  }
+  & .number-line-reading {
+    height: 1.55rem;
+    color: var(--text);
+
+    & span::before {
+      content: "";
+      display: block;
+      width: .5rem;
+      height: .35rem;
+      margin: .15rem auto 0;
+      background: currentColor;
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+  }
+  & :is(.number-line-start, .number-line-end) {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  & .number-line-start { right: calc(100% + .35rem); }
+  & .number-line-end { left: calc(100% + .35rem); }
 }
 
 /* Measured gap and the spacing rules on either side of it */
 .spacing-check {
   & .spacing-scale {
-    display: grid;
-    grid-template-columns: 1.75rem minmax(0, 1fr) 1.75rem;
-    align-items: center;
-    gap: .25rem;
     width: min(100%, 32rem);
     margin-inline: auto;
     text-align: center;
 
-    & > span { font-size: 1.3rem; font-weight: 600; }
+    & .number-line-scroll { padding-inline: 2rem; }
   }
   & .spacing-key {
     display: flex;

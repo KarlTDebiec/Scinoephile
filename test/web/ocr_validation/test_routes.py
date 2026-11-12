@@ -130,11 +130,11 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
         Image.open(BytesIO(b64decode(maps[1]))) as gap_image,
         Image.open(BytesIO(b64decode(maps[2]))) as second,
     ):
-        # Each gap unit spans 24 raster columns on the scale from 0 to 10.
-        assert gap_image.getpixel((40, 50)) == (255, 0, 0, 255)
-        assert gap_image.getpixel((63, 50)) == (255, 0, 0, 255)
-        assert gap_image.getpixel((64, 50)) == (0, 255, 0, 255)
-        assert gap_image.getpixel((112, 50)) == (0, 128, 255, 255)
+        assert gap_image.size == (10, 1)
+        assert gap_image.getpixel((0, 0)) == (255, 0, 0)
+        assert gap_image.getpixel((1, 0)) == (0, 255, 0)
+        assert gap_image.getpixel((3, 0)) == (0, 128, 255)
+        assert gap_image.getpixel((9, 0)) == (0, 0, 0)
         # The two square crops start at (1, 14) and (1, 16) in measurement space.
         assert first.size == (24, 24)
         assert second.size == (12, 12)
@@ -402,14 +402,15 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     page_text = page.get_data(as_text=True)
     assert f'alt="Gap of {gap} pixels between “A” and “B”"' in page_text
     assert b'aria-describedby="spacing-key-0"' in page.data
+    assert f'style="--column: {gap + 0.5}">{gap} px' in page_text
     (scale,) = findall(rb'src="data:image/png;base64,([^"]+)"', page.data)
     with Image.open(BytesIO(b64decode(scale))) as image:
-        # The track spans 880 raster columns over 200 gap units.
-        caret_x = 40 + round((gap + 0.5) * 880 / 200)
-        assert image.getpixel((caret_x, 63)) == (50, 59, 69, 255)
-        assert image.getpixel((52, 50)) == (117, 131, 149, 255)
-        assert image.getpixel((53, 50)) == (50, 59, 69, 255)
-        assert image.getpixel((54, 50)) == (173, 112, 0, 255)
+        assert image.size == (200, 1)
+        assert image.getpixel((2, 0)) == (117, 131, 149)
+        assert image.getpixel((3, 0)) == image.getpixel((5, 0)) == (173, 112, 0)
+        assert image.getpixel((6, 0)) == (53, 106, 195)
+        assert image.getpixel((13, 0)) == (175, 80, 65)
+        assert image.getpixel((20, 0)) == (38, 119, 99)
     legend = page_text.split('id="spacing-key-0">', 1)[1]
     after_legend = legend.split("</ul>", 1)[1]
     for label in labels:
