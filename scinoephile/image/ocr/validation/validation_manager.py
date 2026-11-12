@@ -18,8 +18,8 @@ from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .char_cursor import CharCursor
 from .char_dims import (
-    char_dims_match_approved,
-    char_dims_within_tolerance,
+    are_dims_within_tolerance,
+    can_auto_approve_char_dims,
     get_dims_tuple,
     load_char_dims,
     save_char_dims,
@@ -311,7 +311,7 @@ class ValidationManager:
 
             # Fuzzy match
             for ok_dim in ok_dims:
-                if char_dims_within_tolerance(dims, ok_dim):
+                if are_dims_within_tolerance(dims, ok_dim):
                     self._update_char_grp_dims(char_grp, dims)
                     cursor.advance(n_chars=n_chars, n_bboxes=1)
                     return True
@@ -333,7 +333,7 @@ class ValidationManager:
             ok_dims = self.char_dims_by_n[n_bboxes].get(cursor.char, set())
 
             if dims not in ok_dims:
-                if not char_dims_match_approved(dims, ok_dims):
+                if not can_auto_approve_char_dims(dims, ok_dims):
                     continue
                 self.update_char_dims(cursor.char, dims)
 

@@ -15,8 +15,8 @@ from .csv import save_csv_rows
 
 __all__ = [
     "CHAR_DIM_TOLERANCE",
-    "char_dims_match_approved",
-    "char_dims_within_tolerance",
+    "are_dims_within_tolerance",
+    "can_auto_approve_char_dims",
     "get_dims_tuple",
     "load_char_dims",
     "save_char_dims",
@@ -29,7 +29,24 @@ CHAR_DIM_TOLERANCE = 2
 """Maximum pixel difference allowed for each box dimension and gap."""
 
 
-def char_dims_match_approved(
+def are_dims_within_tolerance(
+    dims: tuple[int, ...], known_dims: tuple[int, ...]
+) -> bool:
+    """Compare all selected dimensions or gaps with their stored values.
+
+    Arguments:
+        dims: proposed measurements
+        known_dims: corresponding measurements from one stored configuration
+    Returns:
+        whether every corresponding measurement is within tolerance
+    """
+    return len(dims) == len(known_dims) and all(
+        abs(proposed - known) <= CHAR_DIM_TOLERANCE
+        for proposed, known in zip(dims, known_dims, strict=True)
+    )
+
+
+def can_auto_approve_char_dims(
     dims: tuple[int, ...], approved_dims: Iterable[tuple[int, ...]]
 ) -> bool:
     """Match each box and internal gap to the same position in an approved example.
@@ -47,7 +64,7 @@ def char_dims_match_approved(
         gap_index = start + 2
         box = dims[start:gap_index]
         if not any(
-            char_dims_within_tolerance(box, example[start:gap_index])
+            are_dims_within_tolerance(box, example[start:gap_index])
             for example in examples
         ):
             return False
@@ -57,23 +74,6 @@ def char_dims_match_approved(
         ):
             return False
     return True
-
-
-def char_dims_within_tolerance(
-    dims: tuple[int, ...], known_dims: tuple[int, ...]
-) -> bool:
-    """Compare all selected dimensions or gaps with their stored values.
-
-    Arguments:
-        dims: proposed measurements
-        known_dims: corresponding measurements from one stored configuration
-    Returns:
-        whether every corresponding measurement is within tolerance
-    """
-    return len(dims) == len(known_dims) and all(
-        abs(proposed - known) <= CHAR_DIM_TOLERANCE
-        for proposed, known in zip(dims, known_dims, strict=True)
-    )
 
 
 def get_dims_tuple(bboxes: Bbox | list[Bbox]) -> tuple[int, ...]:
