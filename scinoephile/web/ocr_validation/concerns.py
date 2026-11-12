@@ -22,7 +22,6 @@ __all__ = [
     "GapConcern",
     "OcrConcern",
     "SubtitleRowView",
-    "ValidationStatus",
     "get_review_status",
 ]
 
@@ -178,17 +177,6 @@ class GapConcern:
         return range(lower // step * step, (upper // step + 2) * step, step)
 
 
-class ValidationStatus(StrEnum):
-    """Row-level OCR validation status."""
-
-    DONE = "done"
-    """Subtitle has no unresolved concerns."""
-    ERROR = "error"
-    """Subtitle validation hit an unrecoverable state."""
-    NEEDS_ACTION = "needs-action"
-    """Subtitle has a concern awaiting human action."""
-
-
 @dataclass(frozen=True)
 class SubtitleRowView:
     """Template view model for one OCR subtitle row."""
@@ -235,18 +223,14 @@ class SubtitleRowView:
         return self.text.replace("\\N", "\n")
 
     @property
-    def status(self) -> ValidationStatus:
-        """Row-level validation status."""
-        if self.concern is None:
-            return ValidationStatus.DONE
-        if isinstance(self.concern, ErrorConcern):
-            return ValidationStatus.ERROR
-        return ValidationStatus.NEEDS_ACTION
+    def status(self) -> str:
+        """Validation status key shared with the review filter."""
+        return get_review_status(self.concern)
 
     @property
     def status_label(self) -> str:
         """Validation status label shared with the review filter."""
-        return FILTER_OPTIONS[get_review_status(self.concern)][0]
+        return FILTER_OPTIONS[self.status][0]
 
     @property
     def text_font_size_cqw_css(self) -> str:

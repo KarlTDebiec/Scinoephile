@@ -3,5 +3,6 @@
 """Subtitle operations shared by workflows and interactive editors.
 
 Package hierarchy (modules may import from any above):
+* subtitle_search
 * review_audit
 """

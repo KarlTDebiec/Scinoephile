@@ -21,7 +21,6 @@ from .concerns import (
     GapConcern,
     OcrConcern,
     SubtitleRowView,
-    ValidationStatus,
 )
 from .html_index import HtmlSubtitleEntry, load_html_entries, update_html_entry_text
 from .session import OcrValidationSession
@@ -35,7 +34,6 @@ __all__ = [
     "OcrConcern",
     "OcrValidationSession",
     "SubtitleRowView",
-    "ValidationStatus",
     "create_app",
     "load_html_entries",
     "update_html_entry_text",

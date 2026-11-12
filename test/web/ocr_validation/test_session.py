@@ -17,7 +17,6 @@ from scinoephile.web.ocr_validation.concerns import (
     ConcernKind,
     ErrorConcern,
     GapConcern,
-    ValidationStatus,
 )
 from scinoephile.web.ocr_validation.session import OcrValidationSession
 from test.helpers.ocr_validation import (
@@ -248,7 +247,7 @@ def test_session_reports_char_dims_concern(tmp_path: Path, monkeypatch: MonkeyPa
 
     row = session.subtitle_row(0)
 
-    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert row.status == "character"
     assert isinstance(row.concern, CharDimsConcern)
     assert row.concern.kind == ConcernKind.CHAR_DIMS
     assert row.concern.char == "A"
@@ -273,7 +272,7 @@ def test_session_reports_error_status_when_validation_cannot_continue(
 
     row = session.subtitle_row(0)
 
-    assert row.status == ValidationStatus.ERROR
+    assert row.status == "boxes"
     assert isinstance(row.concern, ErrorConcern)
 
 
@@ -295,7 +294,7 @@ def test_accept_char_dims_marks_single_char_done(
 
     row = session.resolve_char_concern(0, action="accept", n_bboxes=1)
 
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert (tmp_path / "cache" / "char_dims_1.csv").read_text(
         encoding="utf-8"
@@ -386,7 +385,7 @@ def test_session_reports_space_gap_concern(tmp_path: Path, monkeypatch: MonkeyPa
 
     row = session.subtitle_row(0)
 
-    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert row.status == "spacing"
     assert isinstance(row.concern, GapConcern)
     assert row.concern.kind == ConcernKind.SPACE_GAP
     assert row.concern.char_1 == "A"
@@ -410,7 +409,7 @@ def test_space_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: Monkey
     row = session.resolve_gap_concern(0, action="space")
 
     assert row.text == "A B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 4, 12, 20)
     assert "A B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -431,7 +430,7 @@ def test_existing_space_gap_does_not_update_cutoffs(
 
     row = session.subtitle_row(0)
 
-    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert row.status == "spacing"
     assert isinstance(row.concern, GapConcern)
     assert row.concern.kind == ConcernKind.SPACE_GAP
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
@@ -458,7 +457,7 @@ def test_punctuation_ellipsis_gap_reports_existing_space_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "！ ⋯"
-    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert row.status == "spacing"
     assert isinstance(row.concern, GapConcern)
     assert row.concern.kind == ConcernKind.SPACE_GAP
     assert row.concern.char_1 == "！"
@@ -490,7 +489,7 @@ def test_known_adjacent_gap_mismatch_updates_text_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "臭和"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("臭", "和")] == (22, 41, 90, 200)
     assert "臭和" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -516,7 +515,7 @@ def test_fullwidth_latin_gap_uses_default_cutoffs(
 
     row = session.subtitle_row(0)
 
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("你", "Ｋ")] == (22, 89, 90, 200)
 
@@ -549,7 +548,7 @@ def test_adjacent_gap_choice_updates_cutoff(tmp_path: Path, monkeypatch: MonkeyP
     row = session.resolve_gap_concern(0, action="adjacent")
 
     assert row.text == "白了"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("白", "了")] == (4, 6, 12, 20)
 
@@ -570,7 +569,7 @@ def test_boundary_space_gap_updates_cutoff_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "A B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 5, 12, 20)
     assert "A B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -592,7 +591,7 @@ def test_boundary_tab_gap_updates_cutoff_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "A    B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 19)
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -620,7 +619,7 @@ def test_known_space_gap_mismatch_updates_text_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "呀　你"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("呀", "你")] == (22, 40, 90, 200)
     assert "呀　你" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -642,7 +641,7 @@ def test_known_tab_gap_mismatch_updates_text_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "A    B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -664,7 +663,7 @@ def test_known_tab_gap_replaces_newline_without_concern(
     row = session.subtitle_row(0)
 
     assert row.text == "A    B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
@@ -684,7 +683,7 @@ def test_tab_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: MonkeyPa
     row = session.resolve_gap_concern(0, action="tab")
 
     assert row.text == "A    B"
-    assert row.status == ValidationStatus.DONE
+    assert row.status == "done"
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 15)
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")

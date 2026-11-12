@@ -4,8 +4,7 @@
 
 from __future__ import annotations
 
-from re import fullmatch
-
+from scinoephile.operations.subtitle_search import parse_block_query
 from scinoephile.web.blocks import SubtitleBlock
 
 from .concerns import FILTER_OPTIONS, get_review_status
@@ -28,11 +27,11 @@ def get_filtered_blocks(
     """
     concerns = session.subtitle_concerns()
     counts = dict.fromkeys(("all", *FILTER_OPTIONS), 0)
+    block_query = parse_block_query(query)
     query = query.casefold()
-    block_query = fullmatch(r"block\s*[:#]?\s*(\d+)", query)
     blocks = []
     for number, (first, last) in enumerate(session.block_ranges, 1):
-        if block_query is not None and int(block_query[1]) != number:
+        if block_query is not None and block_query != number:
             continue
         visible = []
         for index in range(first, last):

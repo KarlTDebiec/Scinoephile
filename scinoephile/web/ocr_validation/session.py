@@ -107,52 +107,6 @@ class OcrValidationSession:
         self._states: dict[int, _SubtitleValidationState] = {}
         self._checked_training_revision = self.manager.training_revision
 
-    @classmethod
-    def from_dir_path(
-        cls,
-        dir_path: Path,
-        *,
-        outfile_path: Path | None = None,
-        validation_data_dir_path: Path | str | None = None,
-        dev: bool = False,
-    ) -> Self:
-        """Create a session from an OCR image directory.
-
-        Arguments:
-            dir_path: OCR image HTML directory path
-            outfile_path: optional subtitle output file path
-            validation_data_dir_path: local OCR validation data directory
-            dev: whether validation data updates should write to repo data
-        Returns:
-            OCR validation session
-        Raises:
-            ScinoephileError: if the operation fails
-        """
-        dir_path = Path(dir_path).resolve()
-        if not dir_path.is_dir():
-            raise ScinoephileError(f"Expected {dir_path} to be a directory.")
-        if not (dir_path / "index.html").is_file():
-            raise ScinoephileError(f"Expected {dir_path / 'index.html'} to be a file.")
-
-        try:
-            entries = load_html_entries(dir_path)
-            series = ImageSeries.load(dir_path)
-            manager = ValidationManager(
-                validation_data_dir_path=validation_data_dir_path, dev=dev
-            )
-            session = cls(
-                dir_path=dir_path,
-                entries=entries,
-                series=series,
-                manager=manager,
-                outfile_path=outfile_path,
-            )
-            return session
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to initialize OCR validation session from {dir_path}: {exc}"
-            ) from exc
-
     def prepare(self):
         """Scan subtitles and save the initial output before serving the editor."""
         self.refresh_concerns()
@@ -160,8 +114,9 @@ class OcrValidationSession:
 
     def refresh_concerns(self):
         """Apply newly learned data while retaining unchanged box selections."""
-        for sub_idx in range(len(self.entries)):
-            self._state(sub_idx)
+        if len(self._states) < len(self.entries):
+            for sub_idx in range(len(self.entries)):
+                self._state(sub_idx)
         # Later rows can teach rules that resolve a concern already visited in this pass
         while self._checked_training_revision != self.manager.training_revision:
             self._checked_training_revision = self.manager.training_revision
@@ -309,6 +264,52 @@ class OcrValidationSession:
         if text != self.entries[sub_idx].text:
             self._set_text(sub_idx, text, reset_state=True)
         return self.subtitle_row(sub_idx)
+
+    @classmethod
+    def from_dir_path(
+        cls,
+        dir_path: Path,
+        *,
+        outfile_path: Path | None = None,
+        validation_data_dir_path: Path | str | None = None,
+        dev: bool = False,
+    ) -> Self:
+        """Create a session from an OCR image directory.
+
+        Arguments:
+            dir_path: OCR image HTML directory path
+            outfile_path: optional subtitle output file path
+            validation_data_dir_path: local OCR validation data directory
+            dev: whether validation data updates should write to repo data
+        Returns:
+            OCR validation session
+        Raises:
+            ScinoephileError: if the operation fails
+        """
+        dir_path = Path(dir_path).resolve()
+        if not dir_path.is_dir():
+            raise ScinoephileError(f"Expected {dir_path} to be a directory.")
+        if not (dir_path / "index.html").is_file():
+            raise ScinoephileError(f"Expected {dir_path / 'index.html'} to be a file.")
+
+        try:
+            entries = load_html_entries(dir_path)
+            series = ImageSeries.load(dir_path)
+            manager = ValidationManager(
+                validation_data_dir_path=validation_data_dir_path, dev=dev
+            )
+            session = cls(
+                dir_path=dir_path,
+                entries=entries,
+                series=series,
+                manager=manager,
+                outfile_path=outfile_path,
+            )
+            return session
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to initialize OCR validation session from {dir_path}: {exc}"
+            ) from exc
 
     def _accept_char_dims(self, state: _SubtitleValidationState, n_bboxes: int):
         """Accept selected bbox dimensions for the current character.
