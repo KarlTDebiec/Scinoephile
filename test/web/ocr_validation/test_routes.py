@@ -79,7 +79,7 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 5, 0, 20), Bbox(5, 10, 0, 20)])
     session = _session(images_path, tmp_path)
     session.manager.char_dims_by_n[2]["A"] = {
-        (10, 20, 0, 5, 20),
+        (10, 20, 3, 5, 20),
         (20, 30, 6, 8, 22),
         (5, 20, 4, 5, 20),
     }

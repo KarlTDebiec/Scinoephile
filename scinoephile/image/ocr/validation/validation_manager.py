@@ -18,6 +18,7 @@ from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .char_cursor import CharCursor
 from .char_dims import (
+    char_dims_match_approved,
     char_dims_within_tolerance,
     get_dims_tuple,
     load_char_dims,
@@ -292,7 +293,7 @@ class ValidationManager:
         return False
 
     def match_char_dims(self, cursor: CharCursor) -> bool:
-        """Match character against approved dimensions.
+        """Match each box and internal gap against approved character dimensions.
 
         Arguments:
             cursor: character cursor
@@ -302,32 +303,20 @@ class ValidationManager:
         for n_bboxes in self.char_dims_by_n.keys():
             if cursor.bbox_idx + n_bboxes > len(cursor.bboxes):
                 break
-            dims = get_dims_tuple(cursor.bbox_grp(n_bboxes))
+            bbox_grp = cursor.bbox_grp(n_bboxes)
+            dims = get_dims_tuple(bbox_grp)
             ok_dims = self.char_dims_by_n[n_bboxes].get(cursor.char, set())
 
-            # Exact match
-            if dims in ok_dims:
-                bbox_grp = cursor.bbox_grp(n_bboxes)
-                merged_bbox = get_merged_bbox(bbox_grp)
-                cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
-                    merged_bbox
-                ]
-                cursor.advance(n_chars=1, n_bboxes=1)
-                return True
+            if dims not in ok_dims:
+                if not char_dims_match_approved(dims, ok_dims):
+                    continue
+                self.update_char_dims(cursor.char, dims)
 
-            # Fuzzy match
-            for ok_dim in ok_dims:
-                diffs = [abs(dims[i] - ok_dim[i]) for i in range(len(dims))]
-                max_diff = max(diffs)
-                if max_diff <= 2:
-                    bbox_grp = cursor.bbox_grp(n_bboxes)
-                    merged_bbox = get_merged_bbox(bbox_grp)
-                    cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
-                        merged_bbox
-                    ]
-                    self.update_char_dims(cursor.char, dims)
-                    cursor.advance(n_chars=1, n_bboxes=1)
-                    return True
+            cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
+                get_merged_bbox(bbox_grp)
+            ]
+            cursor.advance(n_chars=1, n_bboxes=1)
+            return True
         return False
 
     def suggest_char_n_bboxes(self, cursor: CharCursor) -> int:

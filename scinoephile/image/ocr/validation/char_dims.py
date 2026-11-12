@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import csv
+from collections.abc import Iterable
 from logging import getLogger
 from pathlib import Path
 
@@ -14,6 +15,7 @@ from .csv import save_csv_rows
 
 __all__ = [
     "CHAR_DIM_TOLERANCE",
+    "char_dims_match_approved",
     "char_dims_within_tolerance",
     "get_dims_tuple",
     "load_char_dims",
@@ -25,6 +27,36 @@ logger = getLogger(__name__)
 
 CHAR_DIM_TOLERANCE = 2
 """Maximum pixel difference allowed for each box dimension and gap."""
+
+
+def char_dims_match_approved(
+    dims: tuple[int, ...], approved_dims: Iterable[tuple[int, ...]]
+) -> bool:
+    """Match each box and internal gap to the same position in an approved example.
+
+    Arguments:
+        dims: proposed widths, heights, and gaps in box order
+        approved_dims: previously approved measurements for the character
+    Returns:
+        whether every box and gap has a match within tolerance
+    """
+    examples = [example for example in approved_dims if len(example) == len(dims)]
+    if not examples:
+        return False
+    for start in range(0, len(dims), 3):
+        gap_index = start + 2
+        box = dims[start:gap_index]
+        if not any(
+            char_dims_within_tolerance(box, example[start:gap_index])
+            for example in examples
+        ):
+            return False
+        if gap_index < len(dims) and not any(
+            abs(dims[gap_index] - example[gap_index]) <= CHAR_DIM_TOLERANCE
+            for example in examples
+        ):
+            return False
+    return True
 
 
 def char_dims_within_tolerance(
