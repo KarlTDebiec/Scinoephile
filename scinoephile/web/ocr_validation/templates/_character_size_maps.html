@@ -3,15 +3,13 @@
 {% if maps %}
   {% set legend_id = "character-measurement-key-" ~ row.sub_idx %}
   {# djlint:off H021 #}
-  <div class="character-measurements"
-       style="{% for kind, _, color in maps[0].legend %}--measurement-{{ kind }}: {{ color }};
-              {% endfor %}">
+  <div>
     <div class="character-size-maps">
       {% for size_map in maps %}
         {% if size_map.gap_before is not none %}
           {% set gap = size_map.gap_before %}
           <figure class="character-gap-scale">
-            {{ number_line(gap.ticks, gap.bands, gap.value, "Gap between boxes " ~ loop.index0 ~ " and " ~ loop.index ~ ": " ~ gap.value ~ " pixels", legend_id, show_reading=false) }}
+            {{ number_line(gap.image, "Gap between boxes " ~ loop.index0 ~ " and " ~ loop.index ~ ": " ~ gap.value ~ " pixels", legend_id) }}
             <figcaption>{{ gap.value }} px</figcaption>
           </figure>
         {% endif %}
@@ -29,7 +27,7 @@
     <ul class="character-size-key"
         id="{{ legend_id }}"
         aria-label="Character measurement legend">
-      {% for kind, label, _ in maps[0].legend %}<li data-band="{{ kind }}">{{ label }}</li>{% endfor %}
+      {% for _, label, color in maps[0].legend %}<li style="--band-color: {{ color }}">{{ label }}</li>{% endfor %}
     </ul>
   </div>
   {# djlint:on #}

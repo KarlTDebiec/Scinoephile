@@ -7,11 +7,13 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import StrEnum
 from hashlib import sha256
+from typing import ClassVar
 
 from scinoephile.image.bbox import Bbox
 from scinoephile.lang.cmn.romanization import get_cmn_char_romanized
 from scinoephile.lang.yue.romanization import get_yue_char_romanized
 
+from .measurement_images import NumberLineBand, NumberLineImage, get_number_line_image
 from .size_maps import CharacterSizeMap, get_character_size_maps
 
 __all__ = [
@@ -106,6 +108,15 @@ class ErrorConcern:
 class GapConcern:
     """Ambiguous gap between adjacent characters."""
 
+    scale_colors: ClassVar[dict[str, tuple[str, str]]] = {
+        "adjacent": ("#758395", "#9aaabc"),
+        "space-prompt": ("#ad7000", "#e3b252"),
+        "space": ("#356ac3", "#75a8f5"),
+        "tab-prompt": ("#af5041", "#ed9689"),
+        "tab": ("#267763", "#67c6ae"),
+    }
+    """Light and dark colors shared by the scale image and legend."""
+
     sub_idx: int
     """Zero-based subtitle index."""
     char_1_idx: int
@@ -150,11 +161,11 @@ class GapConcern:
         raise ValueError(f"Invalid gap concern kind: {self.kind}")
 
     @property
-    def scale_bands(self) -> tuple[tuple[str, str, int | None, int | None], ...]:
+    def scale_bands(self) -> tuple[NumberLineBand, ...]:
         """Number line bands with inclusive pixel bounds and None for open ends."""
         adjacent, space_start = self.space_prompt
         space_end, tab = self.tab_prompt
-        bands: tuple[tuple[str, str, int | None, int | None], ...] = (
+        bands: tuple[NumberLineBand, ...] = (
             ("adjacent", "Auto adjacent", None, adjacent),
             ("space-prompt", "Prompt for space", adjacent + 1, space_start - 1),
             ("space", "Auto space", max(adjacent + 1, space_start), space_end),
@@ -165,6 +176,17 @@ class GapConcern:
             band
             for band in bands
             if band[2] is None or band[3] is None or band[2] <= band[3]
+        )
+
+    @property
+    def scale_image(self) -> NumberLineImage:
+        """Rendered spacing scale with the observed gap marked."""
+        return get_number_line_image(
+            self.scale_ticks,
+            self.scale_bands,
+            self.scale_colors,
+            width=480,
+            reading=self.gap,
         )
 
     @property

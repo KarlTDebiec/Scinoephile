@@ -119,23 +119,22 @@ def test_character_selection_survives_paging_and_rejects_stale_approval(
         endpoint, data={**initial, "action": "expand"}, headers=_HTMX
     )
     assert expanded.status_code == 200
-    gap_label = b'aria-label="Gap between boxes 1 and 2: 0 pixels"'
+    gap_label = b'alt="Gap between boxes 1 and 2: 0 pixels"'
     assert expanded.data.index(b"Box 1 size map") < expanded.data.index(gap_label)
     assert expanded.data.index(gap_label) < expanded.data.index(b"Box 2 size map")
-    gap_bands = findall(
-        rb'class="number-line-band"\s+data-band="auto-approved"', expanded.data
-    )
-    assert len(gap_bands) == 3
-    assert search(
-        rb'data-band="proposed"\s+style="--band-start: 0\.0%;\s+--band-end: 10\.0%"',
-        expanded.data,
-    )
+    assert b'<source media="(prefers-color-scheme: dark)"' in expanded.data
     maps = findall(rb'src="data:image/png;base64,([^"]+)"', expanded.data)
-    assert len(maps) == 2
+    assert len(maps) == 3
     with (
         Image.open(BytesIO(b64decode(maps[0]))) as first,
-        Image.open(BytesIO(b64decode(maps[1]))) as second,
+        Image.open(BytesIO(b64decode(maps[1]))) as gap_image,
+        Image.open(BytesIO(b64decode(maps[2]))) as second,
     ):
+        # Each gap unit spans 24 raster columns on the scale from 0 to 10.
+        assert gap_image.getpixel((40, 50)) == (255, 0, 0, 255)
+        assert gap_image.getpixel((63, 50)) == (255, 0, 0, 255)
+        assert gap_image.getpixel((64, 50)) == (0, 255, 0, 255)
+        assert gap_image.getpixel((112, 50)) == (0, 128, 255, 255)
         # The two square crops start at (1, 14) and (1, 16) in measurement space.
         assert first.size == (24, 24)
         assert second.size == (12, 12)
@@ -401,10 +400,16 @@ def test_spacing_choice_updates_text_and_hides_resolved_concern(
     assert b">Spacing needs review</p>" in page.data
     assert b'id="sub-1"' not in client.get("/?status=character").data
     page_text = page.get_data(as_text=True)
-    assert f'aria-label="Gap of {gap} pixels between “A” and “B”"' in page_text
+    assert f'alt="Gap of {gap} pixels between “A” and “B”"' in page_text
     assert b'aria-describedby="spacing-key-0"' in page.data
-    assert f'--gap-position: {(gap + 0.5) / 2}%"' in page_text
-    assert search(rb'--band-start: 1\.5%;\s+--band-end: 3\.0%"', page.data)
+    (scale,) = findall(rb'src="data:image/png;base64,([^"]+)"', page.data)
+    with Image.open(BytesIO(b64decode(scale))) as image:
+        # The track spans 880 raster columns over 200 gap units.
+        caret_x = 40 + round((gap + 0.5) * 880 / 200)
+        assert image.getpixel((caret_x, 63)) == (50, 59, 69, 255)
+        assert image.getpixel((52, 50)) == (117, 131, 149, 255)
+        assert image.getpixel((53, 50)) == (50, 59, 69, 255)
+        assert image.getpixel((54, 50)) == (173, 112, 0, 255)
     legend = page_text.split('id="spacing-key-0">', 1)[1]
     after_legend = legend.split("</ul>", 1)[1]
     for label in labels:

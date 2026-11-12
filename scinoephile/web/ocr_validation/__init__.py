@@ -3,7 +3,8 @@
 """Web application for OCR validation.
 
 Package hierarchy (modules may import from any above):
-* html_index / size_maps
+* html_index / measurement_images
+* size_maps
 * concerns
 * session
 * workspace

@@ -1,32 +1,11 @@
-{% macro position(value, ticks) -%}
-  {{ (value - ticks[0]) / (ticks[-1] - ticks[0]) * 100 }}%
-{%- endmacro %}
-{% macro number_line(ticks, bands, value, label, description_id=none, left=none, right=none, show_reading=true) -%}
-  {# djlint:off H021 #}
-  <div class="number-line"
-       role="img"
-       aria-label="{{ label }}"
-       {% if description_id %}aria-describedby="{{ description_id }}"{% endif %}
-       {% if show_reading %}style="--gap-position: {{ position(value + 0.5, ticks) }}"{% endif %}>
-    <div class="number-line-ticks">
-      {% for tick in ticks %}
-        <span style="--tick-position: {{ position(tick, ticks) }};">{{ tick }}</span>
-      {% endfor %}
-    </div>
-    <div class="number-line-track">
-      {% if left is not none %}<span class="number-line-start">{{ left }}</span>{% endif %}
-      {% for kind, _, lower, upper in bands %}
-        {# Integer ticks mark the start of each pixel-wide interval. #}
-        {% set start = ticks[0] if lower is none else [ticks[0], lower]|max %}
-        {% set end = ticks[-1] if upper is none else [ticks[-1], upper + 1]|min %}
-        <span class="number-line-band"
-              data-band="{{ kind }}"
-              style="--band-start: {{ position(start, ticks) }};
-                     --band-end: {{ position(end, ticks) }}"></span>
-      {% endfor %}
-      {% if right is not none %}<span class="number-line-end">{{ right }}</span>{% endif %}
-    </div>
-    {% if show_reading %}<div class="number-line-reading"><span>{{ value }} px</span></div>{% endif %}
-  </div>
-  {# djlint:on #}
+{% macro number_line(image, label, description_id) -%}
+  <picture class="number-line">
+    <source media="(prefers-color-scheme: dark)" srcset="{{ image.dark_url }}">
+    <img src="{{ image.light_url }}"
+         alt="{{ label }}"
+         aria-describedby="{{ description_id }}"
+         width="{{ image.width }}"
+         height="{{ image.height }}"
+         loading="lazy">
+  </picture>
 {%- endmacro %}

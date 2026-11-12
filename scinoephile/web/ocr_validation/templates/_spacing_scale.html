@@ -1,12 +1,15 @@
 {% from "_number_line.html" import number_line %}
 {% set concern = row.concern %}
-{% set bands = concern.scale_bands %}
 <div class="spacing-scale">
-  {{ number_line(concern.scale_ticks, bands, concern.gap, "Gap of " ~ concern.gap ~ " pixels between “" ~ concern.char_1 ~ "” and “" ~ concern.char_2 ~ "”", "spacing-key-" ~ row.sub_idx, concern.char_1, concern.char_2) }}
+  <span aria-hidden="true">{{ concern.char_1 }}</span>
+  {{ number_line(concern.scale_image, "Gap of " ~ concern.gap ~ " pixels between “" ~ concern.char_1 ~ "” and “" ~ concern.char_2 ~ "”", "spacing-key-" ~ row.sub_idx) }}
+  <span aria-hidden="true">{{ concern.char_2 }}</span>
 </div>
 <ul class="spacing-key" id="spacing-key-{{ row.sub_idx }}">
-  {% for kind, label, lower, upper in bands %}
-    <li data-band="{{ kind }}">
+  {% for kind, label, lower, upper in concern.scale_bands %}
+    {% set light, dark = concern.scale_colors[kind] %}
+    {# djlint:off H021 #}
+    <li style="--band-color: light-dark({{ light }}, {{ dark }})">
       {{ label }}
       <small>
         {% if lower is none %}
@@ -20,6 +23,7 @@
         {% endif %}
       </small>
     </li>
+    {# djlint:on #}
   {% endfor %}
 </ul>
 <div class="spacing-actions">

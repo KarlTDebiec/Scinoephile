@@ -4,14 +4,19 @@
 
 from __future__ import annotations
 
-from base64 import b64encode
 from dataclasses import dataclass
-from io import BytesIO
 from typing import ClassVar
 
 from PIL import Image, ImageDraw
 
 from scinoephile.image.ocr.validation.char_dims import CHAR_DIM_TOLERANCE
+
+from .measurement_images import (
+    NumberLineBand,
+    NumberLineImage,
+    get_number_line_image,
+    get_png_data_url,
+)
 
 __all__ = ["CharacterGapScale", "CharacterSizeMap", "get_character_size_maps"]
 
@@ -30,10 +35,8 @@ class CharacterGapScale:
 
     value: int
     """Measured gap in pixels."""
-    ticks: range
-    """Labels spanning the stored, accepted, and measured gaps."""
-    bands: tuple[tuple[str, str, int | None, int | None], ...]
-    """Colored ranges from the background through the proposed gap."""
+    image: NumberLineImage
+    """Rendered scale with the stored, accepted, and measured gaps."""
 
 
 @dataclass(frozen=True)
@@ -82,12 +85,6 @@ def get_character_size_maps(
         width, height = dims[index : index + 2]
         known_sizes = {(known[index], known[index + 1]) for known in known_dims}
         image, min_width, min_height = _draw_size_map((width, height), known_sizes)
-        with BytesIO() as output:
-            image.save(output, format="PNG")
-            image_url = (
-                f"data:image/png;base64,{b64encode(output.getvalue()).decode('ascii')}"
-            )
-
         gap_before = None
         if index:
             gap_index = index - 1
@@ -103,7 +100,7 @@ def get_character_size_maps(
                 min_height=min_height,
                 image_size=image.width,
                 display_size=image.width * max(1, _MAP_TARGET_SIZE // image.width),
-                image_url=image_url,
+                image_url=get_png_data_url(image),
             )
         )
     return tuple(maps)
@@ -163,13 +160,13 @@ def _get_gap_scale(gap: int, stored: set[int]) -> CharacterGapScale:
     upper = max(10, gap + 1, max(stored, default=0) + tolerance + 1)
     step = ((upper - lower + 19) // 20) * 5
     ticks = range(lower // step * step, ((upper + step - 1) // step + 1) * step, step)
-    bands: list[tuple[str, str, int | None, int | None]] = [
-        ("needs-review", "Needs review", None, None)
-    ]
+    bands: list[NumberLineBand] = [("needs-review", "Needs review", None, None)]
     bands.extend(
         ("auto-approved", "Auto-approved", value - tolerance, value + tolerance)
         for value in sorted(stored)
     )
     bands.extend(("stored", _STORED_LABEL, value, value) for value in sorted(stored))
     bands.append(("proposed", "Proposed", gap, gap))
-    return CharacterGapScale(gap, ticks, tuple(bands))
+    colors = {kind: (color, color) for kind, _, color in CharacterSizeMap.legend}
+    image = get_number_line_image(ticks, tuple(bands), colors, width=160)
+    return CharacterGapScale(gap, image)
