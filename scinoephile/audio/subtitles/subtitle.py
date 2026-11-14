@@ -20,7 +20,7 @@ class AudioSubtitle(Subtitle):
 
     @override
     # Audio metadata extends the keyword-based subtitle constructor
-    def __init__(  # ty: ignore[invalid-method-override]
+    def __init__(  # ty: ignore[incompatible-method-override]
         self,
         audio: AudioSegment | None = None,
         segment: TranscribedSegment | None = None,
