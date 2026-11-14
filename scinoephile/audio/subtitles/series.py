@@ -57,7 +57,7 @@ class AudioSeries(Series[AudioSubtitle, "AudioSeries"]):
 
     @override
     # Audio series require a sound source in addition to subtitle events
-    def __init__(  # ty: ignore[invalid-method-override]
+    def __init__(  # ty: ignore[incompatible-method-override]
         self, audio: AudioSegment, events: list[AudioSubtitle] | None = None
     ):
         """Initialize.

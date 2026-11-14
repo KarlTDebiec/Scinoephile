@@ -31,7 +31,7 @@ class Series[TEvent: Subtitle, TBlock: Series](SSAFile):
     event_class = cast("type[TEvent]", Subtitle)
     """Class of individual subtitle events."""
     # pysubs2 exposes a mutable SSAEvent list; concrete series keep their event type
-    events: list[TEvent]  # ty: ignore[invalid-attribute-override]
+    events: list[TEvent]  # ty: ignore[incompatible-attribute-override]
     """Individual subtitle events."""
 
     @override
