@@ -96,6 +96,9 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "JSON file containing transcription test cases": (
             "包含转写测试用例的 JSON 文件"
         ),
+        "alignment artifact JSON outfile (default: derived from subtitle outfile)": (
+            "对齐产物 JSON 输出文件（默认：从字幕输出文件派生）"
+        ),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
         ),
@@ -149,6 +152,9 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "字幕最短顯示秒數（預設：%(default)s）"
         ),
         "JSON file containing transcription test cases": ("包含轉寫測試案例的 JSON 檔"),
+        "alignment artifact JSON outfile (default: derived from subtitle outfile)": (
+            "對齊產物 JSON 輸出檔（預設：從字幕輸出檔衍生）"
+        ),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
         "overwrite output files if they exist": "覆寫已存在的輸出檔",
     },
@@ -308,6 +314,15 @@ class TranscribeCli(ScinoephileCliBase):
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
+            "--alignment-outfile",
+            dest="alignment_outfile_path",
+            type=output_file_arg(exist_ok=True),
+            help=(
+                "alignment artifact JSON outfile "
+                "(default: derived from subtitle outfile)"
+            ),
+        )
+        arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
             dest="outfile_path",
@@ -342,6 +357,7 @@ class TranscribeCli(ScinoephileCliBase):
         llm_args: LlmArguments,
         cache_args: CacheArguments,
         json_path: Path | None,
+        alignment_outfile_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -365,23 +381,33 @@ class TranscribeCli(ScinoephileCliBase):
             llm_args: LLM provider arguments
             cache_args: cache arguments
             json_path: transcription test-case JSON path
+            alignment_outfile_path: alignment artifact JSON output path
             outfile_path: subtitle output path
             overwrite: whether to overwrite existing output files
         """
         parser = _parser or cls.argparser()
-        if overwrite and outfile_path is None:
+        if overwrite and outfile_path is None and alignment_outfile_path is None:
             parser.error("--overwrite requires an output file")
-        alignment_outfile_path = None
+        if alignment_outfile_path is None and outfile_path is not None:
+            alignment_outfile_path = outfile_path.with_suffix(".alignment.json")
         run_manifest_outfile_path = None
         if outfile_path is not None:
-            alignment_outfile_path = outfile_path.with_suffix(".alignment.json")
             run_manifest_outfile_path = outfile_path.with_suffix(".run.json")
-        for output_path in (
-            outfile_path,
-            alignment_outfile_path,
-            run_manifest_outfile_path,
-        ):
-            if output_path is not None and output_path.exists() and not overwrite:
+        elif alignment_outfile_path is not None:
+            run_manifest_outfile_path = alignment_outfile_path.with_suffix(".run.json")
+        output_paths = [
+            output_path
+            for output_path in (
+                outfile_path,
+                alignment_outfile_path,
+                run_manifest_outfile_path,
+            )
+            if output_path is not None
+        ]
+        if len(output_paths) != len(set(output_paths)):
+            parser.error("Output file paths must be distinct")
+        for output_path in output_paths:
+            if output_path.exists() and not overwrite:
                 parser.error(f"{output_path} already exists")
 
         start_at_idx, stop_at_idx = get_block_range_indexes(
