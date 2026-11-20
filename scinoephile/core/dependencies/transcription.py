@@ -183,7 +183,7 @@ def import_mlx_core() -> ModuleType:
         raise DependencyError(
             "Unable to load MLX. Install the 'transcription' extra; Windows x64 "
             "requires matching mlx and mlx-cuda-13 packages and an NVIDIA driver "
-            f"supporting CUDA 13. See docs/TRANSCRIPTION.md. Native error: {exc}"
+            f"supporting CUDA 13. Native error: {exc}"
         ) from exc
     return mx
 

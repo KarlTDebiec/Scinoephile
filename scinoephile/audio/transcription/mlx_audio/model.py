@@ -107,7 +107,7 @@ class MlxAudioModel:
                 raise DependencyError(
                     "MLX-Audio on Windows requires the MLX CUDA backend and an "
                     "NVIDIA driver supporting CUDA 13. Install the 'transcription' "
-                    "extra and see docs/TRANSCRIPTION.md."
+                    "extra."
                 )
             mx.set_default_device(mx.gpu)
 
