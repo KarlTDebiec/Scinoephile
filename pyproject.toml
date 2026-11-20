@@ -153,6 +153,8 @@ allowed-unresolved-imports = [
     "fireredasr2s.**",
     "huggingface_hub",
     "huggingface_hub.**",
+    "mlx",
+    "mlx.**",
     "mlx_audio",
     "mlx_audio.**",
     "paddleocr",
