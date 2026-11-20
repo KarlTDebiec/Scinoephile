@@ -147,6 +147,12 @@ class Transcriber(ABC):
         )
         return segments
 
+    def release(self):
+        """Release resident recognition models when a backend owns any.
+
+        Persistent transcription caches remain available for later calls.
+        """
+
     def remove_cached_transcriptions(self, audio: AudioSegment):
         """Remove cached transcriptions for all configured settings.
 

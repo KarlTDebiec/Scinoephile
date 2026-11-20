@@ -77,6 +77,51 @@ def test_model_returns_result_directly(tmp_path: Path):
     )
 
 
+def test_release_clears_loaded_weights_once(monkeypatch: pytest.MonkeyPatch):
+    """Release resident weights without initializing an unused backend.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    mx = Mock()
+    import_core = Mock(return_value=mx)
+    monkeypatch.setattr(mlx_audio_model_module, "import_mlx_core", import_core)
+    model = MlxAudioModel(QWEN3_ASR_MODEL, Language.yue_hant)
+    model.release()
+    import_core.assert_not_called()
+    model.__dict__["model"] = Mock()
+
+    model.release()
+    model.release()
+
+    assert "model" not in model.__dict__
+    mx.synchronize.assert_called_once_with()
+    mx.clear_cache.assert_called_once_with()
+
+
+@pytest.mark.parametrize("fails", [False, True])
+def test_inference_releases_weights_before_return(tmp_path: Path, fails: bool):
+    """Release recognition weights before alignment, including failed inference.
+
+    Arguments:
+        tmp_path: temporary directory path
+        fails: whether inference raises an exception
+    """
+    model = MlxAudioModel(
+        QWEN3_ASR_MODEL, Language.yue_hant, release_after_inference=True
+    )
+    runtime = Mock()
+    model.__dict__["model"] = runtime
+    model.release = Mock()
+    if fails:
+        runtime.generate.side_effect = ValueError("inference failed")
+        with pytest.raises(ValueError, match="inference failed"):
+            model(tmp_path / "audio.wav")
+    else:
+        assert model(tmp_path / "audio.wav") is runtime.generate.return_value
+    model.release.assert_called_once_with()
+
+
 @pytest.mark.parametrize(
     ("model", "expected_kwargs"),
     [
@@ -170,8 +215,47 @@ def test_model_rejects_unsupported_platform(
     )
     model = MlxAudioModel(MIMO_MODEL, Language.yue_hant)
 
-    with pytest.raises(RuntimeError, match="requires macOS on Apple Silicon"):
+    with pytest.raises(DependencyError, match="requires macOS on Apple Silicon"):
         _ = model.model
+
+
+@pytest.mark.parametrize("cuda_available", [True, False])
+def test_windows_requires_available_cuda_backend(
+    monkeypatch: pytest.MonkeyPatch, cuda_available: bool
+):
+    """Check CUDA availability before downloading a model on Windows.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        cuda_available: whether the native CUDA backend is available
+    """
+    monkeypatch.setattr(mlx_audio_model_module.platform, "system", lambda: "Windows")
+    monkeypatch.setattr(mlx_audio_model_module.platform, "machine", lambda: "AMD64")
+    mx = SimpleNamespace(
+        cuda=SimpleNamespace(is_available=lambda: cuda_available),
+        gpu=object(),
+        set_default_device=Mock(),
+    )
+    monkeypatch.setattr(mlx_audio_model_module, "import_mlx_core", lambda: mx)
+    load = Mock()
+    snapshot = Mock(return_value=Path("/cached/model"))
+    monkeypatch.setattr(
+        mlx_audio_model_module, "import_mlx_audio_stt_load", lambda: load
+    )
+    monkeypatch.setattr(
+        mlx_audio_model_module, "get_huggingface_snapshot_dir_path", snapshot
+    )
+    model = MlxAudioModel(QWEN3_ASR_MODEL, Language.yue_hant)
+
+    if cuda_available:
+        assert model.model is load.return_value
+        mx.set_default_device.assert_called_once_with(mx.gpu)
+        snapshot.assert_called_once_with(QWEN3_ASR_MODEL.name, QWEN3_ASR_MODEL.revision)
+    else:
+        with pytest.raises(DependencyError, match="MLX CUDA backend"):
+            _ = model.model
+        snapshot.assert_not_called()
+        load.assert_not_called()
 
 
 @pytest.mark.parametrize(

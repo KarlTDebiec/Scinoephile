@@ -87,6 +87,29 @@ def test_model_honors_explicit_device(monkeypatch: MonkeyPatch):
     get_torch_device.assert_not_called()
 
 
+def test_release_clears_cuda_weights_once(monkeypatch: MonkeyPatch):
+    """Release resident weights without initializing an unused Torch backend.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    torch = Mock()
+    import_torch = Mock(return_value=torch)
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper.model.import_torch", import_torch
+    )
+    model = WhisperModel(_CUSTOM_MODEL, Language.yue_hant, device="cuda")
+    model.release()
+    import_torch.assert_not_called()
+    model.__dict__["model"] = Mock()
+
+    model.release()
+    model.release()
+
+    assert "model" not in model.__dict__
+    torch.cuda.empty_cache.assert_called_once_with()
+
+
 def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch):
     """Share one executable model across transcription configurations.
 

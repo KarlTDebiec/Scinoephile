@@ -6,10 +6,15 @@ from __future__ import annotations
 
 import platform
 from functools import cached_property
+from gc import collect
 from pathlib import Path
 from typing import cast
 
-from scinoephile.core.dependencies.transcription import import_mlx_audio_stt_load
+from scinoephile.core.dependencies.transcription import (
+    import_mlx_audio_stt_load,
+    import_mlx_core,
+)
+from scinoephile.core.exceptions import DependencyError
 from scinoephile.core.language import Language
 from scinoephile.core.ml import get_huggingface_snapshot_dir_path
 
@@ -23,17 +28,26 @@ __all__ = ["MlxAudioModel", "MlxAudioResult"]
 class MlxAudioModel:
     """Configured executable MLX-Audio speech-to-text model."""
 
-    def __init__(self, spec: MlxAudioModelSpec, language: Language):
+    def __init__(
+        self,
+        spec: MlxAudioModelSpec,
+        language: Language,
+        *,
+        release_after_inference: bool = False,
+    ):
         """Initialize.
 
         Arguments:
             spec: MLX-Audio model specification
             language: language to transcribe
+            release_after_inference: whether to release weights before CTC timing
         Raises:
             ValueError: if the model does not support the language
         """
         self.spec = spec
         """Selected MLX-Audio model specification."""
+        self.release_after_inference = release_after_inference
+        """Whether recognition weights are released before timestamp alignment."""
 
         if language not in self.spec.languages:
             raise ValueError(
@@ -62,7 +76,11 @@ class MlxAudioModel:
         Raises:
             DependencyError: if MLX-Audio is unavailable
         """
-        return self.model.generate(str(audio_path), **self.generate_kw)
+        try:
+            return self.model.generate(str(audio_path), **self.generate_kw)
+        finally:
+            if self.release_after_inference:
+                self.release()
 
     @cached_property
     def model(self) -> MlxAudioRuntimeModel:
@@ -71,17 +89,27 @@ class MlxAudioModel:
         Returns:
             loaded MLX-Audio model
         Raises:
-            DependencyError: if MLX-Audio is unavailable
-            RuntimeError: if MLX-Audio is unsupported on the current platform
+            DependencyError: if MLX-Audio is unavailable or the platform or
+                accelerator is unsupported
         """
         system = platform.system()
         machine = platform.machine()
-        if system != "Darwin" or machine != "arm64":
-            raise RuntimeError(
-                "MLX-Audio support requires macOS on Apple Silicon "
+        if (system, machine) not in {("Darwin", "arm64"), ("Windows", "AMD64")}:
+            raise DependencyError(
+                "MLX-Audio support requires macOS on Apple Silicon or Windows "
+                "x64 with NVIDIA CUDA "
                 f"(detected platform.system()={system!r}, "
-                f"platform.machine()={machine!r}). CUDA support is not included."
+                f"platform.machine()={machine!r})."
             )
+        if system == "Windows":
+            mx = import_mlx_core()
+            if not mx.cuda.is_available():
+                raise DependencyError(
+                    "MLX-Audio on Windows requires the MLX CUDA backend and an "
+                    "NVIDIA driver supporting CUDA 13. Install the 'transcription' "
+                    "extra."
+                )
+            mx.set_default_device(mx.gpu)
 
         load = import_mlx_audio_stt_load()
         model_dir_path = get_huggingface_snapshot_dir_path(
@@ -96,3 +124,13 @@ class MlxAudioModel:
         )
         with use_local_tokenizer(tokenizer, tokenizer_dir_path):
             return load(model_dir_path, model_type=self.spec.model_type)
+
+    def release(self):
+        """Release loaded model weights and unused MLX accelerator buffers."""
+        if "model" not in self.__dict__:
+            return
+        mx = import_mlx_core()
+        mx.synchronize()
+        del self.__dict__["model"]
+        collect()
+        mx.clear_cache()

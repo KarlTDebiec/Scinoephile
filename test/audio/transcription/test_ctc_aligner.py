@@ -56,6 +56,33 @@ def test_ctc_aligner_allows_model_override(monkeypatch: pytest.MonkeyPatch):
     assert aligner.model.device == "mps"
 
 
+def test_ctc_model_release_retains_processor(monkeypatch: pytest.MonkeyPatch):
+    """Release CUDA weights while preserving the processor and model identity.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    torch = Mock()
+    import_torch = Mock(return_value=torch)
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.ctc.model.import_torch", import_torch
+    )
+    model = CtcModel(_CUSTOM_MODEL, "cuda")
+    model.release()
+    import_torch.assert_not_called()
+    processor = Mock()
+    model.__dict__["model"] = Mock()
+    model.__dict__["processor"] = processor
+
+    model.release()
+    model.release()
+
+    assert "model" not in model.__dict__
+    assert model.processor is processor
+    assert model.spec is _CUSTOM_MODEL
+    torch.cuda.empty_cache.assert_called_once_with()
+
+
 def test_ctc_aligner_selects_available_device_lazily(monkeypatch: pytest.MonkeyPatch):
     """Test CTC selects the available Torch device only when first needed.
 

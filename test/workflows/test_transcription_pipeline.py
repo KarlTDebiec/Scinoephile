@@ -495,6 +495,10 @@ def test_factory_omits_disabled_audio_analysis(monkeypatch: MonkeyPatch):
     )
 
     assert result is pipeline
+    assert (
+        get_sources.call_args.kwargs["ctc_aligner"]
+        is get_transcriber.call_args.kwargs["ctc_aligner"]
+    )
     constructors["FireRedAudioEventDetector"].assert_not_called()
     constructors["PyannoteDiarizer"].assert_not_called()
     constructors["FireRedLanguageIdentifier"].assert_not_called()

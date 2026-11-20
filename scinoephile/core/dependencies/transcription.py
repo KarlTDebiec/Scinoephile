@@ -22,6 +22,7 @@ __all__ = [
     "import_huggingface_hub_utils",
     "import_mlx_audio_mimo_asr",
     "import_mlx_audio_stt_load",
+    "import_mlx_core",
     "import_pyannote_audio",
     "import_pyannote_audio_voice_activity_detection",
     "import_silero_vad_load_silero_vad",
@@ -166,6 +167,25 @@ def import_mlx_audio_stt_load() -> Callable[..., Any]:
     except ImportError as exc:
         raise DependencyError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
     return load
+
+
+def import_mlx_core() -> ModuleType:
+    """Import MLX and report missing native accelerator libraries.
+
+    Returns:
+        MLX core module
+    Raises:
+        DependencyError: if MLX or its native backend cannot load
+    """
+    try:
+        import mlx.core as mx
+    except (ImportError, OSError, RuntimeError) as exc:
+        raise DependencyError(
+            "Unable to load MLX. Install the 'transcription' extra; Windows x64 "
+            "requires matching mlx and mlx-cuda-13 packages and an NVIDIA driver "
+            f"supporting CUDA 13. Native error: {exc}"
+        ) from exc
+    return mx
 
 
 def import_pyannote_audio() -> ModuleType:

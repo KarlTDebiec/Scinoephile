@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
 from functools import cached_property
+from gc import collect
 from logging import getLogger
 from math import ceil
 from pathlib import Path
@@ -18,6 +19,7 @@ from scinoephile.audio.transcription.exceptions import (
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.core.dependencies.transcription import (
     import_huggingface_hub,
+    import_torch,
     import_whisper_timestamped,
 )
 from scinoephile.core.language import Language
@@ -186,6 +188,14 @@ class WhisperModel:
             _MAX_SAMPLE_LEN,
             max(_MIN_SAMPLE_LEN, ceil(duration_seconds * _MAX_TOKENS_PER_SECOND)),
         )
+
+    def release(self):
+        """Release recognition weights and unused Torch CUDA buffers."""
+        if self.__dict__.pop("model", None) is None:
+            return
+        collect()
+        if self.device.startswith("cuda"):
+            import_torch().cuda.empty_cache()
 
     def transcribe_native(
         self,

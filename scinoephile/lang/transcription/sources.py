@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import platform
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -82,6 +83,7 @@ def get_transcription_sources(
     demucs_mode: DemucsMode = DemucsMode.OFF,
     cache_root_path: Path | None = None,
     overwrite_cache: bool = False,
+    ctc_aligner: CtcAligner | None = None,
 ) -> tuple[dict[str, Transcriber], tuple[AlignmentSource, ...]]:
     """Construct configured ASR sources and portable source descriptors.
 
@@ -94,6 +96,7 @@ def get_transcription_sources(
         demucs_mode: source-level vocal-separation mode
         cache_root_path: cache root directory path
         overwrite_cache: whether to replace matching generated cache files
+        ctc_aligner: optional shared aligner for recognition and consensus timing
     Returns:
         named source transcribers and matching portable descriptors
     Raises:
@@ -112,6 +115,10 @@ def get_transcription_sources(
     if len({source.name for source in source_specs}) != len(source_specs):
         raise ValueError("Transcription source names must be unique.")
 
+    if ctc_aligner is None:
+        ctc_aligner = CtcAligner(
+            language, cache_root_path=cache_root_path, overwrite_cache=overwrite_cache
+        )
     transcribers: dict[str, Transcriber] = {}
     descriptors = []
     for source in source_specs:
@@ -130,16 +137,17 @@ def get_transcription_sources(
                 cache_root_path=cache_root_path,
                 overwrite_cache=overwrite_cache,
                 recover_decoding=True,
+                ctc_aligner=ctc_aligner,
             )
             backend_name = WhisperTranscriber.backend_name
         elif isinstance(source.spec, MlxAudioModelSpec):
             transcriber = MlxAudioTranscriber(
-                model=MlxAudioModel(source.spec, language),
-                ctc_aligner=CtcAligner(
+                model=MlxAudioModel(
+                    source.spec,
                     language,
-                    cache_root_path=cache_root_path,
-                    overwrite_cache=overwrite_cache,
+                    release_after_inference=platform.system() == "Windows",
                 ),
+                ctc_aligner=ctc_aligner,
                 language=language,
                 chunk_duration_seconds=_MLX_AUDIO_CHUNK_DURATION_SECONDS,
                 demucs_mode=demucs_mode,
