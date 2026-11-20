@@ -133,6 +133,11 @@ class MlxAudioTranscriber(Transcriber):
             vad_detector,
         )
 
+    def release(self):
+        """Release recognition and CTC weights between processing sources."""
+        self.model.release()
+        self.ctc_aligner.model.release()
+
     def _get_effective_chunking(self, audio: AudioSegment) -> tuple[int | None, int]:
         """Get effective core and overlap durations for one audio input.
 

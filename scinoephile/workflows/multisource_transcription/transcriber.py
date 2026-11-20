@@ -46,6 +46,7 @@ class MultiSourceTranscriber:
         aligner: MsaAligner,
         processor: TranscriptionProcessor,
         ctc_aligner: CtcAligner | None = None,
+        release_source_models: bool = False,
     ):
         """Initialize.
 
@@ -55,6 +56,8 @@ class MultiSourceTranscriber:
             aligner: multiple-sequence character aligner
             processor: aligned consensus and subtitle-boundary processor
             ctc_aligner: aligner used to recover final consensus timings
+            release_source_models: whether to release recognition weights after
+                each source, including failed attempts
         Raises:
             ValueError: if there are too few named transcription sources
         """
@@ -76,6 +79,8 @@ class MultiSourceTranscriber:
             ctc_aligner = CtcAligner(language)
         self.ctc_aligner = ctc_aligner
         """Aligner used to recover final consensus timings."""
+        self.release_source_models = release_source_models
+        """Whether recognition weights are released between sources."""
         self.last_alignment: MsaAlignment | None = None
         """Latest aligned ASR evidence with timed pauses."""
         self.last_lexical_alignment: MsaAlignment | None = None
@@ -173,9 +178,13 @@ class MultiSourceTranscriber:
             raise TranscriptionEmptyError(
                 "Aligned multi-source transcription produced no usable text."
             )
-        segments, self.last_timing_sources = get_timed_request_segments(
-            audio, alignment, request_results, self.ctc_aligner
-        )
+        try:
+            segments, self.last_timing_sources = get_timed_request_segments(
+                audio, alignment, request_results, self.ctc_aligner
+            )
+        finally:
+            if self.release_source_models:
+                self.ctc_aligner.model.release()
         return segments
 
     def transcribe_block(
@@ -205,8 +214,6 @@ class MultiSourceTranscriber:
         self.last_source_cache_key_sha256s = {}
         self.last_query_key_sha256s = ()
         self.last_timing_sources = {}
-        successful_sources: dict[str, list[TranscribedSegment]] = {}
-        source_errors = {}
         audio_duration_seconds = len(audio) / 1000
         for source_name, transcriber in self.transcribers.items():
             quality_issue: str | None = None
@@ -232,12 +239,15 @@ class MultiSourceTranscriber:
                 segments = transcriber(audio, is_usable=is_usable)
             except TranscriptionError as exc:
                 error = str(exc).strip() or type(exc).__name__
-                source_errors[source_name] = error
+                self.last_source_errors[source_name] = error
                 logger.info(
                     f"Transcription source {source_name!r} failed and will be "
                     f"excluded from this block: {error}"
                 )
                 continue
+            finally:
+                if self.release_source_models:
+                    transcriber.release()
             segments = self._get_audio_bounded_segments(
                 segments, audio_duration_seconds
             )
@@ -248,25 +258,23 @@ class MultiSourceTranscriber:
             elif quality_issue is None:
                 quality_issue = get_transcription_quality_issue(segments)
             if quality_issue is not None:
-                source_errors[source_name] = quality_issue
+                self.last_source_errors[source_name] = quality_issue
                 logger.info(
                     f"Transcription source {source_name!r} was rejected and will be "
                     f"excluded from this block: {quality_issue}"
                 )
                 continue
-            successful_sources[source_name] = segments
+            self.last_sources[source_name] = segments
             cache_key_sha256 = transcriber.last_cache_key_sha256
             if cache_key_sha256 is not None:
                 self.last_source_cache_key_sha256s[source_name] = cache_key_sha256
 
-        self.last_sources = successful_sources
-        self.last_source_errors = source_errors
-        if not successful_sources:
+        if not self.last_sources:
             raise TranscriptionEmptyError(
                 "All transcription sources produced empty output."
             )
-        if len(successful_sources) == 1:
-            source_name, segments = next(iter(successful_sources.items()))
+        if len(self.last_sources) == 1:
+            source_name, segments = next(iter(self.last_sources.items()))
             text = "".join(segment.text for segment in segments)
             if is_low_information_text(text):
                 raise TranscriptionEmptyError(
@@ -285,7 +293,7 @@ class MultiSourceTranscriber:
             )
             return segments
         return self.merge(
-            successful_sources,
+            self.last_sources,
             audio,
             diarization=diarization,
             pause_intervals_seconds=pause_intervals_seconds,

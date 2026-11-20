@@ -51,7 +51,9 @@ transcription = [
     "fireredasr2s @ git+https://github.com/FireRedTeam/FireRedASR2S.git@4e7d9aaf4482a47cec1724807026b9b151926eb5",
     "huggingface-hub>=1.27.0",
     "kaldi-native-fbank>=1.22.3",
-    "mlx-audio @ git+https://github.com/ailuntx/mlx-audio@ff0197c0ae9f9fd02072904c696f2533e329c06e ; platform_machine == 'arm64' and sys_platform == 'darwin'",
+    "mlx-audio==0.6.5; (platform_machine == 'arm64' and sys_platform == 'darwin') or (platform_machine == 'AMD64' and sys_platform == 'win32')",
+    "mlx==0.32.4; platform_machine == 'AMD64' and sys_platform == 'win32'",
+    "mlx-cuda-13==0.32.4; platform_machine == 'AMD64' and sys_platform == 'win32'",
     "onnxruntime>=1.28.0",
     "pyannote.audio>=4.0.7,<5.0.0",
     "silero-vad>=6.2.1",
@@ -186,6 +188,8 @@ scinoephile = [
 
 [tool.uv]
 override-dependencies = [
+    # MLX's Windows backend incorrectly declares the Linux-only NCCL package.
+    "nvidia-nccl-cu13; sys_platform == 'linux'",
     "numpy>=2.5.2",
     "torch>=2.13.0",
     "torchaudio>=2.11.0",
@@ -195,3 +199,10 @@ package = true
 
 [tool.uv.sources]
 paddlepaddle-gpu = { url = "https://paddle-whl.cdn.bcebos.com/stable/cu126/paddlepaddle-gpu/paddlepaddle_gpu-3.2.2-cp313-cp313-win_amd64.whl" }
+torch = { index = "pytorch-cu130", marker = "platform_machine == 'AMD64' and sys_platform == 'win32'" }
+torchaudio = { index = "pytorch-cu130", marker = "platform_machine == 'AMD64' and sys_platform == 'win32'" }
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true

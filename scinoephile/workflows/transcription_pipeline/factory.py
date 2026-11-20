@@ -13,6 +13,7 @@ from scinoephile.audio.classification import (
     FireRedLanguageIdentifier,
 )
 from scinoephile.audio.diarization import PyannoteDiarizer
+from scinoephile.audio.transcription.ctc import CtcAligner
 from scinoephile.audio.transcription.preprocessing_settings import DemucsMode
 from scinoephile.audio.vad.cache import VoiceActivityCache
 from scinoephile.audio.vad.detector import VoiceActivityDetector
@@ -74,12 +75,16 @@ def get_transcription_pipeline(
     Returns:
         configured production transcription pipeline
     """
+    ctc_aligner = CtcAligner(
+        language, cache_root_path=cache_root_path, overwrite_cache=overwrite_cache
+    )
     source_transcribers, alignment_sources = get_transcription_sources(
         language,
         source_specs=source_specs,
         demucs_mode=demucs_mode,
         cache_root_path=cache_root_path,
         overwrite_cache=overwrite_cache,
+        ctc_aligner=ctc_aligner,
     )
     transcriber = get_multi_source_transcriber(
         language,
@@ -92,6 +97,7 @@ def get_transcription_pipeline(
         current_test_cases_path=current_test_cases_path,
         prune_test_cases=prune_test_cases,
         shared_test_cases=shared_test_cases,
+        ctc_aligner=ctc_aligner,
     )
     block_settings = SpeechBlockSettings()
     block_splitter = SpeechBlockSplitter(block_settings)

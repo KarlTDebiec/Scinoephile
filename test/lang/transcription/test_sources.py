@@ -22,11 +22,24 @@ from scinoephile.lang.transcription.sources import (
     TranscriptionSourceSpec,
     get_transcription_sources,
 )
+from test.helpers import parametrize
 
 
-def test_default_cantonese_sources_use_configured_models_without_internal_vad():
-    """Test default Cantonese sources use typed models without internal VAD."""
+@parametrize(("system", "release"), [("Windows", True), ("Darwin", False)])
+def test_default_cantonese_sources_use_configured_models_without_internal_vad(
+    system: str, release: bool
+):
+    """Test source configuration and residency for each supported platform.
+
+    Arguments:
+        system: operating system name
+        release: whether to release recognition weights before CTC alignment
+    """
     with (
+        patch(
+            "scinoephile.lang.transcription.sources.platform.system",
+            return_value=system,
+        ),
         patch("scinoephile.lang.transcription.sources.WhisperTranscriber") as whisper,
         patch("scinoephile.lang.transcription.sources.MlxAudioTranscriber") as mlx,
     ):
@@ -74,7 +87,15 @@ def test_default_cantonese_sources_use_configured_models_without_internal_vad():
         call.kwargs["ctc_aligner"].language is Language.yue_hant
         for call in mlx.call_args_list
     )
+    shared_aligner = whisper.call_args.kwargs["ctc_aligner"]
+    assert all(
+        call.kwargs["ctc_aligner"] is shared_aligner for call in mlx.call_args_list
+    )
     assert all(call.kwargs["vad_mode"] is VadMode.OFF for call in mlx.call_args_list)
+    assert all(
+        call.kwargs["model"].release_after_inference is release
+        for call in mlx.call_args_list
+    )
     assert all(
         call.kwargs["chunk_duration_seconds"] == 30.0 for call in mlx.call_args_list
     )

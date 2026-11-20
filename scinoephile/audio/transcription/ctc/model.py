@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from gc import collect
 from typing import TYPE_CHECKING, cast
 
 import numpy as np
@@ -150,3 +151,11 @@ class CtcModel:
                 "CTC aligner processor did not expose a valid sampling rate."
             )
         return processor
+
+    def release(self):
+        """Release CTC weights while retaining the lightweight processor."""
+        if self.__dict__.pop("model", None) is None:
+            return
+        collect()
+        if self.device.startswith("cuda"):
+            import_torch().cuda.empty_cache()

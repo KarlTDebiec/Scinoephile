@@ -9,6 +9,9 @@ Scinoephile is a package for working with Chinese/English bilingual subtitles, w
 focus on combining separate Chinese and English subtitles into synchronized bilingual
 subtitles.
 
+Native Windows CUDA and Apple Silicon transcription setup is documented in
+[Cantonese transcription](docs/TRANSCRIPTION.md).
+
 ## Notices
 
 Third-party license and data-source acknowledgements are listed in

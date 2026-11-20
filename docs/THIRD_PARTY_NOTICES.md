@@ -132,13 +132,11 @@ SOFTWARE.
 
 ## MLX-Audio (speech-to-text inference runtime)
 
-Scinoephile's optional transcription dependencies install MLX-Audio from a pinned
-source revision. The dependency is enabled only on Apple Silicon, which is the
-platform supported by Scinoephile's MLX-Audio runtime.
+Scinoephile's optional transcription dependencies install upstream MLX-Audio
+0.6.5 on Apple Silicon and Windows x64 with NVIDIA CUDA.
 
 - Upstream project: https://github.com/Blaizzy/mlx-audio
-- MiMo source revision:
-  https://github.com/ailuntx/mlx-audio/tree/ff0197c0ae9f9fd02072904c696f2533e329c06e
+- Release: https://pypi.org/project/mlx-audio/0.6.5/
 - License: MIT
 - Copyright: Copyright (c) 2024 Prince Canuma
 
@@ -146,9 +144,9 @@ The `MLX-Audio` license permits use, modification, and distribution, provided
 the copyright and permission notice are included in copies or substantial
 portions of the software.
 
-For the complete license text used by the pinned `MLX-Audio` revision, see:
+For the complete license text used by the pinned `MLX-Audio` release, see:
 
-- https://github.com/ailuntx/mlx-audio/blob/ff0197c0ae9f9fd02072904c696f2533e329c06e/LICENSE
+- https://github.com/Neywa-Labs/mlx-audio/blob/v0.6.5/LICENSE
 
 MIT license text (from `MLX-Audio`):
 

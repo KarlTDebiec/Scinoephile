@@ -10,10 +10,13 @@ from pkgutil import iter_modules
 from types import SimpleNamespace
 from warnings import catch_warnings, simplefilter, warn
 
-from pytest import MonkeyPatch
+from pytest import MonkeyPatch, raises
 
-from scinoephile.core import dependencies
-from scinoephile.core.dependencies.transcription import import_pyannote_audio
+from scinoephile.core import DependencyError, dependencies
+from scinoephile.core.dependencies.transcription import (
+    import_mlx_core,
+    import_pyannote_audio,
+)
 
 
 def test_dependency_exports_use_lazy_import_naming():
@@ -81,3 +84,45 @@ def test_pyannote_import_ignores_irrelevant_torchcodec_warning(
 
     assert module is pyannote_audio
     assert caught_warnings == []
+
+
+def test_mlx_native_import_failure_names_accelerator_requirements(
+    monkeypatch: MonkeyPatch,
+):
+    """Preserve native loader errors alongside actionable Windows guidance.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    native_error = OSError("CUDA DLL missing")
+
+    def import_without_mlx(
+        name: str,
+        globals_: dict[str, object] | None = None,
+        locals_: dict[str, object] | None = None,
+        fromlist: tuple[str, ...] = (),
+        level: int = 0,
+    ) -> object:
+        """Fail native MLX loading while preserving all other imports.
+
+        Arguments:
+            name: module name
+            globals_: optional global namespace
+            locals_: optional local namespace
+            fromlist: imported names
+            level: relative import level
+        Returns:
+            imported module
+        Raises:
+            OSError: if MLX cannot load its native backend
+        """
+        if name == "mlx.core":
+            raise native_error
+        return builtin_import(name, globals_, locals_, fromlist, level)
+
+    monkeypatch.setattr("builtins.__import__", import_without_mlx)
+
+    with raises(DependencyError, match="matching mlx and mlx-cuda-13") as caught:
+        import_mlx_core()
+
+    assert caught.value.__cause__ is native_error

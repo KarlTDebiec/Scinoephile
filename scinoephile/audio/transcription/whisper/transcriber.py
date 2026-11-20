@@ -145,6 +145,12 @@ class WhisperTranscriber(Transcriber):
                 vad_detector=self.vad_detector,
             )
 
+    def release(self):
+        """Release the model shared by standard and recovery decoding."""
+        self.model.release()
+        if self.ctc_aligner is not None:
+            self.ctc_aligner.model.release()
+
     def remove_cached_transcriptions(self, audio: AudioSegment):
         """Remove standard and recovery transcriptions for the audio.
 

@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
@@ -40,6 +40,7 @@ from scinoephile.workflows.multisource_transcription.timing import (
     get_request_interval,
     get_timed_request_segments,
 )
+from test.helpers import parametrize
 
 
 def _get_answer(*texts: str) -> TranscriptionAnswer:
@@ -90,7 +91,7 @@ def _get_transcriber(
     *,
     processor: TranscriptionProcessor | None = None,
     ctc_aligner: CtcAligner | None = None,
-    sources: dict[str, Transcriber] | None = None,
+    sources: Mapping[str, Transcriber] | None = None,
 ) -> MultiSourceTranscriber:
     """Get a multi-source transcriber with mocked dependencies.
 
@@ -610,6 +611,34 @@ def test_transcribe_block_tolerates_source_inference_failure():
     assert transcriber.last_source_errors == {"mimo": "failed"}
 
 
+def test_transcribe_block_releases_sources_after_success_and_failure():
+    """Release weights before advancing to the next source even after failure."""
+    sources = {
+        "whisper": Mock(spec=Transcriber, return_value=[_get_segment("甲", 0.1, 0.4)]),
+        "mimo": Mock(
+            spec=Transcriber, side_effect=TranscriptionRecognitionError("failed")
+        ),
+        "qwen": Mock(spec=Transcriber, return_value=[_get_segment("乙", 0.2, 0.5)]),
+    }
+    transcriber = _get_transcriber(sources=sources)
+    transcriber.release_source_models = True
+    transcriber.merge = Mock(return_value=[_get_segment("甲乙", 0.1, 0.5)])
+    events = Mock()
+    for name, source in sources.items():
+        events.attach_mock(source, name)
+
+    transcriber(AudioSegment.silent(duration=1_000))
+
+    assert [event[0] for event in events.mock_calls] == [
+        "whisper",
+        "whisper.release",
+        "mimo",
+        "mimo.release",
+        "qwen",
+        "qwen.release",
+    ]
+
+
 def test_transcribe_block_rejects_all_empty_sources():
     """Test absent source output becomes an empty-transcription error."""
     empty = Mock(spec=Transcriber, side_effect=TranscriptionEmptyError("empty"))
@@ -632,19 +661,40 @@ def test_construction_and_direct_merge_enforce_source_count():
         )
 
 
-def test_factory_uses_current_language_transcription_processor():
-    """Test factory composes the current language-level processor."""
+@parametrize(("system", "release"), [("Windows", True), ("Darwin", False)])
+def test_factory_uses_current_language_transcription_processor(
+    system: str, release: bool
+):
+    """Test composition preserves shared alignment and platform residency.
+
+    Arguments:
+        system: operating system name
+        release: whether to release weights between sources
+    """
     processor = Mock(spec=TranscriptionProcessor)
+    ctc_aligner = Mock(spec=CtcAligner)
     sources = {"whisper": Mock(spec=Transcriber), "mimo": Mock(spec=Transcriber)}
-    with patch(
-        "scinoephile.workflows.multisource_transcription.factory.get_transcriber",
-        return_value=processor,
-    ) as get_processor:
+    with (
+        patch(
+            "scinoephile.workflows.multisource_transcription.factory.get_transcriber",
+            return_value=processor,
+        ) as get_processor,
+        patch(
+            "scinoephile.workflows.multisource_transcription.factory.platform.system",
+            return_value=system,
+        ),
+    ):
         transcriber = get_multi_source_transcriber(
-            Language.yue_hant, sources, no_op=True, shared_test_cases=[]
+            Language.yue_hant,
+            sources,
+            no_op=True,
+            shared_test_cases=[],
+            ctc_aligner=ctc_aligner,
         )
 
     assert transcriber.processor is processor
+    assert transcriber.ctc_aligner is ctc_aligner
+    assert transcriber.release_source_models is release
     assert isinstance(transcriber.aligner.similarity, YueTokenSimilarity)
     get_processor.assert_called_once_with(
         Language.yue_hant,
